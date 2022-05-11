@@ -23,6 +23,7 @@ qt:shared=True
 qt:gui=True
 qt:qtshadertools=True
 qt:qtdeclarative=True
+qt:qtsvg=True
 
 [imports]
 bin, *.dll -> ../lib/binaries/win86_Release

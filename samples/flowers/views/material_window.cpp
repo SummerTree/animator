@@ -62,7 +62,7 @@ namespace flower
 			this->check = new QCheckBox;
 
 			this->title = new QLabel;
-			this->title->setText(name + u8"贴图");
+			this->title->setText(name + tr("贴图"));
 
 			this->path = new QLabel;
 			this->path->setMinimumSize(QSize(160, 20));
@@ -267,11 +267,11 @@ namespace flower
 		backButton_->setIconSize(QSize(20, 20));
 
 		title_ = new QLabel();
-		title_->setText(u8"材质属性");
+		title_->setText(tr("材质属性"));
 
 		closeButton_ = new QToolButton();
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"关闭");
+		closeButton_->setToolTip(tr("关闭"));
 
 		titleLayout_ = new QHBoxLayout();
 		titleLayout_->addWidget(backButton_, 0, Qt::AlignLeft);
@@ -280,21 +280,21 @@ namespace flower
 		titleLayout_->addStretch();
 		titleLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
 
-		this->albedo_.init(u8"基本颜色", CreateFlags::SpoilerBit | CreateFlags::ColorBit | CreateFlags::TextureBit);
-		this->opacity_.init(u8"不透明度", CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
-		this->normal_.init(u8"法线", CreateFlags::SpoilerBit | CreateFlags::TextureBit);
-		this->roughness_.init(u8"粗糙度", CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
-		this->metalness_.init(u8"金属", CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
-		this->specular_.init(u8"反射", CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
-		this->anisotropy_.init(u8"各向异性", CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
-		this->sheen_.init(u8"布料", CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
-		this->clearcoat_.init(u8"清漆", CreateFlags::ValueBit | CreateFlags::TextureBit);
-		this->clearcoatRoughness_.init(u8"清漆粗糙度", CreateFlags::ValueBit | CreateFlags::TextureBit);
-		this->subsurface_.init(u8"散射程度", CreateFlags::ValueBit | CreateFlags::TextureBit);
-		this->subsurfaceValue_.init(u8"散射颜色", CreateFlags::ColorBit | CreateFlags::TextureBit);
-		this->refraction_.init(u8"透过程度", CreateFlags::ValueBit);
-		this->refractionIor_.init(u8"折射率", CreateFlags::ValueBit);
-		this->emissive_.init(u8"自发光", CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::ColorBit | CreateFlags::TextureBit);
+		this->albedo_.init(tr("基本颜色"), CreateFlags::SpoilerBit | CreateFlags::ColorBit | CreateFlags::TextureBit);
+		this->opacity_.init(tr("不透明度"), CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
+		this->normal_.init(tr("法线"), CreateFlags::SpoilerBit | CreateFlags::TextureBit);
+		this->roughness_.init(tr("粗糙度"), CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
+		this->metalness_.init(tr("金属"), CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
+		this->specular_.init(tr("反射"), CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
+		this->anisotropy_.init(tr("各向异性"), CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
+		this->sheen_.init(tr("布料"), CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
+		this->clearcoat_.init(tr("清漆"), CreateFlags::ValueBit | CreateFlags::TextureBit);
+		this->clearcoatRoughness_.init(tr("清漆粗糙度"), CreateFlags::ValueBit | CreateFlags::TextureBit);
+		this->subsurface_.init(tr("散射程度"), CreateFlags::ValueBit | CreateFlags::TextureBit);
+		this->subsurfaceValue_.init(tr("散射颜色"), CreateFlags::ColorBit | CreateFlags::TextureBit);
+		this->refraction_.init(tr("透过程度"), CreateFlags::ValueBit);
+		this->refractionIor_.init(tr("折射率"), CreateFlags::ValueBit);
+		this->emissive_.init(tr("自发光"), CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::ColorBit | CreateFlags::TextureBit);
 
 		this->clearcoat_.mainLayout->setContentsMargins(0, 0, 0, 0);
 		this->clearcoatRoughness_.mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -322,23 +322,23 @@ namespace flower
 		refractionLayout->addLayout(this->refractionIor_.mainLayout);
 		refractionLayout->setContentsMargins(20, 5, 50, 0);
 
-		this->clearCoatSpoiler_ = new Spoiler(u8"清漆");
+		this->clearCoatSpoiler_ = new Spoiler(tr("清漆"));
 		this->clearCoatSpoiler_->setContentLayout(*clearlayout);
 
-		this->subsurfaceSpoiler_ = new Spoiler(u8"次表面散射");
+		this->subsurfaceSpoiler_ = new Spoiler(tr("次表面散射"));
 		this->subsurfaceSpoiler_->setContentLayout(*subsurfaceLayout);
 
-		this->refractionSpoiler_ = new Spoiler(u8"透射");
+		this->refractionSpoiler_ = new Spoiler(tr("透射"));
 		this->refractionSpoiler_->setContentLayout(*refractionLayout);
 
 		this->receiveShadowCheck_ = new QCheckBox;
-		this->receiveShadowCheck_->setText(u8"接收阴影");
+		this->receiveShadowCheck_->setText(tr("接收阴影"));
 
 		auto otherslayout = new QVBoxLayout();
 		otherslayout->addWidget(this->receiveShadowCheck_, 0, Qt::AlignLeft);
 		otherslayout->setContentsMargins(20, 5, 50, 0);
 
-		this->othersSpoiler_ = new Spoiler(u8"其它");
+		this->othersSpoiler_ = new Spoiler(tr("其它"));
 		this->othersSpoiler_->setContentLayout(*otherslayout);
 
 		this->emissive_.spinBox->setMaximum(100.f);
@@ -816,7 +816,7 @@ namespace flower
 	void
 	MaterialEditWindow::colorMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setAlbedoMap(path);
 	}
@@ -824,7 +824,7 @@ namespace flower
 	void
 	MaterialEditWindow::opacityMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setOpacityMap(path);
 	}
@@ -832,7 +832,7 @@ namespace flower
 	void
 	MaterialEditWindow::normalMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setNormalMap(path);
 	}
@@ -840,7 +840,7 @@ namespace flower
 	void
 	MaterialEditWindow::specularMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setSpecularMap(path);
 	}
@@ -848,7 +848,7 @@ namespace flower
 	void
 	MaterialEditWindow::smoothnessMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setRoughnessMap(path);
 	}
@@ -856,7 +856,7 @@ namespace flower
 	void
 	MaterialEditWindow::metalnessMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setMetalnessMap(path);
 	}
@@ -864,7 +864,7 @@ namespace flower
 	void
 	MaterialEditWindow::anisotropyMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setAnisotropyMap(path);
 	}
@@ -872,7 +872,7 @@ namespace flower
 	void
 	MaterialEditWindow::sheenMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setSheenMap(path);
 	}
@@ -880,7 +880,7 @@ namespace flower
 	void
 	MaterialEditWindow::clearcoatMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setClearCoatMap(path);
 	}
@@ -888,7 +888,7 @@ namespace flower
 	void
 	MaterialEditWindow::clearcoatRoughnessMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setClearCoatRoughnessMap(path);
 	}
@@ -896,7 +896,7 @@ namespace flower
 	void
 	MaterialEditWindow::subsurfaceMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setSubsurfaceMap(path);
 	}
@@ -904,7 +904,7 @@ namespace flower
 	void
 	MaterialEditWindow::subsurfaceColorMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setSubsurfaceColorMap(path);
 	}
@@ -912,7 +912,7 @@ namespace flower
 	void
 	MaterialEditWindow::emissiveMapClickEvent()
 	{
-		QString path = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr(imageFormat));
+		QString path = QFileDialog::getOpenFileName(this, tr("打开图像"), "", tr(imageFormat));
 		if (!path.isEmpty())
 			this->setEmissiveMap(path);
 	}
@@ -1106,7 +1106,7 @@ namespace flower
 		imageLabel_->setFixedSize(QSize(128, 128));
 
 		textLabel_ = new QLabel();
-		textLabel_->setText(u8"material");
+		textLabel_->setText(tr("material"));
 
 		QVBoxLayout* summaryLayout = new QVBoxLayout;
 		summaryLayout->setContentsMargins(0, 0, 0, 0);
@@ -1548,11 +1548,11 @@ namespace flower
 	MaterialListPanel::MaterialListPanel()
 	{
 		title_ = new QLabel();
-		title_->setText(u8"材质");
+		title_->setText(tr("材质"));
 
 		closeButton_ = new QToolButton();
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"关闭");
+		closeButton_->setToolTip(tr("关闭"));
 
 		titleLayout_ = new QHBoxLayout();
 		titleLayout_->addStretch();
@@ -1587,7 +1587,7 @@ namespace flower
 	{
 		this->hide();
 		this->setObjectName("materialWindow");
-		this->setWindowTitle(u8"材质");
+		this->setWindowTitle(tr("材质"));
 		this->setFixedWidth(340);
 		this->setMouseTracking(true);
 
