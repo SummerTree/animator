@@ -27,6 +27,8 @@ qt:qtdeclarative=True
 [imports]
 bin, *.dll -> ../lib/binaries/win86_Release
 bin, *.dll -> ../lib/binaries/win86_Debug
+bin, *.dll -> ../lib/binaries/win64_Release
+bin, *.dll -> ../lib/binaries/win64_Debug
 
 [generators]
 cmake
