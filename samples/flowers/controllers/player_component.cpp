@@ -424,7 +424,7 @@ namespace flower
 	{
 		auto& model = this->getModel();
 		auto& context = this->getContext();
-		auto& profile = context->profile;
+
 		this->updateDofTarget();
 
 		if (!model->playing_)

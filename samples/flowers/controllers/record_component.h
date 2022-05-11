@@ -35,6 +35,9 @@ namespace flower
 		virtual void onRecord() noexcept;
 
 	private:
+		void setupDenoise() noexcept;
+		void shutdownDenoise() noexcept;
+
 		void captureImage() noexcept;
 
 	private:
