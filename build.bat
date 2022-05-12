@@ -28,8 +28,13 @@ if %errorlevel% == 0 (
 cd ..
 echo Success Compilation
 pause
+goto EndLabel
 
 :ExitLabelFailure
 cd ..
 echo Error Compilation
+pause
+goto EndLabel
+
+:EndLabel
 pause

@@ -56,5 +56,9 @@
 		<file>res/icons/back.png</file>
 		<file>res/icons/target.png</file>
 		<file>res/qss/default.qss</file>
+		<file>res/languages/en_US.qm</file>
+		<file>res/languages/es_ES.qm</file>
+		<file>res/languages/zh_CN.qm</file>
+		<file>res/languages/ja_JP.qm</file>
     </qresource>
 </RCC>

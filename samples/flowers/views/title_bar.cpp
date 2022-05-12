@@ -10,11 +10,11 @@ namespace flower
 
 		titleLabel_ = std::make_unique<QLabel>(this);
 		titleLabel_->setObjectName("title");
-		titleLabel_->setText(u8"ÉèÖÃ");
+		titleLabel_->setText(tr("Settings"));
 
 		closeButton_ = std::make_unique<QToolButton>(this);
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"¹Ø±Õ");
+		closeButton_->setToolTip(tr("Close"));
 
 		layout_ = std::make_unique<QHBoxLayout>(this);
 		layout_->setObjectName("titleLayout");

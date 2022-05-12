@@ -42,49 +42,49 @@ namespace flower
 		: QWidget(parent)
 	{
 		infoLabel = std::make_unique<QLabel>(this);
-		infoLabel->setText(u8"°æ±¾ÐÅÏ¢");
+		infoLabel->setText(tr("Version"));
 		infoLabel->setStyleSheet("color: rgb(255,255,255);");
 
 		infoButton = std::make_unique<QToolButton>(this);
-		infoButton->setText(u8"¼ì²é¸üÐÂ");
+		infoButton->setText(tr("Check Updates"));
 		infoButton->setStyleSheet("background: rgb(50,50,50); border:2px solid #646464;border-radius:4px;color: rgb(200,200,200);");
 		infoButton->setFixedSize(190, 35);
 
 		versionLabel = std::make_unique<QLabel>(this);
-		versionLabel->setText((u8"µ±Ç°°æ±¾£ºv" + behaviour->getProfile()->clientModule->version).c_str());
+		versionLabel->setText(tr("Current Version: v") + QString::fromStdString(behaviour->getProfile()->clientModule->version));
 		versionLabel->setStyleSheet("color: rgb(200,200,200);");
 
 		/*QLabel* startupLabel = new QLabel(this);
-		startupLabel->setText(u8"Æô¶¯Ïî");
+		startupLabel->setText(u8"å¯åŠ¨é¡¹");
 		startupLabel->setStyleSheet("color: rgb(255,255,255);");
 
 		QCheckBox* checkBox = new QCheckBox(this);
-		checkBox->setText(u8"¿ª»ú×Ô¶¯Æô¶¯");
+		checkBox->setText(u8"å¼€æœºè‡ªåŠ¨å¯åŠ¨");
 		checkBox->setStyleSheet("color: rgb(200,200,200);");
 
 		QLabel* langLabel = new QLabel(this);
-		langLabel->setText(u8"ÓïÑÔ");
+		langLabel->setText(u8"è¯­è¨€");
 		langLabel->setStyleSheet("color: rgb(255,255,255);");
 
 		QComboBox* gamCombo = new QComboBox(this);
-		gamCombo->addItem(u8"ÖÐÎÄ");
+		gamCombo->addItem(u8"ä¸­æ–‡");
 		gamCombo->setStyleSheet("color: rgb(200,200,200);");
 		gamCombo->setFont(QFont("Microsoft YaHei", 9, 50));
 
 		QLabel* powerLabel = new QLabel(this);
-		powerLabel->setText(u8"ÐÔÄÜ");
+		powerLabel->setText(u8"æ€§èƒ½");
 		powerLabel->setStyleSheet("color: rgb(255,255,255);");
 
 		QCheckBox* lowpowerBox = new QCheckBox(this);
-		lowpowerBox->setText(u8"µÍ¹¦ºÄÄ£Ê½");
+		lowpowerBox->setText(u8"ä½ŽåŠŸè€—æ¨¡å¼");
 		lowpowerBox->setStyleSheet("color: rgb(200,200,200);");*/
 
 		resetLabel = std::make_unique<QLabel>(this);
-		resetLabel->setText(u8"»Ö¸´Ä¬ÈÏÉèÖÃ");
+		resetLabel->setText(tr("Reset to default settings"));
 		resetLabel->setStyleSheet("color: rgb(255,255,255);");
 
 		resetButton = std::make_unique<QToolButton>(this);
-		resetButton->setText(u8"Á¢¼´»Ö¸´");
+		resetButton->setText(tr("Reset"));
 		resetButton->setStyleSheet("background: rgb(50,50,50); border:2px solid #646464; border-radius:4px;color: rgb(200,200,200);");
 		resetButton->setFixedSize(190, 35);
 
@@ -115,22 +115,22 @@ namespace flower
 		: QWidget(parent)
 	{
 		renderLabel = std::make_unique<QLabel>();
-		renderLabel->setText(u8"äÖÈ¾ÉèÖÃ");
+		renderLabel->setText(tr("Render Settings"));
 		renderLabel->setStyleSheet("color: rgb(255,255,255);");
 
 		resolutionLabel = std::make_unique<QLabel>();
-		resolutionLabel->setText(u8"·Ö±æÂÊ");
+		resolutionLabel->setText(tr("Resolution"));
 		resolutionLabel->setStyleSheet("color: rgb(200,200,200);");
 
 		resolutionCombo = std::make_unique<QComboBox>();
-		resolutionCombo->addItem(u8"720*480");
-		resolutionCombo->addItem(u8"800*480");
-		resolutionCombo->addItem(u8"1024*576");
-		resolutionCombo->addItem(u8"1280x720");
-		resolutionCombo->addItem(u8"1920x1080");
-		resolutionCombo->addItem(u8"540x960");
-		resolutionCombo->addItem(u8"720x1280");
-		resolutionCombo->addItem(u8"1080x1920");
+		resolutionCombo->addItem("720*480");
+		resolutionCombo->addItem("800*480");
+		resolutionCombo->addItem("1024*576");
+		resolutionCombo->addItem("1280x720");
+		resolutionCombo->addItem("1920x1080");
+		resolutionCombo->addItem("540x960");
+		resolutionCombo->addItem("720x1280");
+		resolutionCombo->addItem("1080x1920");
 		resolutionCombo->setStyleSheet("color: rgb(200,200,200);");
 		resolutionCombo->setFont(QFont("Microsoft YaHei", 9, 50));
 
@@ -154,7 +154,7 @@ namespace flower
 	{
 		this->setObjectName("settingContext");
 
-		QStringList strList{ tr(u8"Ö÷Ãæ°å") };
+		QStringList strList{ tr("Main Panel") };
 
 		listWidget_ = std::make_unique<QListWidget>(this);
 		listWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -348,8 +348,8 @@ namespace flower
 		//if (version == behaviour_->getProfile()->clientModule->version)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle(QString::fromUtf8(u8"ÌáÊ¾"));
-			msg.setText(u8"Äúµ±Ç°Ê¹ÓÃµÄ»¨éºäÖÈ¾Æ÷ÒÑÊÇ×îÐÂ°æ£¬ÎÞÐè¸üÐÂ£¡");
+			msg.setWindowTitle(tr("Information"));
+			msg.setText(tr("You are using the latest version of the renderer, no need to update!"));
 			msg.setIcon(QMessageBox::NoIcon);
 			msg.setStandardButtons(QMessageBox::Ok);
 

@@ -1,4 +1,4 @@
-﻿#include "splash_screen.h"
+#include "splash_screen.h"
 #include <qapplication.h>
 #include <qscreen.h>
 
@@ -18,12 +18,12 @@ namespace flower
 
 		englishName = new QLabel(widget);
 		englishName->setObjectName("title");
-		englishName->setText(u8"花楹渲染器 2022");
+		englishName->setText(tr("Flower Render Toolbox 2022"));
 		englishName->setAlignment(Qt::AlignLeft);
 
 		copyrightInfo = new QLabel(widget);
 		copyrightInfo->setObjectName("copyright");
-		copyrightInfo->setText(u8"© 2022 Flowers-Softwares. All Rights Reserved.");
+		copyrightInfo->setText(tr("© 2022 Flowers-Softwares. All Rights Reserved."));
 		copyrightInfo->setAlignment(Qt::AlignLeft);
 
 		vlayout = new QVBoxLayout(widget);
@@ -39,12 +39,12 @@ namespace flower
 
 		versionInfo = new QLabel(this);
 		versionInfo->setObjectName("version");
-		versionInfo->setText(u8"Version: 1.0.0");
+		versionInfo->setText(tr("Version: 1.0.0"));
 		versionInfo->setAlignment(Qt::AlignRight);
 
 		message = new QLabel(this);
 		message->setObjectName("message");
-		message->setText(u8"Loading...");
+		message->setText(tr("Loading..."));
 		message->setAlignment(Qt::AlignLeft);
 
 		mainLayout = new QVBoxLayout();
