@@ -41,6 +41,67 @@ namespace flower
 	}
 
 	void
+	RecordComponent::setupDenoise() noexcept
+	{
+		auto& model = this->getContext()->profile->recordModule;
+		auto& profile = this->getContext()->profile;
+
+		if (profile->offlineModule->offlineEnable)
+		{
+			device_ = oidnNewDevice(OIDN_DEVICE_TYPE_DEFAULT);
+			oidnCommitDevice(device_);
+
+			oidnColorBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
+			oidnNormalBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
+			oidnAlbedoBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
+			oidnOutputBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
+
+			filter_ = oidnNewFilter(device_, "RT");
+			oidnSetFilterImage(filter_, "color", oidnColorBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
+			oidnSetFilterImage(filter_, "albedo", oidnAlbedoBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
+			oidnSetFilterImage(filter_, "normal", oidnNormalBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
+			oidnSetFilterImage(filter_, "output", oidnOutputBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
+			oidnSetFilter1b(filter_, "hdr", this->getModel()->hdr);
+			oidnSetFilter1b(filter_, "srgb", this->getModel()->srgb);
+			oidnCommitFilter(filter_);
+		}
+	}
+
+	void
+	RecordComponent::shutdownDenoise() noexcept
+	{
+		if (oidnColorBuffer_)
+		{
+			oidnReleaseBuffer(oidnColorBuffer_);
+			oidnColorBuffer_ = nullptr;
+		}
+
+		if (oidnNormalBuffer_)
+		{
+			oidnReleaseBuffer(oidnNormalBuffer_);
+			oidnNormalBuffer_ = nullptr;
+		}
+
+		if (oidnAlbedoBuffer_)
+		{
+			oidnReleaseBuffer(oidnAlbedoBuffer_);
+			oidnAlbedoBuffer_ = nullptr;
+		}
+
+		if (filter_)
+		{
+			oidnReleaseFilter(filter_);
+			filter_ = nullptr;
+		}
+
+		if (device_)
+		{
+			oidnReleaseDevice(device_);
+			device_ = nullptr;
+		}
+	}
+
+	void
 	RecordComponent::captureImage() noexcept
 	{
 		auto& model = this->getModel();
@@ -150,34 +211,43 @@ namespace flower
 		this->colorBuffer_.resize(model->width * model->height);
 		this->denoiseBuffer_.resize(model->width * model->height);
 
-		this->captureImage();
-
-		auto canvas = this->getContext()->profile->recordModule;
-		auto width = canvas->width;
-		auto height = canvas->height;
-		auto output = this->getContext()->profile->offlineModule->offlineEnable ? denoiseBuffer_.data() : colorBuffer_.data();
-
-		octoon::Image image;
-
-		if (image.create(octoon::Format::R8G8B8SRGB, width, height))
+		try
 		{
-			auto data = (char*)image.data();
+			this->setupDenoise();
+			this->captureImage();
+			this->shutdownDenoise();
+
+			auto canvas = this->getContext()->profile->recordModule;
+			auto width = canvas->width;
+			auto height = canvas->height;
+			auto output = this->getContext()->profile->offlineModule->offlineEnable ? denoiseBuffer_.data() : colorBuffer_.data();
+
+			octoon::Image image;
+
+			if (image.create(octoon::Format::R8G8B8SRGB, width, height))
+			{
+				auto data = (char*)image.data();
 
 #			pragma omp parallel for num_threads(4)
-			for (std::int32_t y = 0; y < height; y++)
-			{
-				for (std::uint32_t x = 0; x < width; x++)
+				for (std::int32_t y = 0; y < height; y++)
 				{
-					auto src = y * width + x;
-					auto dst = ((height - y - 1) * width + x) * 3;
+					for (std::uint32_t x = 0; x < width; x++)
+					{
+						auto src = y * width + x;
+						auto dst = ((height - y - 1) * width + x) * 3;
 
-					data[dst] = (std::uint8_t)(output[src].x * 255);
-					data[dst + 1] = (std::uint8_t)(output[src].y * 255);
-					data[dst + 2] = (std::uint8_t)(output[src].z * 255);
+						data[dst] = (std::uint8_t)(output[src].x * 255);
+						data[dst + 1] = (std::uint8_t)(output[src].y * 255);
+						data[dst + 2] = (std::uint8_t)(output[src].z * 255);
+					}
 				}
-			}
 
-			image.save(std::string(filepath), "png");
+				image.save(std::string(filepath), "png");
+			}
+		}
+		catch (...)
+		{
+			this->shutdownDenoise();
 		}
 	}
 
@@ -199,25 +269,7 @@ namespace flower
 				return false;
 		}
 
-		if (profile->offlineModule->offlineEnable)
-		{
-			device_ = oidnNewDevice(OIDN_DEVICE_TYPE_DEFAULT);
-			oidnCommitDevice(device_);
-
-			oidnColorBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
-			oidnNormalBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
-			oidnAlbedoBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
-			oidnOutputBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
-
-			filter_ = oidnNewFilter(device_, "RT");
-			oidnSetFilterImage(filter_, "color", oidnColorBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
-			oidnSetFilterImage(filter_, "albedo", oidnAlbedoBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
-			oidnSetFilterImage(filter_, "normal", oidnNormalBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
-			oidnSetFilterImage(filter_, "output", oidnOutputBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
-			oidnSetFilter1b(filter_, "hdr", this->getModel()->hdr);
-			oidnSetFilter1b(filter_, "srgb", this->getModel()->srgb);
-			oidnCommitFilter(filter_);
-		}
+		this->setupDenoise();
 
 		profile->recordModule->active = true;
 
@@ -240,35 +292,7 @@ namespace flower
 		if (h265)
 			h265->close();
 
-		if (oidnColorBuffer_)
-		{
-			oidnReleaseBuffer(oidnColorBuffer_);
-			oidnColorBuffer_ = nullptr;
-		}
-
-		if (oidnNormalBuffer_)
-		{
-			oidnReleaseBuffer(oidnNormalBuffer_);
-			oidnNormalBuffer_ = nullptr;
-		}
-
-		if (oidnAlbedoBuffer_)
-		{
-			oidnReleaseBuffer(oidnAlbedoBuffer_);
-			oidnAlbedoBuffer_ = nullptr;
-		}
-
-		if (filter_)
-		{
-			oidnReleaseFilter(filter_);
-			filter_ = nullptr;
-		}
-
-		if (device_)
-		{
-			oidnReleaseDevice(device_);
-			device_ = nullptr;
-		}
+		this->shutdownDenoise();
 	}
 
 	void

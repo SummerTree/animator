@@ -278,7 +278,7 @@ QWidget#TitleWindow > QToolButton#setting{
 	qproperty-icon: url(":res/icons/setting.png");
 }
 QWidget#TitleWindow > QPushButton#logo{
-	qproperty-icon: url(":res/icons/logo.svg");
+	qproperty-icon: url(":res/icons/logo.png");
 	qproperty-iconSize: 24px 24px;
 }
 QWidget#TitleWindow > QToolButton#vip{
