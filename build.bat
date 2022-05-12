@@ -1,11 +1,18 @@
+python update_languages.py
+python deploy_languages.py
+
+if %errorlevel% == 0 (
+    echo Successfully deployed languages.
+) else (
+  echo Please install QT linguist in PATH.
+  goto ExitLabelFailure
+)
+
 if exist build (
   cd build
 ) else (
   mkdir build && cd build
 )
-
-python update_languages.py
-python deploy_languages.py
 
 conan remote add iteale http://conan.iteale.com:19479
 
