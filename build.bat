@@ -1,13 +1,3 @@
-python update_languages.py
-python deploy_languages.py
-
-if %errorlevel% == 0 (
-    echo Successfully deployed languages.
-) else (
-  echo Please install QT linguist in PATH.
-  goto ExitLabelFailure
-)
-
 if exist build (
   cd build
 ) else (
