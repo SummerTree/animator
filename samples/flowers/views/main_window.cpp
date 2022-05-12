@@ -287,7 +287,7 @@ namespace flower
 				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 				if (behaviour)
 				{
-					QString fileName = QFileDialog::getOpenFileName(this, (const char*)u8"打开项目", "", tr("All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)"));
+					QString fileName = QFileDialog::getOpenFileName(this, (const char*)tr("Open Project"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)"));
 					if (!fileName.isEmpty())
 					{
 						try
@@ -297,7 +297,7 @@ namespace flower
 						catch (const std::exception& e)
 						{
 							QMessageBox msg(this);
-							msg.setWindowTitle((const char*)u8"错误");
+							msg.setWindowTitle((const char*)tr("Error"));
 							msg.setText(e.what());
 							msg.setIcon(QMessageBox::Information);
 							msg.setStandardButtons(QMessageBox::Ok);
@@ -311,7 +311,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle((const char*)tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -340,8 +340,8 @@ namespace flower
 				else
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)u8"提示");
-					msg.setText((const char*)u8"请加载一个.pmm工程");
+					msg.setWindowTitle((const char*)tr("Warning"));
+					msg.setText((const char*)tr("Please load a project with pmm extension."));
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
 
@@ -355,7 +355,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle((const char*)tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -385,8 +385,8 @@ namespace flower
 				else
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)u8"提示");
-					msg.setText((const char*)u8"请加载一个.pmm工程");
+					msg.setWindowTitle((const char*)tr("Warning"));
+					msg.setText((const char*)tr("Please load a project with pmm extension."));
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
 
@@ -399,7 +399,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle((const char*)tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -426,8 +426,8 @@ namespace flower
 				else
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)u8"提示");
-					msg.setText((const char*)u8"请加载一个.pmm工程");
+					msg.setWindowTitle((const char*)tr("Warning"));
+					msg.setText((const char*)tr("Please load a project with pmm extension."));
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
 
@@ -438,7 +438,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle((const char*)tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -464,8 +464,8 @@ namespace flower
 				else
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)u8"提示");
-					msg.setText((const char*)u8"请加载一个.pmm工程");
+					msg.setWindowTitle((const char*)tr("Warning"));
+					msg.setText((const char*)tr("Please load a project with pmm extension."));
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
 
@@ -476,7 +476,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle((const char*)tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -497,7 +497,7 @@ namespace flower
 				{
 					if (enable)
 					{
-						QString fileName = QFileDialog::getOpenFileName(this, (const char*)u8"打开项目", "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
+						QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
 						if (!fileName.isEmpty())
 						{
 							behaviour->loadAudio(fileName.toUtf8().data());
@@ -513,7 +513,7 @@ namespace flower
 				catch (const std::exception& e)
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)u8"错误");
+					msg.setWindowTitle((const char*)tr("Error"));
 					msg.setText(e.what());
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
@@ -551,8 +551,8 @@ namespace flower
 				else
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)u8"提示");
-					msg.setText((const char*)u8"请加载一个.pmm工程");
+					msg.setWindowTitle(tr("Warning"));
+					msg.setText(tr("Please load a project with pmm extension."));
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
 
@@ -566,7 +566,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -584,7 +584,7 @@ namespace flower
 		{
 			if (behaviour_ && !profile_->playerModule->playing_ && !profile_->recordModule->active)
 			{
-				QString fileName = QFileDialog::getSaveFileName(this, (const char*)u8"保存图像", "", tr("PNG Files (*.png)"));
+				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image"), "", tr("PNG Files (*.png)"));
 				if (!fileName.isEmpty())
 				{
 					auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
@@ -595,7 +595,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -632,7 +632,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -669,8 +669,8 @@ namespace flower
 			else
 			{
 				QMessageBox msg(this);
-				msg.setWindowTitle((const char*)u8"提示");
-				msg.setText((const char*)u8"获取核心组件失败");
+				msg.setWindowTitle(tr("Warning"));
+				msg.setText(tr("Please load a project with pmm extension."));
 				msg.setIcon(QMessageBox::Information);
 				msg.setStandardButtons(QMessageBox::Ok);
 
@@ -680,7 +680,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -715,8 +715,8 @@ namespace flower
 			else
 			{
 				QMessageBox msg(this);
-				msg.setWindowTitle((const char*)u8"提示");
-				msg.setText((const char*)u8"获取核心组件失败");
+				msg.setWindowTitle(tr("Warning"));
+				msg.setText(tr("Fail to get core component."));
 				msg.setIcon(QMessageBox::Information);
 				msg.setStandardButtons(QMessageBox::Ok);
 
@@ -726,7 +726,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -761,8 +761,8 @@ namespace flower
 			else
 			{
 				QMessageBox msg(this);
-				msg.setWindowTitle((const char*)u8"提示");
-				msg.setText((const char*)u8"获取核心组件失败");
+				msg.setWindowTitle(tr("Warning"));
+				msg.setText(tr("Fail to get core component."));
 				msg.setIcon(QMessageBox::Information);
 				msg.setStandardButtons(QMessageBox::Ok);
 
@@ -772,7 +772,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -807,8 +807,8 @@ namespace flower
 			else
 			{
 				QMessageBox msg(this);
-				msg.setWindowTitle((const char*)u8"提示");
-				msg.setText((const char*)u8"获取核心组件失败");
+				msg.setWindowTitle(tr("Warning"));
+				msg.setText(tr("Fail to get core component."));
 				msg.setIcon(QMessageBox::Information);
 				msg.setStandardButtons(QMessageBox::Ok);
 
@@ -818,7 +818,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -842,7 +842,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -869,7 +869,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -900,7 +900,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -1019,8 +1019,8 @@ namespace flower
 					if (!lightComponent->createLight((LightType)lightData.toInt()))
 					{
 						QMessageBox msg(this);
-						msg.setWindowTitle((const char*)u8"错误");
-						msg.setText((const char*)u8"不支持的光源类型");
+						msg.setWindowTitle("Error");
+						msg.setText(tr("Unsupported light type."));
 						msg.setIcon(QMessageBox::Information);
 						msg.setStandardButtons(QMessageBox::Ok);
 
@@ -1172,8 +1172,8 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)u8"错误");
-			msg.setText((const char*)u8"当前您的显卡可能并不支持OpenCL，或正在使用核显");
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(tr("Current GPU does not support OpenCL or you are using an integrated GPU accelerator."));
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
 
