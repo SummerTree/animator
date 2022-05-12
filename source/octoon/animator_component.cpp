@@ -123,7 +123,7 @@ namespace octoon
 					auto rigidbody = child->getComponent<RigidbodyComponent>();
 					if (rigidbody)
 					{
-						auto transform = child->getComponent<octoon::TransformComponent>();
+						auto transform = child->getComponent<TransformComponent>();
 						rigidbody->setPositionAndRotation(transform->getTranslate(), transform->getQuaternion());
 						rigidbody->clearForce();
 						rigidbody->clearTorque();
