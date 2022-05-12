@@ -37,6 +37,9 @@ namespace octoon
 		virtual void addConstraint(std::shared_ptr<PhysicsJoint> joint) = 0;
 		virtual void removeConstraint(std::shared_ptr<PhysicsJoint> joint) = 0;
 
+		virtual void setFixedTimeStep(float fixedTimeStep) noexcept = 0;
+		virtual float getFixedTimeStep() noexcept = 0;
+
 		virtual void simulate(float time) = 0;
 
 		virtual void fetchResults() = 0;

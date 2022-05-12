@@ -18,8 +18,8 @@ namespace flower
 		this->spp = 100;
 		this->sppCount_ = 0;
 		this->recordFps = 30.0f;
-		this->playTimeStep = 1.0f / 50.f;
-		this->normalTimeStep = 1.0f / 50.f;
+		this->playTimeStep = 1.0f / 60.f;
+		this->normalTimeStep = 1.0f / 60.f;
 		this->endFrame = 0;
 		this->startFrame = 0;
 		this->timeLength = 0;
