@@ -45,7 +45,7 @@ namespace octoon
 		std::unique_ptr<btBroadphaseInterface> broadphase_;
 		std::unique_ptr<btCollisionDispatcher> dispatcher_;
 		std::unique_ptr<btDefaultCollisionConfiguration> collisionConfiguration_;
-		std::unique_ptr<btSequentialImpulseConstraintSolver> solver_;
+		std::unique_ptr<btSequentialImpulseConstraintSolverMt> solver_;
 		std::unique_ptr<btDiscreteDynamicsWorld> dynamicsWorld_;
 	};
 }

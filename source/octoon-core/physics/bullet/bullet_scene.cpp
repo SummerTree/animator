@@ -3,6 +3,7 @@
 #include "bullet_joint.h"
 
 #include <bullet/btBulletDynamicsCommon.h>
+#include <bullet/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolverMt.h>
 
 namespace octoon
 {
@@ -20,7 +21,7 @@ namespace octoon
 		: broadphase_(std::make_unique<btDbvtBroadphase>())
 		, collisionConfiguration_(std::make_unique<btDefaultCollisionConfiguration>())
 		, filterCallback_(std::make_unique<FilterCallback>())
-		, solver_(std::make_unique<btSequentialImpulseConstraintSolver>())
+		, solver_(std::make_unique<btSequentialImpulseConstraintSolverMt>())
 		, maxSubSteps_(1)
 	{
 		dispatcher_ = std::make_unique<btCollisionDispatcher>(collisionConfiguration_.get());
