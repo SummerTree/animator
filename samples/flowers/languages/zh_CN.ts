@@ -246,12 +246,12 @@
     <message>
         <location filename="../views/material_window.cpp" line="65"/>
         <source> Texture</source>
-        <translation type="unfinished"></translation>
+        <translation>纹理</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="270"/>
         <source>Material Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>材质属性</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="274"/>
@@ -261,94 +261,94 @@
     <message>
         <location filename="../views/material_window.cpp" line="283"/>
         <source>Base Color</source>
-        <translation type="unfinished"></translation>
+        <translation>基本颜色</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="284"/>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>透明度</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="285"/>
         <source>Normal</source>
-        <translation type="unfinished"></translation>
+        <translation>法线</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="286"/>
         <source>Roughness</source>
-        <translation type="unfinished"></translation>
+        <translation>粗糙度</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="287"/>
         <source>Metal</source>
-        <translation type="unfinished"></translation>
+        <translation>金属程度</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="288"/>
         <source>Specular</source>
-        <translation type="unfinished"></translation>
+        <translation>反射率</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="289"/>
         <source>Anisotropy</source>
-        <translation type="unfinished"></translation>
+        <translation>各向异性</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="290"/>
         <source>Cloth</source>
-        <translation type="unfinished"></translation>
+        <translation>布料程度</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="291"/>
         <location filename="../views/material_window.cpp" line="325"/>
         <source>Clear Coat</source>
-        <translation type="unfinished"></translation>
+        <translation>清漆</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="292"/>
         <source>Clear Coat Roughness</source>
-        <translation type="unfinished"></translation>
+        <translation>清漆粗超度</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="293"/>
         <source>Subsurface</source>
-        <translation type="unfinished"></translation>
+        <translation>次表面</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="294"/>
         <source>Subsurface Color</source>
-        <translation type="unfinished"></translation>
+        <translation>次表面散射颜色</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="295"/>
         <location filename="../views/material_window.cpp" line="331"/>
         <source>Refraction</source>
-        <translation type="unfinished"></translation>
+        <translation>折射程度</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="296"/>
         <source>Refraction Ior</source>
-        <translation type="unfinished"></translation>
+        <translation>折射率</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="297"/>
         <source>Emissive</source>
-        <translation type="unfinished"></translation>
+        <translation>自发光</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="328"/>
         <source>Subsurface Scattering</source>
-        <translation type="unfinished"></translation>
+        <translation>次表面散射</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="335"/>
         <source>Receive Shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>接受阴影</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="341"/>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>其它</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="819"/>
@@ -365,12 +365,12 @@
         <location filename="../views/material_window.cpp" line="907"/>
         <location filename="../views/material_window.cpp" line="915"/>
         <source>Open Image</source>
-        <translation type="unfinished"></translation>
+        <translation>打开图像</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="1109"/>
         <source>material</source>
-        <translation type="unfinished"></translation>
+        <translation>材质</translation>
     </message>
 </context>
 <context>
