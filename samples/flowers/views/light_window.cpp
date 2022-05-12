@@ -72,11 +72,11 @@ namespace flower
 		this->hide();
 
 		title_ = new QLabel();
-		title_->setText(u8"光源");
+		title_->setText(tr("Source"));
 
 		closeButton_ = new QToolButton();
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"关闭");
+		closeButton_->setToolTip(tr("Close"));
 
 		titleLayout_ = new QHBoxLayout();
 		titleLayout_->addStretch();
@@ -87,10 +87,10 @@ namespace flower
 
 		listWidget_ = new LightListWindow;
 
-		std::vector<const char*> lights;
-		lights.push_back(u8"点光源");
-		lights.push_back(u8"聚光灯");
-		lights.push_back(u8"平行光");
+		std::vector<QString> lights;
+		lights.push_back(tr("Point Light"));
+		lights.push_back(tr("Spot Light"));
+		lights.push_back(tr("Directional Light"));
 
 		for (int i = 0; i < 3; i++)
 		{

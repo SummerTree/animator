@@ -279,11 +279,11 @@ namespace flower
 		label_->setMinimumSize(258, 258);
 
 		labelH_ = std::make_unique<QLabel>();
-		labelH_->setText(u8"色相");
+		labelH_->setText(tr("Hue"));
 		labelS_ = std::make_unique<QLabel>();
-		labelS_->setText(u8"饱和度");
+		labelS_->setText(tr("Saturation"));
 		labelV_ = std::make_unique<QLabel>();
-		labelV_->setText(u8"亮度");
+		labelV_->setText(tr("Value"));
 
 		editH_ = std::make_unique<SpinBox>();
 		editH_->setFixedWidth(50);

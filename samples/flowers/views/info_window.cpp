@@ -21,7 +21,7 @@ namespace flower
 
 		closeButton_ = std::make_unique<QToolButton>();
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"¹Ø±Õ");
+		closeButton_->setToolTip(tr("Close"));
 
 		logo_ = std::make_unique<QPushButton>();
 		logo_->setObjectName("logo");

@@ -10,10 +10,143 @@
     </message>
 </context>
 <context>
+    <name>flower::ColorDialog</name>
+    <message>
+        <location filename="../views/color_dialog.cpp" line="282"/>
+        <source>Hue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/color_dialog.cpp" line="284"/>
+        <source>Saturation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/color_dialog.cpp" line="286"/>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>flower::EnvironmentWindow</name>
+    <message>
+        <location filename="../views/environment_window.cpp" line="40"/>
+        <source>Environment Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="44"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="50"/>
+        <source>Untitled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="60"/>
+        <source>Thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="63"/>
+        <source>Toggle Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="70"/>
+        <source>Intensity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="88"/>
+        <source>Horizontal Rotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="106"/>
+        <source>Vertical Rotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="124"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="174"/>
+        <source>Environment Attribute</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../views/environment_window.cpp" line="311"/>
         <source>HDRi Files (*.hdr)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_window.cpp" line="355"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::ForgetWidget</name>
+    <message>
+        <location filename="../views/login_window.cpp" line="157"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::HideBar</name>
+    <message>
+        <location filename="../views/hide_window.cpp" line="9"/>
+        <source>Show Toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::InfoWindow</name>
+    <message>
+        <location filename="../views/info_window.cpp" line="24"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::LightWindow</name>
+    <message>
+        <location filename="../views/light_window.cpp" line="75"/>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/light_window.cpp" line="79"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/light_window.cpp" line="91"/>
+        <source>Point Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/light_window.cpp" line="92"/>
+        <source>Spot Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/light_window.cpp" line="93"/>
+        <source>Directional Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::LoginWidget</name>
+    <message>
+        <location filename="../views/login_window.cpp" line="30"/>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -264,8 +397,31 @@
 <context>
     <name>flower::RecordWindow</name>
     <message>
+        <location filename="../views/record_window.cpp" line="97"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_window.cpp" line="418"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/record_window.cpp" line="561"/>
         <source>MP4 Files (*.mp4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::RegisterWidget</name>
+    <message>
+        <location filename="../views/login_window.cpp" line="256"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="265"/>
+        <source>Register</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -348,6 +504,44 @@
     <message>
         <location filename="../views/splash_screen.cpp" line="47"/>
         <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::SunWindow</name>
+    <message>
+        <location filename="../views/sun_window.cpp" line="33"/>
+        <source>Main Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/sun_window.cpp" line="37"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/sun_window.cpp" line="46"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/sun_window.cpp" line="49"/>
+        <source>Intensity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/sun_window.cpp" line="74"/>
+        <source>Rotation X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/sun_window.cpp" line="99"/>
+        <source>Rotation Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/sun_window.cpp" line="124"/>
+        <source>Rotation Z</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

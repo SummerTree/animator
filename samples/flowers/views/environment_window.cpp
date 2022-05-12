@@ -37,17 +37,17 @@ namespace flower
 		this->hide();
 
 		this->title_ = new QLabel();
-		this->title_->setText(u8"环境光");
+		this->title_->setText(tr("Environment Light"));
 
 		this->closeButton_ = new QToolButton();
 		this->closeButton_->setObjectName("close");
-		this->closeButton_->setToolTip(u8"关闭");
+		this->closeButton_->setToolTip(tr("Close"));
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setFixedSize(QSize(256, 144));
 
 		this->previewName_ = new QLabel;
-		this->previewName_->setText(u8"未命名");
+		this->previewName_->setText(tr("Untitled"));
 
 		this->colorButton = new QToolButton;
 		this->colorButton->setIconSize(QSize(50, 30));
@@ -57,17 +57,17 @@ namespace flower
 		this->thumbnail->setIconSize(QSize(48, 48));
 
 		this->thumbnailToggle = new QCheckBox;
-		this->thumbnailToggle->setText(u8"环境贴图");
+		this->thumbnailToggle->setText(tr("Thumbnail"));
 
 		this->backgroundToggle = new QCheckBox;
-		this->backgroundToggle->setText(u8"显示背景");
+		this->backgroundToggle->setText(tr("Toggle Background"));
 		this->backgroundToggle->setChecked(true);
 
 		this->thumbnailPath = new QLabel;
 		this->thumbnailPath->setMinimumSize(QSize(160, 20));
 
 		this->intensityLabel_ = new QLabel;
-		this->intensityLabel_->setText(u8"光强");
+		this->intensityLabel_->setText(tr("Intensity"));
 
 		this->intensitySlider = new QSlider(Qt::Horizontal);
 		this->intensitySlider->setObjectName("Value");
@@ -85,7 +85,7 @@ namespace flower
 		this->intensitySpinBox->setDecimals(1);
 
 		this->horizontalRotationLabel_ = new QLabel;
-		this->horizontalRotationLabel_->setText(u8"水平旋转");
+		this->horizontalRotationLabel_->setText(tr("Horizontal Rotation"));
 
 		this->horizontalRotationSlider = new QSlider(Qt::Horizontal);
 		this->horizontalRotationSlider->setObjectName("Value");
@@ -103,7 +103,7 @@ namespace flower
 		this->horizontalRotationSpinBox->setValue(0.0f);
 
 		this->verticalRotationLabel_ = new QLabel;
-		this->verticalRotationLabel_->setText(u8"垂直旋转");
+		this->verticalRotationLabel_->setText(tr("Vertical Rotation"));
 
 		this->verticalRotationSlider = new QSlider(Qt::Horizontal);
 		this->verticalRotationSlider->setObjectName("Value");
@@ -121,7 +121,7 @@ namespace flower
 		this->verticalRotationSpinBox->setValue(0.0f);
 
 		this->resetButton_ = new QToolButton();
-		this->resetButton_->setText(u8"重置");
+		this->resetButton_->setText(tr("Reset"));
 
 		auto thumbnailTitleLayout = new QHBoxLayout();
 		thumbnailTitleLayout->addWidget(thumbnailToggle, 0, Qt::AlignLeft);
@@ -171,7 +171,7 @@ namespace flower
 		spoilerLayout->addWidget(this->verticalRotationSlider);
 		spoilerLayout->setContentsMargins(20, 5, 50, 0);
 
-		this->spoiler = new Spoiler(u8"环境属性");
+		this->spoiler = new Spoiler(tr("Environment Attribute"));
 		this->spoiler->setFixedWidth(340);
 		this->spoiler->setContentLayout(*spoilerLayout);
 		this->spoiler->toggleButton.click();
@@ -352,7 +352,7 @@ namespace flower
 		catch (const std::exception & e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle(u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);

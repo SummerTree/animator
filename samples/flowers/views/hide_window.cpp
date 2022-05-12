@@ -6,7 +6,7 @@ namespace flower
 	{
 		hideButton_ = std::make_unique<QPushButton>(this);
 		hideButton_->setObjectName("show");
-		hideButton_->setToolTip(u8"ÏÔÊ¾¹¤¾ßÀ¸");
+		hideButton_->setToolTip(tr("Show Toolbar"));
 
 		layout_ = std::make_unique<QVBoxLayout>(this);
 		layout_->addWidget(hideButton_.get());

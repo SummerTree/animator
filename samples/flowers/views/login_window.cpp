@@ -27,7 +27,7 @@ namespace flower
 
 		closeButton_ = std::make_unique<QToolButton>();
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"关闭");
+		closeButton_->setToolTip(tr("Close"));
 
 		logoButton_ = std::make_unique<QPushButton>();
 		logoButton_->setObjectName("logo");
@@ -154,7 +154,7 @@ namespace flower
 
 		closeButton_ = std::make_unique<QToolButton>();
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"关闭");
+		closeButton_->setToolTip(tr("Close"));
 
 		logoButton_ = std::make_unique<QPushButton>();
 		logoButton_->setObjectName("logo");
@@ -253,7 +253,7 @@ namespace flower
 
 		closeButton_ = std::make_unique<QToolButton>();
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"关闭");
+		closeButton_->setToolTip(tr("Close"));
 
 		logoButton_ = std::make_unique<QPushButton>();
 		logoButton_->setObjectName("logo");
@@ -262,7 +262,7 @@ namespace flower
 
 		selectButton_ = std::make_unique<QLabel>();
 		selectButton_->setObjectName("selector");
-		selectButton_->setText(u8"用户注册");
+		selectButton_->setText(tr("Register"));
 
 		validButton_ = std::make_unique<QLabel>();
 		validButton_->setObjectName("valid");
@@ -285,12 +285,12 @@ namespace flower
 
 		registerButton_ = std::make_unique<QToolButton>();
 		registerButton_->setObjectName("login");
-		registerButton_->setText(u8"注册");
+		registerButton_->setText("Register");
 		registerButton_->setContentsMargins(0, 20, 0, 20);
 
 		returnButton_ = std::make_unique<QPushButton>();
 		returnButton_->setObjectName("register");
-		returnButton_->setText(u8"返回");
+		returnButton_->setText("Back");
 
 		layout_ = std::make_unique<QVBoxLayout>(this);
 		layout_->addWidget(closeButton_.get(), 0, Qt::AlignRight | Qt::AlignTop);

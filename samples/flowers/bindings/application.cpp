@@ -73,7 +73,7 @@ namespace flower
 		catch (const std::exception&)
 		{
 			QMessageBox msg;
-			msg.setWindowTitle((const char*)u8"错误");
+			msg.setWindowTitle(tr("Error"));
 			msg.setText((const char*)u8"当前您的显卡可能并不支持OpenCL，或正在使用核显");
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);

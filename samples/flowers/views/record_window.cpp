@@ -94,7 +94,7 @@ namespace flower
 
 		closeButton_ = new QToolButton();
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"关闭");
+		closeButton_->setToolTip(tr("Close"));
 
 		markButton_ = new QToolButton();
 		markButton_->setObjectName("mark");
@@ -415,7 +415,7 @@ namespace flower
 			else
 			{
 				QMessageBox msg(this);
-				msg.setWindowTitle(u8"错误");
+				msg.setWindowTitle(tr("Error"));
 				msg.setText(u8"创建文件失败");
 				msg.setIcon(QMessageBox::Information);
 				msg.setStandardButtons(QMessageBox::Ok);

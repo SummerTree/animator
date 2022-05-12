@@ -30,11 +30,11 @@ namespace flower
 		this->hide();
 
 		title_ = new QLabel();
-		title_->setText(u8"主光源");
+		title_->setText(tr("Main Light"));
 
 		closeButton_ = new QToolButton();
 		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(u8"关闭");
+		closeButton_->setToolTip(tr("Close"));
 
 		scrollWidget_ = new QWidget(this);
 		scrollWidget_->setMinimumWidth(340);
@@ -43,10 +43,10 @@ namespace flower
 		colorDialog_->setCurrentColor(QColor::fromRgbF(profile->sunModule->color.x, profile->sunModule->color.y, profile->sunModule->color.z));
 
 		resetButton_ = new QToolButton();
-		resetButton_->setText(u8"重置");
+		resetButton_->setText(tr("Reset"));
 
 		labelIntensity_ = new QLabel();
-		labelIntensity_->setText(u8"光强");
+		labelIntensity_->setText(tr("Intensity"));
 
 		editIntensity_ = new DoubleSpinBox();
 		editIntensity_->setFixedWidth(50);
@@ -71,7 +71,7 @@ namespace flower
 		layoutIntensity_->setContentsMargins(40, 5, 35, 0);
 
 		labelRotationX_ = new QLabel();
-		labelRotationX_->setText(u8"旋转 X");
+		labelRotationX_->setText(tr("Rotation X"));
 
 		editRotationX_ = new DoubleSpinBox();
 		editRotationX_->setFixedWidth(50);
@@ -96,7 +96,7 @@ namespace flower
 		layoutRotationX_->setContentsMargins(40, 5, 35, 0);
 
 		labelRotationY_ = new QLabel();
-		labelRotationY_->setText(u8"旋转 Y");
+		labelRotationY_->setText(tr("Rotation Y"));
 
 		editRotationY_ = new DoubleSpinBox();
 		editRotationY_->setFixedWidth(50);
@@ -121,7 +121,7 @@ namespace flower
 		layoutRotationY_->setContentsMargins(40, 5, 35, 0);
 
 		labelRotationZ_ = new QLabel();
-		labelRotationZ_->setText(u8"旋转 Z");
+		labelRotationZ_->setText(tr("Rotation Z"));
 
 		editRotationZ_ = new DoubleSpinBox();
 		editRotationZ_->setFixedWidth(50);
