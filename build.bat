@@ -4,6 +4,9 @@ if exist build (
   mkdir build && cd build
 )
 
+python update_languages.py
+python deploy_languages.py
+
 conan remote add iteale http://conan.iteale.com:19479
 
 conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Debug -s compiler.runtime=MDd --build missing
