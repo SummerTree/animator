@@ -6,7 +6,7 @@
     <message>
         <location filename="../res/qml/MainView.qml" line="8"/>
         <source>Flowers Render Toolbox (Alpha Version)</source>
-        <translation type="unfinished"></translation>
+        <translation>花楹渲染器(内测版本)</translation>
     </message>
 </context>
 <context>
@@ -123,7 +123,7 @@
     <message>
         <location filename="../views/material_window.cpp" line="274"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="283"/>
@@ -245,12 +245,12 @@
     <message>
         <location filename="../views/material_window.cpp" line="1551"/>
         <source>Material</source>
-        <translation type="unfinished">材质</translation>
+        <translation>材质</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="1555"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../views/material_window.cpp" line="1590"/>
         <source>Material</source>
-        <translation type="unfinished">材质</translation>
+        <translation>材质</translation>
     </message>
 </context>
 <context>
@@ -292,27 +292,27 @@
     <message>
         <location filename="../views/setting_window.cpp" line="45"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>版本</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="49"/>
         <source>Check Updates</source>
-        <translation type="unfinished"></translation>
+        <translation>检查更新</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="54"/>
         <source>Current Version: v</source>
-        <translation type="unfinished"></translation>
+        <translation>当前版本：v</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="83"/>
         <source>Reset to default settings</source>
-        <translation type="unfinished"></translation>
+        <translation>重置默认设置</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="87"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>重置</translation>
     </message>
 </context>
 <context>
@@ -333,7 +333,7 @@
     <message>
         <location filename="../views/splash_screen.cpp" line="21"/>
         <source>Flower Render Toolbox 2022</source>
-        <translation type="unfinished"></translation>
+        <translation>花楹渲染器 2022</translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="26"/>
@@ -343,12 +343,12 @@
     <message>
         <location filename="../views/splash_screen.cpp" line="42"/>
         <source>Version: 1.0.0</source>
-        <translation type="unfinished"></translation>
+        <translation>版本: 1.0.0</translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="47"/>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>加载中...</translation>
     </message>
 </context>
 <context>
@@ -379,22 +379,22 @@
     <message>
         <location filename="../views/title_window.cpp" line="26"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../views/title_window.cpp" line="29"/>
         <source>Global Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>全局设置</translation>
     </message>
     <message>
         <location filename="../views/title_window.cpp" line="33"/>
         <source>VIP</source>
-        <translation type="unfinished"></translation>
+        <translation>会员</translation>
     </message>
     <message>
         <location filename="../views/title_window.cpp" line="39"/>
         <source>Flowers Render (Alpha Version)</source>
-        <translation type="unfinished"></translation>
+        <translation>花楹渲染器(内测版本)</translation>
     </message>
 </context>
 <context>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../views/tool_window.cpp" line="49"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>重置</translation>
     </message>
     <message>
         <location filename="../views/tool_window.cpp" line="50"/>

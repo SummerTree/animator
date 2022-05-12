@@ -21,13 +21,13 @@
     <name>flower::MainWindow</name>
     <message>
         <location filename="../views/main_window.cpp" line="290"/>
-        <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
+        <location filename="../views/main_window.cpp" line="500"/>
+        <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/main_window.cpp" line="290"/>
-        <location filename="../views/main_window.cpp" line="500"/>
-        <source>Open Project</source>
+        <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -82,12 +82,12 @@
     </message>
     <message>
         <location filename="../views/main_window.cpp" line="587"/>
-        <source>PNG Files (*.png)</source>
+        <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/main_window.cpp" line="587"/>
-        <source>Save Image</source>
+        <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
