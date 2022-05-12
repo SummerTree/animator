@@ -3,7 +3,9 @@ import os
 import sys
 
 def main():
-    files = glob.glob("samples/flowers/views/*.cpp")
+    cpp_files = glob.glob("samples/flowers/views/*.cpp")
+    qml_files = glob.glob("samples/flowers/res/qml/*.qml")
+    files = cpp_files + qml_files
     langs = ["en_US", "de_DE", "fr_FR", "it_IT", "es_ES", "pt_BR", "ru_RU", "zh_CN", "ja_JP"]
     for l in langs:
         # run command to update the languages

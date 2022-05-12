@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>MainView</name>
+    <message>
+        <location filename="../res/qml/MainView.qml" line="8"/>
+        <source>Flowers Render Toolbox (Alpha Version)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>flower::EnvironmentWindow</name>
     <message>
         <location filename="../views/environment_window.cpp" line="311"/>
@@ -115,7 +123,7 @@
     <message>
         <location filename="../views/material_window.cpp" line="274"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">关闭</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="283"/>
@@ -237,12 +245,12 @@
     <message>
         <location filename="../views/material_window.cpp" line="1551"/>
         <source>Material</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">材质</translation>
     </message>
     <message>
         <location filename="../views/material_window.cpp" line="1555"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">关闭</translation>
     </message>
 </context>
 <context>
@@ -250,7 +258,7 @@
     <message>
         <location filename="../views/material_window.cpp" line="1590"/>
         <source>Material</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">材质</translation>
     </message>
 </context>
 <context>
@@ -371,7 +379,7 @@
     <message>
         <location filename="../views/title_window.cpp" line="26"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">关闭</translation>
     </message>
     <message>
         <location filename="../views/title_window.cpp" line="29"/>

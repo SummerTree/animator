@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="br_FR">
 <context>
+    <name>MainView</name>
+    <message>
+        <location filename="../res/qml/MainView.qml" line="8"/>
+        <source>Flowers Render Toolbox (Alpha Version)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>flower::EnvironmentWindow</name>
     <message>
         <location filename="../views/environment_window.cpp" line="311"/>
