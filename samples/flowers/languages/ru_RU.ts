@@ -262,10 +262,69 @@
     </message>
 </context>
 <context>
+    <name>flower::SettingContextPlane</name>
+    <message>
+        <location filename="../views/setting_window.cpp" line="157"/>
+        <source>Main Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="351"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="352"/>
+        <source>You are using the latest version of the renderer, no need to update!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::SettingMainPlane</name>
+    <message>
+        <location filename="../views/setting_window.cpp" line="45"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="49"/>
+        <source>Check Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="54"/>
+        <source>Current Version: v</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="83"/>
+        <source>Reset to default settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="87"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::SettingMainPlane2</name>
+    <message>
+        <location filename="../views/setting_window.cpp" line="118"/>
+        <source>Render Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="122"/>
+        <source>Resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>flower::SplashScreen</name>
     <message>
         <location filename="../views/splash_screen.cpp" line="21"/>
-        <source>花楹渲染器 2022</source>
+        <source>Flower Render Toolbox 2022</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -281,6 +340,214 @@
     <message>
         <location filename="../views/splash_screen.cpp" line="47"/>
         <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::TitleBar</name>
+    <message>
+        <location filename="../views/title_bar.cpp" line="13"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/title_bar.cpp" line="17"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::TitleWindow</name>
+    <message>
+        <location filename="../views/title_window.cpp" line="19"/>
+        <source>Minimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="22"/>
+        <source>Maximize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="26"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="29"/>
+        <source>Global Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="33"/>
+        <source>VIP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="39"/>
+        <source>Flowers Render (Alpha Version)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::ToolWindow</name>
+    <message>
+        <location filename="../views/tool_window.cpp" line="34"/>
+        <source>Hide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="35"/>
+        <source>Hide side toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="39"/>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="40"/>
+        <source>Import Resource File(.pmm, .mdl)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="44"/>
+        <location filename="../views/tool_window.cpp" line="184"/>
+        <location filename="../views/tool_window.cpp" line="228"/>
+        <location filename="../views/tool_window.cpp" line="240"/>
+        <source>Play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="45"/>
+        <source>Play Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="49"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="50"/>
+        <source>Reset States</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="54"/>
+        <source>Backward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="55"/>
+        <source>Backward 1 second</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="59"/>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="60"/>
+        <source>Forward 1 second</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="64"/>
+        <source>Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="65"/>
+        <source>Record Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="69"/>
+        <source>Music</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="70"/>
+        <source>Set Background Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="74"/>
+        <source>Screenshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="75"/>
+        <source>Denoising Screenshot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="79"/>
+        <source>Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="80"/>
+        <source>Enable High Quality Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="84"/>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="85"/>
+        <source>Cleanup Scene</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="89"/>
+        <source>Material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="90"/>
+        <source>Open Material Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="94"/>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="95"/>
+        <source>Light Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="99"/>
+        <source>Main Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="100"/>
+        <source>Main Light Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="104"/>
+        <source>Environment Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="105"/>
+        <source>Environment Light Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="172"/>
+        <location filename="../views/tool_window.cpp" line="219"/>
+        <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

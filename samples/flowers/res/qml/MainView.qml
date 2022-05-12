@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 
 ApplicationWindow {
 	id: window
-	title: qsTr("兔叽渲染器(内测版)")
+	title: qsTr("Flowers Render Toolbox (Alpha Version)")
 	minimumWidth: 1280
 	minimumHeight: 752
 	flags: Qt.Window | Qt.FramelessWindowHint

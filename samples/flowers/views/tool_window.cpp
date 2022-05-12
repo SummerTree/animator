@@ -31,78 +31,78 @@ namespace flower
 		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
 		hideButton.setObjectName("hide");
-		hideButton.setText(u8"隐藏");
-		hideButton.setToolTip(u8"隐藏侧边工具栏");
+		hideButton.setText(tr("Hide"));
+		hideButton.setToolTip(tr("Hide side toolbar"));
 		hideButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		importButton.setObjectName("import");
-		importButton.setText(u8"加载");
-		importButton.setToolTip(u8"加载资源文件(.pmm, .mdl)");
+		importButton.setText(tr("Import"));
+		importButton.setToolTip(tr("Import Resource File(.pmm, .mdl)"));
 		importButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		playButton.setObjectName("play");
-		playButton.setText(u8"播放");
-		playButton.setToolTip(u8"播放动画");
+		playButton.setText(tr("Play"));
+		playButton.setToolTip(tr("Play Animation"));
 		playButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		resetButton.setObjectName("reset");
-		resetButton.setText(u8"重置");
-		resetButton.setToolTip(u8"重置动画");
+		resetButton.setText(tr("Reset"));
+		resetButton.setToolTip(tr("Reset States"));
 		resetButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		leftButton.setObjectName("left");
-		leftButton.setText(u8"后退");
-		leftButton.setToolTip(u8"后退1秒");
+		leftButton.setText(tr("Backward"));
+		leftButton.setToolTip(tr("Backward 1 second"));
 		leftButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		rightButton.setObjectName("right");
-		rightButton.setText(u8"快进");
-		rightButton.setToolTip(u8"快进1秒");
+		rightButton.setText(tr("Forward"));
+		rightButton.setToolTip(tr("Forward 1 second"));
 		rightButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		recordButton.setObjectName("record");
-		recordButton.setText(u8"录制");
-		recordButton.setToolTip(u8"录制视频");
+		recordButton.setText(tr("Record"));
+		recordButton.setToolTip(tr("Record Video"));
 		recordButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		audioButton.setObjectName("audio");
-		audioButton.setText(u8"音乐");
-		audioButton.setToolTip(u8"设置用于播放背景音乐的音频文件");
+		audioButton.setText(tr("Music"));
+		audioButton.setToolTip(tr("Set Background Audio File"));
 		audioButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		shotButton.setObjectName("shot");
-		shotButton.setText(u8"截图");
-		shotButton.setToolTip(u8"降噪截图");
+		shotButton.setText(tr("Screenshot"));
+		shotButton.setToolTip(tr("Denoising Screenshot"));
 		shotButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		gpuButton.setObjectName("gpu");
-		gpuButton.setText(u8"渲染");
-		gpuButton.setToolTip(u8"开启高质量渲染模式");
+		gpuButton.setText(tr("Render"));
+		gpuButton.setToolTip(tr("Enable High Quality Rendering"));
 		gpuButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		cleanupButton.setObjectName("cleanup");
-		cleanupButton.setText(u8"清空");
-		cleanupButton.setToolTip(u8"清空项目");
+		cleanupButton.setText(tr("Cleanup"));
+		cleanupButton.setToolTip(tr("Cleanup Scene"));
 		cleanupButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		materialButton.setObjectName("material");
-		materialButton.setText(u8"材质");
-		materialButton.setToolTip(u8"打开材质库面板");
+		materialButton.setText(tr("Material"));
+		materialButton.setToolTip(tr("Open Material Panel"));
 		materialButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		lightButton.setObjectName("sun");
-		lightButton.setText(u8"光源");
-		lightButton.setToolTip(u8"光源设置");
+		lightButton.setText(tr("Light"));
+		lightButton.setToolTip(tr("Light Settings"));
 		lightButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		sunButton.setObjectName("sun");
-		sunButton.setText(u8"主光源");
-		sunButton.setToolTip(u8"主光源设置");
+		sunButton.setText(tr("Main Light"));
+		sunButton.setToolTip(tr("Main Light Settings"));
 		sunButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		environmentButton.setObjectName("environment");
-		environmentButton.setText(u8"环境光");
-		environmentButton.setToolTip(u8"环境光设置");
+		environmentButton.setText(tr("Environment Light"));
+		environmentButton.setToolTip(tr("Environment Light Settings"));
 		environmentButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		auto layout = new QVBoxLayout;
@@ -169,7 +169,7 @@ namespace flower
 			if (playSignal(true))
 			{
 				playButton.setIcon(playOnIcon_);
-				playButton.setToolTip(u8"暂停");
+				playButton.setToolTip(tr("Pause"));
 				playEnable_ = true;
 			}
 		}
@@ -181,7 +181,7 @@ namespace flower
 		if (playEnable_)
 		{
 			playButton.setIcon(playIcon_);
-			playButton.setToolTip(u8"播放");
+			playButton.setToolTip(tr("Play"));
 			playEnable_ = false;
 		}
 	}
@@ -216,7 +216,7 @@ namespace flower
 			if (playSignal(true))
 			{
 				playButton.setIcon(playOnIcon_);
-				playButton.setToolTip(u8"暂停");
+				playButton.setToolTip(tr("Pause"));
 				playEnable_ = true;
 			}
 		}
@@ -225,7 +225,7 @@ namespace flower
 			if (playSignal(false))
 			{
 				playButton.setIcon(playIcon_);
-				playButton.setToolTip(u8"播放");
+				playButton.setToolTip(tr("Play"));
 				playEnable_ = false;
 			}
 		}
@@ -237,7 +237,7 @@ namespace flower
 		if (resetSignal())
 		{
 			playButton.setIcon(playIcon_);
-			playButton.setToolTip(u8"播放");
+			playButton.setToolTip(tr("Play"));
 			playEnable_ = false;
 		}
 	}

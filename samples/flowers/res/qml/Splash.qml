@@ -50,7 +50,7 @@ Window {
                 Layout.topMargin : 10
 
                 Text {
-                    text: "Rabbit Toolbox 2021"
+                    text: "Flowers Render Toolbox 2021"
                     color:"#c78ced"
                     font.pixelSize : 18
                     font.family: "Microsoft YaHei"
@@ -58,7 +58,7 @@ Window {
                 }
 
                 Text {
-                    text: "© 2019-2021 Rabbit-Softwares. All Rights Reserved."
+                    text: "© 2019-2022 Ray-Softwares. All Rights Reserved."
                     color:"#a5a5a5"
                     font.pixelSize : 12
                     font.family: "Microsoft YaHei"

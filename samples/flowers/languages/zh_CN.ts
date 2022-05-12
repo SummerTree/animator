@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="zh_CN">
 <context>
     <name>flower::EnvironmentWindow</name>
     <message>
         <location filename="../views/environment_window.cpp" line="311"/>
         <source>HDRi Files (*.hdr)</source>
-        <translation type="unfinished"></translation>
+        <translation>HDRi 文件 (*.hdr)</translation>
     </message>
 </context>
 <context>
@@ -14,13 +14,13 @@
     <message>
         <location filename="../views/main_window.cpp" line="290"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
-        <translation type="unfinished"></translation>
+        <translation>所有文件(*.pmm *.pmx *.abc *.mdl);; PMM 文件 (*.pmm);; PMX 文件 (*.pmx);; Abc 文件 (*.abc);;材质文件 (*.mdl)</translation>
     </message>
     <message>
         <location filename="../views/main_window.cpp" line="290"/>
         <location filename="../views/main_window.cpp" line="500"/>
         <source>Open Project</source>
-        <translation type="unfinished"></translation>
+        <translation>打开项目</translation>
     </message>
     <message>
         <location filename="../views/main_window.cpp" line="300"/>
@@ -42,7 +42,7 @@
         <location filename="../views/main_window.cpp" line="903"/>
         <location filename="../views/main_window.cpp" line="1175"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <location filename="../views/main_window.cpp" line="343"/>
@@ -55,7 +55,7 @@
         <location filename="../views/main_window.cpp" line="764"/>
         <location filename="../views/main_window.cpp" line="810"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../views/main_window.cpp" line="344"/>
@@ -65,7 +65,7 @@
         <location filename="../views/main_window.cpp" line="555"/>
         <location filename="../views/main_window.cpp" line="673"/>
         <source>Please load a project with pmm extension.</source>
-        <translation type="unfinished"></translation>
+        <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
         <location filename="../views/main_window.cpp" line="500"/>
@@ -80,7 +80,7 @@
     <message>
         <location filename="../views/main_window.cpp" line="587"/>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>保存图像</translation>
     </message>
     <message>
         <location filename="../views/main_window.cpp" line="719"/>
@@ -262,10 +262,69 @@
     </message>
 </context>
 <context>
+    <name>flower::SettingContextPlane</name>
+    <message>
+        <location filename="../views/setting_window.cpp" line="157"/>
+        <source>Main Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="351"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="352"/>
+        <source>You are using the latest version of the renderer, no need to update!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::SettingMainPlane</name>
+    <message>
+        <location filename="../views/setting_window.cpp" line="45"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="49"/>
+        <source>Check Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="54"/>
+        <source>Current Version: v</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="83"/>
+        <source>Reset to default settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="87"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::SettingMainPlane2</name>
+    <message>
+        <location filename="../views/setting_window.cpp" line="118"/>
+        <source>Render Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="122"/>
+        <source>Resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>flower::SplashScreen</name>
     <message>
         <location filename="../views/splash_screen.cpp" line="21"/>
-        <source>花楹渲染器 2022</source>
+        <source>Flower Render Toolbox 2022</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -282,6 +341,214 @@
         <location filename="../views/splash_screen.cpp" line="47"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::TitleBar</name>
+    <message>
+        <location filename="../views/title_bar.cpp" line="13"/>
+        <source>Settings</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../views/title_bar.cpp" line="17"/>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+</context>
+<context>
+    <name>flower::TitleWindow</name>
+    <message>
+        <location filename="../views/title_window.cpp" line="19"/>
+        <source>Minimize</source>
+        <translation>最小化</translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="22"/>
+        <source>Maximize</source>
+        <translation>最大化</translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="26"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="29"/>
+        <source>Global Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="33"/>
+        <source>VIP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/title_window.cpp" line="39"/>
+        <source>Flowers Render (Alpha Version)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::ToolWindow</name>
+    <message>
+        <location filename="../views/tool_window.cpp" line="34"/>
+        <source>Hide</source>
+        <translation>隐藏</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="35"/>
+        <source>Hide side toolbar</source>
+        <translation>隐藏侧边栏</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="39"/>
+        <source>Import</source>
+        <translation>导入</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="40"/>
+        <source>Import Resource File(.pmm, .mdl)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="44"/>
+        <location filename="../views/tool_window.cpp" line="184"/>
+        <location filename="../views/tool_window.cpp" line="228"/>
+        <location filename="../views/tool_window.cpp" line="240"/>
+        <source>Play</source>
+        <translation>播放</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="45"/>
+        <source>Play Animation</source>
+        <translation>播放动画</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="49"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="50"/>
+        <source>Reset States</source>
+        <translation>重置</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="54"/>
+        <source>Backward</source>
+        <translation>回退</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="55"/>
+        <source>Backward 1 second</source>
+        <translation>回退一秒</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="59"/>
+        <source>Forward</source>
+        <translation>快进</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="60"/>
+        <source>Forward 1 second</source>
+        <translation>快进一秒</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="64"/>
+        <source>Record</source>
+        <translation>录制</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="65"/>
+        <source>Record Video</source>
+        <translation>录制视频</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="69"/>
+        <source>Music</source>
+        <translation>音乐</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="70"/>
+        <source>Set Background Audio File</source>
+        <translation>设置背景音乐</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="74"/>
+        <source>Screenshot</source>
+        <translation>截屏</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="75"/>
+        <source>Denoising Screenshot</source>
+        <translation>降噪截屏</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="79"/>
+        <source>Render</source>
+        <translation>渲染</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="80"/>
+        <source>Enable High Quality Rendering</source>
+        <translation>启用高质量渲染</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="84"/>
+        <source>Cleanup</source>
+        <translation>清空</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="85"/>
+        <source>Cleanup Scene</source>
+        <translation>清空场景</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="89"/>
+        <source>Material</source>
+        <translation>材质</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="90"/>
+        <source>Open Material Panel</source>
+        <translation>打开材质面板</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="94"/>
+        <source>Light</source>
+        <translation>光源</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="95"/>
+        <source>Light Settings</source>
+        <translation>光源设置</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="99"/>
+        <source>Main Light</source>
+        <translation>主光源</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="100"/>
+        <source>Main Light Settings</source>
+        <translation>主光源设置</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="104"/>
+        <source>Environment Light</source>
+        <translation>环境光</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="105"/>
+        <source>Environment Light Settings</source>
+        <translation>环境光设置</translation>
+    </message>
+    <message>
+        <location filename="../views/tool_window.cpp" line="172"/>
+        <location filename="../views/tool_window.cpp" line="219"/>
+        <source>Pause</source>
+        <translation>暂停</translation>
     </message>
 </context>
 </TS>

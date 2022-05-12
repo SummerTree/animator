@@ -287,7 +287,7 @@ namespace flower
 				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 				if (behaviour)
 				{
-					QString fileName = QFileDialog::getOpenFileName(this, (const char*)tr("Open Project"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)"));
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)"));
 					if (!fileName.isEmpty())
 					{
 						try
@@ -297,7 +297,7 @@ namespace flower
 						catch (const std::exception& e)
 						{
 							QMessageBox msg(this);
-							msg.setWindowTitle((const char*)tr("Error"));
+							msg.setWindowTitle(tr("Error"));
 							msg.setText(e.what());
 							msg.setIcon(QMessageBox::Information);
 							msg.setStandardButtons(QMessageBox::Ok);
@@ -311,7 +311,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)tr("Error"));
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -340,8 +340,8 @@ namespace flower
 				else
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)tr("Warning"));
-					msg.setText((const char*)tr("Please load a project with pmm extension."));
+					msg.setWindowTitle(tr("Warning"));
+					msg.setText(tr("Please load a project with pmm extension."));
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
 
@@ -355,7 +355,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)tr("Error"));
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -385,8 +385,8 @@ namespace flower
 				else
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)tr("Warning"));
-					msg.setText((const char*)tr("Please load a project with pmm extension."));
+					msg.setWindowTitle(tr("Warning"));
+					msg.setText(tr("Please load a project with pmm extension."));
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
 
@@ -399,7 +399,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)tr("Error"));
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -426,8 +426,8 @@ namespace flower
 				else
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)tr("Warning"));
-					msg.setText((const char*)tr("Please load a project with pmm extension."));
+					msg.setWindowTitle(tr("Warning"));
+					msg.setText(tr("Please load a project with pmm extension."));
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
 
@@ -438,7 +438,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)tr("Error"));
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -464,8 +464,8 @@ namespace flower
 				else
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)tr("Warning"));
-					msg.setText((const char*)tr("Please load a project with pmm extension."));
+					msg.setWindowTitle(tr("Warning"));
+					msg.setText(tr("Please load a project with pmm extension."));
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);
 
@@ -476,7 +476,7 @@ namespace flower
 		catch (const std::exception& e)
 		{
 			QMessageBox msg(this);
-			msg.setWindowTitle((const char*)tr("Error"));
+			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
@@ -513,7 +513,7 @@ namespace flower
 				catch (const std::exception& e)
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle((const char*)tr("Error"));
+					msg.setWindowTitle(tr("Error"));
 					msg.setText(e.what());
 					msg.setIcon(QMessageBox::Information);
 					msg.setStandardButtons(QMessageBox::Ok);

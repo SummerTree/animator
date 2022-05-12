@@ -16,27 +16,27 @@ namespace flower
 		vipOnPix_ = QIcon::fromTheme("res", QIcon(":res/icons/vip-on.png"));
 
 		minimizeButton_.setObjectName("minimize");
-		minimizeButton_.setToolTip(u8"最小化");
+		minimizeButton_.setToolTip(tr("Minimize"));
 
 		maximizeButton_.setObjectName("maximize");
-		maximizeButton_.setToolTip(u8"最大化");
+		maximizeButton_.setToolTip(tr("Maximize"));
 		maximizeButton_.setEnabled(false);
 
 		closeButton_.setObjectName("close");
-		closeButton_.setToolTip(u8"关闭");
+		closeButton_.setToolTip(tr("Close"));
 
 		settingButton_.setObjectName("setting");
-		settingButton_.setToolTip(u8"全局设置");
+		settingButton_.setToolTip(tr("Global Settings"));
 
 		vipButton_.setVisible(false);
 		vipButton_.setObjectName("vip");
-		vipButton_.setToolTip(u8"会员");
+		vipButton_.setToolTip(tr("VIP"));
 
 		logoButton_.setObjectName("logo");
 		logoButton_.setContentsMargins(0, 0, 5, 0);
 
 		titleLabel_.setObjectName("title");
-		titleLabel_.setText(u8"花楹渲染器（内测版）");
+		titleLabel_.setText(tr("Flowers Render (Alpha Version)"));
 
 		layout_.setObjectName("titleLayout");
 		layout_.addWidget(&logoButton_);

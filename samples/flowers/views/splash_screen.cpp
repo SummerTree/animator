@@ -1,4 +1,4 @@
-﻿#include "splash_screen.h"
+#include "splash_screen.h"
 #include <qapplication.h>
 #include <qscreen.h>
 
@@ -18,7 +18,7 @@ namespace flower
 
 		englishName = new QLabel(widget);
 		englishName->setObjectName("title");
-		englishName->setText(tr("花楹渲染器 2022") );
+		englishName->setText(tr("Flower Render Toolbox 2022"));
 		englishName->setAlignment(Qt::AlignLeft);
 
 		copyrightInfo = new QLabel(widget);
