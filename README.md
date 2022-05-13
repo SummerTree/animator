@@ -40,6 +40,14 @@
 ------
 * https://github.com/ray-cast/flowers/releases/download/Demo/Demo.zip
 
+编译依赖：
+------
+* Python 3.10.6 (64 bit)
+* Conan Package Manager
+* CMake 3.19.3
+* Qt Linguist 5.12.0
+* OpenCL SDK
+
 系统需求：
 ------
 1. 支持SSE4.1的CPU，如i5，用于AI 降噪
