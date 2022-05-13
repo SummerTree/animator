@@ -17,9 +17,6 @@ namespace flower
 		EntitiesComponent() noexcept;
 		virtual ~EntitiesComponent() noexcept;
 
-		void setActive(bool active) noexcept override;
-		bool getActive() const noexcept override;
-		
 		bool importAudio(std::string_view path) noexcept;
 		bool importAbc(std::string_view path) noexcept;
 		void importAss(std::string_view path) noexcept(false);

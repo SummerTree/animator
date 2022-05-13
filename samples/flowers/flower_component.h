@@ -47,11 +47,24 @@ namespace flower
 
 		virtual void setActive(bool active) noexcept override
 		{
+			assert(model_);
+
+			auto enable = this->getModel()->getEnable();
+			if (enable != active)
+			{
+				if (active)
+					this->onEnable();
+				else
+					this->onDisable();
+
+				this->getModel()->setEnable(active);
+			}
 		}
 
 		virtual bool getActive() const noexcept
 		{
-			return true;
+			assert(model_);
+			return this->getModel()->getEnable();
 		}
 
 		virtual void captureEvent()

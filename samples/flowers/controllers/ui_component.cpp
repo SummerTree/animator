@@ -14,17 +14,6 @@ namespace flower
 	}
 
 	void
-	UIComponent::setActive(bool active) noexcept
-	{
-	}
-
-	bool
-	UIComponent::getActive() const noexcept
-	{
-		return true;
-	}
-
-	void
 	UIComponent::addMessageListener(const std::string& event, std::function<void(const std::any&)> listener) noexcept
 	{
 		main_->addMessageListener(event, listener);

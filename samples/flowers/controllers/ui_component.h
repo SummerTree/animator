@@ -13,9 +13,6 @@ namespace flower
 		UIComponent() noexcept;
 		~UIComponent() noexcept;
 
-		void setActive(bool active) noexcept override;
-		bool getActive() const noexcept override;
-
 		void addMessageListener(const std::string& event, std::function<void(const std::any&)> listener) noexcept;
 		void removeMessageListener(const std::string& event, std::function<void(const std::any&)> listener) noexcept;
 

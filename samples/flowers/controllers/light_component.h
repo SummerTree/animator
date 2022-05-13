@@ -19,9 +19,6 @@ namespace flower
 		LightComponent() noexcept;
 		virtual ~LightComponent() noexcept;
 
-		void setActive(bool active) noexcept override;
-		bool getActive() const noexcept override;
-
 		bool createLight(LightType) noexcept;
 
 		virtual const std::type_info& type_info() const noexcept

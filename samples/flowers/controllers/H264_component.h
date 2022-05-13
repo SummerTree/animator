@@ -15,9 +15,6 @@ namespace flower
 	public:
 		H264Component() noexcept;
 
-		void setActive(bool active) noexcept override;
-		bool getActive() const noexcept override;
-
 		bool record(std::string_view filepath) noexcept(false);
 		void write(const octoon::math::Vector3* data) noexcept(false);
 

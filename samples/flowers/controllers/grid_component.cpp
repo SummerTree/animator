@@ -14,18 +14,6 @@ namespace flower
 	}
 
 	void
-	GridComponent::setActive(bool active) noexcept
-	{
-		return this->getModel()->setEnable(active);
-	}
-
-	bool
-	GridComponent::getActive() const noexcept
-	{
-		return this->getModel()->getEnable();
-	}
-	
-	void
 	GridComponent::onEnable() noexcept
 	{
 		auto material = std::make_shared<octoon::LineBasicMaterial>(octoon::math::float3(0.5f, 0.5f, 0.5f));

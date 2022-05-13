@@ -16,17 +16,6 @@ namespace flower
 	{
 	}
 
-	void
-	LightComponent::setActive(bool active) noexcept
-	{
-	}
-
-	bool
-	LightComponent::getActive() const noexcept
-	{
-		return true;
-	}
-
 	bool
 	LightComponent::createLight(LightType type) noexcept
 	{

@@ -27,17 +27,6 @@ namespace flower
 	}
 
 	void
-	MaterialComponent::setActive(bool active) noexcept
-	{
-	}
-
-	bool
-	MaterialComponent::getActive() const noexcept
-	{
-		return true;
-	}
-
-	void
 	MaterialComponent::onEnable() noexcept
 	{
 		try

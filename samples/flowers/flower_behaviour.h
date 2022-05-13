@@ -55,7 +55,7 @@ namespace flower
 		void addComponent(IFlowerComponent* component) noexcept;
 		void removeComponent(const IFlowerComponent* component) noexcept;
 		const std::vector<IFlowerComponent*>& getComponents() const noexcept;
-		void enableComponents() noexcept(false);
+		void initializeComponents() noexcept(false);
 		void disableComponents() noexcept;
 
 		IFlowerComponent* getComponent(const std::type_info& type) const noexcept;

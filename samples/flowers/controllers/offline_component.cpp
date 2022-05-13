@@ -14,43 +14,7 @@ namespace flower
 	}
 
 	void
-	OfflineComponent::setActive(bool active) noexcept
-	{
-		if (this->getModel()->offlineEnable != active)
-		{
-			for (auto& object : this->getContext()->profile->entitiesModule->objects)
-			{
-				auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
-				if (smr)
-					smr->setAutomaticUpdate(!active);
-			}
-
-			this->getFeature<octoon::VideoFeature>()->setGlobalIllumination(active);
-			this->getModel()->offlineEnable = active;
-
-			this->sendMessage("flower:offline", active);
-		}
-	}
-
-	bool
-	OfflineComponent::getActive() const noexcept
-	{
-		return this->getModel()->offlineEnable;
-	}
-
-	void
-	OfflineComponent::onEnable() noexcept
-	{
-	}
-
-	void
-	OfflineComponent::onDisable() noexcept
-	{
-	}
-
-
-	void
-	OfflineComponent::setMaxBounces(std::uint32_t num_bounces)
+	OfflineComponent::setMaxBounces(std::uint32_t num_bounces) noexcept
 	{
 		if (this->getModel()->bounces != num_bounces)
 		{
@@ -60,8 +24,39 @@ namespace flower
 	}
 
 	std::uint32_t
-	OfflineComponent::getMaxBounces() const
+	OfflineComponent::getMaxBounces() const noexcept
 	{
 		return this->getModel()->bounces;
+	}
+
+	void
+	OfflineComponent::onEnable() noexcept
+	{
+		for (auto& object : this->getContext()->profile->entitiesModule->objects)
+		{
+			auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
+			if (smr)
+				smr->setAutomaticUpdate(false);
+		}
+
+		this->getFeature<octoon::VideoFeature>()->setMaxBounces(this->getModel()->bounces);
+		this->getFeature<octoon::VideoFeature>()->setGlobalIllumination(true);
+
+		this->sendMessage("flower:offline", true);
+	}
+
+	void
+	OfflineComponent::onDisable() noexcept
+	{
+		for (auto& object : this->getContext()->profile->entitiesModule->objects)
+		{
+			auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
+			if (smr)
+				smr->setAutomaticUpdate(true);
+		}
+
+		this->getFeature<octoon::VideoFeature>()->setGlobalIllumination(false);
+
+		this->sendMessage("flower:offline", false);
 	}
 }

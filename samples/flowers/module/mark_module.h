@@ -21,8 +21,6 @@ namespace flower
 		MarkModule& operator=(const MarkModule&) = delete;
 
 	public:
-		bool markEnable;
-
 		std::uint32_t x;
 		std::uint32_t y;
 		std::uint32_t width;

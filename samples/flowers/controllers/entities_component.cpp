@@ -24,17 +24,6 @@ namespace flower
 	{
 	}
 
-	void
-	EntitiesComponent::setActive(bool active) noexcept
-	{
-	}
-
-	bool
-	EntitiesComponent::getActive() const noexcept
-	{
-		return true;
-	}
-
 	bool 
 	EntitiesComponent::showFileOpenBrowse(std::string::pointer buffer, std::uint32_t max_length, std::string::const_pointer ext_name) noexcept
 	{
@@ -199,7 +188,7 @@ namespace flower
 
 				auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
-					smr->setAutomaticUpdate(!this->getContext()->profile->offlineModule->offlineEnable);
+					smr->setAutomaticUpdate(!this->getContext()->profile->offlineModule->getEnable());
 
 				objects.emplace_back(std::move(model));
 			}
@@ -229,7 +218,7 @@ namespace flower
 		{
 			auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
 			if (smr)
-				smr->setAutomaticUpdate(!this->getContext()->profile->offlineModule->offlineEnable);
+				smr->setAutomaticUpdate(!this->getContext()->profile->offlineModule->getEnable());
 
 			this->getContext()->profile->entitiesModule->objects.push_back(model);
 			return true;

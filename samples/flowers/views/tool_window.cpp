@@ -356,6 +356,23 @@ namespace flower
 	void
 	ToolWindow::paintEvent(QPaintEvent* e) noexcept
 	{
+		if (this->profile_->offlineModule->getEnable())
+		{
+			if (!gpuEnable_)
+			{
+				gpuButton.setIcon(gpuOnIcon_);
+				gpuEnable_ = true;
+			}
+		}
+		else
+		{
+			if (gpuEnable_)
+			{
+				gpuButton.setIcon(gpuIcon_);
+				gpuEnable_ = false;
+			}
+		}
+
 		if (this->profile_->entitiesModule->sound)
 		{
 			if (!audioEnable_)

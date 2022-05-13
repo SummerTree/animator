@@ -16,9 +16,6 @@ namespace flower
 	public:
 		H265Component() noexcept;
 
-		void setActive(bool active) noexcept override;
-		bool getActive() const noexcept override;
-
 		bool create(std::string_view filepath) noexcept(false);
 		void close() noexcept;
 

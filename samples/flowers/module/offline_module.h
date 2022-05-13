@@ -21,7 +21,6 @@ namespace flower
 		OfflineModule& operator=(const OfflineModule&) = delete;
 
 	public:
-		bool offlineEnable;
 		std::uint32_t bounces;
 	};
 }

@@ -17,45 +17,6 @@ namespace flower
 	}
 
 	void
-	PlayerComponent::setActive(bool active) noexcept
-	{
-	}
-
-	bool
-	PlayerComponent::getActive() const noexcept
-	{
-		return true;
-	}
-
-	void
-	PlayerComponent::onEnable() noexcept
-	{
-		auto& context = this->getContext()->profile;
-		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
-		if (physicsFeature)
-			physicsFeature->setGravity(context->physicsModule->gravity);
-
-		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
-		if (timeFeature)
-			timeFeature->setTimeStep(this->getModel()->normalTimeStep);
-
-		this->addMessageListener("flower:project:open", [this](const std::any& data)
-		{
-			auto& model = this->getModel();
-			model->timeLength = this->getContext()->behaviour->getComponent<PlayerComponent>()->timeLength();
-			model->startFrame = 0;
-			model->endFrame = this->getModel()->timeLength * 30;
-
-			this->reset();
-		});
-	}
-
-	void
-	PlayerComponent::onDisable() noexcept
-	{
-	}
-
-	void
 	PlayerComponent::play() noexcept
 	{
 		auto& model = this->getModel();
@@ -228,7 +189,7 @@ namespace flower
 				}
 			}
 
-			if (this->getContext()->profile->offlineModule->offlineEnable)
+			if (this->getContext()->profile->offlineModule->getEnable())
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
@@ -303,7 +264,7 @@ namespace flower
 				}
 			}
 
-			if (this->getContext()->profile->offlineModule->offlineEnable)
+			if (this->getContext()->profile->offlineModule->getEnable())
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
@@ -383,7 +344,7 @@ namespace flower
 				}
 			}
 
-			if (this->getContext()->profile->offlineModule->offlineEnable)
+			if (this->getContext()->profile->offlineModule->getEnable())
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
@@ -474,6 +435,34 @@ namespace flower
 	}
 
 	void
+	PlayerComponent::onEnable() noexcept
+	{
+		auto& context = this->getContext()->profile;
+		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
+		if (physicsFeature)
+			physicsFeature->setGravity(context->physicsModule->gravity);
+
+		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
+		if (timeFeature)
+			timeFeature->setTimeStep(this->getModel()->normalTimeStep);
+
+		this->addMessageListener("flower:project:open", [this](const std::any& data)
+		{
+			auto& model = this->getModel();
+			model->timeLength = this->getContext()->behaviour->getComponent<PlayerComponent>()->timeLength();
+			model->startFrame = 0;
+			model->endFrame = this->getModel()->timeLength * 30;
+
+			this->reset();
+		});
+	}
+
+	void
+	PlayerComponent::onDisable() noexcept
+	{
+	}
+
+	void
 	PlayerComponent::onLateUpdate() noexcept
 	{
 		auto& model = this->getModel();
@@ -482,7 +471,7 @@ namespace flower
 		if (!model->playing_)
 			return;
 
-		if (profile->offlineModule->offlineEnable)
+		if (profile->offlineModule->getEnable())
 		{
 			model->sppCount_++;
 

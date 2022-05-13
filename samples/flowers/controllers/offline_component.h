@@ -12,11 +12,8 @@ namespace flower
 		OfflineComponent() noexcept;
 		virtual ~OfflineComponent() noexcept;
 
-		void setActive(bool active) noexcept override;
-		bool getActive() const noexcept override;
-
-		void setMaxBounces(std::uint32_t num_bounces);
-		std::uint32_t getMaxBounces() const;
+		void setMaxBounces(std::uint32_t num_bounces) noexcept;
+		std::uint32_t getMaxBounces() const noexcept;
 
 		virtual const std::type_info& type_info() const noexcept
 		{

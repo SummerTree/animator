@@ -12,9 +12,6 @@ namespace flower
 		PlayerComponent() noexcept;
 		virtual ~PlayerComponent() noexcept;
 
-		void setActive(bool active) noexcept override;
-		bool getActive() const noexcept override;
-
 		void play() noexcept;
 		void pause() noexcept;
 		void render() noexcept;

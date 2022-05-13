@@ -12,27 +12,6 @@ namespace flower
 	{
 	}
 
-	void
-	DragComponent::setActive(bool active) noexcept
-	{
-		auto enable = this->getModel()->getEnable();
-		if (enable != active)
-		{
-			if (active)
-				this->onEnable();
-			else
-				this->onDisable();
-
-			this->getModel()->setEnable(active);
-		}
-	}
-
-	bool
-	DragComponent::getActive() const noexcept
-	{
-		return this->getModel()->getEnable();
-	}
-
 	std::optional<octoon::RaycastHit>
 	DragComponent::intersectObjects(float x, float y) noexcept
 	{

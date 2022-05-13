@@ -50,7 +50,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::enableComponents() noexcept(false)
+	FlowerBehaviour::initializeComponents() noexcept(false)
 	{
 		auto feature = this->tryGetFeature<octoon::GameBaseFeature>();
 
@@ -59,7 +59,8 @@ namespace flower
 			if (feature)
 				feature->log("Initialize :" + std::string(it->type_info().name()));
 			
-			it->onEnable();
+			if (it->getActive())
+				it->onEnable();
 		}
 
 		if (feature)
@@ -124,7 +125,7 @@ namespace flower
 		this->addComponent(recordComponent_.get());
 		this->addComponent(h265Component_.get());
 
-		this->enableComponents();
+		this->initializeComponents();
 
 		this->addComponentDispatch(octoon::GameDispatchType::FixedUpdate);
 		this->addComponentDispatch(octoon::GameDispatchType::Frame);

@@ -19,7 +19,7 @@ namespace flower
 		width = 0;
 		height = 0;
 		channel = 8;
-		markEnable = false;
+		this->setEnable(false);
 	}
 
 	void 

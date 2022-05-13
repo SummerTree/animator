@@ -21,26 +21,6 @@ namespace flower
 	}
 
 	void
-	H265Component::setActive(bool active) noexcept
-	{
-		if (this->getModel()->enable != active)
-		{
-			this->getModel()->enable = active;
-
-			if (active)
-				this->onEnable();
-			else
-				this->onDisable();
-		}
-	}
-
-	bool
-	H265Component::getActive() const noexcept
-	{
-		return this->getModel()->enable;
-	}
-
-	void
 	H265Component::onEnable() noexcept
 	{
 	}

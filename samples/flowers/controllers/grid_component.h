@@ -13,9 +13,6 @@ namespace flower
 		GridComponent() noexcept;
 		~GridComponent() noexcept;
 
-		void setActive(bool active) noexcept override;
-		bool getActive() const noexcept override;
-
 		virtual const std::type_info& type_info() const noexcept
 		{
 			return typeid(GridComponent);

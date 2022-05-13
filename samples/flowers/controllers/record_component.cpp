@@ -46,7 +46,7 @@ namespace flower
 		auto& model = this->getContext()->profile->recordModule;
 		auto& profile = this->getContext()->profile;
 
-		if (profile->offlineModule->offlineEnable)
+		if (profile->offlineModule->getEnable())
 		{
 			device_ = oidnNewDevice(OIDN_DEVICE_TYPE_DEFAULT);
 			oidnCommitDevice(device_);
@@ -107,7 +107,7 @@ namespace flower
 		auto& model = this->getModel();
 		auto& context = this->getContext();
 
-		if (this->getContext()->profile->offlineModule->offlineEnable)
+		if (this->getContext()->profile->offlineModule->getEnable())
 		{
 			auto videoFeature = this->getFeature<octoon::VideoFeature>();
 			videoFeature->readColorBuffer(colorBuffer_.data());
@@ -144,7 +144,7 @@ namespace flower
 			}
 		}
 
-		if (this->getContext()->profile->offlineModule->offlineEnable)
+		if (this->getContext()->profile->offlineModule->getEnable())
 		{
 			auto color = oidnMapBuffer(oidnColorBuffer_, OIDN_ACCESS_WRITE_DISCARD, 0, 0);
 			auto normal = oidnMapBuffer(oidnNormalBuffer_, OIDN_ACCESS_WRITE_DISCARD, 0, 0);
@@ -220,7 +220,7 @@ namespace flower
 			auto canvas = this->getContext()->profile->recordModule;
 			auto width = canvas->width;
 			auto height = canvas->height;
-			auto output = this->getContext()->profile->offlineModule->offlineEnable ? denoiseBuffer_.data() : colorBuffer_.data();
+			auto output = this->getContext()->profile->offlineModule->getEnable() ? denoiseBuffer_.data() : colorBuffer_.data();
 
 			octoon::Image image;
 

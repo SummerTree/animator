@@ -45,7 +45,6 @@ namespace flower
 		}
 
 	private:
-
 		void handleMouseDown(const octoon::input::InputEvent& event) noexcept;
 		void handleMouseUp(const octoon::input::InputEvent& event) noexcept;
 		void handleMouseMove(const octoon::input::InputEvent& event) noexcept;
