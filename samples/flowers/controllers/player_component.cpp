@@ -471,7 +471,7 @@ namespace flower
 		if (!model->playing_)
 			return;
 
-		if (profile->offlineModule->getEnable())
+		if (profile->offlineModule->getEnable() && profile->recordModule->active)
 		{
 			model->sppCount_++;
 
