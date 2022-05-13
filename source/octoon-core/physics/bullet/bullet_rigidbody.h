@@ -43,6 +43,9 @@ namespace octoon
 		void setLinearVelocity(const math::float3& value) override;
 		void setAngularVelocity(const math::float3& value) override;
 
+		math::float3 getLinearVelocity() const override;
+		math::float3 getAngularVelocity() const override;
+
 		float getMass() const override;
 		float getDynamicFriction() const override;
 		float getStaticFriction() const override;

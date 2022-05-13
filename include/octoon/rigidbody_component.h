@@ -23,7 +23,6 @@ namespace octoon
         virtual ~RigidbodyComponent();
         virtual GameComponentPtr clone() const noexcept;
 
-        void setAngularVelocity(float v) noexcept;
         void setGravityScale(float scale) noexcept;
         void setMass(float m) noexcept;
         void setSleepMode(RigidbodySleepMode mode) noexcept;
@@ -37,11 +36,12 @@ namespace octoon
 		void setSleepThreshold(float threshold) noexcept;
 		void setEnableCCD(bool enable) noexcept;
 		void setSolverIterationCounts(std::uint32_t minPositionIters, std::uint32_t minVelocityIters) noexcept;
+		void setLinearVelocity(const math::float3& linearVelocity) noexcept;
+		void setAngularVelocity(const math::float3& angularVelocity) noexcept;
 
         float getDynamicFriction() const;
         float getStaticFriction() const;
         float getRestitution() const;
-        float getAngularVelocity() const noexcept;
         float getGravityScale() const noexcept;
         float getMass() const noexcept;
 		float getSleepThreshold() const noexcept;
@@ -49,6 +49,8 @@ namespace octoon
 		std::uint32_t getGroup() const noexcept;
 		std::uint16_t getGroupMask() const noexcept;
 		RigidbodySleepMode getSleepMode() const noexcept;
+		math::float3 getLinearVelocity() const noexcept;
+		math::float3 getAngularVelocity() const noexcept;
 
 		void rotation(const math::Quaternion& quat) noexcept;
 		void movePosition(const math::float3& position) noexcept;
@@ -82,7 +84,6 @@ namespace octoon
         bool isKinematic_;
 		bool enableCCD_;
 
-        float angularVelocity_;
         float gravityScale_;
         float mass_;
         float dynamicFriction_;

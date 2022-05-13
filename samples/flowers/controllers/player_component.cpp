@@ -200,22 +200,31 @@ namespace flower
 			auto animator = it->getComponent<octoon::AnimatorComponent>();
 			if (animator)
 			{
+				for (auto& bone : animator->getAvatar())
+				{
+					for (auto& child : bone->getChildren())
+					{
+						auto transform = child->getComponent<octoon::TransformComponent>();
+						transform->setAllowRelativeMotion(true);
+					}
+				}
+
 				animator->setTime(model->curTime);
 				animator->sample();
-			}
-		}
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
-		{
-			auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
-			if (smr)
-			{
-				for (auto& transform : smr->getTransforms())
+				for (auto& transform : animator->getAvatar())
 				{
 					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
 					if (solver)
 						solver->solve();
 				}
+			}
+
+			if (this->getContext()->profile->offlineModule->offlineEnable)
+			{
+				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
+				if (smr)
+					smr->updateMeshData();
 			}
 		}
 	}
@@ -241,26 +250,16 @@ namespace flower
 			{
 				animator->setTime(model->curTime);
 				animator->sample();
-			}
-		}
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
-		{
-			auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
-			if (smr)
-			{
-				for (auto& transform : smr->getTransforms())
+				for (auto& transform : animator->getAvatar())
 				{
 					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
 					if (solver)
 						solver->solve();
 				}
 			}
-		}
 
-		if (this->getContext()->profile->offlineModule->offlineEnable)
-		{
-			for (auto& it : this->getContext()->profile->entitiesModule->objects)
+			if (this->getContext()->profile->offlineModule->offlineEnable)
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
@@ -295,26 +294,16 @@ namespace flower
 			{
 				animator->setTime(model->curTime);
 				animator->evaluate();
-			}
-		}
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
-		{
-			auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
-			if (smr)
-			{
-				for (auto& transform : smr->getTransforms())
+				for (auto& transform : animator->getAvatar())
 				{
 					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
 					if (solver)
 						solver->solve();
 				}
 			}
-		}
 
-		if (this->getContext()->profile->offlineModule->offlineEnable)
-		{
-			for (auto& it : this->getContext()->profile->entitiesModule->objects)
+			if (this->getContext()->profile->offlineModule->offlineEnable)
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)

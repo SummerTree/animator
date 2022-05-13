@@ -202,6 +202,20 @@ namespace octoon
 		rigidbody_->setAngularVelocity(physx::PxVec3(value.x, value.y, value.z));
 	}
 
+	math::float3
+	PhysxRigidbody::getLinearVelocity() const
+	{
+		auto v = rigidbody_->getLinearVelocity();
+		return math::float3(v.x, v.y, v.z);
+	}
+
+	math::float3
+	PhysxRigidbody::getAngularVelocity() const
+	{
+		auto v = rigidbody_->getAngularVelocity();
+		return math::float3(v.x, v.y, v.z);
+	}
+
 	void
 	PhysxRigidbody::setEnableCCD(bool enable)
 	{

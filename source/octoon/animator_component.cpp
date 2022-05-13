@@ -127,6 +127,8 @@ namespace octoon
 						rigidbody->setPositionAndRotation(transform->getTranslate(), transform->getQuaternion());
 						rigidbody->clearForce();
 						rigidbody->clearTorque();
+						rigidbody->setLinearVelocity(math::float3::Zero);
+						rigidbody->setAngularVelocity(math::float3::Zero);
 					}
 				}
 			}

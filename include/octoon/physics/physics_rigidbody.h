@@ -72,6 +72,9 @@ namespace octoon
 		virtual math::float3 getPosition() = 0;
 		virtual math::Quaternion getRotation() = 0;
 
+		virtual math::float3 getLinearVelocity() const = 0;
+		virtual math::float3 getAngularVelocity() const = 0;
+
 		virtual float getMass() const = 0;
 		virtual float getDynamicFriction() const = 0;
 		virtual float getStaticFriction() const = 0;

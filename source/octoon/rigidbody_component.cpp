@@ -9,7 +9,6 @@ namespace octoon
 
     RigidbodyComponent::RigidbodyComponent() noexcept
 		: isKinematic_(false)
-		, angularVelocity_(1.0)
 		, gravityScale_(1.0)
 		, mass_(1.0)
 		, dynamicFriction_(0.5f)
@@ -114,15 +113,23 @@ namespace octoon
 	}
 
 	void
-	RigidbodyComponent::setAngularVelocity(float angularVelocity) noexcept
-	{
-		angularVelocity_ = angularVelocity;
-	}
-
-	void
 	RigidbodyComponent::setGravityScale(float gravityScale) noexcept
 	{
 		gravityScale_ = gravityScale;
+	}
+
+	void
+	RigidbodyComponent::setLinearVelocity(const math::float3& linearVelocity) noexcept
+	{
+		if (rigidbody_)
+			rigidbody_->setLinearVelocity(linearVelocity);
+	}
+	
+	void
+	RigidbodyComponent::setAngularVelocity(const math::float3& angularVelocity) noexcept
+	{
+		if (rigidbody_)
+			rigidbody_->setAngularVelocity(angularVelocity);
 	}
 
 	void
@@ -214,12 +221,6 @@ namespace octoon
 	}
 
 	float
-	RigidbodyComponent::getAngularVelocity() const noexcept
-	{
-		return angularVelocity_;
-	}
-
-	float
 	RigidbodyComponent::getGravityScale() const noexcept
 	{
 		return gravityScale_;
@@ -259,6 +260,22 @@ namespace octoon
 	RigidbodyComponent::getSleepMode() const noexcept
 	{
 		return sleepMode_;
+	}
+
+	math::float3
+	RigidbodyComponent::getLinearVelocity() const noexcept
+	{
+		if (rigidbody_)
+			rigidbody_->getLinearVelocity();
+		return math::float3::Zero;
+	}
+	
+	math::float3
+	RigidbodyComponent::getAngularVelocity() const noexcept
+	{
+		if (rigidbody_)
+			rigidbody_->getAngularVelocity();
+		return math::float3::Zero;
 	}
 
 	void

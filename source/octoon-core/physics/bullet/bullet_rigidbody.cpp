@@ -121,6 +121,7 @@ namespace octoon
 	BulletRigidbody::clearForce() noexcept
 	{
 		rigidbody_->clearForces();
+		rigidbody_->clearGravity();
 	}
 
 	void
@@ -223,6 +224,20 @@ namespace octoon
 	BulletRigidbody::setAngularVelocity(const math::float3& value)
 	{
 		rigidbody_->setAngularVelocity(btVector3(value.x, value.y, value.z));
+	}
+
+	math::float3
+	BulletRigidbody::getLinearVelocity() const
+	{
+		auto v = rigidbody_->getLinearVelocity();
+		return math::float3(v.getX(), v.getY(), v.getZ());
+	}
+
+	math::float3
+	BulletRigidbody::getAngularVelocity() const
+	{
+		auto v = rigidbody_->getAngularVelocity();
+		return math::float3(v.getX(), v.getY(), v.getZ());
 	}
 
 	void
