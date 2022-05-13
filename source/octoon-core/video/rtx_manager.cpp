@@ -129,6 +129,7 @@ namespace octoon
 				}
 
 				this->configs_.push_back(std::move(cfg));
+				break;
 			}
 		}
 
