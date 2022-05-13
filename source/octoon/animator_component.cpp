@@ -289,6 +289,8 @@ namespace octoon
 					euler.y = curve.second.value;
 				else if (curve.first == "LocalEulerAnglesRaw.z")
 					euler.z = curve.second.value;
+				else
+					this->sendMessage(curve.first, curve.second.value);
 			}
 
 			transform->setLocalScale(scale);

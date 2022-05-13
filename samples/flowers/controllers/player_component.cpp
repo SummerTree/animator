@@ -82,19 +82,22 @@ namespace flower
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
 		{
-			auto animator = it->getComponent<octoon::AnimatorComponent>();
-			if (!animator)
-				continue;
-
-			for (auto& bone : animator->getAvatar())
+			for (auto component : it->getComponents())
 			{
-				for (auto& child : bone->getChildren())
+				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+					continue;
+
+				auto animator = component->downcast<octoon::AnimatorComponent>();
+				for (auto& bone : animator->getAvatar())
 				{
-					auto rigidbody = child->getComponent<octoon::RigidbodyComponent>();
-					if (rigidbody)
+					for (auto& child : bone->getChildren())
 					{
-						auto transform = child->getComponent<octoon::TransformComponent>();
-						transform->setAllowRelativeMotion(rigidbody->getIsKinematic());
+						auto rigidbody = child->getComponent<octoon::RigidbodyComponent>();
+						if (rigidbody)
+						{
+							auto transform = child->getComponent<octoon::TransformComponent>();
+							transform->setAllowRelativeMotion(rigidbody->getIsKinematic());
+						}
 					}
 				}
 			}
@@ -121,16 +124,19 @@ namespace flower
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
 		{
-			auto animator = it->getComponent<octoon::AnimatorComponent>();
-			if (!animator)
-				continue;
-
-			for (auto& bone : animator->getAvatar())
+			for (auto component : it->getComponents())
 			{
-				for (auto& child : bone->getChildren())
+				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+					continue;
+
+				auto animator = component->downcast<octoon::AnimatorComponent>();
+				for (auto& bone : animator->getAvatar())
 				{
-					auto transform = child->getComponent<octoon::TransformComponent>();
-					transform->setAllowRelativeMotion(true);
+					for (auto& child : bone->getChildren())
+					{
+						auto transform = child->getComponent<octoon::TransformComponent>();
+						transform->setAllowRelativeMotion(true);
+					}
 				}
 			}
 		}
@@ -193,26 +199,32 @@ namespace flower
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
 		{
-			auto animator = it->getComponent<octoon::AnimatorComponent>();
-			if (animator)
+			for (auto component : it->getComponents())
 			{
-				for (auto& bone : animator->getAvatar())
+				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+					continue;
+
+				auto animator = component->downcast<octoon::AnimatorComponent>();
+				if (animator)
 				{
-					for (auto& child : bone->getChildren())
+					for (auto& bone : animator->getAvatar())
 					{
-						auto transform = child->getComponent<octoon::TransformComponent>();
-						transform->setAllowRelativeMotion(true);
+						for (auto& child : bone->getChildren())
+						{
+							auto transform = child->getComponent<octoon::TransformComponent>();
+							transform->setAllowRelativeMotion(true);
+						}
 					}
-				}
 
-				animator->setTime(model->curTime);
-				animator->sample();
+					animator->setTime(model->curTime);
+					animator->sample();
 
-				for (auto& transform : animator->getAvatar())
-				{
-					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
-					if (solver)
-						solver->solve();
+					for (auto& transform : animator->getAvatar())
+					{
+						auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+						if (solver)
+							solver->solve();
+					}
 				}
 			}
 
@@ -233,17 +245,23 @@ namespace flower
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
 		{
-			auto animator = it->getComponent<octoon::AnimatorComponent>();
-			if (animator)
+			for (auto component : it->getComponents())
 			{
-				animator->setTime(model->curTime);
-				animator->sample();
+				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+					continue;
 
-				for (auto& transform : animator->getAvatar())
+				auto animator = component->downcast<octoon::AnimatorComponent>();
+				if (animator)
 				{
-					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
-					if (solver)
-						solver->solve();
+					animator->setTime(model->curTime);
+					animator->sample();
+
+					for (auto& transform : animator->getAvatar())
+					{
+						auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+						if (solver)
+							solver->solve();
+					}
 				}
 			}
 		}
@@ -265,17 +283,23 @@ namespace flower
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
 		{
-			auto animator = it->getComponent<octoon::AnimatorComponent>();
-			if (animator)
+			for (auto component : it->getComponents())
 			{
-				animator->setTime(model->curTime);
-				animator->sample();
+				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+					continue;
 
-				for (auto& transform : animator->getAvatar())
+				auto animator = component->downcast<octoon::AnimatorComponent>();
+				if (animator)
 				{
-					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
-					if (solver)
-						solver->solve();
+					animator->setTime(model->curTime);
+					animator->sample();
+
+					for (auto& transform : animator->getAvatar())
+					{
+						auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+						if (solver)
+							solver->solve();
+					}
 				}
 			}
 
@@ -309,17 +333,23 @@ namespace flower
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
 		{
-			auto animator = it->getComponent<octoon::AnimatorComponent>();
-			if (animator)
+			for (auto component : it->getComponents())
 			{
-				animator->setTime(model->curTime);
-				animator->sample();
+				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+					continue;
 
-				for (auto& transform : animator->getAvatar())
+				auto animator = component->downcast<octoon::AnimatorComponent>();
+				if (animator)
 				{
-					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
-					if (solver)
-						solver->solve();
+					animator->setTime(model->curTime);
+					animator->sample();
+
+					for (auto& transform : animator->getAvatar())
+					{
+						auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+						if (solver)
+							solver->solve();
+					}
 				}
 			}
 		}
@@ -333,17 +363,23 @@ namespace flower
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
 		{
-			auto animator = it->getComponent<octoon::AnimatorComponent>();
-			if (animator)
+			for (auto component : it->getComponents())
 			{
-				animator->setTime(model->curTime);
-				animator->evaluate();
+				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+					continue;
 
-				for (auto& transform : animator->getAvatar())
+				auto animator = component->downcast<octoon::AnimatorComponent>();
+				if (animator)
 				{
-					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
-					if (solver)
-						solver->solve();
+					animator->setTime(model->curTime);
+					animator->evaluate();
+
+					for (auto& transform : animator->getAvatar())
+					{
+						auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+						if (solver)
+							solver->solve();
+					}
 				}
 			}
 
