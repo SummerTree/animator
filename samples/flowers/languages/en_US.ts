@@ -97,6 +97,31 @@
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="166"/>
+        <source>Reset Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="173"/>
+        <source>Phone/E-mail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="180"/>
+        <source>Verification code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="187"/>
+        <source>Send Verification Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="192"/>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>flower::HideBar</name>
@@ -111,6 +136,67 @@
     <message>
         <location filename="../views/info_window.cpp" line="24"/>
         <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="31"/>
+        <source>logout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="39"/>
+        <location filename="../views/info_window.cpp" line="243"/>
+        <source>balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="43"/>
+        <source>VIP Privilege</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="47"/>
+        <source>5000 Coin
+$5 (Original cost $10)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="53"/>
+        <source>10000 Coin
+$10 (Original cost $20)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="59"/>
+        <source>20000 Coin
+$20 (Original cost $40)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="65"/>
+        <source>Scan qrcode in Alipay to pay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="73"/>
+        <location filename="../views/info_window.cpp" line="77"/>
+        <source>Flowers End User Agreement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="358"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="359"/>
+        <source>Successful recharge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/info_window.cpp" line="39"/>
+        <location filename="../views/info_window.cpp" line="243"/>
+        <source>$</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -149,53 +235,75 @@
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="39"/>
+        <source>Account Login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="46"/>
+        <source>Account/E-mail/Phone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="53"/>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="62"/>
+        <source>Login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="67"/>
+        <source>Auto Login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="72"/>
+        <source>Register</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/login_window.cpp" line="76"/>
+        <source>Forget Password</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>flower::MainWindow</name>
     <message>
-        <location filename="../views/main_window.cpp" line="290"/>
-        <location filename="../views/main_window.cpp" line="500"/>
+        <location filename="../views/main_window.cpp" line="291"/>
+        <location filename="../views/main_window.cpp" line="501"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="290"/>
+        <location filename="../views/main_window.cpp" line="291"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="300"/>
-        <location filename="../views/main_window.cpp" line="314"/>
-        <location filename="../views/main_window.cpp" line="358"/>
-        <location filename="../views/main_window.cpp" line="402"/>
-        <location filename="../views/main_window.cpp" line="441"/>
-        <location filename="../views/main_window.cpp" line="479"/>
-        <location filename="../views/main_window.cpp" line="516"/>
-        <location filename="../views/main_window.cpp" line="569"/>
-        <location filename="../views/main_window.cpp" line="598"/>
-        <location filename="../views/main_window.cpp" line="635"/>
-        <location filename="../views/main_window.cpp" line="683"/>
-        <location filename="../views/main_window.cpp" line="729"/>
-        <location filename="../views/main_window.cpp" line="775"/>
-        <location filename="../views/main_window.cpp" line="821"/>
-        <location filename="../views/main_window.cpp" line="845"/>
-        <location filename="../views/main_window.cpp" line="872"/>
-        <location filename="../views/main_window.cpp" line="903"/>
-        <location filename="../views/main_window.cpp" line="1175"/>
+        <location filename="../views/main_window.cpp" line="301"/>
+        <location filename="../views/main_window.cpp" line="315"/>
+        <location filename="../views/main_window.cpp" line="359"/>
+        <location filename="../views/main_window.cpp" line="403"/>
+        <location filename="../views/main_window.cpp" line="442"/>
+        <location filename="../views/main_window.cpp" line="480"/>
+        <location filename="../views/main_window.cpp" line="517"/>
+        <location filename="../views/main_window.cpp" line="570"/>
+        <location filename="../views/main_window.cpp" line="599"/>
+        <location filename="../views/main_window.cpp" line="636"/>
+        <location filename="../views/main_window.cpp" line="684"/>
+        <location filename="../views/main_window.cpp" line="730"/>
+        <location filename="../views/main_window.cpp" line="776"/>
+        <location filename="../views/main_window.cpp" line="822"/>
+        <location filename="../views/main_window.cpp" line="846"/>
+        <location filename="../views/main_window.cpp" line="873"/>
+        <location filename="../views/main_window.cpp" line="904"/>
+        <location filename="../views/main_window.cpp" line="1176"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/main_window.cpp" line="343"/>
-        <location filename="../views/main_window.cpp" line="388"/>
-        <location filename="../views/main_window.cpp" line="429"/>
-        <location filename="../views/main_window.cpp" line="467"/>
-        <location filename="../views/main_window.cpp" line="554"/>
-        <location filename="../views/main_window.cpp" line="672"/>
-        <location filename="../views/main_window.cpp" line="718"/>
-        <location filename="../views/main_window.cpp" line="764"/>
-        <location filename="../views/main_window.cpp" line="810"/>
-        <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -205,38 +313,51 @@
         <location filename="../views/main_window.cpp" line="468"/>
         <location filename="../views/main_window.cpp" line="555"/>
         <location filename="../views/main_window.cpp" line="673"/>
+        <location filename="../views/main_window.cpp" line="719"/>
+        <location filename="../views/main_window.cpp" line="765"/>
+        <location filename="../views/main_window.cpp" line="811"/>
+        <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_window.cpp" line="345"/>
+        <location filename="../views/main_window.cpp" line="390"/>
+        <location filename="../views/main_window.cpp" line="431"/>
+        <location filename="../views/main_window.cpp" line="469"/>
+        <location filename="../views/main_window.cpp" line="556"/>
+        <location filename="../views/main_window.cpp" line="674"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="500"/>
+        <location filename="../views/main_window.cpp" line="501"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="587"/>
+        <location filename="../views/main_window.cpp" line="588"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="587"/>
+        <location filename="../views/main_window.cpp" line="588"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="719"/>
-        <location filename="../views/main_window.cpp" line="765"/>
-        <location filename="../views/main_window.cpp" line="811"/>
+        <location filename="../views/main_window.cpp" line="720"/>
+        <location filename="../views/main_window.cpp" line="766"/>
+        <location filename="../views/main_window.cpp" line="812"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="1023"/>
+        <location filename="../views/main_window.cpp" line="1024"/>
         <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="1176"/>
+        <location filename="../views/main_window.cpp" line="1177"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>

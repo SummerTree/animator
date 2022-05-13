@@ -20,6 +20,8 @@
 #include <fstream>
 #include <octoon/game_listener.h>
 
+#include <QDockWidget>
+
 namespace flower
 {
 	class MainListener : public octoon::GameListener
