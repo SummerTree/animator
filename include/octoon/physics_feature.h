@@ -19,7 +19,7 @@ namespace octoon
 		void setGravity(const math::float3& gravity) noexcept;
 		const math::float3& getGravity() const noexcept;
 
-		void simulate() noexcept;
+		void simulate(float delta) noexcept;
 
 	public:
 		void onActivate() except override;
@@ -42,7 +42,6 @@ namespace octoon
 		PhysicsFeature& operator=(const PhysicsFeature&) = delete;
 
 	private:
-		bool forceSimulate_;
 		bool enableSimulate_;
 
 		int maxSubSteps_;

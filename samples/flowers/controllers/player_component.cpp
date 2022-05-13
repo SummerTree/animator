@@ -164,10 +164,6 @@ namespace flower
 		if (timeFeature)
 			timeFeature->setTimeStep(model->normalTimeStep);
 
-		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
-		if (physicsFeature)
-			physicsFeature->setEnableSimulate(true);
-
 		auto camera = this->getContext()->profile->entitiesModule->camera;
 		if (camera)
 		{
@@ -179,19 +175,19 @@ namespace flower
 			}
 			else
 			{
-				camera->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0, 0, 0));
-				camera->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion(0, 0, 0, 1));
+				camera->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3::Zero);
+				camera->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion::Zero);
 			}
 		}
 
 		auto sound = this->getContext()->profile->entitiesModule->sound;
 		if (sound)
 		{
-			auto soundComponent = sound->getComponent<octoon::AudioSourceComponent>();
-			if (soundComponent)
+			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
+			if (audioSource)
 			{
-				soundComponent->setTime(model->curTime);
-				soundComponent->reset();
+				audioSource->setTime(model->curTime);
+				audioSource->reset();
 			}
 		}
 
@@ -225,6 +221,30 @@ namespace flower
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
 					smr->updateMeshData();
+			}
+		}
+
+		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
+		if (physicsFeature)
+		{
+			physicsFeature->simulate(timeFeature->getTimeStep());
+			physicsFeature->setEnableSimulate(true);
+		}
+
+		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		{
+			auto animator = it->getComponent<octoon::AnimatorComponent>();
+			if (animator)
+			{
+				animator->setTime(model->curTime);
+				animator->sample();
+
+				for (auto& transform : animator->getAvatar())
+				{
+					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+					if (solver)
+						solver->solve();
+				}
 			}
 		}
 	}
@@ -279,6 +299,30 @@ namespace flower
 
 			this->updateDofTarget();
 		}
+
+		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
+		if (physicsFeature)
+		{
+			physicsFeature->simulate(delta);
+			physicsFeature->setEnableSimulate(true);
+		}
+
+		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		{
+			auto animator = it->getComponent<octoon::AnimatorComponent>();
+			if (animator)
+			{
+				animator->setTime(model->curTime);
+				animator->sample();
+
+				for (auto& transform : animator->getAvatar())
+				{
+					auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+					if (solver)
+						solver->solve();
+				}
+			}
+		}
 	}
 
 	void
@@ -328,7 +372,7 @@ namespace flower
 		if (physicsFeature)
 		{
 			if (!physicsFeature->getEnableSimulate())
-				physicsFeature->simulate();
+				physicsFeature->simulate(delta);
 		}
 	}
 

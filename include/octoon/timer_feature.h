@@ -29,6 +29,7 @@ namespace octoon
 		float elapsedMax() const noexcept;
 		float elapsedMin() const noexcept;
 
+		void reset() noexcept;
 		void sleepForFps(float fps) const noexcept;
 
 	private:

@@ -10,7 +10,6 @@ namespace octoon
 		, physicsScene(nullptr)
 		, gravity_(0.0f, -9.8f, 0.0f)
 		, enableSimulate_(true)
-		, forceSimulate_(false)
 		, maxSubSteps_(0)
 	{
 	}
@@ -46,9 +45,10 @@ namespace octoon
 	}
 
 	void
-	PhysicsFeature::simulate() noexcept
+	PhysicsFeature::simulate(float delta) noexcept
 	{
-		this->forceSimulate_ = true;
+		physicsScene->simulate(delta);
+		physicsScene->fetchResults();
 	}
 
 	void
@@ -99,15 +99,10 @@ namespace octoon
 		if (data.type() == typeid(float))
 		{
 			auto timeInterval = std::any_cast<float>(data);
-			if (timeInterval > 0.0f)
+			if (timeInterval > 0.0f && this->getEnableSimulate())
 			{
-				if (this->getEnableSimulate() || forceSimulate_)
-				{
-					physicsScene->simulate(timeInterval);
-					physicsScene->fetchResults();
-
-					forceSimulate_ = false;
-				}				
+				physicsScene->simulate(timeInterval);
+				physicsScene->fetchResults();
 			}
 		}
 	}

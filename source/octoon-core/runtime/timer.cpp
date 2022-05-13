@@ -85,6 +85,7 @@ namespace octoon
 		Timer::reset() noexcept
 		{
 			startTime_ = (float)std::clock() / (float)CLOCKS_PER_SEC;
+			last_time_ = 0;
 		}
 
 		void
