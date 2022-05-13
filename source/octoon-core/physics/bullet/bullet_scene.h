@@ -31,6 +31,9 @@ namespace octoon
 		virtual void setMaxSubStepCount(int numSubSteps) noexcept override;
 		virtual int getMaxSubStepCount() noexcept override;
 
+		virtual void setFixedTimeStep(float fixedTimeStep) noexcept override;
+		virtual float getFixedTimeStep() noexcept override;
+
 		virtual void simulate(float time) override;
 			
 		virtual void fetchResults() override;
@@ -41,6 +44,7 @@ namespace octoon
 
     private:
 		int maxSubSteps_;
+		float fixedTimeStep_;
 		std::unique_ptr<btOverlapFilterCallback> filterCallback_;
 		std::unique_ptr<btBroadphaseInterface> broadphase_;
 		std::unique_ptr<btCollisionDispatcher> dispatcher_;

@@ -18,9 +18,8 @@ namespace flower
 		this->spp = 100;
 		this->sppCount_ = 0;
 		this->recordFps = 30.0f;
-		this->playFps = 30.0f;
-		this->playTimeStep = 1.0f / 30.f;
-		this->normalTimeStep = 1.0f / 50.f;
+		this->playTimeStep = 1.0f / 60.f;
+		this->normalTimeStep = 1.0f / 60.f;
 		this->endFrame = 0;
 		this->startFrame = 0;
 		this->timeLength = 0;
@@ -34,8 +33,6 @@ namespace flower
 			this->spp = reader["spp"];
 		if (reader.find("recordFps") != reader.end())
 			this->recordFps = reader["recordFps"];
-		if (reader.find("playFps") != reader.end())
-			this->playFps = reader["playFps"];
 		if (reader.find("playTimeStep") != reader.end())
 			this->playTimeStep = reader["playTimeStep"];
 		if (reader.find("normalTimeStep") != reader.end())
@@ -47,7 +44,6 @@ namespace flower
 	{
 		writer["spp"] = this->spp;
 		writer["recordFps"] = this->recordFps;
-		writer["playFps"] = this->playFps;
 		writer["playTimeStep"] = this->playTimeStep;
 		writer["normalTimeStep"] = this->normalTimeStep;
 	}

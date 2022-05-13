@@ -16,6 +16,7 @@ class btBroadphaseInterface;
 class btCollisionDispatcher;
 class btDefaultCollisionConfiguration;
 class btSequentialImpulseConstraintSolver;
+class btSequentialImpulseConstraintSolverMt;
 class btDiscreteDynamicsWorld;
 class btActionInterface;
 class btPairCachingGhostObject;

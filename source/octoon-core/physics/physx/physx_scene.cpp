@@ -66,6 +66,7 @@ namespace octoon
 		, px_scene(nullptr)
 		, simulationEventCallback_(std::make_unique<SimulationEventCallback>())
 		, maxSubSteps_(1)
+		, fixedTimeStep_(1.0f / 60.0f)
 	{
 		physx::PxSceneDesc sceneDesc(context->getPxPhysics()->getTolerancesScale());
 		sceneDesc.gravity = physx::PxVec3(desc.gravity.x, desc.gravity.y, desc.gravity.z);
@@ -139,6 +140,18 @@ namespace octoon
 	PhysxScene::getMaxSubStepCount() noexcept
 	{
 		return maxSubSteps_;
+	}
+
+	void
+	PhysxScene::setFixedTimeStep(float fixedTimeStep) noexcept
+	{
+		fixedTimeStep_ = fixedTimeStep;
+	}
+
+	float
+	PhysxScene::getFixedTimeStep() noexcept
+	{
+		return fixedTimeStep_;
 	}
 
 	void

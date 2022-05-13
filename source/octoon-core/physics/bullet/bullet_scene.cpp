@@ -3,6 +3,7 @@
 #include "bullet_joint.h"
 
 #include <bullet/btBulletDynamicsCommon.h>
+#include <bullet/BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolverMt.h>
 
 namespace octoon
 {
@@ -22,6 +23,7 @@ namespace octoon
 		, filterCallback_(std::make_unique<FilterCallback>())
 		, solver_(std::make_unique<btSequentialImpulseConstraintSolver>())
 		, maxSubSteps_(1)
+		, fixedTimeStep_(1.0f / 60.f)
 	{
 		dispatcher_ = std::make_unique<btCollisionDispatcher>(collisionConfiguration_.get());
 
@@ -90,6 +92,18 @@ namespace octoon
 	}
 
 	void
+	BulletScene::setFixedTimeStep(float fixedTimeStep) noexcept
+	{
+		fixedTimeStep_ = fixedTimeStep;
+	}
+
+	float
+	BulletScene::getFixedTimeStep() noexcept
+	{
+		return fixedTimeStep_;
+	}
+
+	void
 	BulletScene::simulate(float time)
 	{
 		auto collision = this->dynamicsWorld_->getCollisionObjectArray();
@@ -109,7 +123,7 @@ namespace octoon
 			}
 		}
 
-		this->dynamicsWorld_->stepSimulation(time, maxSubSteps_, time);
+		this->dynamicsWorld_->stepSimulation(time, maxSubSteps_, fixedTimeStep_);
 	}
 
 	void

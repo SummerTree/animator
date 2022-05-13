@@ -31,6 +31,9 @@ namespace octoon
 		virtual void setMaxSubStepCount(int numSubSteps) noexcept override;
 		virtual int getMaxSubStepCount() noexcept override;
 
+		virtual void setFixedTimeStep(float fixedTimeStep) noexcept override;
+		virtual float getFixedTimeStep() noexcept override;
+
 		virtual void simulate(float time) override;
 			
 		virtual void fetchResults() override;
@@ -42,6 +45,7 @@ namespace octoon
 	private:
 		PhysxContext* context;
 		int maxSubSteps_;
+		float fixedTimeStep_;
 		physx::PxScene* px_scene;
 		std::unique_ptr<class SimulationEventCallback> simulationEventCallback_;
 	};
