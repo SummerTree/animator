@@ -176,16 +176,12 @@ namespace octoon
 				else if (origin == TGA_BottomRight)
 				{
 					auto data = (char*)image.data();
-					for (std::uint32_t y = 0; y < rows / 2; y++)
+					for (std::uint32_t y = 0; y < rows; y++)
 					{
 						for (std::uint32_t x = 0; x < columns; x++)
 						{
 							auto src = (y * columns + x) * 3;
-							auto dst = ((rows - y - 1) * columns + (columns - x - 1)) * 3;
-
-							std::swap(data[src], data[dst + 2]);
-							std::swap(data[src + 1], data[dst + 1]);
-							std::swap(data[src + 2], data[dst]);
+							std::swap(data[src], data[src + 2]);
 						}
 					}
 				}
@@ -197,11 +193,7 @@ namespace octoon
 						for (std::uint32_t x = 0; x < columns; x++)
 						{
 							auto src = (y * columns + x) * 3;
-							auto dst = ((rows - y - 1) * columns + x) * 3;
-
-							std::swap(data[src], data[dst + 2]);
-							std::swap(data[src + 1], data[dst + 1]);
-							std::swap(data[src + 2], data[dst]);
+							std::swap(data[src], data[src + 2]);
 						}
 					}
 				}
@@ -236,17 +228,12 @@ namespace octoon
 				else if (origin == TGA_BottomRight)
 				{
 					auto data = (char*)image.data();
-					for (std::uint32_t y = 0; y < rows / 2; y++)
+					for (std::uint32_t y = 0; y < rows; y++)
 					{
 						for (std::uint32_t x = 0; x < columns; x++)
 						{
-							auto src = (y * columns + x) * 4;
-							auto dst = ((rows - y - 1) * columns + (columns - x - 1)) * 4;
-
-							std::swap(data[src], data[dst + 2]);
-							std::swap(data[src + 1], data[dst + 1]);
-							std::swap(data[src + 2], data[dst]);
-							std::swap(data[src + 3], data[dst + 3]);
+							auto src = (columns * y + x) * 4;
+							std::swap(data[src], data[src + 2]);
 						}
 					}
 				}

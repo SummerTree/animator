@@ -8,6 +8,7 @@
 #include <octoon/math/mathfwd.h>
 #include <octoon/math/mathutil.h>
 #include <octoon/runtime/string.h>
+#include <octoon/hal/graphics_texture.h>
 
 #include <map>
 #include <cstring>
@@ -619,6 +620,20 @@ namespace octoon
 			}
 
 			bool hasAlphaTexture = it.TextureIndex < limits ? std::wstring_view(pmx.textures[it.TextureIndex].name).find(L".png") != std::string::npos : false;
+
+			auto colorMap = material->getColorMap();
+			if (colorMap)
+			{
+				auto textureFormat = material->getColorMap()->getTextureDesc().getTexFormat();
+				if (textureFormat == hal::GraphicsFormat::B8G8R8A8SRGB ||
+					textureFormat == hal::GraphicsFormat::B8G8R8A8UNorm ||
+					textureFormat == hal::GraphicsFormat::R8G8B8A8SRGB ||
+					textureFormat == hal::GraphicsFormat::R8G8B8A8UNorm)
+				{
+					hasAlphaTexture = true;
+				}
+			}
+
 			if (it.Opacity < 1.0 || hasAlphaTexture) {
 				hal::GraphicsColorBlend blend;
 				blend.setBlendEnable(true);
