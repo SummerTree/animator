@@ -181,7 +181,7 @@
         <location filename="../views/main_window.cpp" line="845"/>
         <location filename="../views/main_window.cpp" line="872"/>
         <location filename="../views/main_window.cpp" line="903"/>
-        <location filename="../views/main_window.cpp" line="1175"/>
+        <location filename="../views/main_window.cpp" line="1178"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -236,7 +236,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="1176"/>
+        <location filename="../views/main_window.cpp" line="1179"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -256,8 +256,8 @@ namespace flower
 		std::filesystem::create_directories("config");
 		flower::FlowerProfile::save("./config/config.conf", *profile_);
 
-		profile_.reset();
 		behaviour_.reset();
+		profile_.reset();		
 		gameApp_.reset();
 	}
 
@@ -1147,7 +1147,7 @@ namespace flower
 
 			behaviour->addMessageListener("flower:player:finish", [this](const std::any&)
 				{
-					if (toolBar_->playEnable_)
+					if (toolBar_ && toolBar_->playEnable_)
 						toolBar_->stop();
 					else
 						recordWindow_->stopRecord();
@@ -1155,15 +1155,18 @@ namespace flower
 
 			behaviour->addMessageListener("flower:offline", [this](const std::any& enable)
 				{
-					if (std::any_cast<bool>(enable))
+					if (toolBar_)
 					{
-						toolBar_->gpuButton.setIcon(toolBar_->gpuOnIcon_);
-						toolBar_->gpuEnable_ = true;
-					}
-					else
-					{
-						toolBar_->gpuButton.setIcon(toolBar_->gpuIcon_);
-						toolBar_->gpuEnable_ = false;
+						if (std::any_cast<bool>(enable))
+						{
+							toolBar_->gpuButton.setIcon(toolBar_->gpuOnIcon_);
+							toolBar_->gpuEnable_ = true;
+						}
+						else
+						{
+							toolBar_->gpuButton.setIcon(toolBar_->gpuIcon_);
+							toolBar_->gpuEnable_ = false;
+						}
 					}
 				});
 

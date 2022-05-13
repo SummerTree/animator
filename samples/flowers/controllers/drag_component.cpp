@@ -33,7 +33,6 @@ namespace flower
 		return this->getModel()->getEnable();
 	}
 
-
 	std::optional<octoon::RaycastHit>
 	DragComponent::intersectObjects(float x, float y) noexcept
 	{
