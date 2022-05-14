@@ -9,6 +9,7 @@
 #include "bindings/application.h"
 
 #include "views/main_window.h"
+#include "views/main_dock.h"
 #include "views/splash_screen.h"
 
 int main(int argc, char *argv[])
@@ -55,7 +56,7 @@ int main(int argc, char *argv[])
 		splash->show();
 		app.processEvents();
 
-		flower::MainWindow w(splash.get());
+		flower::MainDock w(splash.get());
 		w.show();
 
 		splash.reset();

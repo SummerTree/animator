@@ -286,6 +286,7 @@ void main()
 					scene->addGeometry(&radianceGeometry);
 
 				Renderer::instance()->render(scene);
+				Renderer::instance()->clearCache();
 			}
 
 			return colorTexture;

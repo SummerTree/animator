@@ -1,4 +1,4 @@
-#include "material_window.h"
+#include "material_dock.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qevent.h>
@@ -258,9 +258,8 @@ namespace flower
 		return textureData;
 	}
 
-	MaterialEditWindow::MaterialEditWindow(QWidget* widget, const octoon::GameObjectPtr& behaviour)
-		: QWidget(widget)
-		, behaviour_(behaviour)
+	MaterialEditWindow::MaterialEditWindow(const octoon::GameObjectPtr& behaviour)
+		: behaviour_(behaviour)
 	{
 		backButton_ = new QToolButton;
 		backButton_->setObjectName("back");
@@ -269,16 +268,11 @@ namespace flower
 		title_ = new QLabel();
 		title_->setText(tr("Material Properties"));
 
-		closeButton_ = new QToolButton();
-		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(tr("Close"));
-
 		titleLayout_ = new QHBoxLayout();
 		titleLayout_->addWidget(backButton_, 0, Qt::AlignLeft);
 		titleLayout_->addStretch();
 		titleLayout_->addWidget(title_, 0, Qt::AlignCenter);
 		titleLayout_->addStretch();
-		titleLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
 
 		this->albedo_.init(tr("Base Color"), CreateFlags::SpoilerBit | CreateFlags::ColorBit | CreateFlags::TextureBit);
 		this->opacity_.init(tr("Opacity"), CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
@@ -1547,25 +1541,10 @@ namespace flower
 
 	MaterialListPanel::MaterialListPanel()
 	{
-		title_ = new QLabel();
-		title_->setText(tr("Material"));
-
-		closeButton_ = new QToolButton();
-		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(tr("Close"));
-
-		titleLayout_ = new QHBoxLayout();
-		titleLayout_->addStretch();
-		titleLayout_->addWidget(title_, 0, Qt::AlignCenter);
-		titleLayout_->addStretch();
-		titleLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
-		titleLayout_->setContentsMargins(10, 0, 10, 0);
-
 		listWidget_ = new MaterialListWindow;
 		listWidget_->setIconSize(QSize(100, 100));
 
 		mainLayout_ = new QVBoxLayout(this);
-		mainLayout_->addLayout(titleLayout_);
 		mainLayout_->addWidget(listWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(0, 10, 0, 5);
@@ -1579,33 +1558,34 @@ namespace flower
 	MaterialListPanel::resizeEvent(QResizeEvent* e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins();
-		listWidget_->setMinimumHeight(this->height() - title_->height() * 2 - margins.top() - margins.bottom());
+		listWidget_->setMinimumHeight(this->height() - margins.top() - margins.bottom());
 	}
 
-	MaterialWindow::MaterialWindow(QWidget* parent, const octoon::GameObjectPtr& behaviour) noexcept(false)
+	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour) noexcept(false)
 		: behaviour_(behaviour)
 	{
-		this->hide();
-		this->setObjectName("materialWindow");
+		this->setObjectName("MaterialDock");
 		this->setWindowTitle(tr("Material"));
-		this->setFixedWidth(340);
 		this->setMouseTracking(true);
 
 		listPanel_ = new MaterialListPanel();
 		listPanel_->listWidget_->setFixedWidth(340);
 
-		modifyWidget_ = new MaterialEditWindow(this, behaviour);
-		modifyWidget_->setFixedWidth(340);
+		modifyWidget_ = new MaterialEditWindow(behaviour);
+		modifyWidget_->hide();
 
-		mainLayout_ = new QVBoxLayout(this);
+		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addWidget(listPanel_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addWidget(modifyWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(0, 0, 0, 0);
 
+		widget_ = new QWidget;
+		widget_->setLayout(mainLayout_);
+
+		this->setWidget(widget_);
+
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(okEvent()));
-		connect(listPanel_->closeButton_, SIGNAL(clicked()), this, SLOT(closeEvent()));
-		connect(modifyWidget_->closeButton_, SIGNAL(clicked()), this, SLOT(closeEvent()));
 		connect(listPanel_->listWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
 		behaviour->addMessageListener("editor:material:change", [this](const std::any&) {
@@ -1631,37 +1611,30 @@ namespace flower
 		});
 	}
 
-	MaterialWindow::~MaterialWindow() noexcept
+	MaterialDock::~MaterialDock() noexcept
 	{
 	}
 
 	void
-	MaterialWindow::showEvent(QShowEvent* event) noexcept
+	MaterialDock::showEvent(QShowEvent* event) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins();
 		modifyWidget_->hide();
-		modifyWidget_->setMinimumSize(this->size());
-		listPanel_->setMinimumSize(this->size());
+		modifyWidget_->resize(widget_->size());
+		listPanel_->resize(widget_->size());
 		listPanel_->show();
 		this->updateList();
 	}
 
 	void
-	MaterialWindow::closeEvent()
-	{
-		this->close();
-		parentWidget()->setFixedWidth(parentWidget()->width() - this->width());
-	}
-
-	void
-	MaterialWindow::okEvent()
+	MaterialDock::okEvent()
 	{
 		modifyWidget_->hide();
 		listPanel_->show();
 	}
 
 	void
-	MaterialWindow::itemClicked(QListWidgetItem* item)
+	MaterialDock::itemClicked(QListWidgetItem* item)
 	{
 		if (behaviour_)
 		{
@@ -1684,7 +1657,7 @@ namespace flower
 	}
 
 	void
-	MaterialWindow::itemDoubleClicked(QListWidgetItem* item)
+	MaterialDock::itemDoubleClicked(QListWidgetItem* item)
 	{
 		if (behaviour_)
 		{
@@ -1704,7 +1677,7 @@ namespace flower
 	}
 
 	void
-	MaterialWindow::updateList()
+	MaterialDock::updateList()
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)

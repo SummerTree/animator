@@ -1,25 +1,23 @@
-#include "tool_window.h"
+#include "tool_dock.h"
 #include <qscrollarea.h>
+#include <qmessagebox.h>
+#include <qfiledialog.h>
+#include <qmimedata.h>
 
 namespace flower
 {
-	ToolWindow::ToolWindow(QWidget* parent, const octoon::GameObjectPtr& behaviour, std::shared_ptr<FlowerProfile> profile) noexcept
-		: QWidget(parent)
-		, profile_(profile)
+	ToolDock::ToolDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<FlowerProfile> profile) noexcept
+		: profile_(profile)
 		, gpuEnable_(false)
-		, playEnable_(false)
 		, audioEnable_(false)
 		, recordEnable_(false)
 		, hdrEnable_(false)
 		, sunEnable_(false)
 		, environmentEnable_(false)
 		, behaviour_(behaviour)
-		, playIcon_(QIcon::fromTheme("res", QIcon(":res/icons/play.png")))
-		, playOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/play-on.png")))
 		, gpuIcon_(QIcon::fromTheme("res", QIcon(":res/icons/gpu.png")))
 		, gpuOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/gpu-on.png")))
 		, recordIcon_(QIcon::fromTheme("res", QIcon(":res/icons/record.png")))
-		, recordOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/record-on.png")))
 		, audioIcon_(QIcon::fromTheme("res", QIcon(":res/icons/music.svg")))
 		, audioOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/music-on.png")))
 		, sunIcon_(QIcon::fromTheme("res", QIcon(":res/icons/sun.png")))
@@ -27,38 +25,15 @@ namespace flower
 		, environmentIcon_(QIcon::fromTheme("res", QIcon(":res/icons/environment.png")))
 		, environmentOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/environment-on.png")))
 	{
-		this->setObjectName("ToolWindow");
+		this->setWindowTitle("Tool");
+		this->setObjectName("ToolDock");
 		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-
-		hideButton.setObjectName("hide");
-		hideButton.setText(tr("Hide"));
-		hideButton.setToolTip(tr("Hide side toolbar"));
-		hideButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		this->setFeatures(DockWidgetFeature::DockWidgetMovable | DockWidgetFeature::DockWidgetFloatable);
 
 		importButton.setObjectName("import");
 		importButton.setText(tr("Import"));
 		importButton.setToolTip(tr("Import Resource File(.pmm, .mdl)"));
 		importButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-		playButton.setObjectName("play");
-		playButton.setText(tr("Play"));
-		playButton.setToolTip(tr("Play Animation"));
-		playButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-		resetButton.setObjectName("reset");
-		resetButton.setText(tr("Reset"));
-		resetButton.setToolTip(tr("Reset States"));
-		resetButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-		leftButton.setObjectName("left");
-		leftButton.setText(tr("Backward"));
-		leftButton.setToolTip(tr("Backward 1 second"));
-		leftButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-		rightButton.setObjectName("right");
-		rightButton.setText(tr("Forward"));
-		rightButton.setToolTip(tr("Forward 1 second"));
-		rightButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		recordButton.setObjectName("record");
 		recordButton.setText(tr("Record"));
@@ -108,13 +83,7 @@ namespace flower
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
-		layout->addSpacing(1);
-		layout->addWidget(&hideButton, 0, Qt::AlignCenter);
 		layout->addWidget(&importButton, 0, Qt::AlignCenter);
-		layout->addWidget(&playButton, 0, Qt::AlignCenter);
-		layout->addWidget(&resetButton, 0, Qt::AlignCenter);
-		layout->addWidget(&leftButton, 0, Qt::AlignCenter);
-		layout->addWidget(&rightButton, 0, Qt::AlignCenter);
 		layout->addWidget(&gpuButton, 0, Qt::AlignCenter);
 		layout->addWidget(&recordButton, 0, Qt::AlignCenter);
 		layout->addWidget(&shotButton, 0, Qt::AlignCenter);
@@ -126,26 +95,26 @@ namespace flower
 		layout->addWidget(&cleanupButton, 0, Qt::AlignCenter);
 		layout->addStretch();
 
-		contentWidget = new QWidget;
+		auto contentWidget = new QWidget;
 		contentWidget->setLayout(layout);
 
-		contentWidgetArea = new QScrollArea();
+		auto contentWidgetArea = new QScrollArea();
 		contentWidgetArea->setWidget(contentWidget);
 		contentWidgetArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		contentWidgetArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		contentWidgetArea->setWidgetResizable(true);
 
-		auto mainLayout = new QVBoxLayout(this);
+		auto mainLayout = new QVBoxLayout();
 		mainLayout->setSpacing(0);
 		mainLayout->setContentsMargins(0, 0, 0, 0);
 		mainLayout->addWidget(contentWidgetArea);
 
-		this->connect(&hideButton, SIGNAL(clicked()), this, SLOT(hideEvent()));
+		auto mainWidget = new QWidget;
+		mainWidget->setLayout(mainLayout);
+
+		this->setWidget(mainWidget);
+
 		this->connect(&importButton, SIGNAL(clicked()), this, SLOT(importEvent()));
-		this->connect(&playButton, SIGNAL(clicked()), this, SLOT(playEvent()));
-		this->connect(&leftButton, SIGNAL(clicked()), this, SLOT(leftEvent()));
-		this->connect(&rightButton, SIGNAL(clicked()), this, SLOT(rightEvent()));
-		this->connect(&resetButton, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		this->connect(&recordButton, SIGNAL(clicked()), this, SLOT(recordEvent()));
 		this->connect(&audioButton, SIGNAL(clicked()), this, SLOT(audioEvent()));
 		this->connect(&shotButton, SIGNAL(clicked()), this, SLOT(shotEvent()));
@@ -157,127 +126,102 @@ namespace flower
 		this->connect(&materialButton, SIGNAL(clicked()), this, SLOT(materialEvent()));
 	}
 
-	ToolWindow::~ToolWindow() noexcept
+	ToolDock::~ToolDock() noexcept
 	{
 	}
 
 	void
-	ToolWindow::play()
+	ToolDock::importEvent() noexcept
 	{
-		if (!playEnable_)
+		try
 		{
-			if (playSignal(true))
+			if (behaviour_ && !profile_->playerModule->playing_)
 			{
-				playButton.setIcon(playOnIcon_);
-				playButton.setToolTip(tr("Pause"));
-				playEnable_ = true;
+				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+				if (behaviour)
+				{
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)"));
+					if (!fileName.isEmpty())
+					{
+						try
+						{
+							behaviour->open(fileName.toUtf8().data());
+						}
+						catch (const std::exception& e)
+						{
+							QMessageBox msg(this);
+							msg.setWindowTitle(tr("Error"));
+							msg.setText(e.what());
+							msg.setIcon(QMessageBox::Information);
+							msg.setStandardButtons(QMessageBox::Ok);
+
+							msg.exec();
+						}
+					}
+				}
 			}
 		}
-	}
-
-	void
-	ToolWindow::stop()
-	{
-		if (playEnable_)
+		catch (const std::exception& e)
 		{
-			playButton.setIcon(playIcon_);
-			playButton.setToolTip(tr("Play"));
-			playEnable_ = false;
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(e.what());
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
 		}
 	}
 
 	void
-	ToolWindow::showEvent(QShowEvent* e) noexcept
+	ToolDock::recordEvent() noexcept
 	{
-	}
-
-	void
-	ToolWindow::resizeEvent(QResizeEvent* e) noexcept
-	{
-	}
-
-	void
-	ToolWindow::hideEvent() noexcept
-	{
-		emit hideSignal();
-	}
-
-	void
-	ToolWindow::importEvent() noexcept
-	{
-		emit importSignal();
-	}
-
-	void
-	ToolWindow::playEvent() noexcept
-	{
-		if (!playEnable_)
-		{
-			if (playSignal(true))
-			{
-				playButton.setIcon(playOnIcon_);
-				playButton.setToolTip(tr("Pause"));
-				playEnable_ = true;
-			}
-		}
-		else
-		{
-			if (playSignal(false))
-			{
-				playButton.setIcon(playIcon_);
-				playButton.setToolTip(tr("Play"));
-				playEnable_ = false;
-			}
-		}
-	}
-
-	void
-	ToolWindow::resetEvent() noexcept
-	{
-		if (resetSignal())
-		{
-			playButton.setIcon(playIcon_);
-			playButton.setToolTip(tr("Play"));
-			playEnable_ = false;
-		}
-	}
-
-	void
-	ToolWindow::leftEvent() noexcept
-	{
-		emit leftSignal();
+		emit recordSignal();
 	}
 
 	void 
-	ToolWindow::rightEvent() noexcept
+	ToolDock::audioEvent() noexcept
 	{
-		emit rightSignal();
-	}
-
-	void
-	ToolWindow::recordEvent() noexcept
-	{
-		if (!recordEnable_)
+		auto audioSignal = [this](bool enable) -> bool
 		{
-			if (recordSignal(true))
+			if (behaviour_ && !profile_->playerModule->playing_ && !profile_->recordModule->active)
 			{
-				recordButton.setIcon(recordOnIcon_);
-				recordEnable_ = true;
-			}
-		}
-		else
-		{
-			if (recordSignal(false))
-			{
-				recordButton.setIcon(recordIcon_);
-				recordEnable_ = false;
-			}
-		}
-	}
+				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+				if (behaviour)
+				{
+					try
+					{
+						if (enable)
+						{
+							QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
+							if (!fileName.isEmpty())
+							{
+								behaviour->loadAudio(fileName.toUtf8().data());
+								return true;
+							}
+						}
+						else
+						{
+							behaviour->clearAudio();
+							return true;
+						}
+					}
+					catch (const std::exception& e)
+					{
+						QMessageBox msg(this);
+						msg.setWindowTitle(tr("Error"));
+						msg.setText(e.what());
+						msg.setIcon(QMessageBox::Information);
+						msg.setStandardButtons(QMessageBox::Ok);
 
-	void 
-	ToolWindow::audioEvent() noexcept
-	{
+						msg.exec();
+					}
+				}
+			}
+
+			return false;
+		};
+
 		if (!audioEnable_)
 		{
 			if (audioSignal(true))
@@ -297,14 +241,73 @@ namespace flower
 	}
 
 	void
-	ToolWindow::shotEvent() noexcept
+	ToolDock::shotEvent() noexcept
 	{
-		emit shotSignal();
+		try
+		{
+			if (behaviour_ && !profile_->playerModule->playing_ && !profile_->recordModule->active)
+			{
+				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image"), "", tr("PNG Files (*.png)"));
+				if (!fileName.isEmpty())
+				{
+					auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+					behaviour->renderPicture(fileName.toUtf8().data());
+				}
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(e.what());
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
+		}
 	}
 
 	void
-	ToolWindow::gpuEvent() noexcept
+	ToolDock::gpuEvent() noexcept
 	{
+		auto gpuSignal = [this](bool enable) -> bool
+		{
+			try
+			{
+				if (behaviour_ && !profile_->recordModule->active)
+				{
+					auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+					if (behaviour)
+					{
+						auto offline = behaviour->getComponent<OfflineComponent>();
+						if (offline)
+						{
+							if (enable)
+								offline->setActive(true);
+							else
+								offline->setActive(false);
+						}
+
+						return true;
+					}
+				}
+
+				return false;
+			}
+			catch (const std::exception& e)
+			{
+				QMessageBox msg(this);
+				msg.setWindowTitle(tr("Error"));
+				msg.setText(e.what());
+				msg.setIcon(QMessageBox::Information);
+				msg.setStandardButtons(QMessageBox::Ok);
+
+				msg.exec();
+
+				return false;
+			}
+		};
+
 		if (!gpuEnable_)
 		{
 			if (gpuSignal(true))
@@ -324,37 +327,55 @@ namespace flower
 	}
 
 	void
-	ToolWindow::cleanupEvent() noexcept
+	ToolDock::cleanupEvent() noexcept
 	{
-		emit cleanupSignal();
+		try
+		{
+			if (behaviour_ && !profile_->playerModule->playing_)
+			{
+				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+				if (behaviour->isOpen())
+					behaviour->close();
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(e.what());
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
+		}
 	}
 
 	void
-	ToolWindow::lightEvent() noexcept
+	ToolDock::lightEvent() noexcept
 	{
 		emit lightSignal();
 	}
 
 	void
-	ToolWindow::sunEvent() noexcept
+	ToolDock::sunEvent() noexcept
 	{
 		emit sunSignal();
 	}
 
 	void
-	ToolWindow::materialEvent() noexcept
+	ToolDock::materialEvent() noexcept
 	{
 		emit materialSignal();
 	}
 
 	void
-	ToolWindow::environmentEvent() noexcept
+	ToolDock::environmentEvent() noexcept
 	{
 		emit environmentSignal();
 	}
 
 	void
-	ToolWindow::paintEvent(QPaintEvent* e) noexcept
+	ToolDock::paintEvent(QPaintEvent* e) noexcept
 	{
 		if (this->profile_->offlineModule->getEnable())
 		{
@@ -389,26 +410,5 @@ namespace flower
 				audioEnable_ = false;
 			}
 		}
-	}
-
-	void
-	ToolWindow::mousePressEvent(QMouseEvent* e) noexcept
-	{
-		allowMove_ = true;
-		startPos_ = e->globalPos();
-		clickPos_ = mapToParent(e->pos());
-	}
-
-	void
-	ToolWindow::mouseReleaseEvent(QMouseEvent* e) noexcept
-	{
-		allowMove_ = false;
-	}
-
-	void
-	ToolWindow::mouseMoveEvent(QMouseEvent* e) noexcept
-	{
-		if (allowMove_)
-			parentWidget()->move(e->globalPos() - clickPos_);
 	}
 }

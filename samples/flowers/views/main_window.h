@@ -1,40 +1,23 @@
 #ifndef FLOWER_MAIN_WINDOW_H
 #define FLOWER_MAIN_WINDOW_H
 
-#include "view_window.h"
-#include "title_window.h"
-#include "tool_window.h"
-#include "hide_window.h"
+#include "view_dock.h"
+#include "tool_dock.h"
+#include "main_light_dock.h"
+#include "environment_dock.h"
+#include "toplevel_dock.h"
 #include "setting_window.h"
 #include "color_dialog.h"
 #include "flower_profile.h"
 #include "splash_screen.h"
 #include "light_window.h"
-#include "sun_window.h"
-#include "environment_window.h"
 #include "login_window.h"
 #include "info_window.h"
 #include "record_window.h"
-#include "material_window.h"
-
-#include <fstream>
-#include <octoon/game_listener.h>
-
-#include <QDockWidget>
+#include "material_dock.h"
 
 namespace flower
 {
-	class MainListener : public octoon::GameListener
-	{
-	public:
-		MainListener(SplashScreen* splash, const std::string& path);
-		void onMessage(std::string_view message) noexcept override;
-
-	public:
-		SplashScreen* splash_;
-		std::ofstream stream_;
-	};
-
 	class MainWindow final : public QFrame
 	{
 		Q_OBJECT
@@ -43,46 +26,8 @@ namespace flower
 		~MainWindow();
 
 	private Q_SLOTS:
-		void onHideToolBarSignal() noexcept;
-		void onShowToolbarSignal() noexcept;
-		bool onPlaySignal(bool enable) noexcept;
-		bool onResetSignal() noexcept;
-		void onLeftSignal() noexcept;
-		void onRightSignal() noexcept;
-		void onImportSignal() noexcept;
-		bool onAudioSignal(bool enable) noexcept;
-		bool onRecordSignal(bool enable) noexcept;
-		void onScreenShotSignal() noexcept;
-		bool onOfflineModeSignal(bool enable) noexcept;
-		void onSettingSignal() noexcept;
-		void onCleanupSignal() noexcept;
-		void onProfileSignal(const flower::FlowerProfile& profile) noexcept;
-		void onLightSignal() noexcept;
-		void onSunSignal() noexcept;
-		void onEnvironmentSignal() noexcept;
-		void onVipSignal() noexcept;
-		void onMaterialSignal() noexcept;
 
-		void onResizeSignal(QResizeEvent* e) noexcept;
-		void onMousePressSignal(QMouseEvent* event) noexcept;
-		void onMouseMoveSignal(QMouseEvent* event) noexcept;
-		void onMouseReleaseSignal(QMouseEvent* event) noexcept;
-		void onMouseDoubleClickSignal(QMouseEvent* event) noexcept;
-		void onWheelSignal(QWheelEvent* event) noexcept;
-		void onDragEnterSignal(QDragEnterEvent* event) noexcept;
-		void onDropSignal(QDropEvent* event) noexcept;
-		void onDragMoveSignal(QDragMoveEvent *e) noexcept;
-		void onShowSignal(QShowEvent* event) noexcept;
 		void onUpdateSignal() noexcept;
-
-		bool eventFilter(QObject* watched, QEvent* event);
-
-		void keyPressEvent(QKeyEvent* event) noexcept override;
-		void keyReleaseEvent(QKeyEvent* event) noexcept override;
-		void showEvent(QShowEvent* event) noexcept override;
-		void resizeEvent(QResizeEvent* event) noexcept override;
-
-		void hideSliderWindow() noexcept;
 
 	private:
 		bool open(int w, int h) noexcept;
@@ -96,20 +41,19 @@ namespace flower
 
 		std::unique_ptr<QTimer> timer;
 		std::shared_ptr<flower::FlowerProfile> profile_;
-		std::shared_ptr<MainListener> listener_;
+		std::shared_ptr<SplashListener> listener_;
 
-		std::unique_ptr<ToolWindow> toolBar_;
-		std::unique_ptr<TitleWindow> titleBar_;
-		std::unique_ptr<ViewWidget> viewPanel_;
-		std::unique_ptr<HideBar> hideBar_;
+		std::unique_ptr<ToolDock> toolBar_;
+		std::unique_ptr<ToplevelDock> toplevelDock_;
+		std::unique_ptr<ViewDock> viewDock_;
 		std::unique_ptr<SettingWindow> settingWindow_;
 		std::unique_ptr<LightWindow> lightWindow_;
-		std::unique_ptr<SunWindow> sunWindow_;
-		std::unique_ptr<EnvironmentWindow> environmentWindow_;
+		std::unique_ptr<MainLightDock> sunWindow_;
+		std::unique_ptr<EnvironmentDock> environmentWindow_;
 		std::unique_ptr<LoginWindow> loginWindow_;
 		std::unique_ptr<InfoWindow> infoWindow_;
 		std::unique_ptr<RecordWindow> recordWindow_;
-		std::unique_ptr<MaterialWindow> materialWindow_;
+		std::unique_ptr<MaterialDock> materialWindow_;
 
 		std::unique_ptr<QHBoxLayout> mainLayout_;
 		std::unique_ptr<QVBoxLayout> contextLayout_;

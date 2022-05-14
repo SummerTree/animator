@@ -1,5 +1,5 @@
-#ifndef FLOWER_SUN_WINDOW_H_
-#define FLOWER_SUN_WINDOW_H_
+#ifndef FLOWER_MAIN_LIGHT_WINDOW_H_
+#define FLOWER_MAIN_LIGHT_WINDOW_H_
 
 #include <qwidget.h>
 #include <qlayout.h>
@@ -10,18 +10,19 @@
 
 namespace flower
 {
-	class SunWindow final : public QWidget
+	class MainLightDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		SunWindow(const std::shared_ptr<flower::FlowerProfile>& profile);
-		~SunWindow();
+		MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile);
+		~MainLightDock();
 
 		void repaint();
 
 		virtual void showEvent(QShowEvent* event) override;
 		virtual void resizeEvent(QResizeEvent* event) override;
 		virtual void closeEvent(QCloseEvent* event) override;
+		virtual void paintEvent(QPaintEvent* e) noexcept override;
 
 	public Q_SLOTS:
 		void currentColorChanged(QColor);
@@ -40,8 +41,6 @@ namespace flower
 		QWidget* scrollWidget_;
 		QScrollArea* scrollArea_;
 		QVBoxLayout* scrollLayout_;
-		QLabel* title_;
-		QToolButton* closeButton_;
 		ColorDialog* colorDialog_;
 		QDoubleSpinBox* editIntensity_;
 		QDoubleSpinBox* editRotationX_;
@@ -62,6 +61,7 @@ namespace flower
 		QHBoxLayout* layoutRotationZ_;
 		QVBoxLayout* mainLayout_;
 		QToolButton* resetButton_;
+		QWidget* mainWidget_;
 		std::shared_ptr<flower::FlowerProfile> profile_;
 	};
 }

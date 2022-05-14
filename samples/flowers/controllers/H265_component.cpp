@@ -88,8 +88,6 @@ namespace flower
 	{
 		if (ostream_)
 		{
-			auto& context = this->getContext();
-
 			this->convert((float*)data, this->width_, this->height_, this->buf_.get());
 
 			x265_nal* nals = nullptr;

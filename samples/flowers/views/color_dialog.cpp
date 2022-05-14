@@ -149,9 +149,9 @@ namespace flower
 						auto smooth = octoon::math::smoothlerp(1.0f, 0.0f, (length - 0.99f) * 50.0f);
 						
 						auto rgb = QColor::fromHsvF(h, 1.0f, 1.0f);
-						rgb.setRed(octoon::math::lerp<float>(30, rgb.red(), smooth));
-						rgb.setGreen(octoon::math::lerp<float>(30, rgb.green(), smooth));
-						rgb.setBlue(octoon::math::lerp<float>(30, rgb.blue(), smooth));
+						rgb.setRed(octoon::math::lerp<float>(40, rgb.red(), smooth));
+						rgb.setGreen(octoon::math::lerp<float>(40, rgb.green(), smooth));
+						rgb.setBlue(octoon::math::lerp<float>(40, rgb.blue(), smooth));
 
 						hueImage_.setPixelColor(x, y, rgb);
 					}
@@ -160,9 +160,9 @@ namespace flower
 						auto smooth = octoon::math::smoothlerp(1.0f, 0.0f, (0.85f - length) * 50.0f);
 
 						auto rgb = QColor::fromHsvF(h, 1.0f, 1.0f);
-						rgb.setRed(octoon::math::lerp<float>(30, rgb.red(), smooth));
-						rgb.setGreen(octoon::math::lerp<float>(30, rgb.green(), smooth));
-						rgb.setBlue(octoon::math::lerp<float>(30, rgb.blue(), smooth));
+						rgb.setRed(octoon::math::lerp<float>(40, rgb.red(), smooth));
+						rgb.setGreen(octoon::math::lerp<float>(40, rgb.green(), smooth));
+						rgb.setBlue(octoon::math::lerp<float>(40, rgb.blue(), smooth));
 
 						hueImage_.setPixelColor(x, y, rgb);
 					}

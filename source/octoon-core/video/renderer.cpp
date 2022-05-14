@@ -208,6 +208,12 @@ namespace octoon
 	}
 
 	void
+	Renderer::clearCache() noexcept(false)
+	{
+		context_->cleanCache();
+	}
+
+	void
 	Renderer::render(const std::shared_ptr<RenderScene>& scene) noexcept(false)
 	{
 		this->beginFrameRendering(scene, scene->getCameras());

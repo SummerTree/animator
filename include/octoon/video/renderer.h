@@ -47,6 +47,7 @@ namespace octoon
 
 		const std::shared_ptr<ScriptableRenderContext>& getScriptableRenderContext() const noexcept;
 
+		void clearCache() noexcept(false);
 		void render(const std::shared_ptr<RenderScene>& scene) noexcept(false);
 
 	private:

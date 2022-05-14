@@ -1,4 +1,4 @@
-﻿#include "environment_window.h"
+﻿#include "environment_dock.h"
 #include <octoon/environment_light_component.h>
 #include <octoon/mesh_renderer_component.h>
 #include <octoon/image/image.h>
@@ -27,21 +27,12 @@ namespace flower
 		}
 	};
 
-	EnvironmentWindow::EnvironmentWindow(QWidget* widget, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile)
-		: QWidget(widget)
+	EnvironmentDock::EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile)
+		: behaviour_(behaviour)
 		, profile_(profile)
-		, behaviour_(behaviour)
 	{
-		this->setObjectName("environmentWindow");
-		this->setMinimumWidth(340);
-		this->hide();
-
-		this->title_ = new QLabel();
-		this->title_->setText(tr("Environment Light"));
-
-		this->closeButton_ = new QToolButton();
-		this->closeButton_->setObjectName("close");
-		this->closeButton_->setToolTip(tr("Close"));
+		this->setWindowTitle(tr("Environment Light"));
+		this->setObjectName("EnvironmentDock");
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setFixedSize(QSize(256, 144));
@@ -176,20 +167,12 @@ namespace flower
 		this->spoiler->setContentLayout(*spoilerLayout);
 		this->spoiler->toggleButton.click();
 
-		auto titleLayout = new QHBoxLayout();
-		titleLayout->addSpacing(this->closeButton_->iconSize().width());
-		titleLayout->addStretch();
-		titleLayout->addWidget(title_, 0, Qt::AlignCenter);
-		titleLayout->addStretch();
-		titleLayout->addWidget(closeButton_, 0, Qt::AlignRight);
-
 		auto imageLayout = new QHBoxLayout();
 		imageLayout->addStretch();
 		imageLayout->addWidget(previewButton_, 0, Qt::AlignCenter);
 		imageLayout->addStretch();
 
-		auto mainLayout = new QVBoxLayout(this);
-		mainLayout->addLayout(titleLayout);
+		auto mainLayout = new QVBoxLayout();
 		mainLayout->addLayout(imageLayout);
 		mainLayout->addWidget(previewName_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(spoiler);
@@ -197,7 +180,11 @@ namespace flower
 		mainLayout->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
 		mainLayout->setContentsMargins(10, 10, 10, 10);
 
-		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeEvent()));
+		auto mainWidget = new QWidget();
+		mainWidget->setLayout(mainLayout);
+
+		this->setWidget(mainWidget);
+
 		connect(resetButton_, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		connect(thumbnail, SIGNAL(clicked()), this, SLOT(colorMapClickEvent()));
 		connect(thumbnailToggle, SIGNAL(stateChanged(int)), this, SLOT(colorMapCheckEvent(int)));
@@ -212,23 +199,26 @@ namespace flower
 		connect(&colorSelector_, SIGNAL(currentColorChanged(const QColor&)), this, SLOT(colorChangeEvent(const QColor&)));
 	}
 
-	EnvironmentWindow::~EnvironmentWindow()
+	EnvironmentDock::~EnvironmentDock()
 	{
 		this->image_.reset();
 	}
 
 	void
-	EnvironmentWindow::setColor(const QColor& c, int w, int h)
+	EnvironmentDock::setColor(const QColor& c, int w, int h)
 	{
 		this->profile_->environmentModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
 
-		auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-		if (environmentLight)
-			environmentLight->setColor(octoon::math::srgb2linear(profile_->environmentModule->color));
+		if (profile_->entitiesModule->enviromentLight)
+		{
+			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
+			if (environmentLight)
+				environmentLight->setColor(octoon::math::srgb2linear(profile_->environmentModule->color));
 
-		auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
-		if (meshRenderer)
-			meshRenderer->getMaterial()->set("diffuse", octoon::math::srgb2linear(profile_->environmentModule->color));
+			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
+			if (meshRenderer)
+				meshRenderer->getMaterial()->set("diffuse", octoon::math::srgb2linear(profile_->environmentModule->color));
+		}
 
 		QPixmap pixmap(w, h);
 		QPainter painter(&pixmap);
@@ -238,7 +228,7 @@ namespace flower
 	}
 
 	void
-	EnvironmentWindow::repaint()
+	EnvironmentDock::repaint()
 	{
 		auto w = this->previewButton_->width();
 		auto h = this->previewButton_->height();
@@ -286,7 +276,7 @@ namespace flower
 	}
 
 	void
-	EnvironmentWindow::showEvent(QShowEvent* event)
+	EnvironmentDock::showEvent(QShowEvent* event)
 	{
 		this->intensitySpinBox->setValue(profile_->environmentModule->intensity);
 		this->horizontalRotationSpinBox->setValue(profile_->environmentModule->offset.x);
@@ -297,12 +287,7 @@ namespace flower
 	}
 
 	void
-	EnvironmentWindow::closeEvent(QCloseEvent* event)
-	{
-	}
-
-	void
-	EnvironmentWindow::colorMapClickEvent()
+	EnvironmentDock::colorMapClickEvent()
 	{
 		try
 		{
@@ -362,9 +347,9 @@ namespace flower
 	}
 
 	void
-	EnvironmentWindow::colorMapCheckEvent(int state)
+	EnvironmentDock::colorMapCheckEvent(int state)
 	{
-		auto& environmentLight = this->profile_->entitiesModule->enviromentLight;
+		auto environmentLight = this->profile_->entitiesModule->enviromentLight;
 		if (environmentLight)
 		{
 			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -382,9 +367,9 @@ namespace flower
 	}
 
 	void
-	EnvironmentWindow::backgroundMapCheckEvent(int state)
+	EnvironmentDock::backgroundMapCheckEvent(int state)
 	{
-		auto& environmentLight = this->profile_->entitiesModule->enviromentLight;
+		auto environmentLight = this->profile_->entitiesModule->enviromentLight;
 		if (environmentLight)
 		{
 			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -396,104 +381,107 @@ namespace flower
 	}
 
 	void
-	EnvironmentWindow::colorClickEvent()
+	EnvironmentDock::colorClickEvent()
 	{
 		colorSelector_.setCurrentColor(QColor::fromRgbF(this->profile_->environmentModule->color.x, this->profile_->environmentModule->color.y, this->profile_->environmentModule->color.z));
 		colorSelector_.show();
 	}
 
 	void 
-	EnvironmentWindow::colorChangeEvent(const QColor& color)
+	EnvironmentDock::colorChangeEvent(const QColor& color)
 	{
 		this->setColor(color);
 		this->repaint();
 	}
 
 	void
-	EnvironmentWindow::intensitySliderEvent(int value)
+	EnvironmentDock::intensitySliderEvent(int value)
 	{
 		this->intensitySpinBox->setValue(value / 10.0f);
 	}
 
 	void
-	EnvironmentWindow::intensityEditEvent(double value)
+	EnvironmentDock::intensityEditEvent(double value)
 	{
-		auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-		if (environmentLight)
-			environmentLight->setIntensity(value);
-		this->intensitySlider->setValue(value * 10.0f);
+		if (profile_->entitiesModule->enviromentLight)
+		{
+			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
+			if (environmentLight)
+				environmentLight->setIntensity(value);
+		}
+
 		this->profile_->environmentModule->intensity = value;
+		this->intensitySlider->setValue(value * 10.0f);
 	}
 
 	void
-	EnvironmentWindow::horizontalRotationSliderEvent(int value)
+	EnvironmentDock::horizontalRotationSliderEvent(int value)
 	{
 		this->horizontalRotationSpinBox->setValue(value / 100.0f);
 	}
 	
 	void
-	EnvironmentWindow::horizontalRotationEditEvent(double value)
+	EnvironmentDock::horizontalRotationEditEvent(double value)
 	{
 		this->profile_->environmentModule->offset = octoon::math::float2(value, this->profile_->environmentModule->offset.y);
 
-		auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
-		if (meshRenderer)
+		if (profile_->entitiesModule->enviromentLight)
 		{
-			auto material = meshRenderer->getMaterial();
-			if (material->isInstanceOf<octoon::MeshBasicMaterial>())
+			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
+			if (meshRenderer)
 			{
-				auto basicMaterial = material->downcast<octoon::MeshBasicMaterial>();
-				basicMaterial->setOffset(this->profile_->environmentModule->offset);
+				auto material = meshRenderer->getMaterial();
+				if (material->isInstanceOf<octoon::MeshBasicMaterial>())
+				{
+					auto basicMaterial = material->downcast<octoon::MeshBasicMaterial>();
+					basicMaterial->setOffset(this->profile_->environmentModule->offset);
+				}
 			}
-		}
 
-		auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-		if (environmentLight)
-			environmentLight->setOffset(this->profile_->environmentModule->offset);
+			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
+			if (environmentLight)
+				environmentLight->setOffset(this->profile_->environmentModule->offset);
+		}
 
 		this->horizontalRotationSlider->setValue(value * 100.0f);
 		this->repaint();
 	}
 
 	void
-	EnvironmentWindow::verticalRotationSliderEvent(int value)
+	EnvironmentDock::verticalRotationSliderEvent(int value)
 	{
 		this->verticalRotationSpinBox->setValue(value / 100.0f);
 	}
 	
 	void
-	EnvironmentWindow::verticalRotationEditEvent(double value)
+	EnvironmentDock::verticalRotationEditEvent(double value)
 	{
 		this->profile_->environmentModule->offset = octoon::math::float2(this->profile_->environmentModule->offset.x, value);
 
-		auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
-		if (meshRenderer)
+		if (profile_->entitiesModule->enviromentLight)
 		{
-			auto material = meshRenderer->getMaterial();
-			if (material->isInstanceOf<octoon::MeshBasicMaterial>())
+			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
+			if (meshRenderer)
 			{
-				auto basicMaterial = material->downcast<octoon::MeshBasicMaterial>();
-				basicMaterial->setOffset(this->profile_->environmentModule->offset);
+				auto material = meshRenderer->getMaterial();
+				if (material->isInstanceOf<octoon::MeshBasicMaterial>())
+				{
+					auto basicMaterial = material->downcast<octoon::MeshBasicMaterial>();
+					basicMaterial->setOffset(this->profile_->environmentModule->offset);
+				}
 			}
+
+			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
+			if (environmentLight)
+				environmentLight->setOffset(this->profile_->environmentModule->offset);
 		}
 
-		auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-		if (environmentLight)
-			environmentLight->setOffset(this->profile_->environmentModule->offset);
-		
 		this->verticalRotationSlider->setValue(value * 100.0f);
 		this->repaint();
 	}
 
 	void
-	EnvironmentWindow::closeEvent()
-	{
-		this->close();
-		parentWidget()->setFixedWidth(parentWidget()->width() - this->width());
-	}
-
-	void
-	EnvironmentWindow::resetEvent()
+	EnvironmentDock::resetEvent()
 	{
 		this->intensitySpinBox->setValue(1.0f);
 		this->thumbnailToggle->setChecked(false);

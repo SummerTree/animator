@@ -47,6 +47,8 @@ namespace flower
 
 		void loadAudio(std::string_view filepath) noexcept;
 		void clearAudio() noexcept;
+		void setVolume(float volume) noexcept;
+		float getVolume() const noexcept;
 
 		void renderPicture(std::string_view path) noexcept(false);
 

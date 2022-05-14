@@ -415,6 +415,18 @@ namespace flower
 	}
 
 	void
+	FlowerBehaviour::setVolume(float volume) noexcept
+	{
+		entitiesComponent_->setVolume(volume);
+	}
+
+	float
+	FlowerBehaviour::getVolume() const noexcept
+	{
+		return entitiesComponent_->getVolume();
+	}
+
+	void
 	FlowerBehaviour::clearAudio() noexcept
 	{
 		entitiesComponent_->clearAudio();

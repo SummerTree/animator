@@ -27,7 +27,7 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		MaterialEditWindow(QWidget* widget, const octoon::GameObjectPtr& behaviour);
+		MaterialEditWindow(const octoon::GameObjectPtr& behaviour);
 		~MaterialEditWindow();
 
 		void repaint();
@@ -181,7 +181,6 @@ namespace flower
 		Spoiler* othersSpoiler_;
 
 		QLabel* title_;
-		QToolButton* closeButton_;
 		QHBoxLayout* titleLayout_;
 		QLabel* textLabel_;
 		QLabel* imageLabel_;
@@ -218,25 +217,21 @@ namespace flower
 		void resizeEvent(QResizeEvent* e) noexcept override;
 
 	public:
-		QLabel* title_;
-		QToolButton* closeButton_;
-		QHBoxLayout* titleLayout_;
 		QListWidget* listWidget_;
 		QVBoxLayout* mainLayout_;
 	};
 
-	class MaterialWindow final : public QWidget
+	class MaterialDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		MaterialWindow(QWidget* parent, const octoon::GameObjectPtr& behaviour) noexcept(false);
-		~MaterialWindow() noexcept;
+		MaterialDock(const octoon::GameObjectPtr& behaviour) noexcept(false);
+		~MaterialDock() noexcept;
 
 		void showEvent(QShowEvent* event) noexcept override;
 		void updateList();
 
 	private Q_SLOTS:
-		void closeEvent();
 		void okEvent();
 		void itemClicked(QListWidgetItem* item);
 		void itemDoubleClicked(QListWidgetItem* item);
@@ -247,6 +242,7 @@ namespace flower
 		MaterialListPanel* listPanel_;
 		MaterialEditWindow* modifyWidget_;
 		QScrollArea* modifyMaterialArea_;
+		QWidget* widget_;
 		octoon::GameObjectPtr behaviour_;
 	};
 }
