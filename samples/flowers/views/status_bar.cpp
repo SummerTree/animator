@@ -30,7 +30,7 @@ namespace flower
 
 			auto time = std::max<int>(0, std::round(behaviour->getProfile()->playerModule->curTime * 30.0f));
 
-			this->showMessage(QString(u8"动作帧数：%1 | 当前帧：%2").arg(animLength).arg(time));
+			this->showMessage(QString(u8"动作帧数：%1 | 当前帧数：%2").arg(animLength).arg(time));
 		}
 	}
 }
