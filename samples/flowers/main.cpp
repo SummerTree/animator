@@ -39,28 +39,15 @@ int main(int argc, char *argv[])
 		app.setStyleSheet(styleSheet.readAll());
 
 		// Load translation files
-
 		QString local = QLocale::languageToString(QLocale::system().language());
-		/*
-		QMessageBox::question(nullptr,
-			"µØ¥∞±ÍÃ‚",
-			local,
-			QMessageBox::Ok | QMessageBox::Cancel,
-			QMessageBox::Ok);
-		*/
+
 		QTranslator qtTranslator;
 		if (local == "Chinese")
-		{
 			qtTranslator.load("zh_CN.qm", ":res/languages/");
-		}
 		else if (local == "English")
-		{
 			qtTranslator.load("en_US.qm", ":res/languages/");
-		}
 		else
-		{
 			qtTranslator.load("en_US.qm", ":res/languages/");
-		}
 		
 		app.installTranslator(&qtTranslator);
 

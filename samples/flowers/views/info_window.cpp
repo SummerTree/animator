@@ -28,7 +28,7 @@ namespace flower
 
 		loginOutButton_ = std::make_unique<QToolButton>();
 		loginOutButton_->setObjectName("loginOut");
-		loginOutButton_->setText(u8"注销");
+		loginOutButton_->setText(tr("logout"));
 
 		username_ = std::make_unique<QPushButton>();
 		username_->setObjectName("user");
@@ -36,33 +36,33 @@ namespace flower
 
 		countLabel_ = std::make_unique<QPushButton>();
 		countLabel_->setObjectName("count");
-		countLabel_->setText((std::string(u8"可用兔币") + std::to_string(behaviour->getProfile()->clientModule->coin) + u8"个").c_str());
+		countLabel_->setText(tr("balance") + QString::fromStdString(std::to_string(behaviour->getProfile()->clientModule->coin)) + tr("$"));
 
 		vipLabel_ = std::make_unique<QLabel>();
 		vipLabel_->setObjectName("vip");
-		vipLabel_->setText(u8"会员特权");
+		vipLabel_->setText(tr("VIP Privilege"));
 		
 		selectButton1_ = std::make_unique<QToolButton>();
 		selectButton1_->setObjectName("select1");
-		selectButton1_->setText(u8"5000币\n￥5 (原价￥10)");
+		selectButton1_->setText(tr("5000 Coin\n$5 (Original cost $10)"));
 		selectButton1_->setMinimumSize(200, 90);
 		selectButton1_->setCheckable(true);
 
 		selectButton2_ = std::make_unique<QToolButton>();
 		selectButton2_->setObjectName("select2");
-		selectButton2_->setText(u8"10000币\n￥10 (原价￥20)");
+		selectButton2_->setText(tr("10000 Coin\n$10 (Original cost $20)"));
 		selectButton2_->setMinimumSize(200, 90);
 		selectButton2_->setCheckable(true);
 
 		selectButton3_ = std::make_unique<QToolButton>();
 		selectButton3_->setObjectName("select3");
-		selectButton3_->setText(u8"20000币\n￥20 (原价￥40)");
+		selectButton3_->setText(tr("20000 Coin\n$20 (Original cost $40)"));
 		selectButton3_->setMinimumSize(200, 90);
 		selectButton3_->setCheckable(true);
 
 		payLabel_ = std::make_unique<QLabel>();
 		payLabel_->setObjectName("vip");
-		payLabel_->setText(u8"支付宝扫码支付");
+		payLabel_->setText(tr("Scan qrcode in Alipay to pay"));
 
 		qrcodeButton_ = std::make_unique<QPushButton>();
 		qrcodeButton_->setObjectName("qrcode");
@@ -70,11 +70,11 @@ namespace flower
 
 		vipButton_ = std::make_unique<QPushButton>();
 		vipButton_->setObjectName("vipLicense");
-		vipButton_->setText(u8"《花楹会员用户协议》");
+		vipButton_->setText(tr("Flowers End User Agreement"));
 
 		licenseButton_ = std::make_unique<QPushButton>();
 		licenseButton_->setObjectName("license");
-		licenseButton_->setText(u8"《会员特权用户协议》");
+		licenseButton_->setText(tr("Flowers End User Agreement"));
 
 		closeAnimation_ = std::make_unique<QPropertyAnimation>(this, "windowOpacity");
 		closeAnimation_->setDuration(100);
@@ -240,7 +240,7 @@ namespace flower
 			if (client)
 				client->refresh();
 
-			countLabel_->setText((std::string(u8"可用兔币") + std::to_string(behaviour_->getProfile()->clientModule->coin) + u8"个").c_str());
+			countLabel_->setText(tr("balance") + QString::fromStdString(std::to_string(behaviour_->getProfile()->clientModule->coin)) + tr("$"));
 		}
 		catch (const std::exception&)
 		{
@@ -355,8 +355,8 @@ namespace flower
 				if (client->invoice(trade_no_))
 				{
 					QMessageBox msg(this);
-					msg.setWindowTitle(QString::fromUtf8(u8"提示"));
-					msg.setText(u8"充值成功");
+					msg.setWindowTitle(tr("Info"));
+					msg.setText(tr("Successful recharge"));
 					msg.setIcon(QMessageBox::NoIcon);
 					msg.setStandardButtons(QMessageBox::Ok);
 

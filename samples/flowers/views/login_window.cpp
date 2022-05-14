@@ -36,21 +36,21 @@ namespace flower
 
 		selectButton_ = std::make_unique<QLabel>();
 		selectButton_->setObjectName("selector");
-		selectButton_->setText(u8"ÕËºÅµÇÂ½");
+		selectButton_->setText(tr("Account Login"));
 
 		validButton_ = std::make_unique<QLabel>();
 		validButton_->setObjectName("valid");
 
 		usernameEdit_ = std::make_unique<LineEdit>();
 		usernameEdit_->setObjectName("username");
-		usernameEdit_->setPlaceholderText(u8"ÕÊºÅ/ÓÊÏä/ÊÖ»ú");
+		usernameEdit_->setPlaceholderText(tr("Account/E-mail/Phone"));
 		usernameEdit_->setMaxLength(20);
 		usernameEdit_->setValidator(validator_.get());
 		usernameEdit_->addAction(userAccount_.get(), QLineEdit::LeadingPosition);
 
 		passwordEdit_ = std::make_unique<LineEdit>();
 		passwordEdit_->setObjectName("password");
-		passwordEdit_->setPlaceholderText(u8"ÃÜÂë");
+		passwordEdit_->setPlaceholderText(tr("Password"));
 		passwordEdit_->setEchoMode(QLineEdit::Password);
 		passwordEdit_->setMaxLength(20);
 		passwordEdit_->setValidator(validator_.get());
@@ -59,21 +59,21 @@ namespace flower
 
 		loginButton_ = std::make_unique<QToolButton>();
 		loginButton_->setObjectName("login");
-		loginButton_->setText(u8"µÇÂ¼");
+		loginButton_->setText(tr("Login"));
 		loginButton_->setContentsMargins(0, 20, 0, 20);
 
 		autoLoginBox_ = std::make_unique<QCheckBox>();
 		autoLoginBox_->setObjectName("login");
-		autoLoginBox_->setText(u8"×Ô¶¯µÇÂ¼");
+		autoLoginBox_->setText(tr("Auto Login"));
 		autoLoginBox_->setContentsMargins(0, 20, 0, 20);
 
 		registerButton_ = std::make_unique<QPushButton>();
 		registerButton_->setObjectName("register");
-		registerButton_->setText(u8"×¢²áÕËºÅ");
+		registerButton_->setText(tr("Register"));
 
 		forgetButton_ = std::make_unique<QPushButton>();
 		forgetButton_->setObjectName("forget");
-		forgetButton_->setText(u8"Íü¼ÇÃÜÂë");
+		forgetButton_->setText(tr("Forget Password"));
 
 		hLayout_ = std::make_unique<QHBoxLayout>();
 		hLayout_->addWidget(registerButton_.get(), 0, Qt::AlignRight | Qt::AlignTop);
@@ -163,33 +163,33 @@ namespace flower
 
 		selectButton_ = std::make_unique<QLabel>();
 		selectButton_->setObjectName("selector");
-		selectButton_->setText(u8"ÕÒ»ØÃÜÂë");
+		selectButton_->setText(tr("Reset Password"));
 
 		validButton_ = std::make_unique<QLabel>();
 		validButton_->setObjectName("valid");
 
 		usernameEdit_ = std::make_unique<LineEdit>();
 		usernameEdit_->setObjectName("username");
-		usernameEdit_->setPlaceholderText(u8"ÊÖ»úºÅ/ÓÊÏä");
+		usernameEdit_->setPlaceholderText(tr("Phone/E-mail"));
 		usernameEdit_->setMaxLength(20);
 		usernameEdit_->setValidator(validator_.get());
 		usernameEdit_->addAction(userAccount_.get(), QLineEdit::LeadingPosition);
 
 		passwordEdit_ = std::make_unique<LineEdit>();
 		passwordEdit_->setObjectName("password");
-		passwordEdit_->setPlaceholderText(u8"ÑéÖ¤Âë");
+		passwordEdit_->setPlaceholderText(tr("Verification code"));
 		passwordEdit_->setMaxLength(20);
 		passwordEdit_->setValidator(validator_.get());
 		passwordEdit_->addAction(passAccount_.get(), QLineEdit::LeadingPosition);
 
 		forgetButton_ = std::make_unique<QToolButton>();
 		forgetButton_->setObjectName("login");
-		forgetButton_->setText(u8"·¢ËÍÑéÖ¤Âë");
+		forgetButton_->setText(tr("Send Verification Code"));
 		forgetButton_->setContentsMargins(0, 20, 0, 20);
 
 		returnButton_ = std::make_unique<QPushButton>();
 		returnButton_->setObjectName("register");
-		returnButton_->setText(u8"·µ»Ø");
+		returnButton_->setText(tr("Back"));
 
 		layout_ = std::make_unique<QVBoxLayout>(this);
 		layout_->addWidget(closeButton_.get(), 0, Qt::AlignRight | Qt::AlignTop);

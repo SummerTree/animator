@@ -6,6 +6,7 @@
 #include <qsplashscreen.h>
 #include <qapplication.h>
 // #include <qdesktopwidget.h>
+
 #include <qscreen.h>
 #include <qmessagebox.h>
 #include <fstream>

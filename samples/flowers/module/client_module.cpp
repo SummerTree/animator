@@ -38,7 +38,7 @@ namespace flower
 #endif
 		port = 443;
 		autoLogin = true;
-		version = "1.0.3";
+		version = "1.0.0";
 	}
 
 	void 
