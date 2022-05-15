@@ -10,17 +10,8 @@ namespace flower
 {
 	ThumbnailDock::ThumbnailDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<FlowerProfile> profile) noexcept
 		: profile_(profile)
-		, recordEnable_(false)
-		, hdrEnable_(false)
-		, sunEnable_(false)
-		, environmentEnable_(false)
 		, behaviour_(behaviour)
-		, sunIcon_(QIcon::fromTheme("res", QIcon(":res/icons/sun.png")))
-		, sunOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/sun-on.png")))
-		, environmentIcon_(QIcon::fromTheme("res", QIcon(":res/icons/environment.png")))
-		, environmentOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/environment-on.png")))
 	{
-		this->setWindowTitle("Thumbnail");
 		this->setObjectName("ThumbnailDock");
 		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 		this->setFeatures(DockWidgetFeature::DockWidgetMovable | DockWidgetFeature::DockWidgetFloatable);
@@ -28,7 +19,7 @@ namespace flower
 		recordButton_ = new QToolButton;
 		recordButton_->setObjectName("record");
 		recordButton_->setText(tr("Record"));
-		recordButton_->setToolTip(tr("Record Video"));
+		recordButton_->setToolTip(tr("Open Record Panel"));
 		recordButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		materialButton_ = new QToolButton;
@@ -40,19 +31,19 @@ namespace flower
 		lightButton_ = new QToolButton;
 		lightButton_->setObjectName("sun");
 		lightButton_->setText(tr("Light"));
-		lightButton_->setToolTip(tr("Light Settings"));
+		lightButton_->setToolTip(tr("Open Light Panel"));
 		lightButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		sunButton_ = new QToolButton;
 		sunButton_->setObjectName("sun");
 		sunButton_->setText(tr("Main Light"));
-		sunButton_->setToolTip(tr("Main Light Settings"));
+		sunButton_->setToolTip(tr("Open Main Light Panel"));
 		sunButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		environmentButton_ = new QToolButton;
 		environmentButton_->setObjectName("environment");
 		environmentButton_->setText(tr("Environment Light"));
-		environmentButton_->setToolTip(tr("Environment Light Settings"));
+		environmentButton_->setToolTip(tr("Open Environment Light Panel"));
 		environmentButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		auto layout = new QVBoxLayout;
@@ -123,10 +114,5 @@ namespace flower
 	ThumbnailDock::environmentEvent() noexcept
 	{
 		emit environmentSignal();
-	}
-
-	void
-	ThumbnailDock::paintEvent(QPaintEvent* e) noexcept
-	{
 	}
 }

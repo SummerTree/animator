@@ -35,10 +35,12 @@ namespace flower
 		this->setObjectName("EnvironmentDock");
 
 		this->previewButton_ = new QToolButton();
-		this->previewButton_->setFixedSize(QSize(256, 144));
+		this->previewButton_->setFixedSize(QSize(260, 130));
 
 		this->previewName_ = new QLabel;
 		this->previewName_->setText(tr("Untitled"));
+		this->previewName_->setAlignment(Qt::AlignCenter);
+		this->previewName_->setMinimumWidth(260);
 
 		this->colorButton = new QToolButton;
 		this->colorButton->setIconSize(QSize(50, 30));
@@ -46,6 +48,7 @@ namespace flower
 		this->thumbnail = new QToolButton;
 		this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 		this->thumbnail->setIconSize(QSize(48, 48));
+		this->thumbnail->setToolTip(tr("Open"));
 
 		this->thumbnailToggle = new QCheckBox;
 		this->thumbnailToggle->setText(tr("Thumbnail"));
@@ -53,7 +56,7 @@ namespace flower
 		this->backgroundToggle = new QCheckBox;
 		this->backgroundToggle->setText(tr("Toggle Background"));
 		this->backgroundToggle->setChecked(true);
-
+		
 		this->thumbnailPath = new QLabel;
 		this->thumbnailPath->setMinimumSize(QSize(160, 20));
 
@@ -65,7 +68,7 @@ namespace flower
 		this->intensitySlider->setMinimum(0);
 		this->intensitySlider->setMaximum(100);
 		this->intensitySlider->setValue(0);
-		this->intensitySlider->setFixedWidth(270);
+		this->intensitySlider->setMinimumWidth(270);
 
 		this->intensitySpinBox = new DoubleSpinBox;
 		this->intensitySpinBox->setFixedWidth(50);
@@ -83,7 +86,7 @@ namespace flower
 		this->horizontalRotationSlider->setMinimum(-100);
 		this->horizontalRotationSlider->setMaximum(100);
 		this->horizontalRotationSlider->setValue(0);
-		this->horizontalRotationSlider->setFixedWidth(270);
+		this->horizontalRotationSlider->setMinimumWidth(270);
 
 		this->horizontalRotationSpinBox = new DoubleSpinBox;
 		this->horizontalRotationSpinBox->setFixedWidth(50);
@@ -101,7 +104,7 @@ namespace flower
 		this->verticalRotationSlider->setMinimum(-100);
 		this->verticalRotationSlider->setMaximum(100);
 		this->verticalRotationSlider->setValue(0);
-		this->verticalRotationSlider->setFixedWidth(270);
+		this->verticalRotationSlider->setMinimumWidth(270);
 
 		this->verticalRotationSpinBox = new DoubleSpinBox;
 		this->verticalRotationSpinBox->setFixedWidth(50);
@@ -113,7 +116,7 @@ namespace flower
 
 		this->resetButton_ = new QToolButton();
 		this->resetButton_->setText(tr("Reset"));
-
+		
 		auto thumbnailTitleLayout = new QHBoxLayout();
 		thumbnailTitleLayout->addWidget(thumbnailToggle, 0, Qt::AlignLeft);
 		thumbnailTitleLayout->addSpacing(4);
@@ -160,10 +163,9 @@ namespace flower
 		spoilerLayout->addWidget(this->horizontalRotationSlider);
 		spoilerLayout->addLayout(verticalRotationLayout);
 		spoilerLayout->addWidget(this->verticalRotationSlider);
-		spoilerLayout->setContentsMargins(20, 5, 50, 0);
+		spoilerLayout->setContentsMargins(20, 0, 0, 0);
 
-		this->spoiler = new Spoiler(tr("Environment Attribute"));
-		this->spoiler->setFixedWidth(340);
+		this->spoiler = new Spoiler(tr("Attribute"));
 		this->spoiler->setContentLayout(*spoilerLayout);
 		this->spoiler->toggleButton.click();
 
@@ -178,7 +180,7 @@ namespace flower
 		mainLayout->addWidget(spoiler);
 		mainLayout->addStretch();
 		mainLayout->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout->setContentsMargins(10, 10, 10, 10);
+		mainLayout->setContentsMargins(10, 10, 30, 10);
 
 		auto mainWidget = new QWidget();
 		mainWidget->setLayout(mainLayout);
@@ -320,9 +322,10 @@ namespace flower
 							QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
 
 							QFontMetrics metrics(this->thumbnailPath->font());
-							auto name = metrics.elidedText(QFileInfo(filepath).fileName(), Qt::ElideRight, this->thumbnailPath->width());
 
-							this->thumbnailPath->setText(name);
+							this->previewName_->setText(metrics.elidedText(QFileInfo(filepath).fileName(), Qt::ElideRight, this->previewName_->width()));
+							this->thumbnailPath->setText(metrics.elidedText(filepath, Qt::ElideRight, this->thumbnailPath->width()));
+							this->thumbnailPath->setToolTip(filepath);
 							this->thumbnailToggle->setChecked(false);
 							this->thumbnail->setIcon(QIcon(QPixmap::fromImage(qimage.scaled(QSize(48, 30)))));
 							this->texture = texel;

@@ -104,46 +104,51 @@
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="51"/>
-        <source>Thumbnail</source>
+        <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="54"/>
+        <source>Thumbnail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="57"/>
         <source>Toggle Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="61"/>
+        <location filename="../views/environment_dock.cpp" line="64"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="79"/>
+        <location filename="../views/environment_dock.cpp" line="82"/>
         <source>Horizontal Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="97"/>
+        <location filename="../views/environment_dock.cpp" line="100"/>
         <source>Vertical Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="115"/>
+        <location filename="../views/environment_dock.cpp" line="118"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="165"/>
-        <source>Environment Attribute</source>
+        <location filename="../views/environment_dock.cpp" line="168"/>
+        <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="296"/>
+        <location filename="../views/environment_dock.cpp" line="298"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="340"/>
+        <location filename="../views/environment_dock.cpp" line="343"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -608,53 +613,53 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::ThumbnailDock</name>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="30"/>
+        <location filename="../views/thumbnail_dock.cpp" line="21"/>
         <source>Record</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="31"/>
-        <source>Record Video</source>
+        <location filename="../views/thumbnail_dock.cpp" line="22"/>
+        <source>Open Record Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="36"/>
+        <location filename="../views/thumbnail_dock.cpp" line="27"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="37"/>
+        <location filename="../views/thumbnail_dock.cpp" line="28"/>
         <source>Open Material Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="42"/>
+        <location filename="../views/thumbnail_dock.cpp" line="33"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="43"/>
-        <source>Light Settings</source>
+        <location filename="../views/thumbnail_dock.cpp" line="34"/>
+        <source>Open Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="48"/>
+        <location filename="../views/thumbnail_dock.cpp" line="40"/>
+        <source>Open Main Light Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="46"/>
+        <source>Open Environment Light Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="39"/>
         <source>Main Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="49"/>
-        <source>Main Light Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/thumbnail_dock.cpp" line="54"/>
+        <location filename="../views/thumbnail_dock.cpp" line="45"/>
         <source>Environment Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/thumbnail_dock.cpp" line="55"/>
-        <source>Environment Light Settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

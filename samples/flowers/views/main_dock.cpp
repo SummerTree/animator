@@ -161,7 +161,7 @@ namespace flower
 	{
 		try
 		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
 				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)

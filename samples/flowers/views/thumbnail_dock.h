@@ -37,20 +37,7 @@ namespace flower
 		void materialSignal();
 		void environmentSignal();
 
-	private:
-		void paintEvent(QPaintEvent* e) noexcept override;
-
 	public:
-		bool recordEnable_;
-		bool hdrEnable_;
-		bool sunEnable_;
-		bool environmentEnable_;
-
-		QIcon sunIcon_;
-		QIcon sunOnIcon_;
-		QIcon environmentIcon_;
-		QIcon environmentOnIcon_;
-
 		QToolButton* recordButton_;
 		QToolButton* lightButton_;
 		QToolButton* sunButton_;

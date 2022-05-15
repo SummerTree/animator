@@ -95,57 +95,62 @@
     <message>
         <location filename="../views/environment_dock.cpp" line="34"/>
         <source>Environment Light</source>
-        <translation type="unfinished">环境光</translation>
+        <translation>环境光</translation>
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="41"/>
         <source>Untitled</source>
-        <translation type="unfinished">未命名</translation>
+        <translation>未命名</translation>
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="51"/>
-        <source>Thumbnail</source>
-        <translation type="unfinished">环境贴图</translation>
+        <source>Open</source>
+        <translation>打开</translation>
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="54"/>
+        <source>Thumbnail</source>
+        <translation>环境贴图</translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="57"/>
         <source>Toggle Background</source>
-        <translation type="unfinished">显示背景</translation>
+        <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="61"/>
+        <location filename="../views/environment_dock.cpp" line="64"/>
         <source>Intensity</source>
-        <translation type="unfinished">强度</translation>
+        <translation>光照强度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="79"/>
+        <location filename="../views/environment_dock.cpp" line="82"/>
         <source>Horizontal Rotation</source>
-        <translation type="unfinished">水平旋转</translation>
+        <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="97"/>
+        <location filename="../views/environment_dock.cpp" line="100"/>
         <source>Vertical Rotation</source>
-        <translation type="unfinished">垂直旋转</translation>
+        <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="115"/>
+        <location filename="../views/environment_dock.cpp" line="118"/>
         <source>Reset</source>
-        <translation type="unfinished">重置</translation>
+        <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="165"/>
-        <source>Environment Attribute</source>
-        <translation type="unfinished">环境属性</translation>
+        <location filename="../views/environment_dock.cpp" line="168"/>
+        <source>Attribute</source>
+        <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="296"/>
+        <location filename="../views/environment_dock.cpp" line="298"/>
         <source>HDRi Files (*.hdr)</source>
-        <translation type="unfinished">HDRi 文件 (*.hdr)</translation>
+        <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="340"/>
+        <location filename="../views/environment_dock.cpp" line="343"/>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
 </context>
 <context>
@@ -665,54 +670,70 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::ThumbnailDock</name>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="30"/>
+        <location filename="../views/thumbnail_dock.cpp" line="21"/>
         <source>Record</source>
         <translation type="unfinished">录制</translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="31"/>
         <source>Record Video</source>
-        <translation type="unfinished">录制视频</translation>
+        <translation type="obsolete">录制视频</translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="36"/>
+        <location filename="../views/thumbnail_dock.cpp" line="22"/>
+        <source>Open Record Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="27"/>
         <source>Material</source>
         <translation type="unfinished">材质</translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="37"/>
+        <location filename="../views/thumbnail_dock.cpp" line="28"/>
         <source>Open Material Panel</source>
         <translation type="unfinished">打开材质面板</translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="42"/>
+        <location filename="../views/thumbnail_dock.cpp" line="33"/>
         <source>Light</source>
         <translation type="unfinished">光源</translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="43"/>
-        <source>Light Settings</source>
-        <translation type="unfinished">光源设置</translation>
+        <location filename="../views/thumbnail_dock.cpp" line="34"/>
+        <source>Open Light Panel</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="48"/>
+        <location filename="../views/thumbnail_dock.cpp" line="40"/>
+        <source>Open Main Light Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="46"/>
+        <source>Open Environment Light Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light Settings</source>
+        <translation type="obsolete">光源设置</translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="39"/>
         <source>Main Light</source>
         <translation type="unfinished">主光源</translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="49"/>
         <source>Main Light Settings</source>
-        <translation type="unfinished">主光源设置</translation>
+        <translation type="obsolete">主光源设置</translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="54"/>
+        <location filename="../views/thumbnail_dock.cpp" line="45"/>
         <source>Environment Light</source>
         <translation type="unfinished">环境光</translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="55"/>
         <source>Environment Light Settings</source>
-        <translation type="unfinished">环境光设置</translation>
+        <translation type="obsolete">环境光设置</translation>
     </message>
 </context>
 <context>
