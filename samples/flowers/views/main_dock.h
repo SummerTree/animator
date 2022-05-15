@@ -1,5 +1,5 @@
-#ifndef FLOWER_VIEW_DOCK_H_
-#define FLOWER_VIEW_DOCK_H_
+#ifndef FLOWER_MAIN_DOCK_H_
+#define FLOWER_MAIN_DOCK_H_
 
 #include <qwidget.h>
 #include <qtimer.h>

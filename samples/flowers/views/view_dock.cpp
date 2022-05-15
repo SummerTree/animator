@@ -1,4 +1,4 @@
-#include "views/view_dock.h"
+#include "view_dock.h"
 #include "flower_behaviour.h"
 #include <qevent.h>
 #include <qmessagebox.h>

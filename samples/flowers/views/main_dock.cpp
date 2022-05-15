@@ -1,4 +1,4 @@
-﻿#include "views/main_dock.h"
+﻿#include "main_dock.h"
 #include "flower_behaviour.h"
 #include <qdockwidget.h>
 #include <qmessagebox.h>

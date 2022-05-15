@@ -2,76 +2,10 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>MainDock</name>
-    <message>
-        <location filename="../views/main_dock.cpp" line="18"/>
-        <source>Flower Render Toolbox (Alpha Version)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/main_dock.cpp" line="185"/>
-        <location filename="../views/main_dock.cpp" line="225"/>
-        <location filename="../views/main_dock.cpp" line="264"/>
-        <location filename="../views/main_dock.cpp" line="303"/>
-        <location filename="../views/main_dock.cpp" line="342"/>
-        <location filename="../views/main_dock.cpp" line="381"/>
-        <source>Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/main_dock.cpp" line="186"/>
-        <location filename="../views/main_dock.cpp" line="226"/>
-        <source>Please load a project with pmm extension.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/main_dock.cpp" line="197"/>
-        <location filename="../views/main_dock.cpp" line="236"/>
-        <location filename="../views/main_dock.cpp" line="275"/>
-        <location filename="../views/main_dock.cpp" line="314"/>
-        <location filename="../views/main_dock.cpp" line="353"/>
-        <location filename="../views/main_dock.cpp" line="392"/>
-        <location filename="../views/main_dock.cpp" line="416"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/main_dock.cpp" line="265"/>
-        <location filename="../views/main_dock.cpp" line="304"/>
-        <location filename="../views/main_dock.cpp" line="343"/>
-        <location filename="../views/main_dock.cpp" line="382"/>
-        <source>Fail to get core component.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/main_dock.cpp" line="417"/>
-        <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>MainView</name>
     <message>
         <location filename="../res/qml/MainView.qml" line="8"/>
         <source>Flowers Render Toolbox (Alpha Version)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ViewDock</name>
-    <message>
-        <location filename="../views/view_dock.cpp" line="10"/>
-        <source>Camera</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/view_dock.cpp" line="156"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/view_dock.cpp" line="157"/>
-        <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -339,6 +273,54 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/login_window.cpp" line="76"/>
         <source>Forget Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::MainDock</name>
+    <message>
+        <location filename="../views/main_dock.cpp" line="18"/>
+        <source>Flower Render Toolbox (Alpha Version)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="185"/>
+        <location filename="../views/main_dock.cpp" line="225"/>
+        <location filename="../views/main_dock.cpp" line="264"/>
+        <location filename="../views/main_dock.cpp" line="303"/>
+        <location filename="../views/main_dock.cpp" line="342"/>
+        <location filename="../views/main_dock.cpp" line="381"/>
+        <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="186"/>
+        <location filename="../views/main_dock.cpp" line="226"/>
+        <source>Please load a project with pmm extension.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="197"/>
+        <location filename="../views/main_dock.cpp" line="236"/>
+        <location filename="../views/main_dock.cpp" line="275"/>
+        <location filename="../views/main_dock.cpp" line="314"/>
+        <location filename="../views/main_dock.cpp" line="353"/>
+        <location filename="../views/main_dock.cpp" line="392"/>
+        <location filename="../views/main_dock.cpp" line="416"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="265"/>
+        <location filename="../views/main_dock.cpp" line="304"/>
+        <location filename="../views/main_dock.cpp" line="343"/>
+        <location filename="../views/main_dock.cpp" line="382"/>
+        <source>Fail to get core component.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="417"/>
+        <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -872,6 +854,24 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="283"/>
         <source>VolumeOff</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::ViewDock</name>
+    <message>
+        <location filename="../views/view_dock.cpp" line="10"/>
+        <source>Camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/view_dock.cpp" line="156"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/view_dock.cpp" line="157"/>
+        <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
