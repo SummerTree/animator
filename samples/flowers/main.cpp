@@ -21,16 +21,6 @@ int main(int argc, char *argv[])
 	QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
 #endif
 
-#if 0
-
-	QGuiApplication app(argc, argv);
-
-	auto applicationData = std::make_unique<flower::Application>();
-
-	app.exec();
-
-	return 0;
-#else
 	QFile styleSheet(":res/qss/default.qss");
 
 	if (styleSheet.open(QIODevice::ReadOnly))
@@ -48,7 +38,7 @@ int main(int argc, char *argv[])
 			qtTranslator.load("en_US.qm", ":res/languages/");
 		else
 			qtTranslator.load("en_US.qm", ":res/languages/");
-		
+
 		app.installTranslator(&qtTranslator);
 
 		auto splash = std::make_unique<flower::SplashScreen>();
@@ -61,11 +51,10 @@ int main(int argc, char *argv[])
 		splash.reset();
 
 		app.exec();
-	}
+}
 	else
 	{
 		qWarning("Can't open the style sheet file.");
 		return 0;
 	}
-#endif
 }

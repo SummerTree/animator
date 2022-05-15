@@ -22,6 +22,7 @@
 #include "views/environment_dock.h"
 #include "views/material_dock.h"
 #include "views/record_dock.h"
+#include "views/camera_dock.h"
 
 namespace flower
 {
@@ -50,6 +51,7 @@ namespace flower
 		void onRecordSignal() noexcept;
 		void onEnvironmentSignal() noexcept;
 		void onMaterialSignal() noexcept;
+		void onCameraSignal() noexcept;
 
 	private:
 		void open(int w, int h) noexcept(false);
@@ -63,7 +65,7 @@ namespace flower
 		octoon::GameAppPtr gameApp_;
 		octoon::GameObjectPtr behaviour_;
 
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<FlowerProfile> profile_;
 		std::shared_ptr<SplashListener> listener_;
 
 		std::unique_ptr<StatusBar> statusBar_;
@@ -75,6 +77,7 @@ namespace flower
 		std::unique_ptr<MainLightDock> mainLightDock_;
 		std::unique_ptr<EnvironmentDock> environmentDock_;
 		std::unique_ptr<MaterialDock> materialDock_;
+		std::unique_ptr<CameraDock> cameraDock_;
 	};
 }
 

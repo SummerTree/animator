@@ -29,6 +29,7 @@ namespace flower
 		void sunEvent() noexcept;
 		void materialEvent() noexcept;
 		void environmentEvent() noexcept;
+		void cameraEvent() noexcept;
 
 	Q_SIGNALS:
 		void sunSignal();
@@ -36,6 +37,7 @@ namespace flower
 		void recordSignal();
 		void materialSignal();
 		void environmentSignal();
+		void cameraSignal();
 
 	public:
 		QToolButton* recordButton_;
@@ -43,9 +45,10 @@ namespace flower
 		QToolButton* sunButton_;
 		QToolButton* environmentButton_;
 		QToolButton* materialButton_;
+		QToolButton* cameraButton_;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<FlowerProfile> profile_;
 	};
 }
 

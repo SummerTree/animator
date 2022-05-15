@@ -9,39 +9,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="185"/>
-        <location filename="../views/main_dock.cpp" line="232"/>
-        <location filename="../views/main_dock.cpp" line="270"/>
-        <location filename="../views/main_dock.cpp" line="315"/>
-        <location filename="../views/main_dock.cpp" line="362"/>
+        <location filename="../views/main_dock.cpp" line="189"/>
+        <location filename="../views/main_dock.cpp" line="236"/>
+        <location filename="../views/main_dock.cpp" line="274"/>
+        <location filename="../views/main_dock.cpp" line="319"/>
+        <location filename="../views/main_dock.cpp" line="363"/>
+        <location filename="../views/main_dock.cpp" line="402"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="186"/>
-        <location filename="../views/main_dock.cpp" line="271"/>
+        <location filename="../views/main_dock.cpp" line="190"/>
+        <location filename="../views/main_dock.cpp" line="275"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="196"/>
-        <location filename="../views/main_dock.cpp" line="243"/>
-        <location filename="../views/main_dock.cpp" line="282"/>
-        <location filename="../views/main_dock.cpp" line="326"/>
-        <location filename="../views/main_dock.cpp" line="373"/>
-        <location filename="../views/main_dock.cpp" line="397"/>
+        <location filename="../views/main_dock.cpp" line="200"/>
+        <location filename="../views/main_dock.cpp" line="247"/>
+        <location filename="../views/main_dock.cpp" line="286"/>
+        <location filename="../views/main_dock.cpp" line="330"/>
+        <location filename="../views/main_dock.cpp" line="374"/>
+        <location filename="../views/main_dock.cpp" line="413"/>
+        <location filename="../views/main_dock.cpp" line="437"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="233"/>
-        <location filename="../views/main_dock.cpp" line="316"/>
-        <location filename="../views/main_dock.cpp" line="363"/>
+        <location filename="../views/main_dock.cpp" line="237"/>
+        <location filename="../views/main_dock.cpp" line="320"/>
+        <location filename="../views/main_dock.cpp" line="364"/>
+        <location filename="../views/main_dock.cpp" line="403"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="398"/>
+        <location filename="../views/main_dock.cpp" line="438"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -69,6 +72,24 @@
     <message>
         <location filename="../views/view_dock.cpp" line="157"/>
         <source>Unsupported light type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::CameraDock</name>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="87"/>
+        <source>Camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="94"/>
+        <source>aperture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="108"/>
+        <source>focalDistance</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -497,12 +518,12 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::RecordDock</name>
     <message>
-        <location filename="../views/record_dock.cpp" line="403"/>
+        <location filename="../views/record_dock.cpp" line="295"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="538"/>
+        <location filename="../views/record_dock.cpp" line="380"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -650,6 +671,16 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="46"/>
         <source>Open Environment Light Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="51"/>
+        <source>Camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="52"/>
+        <source>Open Camera Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

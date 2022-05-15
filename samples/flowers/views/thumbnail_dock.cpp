@@ -46,6 +46,12 @@ namespace flower
 		environmentButton_->setToolTip(tr("Open Environment Light Panel"));
 		environmentButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
+		cameraButton_ = new QToolButton;
+		cameraButton_->setObjectName("camera");
+		cameraButton_->setText(tr("Camera"));
+		cameraButton_->setToolTip(tr("Open Camera Panel"));
+		cameraButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
@@ -54,6 +60,7 @@ namespace flower
 		layout->addWidget(lightButton_, 0, Qt::AlignCenter);
 		layout->addWidget(sunButton_, 0, Qt::AlignCenter);
 		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
+		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 
 		auto contentWidget = new QWidget;
@@ -80,6 +87,7 @@ namespace flower
 		this->connect(sunButton_, SIGNAL(clicked()), this, SLOT(sunEvent()));
 		this->connect(environmentButton_, SIGNAL(clicked()), this, SLOT(environmentEvent()));
 		this->connect(materialButton_, SIGNAL(clicked()), this, SLOT(materialEvent()));
+		this->connect(cameraButton_, SIGNAL(clicked()), this, SLOT(cameraEvent()));
 	}
 
 	ThumbnailDock::~ThumbnailDock() noexcept
@@ -114,5 +122,11 @@ namespace flower
 	ThumbnailDock::environmentEvent() noexcept
 	{
 		emit environmentSignal();
+	}
+
+	void
+	ThumbnailDock::cameraEvent() noexcept
+	{
+		emit cameraSignal();
 	}
 }

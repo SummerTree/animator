@@ -343,7 +343,10 @@ QWidget#ThumbnailDock QToolButton#sun{
 QWidget#ThumbnailDock QToolButton#material{
 	qproperty-icon: url(":res/icons/material.png");
 }
-QWidget#MainLightDock, QWidget#EnvironmentDock, QWidget#MaterialDock, QWidget#RecordDock
+QWidget#ThumbnailDock QToolButton#camera{
+	qproperty-icon: url(":res/icons/camera.png");
+}
+QWidget#MainLightDock, QWidget#EnvironmentDock, QWidget#MaterialDock, QWidget#RecordDock, QWidget#CameraDock
 {
 	color: rgb(200, 200, 200);
 	min-width:340;

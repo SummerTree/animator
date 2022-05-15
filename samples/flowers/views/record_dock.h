@@ -19,20 +19,6 @@
 
 namespace flower
 {
-	class FocalTargetWindow final : public QToolButton
-	{
-		Q_OBJECT
-	public:
-		FocalTargetWindow() noexcept;
-		~FocalTargetWindow() noexcept;
-
-		void mouseMoveEvent(QMouseEvent* event) override;
-		void mousePressEvent(QMouseEvent* event) override;
-
-	private:
-		QPoint startPos;
-	};
-	
 	class RecordDock final : public QDockWidget
 	{
 		Q_OBJECT
@@ -46,9 +32,8 @@ namespace flower
 		void startRecord(QString fileName);
 		void stopRecord();
 
-		void updateTarget();
-
 		void showEvent(QShowEvent* event) override;
+		void paintEvent(QPaintEvent* e) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
 
 	private Q_SLOTS:
@@ -65,8 +50,6 @@ namespace flower
 		void onSppChanged(int);
 		void onBouncesChanged(int);
 		void onCrfChanged(double);
-		void onApertureChanged(double);
-		void onFocalDistanceChanged(double);
 
 	public:
 		QLabel* quality_;
@@ -81,10 +64,6 @@ namespace flower
 		QLabel* crfLabel;
 		QLabel* startLabel_;
 		QLabel* endLabel_;
-		QLabel* dofInfoLabel_;
-		QLabel* apertureLabel_;
-		QLabel* focalDistanceName_;
-		QLabel* focalDistanceLabel_;
 
 		QButtonGroup* group_;
 		QButtonGroup* speedGroup_;
@@ -97,7 +76,6 @@ namespace flower
 		QToolButton* speed4_;
 		QToolButton* recordButton_;
 		QToolButton* markButton_;
-		QToolButton* focalTargetButton_;
 
 		QSpinBox* start_;
 		QSpinBox* end_;
@@ -105,8 +83,6 @@ namespace flower
 		QSpinBox* bouncesSpinbox_;
 		
 		QDoubleSpinBox* crfSpinbox;
-		QDoubleSpinBox* apertureSpinbox_;
-		QDoubleSpinBox* focalDistanceSpinbox_;
 
 		QHBoxLayout* videoRatioLayout_;
 		QHBoxLayout* frameLayout_;
@@ -116,7 +92,6 @@ namespace flower
 		QWidget* mainWidget_;
 
 		Spoiler* markSpoiler_;
-		Spoiler* cameraSpoiler_;
 		Spoiler* videoSpoiler_;
 		Spoiler* infoSpoiler_;
 		QScrollArea* contentWidgetArea_;

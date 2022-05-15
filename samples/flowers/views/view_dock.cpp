@@ -6,7 +6,7 @@
 
 namespace flower
 {
-	ViewDock::ViewDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile) noexcept
+	ViewDock::ViewDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
 		: QDockWidget(tr("Camera"))
 		, gameApp_(gameApp)
 		, behaviour_(behaviour)
@@ -165,7 +165,7 @@ namespace flower
 				auto materialData = event->mimeData()->data("object/material");
 				if (!materialData.isEmpty())
 				{
-					auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+					auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 					auto selectedItem = behaviour->getProfile()->dragModule->selectedItemHover_;
 					if (selectedItem)
 					{
@@ -179,11 +179,11 @@ namespace flower
 					}
 				}
 
-				/*auto dofData = event->mimeData()->data("object/dof");
+				auto dofData = event->mimeData()->data("object/dof");
 				if (!dofData.isEmpty())
 				{
-					recordWindow_->updateTarget();
-				}*/
+					// recordWindow_->updateTarget();
+				}
 			}
 		}
 	}

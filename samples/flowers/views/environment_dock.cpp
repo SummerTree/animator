@@ -27,7 +27,7 @@ namespace flower
 		}
 	};
 
-	EnvironmentDock::EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile)
+	EnvironmentDock::EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile)
 		: behaviour_(behaviour)
 		, profile_(profile)
 	{

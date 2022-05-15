@@ -51,7 +51,7 @@ namespace flower
 		QToolButton* cleanupButton_;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<FlowerProfile> profile_;
 	};
 }
 

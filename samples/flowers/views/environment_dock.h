@@ -16,7 +16,7 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile);
+		EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile);
 		~EnvironmentDock();
 
 		void repaint();

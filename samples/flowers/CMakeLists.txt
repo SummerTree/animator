@@ -73,6 +73,8 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/status_bar.cpp
 	${SOURCE_PATH}/views/record_dock.h
 	${SOURCE_PATH}/views/record_dock.cpp
+	${SOURCE_PATH}/views/camera_dock.h
+	${SOURCE_PATH}/views/camera_dock.cpp
 	${SOURCE_PATH}/views/material_dock.h
 	${SOURCE_PATH}/views/material_dock.cpp
 	${SOURCE_PATH}/views/light_window.h

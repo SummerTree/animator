@@ -7,7 +7,7 @@ namespace flower
 {
 	MainDock::MainDock(SplashScreen* splash) noexcept
 		: init_flag(false)
-		, profile_(flower::FlowerProfile::load("./config/config.conf"))
+		, profile_(FlowerProfile::load("./config/config.conf"))
 		, gameApp_(std::make_shared<octoon::GameApp>())
 		, behaviour_(octoon::GameObject::create())
 		, splash_(splash)
@@ -39,6 +39,7 @@ namespace flower
 		recordDock_ = std::make_unique<RecordDock>(behaviour_, profile_);
 		mainLightDock_ = std::make_unique<MainLightDock>(behaviour_, profile_);
 		environmentDock_ = std::make_unique<EnvironmentDock>(behaviour_, profile_);
+		cameraDock_ = std::make_unique<CameraDock>(behaviour_, profile_);
 		materialDock_ = std::make_unique<MaterialDock>(behaviour_);
 		statusBar_ = std::make_unique<StatusBar>(behaviour_, profile_);
 
@@ -52,6 +53,7 @@ namespace flower
 		this->splitDockWidget(mainLightDock_.get(), materialDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), recordDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), environmentDock_.get(), Qt::Orientation::Vertical);
+		this->splitDockWidget(mainLightDock_.get(), cameraDock_.get(), Qt::Orientation::Vertical);
 
 		this->setCentralWidget(viewDock_.get());
 		this->setStatusBar(statusBar_.get());
@@ -59,6 +61,7 @@ namespace flower
 		environmentDock_->hide();
 		materialDock_->hide();
 		recordDock_->hide();
+		cameraDock_->hide();
 
 		this->connect(&timer, SIGNAL(timeout()), this, SLOT(updateEvent()));
 
@@ -69,6 +72,7 @@ namespace flower
 		connect(thumbnailDock_.get(), &ThumbnailDock::recordSignal, this, &MainDock::onRecordSignal);
 		connect(thumbnailDock_.get(), &ThumbnailDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
 		connect(thumbnailDock_.get(), &ThumbnailDock::materialSignal, this, &MainDock::onMaterialSignal);
+		connect(thumbnailDock_.get(), &ThumbnailDock::cameraSignal, this, &MainDock::onCameraSignal);
 	}
 
 	MainDock::~MainDock() noexcept
@@ -207,7 +211,7 @@ namespace flower
 	{
 		try
 		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
 				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)
@@ -256,7 +260,7 @@ namespace flower
 		{
 			if (!profile_->playerModule->playing_ && !profile_->recordModule->active)
 			{
-				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 				if (behaviour)
 				{
 					if (recordDock_->isHidden())
@@ -293,7 +297,7 @@ namespace flower
 	{
 		try
 		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
 				if (profile_->entitiesModule->enviromentLight && !profile_->playerModule->playing_)
@@ -337,23 +341,59 @@ namespace flower
 	{
 		try
 		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
 				if (!profile_->playerModule->playing_)
 				{
 					if (materialDock_->isHidden())
 					{
-						//this->hideSliderWindow();
-						//this->setFixedWidth(this->width() + materialWindow_->minimumWidth());
 						materialDock_->show();
 						materialDock_->raise();
 					}
 					else
 					{
 						materialDock_->close();
-						//this->setFixedWidth(this->width() - materialWindow_->width());
 					}
+				}
+			}
+			else
+			{
+				QMessageBox msg(this);
+				msg.setWindowTitle(tr("Warning"));
+				msg.setText(tr("Fail to get core component."));
+				msg.setIcon(QMessageBox::Information);
+				msg.setStandardButtons(QMessageBox::Ok);
+
+				msg.exec();
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(e.what());
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
+		}
+	}
+
+	void
+	MainDock::onCameraSignal() noexcept
+	{
+		try
+		{
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			if (behaviour)
+			{
+				if (!profile_->playerModule->playing_)
+				{
+					if (cameraDock_->isHidden())
+						cameraDock_->show();
+					else
+						cameraDock_->close();
 				}
 			}
 			else
@@ -389,7 +429,7 @@ namespace flower
 			gameApp_->setActive(true);
 			listener_->splash_ = nullptr;
 
-			auto behaviour = behaviour_->addComponent<flower::FlowerBehaviour>(profile_);
+			auto behaviour = behaviour_->addComponent<FlowerBehaviour>(profile_);
 		}
 		catch (const std::exception& e)
 		{

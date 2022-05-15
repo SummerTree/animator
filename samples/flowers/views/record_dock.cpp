@@ -40,45 +40,6 @@ namespace flower
 		}
 	};
 
-	FocalTargetWindow::FocalTargetWindow() noexcept
-	{
-	}
-
-	FocalTargetWindow::~FocalTargetWindow() noexcept
-	{
-	}
-
-	void
-	FocalTargetWindow::mouseMoveEvent(QMouseEvent *event)
-	{
-		if (event->buttons() & Qt::LeftButton)
-		{
-			QPoint length = event->pos() - startPos;
-			if (length.manhattanLength() > QApplication::startDragDistance())
-			{
-				auto mimeData = new QMimeData;
-				mimeData->setData("object/dof", "Automatic");
-
-				auto drag = new QDrag(this);
-				drag->setMimeData(mimeData);
-				drag->setPixmap(QPixmap(":res/icons/target.png"));
-				drag->setHotSpot(QPoint(drag->pixmap().width() / 2, drag->pixmap().height() / 2));
-				drag->exec(Qt::MoveAction);
-			}
-		}
-
-		QToolButton::mouseMoveEvent(event);
-	}
-
-	void
-	FocalTargetWindow::mousePressEvent(QMouseEvent *event)
-	{
-		if (event->button() == Qt::LeftButton)
-			startPos = event->pos();
-
-		QToolButton::mousePressEvent(event);
-	}
-
 	RecordDock::RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
 		: behaviour_(behaviour)
 		, timer_(new QTimer(this))
@@ -218,46 +179,6 @@ namespace flower
 		recordButton_->setText(u8"开始渲染");
 		recordButton_->setContentsMargins(0, 0, 0, 0);
 
-		dofInfoLabel_ = new QLabel();
-		dofInfoLabel_->setText(u8"* 以下参数设置需开启渲染");
-		dofInfoLabel_->setStyleSheet("color: rgb(100,100,100);");
-
-		apertureLabel_ = new QLabel();
-		apertureLabel_->setText(u8"光圈:");
-		apertureLabel_->setStyleSheet("color: rgb(200,200,200);");
-
-		apertureSpinbox_ = new DoubleSpinBox();
-		apertureSpinbox_->setMinimum(0);
-		apertureSpinbox_->setMaximum(64.0);
-		apertureSpinbox_->setValue(0);
-		apertureSpinbox_->setSingleStep(0.1f);
-		apertureSpinbox_->setAlignment(Qt::AlignRight);
-		apertureSpinbox_->setFixedWidth(100);
-		apertureSpinbox_->setPrefix(u8"f/");
-		apertureSpinbox_->setDecimals(1);
-
-		focalDistanceLabel_ = new QLabel();
-		focalDistanceLabel_->setText(u8"焦距:");
-		focalDistanceLabel_->setStyleSheet("color: rgb(200,200,200);");
-
-		focalDistanceName_ = new QLabel();
-		focalDistanceName_->setText(u8"目标：无");
-		focalDistanceName_->setStyleSheet("color: rgb(200,200,200);");
-
-		focalTargetButton_ = new FocalTargetWindow();
-		focalTargetButton_->setIcon(QIcon(":res/icons/target.png"));
-		focalTargetButton_->setIconSize(QSize(48, 48));
-		focalTargetButton_->setToolTip(u8"通过拖拽该图标到目标模型可绑定模型并开启自动测距");
-
-		focalDistanceSpinbox_ = new DoubleSpinBox();
-		focalDistanceSpinbox_->setMinimum(0);
-		focalDistanceSpinbox_->setMaximum(std::numeric_limits<float>::infinity());
-		focalDistanceSpinbox_->setValue(0);
-		focalDistanceSpinbox_->setSingleStep(0.1f);
-		focalDistanceSpinbox_->setAlignment(Qt::AlignRight);
-		focalDistanceSpinbox_->setFixedWidth(100);
-		focalDistanceSpinbox_->setSuffix(u8"m");
-
 		videoRatioLayout_ = new QHBoxLayout();
 		videoRatioLayout_->addStretch();
 		videoRatioLayout_->addWidget(speed1_, 0, Qt::AlignRight);
@@ -301,34 +222,8 @@ namespace flower
 		infoLayout->addWidget(currentFrame_);
 		infoLayout->addWidget(timeTotal_);
 
-		auto apertureLayout = new QHBoxLayout;
-		apertureLayout->addWidget(apertureLabel_);
-		apertureLayout->addWidget(apertureSpinbox_);
-
-		auto focalNameLayout = new QVBoxLayout;
-		focalNameLayout->addWidget(focalDistanceName_, 0, Qt::AlignLeft);
-		focalNameLayout->addStretch();
-		focalNameLayout->setSpacing(0);
-		focalNameLayout->setContentsMargins(0, 2, 0, 0);
-
-		auto focalDistanceLayout = new QHBoxLayout;
-		focalDistanceLayout->addWidget(focalTargetButton_, 0, Qt::AlignLeft);
-		focalDistanceLayout->addLayout(focalNameLayout);
-		focalDistanceLayout->addStretch();
-		focalDistanceLayout->addWidget(focalDistanceSpinbox_, 0, Qt::AlignRight | Qt::AlignBottom);
-
-		auto cameraLayout = new QVBoxLayout;
-		cameraLayout->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
-		cameraLayout->addLayout(apertureLayout);
-		cameraLayout->addWidget(focalDistanceLabel_);
-		cameraLayout->addLayout(focalDistanceLayout);
-
 		markSpoiler_ = new Spoiler(u8"水印");
 		markSpoiler_->setContentLayout(*markLayout);
-
-		cameraSpoiler_ = new Spoiler(u8"相机设置");
-		cameraSpoiler_->setContentLayout(*cameraLayout);
-		cameraSpoiler_->toggleButton.click();
 
 		videoSpoiler_ = new Spoiler(u8"渲染设置");
 		videoSpoiler_->setContentLayout(*videoLayout);
@@ -338,7 +233,6 @@ namespace flower
 		infoSpoiler_->setContentLayout(*infoLayout);
 
 		auto contentLayout = new QVBoxLayout();
-		contentLayout->addWidget(cameraSpoiler_);
 		contentLayout->addWidget(videoSpoiler_);
 		contentLayout->addWidget(markSpoiler_);
 		contentLayout->addWidget(infoSpoiler_);
@@ -362,7 +256,7 @@ namespace flower
 		mainWidget_->setLayout(mainLayout_);
 
 		this->setWidget(mainWidget_);
-
+		
 		connect(recordButton_, SIGNAL(clicked()), this, SLOT(clickEvent()));
 		connect(select1_, SIGNAL(toggled(bool)), this, SLOT(select1Event(bool)));
 		connect(select2_, SIGNAL(toggled(bool)), this, SLOT(select2Event(bool)));
@@ -375,8 +269,6 @@ namespace flower
 		connect(sppSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onSppChanged(int)));
 		connect(bouncesSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onBouncesChanged(int)));
 		connect(crfSpinbox, SIGNAL(valueChanged(double)), this, SLOT(onCrfChanged(double)));
-		connect(apertureSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onApertureChanged(double)));
-		connect(focalDistanceSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFocalDistanceChanged(double)));
 		connect(timer_, SIGNAL(timeout()), this, SLOT(timeEvent()));
 	}
 
@@ -387,7 +279,7 @@ namespace flower
 	void
 	RecordDock::startRecord(QString fileName)
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
 			if (behaviour->startRecord(fileName.toUtf8().data()))
@@ -413,7 +305,7 @@ namespace flower
 	void
 	RecordDock::stopRecord()
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
 			timer_->stop();
@@ -425,37 +317,9 @@ namespace flower
 	}
 
 	void
-	RecordDock::updateTarget()
-	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
-		if (behaviour)
-		{
-			auto hit = behaviour->getProfile()->dragModule->selectedItemHover_;
-			if (hit)
-			{
-				behaviour->getProfile()->playerModule->dofTarget = hit;
-
-				auto object = hit->object.lock();
-				auto renderer = object->getComponent<octoon::MeshRendererComponent>();
-				auto& materials = renderer->getMaterials();
-
-				focalDistanceName_->setText(QString::fromStdString(u8"目标：" + materials[hit->mesh]->getName()));
-				focalDistanceSpinbox_->setValue(0);
-				focalDistanceSpinbox_->setSpecialValueText(u8"自动测距");
-			}
-			else
-			{
-				focalDistanceName_->setText(QString::fromStdString(u8"目标：无"));
-				focalDistanceSpinbox_->setValue(10);
-				focalDistanceSpinbox_->setSpecialValueText(QString());
-			}
-		}
-	}
-
-	void
 	RecordDock::onSppChanged(int value)
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 			behaviour->getProfile()->playerModule->spp = value;
 	}
@@ -463,44 +327,17 @@ namespace flower
 	void
 	RecordDock::onBouncesChanged(int value)
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
-			behaviour->getComponent<flower::OfflineComponent>()->setMaxBounces(value);
+			behaviour->getComponent<OfflineComponent>()->setMaxBounces(value);
 	}
 
 	void
 	RecordDock::onCrfChanged(double value)
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 			behaviour->getProfile()->h265Module->crf = value;
-	}
-
-	void
-	RecordDock::onApertureChanged(double value)
-	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
-		if (behaviour)
-			behaviour->getProfile()->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setAperture(value);
-	}
-
-	void
-	RecordDock::onFocalDistanceChanged(double value)
-	{
-		if (!focalDistanceSpinbox_->specialValueText().isEmpty())
-		{
-			focalDistanceSpinbox_->setSpecialValueText(QString());
-
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
-			if (behaviour)
-				focalDistanceSpinbox_->setValue(behaviour->getProfile()->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
-		}
-		else
-		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
-			if (behaviour)
-				behaviour->getProfile()->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setFocalDistance(value);
-		}
 	}
 
 	void
@@ -512,11 +349,16 @@ namespace flower
 	void
 	RecordDock::resizeEvent(QResizeEvent* e) noexcept
 	{
-		contentWidgetArea_->resize(contentWidgetArea_->width(),
-			mainWidget_->size().height() -
-			this->recordButton_->height() - 
-			mainLayout_->contentsMargins().bottom() * 2 -
-			mainLayout_->contentsMargins().top() * 2);
+	}
+
+	void
+	RecordDock::paintEvent(QPaintEvent* e) noexcept
+	{
+		int left, top, bottom, right;
+		mainLayout_->getContentsMargins(&left, &top, &right, &bottom);
+		contentWidgetArea_->resize(contentWidgetArea_->size().width(), mainWidget_->size().height() - recordButton_->height() - (top + bottom) * 2);
+
+		QDockWidget::paintEvent(e);
 	}
 
 	void
@@ -528,7 +370,7 @@ namespace flower
 		if (select2_->isChecked())
 			quality = VideoQuality::Medium;
 
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
 			behaviour->getProfile()->h265Module->setVideoQuality(quality);
@@ -563,7 +405,7 @@ namespace flower
 	{
 		if (checked)
 		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 				behaviour->getProfile()->playerModule->recordFps = 24;
 
@@ -576,7 +418,7 @@ namespace flower
 	{
 		if (checked)
 		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 				behaviour->getProfile()->playerModule->recordFps = 25;
 
@@ -589,7 +431,7 @@ namespace flower
 	{
 		if (checked)
 		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 				behaviour->getProfile()->playerModule->recordFps = 30;
 
@@ -602,7 +444,7 @@ namespace flower
 	{
 		if (checked)
 		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 				behaviour->getProfile()->playerModule->recordFps = 60;
 
@@ -613,7 +455,7 @@ namespace flower
 	void
 	RecordDock::startEvent(int value)
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
 			behaviour->getProfile()->playerModule->startFrame = value;
@@ -624,7 +466,7 @@ namespace flower
 	void
 	RecordDock::endEvent(int value)
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
 			behaviour->getProfile()->playerModule->endFrame = value;
@@ -635,7 +477,7 @@ namespace flower
 	void
 	RecordDock::timeEvent()
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
 			auto playerComponent = behaviour->getComponent<PlayerComponent>();
@@ -650,7 +492,7 @@ namespace flower
 	void
 	RecordDock::update()
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
 			auto playerComponent = dynamic_cast<PlayerComponent*>(behaviour->getComponent<PlayerComponent>());
@@ -680,7 +522,7 @@ namespace flower
 	void 
 	RecordDock::repaint()
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
 			auto playerComponent = behaviour->getComponent<PlayerComponent>();
@@ -701,11 +543,7 @@ namespace flower
 
 			sppSpinbox_->setValue(profile->playerModule->spp);
 			crfSpinbox->setValue(profile->h265Module->crf);
-			bouncesSpinbox_->setValue(behaviour->getComponent<flower::OfflineComponent>()->getMaxBounces());
-			apertureSpinbox_->setValue(profile->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getAperture());
-
-			if (!behaviour->getProfile()->playerModule->dofTarget)
-				focalDistanceSpinbox_->setValue(profile->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
+			bouncesSpinbox_->setValue(behaviour->getComponent<OfflineComponent>()->getMaxBounces());
 
 			this->update();
 		}
