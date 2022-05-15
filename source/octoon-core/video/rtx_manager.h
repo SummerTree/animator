@@ -34,6 +34,16 @@ namespace octoon
 
 	class RtxManager
 	{
+		struct Config
+		{
+			DeviceType type;
+			std::unique_ptr<octoon::Pipeline> pipeline;
+			std::unique_ptr<octoon::SceneController> controller;
+			std::unique_ptr<octoon::RenderFactory> factory;
+			CLWContext context;
+			bool caninterop;
+		};
+
 	public:
 		RtxManager() noexcept(false);
 
@@ -56,19 +66,9 @@ namespace octoon
 
 	private:
 		void prepareScene(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene) noexcept;
-		void generateWorkspace(const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t width, std::uint32_t height);
+		void generateWorkspace(Config& config, const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t width, std::uint32_t height);
 
 	private:
-		struct Config
-		{
-			DeviceType type;
-			std::unique_ptr<octoon::Pipeline> pipeline;
-			std::unique_ptr<octoon::SceneController> controller;
-			std::unique_ptr<octoon::RenderFactory> factory;
-			CLWContext context;
-			bool caninterop;
-		};
-
 		RenderScene* scene_;
 
 		bool dirty_;

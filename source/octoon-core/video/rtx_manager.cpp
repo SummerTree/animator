@@ -276,7 +276,7 @@ namespace octoon
 	}
 
 	void
-	RtxManager::generateWorkspace(const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t width, std::uint32_t height)
+	RtxManager::generateWorkspace(Config& config, const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t width, std::uint32_t height)
 	{
 		if (width_ != width || height_ != height)
 		{
@@ -329,10 +329,9 @@ namespace octoon
 				throw std::runtime_error("ContextObject: invalid config count.");
 			}
 
-			auto& c = configs_[0];
-			this->colorImage_ = c.factory->createTextureOutput(static_cast<std::uint32_t>(colorTexture_->handle()), this->width_, this->height_);
-			this->normalImage_ = c.factory->createTextureOutput(static_cast<std::uint32_t>(normalTexture_->handle()), this->width_, this->height_);
-			this->albedoImage_ = c.factory->createTextureOutput(static_cast<std::uint32_t>(albedoTexture_->handle()), this->width_, this->height_);
+			this->colorImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(colorTexture_->handle()), this->width_, this->height_);
+			this->normalImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(normalTexture_->handle()), this->width_, this->height_);
+			this->albedoImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(albedoTexture_->handle()), this->width_, this->height_);
 
 			this->setOutput(OutputType::kColor, this->colorImage_.get());
 			this->setOutput(OutputType::kWorldShadingNormal, this->normalImage_.get());
@@ -355,22 +354,22 @@ namespace octoon
 	{
 		this->prepareScene(context, scene);
 
-		for (auto& c : configs_)
+		for (auto& config : configs_)
 		{
 			auto mainCamera = scene->getMainCamera();
 			auto viewport = mainCamera->getPixelViewport();
-			this->generateWorkspace(context, (std::uint32_t)viewport.width, (std::uint32_t)viewport.height);
+			this->generateWorkspace(config, context, (std::uint32_t)viewport.width, (std::uint32_t)viewport.height);
 
-			CompiledScene& compiledScene = c.controller->getCachedScene(scene);
+			CompiledScene& compiledScene = config.controller->getCachedScene(scene);
 
 			auto& clwscene = dynamic_cast<ClwScene&>(compiledScene);
 			if (clwscene.dirty || this->dirty_)
 			{
-				c.pipeline->clear(math::float4::Zero);
+				config.pipeline->clear(math::float4::Zero);
 				this->dirty_ = clwscene.dirty = false;
 			}
 
-			c.pipeline->render(context, compiledScene);
+			config.pipeline->render(context, compiledScene);
 		}
 
 		math::float4 viewport(0, 0, static_cast<float>(this->width_), static_cast<float>(this->height_));
