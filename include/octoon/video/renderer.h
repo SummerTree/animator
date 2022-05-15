@@ -65,7 +65,8 @@ namespace octoon
 		bool enableGlobalIllumination_;
 
 		std::uint32_t numBounces_;
-		std::uint32_t width_, height_;
+		std::uint32_t width_;
+		std::uint32_t height_;
 
 		std::shared_ptr<ScriptableRenderContext> context_;
 

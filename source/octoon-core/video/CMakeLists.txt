@@ -6,16 +6,6 @@ SET(SOURCE_PATH ${OCTOON_PATH_SOURCE}/octoon-core/${LIB_OUTNAME})
 SET(VIDEO_GRAPHICS_LIST
 	${HEADER_PATH}/renderer.h
 	${SOURCE_PATH}/renderer.cpp
-	${HEADER_PATH}/rendering_data.h
-	${SOURCE_PATH}/rendering_data.cpp
-	${HEADER_PATH}/scriptable_render_buffer.h
-	${SOURCE_PATH}/scriptable_render_buffer.cpp
-	${HEADER_PATH}/scriptable_render_material.h
-	${SOURCE_PATH}/scriptable_render_material.cpp
-	${HEADER_PATH}/scriptable_render_context.h
-	${SOURCE_PATH}/scriptable_render_context.cpp
-	${HEADER_PATH}/scriptable_render_pass.h
-	${SOURCE_PATH}/scriptable_render_pass.cpp
 	${HEADER_PATH}/render_scene.h
 	${SOURCE_PATH}/render_scene.cpp
 	${HEADER_PATH}/render_object.h
@@ -32,18 +22,24 @@ SOURCE_GROUP(renderer\\utils FILES ${VIDEO_UTILS_LIST})
 SET(VIDEO_FORWARE_LIST
 	${HEADER_PATH}/forward_renderer.h
 	${SOURCE_PATH}/forward_renderer.cpp
-)
-SOURCE_GROUP(renderer\\forward FILES ${VIDEO_FORWARE_LIST})
-
-SET(VIDEO_PASS_LIST
 	${HEADER_PATH}/draw_object_pass.h
 	${SOURCE_PATH}/draw_object_pass.cpp
 	${HEADER_PATH}/draw_skybox_pass.h
 	${SOURCE_PATH}/draw_skybox_pass.cpp
 	${HEADER_PATH}/lights_shadow_caster_pass.h
 	${SOURCE_PATH}/lights_shadow_caster_pass.cpp
+	${HEADER_PATH}/rendering_data.h
+	${SOURCE_PATH}/rendering_data.cpp
+	${HEADER_PATH}/scriptable_render_buffer.h
+	${SOURCE_PATH}/scriptable_render_buffer.cpp
+	${HEADER_PATH}/scriptable_render_material.h
+	${SOURCE_PATH}/scriptable_render_material.cpp
+	${HEADER_PATH}/scriptable_render_context.h
+	${SOURCE_PATH}/scriptable_render_context.cpp
+	${HEADER_PATH}/scriptable_render_pass.h
+	${SOURCE_PATH}/scriptable_render_pass.cpp
 )
-SOURCE_GROUP(renderer\\pass FILES ${VIDEO_PASS_LIST})
+SOURCE_GROUP(renderer\\forward FILES ${VIDEO_FORWARE_LIST})
 
 SET(VIDEO_OPENCL_LIST
 	${SOURCE_PATH}/output.h
