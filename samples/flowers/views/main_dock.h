@@ -18,6 +18,7 @@
 #include "views/view_dock.h"
 #include "views/tool_dock.h"
 #include "views/thumbnail_dock.h"
+#include "views/light_dock.h"
 #include "views/main_light_dock.h"
 #include "views/environment_dock.h"
 #include "views/material_dock.h"
@@ -74,6 +75,7 @@ namespace flower
 		std::unique_ptr<ToolDock> toolDock_;
 		std::unique_ptr<ThumbnailDock> thumbnailDock_;
 		std::unique_ptr<RecordDock> recordDock_;
+		std::unique_ptr<LightDock> lightDock_;
 		std::unique_ptr<MainLightDock> mainLightDock_;
 		std::unique_ptr<EnvironmentDock> environmentDock_;
 		std::unique_ptr<MaterialDock> materialDock_;

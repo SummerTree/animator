@@ -9,42 +9,42 @@
         <translation>花楹渲染器(内测版本)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="190"/>
-        <location filename="../views/main_dock.cpp" line="237"/>
-        <location filename="../views/main_dock.cpp" line="275"/>
-        <location filename="../views/main_dock.cpp" line="320"/>
-        <location filename="../views/main_dock.cpp" line="364"/>
-        <location filename="../views/main_dock.cpp" line="403"/>
+        <location filename="../views/main_dock.cpp" line="186"/>
+        <location filename="../views/main_dock.cpp" line="230"/>
+        <location filename="../views/main_dock.cpp" line="268"/>
+        <location filename="../views/main_dock.cpp" line="313"/>
+        <location filename="../views/main_dock.cpp" line="357"/>
+        <location filename="../views/main_dock.cpp" line="396"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="191"/>
-        <location filename="../views/main_dock.cpp" line="276"/>
+        <location filename="../views/main_dock.cpp" line="187"/>
+        <location filename="../views/main_dock.cpp" line="269"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="238"/>
-        <location filename="../views/main_dock.cpp" line="321"/>
-        <location filename="../views/main_dock.cpp" line="365"/>
-        <location filename="../views/main_dock.cpp" line="404"/>
+        <location filename="../views/main_dock.cpp" line="231"/>
+        <location filename="../views/main_dock.cpp" line="314"/>
+        <location filename="../views/main_dock.cpp" line="358"/>
+        <location filename="../views/main_dock.cpp" line="397"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="201"/>
-        <location filename="../views/main_dock.cpp" line="248"/>
-        <location filename="../views/main_dock.cpp" line="287"/>
-        <location filename="../views/main_dock.cpp" line="331"/>
-        <location filename="../views/main_dock.cpp" line="375"/>
-        <location filename="../views/main_dock.cpp" line="414"/>
-        <location filename="../views/main_dock.cpp" line="438"/>
+        <location filename="../views/main_dock.cpp" line="197"/>
+        <location filename="../views/main_dock.cpp" line="241"/>
+        <location filename="../views/main_dock.cpp" line="280"/>
+        <location filename="../views/main_dock.cpp" line="324"/>
+        <location filename="../views/main_dock.cpp" line="368"/>
+        <location filename="../views/main_dock.cpp" line="407"/>
+        <location filename="../views/main_dock.cpp" line="431"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="439"/>
+        <location filename="../views/main_dock.cpp" line="432"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation></translation>
     </message>
@@ -277,31 +277,49 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::LightWindow</name>
+    <name>flower::LightDock</name>
     <message>
-        <location filename="../views/light_window.cpp" line="75"/>
-        <source>Source</source>
+        <location filename="../views/light_dock.cpp" line="70"/>
+        <source>Light</source>
         <translation>光源</translation>
     </message>
     <message>
-        <location filename="../views/light_window.cpp" line="79"/>
-        <source>Close</source>
-        <translation>关闭</translation>
-    </message>
-    <message>
-        <location filename="../views/light_window.cpp" line="91"/>
+        <location filename="../views/light_dock.cpp" line="75"/>
         <source>Point Light</source>
         <translation>点光源</translation>
     </message>
     <message>
-        <location filename="../views/light_window.cpp" line="92"/>
+        <location filename="../views/light_dock.cpp" line="76"/>
         <source>Spot Light</source>
         <translation>聚光灯</translation>
     </message>
     <message>
-        <location filename="../views/light_window.cpp" line="93"/>
+        <location filename="../views/light_dock.cpp" line="77"/>
         <source>Directional Light</source>
         <translation>平行光</translation>
+    </message>
+</context>
+<context>
+    <name>flower::LightWindow</name>
+    <message>
+        <source>Source</source>
+        <translation type="vanished">光源</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="vanished">关闭</translation>
+    </message>
+    <message>
+        <source>Point Light</source>
+        <translation type="vanished">点光源</translation>
+    </message>
+    <message>
+        <source>Spot Light</source>
+        <translation type="vanished">聚光灯</translation>
+    </message>
+    <message>
+        <source>Directional Light</source>
+        <translation type="vanished">平行光</translation>
     </message>
 </context>
 <context>

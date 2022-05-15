@@ -1,4 +1,4 @@
-﻿#include "light_window.h"
+﻿#include "light_dock.h"
 #include <qscrollbar.h>
 #include <qdrag.h>
 #include <qmimedata.h>
@@ -64,26 +64,10 @@ namespace flower
 		QListWidget::mousePressEvent(event);
 	}
 
-	LightWindow::LightWindow(const std::shared_ptr<flower::FlowerProfile>& profile)
+	LightDock::LightDock(const std::shared_ptr<flower::FlowerProfile>& profile)
 	{
-		this->setObjectName("LightWindow");
-		this->setMinimumWidth(340);
-		this->grabKeyboard();
-		this->hide();
-
-		title_ = new QLabel();
-		title_->setText(tr("Source"));
-
-		closeButton_ = new QToolButton();
-		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(tr("Close"));
-
-		titleLayout_ = new QHBoxLayout();
-		titleLayout_->addStretch();
-		titleLayout_->addWidget(title_, 0, Qt::AlignCenter);
-		titleLayout_->addStretch();
-		titleLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
-		titleLayout_->setContentsMargins(10, 0, 10, 0);
+		this->setObjectName("LightDock");
+		this->setWindowTitle(tr("Light"));
 
 		listWidget_ = new LightListWindow;
 
@@ -116,41 +100,36 @@ namespace flower
 			listWidget_->setItemWidget(item, widget);
 		}
 
-		mainLayout_ = new QVBoxLayout(this);
-		mainLayout_->addLayout(titleLayout_);
+		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addWidget(listWidget_);
 		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(0, 10, 0, 5);
 
-		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeEvent()));
+		mainWidget_ = new QWidget;
+		mainWidget_->setLayout(mainLayout_);
+
+		this->setWidget(mainWidget_);
 	}
 
-	LightWindow::~LightWindow()
+	LightDock::~LightDock()
 	{
 	}
 
 	void
-	LightWindow::repaint()
+	LightDock::repaint()
 	{
 	}
 
 	void
-	LightWindow::showEvent(QShowEvent* event)
+	LightDock::showEvent(QShowEvent* event)
 	{
 		this->repaint();
 	}
 
 	void
-	LightWindow::resizeEvent(QResizeEvent* event)
+	LightDock::resizeEvent(QResizeEvent* event)
 	{
 		QMargins margins = mainLayout_->contentsMargins();
-		listWidget_->setMinimumHeight(this->height() - title_->height() * 2 - margins.top() - margins.bottom());
-	}
-
-	void
-	LightWindow::closeEvent()
-	{
-		this->close();
-		parentWidget()->setFixedWidth(parentWidget()->width() - this->width());
+		listWidget_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom());
 	}
 }

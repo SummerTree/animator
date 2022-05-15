@@ -346,7 +346,7 @@ QWidget#ThumbnailDock QToolButton#material{
 QWidget#ThumbnailDock QToolButton#camera{
 	qproperty-icon: url(":res/icons/camera.png");
 }
-QWidget#MainLightDock, QWidget#EnvironmentDock, QWidget#MaterialDock, QWidget#RecordDock, QWidget#CameraDock
+QWidget#MainLightDock, QWidget#EnvironmentDock, QWidget#MaterialDock, QWidget#RecordDock, QWidget#CameraDock, QWidget#LightDock
 {
 	color: rgb(200, 200, 200);
 	min-width:340;

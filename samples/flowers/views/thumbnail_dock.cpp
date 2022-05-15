@@ -82,6 +82,9 @@ namespace flower
 
 		this->setWidget(mainWidget);
 
+		lightButton_->hide();
+		cameraButton_->hide();
+
 		this->connect(recordButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
 		this->connect(lightButton_, SIGNAL(clicked()), this, SLOT(lightEvent()));
 		this->connect(sunButton_, SIGNAL(clicked()), this, SLOT(sunEvent()));

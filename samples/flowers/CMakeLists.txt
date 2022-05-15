@@ -77,8 +77,8 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/camera_dock.cpp
 	${SOURCE_PATH}/views/material_dock.h
 	${SOURCE_PATH}/views/material_dock.cpp
-	${SOURCE_PATH}/views/light_window.h
-	${SOURCE_PATH}/views/light_window.cpp
+	${SOURCE_PATH}/views/light_dock.h
+	${SOURCE_PATH}/views/light_dock.cpp
 	${SOURCE_PATH}/views/color_dialog.h
 	${SOURCE_PATH}/views/color_dialog.cpp
 	${SOURCE_PATH}/views/thumbnail_dock.h

@@ -37,6 +37,7 @@ namespace flower
 		thumbnailDock_ = std::make_unique<ThumbnailDock>(gameApp_, behaviour_, profile_);
 		viewDock_ = std::make_unique<ViewDock>(gameApp_, behaviour_, profile_);
 		recordDock_ = std::make_unique<RecordDock>(behaviour_, profile_);
+		lightDock_ = std::make_unique<LightDock>(profile_);
 		mainLightDock_ = std::make_unique<MainLightDock>(behaviour_, profile_);
 		environmentDock_ = std::make_unique<EnvironmentDock>(behaviour_, profile_);
 		cameraDock_ = std::make_unique<CameraDock>(behaviour_, profile_);
@@ -50,6 +51,7 @@ namespace flower
 		this->addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, thumbnailDock_.get());
 
 		this->splitDockWidget(thumbnailDock_.get(), mainLightDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(mainLightDock_.get(), lightDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), materialDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), recordDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), environmentDock_.get(), Qt::Orientation::Vertical);
@@ -58,6 +60,7 @@ namespace flower
 		this->setCentralWidget(viewDock_.get());
 		this->setStatusBar(statusBar_.get());
 
+		lightDock_->hide();
 		mainLightDock_->hide();
 		environmentDock_->show();
 		materialDock_->hide();
@@ -162,99 +165,6 @@ namespace flower
 	}
 
 	void
-	MainDock::onLightSignal() noexcept
-	{
-		try
-		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-			if (behaviour)
-			{
-				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)
-				{
-					/*if (lightWindow_->isHidden())
-					{
-						this->hideSliderWindow();
-						this->setFixedWidth(this->width() + lightWindow_->minimumWidth());
-						lightWindow_->show();
-					}
-					else
-					{
-						lightWindow_->close();
-						this->setFixedWidth(this->width() - lightWindow_->width());
-					}*/
-				}
-			}
-			else
-			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Warning"));
-				msg.setText(tr("Please load a project with pmm extension."));
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
-			}
-		}
-		catch (const std::exception& e)
-		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
-		}
-	}
-
-	void
-	MainDock::onSunSignal() noexcept
-	{
-		try
-		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-			if (behaviour)
-			{
-				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)
-				{
-					if (mainLightDock_->isHidden())
-					{
-						//this->hideSliderWindow();
-						//this->setFixedWidth(this->width() + mainLightDock_->minimumWidth());
-						mainLightDock_->show();
-						mainLightDock_->raise();
-					}
-					else
-					{
-						mainLightDock_->close();
-						//this->setFixedWidth(this->width() - mainLightDock_->width());
-					}
-				}
-			}
-			else
-			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Warning"));
-				msg.setText(tr("Fail to get core component."));
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
-			}
-		}
-		catch (const std::exception& e)
-		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
-		}
-	}
-
-	void
 	MainDock::onRecordSignal() noexcept
 	{
 		try
@@ -294,6 +204,84 @@ namespace flower
 	}
 
 	void
+	MainDock::onLightSignal() noexcept
+	{
+		try
+		{
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			if (behaviour)
+			{
+				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)
+				{
+					if (lightDock_->isHidden())
+						lightDock_->show();
+					else
+						lightDock_->close();
+				}
+			}
+			else
+			{
+				QMessageBox msg(this);
+				msg.setWindowTitle(tr("Warning"));
+				msg.setText(tr("Please load a project with pmm extension."));
+				msg.setIcon(QMessageBox::Information);
+				msg.setStandardButtons(QMessageBox::Ok);
+
+				msg.exec();
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(e.what());
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
+		}
+	}
+
+	void
+	MainDock::onSunSignal() noexcept
+	{
+		try
+		{
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			if (behaviour)
+			{
+				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)
+				{
+					if (mainLightDock_->isHidden())
+						mainLightDock_->show();
+					else
+						mainLightDock_->close();
+				}
+			}
+			else
+			{
+				QMessageBox msg(this);
+				msg.setWindowTitle(tr("Warning"));
+				msg.setText(tr("Fail to get core component."));
+				msg.setIcon(QMessageBox::Information);
+				msg.setStandardButtons(QMessageBox::Ok);
+
+				msg.exec();
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(e.what());
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
+		}
+	}
+
+	void
 	MainDock::onEnvironmentSignal() noexcept
 	{
 		try
@@ -304,14 +292,9 @@ namespace flower
 				if (profile_->entitiesModule->enviromentLight && !profile_->playerModule->playing_)
 				{
 					if (environmentDock_->isHidden())
-					{
 						environmentDock_->show();
-						environmentDock_->raise();
-					}
 					else
-					{
 						environmentDock_->close();
-					}
 				}
 			}
 			else
@@ -348,14 +331,9 @@ namespace flower
 				if (!profile_->playerModule->playing_)
 				{
 					if (materialDock_->isHidden())
-					{
 						materialDock_->show();
-						materialDock_->raise();
-					}
 					else
-					{
 						materialDock_->close();
-					}
 				}
 			}
 			else
