@@ -47,9 +47,6 @@ namespace octoon
 	public:
 		RtxManager() noexcept(false);
 
-		void setRenderScene(RenderScene* scene) noexcept;
-		const RenderScene* getRenderScene() const noexcept;
-
 		void setOutput(OutputType type, Output* output);
 		Output* getOutput(OutputType type) const;
 
@@ -69,8 +66,6 @@ namespace octoon
 		void generateWorkspace(Config& config, const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t width, std::uint32_t height);
 
 	private:
-		RenderScene* scene_;
-
 		bool dirty_;
 
 		std::uint32_t width_;

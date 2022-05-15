@@ -152,18 +152,6 @@ namespace octoon
 	}
 
 	void
-	RtxManager::setRenderScene(RenderScene* scene) noexcept
-	{
-		this->scene_ = scene;
-	}
-
-	const RenderScene*
-	RtxManager::getRenderScene() const noexcept
-	{
-		return this->scene_;
-	}
-
-	void
 	RtxManager::setOutput(OutputType type, Output* output)
 	{
 		auto idx = static_cast<std::size_t>(type);
