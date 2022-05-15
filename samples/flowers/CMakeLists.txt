@@ -65,8 +65,8 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/main_light_dock.cpp
 	${SOURCE_PATH}/views/environment_dock.h
 	${SOURCE_PATH}/views/environment_dock.cpp
-	${SOURCE_PATH}/views/toplevel_dock.h
-	${SOURCE_PATH}/views/toplevel_dock.cpp
+	${SOURCE_PATH}/views/toplevel_bar.h
+	${SOURCE_PATH}/views/toplevel_bar.cpp
 	${SOURCE_PATH}/views/tool_dock.h
 	${SOURCE_PATH}/views/tool_dock.cpp
 	${SOURCE_PATH}/views/status_bar.h

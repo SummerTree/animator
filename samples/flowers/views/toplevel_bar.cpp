@@ -1,9 +1,9 @@
-#include "toplevel_dock.h"
+#include "toplevel_bar.h"
 #include <qmessagebox.h>
 
 namespace flower
 {
-	ToplevelDock::ToplevelDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
+	ToplevelBar::ToplevelBar(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
 		: behaviour_(behaviour)
 		, profile_(profile)
 		, playEnable_(false)
@@ -12,15 +12,9 @@ namespace flower
 		, volumeOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/volumeMiddle.png")))
 		, volumeOffIcon_(QIcon::fromTheme("res", QIcon(":res/icons/volumeCross.png")))
 	{
-		this->setObjectName("ToplevelDock");
+		this->setObjectName("ToplevelBar");
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-		this->setFeatures(DockWidgetFeature::NoDockWidgetFeatures);
-
-		QWidget* oldTitalbar = this->titleBarWidget();
-		QWidget* newTitalbar = new QWidget();
-		this->setTitleBarWidget(newTitalbar);
-		delete oldTitalbar;
-
+	
 		playButton.setObjectName("play");
 		playButton.setToolTip(tr("Play Animation"));
 		playButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -55,7 +49,7 @@ namespace flower
 		auto mainWidget = new QWidget;
 		mainWidget->setLayout(&layout_);
 
-		this->setWidget(mainWidget);
+		this->addWidget(mainWidget);
 
 		this->connect(&resetButton, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		this->connect(&playButton, SIGNAL(clicked()), this, SLOT(playEvent()));
@@ -64,12 +58,12 @@ namespace flower
 		this->connect(&volumeButton, SIGNAL(clicked()), this, SLOT(volumeEvent()));
 	}
 
-	ToplevelDock::~ToplevelDock() noexcept
+	ToplevelBar::~ToplevelBar() noexcept
 	{
 	}
 
 	void
-	ToplevelDock::playEvent() noexcept
+	ToplevelBar::playEvent() noexcept
 	{
 		auto playSignal = [this](bool enable) noexcept
 		{
@@ -136,7 +130,7 @@ namespace flower
 	}
 
 	void
-	ToplevelDock::resetEvent() noexcept
+	ToplevelBar::resetEvent() noexcept
 	{
 		auto resetSignal = [this]() -> bool
 		{
@@ -190,7 +184,7 @@ namespace flower
 	}
 
 	void
-	ToplevelDock::leftEvent() noexcept
+	ToplevelBar::leftEvent() noexcept
 	{
 		try
 		{
@@ -228,7 +222,7 @@ namespace flower
 	}
 
 	void 
-	ToplevelDock::rightEvent() noexcept
+	ToplevelBar::rightEvent() noexcept
 	{
 		try
 		{
@@ -266,7 +260,7 @@ namespace flower
 	}
 
 	void
-	ToplevelDock::volumeEvent() noexcept
+	ToplevelBar::volumeEvent() noexcept
 	{
 		if (!volumeEnable_)
 		{
@@ -293,7 +287,7 @@ namespace flower
 	}
 
 	void
-	ToplevelDock::paintEvent(QPaintEvent* e) noexcept
+	ToplevelBar::paintEvent(QPaintEvent* e) noexcept
 	{
 		if (profile_->playerModule->playing_)
 		{

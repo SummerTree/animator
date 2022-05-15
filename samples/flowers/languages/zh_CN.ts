@@ -9,39 +9,39 @@
         <translation>花楹渲染器(内测版本)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="169"/>
-        <location filename="../views/main_dock.cpp" line="216"/>
-        <location filename="../views/main_dock.cpp" line="261"/>
-        <location filename="../views/main_dock.cpp" line="309"/>
-        <location filename="../views/main_dock.cpp" line="356"/>
+        <location filename="../views/main_dock.cpp" line="171"/>
+        <location filename="../views/main_dock.cpp" line="218"/>
+        <location filename="../views/main_dock.cpp" line="263"/>
+        <location filename="../views/main_dock.cpp" line="311"/>
+        <location filename="../views/main_dock.cpp" line="358"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="170"/>
-        <location filename="../views/main_dock.cpp" line="262"/>
+        <location filename="../views/main_dock.cpp" line="172"/>
+        <location filename="../views/main_dock.cpp" line="264"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="217"/>
-        <location filename="../views/main_dock.cpp" line="310"/>
-        <location filename="../views/main_dock.cpp" line="357"/>
+        <location filename="../views/main_dock.cpp" line="219"/>
+        <location filename="../views/main_dock.cpp" line="312"/>
+        <location filename="../views/main_dock.cpp" line="359"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="180"/>
-        <location filename="../views/main_dock.cpp" line="227"/>
-        <location filename="../views/main_dock.cpp" line="273"/>
-        <location filename="../views/main_dock.cpp" line="320"/>
-        <location filename="../views/main_dock.cpp" line="367"/>
-        <location filename="../views/main_dock.cpp" line="391"/>
+        <location filename="../views/main_dock.cpp" line="182"/>
+        <location filename="../views/main_dock.cpp" line="229"/>
+        <location filename="../views/main_dock.cpp" line="275"/>
+        <location filename="../views/main_dock.cpp" line="322"/>
+        <location filename="../views/main_dock.cpp" line="369"/>
+        <location filename="../views/main_dock.cpp" line="393"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="392"/>
+        <location filename="../views/main_dock.cpp" line="394"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation></translation>
     </message>
@@ -655,7 +655,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/status_bar.cpp" line="33"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>动画帧数: %1 | 当前帧数: %2</translation>
     </message>
 </context>
 <context>
@@ -850,72 +850,119 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
+    <name>flower::ToplevelBar</name>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="19"/>
+        <source>Play Animation</source>
+        <translation type="unfinished">播放动画</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="23"/>
+        <source>Backward 1 second</source>
+        <translation type="unfinished">回退一秒</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="27"/>
+        <source>Forward 1 second</source>
+        <translation type="unfinished">快进一秒</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="31"/>
+        <source>Reset States</source>
+        <translation type="unfinished">重置</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="35"/>
+        <location filename="../views/toplevel_bar.cpp" line="272"/>
+        <source>Volume</source>
+        <translation type="unfinished">音量打开</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="87"/>
+        <location filename="../views/toplevel_bar.cpp" line="154"/>
+        <location filename="../views/toplevel_bar.cpp" line="203"/>
+        <location filename="../views/toplevel_bar.cpp" line="241"/>
+        <source>Warning</source>
+        <translation type="unfinished">警告</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="88"/>
+        <location filename="../views/toplevel_bar.cpp" line="155"/>
+        <location filename="../views/toplevel_bar.cpp" line="204"/>
+        <location filename="../views/toplevel_bar.cpp" line="242"/>
+        <source>Please load a project with pmm extension.</source>
+        <translation type="unfinished">请加载后缀为.pmm的文件.</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="102"/>
+        <location filename="../views/toplevel_bar.cpp" line="168"/>
+        <location filename="../views/toplevel_bar.cpp" line="215"/>
+        <location filename="../views/toplevel_bar.cpp" line="253"/>
+        <source>Error</source>
+        <translation type="unfinished">错误</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="117"/>
+        <source>Pause</source>
+        <translation type="unfinished">暂停</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="126"/>
+        <location filename="../views/toplevel_bar.cpp" line="181"/>
+        <source>Play</source>
+        <translation type="unfinished">播放</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="283"/>
+        <source>VolumeOff</source>
+        <translation type="unfinished">音量关闭</translation>
+    </message>
+</context>
+<context>
     <name>flower::ToplevelDock</name>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="41"/>
-        <location filename="../views/toplevel_dock.cpp" line="278"/>
         <source>Volume</source>
-        <translation>音量打开</translation>
+        <translation type="vanished">音量打开</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="93"/>
-        <location filename="../views/toplevel_dock.cpp" line="160"/>
-        <location filename="../views/toplevel_dock.cpp" line="209"/>
-        <location filename="../views/toplevel_dock.cpp" line="247"/>
         <source>Warning</source>
-        <translation>警告</translation>
+        <translation type="vanished">警告</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="94"/>
-        <location filename="../views/toplevel_dock.cpp" line="161"/>
-        <location filename="../views/toplevel_dock.cpp" line="210"/>
-        <location filename="../views/toplevel_dock.cpp" line="248"/>
         <source>Please load a project with pmm extension.</source>
-        <translation>请加载后缀为.pmm的文件.</translation>
+        <translation type="vanished">请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="108"/>
-        <location filename="../views/toplevel_dock.cpp" line="174"/>
-        <location filename="../views/toplevel_dock.cpp" line="221"/>
-        <location filename="../views/toplevel_dock.cpp" line="259"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation type="vanished">错误</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="123"/>
         <source>Pause</source>
-        <translation>暂停</translation>
+        <translation type="vanished">暂停</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="132"/>
-        <location filename="../views/toplevel_dock.cpp" line="187"/>
         <source>Play</source>
-        <translation>播放</translation>
+        <translation type="vanished">播放</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="289"/>
         <source>VolumeOff</source>
-        <translation>音量关闭</translation>
+        <translation type="vanished">音量关闭</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="25"/>
         <source>Play Animation</source>
-        <translation>播放动画</translation>
+        <translation type="vanished">播放动画</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="37"/>
         <source>Reset States</source>
-        <translation>重置</translation>
+        <translation type="vanished">重置</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="29"/>
         <source>Backward 1 second</source>
-        <translation>回退一秒</translation>
+        <translation type="vanished">回退一秒</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="33"/>
         <source>Forward 1 second</source>
-        <translation>快进一秒</translation>
+        <translation type="vanished">快进一秒</translation>
     </message>
 </context>
 </TS>

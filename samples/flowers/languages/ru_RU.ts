@@ -9,39 +9,39 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="169"/>
-        <location filename="../views/main_dock.cpp" line="216"/>
-        <location filename="../views/main_dock.cpp" line="261"/>
-        <location filename="../views/main_dock.cpp" line="309"/>
-        <location filename="../views/main_dock.cpp" line="356"/>
+        <location filename="../views/main_dock.cpp" line="171"/>
+        <location filename="../views/main_dock.cpp" line="218"/>
+        <location filename="../views/main_dock.cpp" line="263"/>
+        <location filename="../views/main_dock.cpp" line="311"/>
+        <location filename="../views/main_dock.cpp" line="358"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="170"/>
-        <location filename="../views/main_dock.cpp" line="262"/>
+        <location filename="../views/main_dock.cpp" line="172"/>
+        <location filename="../views/main_dock.cpp" line="264"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="180"/>
-        <location filename="../views/main_dock.cpp" line="227"/>
-        <location filename="../views/main_dock.cpp" line="273"/>
-        <location filename="../views/main_dock.cpp" line="320"/>
-        <location filename="../views/main_dock.cpp" line="367"/>
-        <location filename="../views/main_dock.cpp" line="391"/>
+        <location filename="../views/main_dock.cpp" line="182"/>
+        <location filename="../views/main_dock.cpp" line="229"/>
+        <location filename="../views/main_dock.cpp" line="275"/>
+        <location filename="../views/main_dock.cpp" line="322"/>
+        <location filename="../views/main_dock.cpp" line="369"/>
+        <location filename="../views/main_dock.cpp" line="393"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="217"/>
-        <location filename="../views/main_dock.cpp" line="310"/>
-        <location filename="../views/main_dock.cpp" line="357"/>
+        <location filename="../views/main_dock.cpp" line="219"/>
+        <location filename="../views/main_dock.cpp" line="312"/>
+        <location filename="../views/main_dock.cpp" line="359"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="392"/>
+        <location filename="../views/main_dock.cpp" line="394"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -776,70 +776,70 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::ToplevelDock</name>
+    <name>flower::ToplevelBar</name>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="25"/>
+        <location filename="../views/toplevel_bar.cpp" line="19"/>
         <source>Play Animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="29"/>
+        <location filename="../views/toplevel_bar.cpp" line="23"/>
         <source>Backward 1 second</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="33"/>
+        <location filename="../views/toplevel_bar.cpp" line="27"/>
         <source>Forward 1 second</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="37"/>
+        <location filename="../views/toplevel_bar.cpp" line="31"/>
         <source>Reset States</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="41"/>
-        <location filename="../views/toplevel_dock.cpp" line="278"/>
+        <location filename="../views/toplevel_bar.cpp" line="35"/>
+        <location filename="../views/toplevel_bar.cpp" line="272"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="93"/>
-        <location filename="../views/toplevel_dock.cpp" line="160"/>
-        <location filename="../views/toplevel_dock.cpp" line="209"/>
-        <location filename="../views/toplevel_dock.cpp" line="247"/>
+        <location filename="../views/toplevel_bar.cpp" line="87"/>
+        <location filename="../views/toplevel_bar.cpp" line="154"/>
+        <location filename="../views/toplevel_bar.cpp" line="203"/>
+        <location filename="../views/toplevel_bar.cpp" line="241"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="94"/>
-        <location filename="../views/toplevel_dock.cpp" line="161"/>
-        <location filename="../views/toplevel_dock.cpp" line="210"/>
-        <location filename="../views/toplevel_dock.cpp" line="248"/>
+        <location filename="../views/toplevel_bar.cpp" line="88"/>
+        <location filename="../views/toplevel_bar.cpp" line="155"/>
+        <location filename="../views/toplevel_bar.cpp" line="204"/>
+        <location filename="../views/toplevel_bar.cpp" line="242"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="108"/>
-        <location filename="../views/toplevel_dock.cpp" line="174"/>
-        <location filename="../views/toplevel_dock.cpp" line="221"/>
-        <location filename="../views/toplevel_dock.cpp" line="259"/>
+        <location filename="../views/toplevel_bar.cpp" line="102"/>
+        <location filename="../views/toplevel_bar.cpp" line="168"/>
+        <location filename="../views/toplevel_bar.cpp" line="215"/>
+        <location filename="../views/toplevel_bar.cpp" line="253"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="123"/>
+        <location filename="../views/toplevel_bar.cpp" line="117"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="132"/>
-        <location filename="../views/toplevel_dock.cpp" line="187"/>
+        <location filename="../views/toplevel_bar.cpp" line="126"/>
+        <location filename="../views/toplevel_bar.cpp" line="181"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_dock.cpp" line="289"/>
+        <location filename="../views/toplevel_bar.cpp" line="283"/>
         <source>VolumeOff</source>
         <translation type="unfinished"></translation>
     </message>

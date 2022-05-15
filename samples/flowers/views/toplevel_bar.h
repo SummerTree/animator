@@ -9,17 +9,18 @@
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <QtGui/qevent.h>
+#include <qtoolbar.h>
 
 #include "flower_behaviour.h"
 
 namespace flower
 {
-	class ToplevelDock final : public QDockWidget
+	class ToplevelBar final : public QToolBar
 	{
 		Q_OBJECT
 	public:
-		ToplevelDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile) noexcept;
-		~ToplevelDock() noexcept;
+		ToplevelBar(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile) noexcept;
+		~ToplevelBar() noexcept;
 
 		void paintEvent(QPaintEvent* e) noexcept;
 

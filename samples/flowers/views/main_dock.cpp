@@ -18,9 +18,9 @@ namespace flower
 		this->setWindowTitle(tr("Flower Render Toolbox (Alpha Version)"));
 		this->setDockNestingEnabled(true);
 		this->installEventFilter(this);
-		this->setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::East);
+		this->setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::West);
 
-		toplevelDock_ = std::make_unique<ToplevelDock>(behaviour_, profile_);
+		toplevelDock_ = std::make_unique<ToplevelBar>(behaviour_, profile_);
 		toolDock_ = std::make_unique<ToolDock>(gameApp_, behaviour_, profile_);
 		viewDock_ = std::make_unique<ViewDock>(gameApp_, behaviour_, profile_);
 		mainLightDock_ = std::make_unique<MainLightDock>(behaviour_, profile_);
@@ -28,14 +28,16 @@ namespace flower
 		materialDock_ = std::make_unique<MaterialDock>(behaviour_);
 		statusBar_ = std::make_unique<StatusBar>(behaviour_, profile_);
 
-		this->addDockWidget(Qt::DockWidgetArea::TopDockWidgetArea, toplevelDock_.get());
+		this->addToolBar(toplevelDock_.get());
+
 		this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, toolDock_.get());
 		this->addDockWidget(Qt::DockWidgetArea::AllDockWidgetAreas, materialDock_.get());
 		this->addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, mainLightDock_.get());
 
-		this->setCentralWidget(viewDock_.get());
 		this->tabifyDockWidget(mainLightDock_.get(), materialDock_.get());
 		this->tabifyDockWidget(mainLightDock_.get(), environmentDock_.get());
+
+		this->setCentralWidget(viewDock_.get());
 		this->setStatusBar(statusBar_.get());
 
 		environmentDock_->hide();
@@ -54,7 +56,7 @@ namespace flower
 
 	MainDock::~MainDock() noexcept
 	{
-		this->removeDockWidget(toplevelDock_.get());
+		this->removeToolBar(toplevelDock_.get());
 		this->removeDockWidget(toolDock_.get());
 		this->removeDockWidget(viewDock_.get());
 		this->removeDockWidget(mainLightDock_.get());

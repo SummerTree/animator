@@ -5,7 +5,7 @@
 #include "tool_dock.h"
 #include "main_light_dock.h"
 #include "environment_dock.h"
-#include "toplevel_dock.h"
+#include "toplevel_bar.h"
 #include "setting_window.h"
 #include "color_dialog.h"
 #include "flower_profile.h"
@@ -44,7 +44,7 @@ namespace flower
 		std::shared_ptr<SplashListener> listener_;
 
 		std::unique_ptr<ToolDock> toolBar_;
-		std::unique_ptr<ToplevelDock> toplevelDock_;
+		std::unique_ptr<ToplevelBar> toplevelDock_;
 		std::unique_ptr<ViewDock> viewDock_;
 		std::unique_ptr<SettingWindow> settingWindow_;
 		std::unique_ptr<LightWindow> lightWindow_;

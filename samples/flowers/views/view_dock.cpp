@@ -19,7 +19,7 @@ namespace flower
 		this->setAcceptDrops(true);
 		this->setFocusPolicy(Qt::StrongFocus);
 		this->setContextMenuPolicy(Qt::PreventContextMenu);
-		this->setFixedSize(profile->recordModule->width, profile->recordModule->height);
+		this->setMinimumSize(profile->recordModule->width, profile->recordModule->height);
 	}
 
 	ViewDock::~ViewDock() noexcept
