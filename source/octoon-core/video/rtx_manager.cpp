@@ -324,11 +324,6 @@ namespace octoon
 			if (!this->framebuffer_)
 				throw runtime::runtime_error::create("createFramebuffer() failed");
 
-			if (configs_.size() != 1)
-			{
-				throw std::runtime_error("ContextObject: invalid config count.");
-			}
-
 			this->colorImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(colorTexture_->handle()), this->width_, this->height_);
 			this->normalImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(normalTexture_->handle()), this->width_, this->height_);
 			this->albedoImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(albedoTexture_->handle()), this->width_, this->height_);
