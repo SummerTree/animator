@@ -14,7 +14,7 @@ namespace octoon
 		ForwardRenderer() noexcept;
 		virtual ~ForwardRenderer() noexcept;
 
-		void render(const std::shared_ptr<ScriptableRenderContext>& context, const RenderingData& scene);
+		void render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene);
 
 		const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 

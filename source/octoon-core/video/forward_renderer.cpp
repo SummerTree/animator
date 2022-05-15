@@ -154,14 +154,17 @@ namespace octoon
 	}
 
 	void
-	ForwardRenderer::render(const std::shared_ptr<ScriptableRenderContext>& context, const RenderingData& renderingData)
+	ForwardRenderer::render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene)
 	{
-		lightsShadowCasterPass_->Execute(*context, renderingData);
-		drawOpaquePass_->Execute(*context, renderingData);
-		drawTranparentPass_->Execute(*context, renderingData);
-		drawSkyboxPass_->Execute(*context, renderingData);
+		context->cleanCache();
+		context->compileScene(scene);
 
-		auto& camera = renderingData.camera;
+		lightsShadowCasterPass_->Execute(*context, context->getRenderingData());
+		drawOpaquePass_->Execute(*context, context->getRenderingData());
+		drawTranparentPass_->Execute(*context, context->getRenderingData());
+		drawSkyboxPass_->Execute(*context, context->getRenderingData());
+
+		auto& camera = context->getRenderingData().camera;
 
 		auto fbo = camera->getFramebuffer();
 		if (fbo && camera->getRenderToScreen())
