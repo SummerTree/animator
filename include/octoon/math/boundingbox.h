@@ -1,6 +1,7 @@
 #ifndef OCTOON_MATH_BOUNDING_BOX_H_
 #define OCTOON_MATH_BOUNDING_BOX_H_
 
+#include <octoon/math/box3.h>
 #include <octoon/math/sphere.h>
 
 namespace octoon

@@ -926,19 +926,22 @@ namespace octoon
 
 		if (_indices.empty())
 		{
-			for (std::size_t i = 0; i < _vertices.size(); i++)
-				_boundingBox.encapsulate(_vertices[i]);
+			_boundingBox.encapsulate(_vertices);
 		}
 		else
 		{
-			for (std::size_t i = 0; i < _indices.size(); i++)
+			for (int i = 0; i < _indices.size(); i++)
 			{
-				auto& indices = _indices[i];
-				for (auto& index : indices)
-					_boundingBoxs[i].encapsulate(_vertices[index]);
+				math::AABB aabb;
 
-				_boundingBox.encapsulate(_boundingBoxs[i]);
+				for (auto& j : _indices[i])
+					aabb.encapsulate(_vertices[j]);
+
+				_boundingBoxs[i].set(aabb);
 			}
+
+			for (std::size_t i = 0; i < _indices.size(); i++)
+				_boundingBox.encapsulate(_boundingBoxs[i]);
 		}
 	}
 
