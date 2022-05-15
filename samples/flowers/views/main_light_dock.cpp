@@ -260,13 +260,6 @@ namespace flower
 	}
 
 	void
-	MainLightDock::closeEvent()
-	{
-		this->close();
-		parentWidget()->setFixedWidth(parentWidget()->width() - this->width());
-	}
-
-	void
 	MainLightDock::intensitySliderEvent(int value)
 	{
 		if (profile_->entitiesModule->sunLight)

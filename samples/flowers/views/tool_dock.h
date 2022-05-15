@@ -25,55 +25,30 @@ namespace flower
 
 	private Q_SLOTS:
 		void importEvent() noexcept;
-		void recordEvent() noexcept;
 		void shotEvent() noexcept;
 		void gpuEvent() noexcept;
 		void audioEvent() noexcept;
 		void cleanupEvent() noexcept;
-		void lightEvent() noexcept;
-		void sunEvent() noexcept;
-		void materialEvent() noexcept;
-		void environmentEvent() noexcept;
-
-	Q_SIGNALS:
-		void sunSignal();
-		void lightSignal();
-		void recordSignal();
-		void materialSignal();
-		void environmentSignal();
 
 	private:
 		void paintEvent(QPaintEvent* e) noexcept override;
 
 	public:
 		bool gpuEnable_;
-		bool recordEnable_;
 		bool audioEnable_;
 		bool hdrEnable_;
-		bool sunEnable_;
-		bool environmentEnable_;
 
 		QIcon gpuIcon_;
 		QIcon gpuOnIcon_;
-		QIcon recordIcon_;
 		QIcon audioIcon_;
 		QIcon audioOnIcon_;
-		QIcon sunIcon_;
-		QIcon sunOnIcon_;
-		QIcon environmentIcon_;
-		QIcon environmentOnIcon_;
 
-		QToolButton importButton;
-		QToolButton saveButton;
-		QToolButton recordButton;
-		QToolButton shotButton;
-		QToolButton gpuButton;
-		QToolButton audioButton;
-		QToolButton cleanupButton;
-		QToolButton lightButton;
-		QToolButton sunButton;
-		QToolButton environmentButton;
-		QToolButton materialButton;
+		QToolButton* importButton_;
+		QToolButton* saveButton_;
+		QToolButton* shotButton_;
+		QToolButton* gpuButton_;
+		QToolButton* audioButton_;
+		QToolButton* cleanupButton_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<flower::FlowerProfile> profile_;

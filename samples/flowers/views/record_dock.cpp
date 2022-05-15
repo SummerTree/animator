@@ -512,7 +512,7 @@ namespace flower
 	void
 	RecordDock::resizeEvent(QResizeEvent* e) noexcept
 	{
-		contentWidgetArea_->setFixedHeight(
+		contentWidgetArea_->resize(contentWidgetArea_->width(),
 			mainWidget_->size().height() -
 			this->recordButton_->height() - 
 			mainLayout_->contentsMargins().bottom() * 2 -

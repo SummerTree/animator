@@ -8,7 +8,6 @@
 
 #include "bindings/application.h"
 
-#include "views/main_window.h"
 #include "views/main_dock.h"
 #include "views/splash_screen.h"
 

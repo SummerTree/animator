@@ -27,7 +27,6 @@ namespace flower
 	public Q_SLOTS:
 		void currentColorChanged(QColor);
 		void resetEvent();
-		void closeEvent();
 		void intensitySliderEvent(int);
 		void intensityEditEvent(double value);
 		void sliderRotationXEvent(int);

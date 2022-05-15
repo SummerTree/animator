@@ -79,8 +79,8 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/light_window.cpp
 	${SOURCE_PATH}/views/color_dialog.h
 	${SOURCE_PATH}/views/color_dialog.cpp
-	${SOURCE_PATH}/views/main_window.h
-	${SOURCE_PATH}/views/main_window.cpp
+	${SOURCE_PATH}/views/thumbnail_dock.h
+	${SOURCE_PATH}/views/thumbnail_dock.cpp
 	${SOURCE_PATH}/views/setting_window.h
 	${SOURCE_PATH}/views/setting_window.cpp
 	${SOURCE_PATH}/views/title_bar.h

@@ -34,6 +34,7 @@ namespace flower
 
 		toplevelDock_ = std::make_unique<ToplevelBar>(behaviour_, profile_);
 		toolDock_ = std::make_unique<ToolDock>(gameApp_, behaviour_, profile_);
+		thumbnailDock_ = std::make_unique<ThumbnailDock>(gameApp_, behaviour_, profile_);
 		viewDock_ = std::make_unique<ViewDock>(gameApp_, behaviour_, profile_);
 		recordDock_ = std::make_unique<RecordDock>(behaviour_, profile_);
 		mainLightDock_ = std::make_unique<MainLightDock>(behaviour_, profile_);
@@ -45,11 +46,12 @@ namespace flower
 
 		this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, toolDock_.get());
 		this->addDockWidget(Qt::DockWidgetArea::AllDockWidgetAreas, materialDock_.get());
-		this->addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, mainLightDock_.get());
+		this->addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, thumbnailDock_.get());
 
-		this->tabifyDockWidget(mainLightDock_.get(), materialDock_.get());
-		this->tabifyDockWidget(mainLightDock_.get(), recordDock_.get());
-		this->tabifyDockWidget(mainLightDock_.get(), environmentDock_.get());
+		this->splitDockWidget(thumbnailDock_.get(), mainLightDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(mainLightDock_.get(), materialDock_.get(), Qt::Orientation::Vertical);
+		this->splitDockWidget(mainLightDock_.get(), recordDock_.get(), Qt::Orientation::Vertical);
+		this->splitDockWidget(mainLightDock_.get(), environmentDock_.get(), Qt::Orientation::Vertical);
 
 		this->setCentralWidget(viewDock_.get());
 		this->setStatusBar(statusBar_.get());
@@ -62,11 +64,11 @@ namespace flower
 
 		timer.start();
 
-		connect(toolDock_.get(), &ToolDock::sunSignal, this, &MainDock::onSunSignal);
-		connect(toolDock_.get(), &ToolDock::lightSignal, this, &MainDock::onLightSignal);
-		connect(toolDock_.get(), &ToolDock::recordSignal, this, &MainDock::onRecordSignal);
-		connect(toolDock_.get(), &ToolDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
-		connect(toolDock_.get(), &ToolDock::materialSignal, this, &MainDock::onMaterialSignal);
+		connect(thumbnailDock_.get(), &ThumbnailDock::sunSignal, this, &MainDock::onSunSignal);
+		connect(thumbnailDock_.get(), &ThumbnailDock::lightSignal, this, &MainDock::onLightSignal);
+		connect(thumbnailDock_.get(), &ThumbnailDock::recordSignal, this, &MainDock::onRecordSignal);
+		connect(thumbnailDock_.get(), &ThumbnailDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
+		connect(thumbnailDock_.get(), &ThumbnailDock::materialSignal, this, &MainDock::onMaterialSignal);
 	}
 
 	MainDock::~MainDock() noexcept
@@ -78,14 +80,9 @@ namespace flower
 		this->removeDockWidget(environmentDock_.get());
 		this->removeDockWidget(materialDock_.get());
 		this->removeDockWidget(recordDock_.get());
+		this->removeDockWidget(thumbnailDock_.get());
 
-		toplevelDock_.reset();
-		toolDock_.reset();
-		viewDock_.reset();
-		mainLightDock_.reset();
-		environmentDock_.reset();
-		recordDock_.reset();
-		materialDock_.reset();
+		FlowerProfile::save("./config/config.conf", *profile_);
 	}
 
 	void 

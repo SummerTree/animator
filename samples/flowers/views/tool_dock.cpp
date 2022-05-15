@@ -12,89 +12,56 @@ namespace flower
 		: profile_(profile)
 		, gpuEnable_(false)
 		, audioEnable_(false)
-		, recordEnable_(false)
 		, hdrEnable_(false)
-		, sunEnable_(false)
-		, environmentEnable_(false)
 		, behaviour_(behaviour)
 		, gpuIcon_(QIcon::fromTheme("res", QIcon(":res/icons/gpu.png")))
 		, gpuOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/gpu-on.png")))
-		, recordIcon_(QIcon::fromTheme("res", QIcon(":res/icons/record.png")))
 		, audioIcon_(QIcon::fromTheme("res", QIcon(":res/icons/music.svg")))
 		, audioOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/music-on.png")))
-		, sunIcon_(QIcon::fromTheme("res", QIcon(":res/icons/sun.png")))
-		, sunOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/sun-on.png")))
-		, environmentIcon_(QIcon::fromTheme("res", QIcon(":res/icons/environment.png")))
-		, environmentOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/environment-on.png")))
 	{
 		this->setWindowTitle("Tool");
 		this->setObjectName("ToolDock");
 		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 		this->setFeatures(DockWidgetFeature::DockWidgetMovable | DockWidgetFeature::DockWidgetFloatable);
 
-		importButton.setObjectName("import");
-		importButton.setText(tr("Import"));
-		importButton.setToolTip(tr("Import Resource File(.pmm, .mdl)"));
-		importButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		importButton_ = new QToolButton;
+		importButton_->setObjectName("import");
+		importButton_->setText(tr("Import"));
+		importButton_->setToolTip(tr("Import Resource File(.pmm, .mdl)"));
+		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-		recordButton.setObjectName("record");
-		recordButton.setText(tr("Record"));
-		recordButton.setToolTip(tr("Record Video"));
-		recordButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		audioButton_ = new QToolButton;
+		audioButton_->setObjectName("audio");
+		audioButton_->setText(tr("Music"));
+		audioButton_->setToolTip(tr("Set Background Audio File"));
+		audioButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-		audioButton.setObjectName("audio");
-		audioButton.setText(tr("Music"));
-		audioButton.setToolTip(tr("Set Background Audio File"));
-		audioButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		shotButton_ = new QToolButton;
+		shotButton_->setObjectName("shot");
+		shotButton_->setText(tr("Screenshot"));
+		shotButton_->setToolTip(tr("Denoising Screenshot"));
+		shotButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-		shotButton.setObjectName("shot");
-		shotButton.setText(tr("Screenshot"));
-		shotButton.setToolTip(tr("Denoising Screenshot"));
-		shotButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		gpuButton_ = new QToolButton;
+		gpuButton_->setObjectName("gpu");
+		gpuButton_->setText(tr("Render"));
+		gpuButton_->setToolTip(tr("Enable High Quality Rendering"));
+		gpuButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-		gpuButton.setObjectName("gpu");
-		gpuButton.setText(tr("Render"));
-		gpuButton.setToolTip(tr("Enable High Quality Rendering"));
-		gpuButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-		cleanupButton.setObjectName("cleanup");
-		cleanupButton.setText(tr("Cleanup"));
-		cleanupButton.setToolTip(tr("Cleanup Scene"));
-		cleanupButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-		materialButton.setObjectName("material");
-		materialButton.setText(tr("Material"));
-		materialButton.setToolTip(tr("Open Material Panel"));
-		materialButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-		lightButton.setObjectName("sun");
-		lightButton.setText(tr("Light"));
-		lightButton.setToolTip(tr("Light Settings"));
-		lightButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-		sunButton.setObjectName("sun");
-		sunButton.setText(tr("Main Light"));
-		sunButton.setToolTip(tr("Main Light Settings"));
-		sunButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-		environmentButton.setObjectName("environment");
-		environmentButton.setText(tr("Environment Light"));
-		environmentButton.setToolTip(tr("Environment Light Settings"));
-		environmentButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		cleanupButton_ = new QToolButton;
+		cleanupButton_->setObjectName("cleanup");
+		cleanupButton_->setText(tr("Cleanup"));
+		cleanupButton_->setToolTip(tr("Cleanup Scene"));
+		cleanupButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
-		layout->addWidget(&importButton, 0, Qt::AlignCenter);
-		layout->addWidget(&gpuButton, 0, Qt::AlignCenter);
-		layout->addWidget(&recordButton, 0, Qt::AlignCenter);
-		layout->addWidget(&shotButton, 0, Qt::AlignCenter);
-		layout->addWidget(&audioButton, 0, Qt::AlignCenter);
-		layout->addWidget(&materialButton, 0, Qt::AlignCenter);
-		layout->addWidget(&lightButton, 0, Qt::AlignCenter);
-		layout->addWidget(&sunButton, 0, Qt::AlignCenter);
-		layout->addWidget(&environmentButton, 0, Qt::AlignCenter);
-		layout->addWidget(&cleanupButton, 0, Qt::AlignCenter);
+		layout->addWidget(importButton_, 0, Qt::AlignCenter);
+		layout->addWidget(gpuButton_, 0, Qt::AlignCenter);
+		layout->addWidget(shotButton_, 0, Qt::AlignCenter);
+		layout->addWidget(audioButton_, 0, Qt::AlignCenter);
+		layout->addWidget(cleanupButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 
 		auto contentWidget = new QWidget;
@@ -116,16 +83,11 @@ namespace flower
 
 		this->setWidget(mainWidget);
 
-		this->connect(&importButton, SIGNAL(clicked()), this, SLOT(importEvent()));
-		this->connect(&recordButton, SIGNAL(clicked()), this, SLOT(recordEvent()));
-		this->connect(&audioButton, SIGNAL(clicked()), this, SLOT(audioEvent()));
-		this->connect(&shotButton, SIGNAL(clicked()), this, SLOT(shotEvent()));
-		this->connect(&gpuButton, SIGNAL(clicked()), this, SLOT(gpuEvent()));
-		this->connect(&cleanupButton, SIGNAL(clicked()), this, SLOT(cleanupEvent()));
-		this->connect(&lightButton, SIGNAL(clicked()), this, SLOT(lightEvent()));
-		this->connect(&sunButton, SIGNAL(clicked()), this, SLOT(sunEvent()));
-		this->connect(&environmentButton, SIGNAL(clicked()), this, SLOT(environmentEvent()));
-		this->connect(&materialButton, SIGNAL(clicked()), this, SLOT(materialEvent()));
+		this->connect(importButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
+		this->connect(audioButton_, SIGNAL(clicked()), this, SLOT(audioEvent()));
+		this->connect(shotButton_, SIGNAL(clicked()), this, SLOT(shotEvent()));
+		this->connect(gpuButton_, SIGNAL(clicked()), this, SLOT(gpuEvent()));
+		this->connect(cleanupButton_, SIGNAL(clicked()), this, SLOT(cleanupEvent()));
 	}
 
 	ToolDock::~ToolDock() noexcept
@@ -147,6 +109,9 @@ namespace flower
 					{
 						try
 						{
+#if 1
+							behaviour->open(fileName.toUtf8().data());
+#else
 							// load task
 							auto fn = [&]() {
 								behaviour->open(fileName.toUtf8().data());
@@ -178,6 +143,7 @@ namespace flower
 									break;
 							}
 							dialog.setValue(2000);
+#endif
 						}
 						catch (const std::exception& e)
 						{
@@ -203,12 +169,6 @@ namespace flower
 
 			msg.exec();
 		}
-	}
-
-	void
-	ToolDock::recordEvent() noexcept
-	{
-		emit recordSignal();
 	}
 
 	void 
@@ -258,7 +218,7 @@ namespace flower
 		{
 			if (audioSignal(true))
 			{
-				audioButton.setIcon(audioOnIcon_);
+				audioButton_->setIcon(audioOnIcon_);
 				audioEnable_ = true;
 			}
 		}
@@ -266,7 +226,7 @@ namespace flower
 		{
 			if (audioSignal(false))
 			{
-				audioButton.setIcon(audioIcon_);
+				audioButton_->setIcon(audioIcon_);
 				audioEnable_ = false;
 			}
 		}
@@ -344,7 +304,7 @@ namespace flower
 		{
 			if (gpuSignal(true))
 			{
-				gpuButton.setIcon(gpuOnIcon_);
+				gpuButton_->setIcon(gpuOnIcon_);
 				gpuEnable_ = true;
 			}
 		}
@@ -352,7 +312,7 @@ namespace flower
 		{
 			if (gpuSignal(false))
 			{
-				gpuButton.setIcon(gpuIcon_);
+				gpuButton_->setIcon(gpuIcon_);
 				gpuEnable_ = false;
 			}
 		}
@@ -383,37 +343,13 @@ namespace flower
 	}
 
 	void
-	ToolDock::lightEvent() noexcept
-	{
-		emit lightSignal();
-	}
-
-	void
-	ToolDock::sunEvent() noexcept
-	{
-		emit sunSignal();
-	}
-
-	void
-	ToolDock::materialEvent() noexcept
-	{
-		emit materialSignal();
-	}
-
-	void
-	ToolDock::environmentEvent() noexcept
-	{
-		emit environmentSignal();
-	}
-
-	void
 	ToolDock::paintEvent(QPaintEvent* e) noexcept
 	{
 		if (this->profile_->offlineModule->getEnable())
 		{
 			if (!gpuEnable_)
 			{
-				gpuButton.setIcon(gpuOnIcon_);
+				gpuButton_->setIcon(gpuOnIcon_);
 				gpuEnable_ = true;
 			}
 		}
@@ -421,7 +357,7 @@ namespace flower
 		{
 			if (gpuEnable_)
 			{
-				gpuButton.setIcon(gpuIcon_);
+				gpuButton_->setIcon(gpuIcon_);
 				gpuEnable_ = false;
 			}
 		}
@@ -430,7 +366,7 @@ namespace flower
 		{
 			if (!audioEnable_)
 			{
-				audioButton.setIcon(audioOnIcon_);
+				audioButton_->setIcon(audioOnIcon_);
 				audioEnable_ = true;
 			}
 		}
@@ -438,7 +374,7 @@ namespace flower
 		{
 			if (audioEnable_)
 			{
-				audioButton.setIcon(audioIcon_);
+				audioButton_->setIcon(audioIcon_);
 				audioEnable_ = false;
 			}
 		}

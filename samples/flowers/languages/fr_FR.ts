@@ -9,39 +9,39 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="188"/>
-        <location filename="../views/main_dock.cpp" line="235"/>
-        <location filename="../views/main_dock.cpp" line="273"/>
-        <location filename="../views/main_dock.cpp" line="318"/>
-        <location filename="../views/main_dock.cpp" line="365"/>
+        <location filename="../views/main_dock.cpp" line="185"/>
+        <location filename="../views/main_dock.cpp" line="232"/>
+        <location filename="../views/main_dock.cpp" line="270"/>
+        <location filename="../views/main_dock.cpp" line="315"/>
+        <location filename="../views/main_dock.cpp" line="362"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="189"/>
-        <location filename="../views/main_dock.cpp" line="274"/>
+        <location filename="../views/main_dock.cpp" line="186"/>
+        <location filename="../views/main_dock.cpp" line="271"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="199"/>
-        <location filename="../views/main_dock.cpp" line="246"/>
-        <location filename="../views/main_dock.cpp" line="285"/>
-        <location filename="../views/main_dock.cpp" line="329"/>
-        <location filename="../views/main_dock.cpp" line="376"/>
-        <location filename="../views/main_dock.cpp" line="400"/>
+        <location filename="../views/main_dock.cpp" line="196"/>
+        <location filename="../views/main_dock.cpp" line="243"/>
+        <location filename="../views/main_dock.cpp" line="282"/>
+        <location filename="../views/main_dock.cpp" line="326"/>
+        <location filename="../views/main_dock.cpp" line="373"/>
+        <location filename="../views/main_dock.cpp" line="397"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="236"/>
-        <location filename="../views/main_dock.cpp" line="319"/>
-        <location filename="../views/main_dock.cpp" line="366"/>
+        <location filename="../views/main_dock.cpp" line="233"/>
+        <location filename="../views/main_dock.cpp" line="316"/>
+        <location filename="../views/main_dock.cpp" line="363"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="401"/>
+        <location filename="../views/main_dock.cpp" line="398"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -355,19 +355,6 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::MainWindow</name>
-    <message>
-        <location filename="../views/main_window.cpp" line="145"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/main_window.cpp" line="146"/>
-        <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>flower::MaterialDock</name>
     <message>
         <location filename="../views/material_dock.cpp" line="1568"/>
@@ -619,6 +606,59 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
+    <name>flower::ThumbnailDock</name>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="30"/>
+        <source>Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="31"/>
+        <source>Record Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="36"/>
+        <source>Material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="37"/>
+        <source>Open Material Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="42"/>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="43"/>
+        <source>Light Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="48"/>
+        <source>Main Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="49"/>
+        <source>Main Light Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="54"/>
+        <source>Environment Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="55"/>
+        <source>Environment Light Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>flower::TitleBar</name>
     <message>
         <location filename="../views/title_bar.cpp" line="13"/>
@@ -634,153 +674,103 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::ToolDock</name>
     <message>
-        <location filename="../views/tool_dock.cpp" line="36"/>
+        <location filename="../views/tool_dock.cpp" line="29"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="37"/>
+        <location filename="../views/tool_dock.cpp" line="30"/>
         <source>Import Resource File(.pmm, .mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="41"/>
-        <source>Record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="42"/>
-        <source>Record Video</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="46"/>
+        <location filename="../views/tool_dock.cpp" line="35"/>
         <source>Music</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="47"/>
+        <location filename="../views/tool_dock.cpp" line="36"/>
         <source>Set Background Audio File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="51"/>
+        <location filename="../views/tool_dock.cpp" line="41"/>
         <source>Screenshot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="52"/>
+        <location filename="../views/tool_dock.cpp" line="42"/>
         <source>Denoising Screenshot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="56"/>
+        <location filename="../views/tool_dock.cpp" line="47"/>
         <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="57"/>
+        <location filename="../views/tool_dock.cpp" line="48"/>
         <source>Enable High Quality Rendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="61"/>
+        <location filename="../views/tool_dock.cpp" line="53"/>
         <source>Cleanup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="62"/>
+        <location filename="../views/tool_dock.cpp" line="54"/>
         <source>Cleanup Scene</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="66"/>
-        <source>Material</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="67"/>
-        <source>Open Material Panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="71"/>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="72"/>
-        <source>Light Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="76"/>
-        <source>Main Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="77"/>
-        <source>Main Light Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="81"/>
-        <source>Environment Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="82"/>
-        <source>Environment Light Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="145"/>
-        <location filename="../views/tool_dock.cpp" line="228"/>
+        <location filename="../views/tool_dock.cpp" line="107"/>
+        <location filename="../views/tool_dock.cpp" line="188"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="145"/>
+        <location filename="../views/tool_dock.cpp" line="107"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="157"/>
+        <location filename="../views/tool_dock.cpp" line="122"/>
         <source>Opening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="157"/>
+        <location filename="../views/tool_dock.cpp" line="122"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="158"/>
+        <location filename="../views/tool_dock.cpp" line="123"/>
         <source>Open Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="185"/>
-        <location filename="../views/tool_dock.cpp" line="199"/>
-        <location filename="../views/tool_dock.cpp" line="244"/>
-        <location filename="../views/tool_dock.cpp" line="293"/>
-        <location filename="../views/tool_dock.cpp" line="332"/>
-        <location filename="../views/tool_dock.cpp" line="376"/>
+        <location filename="../views/tool_dock.cpp" line="151"/>
+        <location filename="../views/tool_dock.cpp" line="165"/>
+        <location filename="../views/tool_dock.cpp" line="204"/>
+        <location filename="../views/tool_dock.cpp" line="253"/>
+        <location filename="../views/tool_dock.cpp" line="292"/>
+        <location filename="../views/tool_dock.cpp" line="336"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="228"/>
+        <location filename="../views/tool_dock.cpp" line="188"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="282"/>
+        <location filename="../views/tool_dock.cpp" line="242"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="282"/>
+        <location filename="../views/tool_dock.cpp" line="242"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
