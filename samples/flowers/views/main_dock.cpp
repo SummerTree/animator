@@ -30,10 +30,11 @@ namespace flower
 		this->addDockWidget(Qt::DockWidgetArea::TopDockWidgetArea, toplevelDock_.get());
 		this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, toolDock_.get());
 		this->addDockWidget(Qt::DockWidgetArea::AllDockWidgetAreas, materialDock_.get());
-		this->splitDockWidget(toolDock_.get(), viewDock_.get(), Qt::Orientation::Horizontal);
-		this->splitDockWidget(toolDock_.get(), mainLightDock_.get(), Qt::Orientation::Horizontal);
-		this->splitDockWidget(toolDock_.get(), materialDock_.get(), Qt::Orientation::Horizontal);
-		this->splitDockWidget(toolDock_.get(), environmentDock_.get(), Qt::Orientation::Horizontal);
+		this->addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, mainLightDock_.get());
+
+		this->setCentralWidget(viewDock_.get());
+		this->splitDockWidget(mainLightDock_.get(), materialDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(mainLightDock_.get(), environmentDock_.get(), Qt::Orientation::Horizontal);
 		this->setStatusBar(statusBar_.get());
 
 		environmentDock_->hide();
