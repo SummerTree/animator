@@ -296,6 +296,12 @@ namespace octoon
 		this->context_->drawIndexedIndirect(data, offset, drawCount, stride);
 	}
 
+	RenderingData&
+	ScriptableRenderContext::getRenderingData() const noexcept(false)
+	{
+		return *renderingData_;
+	}
+
 	void
 	ScriptableRenderContext::compileScene(const std::shared_ptr<RenderScene>& scene) noexcept
 	{
@@ -315,18 +321,21 @@ namespace octoon
 
 		materialCollector.Commit();
 
-		if (!renderingData_)
+		auto iter = sceneCache_.find(scene);
+		if (iter == sceneCache_.cend())
 		{
-			auto out = std::make_unique<RenderingData>();
+			auto out = std::make_shared<RenderingData>();
+
 			this->updateCamera(scene, *out, true);
 			this->updateLights(scene, *out, true);
 			this->updateMaterials(scene, *out, true);
 			this->updateShapes(scene, *out, true);
-			renderingData_ = std::move(out);
+
+			sceneCache_[scene] = renderingData_ = out;
 		}
 		else
 		{
-			auto& out = *renderingData_;
+			renderingData_ = (*iter).second;
 
 			bool should_update_lights = false;
 			for (auto& light : scene->getLights())
@@ -351,7 +360,7 @@ namespace octoon
 				}
 			}
 
-			bool should_update_materials = !out.material_bundle || materialCollector.NeedsUpdate(out.material_bundle.get(),
+			bool should_update_materials = !renderingData_->material_bundle || materialCollector.NeedsUpdate(renderingData_->material_bundle.get(),
 				[](runtime::RttiInterface* ptr)->bool
 			{
 				auto mat = ptr->downcast<Material>();
@@ -359,32 +368,32 @@ namespace octoon
 			});
 
 			auto camera = scene->getMainCamera();
-			bool should_update_camera = out.camera != camera || camera->isDirty();
+			bool should_update_camera = renderingData_->camera != camera || camera->isDirty();
 
 			if (should_update_camera)
-				this->updateCamera(scene, out);
+				this->updateCamera(scene, *renderingData_);
 			
 			if (should_update_lights || should_update_camera)
-				this->updateLights(scene, out);
+				this->updateLights(scene, *renderingData_);
 
 			if (should_update_materials)
-				this->updateMaterials(scene, out);
+				this->updateMaterials(scene, *renderingData_);
 
 			if (should_update_shapes)
-				this->updateShapes(scene, out);
+				this->updateShapes(scene, *renderingData_);
 		}
 	}
 
 	void
 	ScriptableRenderContext::cleanCache() noexcept
 	{
-		renderingData_.reset();
-	}
-
-	RenderingData&
-	ScriptableRenderContext::getRenderingData() const noexcept(false)
-	{
-		return *renderingData_;
+		for (auto it = sceneCache_.begin(); it != sceneCache_.end();)
+		{
+			if ((*it).first.use_count() == 1)
+				it = sceneCache_.erase(it);
+			else
+				++it;
+		}
 	}
 
 	void

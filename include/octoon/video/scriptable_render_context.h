@@ -97,7 +97,9 @@ namespace octoon
 		Collector materialCollector;
 
 		hal::GraphicsContextPtr context_;
-		std::unique_ptr<class RenderingData> renderingData_;
+
+		std::shared_ptr<class RenderingData> renderingData_;
+		std::unordered_map<std::shared_ptr<RenderScene>, std::shared_ptr<RenderingData>> sceneCache_;
 
 		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderBuffer>> buffers_;
 		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderMaterial>> materials_;
