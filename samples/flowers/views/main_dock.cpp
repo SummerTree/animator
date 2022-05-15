@@ -58,7 +58,8 @@ namespace flower
 		this->setCentralWidget(viewDock_.get());
 		this->setStatusBar(statusBar_.get());
 
-		environmentDock_->hide();
+		mainLightDock_->hide();
+		environmentDock_->show();
 		materialDock_->hide();
 		recordDock_->hide();
 		cameraDock_->hide();
