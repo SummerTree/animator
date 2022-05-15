@@ -9,39 +9,39 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="168"/>
-        <location filename="../views/main_dock.cpp" line="214"/>
-        <location filename="../views/main_dock.cpp" line="259"/>
-        <location filename="../views/main_dock.cpp" line="306"/>
-        <location filename="../views/main_dock.cpp" line="352"/>
+        <location filename="../views/main_dock.cpp" line="169"/>
+        <location filename="../views/main_dock.cpp" line="216"/>
+        <location filename="../views/main_dock.cpp" line="261"/>
+        <location filename="../views/main_dock.cpp" line="309"/>
+        <location filename="../views/main_dock.cpp" line="356"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="169"/>
-        <location filename="../views/main_dock.cpp" line="260"/>
+        <location filename="../views/main_dock.cpp" line="170"/>
+        <location filename="../views/main_dock.cpp" line="262"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="179"/>
-        <location filename="../views/main_dock.cpp" line="225"/>
-        <location filename="../views/main_dock.cpp" line="271"/>
-        <location filename="../views/main_dock.cpp" line="317"/>
-        <location filename="../views/main_dock.cpp" line="363"/>
-        <location filename="../views/main_dock.cpp" line="387"/>
+        <location filename="../views/main_dock.cpp" line="180"/>
+        <location filename="../views/main_dock.cpp" line="227"/>
+        <location filename="../views/main_dock.cpp" line="273"/>
+        <location filename="../views/main_dock.cpp" line="320"/>
+        <location filename="../views/main_dock.cpp" line="367"/>
+        <location filename="../views/main_dock.cpp" line="391"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="215"/>
-        <location filename="../views/main_dock.cpp" line="307"/>
-        <location filename="../views/main_dock.cpp" line="353"/>
+        <location filename="../views/main_dock.cpp" line="217"/>
+        <location filename="../views/main_dock.cpp" line="310"/>
+        <location filename="../views/main_dock.cpp" line="357"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="388"/>
+        <location filename="../views/main_dock.cpp" line="392"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
