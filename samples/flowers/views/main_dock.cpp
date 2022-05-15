@@ -20,6 +20,18 @@ namespace flower
 		this->installEventFilter(this);
 		this->setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::West);
 
+		QImage image(":res/icons/rabbit.png");
+		auto w = image.width();
+		auto h = image.height();
+		auto bits = image.bits();
+		auto channel = image.bitPlaneCount() / 8;
+
+		profile_->markModule->width = w;
+		profile_->markModule->height = h;
+		profile_->markModule->channel = channel;
+		profile_->markModule->pixels.resize(w * h * 4);
+		std::memcpy(profile_->markModule->pixels.data(), bits, w * h * 4);
+
 		toplevelDock_ = std::make_unique<ToplevelBar>(behaviour_, profile_);
 		toolDock_ = std::make_unique<ToolDock>(gameApp_, behaviour_, profile_);
 		viewDock_ = std::make_unique<ViewDock>(gameApp_, behaviour_, profile_);

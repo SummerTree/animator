@@ -27,17 +27,7 @@ namespace flower
 		this->setWindowFlags(Qt::FramelessWindowHint);
 		this->installEventFilter(this);
 		
-		QImage image(":res/icons/rabbit.png");
-		auto w = image.width();
-		auto h = image.height();
-		auto bits = image.bits();
-		auto channel = image.bitPlaneCount() / 8;
 
-		profile_->markModule->width = w;
-		profile_->markModule->height = h;
-		profile_->markModule->channel = channel;
-		profile_->markModule->pixels.resize(w * h * 4);
-		std::memcpy(profile_->markModule->pixels.data(), bits, w * h * 4);
 
 		//titleBar_ = std::make_unique<TitleDock>(behaviour_, profile_);
 		//hideBar_ = std::make_unique<HideBar>(this);
@@ -46,7 +36,7 @@ namespace flower
 		lightWindow_ = std::make_unique<LightWindow>(profile_);
 		//sunWindow_ = std::make_unique<MainLightDock>(profile_);
 		//environmentWindow_ = std::make_unique<EnvironmentDock>(behaviour_, profile_);
-		recordWindow_ = std::make_unique<RecordWindow>(this, behaviour_);
+		//recordWindow_ = std::make_unique<RecordWindow>(this, behaviour_);
 		//materialWindow_ = std::make_unique<MaterialWindow>(this, behaviour_);
 
 		contextLayout_ = std::make_unique<QVBoxLayout>();
