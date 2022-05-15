@@ -35,6 +35,7 @@ namespace flower
 		toplevelDock_ = std::make_unique<ToplevelBar>(behaviour_, profile_);
 		toolDock_ = std::make_unique<ToolDock>(gameApp_, behaviour_, profile_);
 		viewDock_ = std::make_unique<ViewDock>(gameApp_, behaviour_, profile_);
+		recordDock_ = std::make_unique<RecordDock>(behaviour_, profile_);
 		mainLightDock_ = std::make_unique<MainLightDock>(behaviour_, profile_);
 		environmentDock_ = std::make_unique<EnvironmentDock>(behaviour_, profile_);
 		materialDock_ = std::make_unique<MaterialDock>(behaviour_);
@@ -47,6 +48,7 @@ namespace flower
 		this->addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, mainLightDock_.get());
 
 		this->tabifyDockWidget(mainLightDock_.get(), materialDock_.get());
+		this->tabifyDockWidget(mainLightDock_.get(), recordDock_.get());
 		this->tabifyDockWidget(mainLightDock_.get(), environmentDock_.get());
 
 		this->setCentralWidget(viewDock_.get());
@@ -54,6 +56,7 @@ namespace flower
 
 		environmentDock_->hide();
 		materialDock_->hide();
+		recordDock_->hide();
 
 		this->connect(&timer, SIGNAL(timeout()), this, SLOT(updateEvent()));
 
@@ -74,12 +77,14 @@ namespace flower
 		this->removeDockWidget(mainLightDock_.get());
 		this->removeDockWidget(environmentDock_.get());
 		this->removeDockWidget(materialDock_.get());
+		this->removeDockWidget(recordDock_.get());
 
 		toplevelDock_.reset();
 		toolDock_.reset();
 		viewDock_.reset();
 		mainLightDock_.reset();
 		environmentDock_.reset();
+		recordDock_.reset();
 		materialDock_.reset();
 	}
 
@@ -255,19 +260,12 @@ namespace flower
 			if (!profile_->playerModule->playing_ && !profile_->recordModule->active)
 			{
 				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
-				if (behaviour->isOpen())
+				if (behaviour)
 				{
-					/*if (recordWindow_->isHidden())
-					{
-						this->hideSliderWindow();
-						this->setFixedWidth(this->width() + recordWindow_->minimumWidth());
-						recordWindow_->show();
-					}
+					if (recordDock_->isHidden())
+						recordDock_->show();
 					else
-					{
-						recordWindow_->close();
-						this->setFixedWidth(this->width() - recordWindow_->width());
-					}*/
+						recordDock_->close();
 				}
 				else
 				{
@@ -305,15 +303,12 @@ namespace flower
 				{
 					if (environmentDock_->isHidden())
 					{
-						//this->hideSliderWindow();
-						//this->setMinimumWidth(this->width() + environmentDock_->minimumWidth());
 						environmentDock_->show();
 						environmentDock_->raise();
 					}
 					else
 					{
 						environmentDock_->close();
-						//this->setMinimumWidth(this->width() - environmentDock_->width());
 					}
 				}
 			}

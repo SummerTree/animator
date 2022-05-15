@@ -14,7 +14,7 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		ViewDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile) noexcept;
+		ViewDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
 		~ViewDock() noexcept;
 
 	private Q_SLOTS:

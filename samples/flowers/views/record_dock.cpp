@@ -1,4 +1,4 @@
-#include "record_window.h"
+#include "record_dock.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qevent.h>
@@ -79,22 +79,12 @@ namespace flower
 		QToolButton::mousePressEvent(event);
 	}
 
-	RecordWindow::RecordWindow(QWidget* parent, const octoon::GameObjectPtr& behaviour) noexcept
+	RecordDock::RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
 		: behaviour_(behaviour)
 		, timer_(new QTimer(this))
 	{
-		this->hide();
-		this->setObjectName("RecordWindow");
-		this->setWindowTitle(u8"选项");
-		this->setFixedWidth(340);
-		this->grabKeyboard();
-
-		title_ = new QLabel();
-		title_->setText(u8"渲染");
-
-		closeButton_ = new QToolButton();
-		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(tr("Close"));
+		this->setObjectName("RecordDock");
+		this->setWindowTitle(u8"录制");
 
 		markButton_ = new QToolButton();
 		markButton_->setObjectName("mark");
@@ -268,14 +258,6 @@ namespace flower
 		focalDistanceSpinbox_->setFixedWidth(100);
 		focalDistanceSpinbox_->setSuffix(u8"m");
 
-		auto titleLayout = new QHBoxLayout();
-		titleLayout->addSpacing(closeButton_->iconSize().width());
-		titleLayout->addStretch();
-		titleLayout->addWidget(title_, 0, Qt::AlignCenter);
-		titleLayout->addStretch();
-		titleLayout->addWidget(closeButton_, 0, Qt::AlignRight);
-		titleLayout->setContentsMargins(0, 0, 0, 0);
-
 		videoRatioLayout_ = new QHBoxLayout();
 		videoRatioLayout_->addStretch();
 		videoRatioLayout_->addWidget(speed1_, 0, Qt::AlignRight);
@@ -355,7 +337,7 @@ namespace flower
 		infoSpoiler_ = new Spoiler(u8"视频信息");
 		infoSpoiler_->setContentLayout(*infoLayout);
 
-		auto contentLayout = new QVBoxLayout(this);
+		auto contentLayout = new QVBoxLayout();
 		contentLayout->addWidget(cameraSpoiler_);
 		contentLayout->addWidget(videoSpoiler_);
 		contentLayout->addWidget(markSpoiler_);
@@ -370,14 +352,17 @@ namespace flower
 		contentWidgetArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		contentWidgetArea_->setWidgetResizable(true);
 
-		mainLayout_ = new QVBoxLayout(this);
-		mainLayout_->addLayout(titleLayout);
+		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addWidget(contentWidgetArea_);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(recordButton_, 0, Qt::AlignCenter);
-		mainLayout_->setContentsMargins(0, 10, 2, 10);
+		mainLayout_->setContentsMargins(0, 0, 0, 10);
 
-		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeEvent()));
+		mainWidget_ = new QWidget;
+		mainWidget_->setLayout(mainLayout_);
+
+		this->setWidget(mainWidget_);
+
 		connect(recordButton_, SIGNAL(clicked()), this, SLOT(clickEvent()));
 		connect(select1_, SIGNAL(toggled(bool)), this, SLOT(select1Event(bool)));
 		connect(select2_, SIGNAL(toggled(bool)), this, SLOT(select2Event(bool)));
@@ -395,12 +380,12 @@ namespace flower
 		connect(timer_, SIGNAL(timeout()), this, SLOT(timeEvent()));
 	}
 
-	RecordWindow::~RecordWindow() noexcept
+	RecordDock::~RecordDock() noexcept
 	{
 	}
 
 	void
-	RecordWindow::startRecord(QString fileName)
+	RecordDock::startRecord(QString fileName)
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -426,7 +411,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::stopRecord()
+	RecordDock::stopRecord()
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -440,7 +425,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::updateTarget()
+	RecordDock::updateTarget()
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -468,7 +453,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::onSppChanged(int value)
+	RecordDock::onSppChanged(int value)
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -476,7 +461,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::onBouncesChanged(int value)
+	RecordDock::onBouncesChanged(int value)
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -484,7 +469,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::onCrfChanged(double value)
+	RecordDock::onCrfChanged(double value)
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -492,7 +477,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::onApertureChanged(double value)
+	RecordDock::onApertureChanged(double value)
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -500,7 +485,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::onFocalDistanceChanged(double value)
+	RecordDock::onFocalDistanceChanged(double value)
 	{
 		if (!focalDistanceSpinbox_->specialValueText().isEmpty())
 		{
@@ -519,31 +504,23 @@ namespace flower
 	}
 
 	void
-	RecordWindow::showEvent(QShowEvent* event)
+	RecordDock::showEvent(QShowEvent* event)
 	{
 		this->repaint();
 	}
 
 	void
-	RecordWindow::resizeEvent(QResizeEvent* e) noexcept
+	RecordDock::resizeEvent(QResizeEvent* e) noexcept
 	{
 		contentWidgetArea_->setFixedHeight(
-			e->size().height() - 
+			mainWidget_->size().height() -
 			this->recordButton_->height() - 
-			this->closeButton_->height() - 
 			mainLayout_->contentsMargins().bottom() * 2 -
 			mainLayout_->contentsMargins().top() * 2);
 	}
 
 	void
-	RecordWindow::closeEvent()
-	{
-		this->close();
-		parentWidget()->setFixedWidth(parentWidget()->width() - this->width());
-	}
-
-	void
-	RecordWindow::clickEvent()
+	RecordDock::clickEvent()
 	{
 		VideoQuality quality = VideoQuality::Medium;
 		if (select1_->isChecked())
@@ -570,19 +547,19 @@ namespace flower
 	}
 
 	void
-	RecordWindow::select1Event(bool checked)
+	RecordDock::select1Event(bool checked)
 	{
 		this->update();
 	}
 	
 	void
-	RecordWindow::select2Event(bool checked)
+	RecordDock::select2Event(bool checked)
 	{
 		this->update();
 	}
 
 	void
-	RecordWindow::speed1Event(bool checked)
+	RecordDock::speed1Event(bool checked)
 	{
 		if (checked)
 		{
@@ -595,7 +572,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::speed2Event(bool checked)
+	RecordDock::speed2Event(bool checked)
 	{
 		if (checked)
 		{
@@ -608,7 +585,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::speed3Event(bool checked)
+	RecordDock::speed3Event(bool checked)
 	{
 		if (checked)
 		{
@@ -621,7 +598,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::speed4Event(bool checked)
+	RecordDock::speed4Event(bool checked)
 	{
 		if (checked)
 		{
@@ -634,7 +611,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::startEvent(int value)
+	RecordDock::startEvent(int value)
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -645,7 +622,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::endEvent(int value)
+	RecordDock::endEvent(int value)
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -656,7 +633,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::timeEvent()
+	RecordDock::timeEvent()
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -671,7 +648,7 @@ namespace flower
 	}
 
 	void
-	RecordWindow::update()
+	RecordDock::update()
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)
@@ -701,7 +678,7 @@ namespace flower
 	}
 
 	void 
-	RecordWindow::repaint()
+	RecordDock::repaint()
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour)

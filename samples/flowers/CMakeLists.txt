@@ -71,6 +71,10 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/tool_dock.cpp
 	${SOURCE_PATH}/views/status_bar.h
 	${SOURCE_PATH}/views/status_bar.cpp
+	${SOURCE_PATH}/views/record_dock.h
+	${SOURCE_PATH}/views/record_dock.cpp
+	${SOURCE_PATH}/views/material_dock.h
+	${SOURCE_PATH}/views/material_dock.cpp
 	${SOURCE_PATH}/views/light_window.h
 	${SOURCE_PATH}/views/light_window.cpp
 	${SOURCE_PATH}/views/color_dialog.h
@@ -85,10 +89,6 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/login_window.cpp
 	${SOURCE_PATH}/views/info_window.h
 	${SOURCE_PATH}/views/info_window.cpp
-	${SOURCE_PATH}/views/record_window.h
-	${SOURCE_PATH}/views/record_window.cpp
-	${SOURCE_PATH}/views/material_dock.h
-	${SOURCE_PATH}/views/material_dock.cpp
 	${SOURCE_PATH}/views/spoiler.h
 	${SOURCE_PATH}/views/spoiler.cpp
 )

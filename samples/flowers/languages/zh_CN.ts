@@ -9,39 +9,39 @@
         <translation>花楹渲染器(内测版本)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="171"/>
-        <location filename="../views/main_dock.cpp" line="218"/>
-        <location filename="../views/main_dock.cpp" line="263"/>
-        <location filename="../views/main_dock.cpp" line="311"/>
-        <location filename="../views/main_dock.cpp" line="358"/>
+        <location filename="../views/main_dock.cpp" line="188"/>
+        <location filename="../views/main_dock.cpp" line="235"/>
+        <location filename="../views/main_dock.cpp" line="273"/>
+        <location filename="../views/main_dock.cpp" line="318"/>
+        <location filename="../views/main_dock.cpp" line="365"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="172"/>
-        <location filename="../views/main_dock.cpp" line="264"/>
+        <location filename="../views/main_dock.cpp" line="189"/>
+        <location filename="../views/main_dock.cpp" line="274"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="219"/>
-        <location filename="../views/main_dock.cpp" line="312"/>
-        <location filename="../views/main_dock.cpp" line="359"/>
+        <location filename="../views/main_dock.cpp" line="236"/>
+        <location filename="../views/main_dock.cpp" line="319"/>
+        <location filename="../views/main_dock.cpp" line="366"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="182"/>
-        <location filename="../views/main_dock.cpp" line="229"/>
-        <location filename="../views/main_dock.cpp" line="275"/>
-        <location filename="../views/main_dock.cpp" line="322"/>
-        <location filename="../views/main_dock.cpp" line="369"/>
-        <location filename="../views/main_dock.cpp" line="393"/>
+        <location filename="../views/main_dock.cpp" line="199"/>
+        <location filename="../views/main_dock.cpp" line="246"/>
+        <location filename="../views/main_dock.cpp" line="285"/>
+        <location filename="../views/main_dock.cpp" line="329"/>
+        <location filename="../views/main_dock.cpp" line="376"/>
+        <location filename="../views/main_dock.cpp" line="400"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="394"/>
+        <location filename="../views/main_dock.cpp" line="401"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation></translation>
     </message>
@@ -365,7 +365,7 @@ $20 (Original cost $40)</source>
         <translation type="vanished">打开项目</translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="155"/>
+        <location filename="../views/main_window.cpp" line="145"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -382,7 +382,7 @@ $20 (Original cost $40)</source>
         <translation type="vanished">保存图像</translation>
     </message>
     <message>
-        <location filename="../views/main_window.cpp" line="156"/>
+        <location filename="../views/main_window.cpp" line="146"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -538,21 +538,31 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::RecordWindow</name>
+    <name>flower::RecordDock</name>
     <message>
-        <location filename="../views/record_window.cpp" line="97"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation type="obsolete">关闭</translation>
     </message>
     <message>
-        <location filename="../views/record_window.cpp" line="418"/>
+        <location filename="../views/record_dock.cpp" line="403"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/record_window.cpp" line="561"/>
+        <location filename="../views/record_dock.cpp" line="538"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::RecordWindow</name>
+    <message>
+        <source>Close</source>
+        <translation type="obsolete">关闭</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="obsolete">错误</translation>
     </message>
 </context>
 <context>

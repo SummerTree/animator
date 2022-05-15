@@ -1,7 +1,7 @@
-#ifndef FLOWER_RECORD_WINDOW_H_
-#define FLOWER_RECORD_WINDOW_H_
+#ifndef FLOWER_RECORD_DOCK_H_
+#define FLOWER_RECORD_DOCK_H_
 
-#include <qwidget>
+#include <qdockwidget.h>
 #include <qdialog.h>
 #include <qboxlayout.h>
 #include <qradiobutton.h>
@@ -33,12 +33,12 @@ namespace flower
 		QPoint startPos;
 	};
 	
-	class RecordWindow final : public QWidget
+	class RecordDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		RecordWindow(QWidget* parent, const octoon::GameObjectPtr& behaviour) noexcept;
-		~RecordWindow() noexcept;
+		RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
+		~RecordDock() noexcept;
 
 		void update();
 		void repaint();
@@ -52,8 +52,6 @@ namespace flower
 		void resizeEvent(QResizeEvent* e) noexcept override;
 
 	private Q_SLOTS:
-
-		void closeEvent();
 		void clickEvent();
 		void select1Event(bool checked);
 		void select2Event(bool checked);
@@ -71,7 +69,6 @@ namespace flower
 		void onFocalDistanceChanged(double);
 
 	public:
-		QLabel* title_;
 		QLabel* quality_;
 		QLabel* videoRatio_;
 		QLabel* frame_;
@@ -99,7 +96,6 @@ namespace flower
 		QToolButton* speed3_;
 		QToolButton* speed4_;
 		QToolButton* recordButton_;
-		QToolButton* closeButton_;
 		QToolButton* markButton_;
 		QToolButton* focalTargetButton_;
 
@@ -116,6 +112,8 @@ namespace flower
 		QHBoxLayout* frameLayout_;
 		QVBoxLayout* mainLayout_;
 		QTimer* timer_;
+
+		QWidget* mainWidget_;
 
 		Spoiler* markSpoiler_;
 		Spoiler* cameraSpoiler_;

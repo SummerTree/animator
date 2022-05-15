@@ -13,7 +13,7 @@
 #include "light_window.h"
 #include "login_window.h"
 #include "info_window.h"
-#include "record_window.h"
+#include "record_dock.h"
 #include "material_dock.h"
 
 namespace flower
@@ -52,7 +52,7 @@ namespace flower
 		std::unique_ptr<EnvironmentDock> environmentWindow_;
 		std::unique_ptr<LoginWindow> loginWindow_;
 		std::unique_ptr<InfoWindow> infoWindow_;
-		std::unique_ptr<RecordWindow> recordWindow_;
+		std::unique_ptr<RecordDock> recordWindow_;
 		std::unique_ptr<MaterialDock> materialWindow_;
 
 		std::unique_ptr<QHBoxLayout> mainLayout_;
