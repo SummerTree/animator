@@ -14,7 +14,7 @@ namespace flower
 	void
 	OfflineModule::reset() noexcept
 	{
-		this->bounces = 3;
+		this->bounces = 5;
 		this->setEnable(false);
 	}
 
