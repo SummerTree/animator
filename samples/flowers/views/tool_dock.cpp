@@ -3,6 +3,8 @@
 #include <qmessagebox.h>
 #include <qfiledialog.h>
 #include <qmimedata.h>
+#include <qprogressdialog.h>
+#include <QtConcurrent/qtconcurrentrun.h>
 
 namespace flower
 {
@@ -145,7 +147,37 @@ namespace flower
 					{
 						try
 						{
-							behaviour->open(fileName.toUtf8().data());
+							// load task
+							auto fn = [&]() {
+								behaviour->open(fileName.toUtf8().data());
+							};
+							QFuture<void> fu = QtConcurrent::run(fn);
+
+							// progress dialog
+							QProgressDialog dialog(tr("Opening"), tr("Cancel"), 0, 2000, this);
+							dialog.setWindowTitle(tr("Open Progress"));
+							dialog.setWindowModality(Qt::WindowModal);
+							dialog.show();
+							for (int i = 0; i < 1900; i++)
+							{
+								dialog.setValue(i);
+								QCoreApplication::processEvents();
+								if (dialog.wasCanceled())
+									break;
+							}
+							
+							// wait finish
+							fu.waitForFinished();
+
+							// left progress
+							for (int i = 1900; i < 2000; i++)
+							{
+								dialog.setValue(i);
+								QCoreApplication::processEvents();
+								if (dialog.wasCanceled())
+									break;
+							}
+							dialog.setValue(2000);
 						}
 						catch (const std::exception& e)
 						{
