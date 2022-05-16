@@ -188,7 +188,7 @@ namespace flower
 	{
 		try
 		{
-			if (behaviour_ && !profile_->playerModule->playing_)
+			if (!profile_->playerModule->playing_)
 			{
 				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 				if (behaviour->isOpen())

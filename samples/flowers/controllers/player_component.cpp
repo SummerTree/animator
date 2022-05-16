@@ -232,7 +232,7 @@ namespace flower
 	PlayerComponent::sample(float delta) noexcept
 	{
 		auto& model = this->getModel();
-		model->curTime += delta;
+		model->curTime = std::max(0.0f, model->curTime + delta);
 
 		auto sound = this->getContext()->profile->entitiesModule->sound;
 		if (sound)
@@ -288,7 +288,7 @@ namespace flower
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
 		{
-			physicsFeature->simulate(delta);
+			physicsFeature->simulate(std::abs(delta));
 			physicsFeature->setEnableSimulate(true);
 		}
 
