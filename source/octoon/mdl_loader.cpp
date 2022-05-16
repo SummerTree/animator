@@ -122,7 +122,7 @@ namespace octoon
 		if (!canvas)
 			return;
 		// Convert normal values from the interval [-1.0,1.0] to [0.0, 1.0]
-		mi::base::Handle<mi::neuraylib::ITile> tile(canvas->get_tile(0, 0));
+		mi::base::Handle<mi::neuraylib::ITile> tile(canvas->get_tile(0));
 		mi::Float32* data = static_cast<mi::Float32*>(tile->get_data());
 
 		const mi::Uint32 n = canvas->get_resolution_x() * canvas->get_resolution_y() * 3;
@@ -251,7 +251,7 @@ namespace octoon
 			ii->get_interface<mi::neuraylib::ICanvas>());
 		if (canvas)
 		{
-			mi::base::Handle<mi::neuraylib::ITile> tile(canvas->get_tile(0, 0));
+			mi::base::Handle<mi::neuraylib::ITile> tile(canvas->get_tile(0));
 			mi::Float32* data = static_cast<mi::Float32*>(tile->get_data());
 
 			const mi::Uint32 n = canvas->get_resolution_x() * canvas->get_resolution_y();
