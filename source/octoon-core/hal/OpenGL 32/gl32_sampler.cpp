@@ -28,20 +28,20 @@ namespace octoon
 				return false;
 			}
 
-			GraphicsSamplerWrap wrap = samplerDesc.getSamplerWrap();
-			if (GraphicsSamplerWrap::Repeat == wrap)
+			SamplerWrap wrap = samplerDesc.getSamplerWrap();
+			if (SamplerWrap::Repeat == wrap)
 			{
 				glSamplerParameteri(_sampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
 				glSamplerParameteri(_sampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
 				glSamplerParameteri(_sampler, GL_TEXTURE_WRAP_R, GL_REPEAT);
 			}
-			else if (GraphicsSamplerWrap::ClampToEdge == wrap)
+			else if (SamplerWrap::ClampToEdge == wrap)
 			{
 				glSamplerParameteri(_sampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 				glSamplerParameteri(_sampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 				glSamplerParameteri(_sampler, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 			}
-			else if (GraphicsSamplerWrap::Mirror == wrap)
+			else if (SamplerWrap::Mirror == wrap)
 			{
 				glSamplerParameteri(_sampler, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 				glSamplerParameteri(_sampler, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);

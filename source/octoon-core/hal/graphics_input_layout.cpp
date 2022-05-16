@@ -7,18 +7,18 @@ namespace octoon
 		OctoonImplementSubInterface(GraphicsInputLayout, GraphicsChild, "GraphicsInputLayoutDesc")
 
 		GraphicsVertexBinding::GraphicsVertexBinding() noexcept
-			: _divisor(GraphicsVertexDivisor::Vertex)
+			: _divisor(VertexAttribDivisor::Vertex)
 		{
 		}
 
 		GraphicsVertexBinding::GraphicsVertexBinding(std::uint8_t slot, std::uint16_t size) noexcept
 			: _slot(slot)
 			, _size(size)
-			, _divisor(GraphicsVertexDivisor::Vertex)
+			, _divisor(VertexAttribDivisor::Vertex)
 		{
 		}
 
-		GraphicsVertexBinding::GraphicsVertexBinding(std::uint8_t slot, std::uint16_t size, GraphicsVertexDivisor divisor) noexcept
+		GraphicsVertexBinding::GraphicsVertexBinding(std::uint8_t slot, std::uint16_t size, VertexAttribDivisor divisor) noexcept
 			: _slot(slot)
 			, _size(size)
 			, _divisor(divisor)
@@ -54,12 +54,12 @@ namespace octoon
 		}
 
 		void
-		GraphicsVertexBinding::setVertexDivisor(GraphicsVertexDivisor divisor) noexcept
+		GraphicsVertexBinding::setVertexDivisor(VertexAttribDivisor divisor) noexcept
 		{
 			_divisor = divisor;
 		}
 
-		GraphicsVertexDivisor
+		VertexAttribDivisor
 		GraphicsVertexBinding::getVertexDivisor() const noexcept
 		{
 			return _divisor;

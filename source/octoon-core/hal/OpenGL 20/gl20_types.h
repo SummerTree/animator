@@ -293,24 +293,24 @@ namespace octoon
 		public:
 			static bool setup() noexcept;
 
-			static GLenum asVertexType(GraphicsVertexType type) noexcept;
+			static GLenum asVertexType(VertexType type) noexcept;
 			static GLenum asVertexFormat(GraphicsFormat format) noexcept;
-			static GLenum asIndexType(GraphicsIndexType type) noexcept;
-			static GLenum asShaderStage(GraphicsShaderStageFlags stage) noexcept;
-			static GLenum asTextureTarget(GraphicsTextureDim dim) noexcept;
+			static GLenum asIndexType(IndexFormat type) noexcept;
+			static GLenum asShaderStage(ShaderStageFlags stage) noexcept;
+			static GLenum asTextureTarget(TextureDimension dim) noexcept;
 			static GLenum asTextureFormat(GraphicsFormat format) noexcept;
 			static GLenum asTextureType(GraphicsFormat format) noexcept;
 			static GLenum asTextureInternalFormat(GraphicsFormat format) noexcept;
-			static GLenum asCompareFunction(GraphicsCompareFunc func) noexcept;
-			static GLenum asBlendFactor(GraphicsBlendFactor func) noexcept;
-			static GLenum asBlendOperation(GraphicsBlendOp op) noexcept;
-			static GLenum asCullMode(GraphicsCullMode mode) noexcept;
-			static GLenum asFrontFace(GraphicsFrontFace face) noexcept;
-			static GLenum asFillMode(GraphicsPolygonMode mode) noexcept;
-			static GLenum asStencilOperation(GraphicsStencilOp stencilop) noexcept;
-			static GLenum asSamplerWrap(GraphicsSamplerWrap wrap) noexcept;
-			static GLenum asSamplerMinFilter(GraphicsSamplerFilter filter) noexcept;
-			static GLenum asSamplerMagFilter(GraphicsSamplerFilter filter) noexcept;
+			static GLenum asCompareFunction(CompareFunction func) noexcept;
+			static GLenum asBlendFactor(BlendMode func) noexcept;
+			static GLenum asBlendOperation(BlendOp op) noexcept;
+			static GLenum asCullMode(CullMode mode) noexcept;
+			static GLenum asFrontFace(FrontFace face) noexcept;
+			static GLenum asFillMode(PolygonMode mode) noexcept;
+			static GLenum asStencilOperation(StencilOp stencilop) noexcept;
+			static GLenum asSamplerWrap(SamplerWrap wrap) noexcept;
+			static GLenum asSamplerMinFilter(SamplerFilter filter) noexcept;
+			static GLenum asSamplerMagFilter(SamplerFilter filter) noexcept;
 
 			static GLsizei getFormatNum(GLenum format, GLenum type) noexcept;
 			static GLsizei getCompressedTextureSize(GLsizei width, GLsizei height, GLsizei depth, GLenum internalFormat) noexcept;

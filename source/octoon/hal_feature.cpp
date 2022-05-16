@@ -146,7 +146,7 @@ namespace octoon
 	{
 		context_->renderBegin();
 		context_->setFramebuffer(nullptr);
-		context_->clearFramebuffer(0, hal::GraphicsClearFlagBits::AllBit, math::float4::Zero, 1.0, 0);
+		context_->clearFramebuffer(0, hal::ClearFlagBits::AllBit, math::float4::Zero, 1.0, 0);
 	}
 
 	void

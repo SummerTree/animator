@@ -10,8 +10,8 @@ namespace flower
 		{
 			octoon::hal::GraphicsColorBlend blend;
 			blend.setBlendEnable(true);
-			blend.setBlendSrc(octoon::hal::GraphicsBlendFactor::SrcAlpha);
-			blend.setBlendDest(octoon::hal::GraphicsBlendFactor::OneMinusSrcAlpha);
+			blend.setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
+			blend.setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
 
 			std::vector<octoon::hal::GraphicsColorBlend> blends;
 			blends.push_back(blend);
@@ -23,7 +23,7 @@ namespace flower
 			this->setColor(this->color_);
 			this->setDepthEnable(false);
 			this->setDepthWriteEnable(false);
-			this->setCullMode(octoon::hal::GraphicsCullMode::None);
+			this->setCullMode(octoon::hal::CullMode::Off);
 			this->setColorBlends(std::move(blends));
 			this->setOpacity(this->opacity_);
 		}
@@ -57,7 +57,7 @@ namespace flower
 		auto planeGeometry = octoon::PlaneMesh::create(50, 50);
 
 		auto material = std::make_shared<octoon::MeshBasicMaterial>();
-		material->setCullMode(octoon::hal::GraphicsCullMode::None);
+		material->setCullMode(octoon::hal::CullMode::Off);
 
 		auto XY = octoon::GameObject::create("XY");
 		XY->addComponent<octoon::MeshFilterComponent>(planeGeometry);

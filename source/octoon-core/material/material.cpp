@@ -19,29 +19,29 @@ namespace octoon
 		, _enableDepthBiasClamp(false)
 		, _enableStencil(false)
 		, _lineWidth(1.0f)
-		, _cullMode(hal::GraphicsCullMode::Back)
-		, _polygonMode(hal::GraphicsPolygonMode::Solid)
-		, _primitiveType(hal::GraphicsVertexType::TriangleList)
-		, _frontFace(hal::GraphicsFrontFace::CW)
+		, _cullMode(hal::CullMode::Back)
+		, _polygonMode(hal::PolygonMode::Solid)
+		, _primitiveType(hal::VertexType::TriangleList)
+		, _frontFace(hal::FrontFace::CW)
 		, _depthMin(0.0)
 		, _depthMax(1.0)
 		, _depthSlopeScaleBias(0)
 		, _depthBias(0)
-		, _depthFunc(hal::GraphicsCompareFunc::Lequal)
+		, _depthFunc(hal::CompareFunction::Lequal)
 		, _stencilFrontRef(0)
 		, _stencilBackRef(0)
 		, _stencilFrontReadMask(0xFFFFFFFF)
 		, _stencilFrontWriteMask(0xFFFFFFFF)
 		, _stencilBackReadMask(0xFFFFFFFF)
 		, _stencilBackWriteMask(0xFFFFFFFF)
-		, _stencilFrontFunc(hal::GraphicsCompareFunc::Always)
-		, _stencilBackFunc(hal::GraphicsCompareFunc::Always)
-		, _stencilFrontFail(hal::GraphicsStencilOp::Keep)
-		, _stencilFrontZFail(hal::GraphicsStencilOp::Keep)
-		, _stencilFrontPass(hal::GraphicsStencilOp::Keep)
-		, _stencilBackFail(hal::GraphicsStencilOp::Keep)
-		, _stencilBackZFail(hal::GraphicsStencilOp::Keep)
-		, _stencilBackPass(hal::GraphicsStencilOp::Keep)
+		, _stencilFrontFunc(hal::CompareFunction::Always)
+		, _stencilBackFunc(hal::CompareFunction::Always)
+		, _stencilFrontFail(hal::StencilOp::Keep)
+		, _stencilFrontZFail(hal::StencilOp::Keep)
+		, _stencilFrontPass(hal::StencilOp::Keep)
+		, _stencilBackFail(hal::StencilOp::Keep)
+		, _stencilBackZFail(hal::StencilOp::Keep)
+		, _stencilBackPass(hal::StencilOp::Keep)
 		, dirty_(true)
 	{
 	}
@@ -556,25 +556,25 @@ namespace octoon
 	}
 
 	void
-	Material::setCullMode(hal::GraphicsCullMode mode) noexcept
+	Material::setCullMode(hal::CullMode mode) noexcept
 	{
 		_cullMode = mode;
 	}
 
 	void
-	Material::setPolygonMode(hal::GraphicsPolygonMode mode) noexcept
+	Material::setPolygonMode(hal::PolygonMode mode) noexcept
 	{
 		_polygonMode = mode;
 	}
 
 	void
-	Material::setPrimitiveType(hal::GraphicsVertexType type) noexcept
+	Material::setPrimitiveType(hal::VertexType type) noexcept
 	{
 		_primitiveType = type;
 	}
 
 	void
-	Material::setFrontFace(hal::GraphicsFrontFace face) noexcept
+	Material::setFrontFace(hal::FrontFace face) noexcept
 	{
 		_frontFace = face;
 	}
@@ -640,7 +640,7 @@ namespace octoon
 	}
 
 	void
-	Material::setDepthFunc(hal::GraphicsCompareFunc func) noexcept
+	Material::setDepthFunc(hal::CompareFunction func) noexcept
 	{
 		_depthFunc = func;
 	}
@@ -688,7 +688,7 @@ namespace octoon
 	}
 
 	void
-	Material::setStencilFrontFunc(hal::GraphicsCompareFunc func) noexcept
+	Material::setStencilFrontFunc(hal::CompareFunction func) noexcept
 	{
 		_stencilFrontFunc = func;
 	}
@@ -706,19 +706,19 @@ namespace octoon
 	}
 
 	void
-	Material::setStencilFrontFail(hal::GraphicsStencilOp stencilOp) noexcept
+	Material::setStencilFrontFail(hal::StencilOp stencilOp) noexcept
 	{
 		_stencilFrontFail = stencilOp;
 	}
 
 	void
-	Material::setStencilFrontZFail(hal::GraphicsStencilOp stencilOp) noexcept
+	Material::setStencilFrontZFail(hal::StencilOp stencilOp) noexcept
 	{
 		_stencilFrontZFail = stencilOp;
 	}
 
 	void
-	Material::setStencilFrontPass(hal::GraphicsStencilOp stencilOp) noexcept
+	Material::setStencilFrontPass(hal::StencilOp stencilOp) noexcept
 	{
 		_stencilFrontPass = stencilOp;
 	}
@@ -730,7 +730,7 @@ namespace octoon
 	}
 
 	void
-	Material::setStencilBackFunc(hal::GraphicsCompareFunc func) noexcept
+	Material::setStencilBackFunc(hal::CompareFunction func) noexcept
 	{
 		_stencilBackFunc = func;
 	}
@@ -748,42 +748,42 @@ namespace octoon
 	}
 
 	void
-	Material::setStencilBackFail(hal::GraphicsStencilOp stencilOp) noexcept
+	Material::setStencilBackFail(hal::StencilOp stencilOp) noexcept
 	{
 		_stencilBackFail = stencilOp;
 	}
 
 	void
-	Material::setStencilBackZFail(hal::GraphicsStencilOp stencilOp) noexcept
+	Material::setStencilBackZFail(hal::StencilOp stencilOp) noexcept
 	{
 		_stencilBackZFail = stencilOp;
 	}
 
 	void
-	Material::setStencilBackPass(hal::GraphicsStencilOp stencilOp) noexcept
+	Material::setStencilBackPass(hal::StencilOp stencilOp) noexcept
 	{
 		_stencilBackPass = stencilOp;
 	}
 
-	hal::GraphicsCullMode
+	hal::CullMode
 	Material::getCullMode() const noexcept
 	{
 		return _cullMode;
 	}
 
-	hal::GraphicsPolygonMode
+	hal::PolygonMode
 	Material::getPolygonMode() const noexcept
 	{
 		return _polygonMode;
 	}
 
-	hal::GraphicsVertexType
+	hal::VertexType
 	Material::getPrimitiveType() const noexcept
 	{
 		return _primitiveType;
 	}
 
-	hal::GraphicsFrontFace
+	hal::FrontFace
 	Material::getFrontFace() const noexcept
 	{
 		return _frontFace;
@@ -849,7 +849,7 @@ namespace octoon
 		return _depthMax;
 	}
 
-	hal::GraphicsCompareFunc
+	hal::CompareFunction
 	Material::getDepthFunc() const noexcept
 	{
 		return _depthFunc;
@@ -897,7 +897,7 @@ namespace octoon
 		return _stencilFrontRef;
 	}
 
-	hal::GraphicsCompareFunc
+	hal::CompareFunction
 	Material::getStencilFrontFunc() const noexcept
 	{
 		return _stencilFrontFunc;
@@ -915,19 +915,19 @@ namespace octoon
 		return _stencilFrontWriteMask;
 	}
 
-	hal::GraphicsStencilOp
+	hal::StencilOp
 	Material::getStencilFrontFail() const noexcept
 	{
 		return _stencilFrontFail;
 	}
 
-	hal::GraphicsStencilOp
+	hal::StencilOp
 	Material::getStencilFrontZFail() const noexcept
 	{
 		return _stencilFrontZFail;
 	}
 
-	hal::GraphicsStencilOp
+	hal::StencilOp
 	Material::getStencilFrontPass() const noexcept
 	{
 		return _stencilFrontPass;
@@ -939,7 +939,7 @@ namespace octoon
 		return _stencilBackRef;
 	}
 
-	hal::GraphicsCompareFunc
+	hal::CompareFunction
 	Material::getStencilBackFunc() const noexcept
 	{
 		return _stencilBackFunc;
@@ -957,19 +957,19 @@ namespace octoon
 		return _stencilBackWriteMask;
 	}
 
-	hal::GraphicsStencilOp
+	hal::StencilOp
 	Material::getStencilBackFail() const noexcept
 	{
 		return _stencilBackFail;
 	}
 
-	hal::GraphicsStencilOp
+	hal::StencilOp
 	Material::getStencilBackZFail() const noexcept
 	{
 		return _stencilBackZFail;
 	}
 
-	hal::GraphicsStencilOp
+	hal::StencilOp
 	Material::getStencilBackPass() const noexcept
 	{
 		return _stencilBackPass;

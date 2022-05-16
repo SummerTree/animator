@@ -45,10 +45,10 @@ namespace octoon
 					destBlend.setBlendEnable(false);
 				}
 
-				if (destBlend.getColorWriteMask() != GraphicsColorMaskFlagBits::RGBABit)
+				if (destBlend.getColorWriteMask() != ColorWriteMask::RGBABit)
 				{
 					glColorMaski(i, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-					destBlend.setColorWriteMask(GraphicsColorMaskFlagBits::RGBABit);
+					destBlend.setColorWriteMask(ColorWriteMask::RGBABit);
 				}
 			}
 
@@ -122,10 +122,10 @@ namespace octoon
 				{
 					auto flags = srcBlend.getColorWriteMask();
 
-					GLboolean r = flags & GraphicsColorMaskFlagBits::RedBit ? GL_TRUE : GL_FALSE;
-					GLboolean g = flags & GraphicsColorMaskFlagBits::GreendBit ? GL_TRUE : GL_FALSE;
-					GLboolean b = flags & GraphicsColorMaskFlagBits::BlurBit ? GL_TRUE : GL_FALSE;
-					GLboolean a = flags & GraphicsColorMaskFlagBits::AlphaBit ? GL_TRUE : GL_FALSE;
+					GLboolean r = flags & ColorWriteMask::RedBit ? GL_TRUE : GL_FALSE;
+					GLboolean g = flags & ColorWriteMask::GreendBit ? GL_TRUE : GL_FALSE;
+					GLboolean b = flags & ColorWriteMask::BlurBit ? GL_TRUE : GL_FALSE;
+					GLboolean a = flags & ColorWriteMask::AlphaBit ? GL_TRUE : GL_FALSE;
 
 					glColorMaski(i, r, g, b, a);
 
@@ -135,7 +135,7 @@ namespace octoon
 
 			if (lastStateDesc.getCullMode() != _stateDesc.getCullMode())
 			{
-				if (_stateDesc.getCullMode() != GraphicsCullMode::None)
+				if (_stateDesc.getCullMode() != CullMode::Off)
 				{
 					GLenum mode = GL33Types::asCullMode(_stateDesc.getCullMode());
 		#if _DEBUG
@@ -154,7 +154,7 @@ namespace octoon
 				else
 				{
 					glDisable(GL_CULL_FACE);
-					lastStateDesc.setCullMode(GraphicsCullMode::None);
+					lastStateDesc.setCullMode(CullMode::Off);
 				}
 			}
 

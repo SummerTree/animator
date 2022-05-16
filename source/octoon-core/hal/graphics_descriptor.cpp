@@ -41,12 +41,12 @@ namespace octoon
 		}
 
 		GraphicsDescriptorPoolComponent::GraphicsDescriptorPoolComponent() noexcept
-			: _type(GraphicsUniformType::Null)
+			: _type(UniformAttributeFormat::Null)
 			, _descriptorNums(0)
 		{
 		}
 
-		GraphicsDescriptorPoolComponent::GraphicsDescriptorPoolComponent(GraphicsUniformType type, std::uint32_t nums) noexcept
+		GraphicsDescriptorPoolComponent::GraphicsDescriptorPoolComponent(UniformAttributeFormat type, std::uint32_t nums) noexcept
 			: _type(type)
 			, _descriptorNums(nums)
 		{
@@ -57,12 +57,12 @@ namespace octoon
 		}
 
 		void
-		GraphicsDescriptorPoolComponent::setDescriptorType(GraphicsUniformType type) noexcept
+		GraphicsDescriptorPoolComponent::setDescriptorType(UniformAttributeFormat type) noexcept
 		{
 			_type = type;
 		}
 
-		GraphicsUniformType
+		UniformAttributeFormat
 		GraphicsDescriptorPoolComponent::getDescriptorType() const noexcept
 		{
 			return _type;

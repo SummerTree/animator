@@ -23,12 +23,12 @@ namespace octoon
 
 		void setClearColor(const math::float4& color) noexcept;
 		void setViewport(const math::float4& viewport) noexcept;
-		void setClearFlags(hal::GraphicsClearFlags clearflags) noexcept;
+		void setClearFlags(hal::ClearFlags clearflags) noexcept;
 		void setCameraType(CameraType type) noexcept;
 		void setFramebuffer(const hal::GraphicsFramebufferPtr& framebuffer) noexcept;
 
 		CameraType getCameraType() const noexcept;
-		hal::GraphicsClearFlags getClearFlags() const noexcept;
+		hal::ClearFlags getClearFlags() const noexcept;
 		hal::GraphicsFramebufferPtr getFramebuffer() const noexcept;
 
 		math::float3 worldToScreen(const math::float3& pos) const noexcept;

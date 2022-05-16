@@ -35,7 +35,7 @@ namespace octoon
 	}
 
 	void
-	CameraComponent::setClearFlags(hal::GraphicsClearFlags clearflags) noexcept
+	CameraComponent::setClearFlags(hal::ClearFlags clearflags) noexcept
 	{
 		camera_->setClearFlags(clearflags);
 	}
@@ -79,7 +79,7 @@ namespace octoon
 		return cameraType_;
 	}
 
-	hal::GraphicsClearFlags
+	hal::ClearFlags
 	CameraComponent::getClearFlags() const noexcept
 	{
 		return camera_->getClearFlags();

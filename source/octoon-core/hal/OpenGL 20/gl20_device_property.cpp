@@ -211,12 +211,12 @@ namespace octoon
 		bool
 		GL20DeviceProperty::initTextureDimSupports() noexcept
 		{
-			_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture2D);
-			_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture2DArray);
-			_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Cube);
+			_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture2D);
+			_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture2DArray);
+			_deviceProperties.supportTextureDims.push_back(TextureDimension::Cube);
 
 			if (GL20Types::isSupportFeature(GL20Features::GL20_EXT_texture_cube_map_array))
-				_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::CubeArray);
+				_deviceProperties.supportTextureDims.push_back(TextureDimension::CubeArray);
 
 			return true;
 		}
@@ -287,8 +287,8 @@ namespace octoon
 		bool
 		GL20DeviceProperty::initShaderSupports() noexcept
 		{
-			_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::VertexBit);
-			_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::FragmentBit);
+			_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::VertexBit);
+			_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::FragmentBit);
 			return true;
 		}
 	}

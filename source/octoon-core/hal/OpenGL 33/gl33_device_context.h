@@ -26,14 +26,14 @@ namespace octoon
 			void setScissor(std::uint32_t i, const uint4& scissor) noexcept;
 			const uint4& getScissor(std::uint32_t i) const noexcept;
 
-			void setStencilCompareMask(GraphicsStencilFaceFlags face, std::uint32_t mask) noexcept;
-			std::uint32_t getStencilCompareMask(GraphicsStencilFaceFlags face) noexcept;
+			void setStencilCompareMask(StencilFaceFlags face, std::uint32_t mask) noexcept;
+			std::uint32_t getStencilCompareMask(StencilFaceFlags face) noexcept;
 
-			void setStencilReference(GraphicsStencilFaceFlags face, std::uint32_t reference) noexcept;
-			std::uint32_t getStencilReference(GraphicsStencilFaceFlags face) noexcept;
+			void setStencilReference(StencilFaceFlags face, std::uint32_t reference) noexcept;
+			std::uint32_t getStencilReference(StencilFaceFlags face) noexcept;
 
-			void setStencilWriteMask(GraphicsStencilFaceFlags face, std::uint32_t mask) noexcept;
-			std::uint32_t getStencilWriteMask(GraphicsStencilFaceFlags face) noexcept;
+			void setStencilWriteMask(StencilFaceFlags face, std::uint32_t mask) noexcept;
+			std::uint32_t getStencilWriteMask(StencilFaceFlags face) noexcept;
 
 			void setRenderPipeline(const GraphicsPipelinePtr& pipeline) noexcept;
 			GraphicsPipelinePtr getRenderPipeline() const noexcept;
@@ -44,14 +44,14 @@ namespace octoon
 			void setVertexBufferData(std::uint32_t i, const GraphicsDataPtr& data, std::intptr_t offset) noexcept;
 			GraphicsDataPtr getVertexBufferData(std::uint32_t i) const noexcept;
 
-			void setIndexBufferData(const GraphicsDataPtr& data, std::intptr_t offset = 0, GraphicsIndexType indexType = hal::GraphicsIndexType::UInt32) noexcept;
+			void setIndexBufferData(const GraphicsDataPtr& data, std::intptr_t offset = 0, IndexFormat indexType = hal::IndexFormat::UInt32) noexcept;
 			GraphicsDataPtr getIndexBufferData() const noexcept;
 
 			void generateMipmap(const GraphicsTexturePtr& texture) noexcept;
 
 			void setFramebuffer(const GraphicsFramebufferPtr& target) noexcept;
-			void clearFramebuffer(std::uint32_t i, GraphicsClearFlags flags, const float4& color, float depth, std::int32_t stencil) noexcept;
-			void discardFramebuffer(const GraphicsFramebufferPtr& src, GraphicsClearFlags flags) noexcept;
+			void clearFramebuffer(std::uint32_t i, ClearFlags flags, const float4& color, float depth, std::int32_t stencil) noexcept;
+			void discardFramebuffer(const GraphicsFramebufferPtr& src, ClearFlags flags) noexcept;
 			void blitFramebuffer(const GraphicsFramebufferPtr& src, const float4& v1, const GraphicsFramebufferPtr& dest, const float4& v2) noexcept;
 			void readFramebuffer(std::uint32_t i, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept;
 			void readFramebufferToCube(std::uint32_t i, std::uint32_t face, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept;

@@ -274,7 +274,7 @@ namespace octoon
 			hal::GraphicsTextureDesc colorTextureDesc;
 			colorTextureDesc.setWidth(this->width_);
 			colorTextureDesc.setHeight(this->height_);
-			colorTextureDesc.setTexDim(hal::GraphicsTextureDim::Texture2D);
+			colorTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
 			colorTextureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32A32SFloat);
 			colorTexture_ = context->createTexture(colorTextureDesc);
 			if (!colorTexture_)
@@ -291,7 +291,7 @@ namespace octoon
 			hal::GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setWidth(this->width_);
 			depthTextureDesc.setHeight(this->height_);
-			depthTextureDesc.setTexDim(hal::GraphicsTextureDim::Texture2D);
+			depthTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
 			depthTextureDesc.setTexFormat(hal::GraphicsFormat::D32_SFLOAT);
 			auto depthTexture_ = context->createTexture(depthTextureDesc);
 			if (!depthTexture_)

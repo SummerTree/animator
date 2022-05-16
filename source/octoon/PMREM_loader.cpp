@@ -204,7 +204,7 @@ void main()
 
 			hal::GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);
-			textureDesc.setTexDim(hal::GraphicsTextureDim::Texture2D);
+			textureDesc.setTexDim(hal::TextureDimension::Texture2D);
 			textureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
 			textureDesc.setMipBase(0);
 			textureDesc.setMipNums(8);
@@ -214,7 +214,7 @@ void main()
 
 			hal::GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setSize(width, height);
-			depthTextureDesc.setTexDim(hal::GraphicsTextureDim::Texture2D);
+			depthTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
 			depthTextureDesc.setTexFormat(hal::GraphicsFormat::D16UNorm);
 			depthTextureDesc.setMipBase(0);
 			depthTextureDesc.setMipNums(8);

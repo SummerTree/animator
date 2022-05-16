@@ -80,7 +80,7 @@ namespace octoon
 		GL20GraphicsUniform::GL20GraphicsUniform() noexcept
 			: _offset(0)
 			, _bindingPoint(GL_INVALID_INDEX)
-			, _type(GraphicsUniformType::Null)
+			, _type(UniformAttributeFormat::Null)
 			, _stageFlags(0)
 		{
 		}
@@ -114,12 +114,12 @@ namespace octoon
 		}
 
 		void
-		GL20GraphicsUniform::setType(GraphicsUniformType type) noexcept
+		GL20GraphicsUniform::setType(UniformAttributeFormat type) noexcept
 		{
 			_type = type;
 		}
 
-		GraphicsUniformType
+		UniformAttributeFormat
 		GL20GraphicsUniform::getType() const noexcept
 		{
 			return _type;
@@ -150,12 +150,12 @@ namespace octoon
 		}
 
 		void
-		GL20GraphicsUniform::setShaderStageFlags(GraphicsShaderStageFlags flags) noexcept
+		GL20GraphicsUniform::setShaderStageFlags(ShaderStageFlags flags) noexcept
 		{
 			_stageFlags = flags;
 		}
 
-		GraphicsShaderStageFlags
+		ShaderStageFlags
 		GL20GraphicsUniform::getShaderStageFlags() const noexcept
 		{
 			return _stageFlags;
@@ -186,7 +186,7 @@ namespace octoon
 			}
 
 			std::string codes = shaderDesc.getByteCodes().data();
-			if (shaderDesc.getLanguage() == GraphicsShaderLang::HLSL)
+			if (shaderDesc.getLanguage() == ShaderLanguage::HLSL)
 			{
 #if defined(__WINDOWS__) && defined(OCTOON_FEATURE_HAL_USE_HLSL)
 				if (!HlslCodes2GLSL(shaderDesc.getStage(), shaderDesc.getByteCodes().data(), codes))
@@ -198,7 +198,7 @@ namespace octoon
 				return false;
 #endif
 			}
-			else if (shaderDesc.getLanguage() == GraphicsShaderLang::HLSLbytecodes)
+			else if (shaderDesc.getLanguage() == ShaderLanguage::HLSLbytecodes)
 			{
 #if defined(__WINDOWS__) && defined(OCTOON_FEATURE_HAL_USE_HLSL)
 				if (!HlslByteCodes2GLSL(shaderDesc.getStage(), shaderDesc.getByteCodes().data(), codes))
@@ -250,7 +250,7 @@ namespace octoon
 		}
 
 		bool
-		GL20Shader::HlslCodes2GLSL(GraphicsShaderStageFlags stage, const std::string& codes, std::string& out)
+		GL20Shader::HlslCodes2GLSL(ShaderStageFlags stage, const std::string& codes, std::string& out)
 		{
 #if defined(OCTOON_BUILD_PLATFORM_WINDOWS) && defined(OCTOON_FEATURE_HAL_USE_HLSL)
 			std::string profile;
@@ -303,7 +303,7 @@ namespace octoon
 		}
 
 		bool
-		GL20Shader::HlslByteCodes2GLSL(GraphicsShaderStageFlags stage, const char* codes, std::string& out)
+		GL20Shader::HlslByteCodes2GLSL(ShaderStageFlags stage, const char* codes, std::string& out)
 		{
 #if defined(OCTOON_BUILD_PLATFORM_WINDOWS) && defined(OCTOON_FEATURE_HAL_USE_HLSL)
 			std::uint32_t flags = HLSLCC_FLAG_COMBINE_TEXTURE_SAMPLERS | HLSLCC_FLAG_INOUT_APPEND_SEMANTIC_NAMES | HLSLCC_FLAG_DISABLE_GLOBALS_STRUCT;
@@ -548,7 +548,7 @@ namespace octoon
 				uniform->setName(nameUniform);
 				uniform->setBindingPoint(location);
 				uniform->setType(toGraphicsUniformType(nameUniform, type));
-				uniform->setShaderStageFlags(GraphicsShaderStageFlagBits::All);
+				uniform->setShaderStageFlags(ShaderStageFlagBits::All);
 
 				if (type == GL_SAMPLER_2D ||
 					type == GL_SAMPLER_CUBE)
@@ -562,7 +562,7 @@ namespace octoon
 
 					glUniform1i(location, textureUnit);
 					uniform->setBindingPoint(textureUnit);
-					uniform->setShaderStageFlags(GraphicsShaderStageFlagBits::All);
+					uniform->setShaderStageFlags(ShaderStageFlagBits::All);
 
 					textureUnit++;
 				}
@@ -607,12 +607,12 @@ namespace octoon
 			}
 		}
 
-		GraphicsUniformType
+		UniformAttributeFormat
 		GL20Program::toGraphicsUniformType(std::string_view name, GLenum type) noexcept
 		{
 			if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE)
 			{
-				return GraphicsUniformType::SamplerImage;
+				return UniformAttributeFormat::SamplerImage;
 			}
 			else
 			{
@@ -620,89 +620,89 @@ namespace octoon
 
 				if (type == GL_BOOL)
 				{
-					return GraphicsUniformType::Boolean;
+					return UniformAttributeFormat::Boolean;
 				}
 				else if (type == GL_INT)
 				{
 					if (isArray)
-						return GraphicsUniformType::IntArray;
+						return UniformAttributeFormat::IntArray;
 					else
-						return GraphicsUniformType::Int;
+						return UniformAttributeFormat::Int;
 				}
 				else if (type == GL_INT_VEC2)
 				{
 					if (isArray)
-						return GraphicsUniformType::Int2Array;
+						return UniformAttributeFormat::Int2Array;
 					else
-						return GraphicsUniformType::Int2;
+						return UniformAttributeFormat::Int2;
 				}
 				else if (type == GL_INT_VEC3)
 				{
 					if (isArray)
-						return GraphicsUniformType::Int3Array;
+						return UniformAttributeFormat::Int3Array;
 					else
-						return GraphicsUniformType::Int3;
+						return UniformAttributeFormat::Int3;
 				}
 				else if (type == GL_INT_VEC4)
 				{
 					if (isArray)
-						return GraphicsUniformType::Int4Array;
+						return UniformAttributeFormat::Int4Array;
 					else
-						return GraphicsUniformType::Int4;
+						return UniformAttributeFormat::Int4;
 				}
 				else if (type == GL_FLOAT)
 				{
 					if (isArray)
-						return GraphicsUniformType::FloatArray;
+						return UniformAttributeFormat::FloatArray;
 					else
-						return GraphicsUniformType::Float;
+						return UniformAttributeFormat::Float;
 				}
 				else if (type == GL_FLOAT_VEC2)
 				{
 					if (isArray)
-						return GraphicsUniformType::Float2Array;
+						return UniformAttributeFormat::Float2Array;
 					else
-						return GraphicsUniformType::Float2;
+						return UniformAttributeFormat::Float2;
 				}
 				else if (type == GL_FLOAT_VEC3)
 				{
 					if (isArray)
-						return GraphicsUniformType::Float3Array;
+						return UniformAttributeFormat::Float3Array;
 					else
-						return GraphicsUniformType::Float3;
+						return UniformAttributeFormat::Float3;
 				}
 				else if (type == GL_FLOAT_VEC4)
 				{
 					if (isArray)
-						return GraphicsUniformType::Float4Array;
+						return UniformAttributeFormat::Float4Array;
 					else
-						return GraphicsUniformType::Float4;
+						return UniformAttributeFormat::Float4;
 				}
 				else if (type == GL_FLOAT_MAT2)
 				{
 					if (isArray)
-						return GraphicsUniformType::Float2x2Array;
+						return UniformAttributeFormat::Float2x2Array;
 					else
-						return GraphicsUniformType::Float2x2;
+						return UniformAttributeFormat::Float2x2;
 				}
 				else if (type == GL_FLOAT_MAT3)
 				{
 					if (isArray)
-						return GraphicsUniformType::Float3x3Array;
+						return UniformAttributeFormat::Float3x3Array;
 					else
-						return GraphicsUniformType::Float3x3;
+						return UniformAttributeFormat::Float3x3;
 				}
 				else if (type == GL_FLOAT_MAT4)
 				{
 					if (isArray)
-						return GraphicsUniformType::Float4x4Array;
+						return UniformAttributeFormat::Float4x4Array;
 					else
-						return GraphicsUniformType::Float4x4;
+						return UniformAttributeFormat::Float4x4;
 				}
 				else
 				{
 					GL_PLATFORM_ASSERT(false, "Invlid uniform type");
-					return GraphicsUniformType::Null;
+					return UniformAttributeFormat::Null;
 				}
 			}
 		}

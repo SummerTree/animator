@@ -14,36 +14,36 @@ namespace octoon
 			~GraphicsColorBlend() noexcept;
 
 			void setBlendEnable(bool enable) noexcept;
-			void setBlendOp(GraphicsBlendOp blendop) noexcept;
-			void setBlendSrc(GraphicsBlendFactor factor) noexcept;
-			void setBlendDest(GraphicsBlendFactor factor) noexcept;
-			void setBlendAlphaOp(GraphicsBlendOp blendop) noexcept;
-			void setBlendAlphaSrc(GraphicsBlendFactor factor) noexcept;
-			void setBlendAlphaDest(GraphicsBlendFactor factor) noexcept;
+			void setBlendOp(BlendOp blendop) noexcept;
+			void setBlendSrc(BlendMode factor) noexcept;
+			void setBlendDest(BlendMode factor) noexcept;
+			void setBlendAlphaOp(BlendOp blendop) noexcept;
+			void setBlendAlphaSrc(BlendMode factor) noexcept;
+			void setBlendAlphaDest(BlendMode factor) noexcept;
 
 			bool getBlendEnable() const noexcept;
-			GraphicsBlendOp getBlendOp() const noexcept;
-			GraphicsBlendFactor getBlendSrc() const noexcept;
-			GraphicsBlendFactor getBlendDest() const noexcept;
-			GraphicsBlendOp getBlendAlphaOp() const noexcept;
-			GraphicsBlendFactor getBlendAlphaSrc() const noexcept;
-			GraphicsBlendFactor getBlendAlphaDest() const noexcept;
+			BlendOp getBlendOp() const noexcept;
+			BlendMode getBlendSrc() const noexcept;
+			BlendMode getBlendDest() const noexcept;
+			BlendOp getBlendAlphaOp() const noexcept;
+			BlendMode getBlendAlphaSrc() const noexcept;
+			BlendMode getBlendAlphaDest() const noexcept;
 
-			void setColorWriteMask(GraphicsColorMaskFlags mask) noexcept;
-			GraphicsColorMaskFlags getColorWriteMask() const noexcept;
+			void setColorWriteMask(ColorWriteMaskFlags mask) noexcept;
+			ColorWriteMaskFlags getColorWriteMask() const noexcept;
 
 		private:
 			bool _enable;
 
-			GraphicsBlendOp _blendOp;
-			GraphicsBlendOp _blendAlphaOp;
+			BlendOp _blendOp;
+			BlendOp _blendAlphaOp;
 
-			GraphicsBlendFactor _blendSrc;
-			GraphicsBlendFactor _blendDest;
-			GraphicsBlendFactor _blendAlphaSrc;
-			GraphicsBlendFactor _blendAlphaDest;
+			BlendMode _blendSrc;
+			BlendMode _blendDest;
+			BlendMode _blendAlphaSrc;
+			BlendMode _blendAlphaDest;
 
-			GraphicsColorMaskFlags _colorWriteMask;
+			ColorWriteMaskFlags _colorWriteMask;
 		};
 
 		class OCTOON_EXPORT GraphicsStateDesc final
@@ -57,10 +57,10 @@ namespace octoon
 			GraphicsColorBlends& getColorBlends() noexcept;
 			const GraphicsColorBlends& getColorBlends() const noexcept;
 
-			void setCullMode(GraphicsCullMode mode) noexcept;
-			void setPolygonMode(GraphicsPolygonMode mode) noexcept;
-			void setPrimitiveType(GraphicsVertexType type) noexcept;
-			void setFrontFace(GraphicsFrontFace face) noexcept;
+			void setCullMode(CullMode mode) noexcept;
+			void setPolygonMode(PolygonMode mode) noexcept;
+			void setPrimitiveType(VertexType type) noexcept;
+			void setFrontFace(FrontFace face) noexcept;
 			void setScissorTestEnable(bool enable) noexcept;
 			void setLinear2sRGBEnable(bool enable) noexcept;
 			void setMultisampleEnable(bool enable) noexcept;
@@ -72,7 +72,7 @@ namespace octoon
 			void setDepthBoundsEnable(bool enable) noexcept;
 			void setDepthMin(float mix) noexcept;
 			void setDepthMax(float max) noexcept;
-			void setDepthFunc(GraphicsCompareFunc func) noexcept;
+			void setDepthFunc(CompareFunction func) noexcept;
 			void setDepthBiasEnable(bool enable) noexcept;
 			void setDepthBias(float bias) noexcept;
 			void setDepthSlopeScaleBias(float bias) noexcept;
@@ -81,24 +81,24 @@ namespace octoon
 
 			void setStencilEnable(bool enable) noexcept;
 			void setStencilFrontRef(std::uint32_t ref) noexcept;
-			void setStencilFrontFunc(GraphicsCompareFunc func) noexcept;
+			void setStencilFrontFunc(CompareFunction func) noexcept;
 			void setStencilFrontReadMask(std::uint32_t mask) noexcept;
 			void setStencilFrontWriteMask(std::uint32_t mask) noexcept;
-			void setStencilFrontFail(GraphicsStencilOp stencilOp) noexcept;
-			void setStencilFrontZFail(GraphicsStencilOp stencilOp) noexcept;
-			void setStencilFrontPass(GraphicsStencilOp stencilOp) noexcept;
+			void setStencilFrontFail(StencilOp stencilOp) noexcept;
+			void setStencilFrontZFail(StencilOp stencilOp) noexcept;
+			void setStencilFrontPass(StencilOp stencilOp) noexcept;
 			void setStencilBackRef(std::uint32_t ref) noexcept;
-			void setStencilBackFunc(GraphicsCompareFunc func) noexcept;
+			void setStencilBackFunc(CompareFunction func) noexcept;
 			void setStencilBackReadMask(std::uint32_t mask) noexcept;
 			void setStencilBackWriteMask(std::uint32_t mask) noexcept;
-			void setStencilBackFail(GraphicsStencilOp stencilOp) noexcept;
-			void setStencilBackZFail(GraphicsStencilOp stencilOp) noexcept;
-			void setStencilBackPass(GraphicsStencilOp stencilOp) noexcept;
+			void setStencilBackFail(StencilOp stencilOp) noexcept;
+			void setStencilBackZFail(StencilOp stencilOp) noexcept;
+			void setStencilBackPass(StencilOp stencilOp) noexcept;
 
-			GraphicsCullMode getCullMode() const noexcept;
-			GraphicsPolygonMode getPolygonMode() const noexcept;
-			GraphicsVertexType getPrimitiveType() const noexcept;
-			GraphicsFrontFace getFrontFace() const noexcept;
+			CullMode getCullMode() const noexcept;
+			PolygonMode getPolygonMode() const noexcept;
+			VertexType getPrimitiveType() const noexcept;
+			FrontFace getFrontFace() const noexcept;
 			bool getScissorTestEnable() const noexcept;
 			bool getLinear2sRGBEnable() const noexcept;
 			bool getMultisampleEnable() const noexcept;
@@ -115,23 +115,23 @@ namespace octoon
 			float getDepthMax() const noexcept;
 			float getDepthBias() const noexcept;
 			float getDepthSlopeScaleBias() const noexcept;
-			GraphicsCompareFunc getDepthFunc() const noexcept;
+			CompareFunction getDepthFunc() const noexcept;
 
 			bool getStencilEnable() const noexcept;
-			GraphicsCompareFunc getStencilFrontFunc() const noexcept;
+			CompareFunction getStencilFrontFunc() const noexcept;
 			std::uint32_t getStencilFrontRef() const noexcept;
 			std::uint32_t getStencilFrontReadMask() const noexcept;
 			std::uint32_t getStencilFrontWriteMask() const noexcept;
-			GraphicsStencilOp getStencilFrontFail() const noexcept;
-			GraphicsStencilOp getStencilFrontZFail() const noexcept;
-			GraphicsStencilOp getStencilFrontPass() const noexcept;
-			GraphicsCompareFunc getStencilBackFunc() const noexcept;
+			StencilOp getStencilFrontFail() const noexcept;
+			StencilOp getStencilFrontZFail() const noexcept;
+			StencilOp getStencilFrontPass() const noexcept;
+			CompareFunction getStencilBackFunc() const noexcept;
 			std::uint32_t getStencilBackRef() const noexcept;
 			std::uint32_t getStencilBackReadMask() const noexcept;
 			std::uint32_t getStencilBackWriteMask() const noexcept;
-			GraphicsStencilOp getStencilBackFail() const noexcept;
-			GraphicsStencilOp getStencilBackZFail() const noexcept;
-			GraphicsStencilOp getStencilBackPass() const noexcept;
+			StencilOp getStencilBackFail() const noexcept;
+			StencilOp getStencilBackZFail() const noexcept;
+			StencilOp getStencilBackPass() const noexcept;
 
 		private:
 			bool _enableScissorTest;
@@ -148,32 +148,32 @@ namespace octoon
 
 			float _lineWidth;
 
-			GraphicsCullMode    _cullMode;
-			GraphicsPolygonMode _polygonMode;
-			GraphicsVertexType  _primitiveType;
-			GraphicsFrontFace   _frontFace;
+			CullMode    _cullMode;
+			PolygonMode _polygonMode;
+			VertexType  _primitiveType;
+			FrontFace   _frontFace;
 
 			float _depthMin;
 			float _depthMax;
 			float _depthBias;
 			float _depthSlopeScaleBias;
-			GraphicsCompareFunc _depthFunc;
+			CompareFunction _depthFunc;
 
 			std::uint32_t _stencilFrontRef;
 			std::uint32_t _stencilFrontReadMask;
 			std::uint32_t _stencilFrontWriteMask;
-			GraphicsStencilOp _stencilFrontFail;
-			GraphicsStencilOp _stencilFrontZFail;
-			GraphicsStencilOp _stencilFrontPass;
-			GraphicsCompareFunc _stencilFrontFunc;
+			StencilOp _stencilFrontFail;
+			StencilOp _stencilFrontZFail;
+			StencilOp _stencilFrontPass;
+			CompareFunction _stencilFrontFunc;
 
 			std::uint32_t _stencilBackRef;
 			std::uint32_t _stencilBackReadMask;
 			std::uint32_t _stencilBackWriteMask;
-			GraphicsStencilOp _stencilBackFail;
-			GraphicsStencilOp _stencilBackZFail;
-			GraphicsStencilOp _stencilBackPass;
-			GraphicsCompareFunc _stencilBackFunc;
+			StencilOp _stencilBackFail;
+			StencilOp _stencilBackZFail;
+			StencilOp _stencilBackPass;
+			CompareFunction _stencilBackFunc;
 
 			GraphicsColorBlends _blends;
 		};

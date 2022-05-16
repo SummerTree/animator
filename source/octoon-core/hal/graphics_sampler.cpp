@@ -7,14 +7,14 @@ namespace octoon
 		OctoonImplementSubInterface(GraphicsSampler, GraphicsChild, "GraphicsSampler")
 
 		GraphicsSamplerDesc::GraphicsSamplerDesc() noexcept
-			: _wrap(GraphicsSamplerWrap::Repeat)
-			, _filterMin(GraphicsSamplerFilter::Linear)
-			, _filterMag(GraphicsSamplerFilter::Linear)
+			: _wrap(SamplerWrap::Repeat)
+			, _filterMin(SamplerFilter::Linear)
+			, _filterMag(SamplerFilter::Linear)
 			, _anis(GraphicsSamplerAnis::Anis0)
 		{
 		}
 
-		GraphicsSamplerDesc::GraphicsSamplerDesc(GraphicsSamplerWrap wrap, GraphicsSamplerFilter filter, GraphicsSamplerAnis anis) noexcept
+		GraphicsSamplerDesc::GraphicsSamplerDesc(SamplerWrap wrap, SamplerFilter filter, GraphicsSamplerAnis anis) noexcept
 			: _wrap(wrap)
 			, _filterMin(filter)
 			, _filterMag(filter)
@@ -27,25 +27,25 @@ namespace octoon
 		}
 
 		void
-		GraphicsSamplerDesc::setSamplerWrap(GraphicsSamplerWrap wrap) noexcept
+		GraphicsSamplerDesc::setSamplerWrap(SamplerWrap wrap) noexcept
 		{
 			_wrap = wrap;
 		}
 
 		void
-		GraphicsSamplerDesc::setSamplerMinFilter(GraphicsSamplerFilter filter) noexcept
+		GraphicsSamplerDesc::setSamplerMinFilter(SamplerFilter filter) noexcept
 		{
 			_filterMin = filter;
 		}
 
 		void
-		GraphicsSamplerDesc::setSamplerMagFilter(GraphicsSamplerFilter filter) noexcept
+		GraphicsSamplerDesc::setSamplerMagFilter(SamplerFilter filter) noexcept
 		{
 			_filterMag = filter;
 		}
 
 		void
-		GraphicsSamplerDesc::setSamplerFilter(GraphicsSamplerFilter minFilter, GraphicsSamplerFilter magFilter) noexcept
+		GraphicsSamplerDesc::setSamplerFilter(SamplerFilter minFilter, SamplerFilter magFilter) noexcept
 		{
 			_filterMin = minFilter;
 			_filterMag = magFilter;
@@ -57,19 +57,19 @@ namespace octoon
 			_anis = anis;
 		}
 
-		GraphicsSamplerWrap
+		SamplerWrap
 		GraphicsSamplerDesc::getSamplerWrap() const noexcept
 		{
 			return _wrap;
 		}
 
-		GraphicsSamplerFilter
+		SamplerFilter
 		GraphicsSamplerDesc::getSamplerMinFilter() const noexcept
 		{
 			return _filterMin;
 		}
 
-		GraphicsSamplerFilter
+		SamplerFilter
 		GraphicsSamplerDesc::getSamplerMagFilter() const noexcept
 		{
 			return _filterMag;

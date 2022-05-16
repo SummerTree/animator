@@ -725,98 +725,98 @@ namespace octoon
 				auto location = it->getGraphicsParam()->getBindingPoint();
 				switch (type)
 				{
-				case GraphicsUniformType::Boolean:
+				case UniformAttributeFormat::Boolean:
 					GL_CHECK(glUniform1i(location, it->getBool()));
 					break;
-				case GraphicsUniformType::Int:
+				case UniformAttributeFormat::Int:
 					GL_CHECK(glUniform1i(location, it->getInt()));
 					break;
-				case GraphicsUniformType::Int2:
+				case UniformAttributeFormat::Int2:
 					GL_CHECK(glUniform2iv(location, 1, (GLint*)it->getInt2().ptr()));
 					break;
-				case GraphicsUniformType::Int3:
+				case UniformAttributeFormat::Int3:
 					GL_CHECK(glUniform3iv(location, 1, (GLint*)it->getInt3().ptr()));
 					break;
-				case GraphicsUniformType::Int4:
+				case UniformAttributeFormat::Int4:
 					GL_CHECK(glUniform4iv(location, 1, (GLint*)it->getInt4().ptr()));
 					break;
-				case GraphicsUniformType::UInt:
+				case UniformAttributeFormat::UInt:
 					GL_CHECK(glUniform1ui(location, it->getUInt()));
 					break;
-				case GraphicsUniformType::UInt2:
+				case UniformAttributeFormat::UInt2:
 					GL_CHECK(glUniform2uiv(location, 1, (GLuint*)it->getUInt2().ptr()));
 					break;
-				case GraphicsUniformType::UInt3:
+				case UniformAttributeFormat::UInt3:
 					GL_CHECK(glUniform3uiv(location, 1, (GLuint*)it->getUInt3().ptr()));
 					break;
-				case GraphicsUniformType::UInt4:
+				case UniformAttributeFormat::UInt4:
 					GL_CHECK(glUniform4uiv(location, 1, (GLuint*)it->getUInt4().ptr()));
 					break;
-				case GraphicsUniformType::Float:
+				case UniformAttributeFormat::Float:
 					GL_CHECK(glUniform1f(location, it->getFloat()));
 					break;
-				case GraphicsUniformType::Float2:
+				case UniformAttributeFormat::Float2:
 					GL_CHECK(glUniform2fv(location, 1, it->getFloat2().ptr()));
 					break;
-				case GraphicsUniformType::Float3:
+				case UniformAttributeFormat::Float3:
 					GL_CHECK(glUniform3fv(location, 1, it->getFloat3().ptr()));
 					break;
-				case GraphicsUniformType::Float4:
+				case UniformAttributeFormat::Float4:
 					GL_CHECK(glUniform4fv(location, 1, it->getFloat4().ptr()));
 					break;
-				case GraphicsUniformType::Float3x3:
+				case UniformAttributeFormat::Float3x3:
 					GL_CHECK(glUniformMatrix3fv(location, 1, GL_FALSE, it->getFloat3x3().ptr()));
 					break;
-				case GraphicsUniformType::Float4x4:
+				case UniformAttributeFormat::Float4x4:
 					GL_CHECK(glUniformMatrix4fv(location, 1, GL_FALSE, it->getFloat4x4().ptr()));
 					break;
-				case GraphicsUniformType::IntArray:
+				case UniformAttributeFormat::IntArray:
 					GL_CHECK(glUniform1iv(location, (GLsizei)it->getIntArray().size(), it->getIntArray().data()));
 					break;
-				case GraphicsUniformType::Int2Array:
+				case UniformAttributeFormat::Int2Array:
 					GL_CHECK(glUniform2iv(location, (GLsizei)it->getInt2Array().size(), (GLint*)it->getInt2Array().data()));
 					break;
-				case GraphicsUniformType::Int3Array:
+				case UniformAttributeFormat::Int3Array:
 					GL_CHECK(glUniform3iv(location, (GLsizei)it->getInt3Array().size(), (GLint*)it->getInt3Array().data()));
 					break;
-				case GraphicsUniformType::Int4Array:
+				case UniformAttributeFormat::Int4Array:
 					GL_CHECK(glUniform4iv(location, (GLsizei)it->getInt4Array().size(), (GLint*)it->getInt4Array().data()));
 					break;
-				case GraphicsUniformType::UIntArray:
+				case UniformAttributeFormat::UIntArray:
 					GL_CHECK(glUniform1uiv(location, (GLsizei)it->getUIntArray().size(), it->getUIntArray().data()));
 					break;
-				case GraphicsUniformType::UInt2Array:
+				case UniformAttributeFormat::UInt2Array:
 					GL_CHECK(glUniform2uiv(location, (GLsizei)it->getUInt2Array().size(), (GLuint*)it->getUInt2Array().data()));
 					break;
-				case GraphicsUniformType::UInt3Array:
+				case UniformAttributeFormat::UInt3Array:
 					GL_CHECK(glUniform3uiv(location, (GLsizei)it->getUInt3Array().size(), (GLuint*)it->getUInt3Array().data()));
 					break;
-				case GraphicsUniformType::UInt4Array:
+				case UniformAttributeFormat::UInt4Array:
 					GL_CHECK(glUniform4uiv(location, (GLsizei)it->getUInt4Array().size(), (GLuint*)it->getUInt4Array().data()));
 					break;
-				case GraphicsUniformType::FloatArray:
+				case UniformAttributeFormat::FloatArray:
 					GL_CHECK(glUniform1fv(location, (GLsizei)it->getFloatArray().size(), (GLfloat*)it->getFloatArray().data()));
 					break;
-				case GraphicsUniformType::Float2Array:
+				case UniformAttributeFormat::Float2Array:
 					GL_CHECK(glUniform2fv(location, (GLsizei)it->getFloat2Array().size(), (GLfloat*)it->getFloat2Array().data()));
 					break;
-				case GraphicsUniformType::Float3Array:
+				case UniformAttributeFormat::Float3Array:
 					GL_CHECK(glUniform3fv(location, (GLsizei)it->getFloat3Array().size(), (GLfloat*)it->getFloat3Array().data()));
 					break;
-				case GraphicsUniformType::Float4Array:
+				case UniformAttributeFormat::Float4Array:
 					GL_CHECK(glUniform4fv(location, (GLsizei)it->getFloat4Array().size(), (GLfloat*)it->getFloat4Array().data()));
 					break;
-				case GraphicsUniformType::Float3x3Array:
+				case UniformAttributeFormat::Float3x3Array:
 					GL_CHECK(glUniformMatrix3fv(location, (GLsizei)it->getFloat3x3Array().size(), GL_FALSE, (GLfloat*)it->getFloat3x3Array().data()));
 					break;
-				case GraphicsUniformType::Float4x4Array:
+				case UniformAttributeFormat::Float4x4Array:
 					GL_CHECK(glUniformMatrix4fv(location, (GLsizei)it->getFloat4x4Array().size(), GL_FALSE, (GLfloat*)it->getFloat4x4Array().data()));
 					break;
 				break;
-				case GraphicsUniformType::Sampler:
-				case GraphicsUniformType::SamplerImage:
-				case GraphicsUniformType::CombinedImageSampler:
-				case GraphicsUniformType::StorageImage:
+				case UniformAttributeFormat::Sampler:
+				case UniformAttributeFormat::SamplerImage:
+				case UniformAttributeFormat::CombinedImageSampler:
+				case UniformAttributeFormat::StorageImage:
 				{
 					auto& texture = it->getTexture();
 					if (texture)
@@ -839,19 +839,19 @@ namespace octoon
 					}
 				}
 				break;
-				case GraphicsUniformType::StorageTexelBuffer:
+				case UniformAttributeFormat::StorageTexelBuffer:
 					break;
-				case GraphicsUniformType::StorageBuffer:
+				case UniformAttributeFormat::StorageBuffer:
 					break;
-				case GraphicsUniformType::StorageBufferDynamic:
+				case UniformAttributeFormat::StorageBufferDynamic:
 					break;
-				case GraphicsUniformType::UniformTexelBuffer:
+				case UniformAttributeFormat::UniformTexelBuffer:
 					break;
-				case GraphicsUniformType::UniformBuffer:
+				case UniformAttributeFormat::UniformBuffer:
 					break;
-				case GraphicsUniformType::UniformBufferDynamic:
+				case UniformAttributeFormat::UniformBufferDynamic:
 					break;
-				case GraphicsUniformType::InputAttachment:
+				case UniformAttributeFormat::InputAttachment:
 					break;
 				default:
 					break;
@@ -877,125 +877,125 @@ namespace octoon
 					auto type = activeUniformSet->getGraphicsParam()->getType();
 					switch (type)
 					{
-					case GraphicsUniformType::Boolean:
+					case UniformAttributeFormat::Boolean:
 						(*it)->uniform1b(activeUniformSet->getBool());
 						break;
-					case GraphicsUniformType::Int:
+					case UniformAttributeFormat::Int:
 						(*it)->uniform1i(activeUniformSet->getInt());
 						break;
-					case GraphicsUniformType::Int2:
+					case UniformAttributeFormat::Int2:
 						(*it)->uniform2i(activeUniformSet->getInt2());
 						break;
-					case GraphicsUniformType::Int3:
+					case UniformAttributeFormat::Int3:
 						(*it)->uniform3i(activeUniformSet->getInt3());
 						break;
-					case GraphicsUniformType::Int4:
+					case UniformAttributeFormat::Int4:
 						(*it)->uniform4i(activeUniformSet->getInt4());
 						break;
-					case GraphicsUniformType::UInt:
+					case UniformAttributeFormat::UInt:
 						(*it)->uniform1ui(activeUniformSet->getUInt());
 						break;
-					case GraphicsUniformType::UInt2:
+					case UniformAttributeFormat::UInt2:
 						(*it)->uniform2ui(activeUniformSet->getUInt2());
 						break;
-					case GraphicsUniformType::UInt3:
+					case UniformAttributeFormat::UInt3:
 						(*it)->uniform3ui(activeUniformSet->getUInt3());
 						break;
-					case GraphicsUniformType::UInt4:
+					case UniformAttributeFormat::UInt4:
 						(*it)->uniform4ui(activeUniformSet->getUInt4());
 						break;
-					case GraphicsUniformType::Float:
+					case UniformAttributeFormat::Float:
 						(*it)->uniform1f(activeUniformSet->getFloat());
 						break;
-					case GraphicsUniformType::Float2:
+					case UniformAttributeFormat::Float2:
 						(*it)->uniform2f(activeUniformSet->getFloat2());
 						break;
-					case GraphicsUniformType::Float3:
+					case UniformAttributeFormat::Float3:
 						(*it)->uniform3f(activeUniformSet->getFloat3());
 						break;
-					case GraphicsUniformType::Float4:
+					case UniformAttributeFormat::Float4:
 						(*it)->uniform4f(activeUniformSet->getFloat4());
 						break;
-					case GraphicsUniformType::Float2x2:
+					case UniformAttributeFormat::Float2x2:
 						(*it)->uniform2fmat(activeUniformSet->getFloat2x2());
 						break;
-					case GraphicsUniformType::Float3x3:
+					case UniformAttributeFormat::Float3x3:
 						(*it)->uniform3fmat(activeUniformSet->getFloat3x3());
 						break;
-					case GraphicsUniformType::Float4x4:
+					case UniformAttributeFormat::Float4x4:
 						(*it)->uniform4fmat(activeUniformSet->getFloat4x4());
 						break;
-					case GraphicsUniformType::IntArray:
+					case UniformAttributeFormat::IntArray:
 						(*it)->uniform1iv(activeUniformSet->getIntArray());
 						break;
-					case GraphicsUniformType::Int2Array:
+					case UniformAttributeFormat::Int2Array:
 						(*it)->uniform2iv(activeUniformSet->getInt2Array());
 						break;
-					case GraphicsUniformType::Int3Array:
+					case UniformAttributeFormat::Int3Array:
 						(*it)->uniform3iv(activeUniformSet->getInt3Array());
 						break;
-					case GraphicsUniformType::Int4Array:
+					case UniformAttributeFormat::Int4Array:
 						(*it)->uniform4iv(activeUniformSet->getInt4Array());
 						break;
-					case GraphicsUniformType::UIntArray:
+					case UniformAttributeFormat::UIntArray:
 						(*it)->uniform1uiv(activeUniformSet->getUIntArray());
 						break;
-					case GraphicsUniformType::UInt2Array:
+					case UniformAttributeFormat::UInt2Array:
 						(*it)->uniform2uiv(activeUniformSet->getUInt2Array());
 						break;
-					case GraphicsUniformType::UInt3Array:
+					case UniformAttributeFormat::UInt3Array:
 						(*it)->uniform3uiv(activeUniformSet->getUInt3Array());
 						break;
-					case GraphicsUniformType::UInt4Array:
+					case UniformAttributeFormat::UInt4Array:
 						(*it)->uniform4uiv(activeUniformSet->getUInt4Array());
 						break;
-					case GraphicsUniformType::FloatArray:
+					case UniformAttributeFormat::FloatArray:
 						(*it)->uniform1fv(activeUniformSet->getFloatArray());
 						break;
-					case GraphicsUniformType::Float2Array:
+					case UniformAttributeFormat::Float2Array:
 						(*it)->uniform2fv(activeUniformSet->getFloat2Array());
 						break;
-					case GraphicsUniformType::Float3Array:
+					case UniformAttributeFormat::Float3Array:
 						(*it)->uniform3fv(activeUniformSet->getFloat3Array());
 						break;
-					case GraphicsUniformType::Float4Array:
+					case UniformAttributeFormat::Float4Array:
 						(*it)->uniform4fv(activeUniformSet->getFloat4Array());
 						break;
-					case GraphicsUniformType::Float2x2Array:
+					case UniformAttributeFormat::Float2x2Array:
 						(*it)->uniform2fmatv(activeUniformSet->getFloat2x2Array());
 						break;
-					case GraphicsUniformType::Float3x3Array:
+					case UniformAttributeFormat::Float3x3Array:
 						(*it)->uniform3fmatv(activeUniformSet->getFloat3x3Array());
 						break;
-					case GraphicsUniformType::Float4x4Array:
+					case UniformAttributeFormat::Float4x4Array:
 						(*it)->uniform4fmatv(activeUniformSet->getFloat4x4Array());
 						break;
-					case GraphicsUniformType::Sampler:
+					case UniformAttributeFormat::Sampler:
 						(*it)->uniformTexture(activeUniformSet->getTexture(), activeUniformSet->getTextureSampler());
 						break;
-					case GraphicsUniformType::SamplerImage:
+					case UniformAttributeFormat::SamplerImage:
 						(*it)->uniformTexture(activeUniformSet->getTexture(), activeUniformSet->getTextureSampler());
 						break;
-					case GraphicsUniformType::CombinedImageSampler:
+					case UniformAttributeFormat::CombinedImageSampler:
 						(*it)->uniformTexture(activeUniformSet->getTexture(), activeUniformSet->getTextureSampler());
 						break;
-					case GraphicsUniformType::StorageImage:
+					case UniformAttributeFormat::StorageImage:
 						(*it)->uniformTexture(activeUniformSet->getTexture(), activeUniformSet->getTextureSampler());
 						break;
-					case GraphicsUniformType::StorageTexelBuffer:
+					case UniformAttributeFormat::StorageTexelBuffer:
 						break;
-					case GraphicsUniformType::StorageBuffer:
+					case UniformAttributeFormat::StorageBuffer:
 						break;
-					case GraphicsUniformType::StorageBufferDynamic:
+					case UniformAttributeFormat::StorageBufferDynamic:
 						break;
-					case GraphicsUniformType::UniformTexelBuffer:
+					case UniformAttributeFormat::UniformTexelBuffer:
 						break;
-					case GraphicsUniformType::UniformBuffer:
+					case UniformAttributeFormat::UniformBuffer:
 						(*it)->uniformBuffer(activeUniformSet->getBuffer());
 						break;
-					case GraphicsUniformType::UniformBufferDynamic:
+					case UniformAttributeFormat::UniformBufferDynamic:
 						break;
-					case GraphicsUniformType::InputAttachment:
+					case UniformAttributeFormat::InputAttachment:
 						break;
 					default:
 						break;

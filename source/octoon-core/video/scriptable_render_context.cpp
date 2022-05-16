@@ -148,36 +148,36 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::setStencilCompareMask(hal::GraphicsStencilFaceFlags face, std::uint32_t mask) noexcept
+	ScriptableRenderContext::setStencilCompareMask(hal::StencilFaceFlags face, std::uint32_t mask) noexcept
 	{
 		this->context_->setStencilCompareMask(face, mask);
 	}
 	std::uint32_t
-	ScriptableRenderContext::getStencilCompareMask(hal::GraphicsStencilFaceFlags face) noexcept
+	ScriptableRenderContext::getStencilCompareMask(hal::StencilFaceFlags face) noexcept
 	{
 		return this->context_->getStencilCompareMask(face);
 	}
 
 	void
-	ScriptableRenderContext::setStencilReference(hal::GraphicsStencilFaceFlags face, std::uint32_t reference) noexcept
+	ScriptableRenderContext::setStencilReference(hal::StencilFaceFlags face, std::uint32_t reference) noexcept
 	{
 		this->context_->setStencilReference(face, reference);
 	}
 
 	std::uint32_t
-	ScriptableRenderContext::getStencilReference(hal::GraphicsStencilFaceFlags face) noexcept
+	ScriptableRenderContext::getStencilReference(hal::StencilFaceFlags face) noexcept
 	{
 		return this->context_->getStencilReference(face);
 	}
 
 	void
-	ScriptableRenderContext::setStencilWriteMask(hal::GraphicsStencilFaceFlags face, std::uint32_t mask) noexcept
+	ScriptableRenderContext::setStencilWriteMask(hal::StencilFaceFlags face, std::uint32_t mask) noexcept
 	{
 		this->context_->setStencilWriteMask(face, mask);
 	}
 
 	std::uint32_t
-	ScriptableRenderContext::getStencilWriteMask(hal::GraphicsStencilFaceFlags face) noexcept
+	ScriptableRenderContext::getStencilWriteMask(hal::StencilFaceFlags face) noexcept
 	{
 		return this->context_->getStencilWriteMask(face);
 	}
@@ -219,7 +219,7 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::setIndexBufferData(const hal::GraphicsDataPtr& data, std::intptr_t offset, hal::GraphicsIndexType indexType) noexcept
+	ScriptableRenderContext::setIndexBufferData(const hal::GraphicsDataPtr& data, std::intptr_t offset, hal::IndexFormat indexType) noexcept
 	{
 		this->context_->setIndexBufferData(data, offset, indexType);
 	}
@@ -237,13 +237,13 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::configureClear(hal::GraphicsClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept
+	ScriptableRenderContext::configureClear(hal::ClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept
 	{
 		this->context_->clearFramebuffer(0, flags, color, depth, stencil);
 	}
 
 	void
-	ScriptableRenderContext::discardFramebuffer(const hal::GraphicsFramebufferPtr& src, hal::GraphicsClearFlags flags) noexcept
+	ScriptableRenderContext::discardFramebuffer(const hal::GraphicsFramebufferPtr& src, hal::ClearFlags flags) noexcept
 	{
 		this->context_->discardFramebuffer(src, flags);
 	}
@@ -746,7 +746,7 @@ namespace octoon
 	{
 		auto& buffer = buffers_.at(mesh.get());
 		this->setVertexBufferData(0, buffer->getVertexBuffer(), 0);
-		this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::GraphicsIndexType::UInt32);
+		this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::IndexFormat::UInt32);
 
 		if (buffer->getIndexBuffer())
 			this->drawIndexed((std::uint32_t)buffer->getNumIndices(subset), 1, (std::uint32_t)buffer->getStartIndices(subset), 0, 0);

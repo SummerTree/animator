@@ -8,13 +8,13 @@ namespace octoon
 
 		GraphicsColorBlend::GraphicsColorBlend() noexcept
 			: _enable(false)
-			, _blendOp(GraphicsBlendOp::Add)
-			, _blendAlphaOp(GraphicsBlendOp::Add)
-			, _blendSrc(GraphicsBlendFactor::SrcAlpha)
-			, _blendDest(GraphicsBlendFactor::OneMinusSrcAlpha)
-			, _blendAlphaSrc(GraphicsBlendFactor::SrcAlpha)
-			, _blendAlphaDest(GraphicsBlendFactor::OneMinusSrcAlpha)
-			, _colorWriteMask(GraphicsColorMaskFlagBits::RGBABit)
+			, _blendOp(BlendOp::Add)
+			, _blendAlphaOp(BlendOp::Add)
+			, _blendSrc(BlendMode::SrcAlpha)
+			, _blendDest(BlendMode::OneMinusSrcAlpha)
+			, _blendAlphaSrc(BlendMode::SrcAlpha)
+			, _blendAlphaDest(BlendMode::OneMinusSrcAlpha)
+			, _colorWriteMask(ColorWriteMask::RGBABit)
 		{
 		}
 
@@ -29,43 +29,43 @@ namespace octoon
 		}
 
 		void
-		GraphicsColorBlend::setBlendOp(GraphicsBlendOp blendOp) noexcept
+		GraphicsColorBlend::setBlendOp(BlendOp blendOp) noexcept
 		{
 			_blendOp = blendOp;
 		}
 
 		void
-		GraphicsColorBlend::setBlendSrc(GraphicsBlendFactor factor) noexcept
+		GraphicsColorBlend::setBlendSrc(BlendMode factor) noexcept
 		{
 			_blendSrc = factor;
 		}
 
 		void
-		GraphicsColorBlend::setBlendDest(GraphicsBlendFactor factor) noexcept
+		GraphicsColorBlend::setBlendDest(BlendMode factor) noexcept
 		{
 			_blendDest = factor;
 		}
 
 		void
-		GraphicsColorBlend::setBlendAlphaOp(GraphicsBlendOp blendOp) noexcept
+		GraphicsColorBlend::setBlendAlphaOp(BlendOp blendOp) noexcept
 		{
 			_blendAlphaOp = blendOp;
 		}
 
 		void
-		GraphicsColorBlend::setBlendAlphaSrc(GraphicsBlendFactor factor) noexcept
+		GraphicsColorBlend::setBlendAlphaSrc(BlendMode factor) noexcept
 		{
 			_blendAlphaSrc = factor;
 		}
 
 		void
-		GraphicsColorBlend::setBlendAlphaDest(GraphicsBlendFactor factor) noexcept
+		GraphicsColorBlend::setBlendAlphaDest(BlendMode factor) noexcept
 		{
 			_blendAlphaDest = factor;
 		}
 
 		void
-		GraphicsColorBlend::setColorWriteMask(GraphicsColorMaskFlags mask) noexcept
+		GraphicsColorBlend::setColorWriteMask(ColorWriteMaskFlags mask) noexcept
 		{
 			_colorWriteMask = mask;
 		}
@@ -76,43 +76,43 @@ namespace octoon
 			return _enable;
 		}
 
-		GraphicsBlendOp
+		BlendOp
 		GraphicsColorBlend::getBlendOp() const noexcept
 		{
 			return _blendOp;
 		}
 
-		GraphicsBlendFactor
+		BlendMode
 		GraphicsColorBlend::getBlendSrc() const noexcept
 		{
 			return _blendSrc;
 		}
 
-		GraphicsBlendFactor
+		BlendMode
 		GraphicsColorBlend::getBlendDest() const noexcept
 		{
 			return _blendDest;
 		}
 
-		GraphicsBlendOp
+		BlendOp
 		GraphicsColorBlend::getBlendAlphaOp() const noexcept
 		{
 			return _blendAlphaOp;
 		}
 
-		GraphicsBlendFactor
+		BlendMode
 		GraphicsColorBlend::getBlendAlphaSrc() const noexcept
 		{
 			return _blendAlphaSrc;
 		}
 
-		GraphicsBlendFactor
+		BlendMode
 		GraphicsColorBlend::getBlendAlphaDest() const noexcept
 		{
 			return _blendAlphaDest;
 		}
 
-		GraphicsColorMaskFlags
+		ColorWriteMaskFlags
 		GraphicsColorBlend::getColorWriteMask() const noexcept
 		{
 			return _colorWriteMask;
@@ -131,29 +131,29 @@ namespace octoon
 			, _enableDepthBiasClamp(false)
 			, _enableStencil(false)
 			, _lineWidth(1.0f)
-			, _cullMode(GraphicsCullMode::Back)
-			, _polygonMode(GraphicsPolygonMode::Solid)
-			, _primitiveType(GraphicsVertexType::TriangleList)
-			, _frontFace(GraphicsFrontFace::CW)
+			, _cullMode(CullMode::Back)
+			, _polygonMode(PolygonMode::Solid)
+			, _primitiveType(VertexType::TriangleList)
+			, _frontFace(FrontFace::CW)
 			, _depthMin(0.0)
 			, _depthMax(1.0)
 			, _depthSlopeScaleBias(0)
 			, _depthBias(0)
-			, _depthFunc(GraphicsCompareFunc::Lequal)
+			, _depthFunc(CompareFunction::Lequal)
 			, _stencilFrontRef(0)
 			, _stencilBackRef(0)
 			, _stencilFrontReadMask(0xFFFFFFFF)
 			, _stencilFrontWriteMask(0xFFFFFFFF)
 			, _stencilBackReadMask(0xFFFFFFFF)
 			, _stencilBackWriteMask(0xFFFFFFFF)
-			, _stencilFrontFunc(GraphicsCompareFunc::Always)
-			, _stencilBackFunc(GraphicsCompareFunc::Always)
-			, _stencilFrontFail(GraphicsStencilOp::Keep)
-			, _stencilFrontZFail(GraphicsStencilOp::Keep)
-			, _stencilFrontPass(GraphicsStencilOp::Keep)
-			, _stencilBackFail(GraphicsStencilOp::Keep)
-			, _stencilBackZFail(GraphicsStencilOp::Keep)
-			, _stencilBackPass(GraphicsStencilOp::Keep)
+			, _stencilFrontFunc(CompareFunction::Always)
+			, _stencilBackFunc(CompareFunction::Always)
+			, _stencilFrontFail(StencilOp::Keep)
+			, _stencilFrontZFail(StencilOp::Keep)
+			, _stencilFrontPass(StencilOp::Keep)
+			, _stencilBackFail(StencilOp::Keep)
+			, _stencilBackZFail(StencilOp::Keep)
+			, _stencilBackPass(StencilOp::Keep)
 		{
 		}
 
@@ -186,25 +186,25 @@ namespace octoon
 		}
 
 		void
-		GraphicsStateDesc::setCullMode(GraphicsCullMode mode) noexcept
+		GraphicsStateDesc::setCullMode(CullMode mode) noexcept
 		{
 			_cullMode = mode;
 		}
 
 		void
-		GraphicsStateDesc::setPolygonMode(GraphicsPolygonMode mode) noexcept
+		GraphicsStateDesc::setPolygonMode(PolygonMode mode) noexcept
 		{
 			_polygonMode = mode;
 		}
 
 		void
-		GraphicsStateDesc::setPrimitiveType(GraphicsVertexType type) noexcept
+		GraphicsStateDesc::setPrimitiveType(VertexType type) noexcept
 		{
 			_primitiveType = type;
 		}
 
 		void
-		GraphicsStateDesc::setFrontFace(GraphicsFrontFace face) noexcept
+		GraphicsStateDesc::setFrontFace(FrontFace face) noexcept
 		{
 			_frontFace = face;
 		}
@@ -270,7 +270,7 @@ namespace octoon
 		}
 
 		void
-		GraphicsStateDesc::setDepthFunc(GraphicsCompareFunc func) noexcept
+		GraphicsStateDesc::setDepthFunc(CompareFunction func) noexcept
 		{
 			_depthFunc = func;
 		}
@@ -318,7 +318,7 @@ namespace octoon
 		}
 
 		void
-		GraphicsStateDesc::setStencilFrontFunc(GraphicsCompareFunc func) noexcept
+		GraphicsStateDesc::setStencilFrontFunc(CompareFunction func) noexcept
 		{
 			_stencilFrontFunc = func;
 		}
@@ -336,19 +336,19 @@ namespace octoon
 		}
 
 		void
-		GraphicsStateDesc::setStencilFrontFail(GraphicsStencilOp stencilOp) noexcept
+		GraphicsStateDesc::setStencilFrontFail(StencilOp stencilOp) noexcept
 		{
 			_stencilFrontFail = stencilOp;
 		}
 
 		void
-		GraphicsStateDesc::setStencilFrontZFail(GraphicsStencilOp stencilOp) noexcept
+		GraphicsStateDesc::setStencilFrontZFail(StencilOp stencilOp) noexcept
 		{
 			_stencilFrontZFail = stencilOp;
 		}
 
 		void
-		GraphicsStateDesc::setStencilFrontPass(GraphicsStencilOp stencilOp) noexcept
+		GraphicsStateDesc::setStencilFrontPass(StencilOp stencilOp) noexcept
 		{
 			_stencilFrontPass = stencilOp;
 		}
@@ -360,7 +360,7 @@ namespace octoon
 		}
 
 		void
-		GraphicsStateDesc::setStencilBackFunc(GraphicsCompareFunc func) noexcept
+		GraphicsStateDesc::setStencilBackFunc(CompareFunction func) noexcept
 		{
 			_stencilBackFunc = func;
 		}
@@ -378,42 +378,42 @@ namespace octoon
 		}
 
 		void
-		GraphicsStateDesc::setStencilBackFail(GraphicsStencilOp stencilOp) noexcept
+		GraphicsStateDesc::setStencilBackFail(StencilOp stencilOp) noexcept
 		{
 			_stencilBackFail = stencilOp;
 		}
 
 		void
-		GraphicsStateDesc::setStencilBackZFail(GraphicsStencilOp stencilOp) noexcept
+		GraphicsStateDesc::setStencilBackZFail(StencilOp stencilOp) noexcept
 		{
 			_stencilBackZFail = stencilOp;
 		}
 
 		void
-		GraphicsStateDesc::setStencilBackPass(GraphicsStencilOp stencilOp) noexcept
+		GraphicsStateDesc::setStencilBackPass(StencilOp stencilOp) noexcept
 		{
 			_stencilBackPass = stencilOp;
 		}
 
-		GraphicsCullMode
+		CullMode
 		GraphicsStateDesc::getCullMode() const noexcept
 		{
 			return _cullMode;
 		}
 
-		GraphicsPolygonMode
+		PolygonMode
 		GraphicsStateDesc::getPolygonMode() const noexcept
 		{
 			return _polygonMode;
 		}
 
-		GraphicsVertexType
+		VertexType
 		GraphicsStateDesc::getPrimitiveType() const noexcept
 		{
 			return _primitiveType;
 		}
 
-		GraphicsFrontFace
+		FrontFace
 		GraphicsStateDesc::getFrontFace() const noexcept
 		{
 			return _frontFace;
@@ -479,7 +479,7 @@ namespace octoon
 			return _depthMax;
 		}
 
-		GraphicsCompareFunc
+		CompareFunction
 		GraphicsStateDesc::getDepthFunc() const noexcept
 		{
 			return _depthFunc;
@@ -527,7 +527,7 @@ namespace octoon
 			return _stencilFrontRef;
 		}
 
-		GraphicsCompareFunc
+		CompareFunction
 		GraphicsStateDesc::getStencilFrontFunc() const noexcept
 		{
 			return _stencilFrontFunc;
@@ -545,19 +545,19 @@ namespace octoon
 			return _stencilFrontWriteMask;
 		}
 
-		GraphicsStencilOp
+		StencilOp
 		GraphicsStateDesc::getStencilFrontFail() const noexcept
 		{
 			return _stencilFrontFail;
 		}
 
-		GraphicsStencilOp
+		StencilOp
 		GraphicsStateDesc::getStencilFrontZFail() const noexcept
 		{
 			return _stencilFrontZFail;
 		}
 
-		GraphicsStencilOp
+		StencilOp
 		GraphicsStateDesc::getStencilFrontPass() const noexcept
 		{
 			return _stencilFrontPass;
@@ -569,7 +569,7 @@ namespace octoon
 			return _stencilBackRef;
 		}
 
-		GraphicsCompareFunc
+		CompareFunction
 		GraphicsStateDesc::getStencilBackFunc() const noexcept
 		{
 			return _stencilBackFunc;
@@ -587,19 +587,19 @@ namespace octoon
 			return _stencilBackWriteMask;
 		}
 
-		GraphicsStencilOp
+		StencilOp
 		GraphicsStateDesc::getStencilBackFail() const noexcept
 		{
 			return _stencilBackFail;
 		}
 
-		GraphicsStencilOp
+		StencilOp
 		GraphicsStateDesc::getStencilBackZFail() const noexcept
 		{
 			return _stencilBackZFail;
 		}
 
-		GraphicsStencilOp
+		StencilOp
 		GraphicsStateDesc::getStencilBackPass() const noexcept
 		{
 			return _stencilBackPass;

@@ -190,10 +190,10 @@ namespace octoon
 
 			if (layer > 0)
 			{
-				if (textureDesc.getTexDim() != GraphicsTextureDim::Texture2D ||
-					textureDesc.getTexDim() != GraphicsTextureDim::Texture2DMultisample ||
-					textureDesc.getTexDim() != GraphicsTextureDim::Cube ||
-					textureDesc.getTexDim() != GraphicsTextureDim::CubeArray)
+				if (textureDesc.getTexDim() != TextureDimension::Texture2D ||
+					textureDesc.getTexDim() != TextureDimension::Texture2DMultisample ||
+					textureDesc.getTexDim() != TextureDimension::Cube ||
+					textureDesc.getTexDim() != TextureDimension::CubeArray)
 				{
 					GL_PLATFORM_LOG("Invalid texture target");
 					return false;

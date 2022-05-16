@@ -81,16 +81,16 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asVertexType(GraphicsVertexType type) noexcept
+		GL20Types::asVertexType(VertexType type) noexcept
 		{
 			switch (type)
 			{
-			case GraphicsVertexType::PointList:     return GL_POINTS;
-			case GraphicsVertexType::LineList:      return GL_LINES;
-			case GraphicsVertexType::LineStrip:     return GL_LINE_STRIP;
-			case GraphicsVertexType::TriangleList:  return GL_TRIANGLES;
-			case GraphicsVertexType::TriangleStrip: return GL_TRIANGLE_STRIP;
-			case GraphicsVertexType::TriangleFan:   return GL_TRIANGLE_FAN;
+			case VertexType::PointList:     return GL_POINTS;
+			case VertexType::LineList:      return GL_LINES;
+			case VertexType::LineStrip:     return GL_LINE_STRIP;
+			case VertexType::TriangleList:  return GL_TRIANGLES;
+			case VertexType::TriangleStrip: return GL_TRIANGLE_STRIP;
+			case VertexType::TriangleFan:   return GL_TRIANGLE_FAN;
 			default:
 				GL_PLATFORM_LOG("Invalid vertex type");
 				return false;
@@ -219,12 +219,12 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asIndexType(GraphicsIndexType type) noexcept
+		GL20Types::asIndexType(IndexFormat type) noexcept
 		{
 			switch (type)
 			{
-			case GraphicsIndexType::UInt16: return GL_UNSIGNED_SHORT;
-			case GraphicsIndexType::UInt32: return GL_UNSIGNED_INT;
+			case IndexFormat::UInt16: return GL_UNSIGNED_SHORT;
+			case IndexFormat::UInt32: return GL_UNSIGNED_INT;
 			default:
 				GL_PLATFORM_LOG("Invalid index type");
 				return GL_INVALID_ENUM;
@@ -232,16 +232,16 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asShaderStage(GraphicsShaderStageFlags stage) noexcept
+		GL20Types::asShaderStage(ShaderStageFlags stage) noexcept
 		{
 			switch (stage)
 			{
-			case GraphicsShaderStageFlagBits::VertexBit:         return GL_VERTEX_SHADER;
-			case GraphicsShaderStageFlagBits::FragmentBit:       return GL_FRAGMENT_SHADER;
-			case GraphicsShaderStageFlagBits::ComputeBit:
-			case GraphicsShaderStageFlagBits::GeometryBit:
-			case GraphicsShaderStageFlagBits::TessControlBit:
-			case GraphicsShaderStageFlagBits::TessEvaluationBit:
+			case ShaderStageFlagBits::VertexBit:         return GL_VERTEX_SHADER;
+			case ShaderStageFlagBits::FragmentBit:       return GL_FRAGMENT_SHADER;
+			case ShaderStageFlagBits::ComputeBit:
+			case ShaderStageFlagBits::GeometryBit:
+			case ShaderStageFlagBits::TessControlBit:
+			case ShaderStageFlagBits::TessEvaluationBit:
 				GL_PLATFORM_LOG("Can't support shader stage");
 			default:
 				GL_PLATFORM_LOG("Invalid shader type");
@@ -250,17 +250,17 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asTextureTarget(GraphicsTextureDim target) noexcept
+		GL20Types::asTextureTarget(TextureDimension target) noexcept
 		{
 			switch (target)
 			{
-			case GraphicsTextureDim::Texture2D:					return GL_TEXTURE_2D;
-			case GraphicsTextureDim::Cube:						return GL_TEXTURE_CUBE_MAP;
-			case GraphicsTextureDim::Texture2DMultisample:
-			case GraphicsTextureDim::Texture2DArrayMultisample:
-			case GraphicsTextureDim::Texture2DArray:
-			case GraphicsTextureDim::Texture3D:
-			case GraphicsTextureDim::CubeArray:
+			case TextureDimension::Texture2D:					return GL_TEXTURE_2D;
+			case TextureDimension::Cube:						return GL_TEXTURE_CUBE_MAP;
+			case TextureDimension::Texture2DMultisample:
+			case TextureDimension::Texture2DArrayMultisample:
+			case TextureDimension::Texture2DArray:
+			case TextureDimension::Texture3D:
+			case TextureDimension::CubeArray:
 			default:
 				return GL_INVALID_ENUM;
 			}
@@ -761,19 +761,19 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asCompareFunction(GraphicsCompareFunc func) noexcept
+		GL20Types::asCompareFunction(CompareFunction func) noexcept
 		{
 			switch (func)
 			{
-			case GraphicsCompareFunc::None:     return GL_NONE;
-			case GraphicsCompareFunc::Lequal:   return GL_LEQUAL;
-			case GraphicsCompareFunc::Equal:    return GL_EQUAL;
-			case GraphicsCompareFunc::Greater:  return GL_GREATER;
-			case GraphicsCompareFunc::Less:     return GL_LESS;
-			case GraphicsCompareFunc::Gequal:   return GL_GEQUAL;
-			case GraphicsCompareFunc::NotEqual: return GL_NOTEQUAL;
-			case GraphicsCompareFunc::Always:   return GL_ALWAYS;
-			case GraphicsCompareFunc::Never:    return GL_NEVER;
+			case CompareFunction::None:     return GL_NONE;
+			case CompareFunction::Lequal:   return GL_LEQUAL;
+			case CompareFunction::Equal:    return GL_EQUAL;
+			case CompareFunction::Greater:  return GL_GREATER;
+			case CompareFunction::Less:     return GL_LESS;
+			case CompareFunction::Gequal:   return GL_GEQUAL;
+			case CompareFunction::NotEqual: return GL_NOTEQUAL;
+			case CompareFunction::Always:   return GL_ALWAYS;
+			case CompareFunction::Never:    return GL_NEVER;
 			default:
 				GL_PLATFORM_ASSERT(false, "Invalid compare function");
 				return GL_INVALID_ENUM;
@@ -781,25 +781,25 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asBlendFactor(GraphicsBlendFactor func) noexcept
+		GL20Types::asBlendFactor(BlendMode func) noexcept
 		{
 			switch (func)
 			{
-			case GraphicsBlendFactor::Zero:                  return GL_ZERO;
-			case GraphicsBlendFactor::One:                   return GL_ONE;
-			case GraphicsBlendFactor::DstCol:                return GL_DST_COLOR;
-			case GraphicsBlendFactor::SrcColor:              return GL_SRC_COLOR;
-			case GraphicsBlendFactor::SrcAlpha:              return GL_SRC_ALPHA;
-			case GraphicsBlendFactor::DstAlpha:              return GL_DST_ALPHA;
-			case GraphicsBlendFactor::OneMinusSrcCol:        return GL_ONE_MINUS_SRC_COLOR;
-			case GraphicsBlendFactor::OneMinusDstCol:        return GL_ONE_MINUS_DST_COLOR;
-			case GraphicsBlendFactor::OneMinusSrcAlpha:      return GL_ONE_MINUS_SRC_ALPHA;
-			case GraphicsBlendFactor::OneMinusDstAlpha:      return GL_ONE_MINUS_DST_ALPHA;
-			case GraphicsBlendFactor::ConstantColor:         return GL_CONSTANT_COLOR;
-			case GraphicsBlendFactor::ConstantAlpha:         return GL_CONSTANT_ALPHA;
-			case GraphicsBlendFactor::OneMinusConstantColor: return GL_CONSTANT_ALPHA;
-			case GraphicsBlendFactor::OneMinusConstantAlpha: return GL_CONSTANT_ALPHA;
-			case GraphicsBlendFactor::SrcAlphaSaturate:      return GL_SRC_ALPHA_SATURATE;
+			case BlendMode::Zero:                  return GL_ZERO;
+			case BlendMode::One:                   return GL_ONE;
+			case BlendMode::DstCol:                return GL_DST_COLOR;
+			case BlendMode::SrcColor:              return GL_SRC_COLOR;
+			case BlendMode::SrcAlpha:              return GL_SRC_ALPHA;
+			case BlendMode::DstAlpha:              return GL_DST_ALPHA;
+			case BlendMode::OneMinusSrcCol:        return GL_ONE_MINUS_SRC_COLOR;
+			case BlendMode::OneMinusDstCol:        return GL_ONE_MINUS_DST_COLOR;
+			case BlendMode::OneMinusSrcAlpha:      return GL_ONE_MINUS_SRC_ALPHA;
+			case BlendMode::OneMinusDstAlpha:      return GL_ONE_MINUS_DST_ALPHA;
+			case BlendMode::ConstantColor:         return GL_CONSTANT_COLOR;
+			case BlendMode::ConstantAlpha:         return GL_CONSTANT_ALPHA;
+			case BlendMode::OneMinusConstantColor: return GL_CONSTANT_ALPHA;
+			case BlendMode::OneMinusConstantAlpha: return GL_CONSTANT_ALPHA;
+			case BlendMode::SrcAlphaSaturate:      return GL_SRC_ALPHA_SATURATE;
 			default:
 				GL_PLATFORM_ASSERT(false, "Invalid blend factor");
 				return GL_INVALID_ENUM;
@@ -807,13 +807,13 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asBlendOperation(GraphicsBlendOp blendop) noexcept
+		GL20Types::asBlendOperation(BlendOp blendop) noexcept
 		{
 			switch (blendop)
 			{
-			case GraphicsBlendOp::Add:        return GL_FUNC_ADD;
-			case GraphicsBlendOp::Subtract:   return GL_FUNC_SUBTRACT;
-			case GraphicsBlendOp::RevSubtract:return GL_FUNC_REVERSE_SUBTRACT;
+			case BlendOp::Add:        return GL_FUNC_ADD;
+			case BlendOp::Subtract:   return GL_FUNC_SUBTRACT;
+			case BlendOp::RevSubtract:return GL_FUNC_REVERSE_SUBTRACT;
 			default:
 				GL_PLATFORM_ASSERT(false, "Invalid blend operation");
 				return GL_INVALID_ENUM;
@@ -821,14 +821,14 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asCullMode(GraphicsCullMode mode) noexcept
+		GL20Types::asCullMode(CullMode mode) noexcept
 		{
 			switch (mode)
 			{
-			case GraphicsCullMode::None:      return GL_NONE;
-			case GraphicsCullMode::Front:     return GL_FRONT;
-			case GraphicsCullMode::Back:      return GL_BACK;
-			case GraphicsCullMode::FrontBack: return GL_FRONT_AND_BACK;
+			case CullMode::Off:      return GL_NONE;
+			case CullMode::Front:     return GL_FRONT;
+			case CullMode::Back:      return GL_BACK;
+			case CullMode::FrontBack: return GL_FRONT_AND_BACK;
 			default:
 				GL_PLATFORM_ASSERT(false, "Invalid cull mode");
 				return GL_INVALID_ENUM;
@@ -836,13 +836,13 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asFrontFace(GraphicsFrontFace face) noexcept
+		GL20Types::asFrontFace(FrontFace face) noexcept
 		{
 			switch (face)
 			{
-			case GraphicsFrontFace::CW:
+			case FrontFace::CW:
 				return GL_CW;
-			case GraphicsFrontFace::CCW:
+			case FrontFace::CCW:
 				return GL_CCW;
 			default:
 				GL_PLATFORM_ASSERT(false, "Invalid front face");
@@ -851,13 +851,13 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asFillMode(GraphicsPolygonMode mode) noexcept
+		GL20Types::asFillMode(PolygonMode mode) noexcept
 		{
 			switch (mode)
 			{
-			case GraphicsPolygonMode::Point:
-			case GraphicsPolygonMode::Wireframe:
-			case GraphicsPolygonMode::Solid:
+			case PolygonMode::Point:
+			case PolygonMode::Wireframe:
+			case PolygonMode::Solid:
 				GL_PLATFORM_ASSERT(false, "Can't support glPolygonMode");
 				return GL_INVALID_ENUM;
 			default:
@@ -867,17 +867,17 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asStencilOperation(GraphicsStencilOp stencilop) noexcept
+		GL20Types::asStencilOperation(StencilOp stencilop) noexcept
 		{
 			switch (stencilop)
 			{
-			case GraphicsStencilOp::Keep:     return GL_KEEP;
-			case GraphicsStencilOp::Replace:  return GL_REPLACE;
-			case GraphicsStencilOp::Incr:     return GL_INCR;
-			case GraphicsStencilOp::Decr:     return GL_DECR;
-			case GraphicsStencilOp::Zero:     return GL_ZERO;
-			case GraphicsStencilOp::IncrWrap: return GL_INCR_WRAP;
-			case GraphicsStencilOp::DecrWrap: return GL_DECR_WRAP;
+			case StencilOp::Keep:     return GL_KEEP;
+			case StencilOp::Replace:  return GL_REPLACE;
+			case StencilOp::Incr:     return GL_INCR;
+			case StencilOp::Decr:     return GL_DECR;
+			case StencilOp::Zero:     return GL_ZERO;
+			case StencilOp::IncrementWrap: return GL_INCR_WRAP;
+			case StencilOp::DecrementWrap: return GL_DECR_WRAP;
 			default:
 				GL_PLATFORM_ASSERT(false, "Invalid stencil operation");
 				return GL_INVALID_ENUM;
@@ -885,13 +885,13 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asSamplerWrap(GraphicsSamplerWrap wrap) noexcept
+		GL20Types::asSamplerWrap(SamplerWrap wrap) noexcept
 		{
 			switch (wrap)
 			{
-			case GraphicsSamplerWrap::Repeat:      return GL_REPEAT;
-			case GraphicsSamplerWrap::Mirror:      return GL_MIRRORED_REPEAT;
-			case GraphicsSamplerWrap::ClampToEdge: return GL_CLAMP_TO_EDGE;
+			case SamplerWrap::Repeat:      return GL_REPEAT;
+			case SamplerWrap::Mirror:      return GL_MIRRORED_REPEAT;
+			case SamplerWrap::ClampToEdge: return GL_CLAMP_TO_EDGE;
 			default:
 				GL_PLATFORM_ASSERT(false, "Invalid sampler wrap");
 				return GL_INVALID_ENUM;
@@ -899,16 +899,16 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asSamplerMinFilter(GraphicsSamplerFilter filter) noexcept
+		GL20Types::asSamplerMinFilter(SamplerFilter filter) noexcept
 		{
 			switch (filter)
 			{
-			case GraphicsSamplerFilter::Nearest:              return GL_NEAREST;
-			case GraphicsSamplerFilter::Linear:               return GL_LINEAR;
-			case GraphicsSamplerFilter::NearestMipmapLinear:  return GL_NEAREST_MIPMAP_LINEAR;
-			case GraphicsSamplerFilter::NearestMipmapNearest: return GL_NEAREST_MIPMAP_NEAREST;
-			case GraphicsSamplerFilter::LinearMipmapNearest:  return GL_LINEAR_MIPMAP_NEAREST;
-			case GraphicsSamplerFilter::LinearMipmapLinear:   return GL_LINEAR_MIPMAP_LINEAR;
+			case SamplerFilter::Nearest:              return GL_NEAREST;
+			case SamplerFilter::Linear:               return GL_LINEAR;
+			case SamplerFilter::NearestMipmapLinear:  return GL_NEAREST_MIPMAP_LINEAR;
+			case SamplerFilter::NearestMipmapNearest: return GL_NEAREST_MIPMAP_NEAREST;
+			case SamplerFilter::LinearMipmapNearest:  return GL_LINEAR_MIPMAP_NEAREST;
+			case SamplerFilter::LinearMipmapLinear:   return GL_LINEAR_MIPMAP_LINEAR;
 			default:
 				GL_PLATFORM_ASSERT(false, "Invalid sampler filter");
 				return GL_INVALID_ENUM;
@@ -916,16 +916,16 @@ namespace octoon
 		}
 
 		GLenum
-		GL20Types::asSamplerMagFilter(GraphicsSamplerFilter filter) noexcept
+		GL20Types::asSamplerMagFilter(SamplerFilter filter) noexcept
 		{
 			switch (filter)
 			{
-			case GraphicsSamplerFilter::Nearest:              return GL_NEAREST;
-			case GraphicsSamplerFilter::Linear:               return GL_LINEAR;
-			case GraphicsSamplerFilter::NearestMipmapLinear:  return GL_NEAREST;
-			case GraphicsSamplerFilter::NearestMipmapNearest: return GL_NEAREST;
-			case GraphicsSamplerFilter::LinearMipmapNearest:  return GL_LINEAR;
-			case GraphicsSamplerFilter::LinearMipmapLinear:   return GL_LINEAR;
+			case SamplerFilter::Nearest:              return GL_NEAREST;
+			case SamplerFilter::Linear:               return GL_LINEAR;
+			case SamplerFilter::NearestMipmapLinear:  return GL_NEAREST;
+			case SamplerFilter::NearestMipmapNearest: return GL_NEAREST;
+			case SamplerFilter::LinearMipmapNearest:  return GL_LINEAR;
+			case SamplerFilter::LinearMipmapLinear:   return GL_LINEAR;
 			default:
 				GL_PLATFORM_ASSERT(false, "Invalid sampler filter");
 				return GL_INVALID_ENUM;

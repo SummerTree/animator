@@ -69,7 +69,7 @@ namespace octoon
 		hal::GraphicsTextureDesc textureDesc;
 		textureDesc.setName(path);
 		textureDesc.setSize(image.width(), image.height(), image.depth());
-		textureDesc.setTexDim(hal::GraphicsTextureDim::Texture2D);
+		textureDesc.setTexDim(hal::TextureDimension::Texture2D);
 		textureDesc.setTexFormat(format);
 		textureDesc.setStream(image.data());
 		textureDesc.setStreamSize(image.size());

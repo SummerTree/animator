@@ -12,7 +12,7 @@ namespace octoon
 		public:
 			GraphicsVertexBinding() noexcept;
 			GraphicsVertexBinding(std::uint8_t slot, std::uint16_t size) noexcept;
-			GraphicsVertexBinding(std::uint8_t slot, std::uint16_t size, GraphicsVertexDivisor divisor) noexcept;
+			GraphicsVertexBinding(std::uint8_t slot, std::uint16_t size, VertexAttribDivisor divisor) noexcept;
 			~GraphicsVertexBinding() noexcept;
 
 			void setVertexSlot(std::uint8_t slot) noexcept;
@@ -21,13 +21,13 @@ namespace octoon
 			void setVertexSize(std::uint16_t size) noexcept;
 			std::uint16_t getVertexSize() const noexcept;
 
-			void setVertexDivisor(GraphicsVertexDivisor divisor) noexcept;
-			GraphicsVertexDivisor getVertexDivisor() const noexcept;
+			void setVertexDivisor(VertexAttribDivisor divisor) noexcept;
+			VertexAttribDivisor getVertexDivisor() const noexcept;
 
 		public:
 			std::uint8_t _slot;
 			std::uint16_t _size;
-			GraphicsVertexDivisor _divisor;
+			VertexAttribDivisor _divisor;
 		};
 
 		class OCTOON_EXPORT GraphicsVertexLayout final

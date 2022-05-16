@@ -949,7 +949,7 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setColor(math::float3(1.0f, 1.0f, 1.0f));
-								material->setColorMap(octoon::TextureLoader::load(file_name.str()));
+								material->setColorMap(TextureLoader::load(file_name.str()));
 							}
 							else
 							{
@@ -966,7 +966,7 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setOpacity(1.0f);
-								material->setOpacityMap(octoon::TextureLoader::load(file_name.str()));
+								material->setOpacityMap(TextureLoader::load(file_name.str()));
 							}
 							else if (param.value)
 							{
@@ -977,12 +977,12 @@ namespace octoon
 
 							if (param.texture || v < 1.0f)
 							{
-								octoon::hal::GraphicsColorBlend blend;
+								hal::GraphicsColorBlend blend;
 								blend.setBlendEnable(true);
-								blend.setBlendSrc(octoon::hal::GraphicsBlendFactor::SrcAlpha);
-								blend.setBlendDest(octoon::hal::GraphicsBlendFactor::OneMinusSrcAlpha);
+								blend.setBlendSrc(hal::BlendMode::SrcAlpha);
+								blend.setBlendDest(hal::BlendMode::OneMinusSrcAlpha);
 
-								std::vector<octoon::hal::GraphicsColorBlend> blends;
+								std::vector<hal::GraphicsColorBlend> blends;
 								blends.push_back(blend);
 
 								material->setColorBlends(std::move(blends));
@@ -992,7 +992,7 @@ namespace octoon
 						{
 							if (param.texture)
 							{
-								material->setNormalMap(octoon::TextureLoader::load(file_name.str()));
+								material->setNormalMap(TextureLoader::load(file_name.str()));
 							}
 						}
 						else if (param_name == "roughness")
@@ -1000,7 +1000,7 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setRoughness(1.0f);
-								material->setRoughnessMap(octoon::TextureLoader::load(file_name.str()));
+								material->setRoughnessMap(TextureLoader::load(file_name.str()));
 							}
 							else if (param.value)
 							{
@@ -1015,7 +1015,7 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setMetalness(1.0f);
-								material->setMetalnessMap(octoon::TextureLoader::load(file_name.str()));
+								material->setMetalnessMap(TextureLoader::load(file_name.str()));
 							}
 							else if (param.value)
 							{
@@ -1030,7 +1030,7 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setAnisotropy(1.0f);
-								material->setAnisotropyMap(octoon::TextureLoader::load(file_name.str()));
+								material->setAnisotropyMap(TextureLoader::load(file_name.str()));
 							}
 							else if (param.value)
 							{
@@ -1045,7 +1045,7 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setSpecular(1.0f);
-								material->setSpecularMap(octoon::TextureLoader::load(file_name.str()));
+								material->setSpecularMap(TextureLoader::load(file_name.str()));
 							}
 							else if (param.value)
 							{
@@ -1060,7 +1060,7 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setClearCoat(1.0f);
-								material->setClearCoatMap(octoon::TextureLoader::load(file_name.str()));
+								material->setClearCoatMap(TextureLoader::load(file_name.str()));
 							}
 							else if (param.value)
 							{
@@ -1075,7 +1075,7 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setClearCoatRoughness(1.0f);
-								material->setClearCoatRoughnessMap(octoon::TextureLoader::load(file_name.str()));
+								material->setClearCoatRoughnessMap(TextureLoader::load(file_name.str()));
 							}
 							else if (param.value)
 							{
@@ -1090,7 +1090,7 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setEmissive(math::float3(1.0f, 1.0f, 1.0f));
-								material->setEmissiveMap(octoon::TextureLoader::load(file_name.str()));
+								material->setEmissiveMap(TextureLoader::load(file_name.str()));
 							}
 							else if (param.value)
 							{

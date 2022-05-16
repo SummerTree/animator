@@ -218,20 +218,7 @@ namespace octoon
 			Fps15 = 3,
 		};
 
-		enum class GraphicsCompareFunc : std::uint8_t
-		{
-			None = 0,
-			Lequal = 1,
-			Equal = 2,
-			Greater = 3,
-			Less = 4,
-			Gequal = 5,
-			NotEqual = 6,
-			Always = 7,
-			Never = 8,
-		};
-
-		enum class GraphicsBlendFactor : std::uint8_t
+		enum class BlendMode : std::uint8_t
 		{
 			Zero = 0,
 			One = 1,
@@ -250,14 +237,27 @@ namespace octoon
 			SrcAlphaSaturate = 14,
 		};
 
-		enum class GraphicsBlendOp : std::uint8_t
+		enum class BlendOp : std::uint8_t
 		{
 			Add = 0,
 			Subtract = 1,
 			RevSubtract = 2,
 		};
 
-		struct GraphicsColorMaskFlagBits
+		enum class CompareFunction : std::uint8_t
+		{
+			None = 0,
+			Lequal = 1,
+			Equal = 2,
+			Greater = 3,
+			Less = 4,
+			Gequal = 5,
+			NotEqual = 6,
+			Always = 7,
+			Never = 8,
+		};
+
+		struct ColorWriteMask
 		{
 			enum Flags
 			{
@@ -270,53 +270,17 @@ namespace octoon
 			};
 		};
 
-		typedef std::uint32_t GraphicsColorMaskFlags;
+		typedef std::uint32_t ColorWriteMaskFlags;
 
-		enum class GraphicsCullMode : std::uint8_t
+		enum class CullMode : std::uint8_t
 		{
-			None = 0,
+			Off = 0,
 			Front = 1,
 			Back = 2,
 			FrontBack = 3,
 		};
 
-		enum class GraphicsFrontFace : std::uint8_t
-		{
-			CW = 0,
-			CCW = 1,
-		};
-
-		enum class GraphicsPolygonMode : std::uint8_t
-		{
-			Point = 0,
-			Wireframe = 1,
-			Solid = 2,
-		};
-
-		enum class GraphicsStencilOp : std::uint8_t
-		{
-			Keep = 0,
-			Replace = 1,
-			Incr = 2,
-			Decr = 3,
-			Zero = 4,
-			IncrWrap = 5,
-			DecrWrap = 6,
-		};
-
-		struct GraphicsStencilFaceFlagBits
-		{
-			enum Flags
-			{
-				FrontBit = 1,
-				BackBit = 2,
-				AllBit = 0x7FFFFFFF
-			};
-		};
-
-		typedef std::uint32_t GraphicsStencilFaceFlags;
-
-		struct GraphicsClearFlagBits
+		struct ClearFlagBits
 		{
 			enum Flags
 			{
@@ -331,7 +295,43 @@ namespace octoon
 			};
 		};
 
-		typedef std::uint32_t GraphicsClearFlags;
+		typedef std::uint32_t ClearFlags;
+
+		enum class FrontFace : std::uint8_t
+		{
+			CW = 0,
+			CCW = 1,
+		};
+
+		enum class PolygonMode : std::uint8_t
+		{
+			Point = 0,
+			Wireframe = 1,
+			Solid = 2,
+		};
+
+		enum class StencilOp : std::uint8_t
+		{
+			Keep = 0,
+			Replace = 1,
+			Incr = 2,
+			Decr = 3,
+			Zero = 4,
+			IncrementWrap = 5,
+			DecrementWrap = 6,
+		};
+
+		struct StencilFaceFlagBits
+		{
+			enum Flags
+			{
+				FrontBit = 1,
+				BackBit = 2,
+				AllBit = 0x7FFFFFFF
+			};
+		};
+
+		typedef std::uint32_t StencilFaceFlags;
 
 		enum class GraphicsFormat : std::uint8_t
 		{
@@ -522,7 +522,7 @@ namespace octoon
 			ASTC12x12SRGBBlock = 184,
 		};
 
-		enum class GraphicsTextureDim : std::uint8_t
+		enum class TextureDimension : std::uint8_t
 		{
 			Texture2D = 0,
 			Texture2DMultisample = 1,
@@ -545,7 +545,7 @@ namespace octoon
 			Anis64 = 7,
 		};
 
-		enum class GraphicsSamplerWrap : std::uint8_t
+		enum class SamplerWrap : std::uint8_t
 		{
 			None = 0,
 			Repeat = 1,
@@ -553,7 +553,7 @@ namespace octoon
 			ClampToEdge = 3,
 		};
 
-		enum class GraphicsSamplerFilter : std::uint8_t
+		enum class SamplerFilter : std::uint8_t
 		{
 			Nearest = 0,
 			Linear = 1,
@@ -593,7 +593,7 @@ namespace octoon
 			IndirectBiffer = 9,
 		};
 
-		enum class GraphicsVertexType : std::uint8_t
+		enum class VertexType : std::uint8_t
 		{
 			PointList = 0,
 			LineList = 1,
@@ -608,19 +608,36 @@ namespace octoon
 			PatchList = 10,
 		};
 
-		enum class GraphicsVertexDivisor : std::uint8_t
+		enum class VertexAttribDivisor : std::uint8_t
 		{
 			Vertex = 0,
 			Instance = 1,
 		};
 
-		enum class GraphicsIndexType : std::uint8_t
+		enum class IndexFormat : std::uint8_t
 		{
 			UInt16 = 0,
 			UInt32 = 2,
 		};
 
-		struct GraphicsShaderStageFlagBits
+		enum class ShaderLanguage : std::uint8_t
+		{
+			None = 0,
+			HLSL = 1,
+			HLSLbytecodes = 2,
+			GLSL = 3,
+		};
+
+		enum class ShaderModel : std::uint8_t
+		{
+			Level2X = 0,
+			Level3X = 1,
+			Level4X = 2,
+			Level5X = 3,
+			Level6X = 4,
+		};
+
+		struct ShaderStageFlagBits
 		{
 			enum Flags
 			{
@@ -639,26 +656,9 @@ namespace octoon
 			};
 		};
 
-		typedef std::uint32_t GraphicsShaderStageFlags;
+		typedef std::uint32_t ShaderStageFlags;
 
-		enum class GraphicsShaderLang : std::uint8_t
-		{
-			None = 0,
-			HLSL = 1,
-			HLSLbytecodes = 2,
-			GLSL = 3,
-		};
-
-		enum class GraphicsShaderModel : std::uint8_t
-		{
-			Level2X = 0,
-			Level3X = 1,
-			Level4X = 2,
-			Level5X = 3,
-			Level6X = 4,
-		};
-
-		enum class GraphicsUniformType : std::uint8_t
+		enum class UniformAttributeFormat : std::uint8_t
 		{
 			Null = 0,
 			Boolean = 1,
