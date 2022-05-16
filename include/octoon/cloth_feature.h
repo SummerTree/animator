@@ -28,6 +28,8 @@ namespace octoon
 		ClothFeature() except;
 		virtual ~ClothFeature() noexcept;
 
+		void simulate(float delta) noexcept;
+
 	public:
 		void onActivate() except override;
 		void onDeactivate() noexcept override;

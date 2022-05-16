@@ -229,6 +229,8 @@ namespace flower
 		~MaterialDock() noexcept;
 
 		void showEvent(QShowEvent* event) noexcept override;
+		void paintEvent(QPaintEvent* e) noexcept override;
+
 		void updateList();
 
 	private Q_SLOTS:

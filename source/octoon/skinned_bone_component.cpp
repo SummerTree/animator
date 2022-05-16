@@ -9,7 +9,6 @@ namespace octoon
 	}
 
 	SkinnedBoneComponent::SkinnedBoneComponent(math::uint1s&& bones, math::float3s&& position, math::Quaternions&& rotation, float control) noexcept
-		: SkinnedBoneComponent()
 	{
 		bones_ = std::move(bones);
 		position_ = std::move(position);
@@ -17,7 +16,6 @@ namespace octoon
 	}
 
 	SkinnedBoneComponent::SkinnedBoneComponent(const math::uint1s& bones, const math::float3s& position, const math::Quaternions& rotation, float control) noexcept
-		: SkinnedBoneComponent()
 	{
 		bones_ = bones;
 		position_ = position;

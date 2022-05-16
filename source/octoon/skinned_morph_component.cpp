@@ -9,14 +9,12 @@ namespace octoon
 	}
 
 	SkinnedMorphComponent::SkinnedMorphComponent(math::float3s&& offsets, math::uint1s&& indices, float control) noexcept
-		: SkinnedMorphComponent()
 	{
 		offsets_ = std::move(offsets);
 		indices_ = std::move(indices);
 	}
 
 	SkinnedMorphComponent::SkinnedMorphComponent(const math::float3s& offsets, const math::uint1s& indices, float control) noexcept
-		: SkinnedMorphComponent()
 	{
 		offsets_ = offsets;
 		indices_ = indices;

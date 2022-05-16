@@ -274,7 +274,6 @@ namespace flower
 	void
 	RecordComponent::stopRecord() noexcept
 	{
-		auto& model = this->getContext()->profile->recordModule;
 		auto& profile = this->getContext()->profile;
 
 		profile->recordModule->active = false;

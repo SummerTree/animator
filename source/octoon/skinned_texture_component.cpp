@@ -9,14 +9,12 @@ namespace octoon
 	}
 
 	SkinnedTextureComponent::SkinnedTextureComponent(math::float2s&& offsets, math::uint1s&& indices, float control) noexcept
-		: SkinnedTextureComponent()
 	{
 		offsets_ = std::move(offsets);
 		indices_ = std::move(indices);
 	}
 
 	SkinnedTextureComponent::SkinnedTextureComponent(const math::float2s& offsets, const math::uint1s& indices, float control) noexcept
-		: SkinnedTextureComponent()
 	{
 		offsets_ = offsets;
 		indices_ = indices;

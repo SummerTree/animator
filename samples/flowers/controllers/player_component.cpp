@@ -496,7 +496,6 @@ namespace flower
 	PlayerComponent::onFixedUpdate() noexcept
 	{
 		auto& model = this->getModel();
-		auto& context = this->getContext();
 
 		this->updateDofTarget();
 

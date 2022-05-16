@@ -44,6 +44,19 @@ namespace octoon
 	{
 	}
 
+	void
+	ClothFeature::simulate(float delta) noexcept
+	{
+		assert(solver_);
+
+		if (solver_->beginSimulation(timeInterval_))
+		{
+			for (int j = 0; j < solver_->getSimulationChunkCount(); j++)
+				solver_->simulateChunk(j);
+			solver_->endSimulation();
+		}
+	}
+
     void
 	ClothFeature::onActivate() except
     {

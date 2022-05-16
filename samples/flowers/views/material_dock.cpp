@@ -1627,6 +1627,15 @@ namespace flower
 	}
 
 	void
+	MaterialDock::paintEvent(QPaintEvent* e) noexcept
+	{
+		modifyWidget_->resize(widget_->size());
+		listPanel_->resize(widget_->size());
+
+		QDockWidget::paintEvent(e);
+	}
+
+	void
 	MaterialDock::okEvent()
 	{
 		modifyWidget_->hide();
