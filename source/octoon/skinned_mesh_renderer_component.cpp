@@ -14,6 +14,7 @@ namespace octoon
 		, morphEnable_(true)
 		, textureEnable_(true)
 		, automaticUpdate_(true)
+		, updateWhenOffscreenEnable_(true)
 	{
 	}
 
@@ -67,6 +68,18 @@ namespace octoon
 	SkinnedMeshRendererComponent::getTransforms() const noexcept
 	{
 		return transforms_;
+	}
+
+	void
+	SkinnedMeshRendererComponent::setUpdateWhenOffscreen(bool enable) noexcept
+	{
+		updateWhenOffscreenEnable_ = true;
+	}
+
+	bool
+	SkinnedMeshRendererComponent::getUpdateWhenOffscreen() const noexcept
+	{
+		return updateWhenOffscreenEnable_;
 	}
 
 	void
@@ -268,7 +281,7 @@ namespace octoon
 	void
 	SkinnedMeshRendererComponent::onPreRender(const Camera& camera) noexcept
 	{
-		if (needUpdate_)
+		if (needUpdate_ && updateWhenOffscreenEnable_)
 			this->updateMeshData(true);
 	}
 
@@ -292,16 +305,6 @@ namespace octoon
 			quaternions_[i].identity();
 			joints_[i].makeIdentity();
 		}
-
-		/*if (!jointData_)
-		{
-			hal::GraphicsDataDesc jointDesc;
-			jointDesc.setStreamSize(sizeof(math::float4x4) * static_cast<std::uint16_t>(joints_.size()));
-			jointDesc.setUsage(hal::GraphicsUsageFlagBits::WriteBit);
-			jointDesc.setType(hal::GraphicsDataType::UniformBuffer);
-
-			jointData_ = Renderer::instance()->createGraphicsData(jointDesc);
-		}*/
 	}
 
 	void

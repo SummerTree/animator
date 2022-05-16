@@ -23,6 +23,9 @@ namespace octoon
 		void setTransforms(GameObjects&& transforms) noexcept;
 		const GameObjects& getTransforms() const noexcept;
 
+		void setUpdateWhenOffscreen(bool enable) noexcept;
+		bool getUpdateWhenOffscreen() const noexcept;
+
 		void setAutomaticUpdate(bool enable) noexcept;
 		bool getAutomaticUpdate() noexcept;
 
@@ -73,6 +76,7 @@ namespace octoon
 		bool morphEnable_;
 		bool textureEnable_;
 		bool automaticUpdate_;
+		bool updateWhenOffscreenEnable_;
 
 		GameObjects transforms_;
 
