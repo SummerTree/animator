@@ -14,9 +14,9 @@ namespace flower
 	void
 	PlayerModule::reset() noexcept
 	{
-		this->playing_ = false;
+		this->isPlaying = false;
 		this->spp = 100;
-		this->sppCount_ = 0;
+		this->sppCount = 0;
 		this->recordFps = 30.0f;
 		this->playTimeStep = 1.0f / 60.f;
 		this->normalTimeStep = 1.0f / 60.f;

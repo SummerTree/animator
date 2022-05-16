@@ -139,7 +139,7 @@ namespace flower
 		auto& model = this->getModel();
 		auto& profile = this->getContext()->profile;
 
-		if (model->selectedItem_ && !profile->playerModule->playing_)
+		if (model->selectedItem_ && !profile->playerModule->isPlaying)
 		{
 			auto hit = model->selectedItem_.value();
 			auto hitObject = hit.object.lock();
@@ -178,7 +178,7 @@ namespace flower
 			gizmoSelected_->getComponent<octoon::MeshRendererComponent>()->setVisible(false);
 		}
 
-		if (model->selectedItemHover_ && model->selectedItem_ != model->selectedItemHover_ && !profile->playerModule->playing_)
+		if (model->selectedItemHover_ && model->selectedItem_ != model->selectedItemHover_ && !profile->playerModule->isPlaying)
 		{
 			auto hit = model->selectedItemHover_.value();
 			auto hitObject = hit.object.lock();

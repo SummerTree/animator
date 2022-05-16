@@ -136,7 +136,7 @@ namespace flower
 		{
 			try
 			{
-				if (behaviour_ && !profile_->playerModule->playing_)
+				if (behaviour_ && !profile_->playerModule->isPlaying)
 				{
 					auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 					if (behaviour->isOpen())
@@ -188,7 +188,7 @@ namespace flower
 	{
 		try
 		{
-			if (!profile_->playerModule->playing_)
+			if (!profile_->playerModule->isPlaying)
 			{
 				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 				if (behaviour->isOpen())
@@ -226,7 +226,7 @@ namespace flower
 	{
 		try
 		{
-			if (!profile_->playerModule->playing_)
+			if (!profile_->playerModule->isPlaying)
 			{
 				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 				if (behaviour->isOpen())
@@ -289,7 +289,7 @@ namespace flower
 	void
 	ToplevelBar::paintEvent(QPaintEvent* e) noexcept
 	{
-		if (profile_->playerModule->playing_)
+		if (profile_->playerModule->isPlaying)
 		{
 			if (!playEnable_)
 			{

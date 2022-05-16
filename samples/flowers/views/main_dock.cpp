@@ -143,7 +143,7 @@ namespace flower
 	{
 		try
 		{
-			if (!profile_->playerModule->playing_ && !profile_->recordModule->active)
+			if (!profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
 				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 				if (behaviour)
@@ -185,7 +185,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)
+				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
 				{
 					if (lightDock_->isHidden())
 						lightDock_->show();
@@ -224,7 +224,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)
+				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
 				{
 					if (mainLightDock_->isHidden())
 						mainLightDock_->show();
@@ -263,7 +263,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->enviromentLight && !profile_->playerModule->playing_)
+				if (profile_->entitiesModule->enviromentLight && !profile_->playerModule->isPlaying)
 				{
 					if (environmentDock_->isHidden())
 						environmentDock_->show();
@@ -302,7 +302,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (!profile_->playerModule->playing_)
+				if (!profile_->playerModule->isPlaying)
 				{
 					if (materialDock_->isHidden())
 						materialDock_->show();
@@ -341,7 +341,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (!profile_->playerModule->playing_)
+				if (!profile_->playerModule->isPlaying)
 				{
 					if (cameraDock_->isHidden())
 						cameraDock_->show();

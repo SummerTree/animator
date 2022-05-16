@@ -99,7 +99,7 @@ namespace flower
 	{
 		try
 		{
-			if (behaviour_ && !profile_->playerModule->playing_)
+			if (behaviour_ && !profile_->playerModule->isPlaying)
 			{
 				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 				if (behaviour)
@@ -176,7 +176,7 @@ namespace flower
 	{
 		auto audioSignal = [this](bool enable) -> bool
 		{
-			if (behaviour_ && !profile_->playerModule->playing_ && !profile_->recordModule->active)
+			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
 				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 				if (behaviour)
@@ -237,7 +237,7 @@ namespace flower
 	{
 		try
 		{
-			if (behaviour_ && !profile_->playerModule->playing_ && !profile_->recordModule->active)
+			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
 				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image"), "", tr("PNG Files (*.png)"));
 				if (!fileName.isEmpty())
@@ -323,7 +323,7 @@ namespace flower
 	{
 		try
 		{
-			if (behaviour_ && !profile_->playerModule->playing_)
+			if (behaviour_ && !profile_->playerModule->isPlaying)
 			{
 				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 				if (behaviour->isOpen())

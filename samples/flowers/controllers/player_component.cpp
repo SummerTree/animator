@@ -20,7 +20,7 @@ namespace flower
 	PlayerComponent::play() noexcept
 	{
 		auto& model = this->getModel();
-		model->playing_ = true;
+		model->isPlaying = true;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -69,7 +69,7 @@ namespace flower
 	PlayerComponent::pause() noexcept
 	{
 		auto& model = this->getModel();
-		model->playing_ = false;
+		model->isPlaying = false;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -109,7 +109,7 @@ namespace flower
 		this->reset();
 
 		auto& model = this->getModel();
-		model->playing_ = true;
+		model->isPlaying = true;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -125,7 +125,7 @@ namespace flower
 	{
 		auto& model = this->getModel();
 		model->curTime = model->startFrame / 30.0f;
-		model->playing_ = false;
+		model->isPlaying = false;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -468,20 +468,20 @@ namespace flower
 		auto& model = this->getModel();
 		auto& profile = this->getContext()->profile;
 
-		if (!model->playing_)
+		if (!model->isPlaying)
 			return;
 
 		if (profile->offlineModule->getEnable() && profile->recordModule->active)
 		{
-			model->sppCount_++;
+			model->sppCount++;
 
-			if (model->sppCount_ >= model->spp)
+			if (model->sppCount >= model->spp)
 			{
 				needAnimationEvaluate_ = true;
 
 				this->sendMessage("flower:player:record");
 
-				model->sppCount_ = 0;
+				model->sppCount = 0;
 			}
 		}
 		else
@@ -499,7 +499,7 @@ namespace flower
 
 		this->updateDofTarget();
 
-		if (!model->playing_)
+		if (!model->isPlaying)
 			return;
 
 		if (model->curTime < model->endFrame / 30.0f)

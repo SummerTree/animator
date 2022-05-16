@@ -24,10 +24,10 @@ namespace flower
 		PlayerModule& operator=(const PlayerModule&) = delete;
 
 	public:
-		bool playing_;
+		bool isPlaying;
 
 		std::uint32_t spp;
-		std::uint32_t sppCount_;
+		std::uint32_t sppCount;
 
 		std::uint32_t endFrame;
 		std::uint32_t startFrame;
