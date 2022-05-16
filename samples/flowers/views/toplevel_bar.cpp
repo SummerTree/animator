@@ -51,6 +51,10 @@ namespace flower
 
 		this->addWidget(mainWidget);
 
+		behaviour->addMessageListener("flower:player:finish", [this](const std::any&) {
+			this->repaint();
+		});
+
 		this->connect(&resetButton, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		this->connect(&playButton, SIGNAL(clicked()), this, SLOT(playEvent()));
 		this->connect(&leftButton, SIGNAL(clicked()), this, SLOT(leftEvent()));
