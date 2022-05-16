@@ -106,7 +106,8 @@ namespace flower
 	void
 	DragComponent::onMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
-		this->handleMouseDown(event);
+		if (event.button.button == octoon::input::InputButton::Left)
+			this->handleMouseDown(event);
 	}
 
 	void
