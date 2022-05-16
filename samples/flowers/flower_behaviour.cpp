@@ -370,14 +370,12 @@ namespace flower
 	FlowerBehaviour::play() noexcept
 	{
 		playerComponent_->play();
-		dragComponent_->setActive(false);
 	}
 
 	void
 	FlowerBehaviour::pause() noexcept
 	{
 		playerComponent_->pause();
-		dragComponent_->setActive(true);
 	}
 
 	bool
@@ -385,7 +383,6 @@ namespace flower
 	{
 		try
 		{
-			this->dragComponent_->setActive(false);
 			this->offlineComponent_->setActive(profile_->h265Module->quality == VideoQuality::High);
 			this->playerComponent_->render();
 
@@ -403,7 +400,6 @@ namespace flower
 	void
 	FlowerBehaviour::stopRecord() noexcept
 	{
-		this->dragComponent_->setActive(true);
 		this->playerComponent_->pause();
 		this->recordComponent_->stopRecord();
 	}
