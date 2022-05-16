@@ -312,27 +312,31 @@ namespace octoon
 		auto& weights = skinnedMesh_->getWeightArray();
 
 		auto numVertices = skinnedMesh_->getNumVertices();
-		auto numProcs = omp_get_num_procs() / 3;
+		auto numProcs = omp_get_num_procs() / 2;
 
-#		pragma omp parallel for num_threads(numProcs)
+#		pragma omp parallel for num_threads(numProcs) schedule(static)
 		for (std::int32_t i = 0; i < numVertices; i++)
 		{
 			auto& blend = weights[i];
 
-			math::float3 v = math::float3::Zero;
-			math::float3 n = math::float3::Zero;
+			auto w0 = blend.weights[0];
+			auto w1 = blend.weights[1];
+			auto w2 = blend.weights[2];
+			auto w3 = blend.weights[3];
 
-			for (std::uint8_t j = 0; j < 4; j++)
-			{
-				auto w = blend.weights[j];
-				if (w == 0.0f)
-					break;
-				v += (joints_[blend.bones[j]] * vertices[i]) * w;
-				n += ((math::float3x3)joints_[blend.bones[j]] * normals[i]) * w;
-			}
+			math::float3 v = vertices[i];
+			math::float3 n = normals[i];
 
-			vertices[i] = v;
-			normals[i] = n;
+			math::float3 sumVertex = math::float3::Zero;
+			math::float3 sumNormal = math::float3::Zero;
+
+			if (w0 != 0.0f) { sumVertex += (joints_[blend.bones[0]] * v) * w0; sumNormal += (joints_[blend.bones[0]] * n) * w0; }
+			if (w1 != 0.0f) { sumVertex += (joints_[blend.bones[1]] * v) * w1; sumNormal += (joints_[blend.bones[1]] * n) * w1; }
+			if (w2 != 0.0f) { sumVertex += (joints_[blend.bones[2]] * v) * w2; sumNormal += (joints_[blend.bones[2]] * n) * w2; }
+			if (w3 != 0.0f) { sumVertex += (joints_[blend.bones[3]] * v) * w3; sumNormal += (joints_[blend.bones[3]] * n) * w3; }
+
+			normals[i] = sumNormal;
+			vertices[i] = sumVertex;
 		}
 	}
 
