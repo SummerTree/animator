@@ -38,6 +38,17 @@ namespace octoon
 	}
 
 	std::size_t
+	Mesh::getNumIndices() const noexcept
+	{
+		std::size_t count = 0;
+
+		for (auto& it : _indices)
+			count += it.size();
+
+		return count;
+	}
+
+	std::size_t
 	Mesh::getNumSubsets() const noexcept
 	{
 		return _indices.size();

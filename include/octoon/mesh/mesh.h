@@ -68,6 +68,7 @@ namespace octoon
 		const math::float4x4s& getBindposes() const noexcept;
 
 		std::size_t getNumVertices() const noexcept;
+		std::size_t getNumIndices() const noexcept;
 		std::size_t getNumSubsets() const noexcept;
 		std::size_t getTexcoordNums() const noexcept;
 

@@ -713,7 +713,7 @@ namespace octoon
 				auto it = this->buffers_.find(mesh.get());
 				if (it != this->buffers_.end())
 				{
-					this->buffers_[mesh.get()] = std::make_shared<ScriptableRenderBuffer>(*this, mesh);
+					(*it).second->updateData(*this, mesh);
 				}
 				else
 				{

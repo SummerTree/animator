@@ -15,13 +15,14 @@ namespace octoon
 		virtual ~ScriptableRenderBuffer() noexcept;
 
 		std::size_t getNumVertices() const noexcept;
+		std::size_t getNumSubsets() const noexcept;
+		std::size_t getNumIndicesAll() const noexcept;
 		std::size_t getNumIndices(std::size_t n) const noexcept;
 		std::size_t getStartIndices(std::size_t n) const noexcept;
 
 		const hal::GraphicsDataPtr& getVertexBuffer() const noexcept;
 		const hal::GraphicsDataPtr& getIndexBuffer() const noexcept;
 
-	private:
 		void updateData(ScriptableRenderContext& context, const std::shared_ptr<Mesh>& mesh) noexcept(false);
 
 	private:
@@ -31,6 +32,8 @@ namespace octoon
 	private:
 		std::uint32_t numVertices_;
 		std::uint32_t numIndices_;
+		std::uint32_t numSubsets_;
+
 		std::vector<std::size_t> startIndice_;
 
 		hal::GraphicsDataPtr vertices_;
