@@ -701,7 +701,15 @@ namespace octoon
 			if (geometry->isDirty() || force)
 			{
 				auto mesh = geometry->getMesh();
-				this->buffers_[mesh.get()] = std::make_shared<ScriptableRenderBuffer>(*this, mesh);
+				auto it = this->buffers_.find(mesh.get());
+				if (it != this->buffers_.end())
+				{
+					this->buffers_[mesh.get()] = std::make_shared<ScriptableRenderBuffer>(*this, mesh);
+				}
+				else
+				{
+					this->buffers_[mesh.get()] = std::make_shared<ScriptableRenderBuffer>(*this, mesh);
+				}
 			}
 		}
     }
