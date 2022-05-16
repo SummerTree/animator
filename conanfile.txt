@@ -17,6 +17,7 @@ ffmpeg/5.0
 nvcloth/1.1.6@xiahan/stable
 opencl-headers/2022.01.04
 opencl-icd-loader/2022.01.04
+mdl-sdk/2021.01.02@xiahan/stable
 
 [options]
 qt:shared=True
