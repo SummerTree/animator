@@ -47,7 +47,6 @@ namespace flower
 		this->addToolBar(toplevelDock_.get());
 
 		this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, toolDock_.get());
-		this->addDockWidget(Qt::DockWidgetArea::AllDockWidgetAreas, materialDock_.get());
 		this->addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, thumbnailDock_.get());
 
 		this->splitDockWidget(thumbnailDock_.get(), mainLightDock_.get(), Qt::Orientation::Horizontal);
