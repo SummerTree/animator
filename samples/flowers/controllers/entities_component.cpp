@@ -178,7 +178,7 @@ namespace flower
 			}
 			else
 			{
-				throw std::runtime_error(u8"无法找到文件:" + it.path);
+				throw std::runtime_error("Failed to find the file: " + it.path);
 			}
 		}
 

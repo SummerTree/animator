@@ -595,7 +595,7 @@ namespace octoon
 			if (it.name.length > 0)
 				material->setName(cv.to_bytes(it.name.name));
 			else
-				material->setName((char*)u8"Î´ÃüÃû");
+				material->setName("Untitled");
 			material->setColor(math::srgb2linear(math::float3(it.Diffuse.x, it.Diffuse.y, it.Diffuse.z)));
 			material->setOpacity(it.Opacity);
 
