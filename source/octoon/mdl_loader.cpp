@@ -814,6 +814,9 @@ namespace octoon
 		if (plug_config->load_plugin_library("nv_freeimage" MI_BASE_DLL_FILE_EXT) != 0)
 			throw std::runtime_error("Fatal: Failed to load the nv_freeimage plugin.\n");
 
+		if (plug_config->load_plugin_library("mdl_distiller" MI_BASE_DLL_FILE_EXT) != 0)
+			throw std::runtime_error("Fatal: Failed to load the mdl_distiller plugin.\n");
+
 		if (this->context_->neuray->start() < 0)
 			throw std::runtime_error("Starting MDL SDK failed");
 
@@ -825,6 +828,9 @@ namespace octoon
 		this->context_->imageAPI = this->context_->neuray->get_api_component<mi::neuraylib::IImage_api>();
 		this->context_->distilling = this->context_->neuray->get_api_component<mi::neuraylib::IMdl_distiller_api>();
 		this->context_->transaction = this->context_->globalScope->create_transaction();
+
+		for (std::size_t i = 0; i < this->context_->distilling->get_target_count(); i++)
+			std::cout << this->context_->distilling->get_target_name(i) << std::endl;
 	}
 
 	MDLLoader::~MDLLoader() noexcept
