@@ -337,42 +337,42 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">花楹渲染器(内测版本)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="184"/>
-        <location filename="../views/main_dock.cpp" line="224"/>
-        <location filename="../views/main_dock.cpp" line="263"/>
-        <location filename="../views/main_dock.cpp" line="302"/>
-        <location filename="../views/main_dock.cpp" line="341"/>
-        <location filename="../views/main_dock.cpp" line="380"/>
+        <location filename="../views/main_dock.cpp" line="159"/>
+        <location filename="../views/main_dock.cpp" line="199"/>
+        <location filename="../views/main_dock.cpp" line="238"/>
+        <location filename="../views/main_dock.cpp" line="277"/>
+        <location filename="../views/main_dock.cpp" line="316"/>
+        <location filename="../views/main_dock.cpp" line="355"/>
         <source>Warning</source>
         <translation type="unfinished">警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="185"/>
-        <location filename="../views/main_dock.cpp" line="225"/>
+        <location filename="../views/main_dock.cpp" line="160"/>
+        <location filename="../views/main_dock.cpp" line="200"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished">请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="196"/>
-        <location filename="../views/main_dock.cpp" line="235"/>
-        <location filename="../views/main_dock.cpp" line="274"/>
-        <location filename="../views/main_dock.cpp" line="313"/>
-        <location filename="../views/main_dock.cpp" line="352"/>
-        <location filename="../views/main_dock.cpp" line="391"/>
-        <location filename="../views/main_dock.cpp" line="415"/>
+        <location filename="../views/main_dock.cpp" line="171"/>
+        <location filename="../views/main_dock.cpp" line="210"/>
+        <location filename="../views/main_dock.cpp" line="249"/>
+        <location filename="../views/main_dock.cpp" line="288"/>
+        <location filename="../views/main_dock.cpp" line="327"/>
+        <location filename="../views/main_dock.cpp" line="366"/>
+        <location filename="../views/main_dock.cpp" line="399"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="264"/>
-        <location filename="../views/main_dock.cpp" line="303"/>
-        <location filename="../views/main_dock.cpp" line="342"/>
-        <location filename="../views/main_dock.cpp" line="381"/>
+        <location filename="../views/main_dock.cpp" line="239"/>
+        <location filename="../views/main_dock.cpp" line="278"/>
+        <location filename="../views/main_dock.cpp" line="317"/>
+        <location filename="../views/main_dock.cpp" line="356"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="416"/>
+        <location filename="../views/main_dock.cpp" line="400"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -385,27 +385,27 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">主光源</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="35"/>
+        <location filename="../views/main_light_dock.cpp" line="34"/>
         <source>Reset</source>
         <translation type="unfinished">重置</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="39"/>
+        <location filename="../views/main_light_dock.cpp" line="38"/>
         <source>Intensity</source>
         <translation type="unfinished">强度</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="64"/>
+        <location filename="../views/main_light_dock.cpp" line="63"/>
         <source>Rotation X</source>
         <translation type="unfinished">旋转X轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="89"/>
+        <location filename="../views/main_light_dock.cpp" line="88"/>
         <source>Rotation Y</source>
         <translation type="unfinished">旋转Y轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="114"/>
+        <location filename="../views/main_light_dock.cpp" line="113"/>
         <source>Rotation Z</source>
         <translation type="unfinished">旋转Z轴</translation>
     </message>
@@ -1101,12 +1101,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">相机</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="156"/>
+        <location filename="../views/view_dock.cpp" line="157"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="157"/>
+        <location filename="../views/view_dock.cpp" line="158"/>
         <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>

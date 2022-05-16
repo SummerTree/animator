@@ -26,7 +26,6 @@ namespace flower
 	{
 		this->setWindowTitle(tr("Main Light"));
 		this->setObjectName("MainLightDock");
-		this->grabKeyboard();
 
 		colorDialog_ = new ColorDialog();
 		colorDialog_->setCurrentColor(QColor::fromRgbF(profile->sunModule->color.x, profile->sunModule->color.y, profile->sunModule->color.z));

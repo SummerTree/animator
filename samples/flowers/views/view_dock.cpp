@@ -15,6 +15,7 @@ namespace flower
 		this->setAttribute(Qt::WA_PaintOnScreen, true);
 		this->setObjectName("ViewDock");
 		this->setMouseTracking(true);
+		//this->grabKeyboard();
 		this->setUpdatesEnabled(false);
 		this->setAcceptDrops(true);
 		this->setFocusPolicy(Qt::StrongFocus);
