@@ -34,13 +34,6 @@ namespace flower
 	}
 
 	void
-	RecordComponent::onResize(const octoon::input::InputEvent& event) noexcept
-	{
-		if (event.change.w > 0 && event.change.h > 0)
-			this->getModel()->resize(event.change.w, event.change.h);
-	}
-
-	void
 	RecordComponent::setupDenoise() noexcept
 	{
 		auto& model = this->getContext()->profile->recordModule;

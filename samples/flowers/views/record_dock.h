@@ -1,7 +1,7 @@
-#ifndef FLOWER_RECORD_WINDOW_H_
-#define FLOWER_RECORD_WINDOW_H_
+#ifndef FLOWER_RECORD_DOCK_H_
+#define FLOWER_RECORD_DOCK_H_
 
-#include <qwidget>
+#include <qdockwidget.h>
 #include <qdialog.h>
 #include <qboxlayout.h>
 #include <qradiobutton.h>
@@ -19,26 +19,12 @@
 
 namespace flower
 {
-	class FocalTargetWindow final : public QToolButton
+	class RecordDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		FocalTargetWindow() noexcept;
-		~FocalTargetWindow() noexcept;
-
-		void mouseMoveEvent(QMouseEvent* event) override;
-		void mousePressEvent(QMouseEvent* event) override;
-
-	private:
-		QPoint startPos;
-	};
-	
-	class RecordWindow final : public QWidget
-	{
-		Q_OBJECT
-	public:
-		RecordWindow(QWidget* parent, const octoon::GameObjectPtr& behaviour) noexcept;
-		~RecordWindow() noexcept;
+		RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
+		~RecordDock() noexcept;
 
 		void update();
 		void repaint();
@@ -46,14 +32,11 @@ namespace flower
 		void startRecord(QString fileName);
 		void stopRecord();
 
-		void updateTarget();
-
 		void showEvent(QShowEvent* event) override;
+		void paintEvent(QPaintEvent* e) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
 
 	private Q_SLOTS:
-
-		void closeEvent();
 		void clickEvent();
 		void select1Event(bool checked);
 		void select2Event(bool checked);
@@ -67,11 +50,8 @@ namespace flower
 		void onSppChanged(int);
 		void onBouncesChanged(int);
 		void onCrfChanged(double);
-		void onApertureChanged(double);
-		void onFocalDistanceChanged(double);
 
 	public:
-		QLabel* title_;
 		QLabel* quality_;
 		QLabel* videoRatio_;
 		QLabel* frame_;
@@ -84,10 +64,6 @@ namespace flower
 		QLabel* crfLabel;
 		QLabel* startLabel_;
 		QLabel* endLabel_;
-		QLabel* dofInfoLabel_;
-		QLabel* apertureLabel_;
-		QLabel* focalDistanceName_;
-		QLabel* focalDistanceLabel_;
 
 		QButtonGroup* group_;
 		QButtonGroup* speedGroup_;
@@ -99,9 +75,7 @@ namespace flower
 		QToolButton* speed3_;
 		QToolButton* speed4_;
 		QToolButton* recordButton_;
-		QToolButton* closeButton_;
 		QToolButton* markButton_;
-		QToolButton* focalTargetButton_;
 
 		QSpinBox* start_;
 		QSpinBox* end_;
@@ -109,16 +83,15 @@ namespace flower
 		QSpinBox* bouncesSpinbox_;
 		
 		QDoubleSpinBox* crfSpinbox;
-		QDoubleSpinBox* apertureSpinbox_;
-		QDoubleSpinBox* focalDistanceSpinbox_;
 
 		QHBoxLayout* videoRatioLayout_;
 		QHBoxLayout* frameLayout_;
 		QVBoxLayout* mainLayout_;
 		QTimer* timer_;
 
+		QWidget* mainWidget_;
+
 		Spoiler* markSpoiler_;
-		Spoiler* cameraSpoiler_;
 		Spoiler* videoSpoiler_;
 		Spoiler* infoSpoiler_;
 		QScrollArea* contentWidgetArea_;

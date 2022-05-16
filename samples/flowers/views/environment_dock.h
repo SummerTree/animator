@@ -12,17 +12,16 @@
 
 namespace flower
 {
-   	class EnvironmentWindow final : public QWidget
+   	class EnvironmentDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		EnvironmentWindow(QWidget* widget, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile);
-		~EnvironmentWindow();
+		EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile);
+		~EnvironmentDock();
 
 		void repaint();
 
 		void showEvent(QShowEvent* event) override;
-		void closeEvent(QCloseEvent* event) override;
 
 	public Q_SLOTS:
 		void colorMapClickEvent();
@@ -30,7 +29,6 @@ namespace flower
 		void backgroundMapCheckEvent(int state);
 		void colorClickEvent();
 		void colorChangeEvent(const QColor&);
-		void closeEvent();
 		void resetEvent();
 		void intensitySliderEvent(int);
 		void intensityEditEvent(double value);
@@ -43,7 +41,6 @@ namespace flower
 		void setColor(const QColor& c, int w = 50, int h = 26);
 		
 	private:
-		QLabel* title_;
 		QLabel* previewName_;
 		QLabel* thumbnailPath;
 		QLabel* intensityLabel_;
@@ -53,7 +50,6 @@ namespace flower
 		QToolButton* previewButton_;
 		QToolButton* colorButton;
 		QToolButton* thumbnail;
-		QToolButton* closeButton_;
 		QToolButton* resetButton_;
 
 		QCheckBox* thumbnailToggle;

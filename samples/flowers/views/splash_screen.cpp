@@ -14,6 +14,7 @@ namespace flower
 		logo->setObjectName("logo");
 
 		widget = new QWidget(this);
+		widget->setObjectName("text");
 		widget->setFixedSize(320, 100);
 
 		englishName = new QLabel(widget);
@@ -71,5 +72,28 @@ namespace flower
 #endif
 		
 		this->move((rect.width() - this->width()) / 2, (rect.height() - this->height()) / 2);
+	}
+
+	SplashListener::SplashListener(SplashScreen* splash, const std::string& path)
+		: splash_(splash)
+		, stream_(path)
+	{
+	}
+
+	void
+	SplashListener::onMessage(std::string_view message) noexcept
+	{
+		if (splash_)
+		{
+			splash_->message->setText(QString::fromStdString(std::string(message)));
+			splash_->repaint();
+		}
+
+		if (stream_.good())
+		{
+			stream_ << message;
+			stream_ << "\n";
+			stream_.flush();
+		}
 	}
 }

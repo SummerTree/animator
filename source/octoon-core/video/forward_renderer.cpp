@@ -30,6 +30,8 @@ namespace octoon
 	ForwardRenderer::ForwardRenderer() noexcept
 		: width_(0)
 		, height_(0)
+		, framebufferWidth_(0)
+		, framebufferHeight_(0)
 	{
 		lightsShadowCasterPass_ = std::make_unique<LightsShadowCasterPass>();
 		drawOpaquePass_ = std::make_unique<DrawObjectPass>(true);
@@ -39,6 +41,20 @@ namespace octoon
 
 	ForwardRenderer::~ForwardRenderer() noexcept
 	{
+	}
+
+	void
+	ForwardRenderer::setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept
+	{
+		framebufferWidth_ = w;
+		framebufferHeight_ = h;
+	}
+
+	void
+	ForwardRenderer::getFramebufferSize(std::uint32_t& w, std::uint32_t& h) const noexcept
+	{
+		w = framebufferWidth_;
+		h = framebufferHeight_;
 	}
 
 	const hal::GraphicsFramebufferPtr&
@@ -190,7 +206,16 @@ namespace octoon
 				}
 				else
 				{
-					context->blitFramebuffer(fbo, viewport, nullptr, viewport);
+					float viewportRatio = viewport.width / viewport.height;
+					float framebufferRatio = framebufferWidth_ / (float)framebufferHeight_;
+
+					float framebufferHeight = std::min<float>(framebufferHeight_, framebufferWidth_ / viewportRatio);
+					float framebufferWidth = framebufferHeight * viewportRatio;
+
+					float framebufferX = (framebufferWidth_ - framebufferWidth) / 2;
+					float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
+
+					context->blitFramebuffer(fbo, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
 					context->discardFramebuffer(fbo, hal::GraphicsClearFlagBits::AllBit);
 				}
 			}

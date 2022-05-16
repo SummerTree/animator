@@ -1,5 +1,6 @@
 #include <octoon/video/scriptable_render_buffer.h>
 #include <octoon/video/renderer.h>
+#include <octoon/runtime/profiling_scope.h>
 
 namespace octoon
 {
@@ -70,37 +71,52 @@ namespace octoon
 			auto vertexCount = vertices.size() * vertexSize;
 			if (vertexCount > 0)
 			{
-				auto vertexBuffer = std::make_unique<float[]>(vertices.size() * vertexSize);
-
-				auto dst = vertexBuffer.get();
 				auto numVertices = vertices.size();
+				auto vertexBuffer = std::make_unique<float[]>(numVertices * vertexSize);
 
-				for (std::size_t i = 0; i < numVertices; i++, dst += vertexSize)
+				if (!vertices.empty())
 				{
-					if (!vertices.empty())
+					auto dst = vertexBuffer.get();
+
+					for (std::size_t i = 0; i < numVertices; i++, dst += vertexSize)
 					{
 						auto& v = vertices[i];
 						dst[0] = v.x;
 						dst[1] = v.y;
 						dst[2] = v.z;
 					}
+				}
 
-					if (!normals.empty())
+				if (!normals.empty())
+				{
+					auto dst = vertexBuffer.get();
+
+					for (std::size_t i = 0; i < numVertices; i++, dst += vertexSize)
 					{
 						auto& n = normals[i];
 						dst[3] = n.x;
 						dst[4] = n.y;
 						dst[5] = n.z;
 					}
+				}
 
-					if (!texcoord.empty())
+				if (!texcoord.empty())
+				{
+					auto dst = vertexBuffer.get();
+
+					for (std::size_t i = 0; i < numVertices; i++, dst += vertexSize)
 					{
 						auto& uv = texcoord[i];
 						dst[6] = uv.x;
 						dst[7] = uv.y;
 					}
+				}
 
-					if (!texcoord1.empty())
+				if (!texcoord1.empty())
+				{
+					auto dst = vertexBuffer.get();
+
+					for (std::size_t i = 0; i < numVertices; i++, dst += vertexSize)
 					{
 						auto& uv = texcoord1[i];
 						dst[8] = uv.x;

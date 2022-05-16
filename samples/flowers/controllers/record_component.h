@@ -30,8 +30,6 @@ namespace flower
 		virtual void onEnable() noexcept override;
 		virtual void onDisable() noexcept override;
 
-		virtual void onResize(const octoon::input::InputEvent& event) noexcept override;
-
 		virtual void onRecord() noexcept;
 
 	private:

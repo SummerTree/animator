@@ -238,8 +238,6 @@ namespace flower
 	{
 		if (ostream_)
 		{
-			auto& context = this->getContext();
-
 			this->convert((float*)data, this->width_, this->height_, this->buf_.get());
 
 			std::uint8_t* yuv[3];

@@ -55,26 +55,34 @@ SET(MODULES_LIST
 SOURCE_GROUP("launcher\\module" FILES ${MODULES_LIST})
 
 SET(VIEWS_LIST
-	${SOURCE_PATH}/views/view_window.h
-	${SOURCE_PATH}/views/view_window.cpp
-	${SOURCE_PATH}/views/sun_window.h
-	${SOURCE_PATH}/views/sun_window.cpp
-	${SOURCE_PATH}/views/light_window.h
-	${SOURCE_PATH}/views/light_window.cpp
-	${SOURCE_PATH}/views/environment_window.h
-	${SOURCE_PATH}/views/environment_window.cpp
 	${SOURCE_PATH}/views/splash_screen.h
 	${SOURCE_PATH}/views/splash_screen.cpp
+	${SOURCE_PATH}/views/main_dock.h
+	${SOURCE_PATH}/views/main_dock.cpp
+	${SOURCE_PATH}/views/view_dock.h
+	${SOURCE_PATH}/views/view_dock.cpp
+	${SOURCE_PATH}/views/main_light_dock.h
+	${SOURCE_PATH}/views/main_light_dock.cpp
+	${SOURCE_PATH}/views/environment_dock.h
+	${SOURCE_PATH}/views/environment_dock.cpp
+	${SOURCE_PATH}/views/toplevel_bar.h
+	${SOURCE_PATH}/views/toplevel_bar.cpp
+	${SOURCE_PATH}/views/tool_dock.h
+	${SOURCE_PATH}/views/tool_dock.cpp
+	${SOURCE_PATH}/views/status_bar.h
+	${SOURCE_PATH}/views/status_bar.cpp
+	${SOURCE_PATH}/views/record_dock.h
+	${SOURCE_PATH}/views/record_dock.cpp
+	${SOURCE_PATH}/views/camera_dock.h
+	${SOURCE_PATH}/views/camera_dock.cpp
+	${SOURCE_PATH}/views/material_dock.h
+	${SOURCE_PATH}/views/material_dock.cpp
+	${SOURCE_PATH}/views/light_dock.h
+	${SOURCE_PATH}/views/light_dock.cpp
 	${SOURCE_PATH}/views/color_dialog.h
 	${SOURCE_PATH}/views/color_dialog.cpp
-	${SOURCE_PATH}/views/title_window.h
-	${SOURCE_PATH}/views/title_window.cpp
-	${SOURCE_PATH}/views/tool_window.h
-	${SOURCE_PATH}/views/tool_window.cpp
-	${SOURCE_PATH}/views/hide_window.h
-	${SOURCE_PATH}/views/hide_window.cpp
-	${SOURCE_PATH}/views/main_window.h
-	${SOURCE_PATH}/views/main_window.cpp
+	${SOURCE_PATH}/views/thumbnail_dock.h
+	${SOURCE_PATH}/views/thumbnail_dock.cpp
 	${SOURCE_PATH}/views/setting_window.h
 	${SOURCE_PATH}/views/setting_window.cpp
 	${SOURCE_PATH}/views/title_bar.h
@@ -83,10 +91,6 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/login_window.cpp
 	${SOURCE_PATH}/views/info_window.h
 	${SOURCE_PATH}/views/info_window.cpp
-	${SOURCE_PATH}/views/record_window.h
-	${SOURCE_PATH}/views/record_window.cpp
-	${SOURCE_PATH}/views/material_window.h
-	${SOURCE_PATH}/views/material_window.cpp
 	${SOURCE_PATH}/views/spoiler.h
 	${SOURCE_PATH}/views/spoiler.cpp
 )

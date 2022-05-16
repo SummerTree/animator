@@ -20,6 +20,7 @@ SET(RUNTIME_LIST
 	${SOURCE_PATH}/rtti_singleton.cpp
 	${HEADER_PATH}/timer.h
 	${SOURCE_PATH}/timer.cpp
+	${HEADER_PATH}/profiling_scope.h
 	${HEADER_PATH}/except.h
 	${SOURCE_PATH}/except.cpp
 	${HEADER_PATH}/string.h

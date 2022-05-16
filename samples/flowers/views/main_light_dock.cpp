@@ -1,4 +1,4 @@
-﻿#include "sun_window.h"
+﻿#include "main_light_dock.h"
 #include <qscrollbar.h>
 #include <octoon/transform_component.h>
 #include <octoon/directional_light_component.h>
@@ -21,29 +21,19 @@ namespace flower
 		}
 	};
 
-	SunWindow::SunWindow(const std::shared_ptr<flower::FlowerProfile>& profile)
+	MainLightDock::MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile)
 		: profile_(profile)
 	{
-		this->setObjectName("sunWindow");
-		this->setMinimumWidth(340);
+		this->setWindowTitle(tr("Main Light"));
+		this->setObjectName("MainLightDock");
 		this->grabKeyboard();
-		this->hide();
-
-		title_ = new QLabel();
-		title_->setText(tr("Main Light"));
-
-		closeButton_ = new QToolButton();
-		closeButton_->setObjectName("close");
-		closeButton_->setToolTip(tr("Close"));
-
-		scrollWidget_ = new QWidget(this);
-		scrollWidget_->setMinimumWidth(340);
 
 		colorDialog_ = new ColorDialog();
 		colorDialog_->setCurrentColor(QColor::fromRgbF(profile->sunModule->color.x, profile->sunModule->color.y, profile->sunModule->color.z));
 
 		resetButton_ = new QToolButton();
 		resetButton_->setText(tr("Reset"));
+		resetButton_->setContentsMargins(0, 0, 10, 0);
 
 		labelIntensity_ = new QLabel();
 		labelIntensity_->setText(tr("Intensity"));
@@ -145,7 +135,7 @@ namespace flower
 		layoutRotationZ_->addWidget(editRotationZ_, 0, Qt::AlignRight);
 		layoutRotationZ_->setContentsMargins(40, 5, 35, 0);
 
-		scrollLayout_ = new QVBoxLayout(scrollWidget_);
+		scrollLayout_ = new QVBoxLayout();
 		scrollLayout_->addWidget(colorDialog_, 0, Qt::AlignHCenter | Qt::AlignTop);
 		scrollLayout_->addLayout(layoutIntensity_, 0);
 		scrollLayout_->addWidget(sliderIntensity_, 0, Qt::AlignHCenter);
@@ -157,26 +147,25 @@ namespace flower
 		scrollLayout_->addWidget(sliderRotationZ_, 0, Qt::AlignHCenter);
 		scrollLayout_->addStretch();
 
+		scrollWidget_ = new QWidget();
+		scrollWidget_->setLayout(scrollLayout_);
+
 		scrollArea_ = new QScrollArea();
 		scrollArea_->setWidget(scrollWidget_);
 		scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		scrollArea_->setWidgetResizable(true);
 
-		layout_ = new QHBoxLayout();
-		layout_->addSpacing(this->closeButton_->iconSize().width());
-		layout_->addStretch();
-		layout_->addWidget(title_, 0, Qt::AlignLeft);
-		layout_->addStretch();
-		layout_->addWidget(closeButton_, 0, Qt::AlignRight);
-
-		mainLayout_ = new QVBoxLayout(this);
-		mainLayout_->addLayout(layout_);
+		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addWidget(scrollArea_);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout_->setContentsMargins(0, 10, 2, 10);
+		mainLayout_->setContentsMargins(0, 0, 0, 10);
 
-		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeEvent()));
+		mainWidget_ = new QWidget();
+		mainWidget_->setLayout(mainLayout_);
+
+		this->setWidget(mainWidget_);
+
 		connect(resetButton_, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		connect(editIntensity_, SIGNAL(valueChanged(double)), this, SLOT(intensityEditEvent(double)));
 		connect(sliderIntensity_, SIGNAL(valueChanged(int)), this, SLOT(intensitySliderEvent(int)));
@@ -189,12 +178,12 @@ namespace flower
 		connect(colorDialog_, SIGNAL(currentColorChanged(QColor)), this, SLOT(currentColorChanged(QColor)));
 	}
 
-	SunWindow::~SunWindow()
+	MainLightDock::~MainLightDock()
 	{
 	}
 
 	void
-	SunWindow::repaint()
+	MainLightDock::repaint()
 	{
 		editRotationX_->setValue(profile_->sunModule->rotation.x + 180.0f);
 		editRotationY_->setValue(profile_->sunModule->rotation.y + 180.0f);
@@ -204,21 +193,28 @@ namespace flower
 	}
 
 	void
-	SunWindow::showEvent(QShowEvent* event)
+	MainLightDock::showEvent(QShowEvent* event)
 	{
 		this->repaint();
 	}
 
 	void
-	SunWindow::resizeEvent(QResizeEvent* event)
+	MainLightDock::resizeEvent(QResizeEvent* event)
 	{
-		int left, top, bottom, right;
-		mainLayout_->getContentsMargins(&left, &top, &right, &bottom);
-		scrollArea_->setFixedHeight(event->size().height() - resetButton_->height() - title_->height() - (top + bottom) * 2);
 	}
 
 	void
-	SunWindow::closeEvent(QCloseEvent* event)
+	MainLightDock::paintEvent(QPaintEvent* e) noexcept
+	{
+		int left, top, bottom, right;
+		mainLayout_->getContentsMargins(&left, &top, &right, &bottom);
+		scrollArea_->resize(scrollArea_->size().width(), mainWidget_->size().height() - resetButton_->height() - (top + bottom) * 2);
+
+		QDockWidget::paintEvent(e);
+	}
+
+	void
+	MainLightDock::closeEvent(QCloseEvent* event)
 	{
 		auto x = editRotationX_->value() - 180.0f;
 		auto y = editRotationY_->value() - 180.0f;
@@ -230,9 +226,9 @@ namespace flower
 	}
 
 	void 
-	SunWindow::currentColorChanged(QColor color)
+	MainLightDock::currentColorChanged(QColor color)
 	{
-		if (color.isValid())
+		if (color.isValid() && profile_->entitiesModule->sunLight)
 		{
 			auto sunLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
 			if (sunLight)
@@ -241,111 +237,124 @@ namespace flower
 	}
 
 	void
-	SunWindow::resetEvent()
+	MainLightDock::resetEvent()
 	{
 		this->repaint();
 
-		auto sunLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
-		if (sunLight)
+		if (profile_->entitiesModule->sunLight)
 		{
-			sunLight->setIntensity(profile_->sunModule->intensity);
-			sunLight->setColor(octoon::math::srgb2linear(profile_->sunModule->color));
-		}
+			auto sunLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
+			if (sunLight)
+			{
+				sunLight->setIntensity(profile_->sunModule->intensity);
+				sunLight->setColor(octoon::math::srgb2linear(profile_->sunModule->color));
+			}
 
-		auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
-		if (transform)
-		{
-			transform->setQuaternion(octoon::math::Quaternion(octoon::math::radians(profile_->sunModule->rotation)));
-			transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
+			auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
+			if (transform)
+			{
+				transform->setQuaternion(octoon::math::Quaternion(octoon::math::radians(profile_->sunModule->rotation)));
+				transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
+			}
 		}
 	}
 
 	void
-	SunWindow::closeEvent()
+	MainLightDock::intensitySliderEvent(int value)
 	{
-		this->close();
-		parentWidget()->setFixedWidth(parentWidget()->width() - this->width());
-	}
+		if (profile_->entitiesModule->sunLight)
+		{
+			auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
+			if (envLight)
+				envLight->setIntensity(value / 10.0f);
+		}
 
-	void
-	SunWindow::intensitySliderEvent(int value)
-	{
-		auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
-		if (envLight)
-			envLight->setIntensity(value / 10.0f);
 		editIntensity_->setValue(value / 10.0f);
 	}
 
 	void
-	SunWindow::intensityEditEvent(double value)
+	MainLightDock::intensityEditEvent(double value)
 	{
-		auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
-		if (envLight)
-			envLight->setIntensity(value);
+		if (profile_->entitiesModule->sunLight)
+		{
+			auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
+			if (envLight)
+				envLight->setIntensity(value);
+		}
+
 		sliderIntensity_->setValue(value * 10.0f);
 	}
 
 	void
-	SunWindow::sliderRotationXEvent(int value)
+	MainLightDock::sliderRotationXEvent(int value)
 	{
 		editRotationX_->setValue(value);
 	}
 
 	void
-	SunWindow::editRotationXEvent(double value)
+	MainLightDock::editRotationXEvent(double value)
 	{
-		auto y = octoon::math::radians(editRotationY_->value() - 180.0f);
-		auto z = octoon::math::radians(editRotationZ_->value());
-
-		auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
-		if (transform)
+		if (profile_->entitiesModule->sunLight)
 		{
-			transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(octoon::math::radians(value - 180.0f), y, z)));
-			transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
+			auto y = octoon::math::radians(editRotationY_->value() - 180.0f);
+			auto z = octoon::math::radians(editRotationZ_->value());
+
+			auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
+			if (transform)
+			{
+				transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(octoon::math::radians(value - 180.0f), y, z)));
+				transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
+			}
 		}
 
 		sliderRotationX_->setValue(value);
 	}
 
 	void
-	SunWindow::sliderRotationYEvent(int value)
+	MainLightDock::sliderRotationYEvent(int value)
 	{
 		editRotationY_->setValue(value);
 	}
 
 	void
-	SunWindow::editRotationYEvent(double value)
+	MainLightDock::editRotationYEvent(double value)
 	{
-		auto x = octoon::math::radians(editRotationX_->value() - 180.0f);
-		auto z = octoon::math::radians(editRotationZ_->value());
-
-		auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
-		if (transform)
+		if (profile_->entitiesModule->sunLight)
 		{
-			transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(x, octoon::math::radians(value - 180.0f), z)));
-			transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
+			auto x = octoon::math::radians(editRotationX_->value() - 180.0f);
+			auto z = octoon::math::radians(editRotationZ_->value());
+
+			auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
+			if (transform)
+			{
+				transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(x, octoon::math::radians(value - 180.0f), z)));
+				transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
+			}
 		}
 
 		sliderRotationY_->setValue(value);
 	}
 
 	void
-	SunWindow::sliderRotationZEvent(int value)
+	MainLightDock::sliderRotationZEvent(int value)
 	{
 		editRotationZ_->setValue(value);
 	}
 
 	void
-	SunWindow::editRotationZEvent(double value)
+	MainLightDock::editRotationZEvent(double value)
 	{
-		auto x = octoon::math::radians(editRotationX_->value() - 180.0f);
-		auto y = octoon::math::radians(editRotationY_->value() - 180.0f);
-
-		auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
-		if (transform)
+		if (profile_->entitiesModule->sunLight)
 		{
-			transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(x, y, octoon::math::radians(value))));
-			transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
+			auto x = octoon::math::radians(editRotationX_->value() - 180.0f);
+			auto y = octoon::math::radians(editRotationY_->value() - 180.0f);
+
+			auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
+			if (transform)
+			{
+				transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(x, y, octoon::math::radians(value))));
+				transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
+			}
 		}
 
 		sliderRotationZ_->setValue(value);

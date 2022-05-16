@@ -1,21 +1,21 @@
-#ifndef FLOWER_VIEW_WIDGET_H
-#define FLOWER_VIEW_WIDGET_H
+#ifndef FLOWER_VIEW_DOCK_H
+#define FLOWER_VIEW_DOCK_H
 
-#include <qwidget.h>
+#include <qdockwidget.h>
 #include <qtimer.h>
 #include <qdrag.h>
 
-#include <octoon/octoon.h>
 #include "flower_profile.h"
+#include "flower_behaviour.h"
 
 namespace flower
 {
-	class ViewWidget final : public QWidget
+	class ViewDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		ViewWidget(QWidget* parent, const std::shared_ptr<flower::FlowerProfile>& profile) noexcept;
-		~ViewWidget() noexcept;
+		ViewDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
+		~ViewDock() noexcept;
 
 	private Q_SLOTS:
 		void paintEvent(QPaintEvent* e) noexcept override;
@@ -24,32 +24,20 @@ namespace flower
 		void mouseMoveEvent(QMouseEvent* event) noexcept override;
 		void mouseReleaseEvent(QMouseEvent* event) noexcept override;
 		void mouseDoubleClickEvent(QMouseEvent* event) noexcept override;
+		void keyPressEvent(QKeyEvent* event) noexcept override;
+		void keyReleaseEvent(QKeyEvent* event) noexcept override;
 		void wheelEvent(QWheelEvent* event) noexcept override;
 		void dragEnterEvent(QDragEnterEvent* event) noexcept override;
 		void dragMoveEvent(QDragMoveEvent *event) noexcept override;
 		void dropEvent(QDropEvent* event) noexcept override;
 		void showEvent(QShowEvent* event) noexcept override;
-		void updateEvent() noexcept;
 
 		virtual QPaintEngine* paintEngine() const noexcept override;
 
-	Q_SIGNALS:
-		void paintSignal(QPaintEvent* e);
-		void resizeSignal(QResizeEvent* e);
-		void mousePressSignal(QMouseEvent* event);
-		void mouseMoveSignal(QMouseEvent* event);
-		void mouseReleaseSignal(QMouseEvent* event);
-		void mouseDoubleClickSignal(QMouseEvent* event);
-		void wheelSignal(QWheelEvent* event);
-		void dragEnterSignal(QDragEnterEvent* event);
-		void dragMoveSignal(QDragMoveEvent* event);
-		void dropSignal(QDropEvent* event);
-		void showSignal(QShowEvent* event);
-		void updateSignal();
+	private:
+		octoon::input::InputKey::Code KeyCodetoInputKey(int key) noexcept;
 
 	private:
-		QTimer timer;
-
 		octoon::GameAppPtr gameApp_;
 		octoon::GameObjectPtr behaviour_;
 

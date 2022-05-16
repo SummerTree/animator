@@ -30,6 +30,7 @@ namespace octoon
 		height_ = h;
 		context_ = std::make_shared<ScriptableRenderContext>(context);
 		forwardRenderer_ = std::make_unique<ForwardRenderer>();
+		forwardRenderer_->setFramebufferSize(w, h);
 	}
 
 	void
@@ -46,6 +47,7 @@ namespace octoon
 	{
 		width_ = w;
 		height_ = h;
+		this->forwardRenderer_->setFramebufferSize(w, h);
 	}
 
 	void
@@ -201,7 +203,7 @@ namespace octoon
 		}
 		else
 		{
-			forwardRenderer_->render(this->context_, scene);
+			this->forwardRenderer_->render(this->context_, scene);
 		}
 	}
 

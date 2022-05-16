@@ -19,6 +19,7 @@ namespace octoon
 		virtual ~GameApp() noexcept;
 
 		void open(WindHandle hwnd, std::uint32_t w, std::uint32_t h, std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) except;
+		bool isOpen() const noexcept;
 		void close() noexcept;
 
 		void setActive(bool active) except;
@@ -87,6 +88,8 @@ namespace octoon
 		GameApp& operator=(const GameApp&) noexcept = delete;
 
 	private:
+		bool isOpen_;
+
 		GameServerPtr server_;
 		GameListenerPtr listener_;
 

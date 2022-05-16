@@ -15,7 +15,8 @@ namespace octoon
 		virtual ~ForwardRenderer() noexcept;
 
 		void render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene);
-
+		void setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept;
+		void getFramebufferSize(std::uint32_t& w, std::uint32_t& h) const noexcept;
 		const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 
 	private:
@@ -28,6 +29,9 @@ namespace octoon
 	private:
 		std::uint32_t width_;
 		std::uint32_t height_;
+
+		std::uint32_t framebufferWidth_;
+		std::uint32_t framebufferHeight_;
 
 		std::unique_ptr<LightsShadowCasterPass> lightsShadowCasterPass_;
 		std::unique_ptr<DrawObjectPass> drawOpaquePass_;

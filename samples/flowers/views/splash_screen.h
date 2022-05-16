@@ -5,6 +5,8 @@
 #include <qframe>
 #include <qpushbutton.h>
 #include <qlabel.h>
+#include <fstream>
+#include <octoon/game_listener.h>
 
 namespace flower
 {
@@ -28,6 +30,18 @@ namespace flower
 		QHBoxLayout* hlayout;
 		QVBoxLayout* vlayout;
 		QVBoxLayout* mainLayout;
+	};
+
+	class SplashListener : public octoon::GameListener
+	{
+	public:
+		SplashListener(SplashScreen* splash, const std::string& path);
+
+		void onMessage(std::string_view message) noexcept override;
+
+	public:
+		SplashScreen* splash_;
+		std::ofstream stream_;
 	};
 }
 

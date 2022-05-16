@@ -17,7 +17,6 @@ namespace flower
 		EntitiesComponent() noexcept;
 		virtual ~EntitiesComponent() noexcept;
 
-		bool importAudio(std::string_view path) noexcept;
 		bool importAbc(std::string_view path) noexcept;
 		void importAss(std::string_view path) noexcept(false);
 		void importPMM(std::string_view path) noexcept(false);
@@ -28,6 +27,10 @@ namespace flower
 		bool exportModel(std::string_view path) noexcept;
 
 		void clearHDRi() noexcept;
+
+		bool importAudio(std::string_view path) noexcept;
+		void setVolume(float volume) noexcept;
+		float getVolume() const noexcept;
 		void clearAudio() noexcept;
 
 		bool showFileOpenBrowse(std::string::pointer buffer, std::uint32_t max_length, std::string::const_pointer ext_name) noexcept;

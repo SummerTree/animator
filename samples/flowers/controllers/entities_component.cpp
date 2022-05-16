@@ -91,22 +91,6 @@ namespace flower
 	}
 
 	bool
-	EntitiesComponent::importAudio(std::string_view path) noexcept
-	{
-		if (!path.empty())
-		{
-			auto audio = octoon::GameObject::create();
-			audio->setName(path);
-			audio->addComponent<octoon::AudioSourceComponent>()->setAudioReader(AudioLoader::load(path));
-
-			this->getContext()->profile->entitiesModule->sound = audio;
-			return true;
-		}
-
-		return false;
-	}
-
-	bool
 	EntitiesComponent::importAbc(std::string_view path) noexcept
 	{
 		auto model = octoon::GameObject::create();
@@ -231,6 +215,46 @@ namespace flower
 	EntitiesComponent::exportModel(std::string_view path) noexcept
 	{
 		return false;
+	}
+
+	bool
+	EntitiesComponent::importAudio(std::string_view path) noexcept
+	{
+		if (!path.empty())
+		{
+			auto audio = octoon::GameObject::create();
+			audio->setName(path);
+			audio->addComponent<octoon::AudioSourceComponent>()->setAudioReader(AudioLoader::load(path));
+
+			this->getContext()->profile->entitiesModule->sound = audio;
+			return true;
+		}
+
+		return false;
+	}
+
+	void
+	EntitiesComponent::setVolume(float volume) noexcept
+	{
+		auto sound = this->getContext()->profile->entitiesModule->sound;
+		if (sound)
+		{
+			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
+			audioSource->setVolume(volume);
+		}
+	}
+
+	float
+	EntitiesComponent::getVolume() const noexcept
+	{
+		auto sound = this->getContext()->profile->entitiesModule->sound;
+		if (sound)
+		{
+			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
+			return audioSource->getVolume();
+		}
+
+		return 0;
 	}
 
 	void

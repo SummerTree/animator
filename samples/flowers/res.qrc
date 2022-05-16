@@ -12,6 +12,7 @@
 	    <file>res/icons/maximize.png</file>
 		<file>res/icons/minimize.png</file>
 		<file>res/icons/close.png</file>
+		<file>res/icons/camera.png</file>
 		<file>res/icons/close2.png</file>
 		<file>res/icons/setting.png</file>
 		<file>res/icons/restore.png</file>
@@ -21,6 +22,8 @@
 		<file>res/icons/music.png</file>
 		<file>res/icons/music.svg</file>
 		<file>res/icons/music-on.png</file>
+		<file>res/icons/volumeMiddle.png</file>
+		<file>res/icons/volumeCross.png</file>
 		<file>res/icons/play.png</file>
 		<file>res/icons/play-on.png</file>
 		<file>res/icons/pause.png</file>

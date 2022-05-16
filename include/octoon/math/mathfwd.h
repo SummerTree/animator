@@ -63,6 +63,7 @@ namespace octoon
 		using Matrix4x4 = detail::Matrix4x4<float>;
 		using Quaternion = detail::Quaternion<float>;
 		using Box2 = detail::Box2<float>;
+		using Box3 = detail::Box3<float>;
 		using AABB = detail::Box3<float>;
 		using Sphere = detail::Sphere<float>;
 		using Triangle = detail::Triangle<float>;
