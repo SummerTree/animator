@@ -415,21 +415,21 @@ namespace octoon
 		bool
 		GL33DeviceProperty::initTextureDimSupports() noexcept
 		{
-			_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture2D);
-			_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture2DArray);
-			_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Cube);
+			_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture2D);
+			_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture2DArray);
+			_deviceProperties.supportTextureDims.push_back(TextureDimension::Cube);
 
 			if (GL_ARB_texture_multisample)
 			{
-				_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture2DMultisample);
-				_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture2DArrayMultisample);
+				_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture2DMultisample);
+				_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture2DArrayMultisample);
 			}
 
 			if (GLEW_ARB_texture_cube_map_array)
-				_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::CubeArray);
+				_deviceProperties.supportTextureDims.push_back(TextureDimension::CubeArray);
 
 			if (GLEW_ARB_texture_storage)
-				_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture3D);
+				_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture3D);
 
 			return true;
 		}
@@ -531,19 +531,19 @@ namespace octoon
 		bool
 		GL33DeviceProperty::initShaderSupports() noexcept
 		{
-			_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::VertexBit);
-			_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::FragmentBit);
+			_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::VertexBit);
+			_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::FragmentBit);
 
 			if (GLEW_ARB_geometry_shader4)
-				_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::GeometryBit);
+				_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::GeometryBit);
 
 			if (GLEW_ARB_compute_shader)
-				_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::ComputeBit);
+				_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::ComputeBit);
 
 			if (GLEW_ARB_tessellation_shader)
 			{
-				_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::TessControlBit);
-				_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::TessEvaluationBit);
+				_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::TessControlBit);
+				_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::TessEvaluationBit);
 			}
 
 			return true;

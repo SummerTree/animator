@@ -28,8 +28,8 @@ namespace octoon
 
 		private:
 			bool applyMipmapLimit(std::uint32_t min, std::uint32_t count) noexcept;
-			bool applySamplerWrap(GraphicsSamplerWrap wrap) noexcept;
-			bool applySamplerFilter(GraphicsSamplerFilter minFilter, GraphicsSamplerFilter magFilter) noexcept;
+			bool applySamplerWrap(SamplerWrap wrap) noexcept;
+			bool applySamplerFilter(SamplerFilter minFilter, SamplerFilter magFilter) noexcept;
 			bool applySamplerAnis(GraphicsSamplerAnis anis) noexcept;
 
 		private:

@@ -29,14 +29,14 @@ namespace octoon
 			void setStreamSize(std::size_t size) noexcept;
 
 			void setTexFormat(GraphicsFormat format) noexcept;
-			void setTexDim(GraphicsTextureDim mapping) noexcept;
+			void setTexDim(TextureDimension mapping) noexcept;
 			void setTexTiling(GraphicsImageTiling tiling) noexcept;
 			void setTexUsage(GraphicsViewUsageFlags flags) noexcept;
 			void setTexMultisample(std::uint32_t samples) noexcept;
 			void setUsageFlagBits(GraphicsUsageFlags flags) noexcept;
 
 			GraphicsFormat getTexFormat()  const noexcept;
-			GraphicsTextureDim getTexDim() const noexcept;
+			TextureDimension getTexDim() const noexcept;
 			GraphicsImageTiling getTexTiling() const noexcept;
 			GraphicsViewUsageFlags getTexUsage() const noexcept;
 			GraphicsUsageFlags getUsageFlagBits() const noexcept;
@@ -72,7 +72,7 @@ namespace octoon
 			std::uint32_t _samples;
 
 			GraphicsFormat _format;
-			GraphicsTextureDim _dim;
+			TextureDimension _dim;
 			GraphicsImageTiling _tiling;
 			GraphicsViewUsageFlags _textureUsage;
 			GraphicsUsageFlags _usageFlags;

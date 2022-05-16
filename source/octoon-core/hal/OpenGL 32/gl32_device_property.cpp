@@ -293,15 +293,15 @@ namespace octoon
 		bool
 		GL32DeviceProperty::initTextureDimSupports() noexcept
 		{
-			_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture2D);
-			_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture2DArray);
-			_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Cube);
+			_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture2D);
+			_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture2DArray);
+			_deviceProperties.supportTextureDims.push_back(TextureDimension::Cube);
 
 			if (GL32Types::isSupportFeature(GL32Features::GL32_EXT_texture_cube_map_array))
-				_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::CubeArray);
+				_deviceProperties.supportTextureDims.push_back(TextureDimension::CubeArray);
 
 			if (GL32Types::isSupportFeature(GL32Features::GL32_OES_texture_3D))
-				_deviceProperties.supportTextureDims.push_back(GraphicsTextureDim::Texture3D);
+				_deviceProperties.supportTextureDims.push_back(TextureDimension::Texture3D);
 
 			return true;
 		}
@@ -372,12 +372,12 @@ namespace octoon
 		bool
 		GL32DeviceProperty::initShaderSupports() noexcept
 		{
-			_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::VertexBit);
-			_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::FragmentBit);
-			_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::ComputeBit);
+			_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::VertexBit);
+			_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::FragmentBit);
+			_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::ComputeBit);
 
 			if (GL32Types::isSupportFeature(GL32Features::GL32_EXT_geometry_shader))
-				_deviceProperties.supportShaders.push_back(GraphicsShaderStageFlagBits::GeometryBit);
+				_deviceProperties.supportShaders.push_back(ShaderStageFlagBits::GeometryBit);
 
 			return true;
 		}

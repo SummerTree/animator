@@ -319,7 +319,7 @@ namespace flower
 		auto camera = mainCamera->addComponent<FilmCameraComponent>();
 		camera->setFov((float)pmm.camera_keyframes[0].fov);
 		camera->setCameraType(CameraType::Main);
-		camera->setClearFlags(hal::GraphicsClearFlagBits::AllBit);
+		camera->setClearFlags(hal::ClearFlagBits::AllBit);
 		camera->setClearColor(math::float4(0.0f, 0.0f, 0.0f, 1.0f));
 		camera->setupFramebuffers(this->getContext()->profile->recordModule->width, this->getContext()->profile->recordModule->height, 0, octoon::hal::GraphicsFormat::R32G32B32SFloat);
 
@@ -515,7 +515,7 @@ namespace flower
 		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion(octoon::math::radians(this->getContext()->profile->sunModule->rotation)));
 
 		auto envMaterial = octoon::MeshBasicMaterial::create(octoon::math::srgb2linear(this->getContext()->profile->environmentModule->color));
-		envMaterial->setCullMode(octoon::hal::GraphicsCullMode::None);
+		envMaterial->setCullMode(octoon::hal::CullMode::Off);
 		envMaterial->setGamma(1.0f);
 		envMaterial->setDepthEnable(false);
 		envMaterial->setDepthWriteEnable(false);
@@ -545,7 +545,7 @@ namespace flower
 		auto planeGeometry = octoon::CubeMesh::create(1, 1, 1);
 
 		auto material = std::make_shared<octoon::MeshStandardMaterial>();
-		material->setCullMode(octoon::hal::GraphicsCullMode::None);
+		material->setCullMode(octoon::hal::CullMode::Off);
 
 		this->sendMessage("editor:camera:set", mainCamera);
 	}

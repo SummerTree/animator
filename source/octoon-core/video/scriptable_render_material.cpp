@@ -2392,8 +2392,8 @@ namespace octoon
 		this->replaceLightNums(fragmentShader, scene);
 
 		hal::GraphicsProgramDesc programDesc;
-		programDesc.addShader(context.createShader(hal::GraphicsShaderDesc(hal::GraphicsShaderStageFlagBits::VertexBit, vertexShader, "main", hal::GraphicsShaderLang::GLSL)));
-		programDesc.addShader(context.createShader(hal::GraphicsShaderDesc(hal::GraphicsShaderStageFlagBits::FragmentBit, fragmentShader, "main", hal::GraphicsShaderLang::GLSL)));
+		programDesc.addShader(context.createShader(hal::GraphicsShaderDesc(hal::ShaderStageFlagBits::VertexBit, vertexShader, "main", hal::ShaderLanguage::GLSL)));
+		programDesc.addShader(context.createShader(hal::GraphicsShaderDesc(hal::ShaderStageFlagBits::FragmentBit, fragmentShader, "main", hal::ShaderLanguage::GLSL)));
 		this->program_ = context.createProgram(programDesc);
 	}
 

@@ -17,14 +17,14 @@ namespace octoon
 		virtual void setViewport(const math::float4& viewport) noexcept;
 		virtual void setRenderToScreen(bool enable) noexcept;
 
-		virtual void setClearFlags(hal::GraphicsClearFlags clearflags) noexcept;
+		virtual void setClearFlags(hal::ClearFlags clearflags) noexcept;
 		virtual void setFramebuffer(const hal::GraphicsFramebufferPtr& framebuffer) noexcept;
 
 		virtual void setProjection(math::float4x4& projection) const noexcept;
 		virtual void setProjectionInverse(math::float4x4& projection) const noexcept;
 
 		virtual bool getRenderToScreen() const noexcept;
-		virtual hal::GraphicsClearFlags getClearFlags() const noexcept;
+		virtual hal::ClearFlags getClearFlags() const noexcept;
 		virtual const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 
 		virtual math::float3 worldToScreen(const math::float3& pos) const noexcept;
@@ -54,7 +54,7 @@ namespace octoon
 
 		bool blitToScreen_;
 
-		hal::GraphicsClearFlags clearflags_;
+		hal::ClearFlags clearflags_;
 
 		hal::GraphicsFramebufferPtr fbo_;
 		hal::GraphicsTexturePtr colorTexture_;

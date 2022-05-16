@@ -191,11 +191,11 @@ namespace octoon
 			auto textureTarget = texture->getTarget();
 			auto& textureDesc = renderTexture->getTextureDesc();
 
-			if (textureDesc.getTexDim() == GraphicsTextureDim::Texture2DArray || textureDesc.getTexDim() == GraphicsTextureDim::Texture2DArrayMultisample)
+			if (textureDesc.getTexDim() == TextureDimension::Texture2DArray || textureDesc.getTexDim() == TextureDimension::Texture2DArrayMultisample)
 				glFramebufferTextureLayer(GL_FRAMEBUFFER, attachment, textureID, level, layer);
-			else if (textureDesc.getTexDim() == GraphicsTextureDim::Cube)
+			else if (textureDesc.getTexDim() == TextureDimension::Cube)
 				glFramebufferTexture(GL_FRAMEBUFFER, attachment, textureID, level);
-			else if (textureDesc.getTexDim() == GraphicsTextureDim::CubeArray)
+			else if (textureDesc.getTexDim() == TextureDimension::CubeArray)
 				glFramebufferTexture3D(GL_FRAMEBUFFER, attachment, textureTarget, textureID, level, layer);
 			else
 				glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, textureTarget, textureID, level);

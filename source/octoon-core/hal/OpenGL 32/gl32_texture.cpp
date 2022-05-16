@@ -237,7 +237,7 @@ namespace octoon
 		}
 
 		bool
-		GL32Texture::applySamplerWrap(GLenum target, GraphicsSamplerWrap wrap) noexcept
+		GL32Texture::applySamplerWrap(GLenum target, SamplerWrap wrap) noexcept
 		{
 			GLenum glwrap = GL32Types::asSamplerWrap(wrap);
 			if (glwrap != GL_INVALID_ENUM)
@@ -253,7 +253,7 @@ namespace octoon
 		}
 
 		bool
-		GL32Texture::applySamplerFilter(GLenum target, GraphicsSamplerFilter filter) noexcept
+		GL32Texture::applySamplerFilter(GLenum target, SamplerFilter filter) noexcept
 		{
 			GLenum min = GL32Types::asSamplerMinFilter(filter);
 			GLenum mag = GL32Types::asSamplerMagFilter(filter);

@@ -12,14 +12,14 @@ namespace octoon
 		OctoonImplementSubInterface(GraphicsProgram, GraphicsChild, "GraphicsProgram")
 
 		GraphicsShaderDesc::GraphicsShaderDesc() noexcept
-			: _lang(GraphicsShaderLang::None)
-			, _model(GraphicsShaderModel::Level4X)
-			, _stage(GraphicsShaderStageFlagBits::VertexBit)
+			: _lang(ShaderLanguage::None)
+			, _model(ShaderModel::Level4X)
+			, _stage(ShaderStageFlagBits::VertexBit)
 			, _main("main")
 		{
 		}
 
-		GraphicsShaderDesc::GraphicsShaderDesc(GraphicsShaderStageFlags stage, const std::string& code, const char* entry_point, GraphicsShaderLang lang, GraphicsShaderModel model) noexcept
+		GraphicsShaderDesc::GraphicsShaderDesc(ShaderStageFlags stage, const std::string& code, const char* entry_point, ShaderLanguage lang, ShaderModel model) noexcept
 			: _bytecodes(code)
 			, _lang(lang)
 			, _model(model)
@@ -28,7 +28,7 @@ namespace octoon
 		{
 		}
 
-		GraphicsShaderDesc::GraphicsShaderDesc(GraphicsShaderStageFlags stage, const std::vector<char>& code, const char* entry_point, GraphicsShaderLang lang, GraphicsShaderModel model) noexcept
+		GraphicsShaderDesc::GraphicsShaderDesc(ShaderStageFlags stage, const std::vector<char>& code, const char* entry_point, ShaderLanguage lang, ShaderModel model) noexcept
 			: _lang(lang)
 			, _model(model)
 			, _stage(stage)
@@ -38,36 +38,36 @@ namespace octoon
 		}
 
 		void
-		GraphicsShaderDesc::setLanguage(GraphicsShaderLang lang) noexcept
+		GraphicsShaderDesc::setLanguage(ShaderLanguage lang) noexcept
 		{
 			_lang = lang;
 		}
 
-		GraphicsShaderLang
+		ShaderLanguage
 		GraphicsShaderDesc::getLanguage() const noexcept
 		{
 			return _lang;
 		}
 
 		void
-		GraphicsShaderDesc::setShaderModel(GraphicsShaderModel model) noexcept
+		GraphicsShaderDesc::setShaderModel(ShaderModel model) noexcept
 		{
 			_model = model;
 		}
 
-		GraphicsShaderModel
+		ShaderModel
 		GraphicsShaderDesc::getShaderModel() const noexcept
 		{
 			return _model;
 		}
 
 		void
-		GraphicsShaderDesc::setStage(GraphicsShaderStageFlags stage) noexcept
+		GraphicsShaderDesc::setStage(ShaderStageFlags stage) noexcept
 		{
 			_stage = stage;
 		}
 
-		GraphicsShaderStageFlags
+		ShaderStageFlags
 		GraphicsShaderDesc::getStage()const noexcept
 		{
 			return _stage;

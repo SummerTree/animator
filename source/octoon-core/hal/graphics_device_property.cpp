@@ -135,7 +135,7 @@ namespace octoon
 		}
 
 		bool
-		GraphicsDeviceProperties::isTextureDimSupport(GraphicsTextureDim dimension) const noexcept
+		GraphicsDeviceProperties::isTextureDimSupport(TextureDimension dimension) const noexcept
 		{
 			return std::find(supportTextureDims.begin(), supportTextureDims.end(), dimension) != supportTextureDims.end();
 		}
@@ -147,7 +147,7 @@ namespace octoon
 		}
 
 		bool
-		GraphicsDeviceProperties::isShaderSupport(GraphicsShaderStageFlags stage) const noexcept
+		GraphicsDeviceProperties::isShaderSupport(ShaderStageFlags stage) const noexcept
 		{
 			return std::find(supportShaders.begin(), supportShaders.end(), stage) != supportShaders.end();
 		}

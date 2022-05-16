@@ -15,7 +15,7 @@ namespace octoon
 		, projectInverse_(math::float4x4::One)
 		, viewProject_(math::float4x4::One)
 		, viewProjectInverse_(math::float4x4::One)
-		, clearflags_(hal::GraphicsClearFlagBits::AllBit)
+		, clearflags_(hal::ClearFlagBits::AllBit)
 	{
 	}
 
@@ -42,7 +42,7 @@ namespace octoon
 	}
 
 	void
-	Camera::setClearFlags(hal::GraphicsClearFlags clearflags) noexcept
+	Camera::setClearFlags(hal::ClearFlags clearflags) noexcept
 	{
 		clearflags_ = clearflags;
 	}
@@ -205,7 +205,7 @@ namespace octoon
 		return blitToScreen_;
 	}
 
-	hal::GraphicsClearFlags
+	hal::ClearFlags
 	Camera::getClearFlags() const noexcept
 	{
 		return clearflags_;
@@ -228,7 +228,7 @@ namespace octoon
 		colorTextureDesc.setWidth(w);
 		colorTextureDesc.setHeight(h);
 		colorTextureDesc.setTexMultisample(multisample);
-		colorTextureDesc.setTexDim(multisample > 0 ? hal::GraphicsTextureDim::Texture2DMultisample : hal::GraphicsTextureDim::Texture2D);
+		colorTextureDesc.setTexDim(multisample > 0 ? hal::TextureDimension::Texture2DMultisample : hal::TextureDimension::Texture2D);
 		colorTextureDesc.setTexFormat(format);
 		colorTexture_ = Renderer::instance()->getScriptableRenderContext()->createTexture(colorTextureDesc);
 		if (!colorTexture_)
@@ -238,7 +238,7 @@ namespace octoon
 		depthTextureDesc.setWidth(w);
 		depthTextureDesc.setHeight(h);
 		depthTextureDesc.setTexMultisample(multisample);
-		depthTextureDesc.setTexDim(multisample > 0 ? hal::GraphicsTextureDim::Texture2DMultisample : hal::GraphicsTextureDim::Texture2D);
+		depthTextureDesc.setTexDim(multisample > 0 ? hal::TextureDimension::Texture2DMultisample : hal::TextureDimension::Texture2D);
 		depthTextureDesc.setTexFormat(depthStencil);
 		depthTexture_ = Renderer::instance()->getScriptableRenderContext()->createTexture(depthTextureDesc);
 		if (!depthTexture_)

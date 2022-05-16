@@ -51,10 +51,10 @@ namespace octoon
 		hal::GraphicsColorBlends& getColorBlends() noexcept;
 		const hal::GraphicsColorBlends& getColorBlends() const noexcept;
 
-		void setCullMode(hal::GraphicsCullMode mode) noexcept;
-		void setPolygonMode(hal::GraphicsPolygonMode mode) noexcept;
-		void setPrimitiveType(hal::GraphicsVertexType type) noexcept;
-		void setFrontFace(hal::GraphicsFrontFace face) noexcept;
+		void setCullMode(hal::CullMode mode) noexcept;
+		void setPolygonMode(hal::PolygonMode mode) noexcept;
+		void setPrimitiveType(hal::VertexType type) noexcept;
+		void setFrontFace(hal::FrontFace face) noexcept;
 		void setScissorTestEnable(bool enable) noexcept;
 		void setLinear2sRGBEnable(bool enable) noexcept;
 		void setMultisampleEnable(bool enable) noexcept;
@@ -66,7 +66,7 @@ namespace octoon
 		void setDepthBoundsEnable(bool enable) noexcept;
 		void setDepthMin(float mix) noexcept;
 		void setDepthMax(float max) noexcept;
-		void setDepthFunc(hal::GraphicsCompareFunc func) noexcept;
+		void setDepthFunc(hal::CompareFunction func) noexcept;
 		void setDepthBiasEnable(bool enable) noexcept;
 		void setDepthBias(float bias) noexcept;
 		void setDepthSlopeScaleBias(float bias) noexcept;
@@ -75,24 +75,24 @@ namespace octoon
 
 		void setStencilEnable(bool enable) noexcept;
 		void setStencilFrontRef(std::uint32_t ref) noexcept;
-		void setStencilFrontFunc(hal::GraphicsCompareFunc func) noexcept;
+		void setStencilFrontFunc(hal::CompareFunction func) noexcept;
 		void setStencilFrontReadMask(std::uint32_t mask) noexcept;
 		void setStencilFrontWriteMask(std::uint32_t mask) noexcept;
-		void setStencilFrontFail(hal::GraphicsStencilOp stencilOp) noexcept;
-		void setStencilFrontZFail(hal::GraphicsStencilOp stencilOp) noexcept;
-		void setStencilFrontPass(hal::GraphicsStencilOp stencilOp) noexcept;
+		void setStencilFrontFail(hal::StencilOp stencilOp) noexcept;
+		void setStencilFrontZFail(hal::StencilOp stencilOp) noexcept;
+		void setStencilFrontPass(hal::StencilOp stencilOp) noexcept;
 		void setStencilBackRef(std::uint32_t ref) noexcept;
-		void setStencilBackFunc(hal::GraphicsCompareFunc func) noexcept;
+		void setStencilBackFunc(hal::CompareFunction func) noexcept;
 		void setStencilBackReadMask(std::uint32_t mask) noexcept;
 		void setStencilBackWriteMask(std::uint32_t mask) noexcept;
-		void setStencilBackFail(hal::GraphicsStencilOp stencilOp) noexcept;
-		void setStencilBackZFail(hal::GraphicsStencilOp stencilOp) noexcept;
-		void setStencilBackPass(hal::GraphicsStencilOp stencilOp) noexcept;
+		void setStencilBackFail(hal::StencilOp stencilOp) noexcept;
+		void setStencilBackZFail(hal::StencilOp stencilOp) noexcept;
+		void setStencilBackPass(hal::StencilOp stencilOp) noexcept;
 
-		hal::GraphicsCullMode getCullMode() const noexcept;
-		hal::GraphicsPolygonMode getPolygonMode() const noexcept;
-		hal::GraphicsVertexType getPrimitiveType() const noexcept;
-		hal::GraphicsFrontFace getFrontFace() const noexcept;
+		hal::CullMode getCullMode() const noexcept;
+		hal::PolygonMode getPolygonMode() const noexcept;
+		hal::VertexType getPrimitiveType() const noexcept;
+		hal::FrontFace getFrontFace() const noexcept;
 		bool getScissorTestEnable() const noexcept;
 		bool getLinear2sRGBEnable() const noexcept;
 		bool getMultisampleEnable() const noexcept;
@@ -109,23 +109,23 @@ namespace octoon
 		float getDepthMax() const noexcept;
 		float getDepthBias() const noexcept;
 		float getDepthSlopeScaleBias() const noexcept;
-		hal::GraphicsCompareFunc getDepthFunc() const noexcept;
+		hal::CompareFunction getDepthFunc() const noexcept;
 
 		bool getStencilEnable() const noexcept;
-		hal::GraphicsCompareFunc getStencilFrontFunc() const noexcept;
+		hal::CompareFunction getStencilFrontFunc() const noexcept;
 		std::uint32_t getStencilFrontRef() const noexcept;
 		std::uint32_t getStencilFrontReadMask() const noexcept;
 		std::uint32_t getStencilFrontWriteMask() const noexcept;
-		hal::GraphicsStencilOp getStencilFrontFail() const noexcept;
-		hal::GraphicsStencilOp getStencilFrontZFail() const noexcept;
-		hal::GraphicsStencilOp getStencilFrontPass() const noexcept;
-		hal::GraphicsCompareFunc getStencilBackFunc() const noexcept;
+		hal::StencilOp getStencilFrontFail() const noexcept;
+		hal::StencilOp getStencilFrontZFail() const noexcept;
+		hal::StencilOp getStencilFrontPass() const noexcept;
+		hal::CompareFunction getStencilBackFunc() const noexcept;
 		std::uint32_t getStencilBackRef() const noexcept;
 		std::uint32_t getStencilBackReadMask() const noexcept;
 		std::uint32_t getStencilBackWriteMask() const noexcept;
-		hal::GraphicsStencilOp getStencilBackFail() const noexcept;
-		hal::GraphicsStencilOp getStencilBackZFail() const noexcept;
-		hal::GraphicsStencilOp getStencilBackPass() const noexcept;
+		hal::StencilOp getStencilBackFail() const noexcept;
+		hal::StencilOp getStencilBackZFail() const noexcept;
+		hal::StencilOp getStencilBackPass() const noexcept;
 
 		bool set(std::string_view key, bool value) noexcept;
 		bool set(std::string_view key, int value) noexcept;
@@ -174,32 +174,32 @@ namespace octoon
 
 		float _lineWidth;
 
-		hal::GraphicsCullMode    _cullMode;
-		hal::GraphicsPolygonMode _polygonMode;
-		hal::GraphicsVertexType  _primitiveType;
-		hal::GraphicsFrontFace   _frontFace;
+		hal::CullMode    _cullMode;
+		hal::PolygonMode _polygonMode;
+		hal::VertexType  _primitiveType;
+		hal::FrontFace   _frontFace;
 
 		float _depthMin;
 		float _depthMax;
 		float _depthBias;
 		float _depthSlopeScaleBias;
-		hal::GraphicsCompareFunc _depthFunc;
+		hal::CompareFunction _depthFunc;
 
 		std::uint32_t _stencilFrontRef;
 		std::uint32_t _stencilFrontReadMask;
 		std::uint32_t _stencilFrontWriteMask;
-		hal::GraphicsStencilOp _stencilFrontFail;
-		hal::GraphicsStencilOp _stencilFrontZFail;
-		hal::GraphicsStencilOp _stencilFrontPass;
-		hal::GraphicsCompareFunc _stencilFrontFunc;
+		hal::StencilOp _stencilFrontFail;
+		hal::StencilOp _stencilFrontZFail;
+		hal::StencilOp _stencilFrontPass;
+		hal::CompareFunction _stencilFrontFunc;
 
 		std::uint32_t _stencilBackRef;
 		std::uint32_t _stencilBackReadMask;
 		std::uint32_t _stencilBackWriteMask;
-		hal::GraphicsStencilOp _stencilBackFail;
-		hal::GraphicsStencilOp _stencilBackZFail;
-		hal::GraphicsStencilOp _stencilBackPass;
-		hal::GraphicsCompareFunc _stencilBackFunc;
+		hal::StencilOp _stencilBackFail;
+		hal::StencilOp _stencilBackZFail;
+		hal::StencilOp _stencilBackPass;
+		hal::CompareFunction _stencilBackFunc;
 
 		hal::GraphicsColorBlends _blends;
 

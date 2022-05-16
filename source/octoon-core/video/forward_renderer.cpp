@@ -82,7 +82,7 @@ namespace octoon
 			colorTextureDesc.setWidth(w);
 			colorTextureDesc.setHeight(h);
 			colorTextureDesc.setTexMultisample(4);
-			colorTextureDesc.setTexDim(hal::GraphicsTextureDim::Texture2DMultisample);
+			colorTextureDesc.setTexDim(hal::TextureDimension::Texture2DMultisample);
 			colorTextureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
 			colorTexture_ = context->createTexture(colorTextureDesc);
 			if (!colorTexture_)
@@ -92,7 +92,7 @@ namespace octoon
 			depthTextureDesc.setWidth(w);
 			depthTextureDesc.setHeight(h);
 			depthTextureDesc.setTexMultisample(4);
-			depthTextureDesc.setTexDim(hal::GraphicsTextureDim::Texture2DMultisample);
+			depthTextureDesc.setTexDim(hal::TextureDimension::Texture2DMultisample);
 			depthTextureDesc.setTexFormat(hal::GraphicsFormat::X8_D24UNormPack32);
 			depthTexture_ = context->createTexture(depthTextureDesc);
 			if (!depthTexture_)
@@ -112,7 +112,7 @@ namespace octoon
 			hal::GraphicsTextureDesc colorTextureDesc2;
 			colorTextureDesc2.setWidth(w);
 			colorTextureDesc2.setHeight(h);
-			colorTextureDesc2.setTexDim(hal::GraphicsTextureDim::Texture2D);
+			colorTextureDesc2.setTexDim(hal::TextureDimension::Texture2D);
 			colorTextureDesc2.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
 			colorTexture2_ = context->createTexture(colorTextureDesc2);
 			if (!colorTexture2_)
@@ -121,7 +121,7 @@ namespace octoon
 			hal::GraphicsTextureDesc depthTextureDesc2;
 			depthTextureDesc2.setWidth(w);
 			depthTextureDesc2.setHeight(h);
-			depthTextureDesc2.setTexDim(hal::GraphicsTextureDim::Texture2D);
+			depthTextureDesc2.setTexDim(hal::TextureDimension::Texture2D);
 			depthTextureDesc2.setTexFormat(hal::GraphicsFormat::X8_D24UNormPack32);
 			depthTexture2_ = context->createTexture(depthTextureDesc2);
 			if (!depthTexture2_)
@@ -189,19 +189,19 @@ namespace octoon
 			auto viewport = math::float4((float)vp.x, (float)vp.y, (float)vp.width, (float)vp.height);
 
 			context->configureTarget(nullptr);
-			context->configureClear(hal::GraphicsClearFlagBits::AllBit, math::float4::Zero, 1.0f, 0);
+			context->configureClear(hal::ClearFlagBits::AllBit, math::float4::Zero, 1.0f, 0);
 
 			if (!fbo->getFramebufferDesc().getColorAttachments().empty())
 			{
 				auto texture = fbo->getFramebufferDesc().getColorAttachment().getBindingTexture();
-				if (texture->getTextureDesc().getTexDim() == hal::GraphicsTextureDim::Texture2DMultisample)
+				if (texture->getTextureDesc().getTexDim() == hal::TextureDimension::Texture2DMultisample)
 				{
 					if (fbo == fbo_)
 					{
 						context->blitFramebuffer(fbo, viewport, fbo2_, viewport);
-						context->discardFramebuffer(fbo, hal::GraphicsClearFlagBits::AllBit);
+						context->discardFramebuffer(fbo, hal::ClearFlagBits::AllBit);
 						context->blitFramebuffer(fbo2_, viewport, nullptr, viewport);
-						context->discardFramebuffer(fbo2_, hal::GraphicsClearFlagBits::AllBit);
+						context->discardFramebuffer(fbo2_, hal::ClearFlagBits::AllBit);
 					}
 				}
 				else
@@ -215,7 +215,7 @@ namespace octoon
 					float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
 
 					context->blitFramebuffer(fbo, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
-					context->discardFramebuffer(fbo, hal::GraphicsClearFlagBits::AllBit);
+					context->discardFramebuffer(fbo, hal::ClearFlagBits::AllBit);
 				}
 			}
 		}

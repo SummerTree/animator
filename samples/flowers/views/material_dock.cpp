@@ -1257,8 +1257,8 @@ namespace flower
 			{
 				octoon::hal::GraphicsColorBlend blend;
 				blend.setBlendEnable(true);
-				blend.setBlendSrc(octoon::hal::GraphicsBlendFactor::SrcAlpha);
-				blend.setBlendDest(octoon::hal::GraphicsBlendFactor::OneMinusSrcAlpha);
+				blend.setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
+				blend.setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
 
 				std::vector<octoon::hal::GraphicsColorBlend> blends;
 				blends.push_back(blend);

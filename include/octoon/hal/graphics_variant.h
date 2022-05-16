@@ -13,8 +13,8 @@ namespace octoon
 			GraphicsVariant() noexcept;
 			virtual ~GraphicsVariant() noexcept;
 
-			void setType(GraphicsUniformType type) noexcept;
-			GraphicsUniformType getType() const noexcept;
+			void setType(UniformAttributeFormat type) noexcept;
+			UniformAttributeFormat getType() const noexcept;
 
 			void uniform1b(bool value) noexcept;
 			void uniform1i(std::int32_t i1) noexcept;
@@ -151,7 +151,7 @@ namespace octoon
 				GraphicsDataPtr* ubo;
 			} _value;
 
-			GraphicsUniformType _type;
+			UniformAttributeFormat _type;
 		};
 	}
 }

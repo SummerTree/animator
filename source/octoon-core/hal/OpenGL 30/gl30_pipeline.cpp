@@ -80,7 +80,7 @@ namespace octoon
 			auto& bindings = pipelineDesc.getInputLayout()->getInputLayoutDesc().getVertexBindings();
 			for (auto& it : bindings)
 			{
-				if (it.getVertexDivisor() != GraphicsVertexDivisor::Vertex)
+				if (it.getVertexDivisor() != VertexAttribDivisor::Vertex)
 				{
 					GL_PLATFORM_LOG("Only support vertex divisor.");
 					return false;
@@ -95,9 +95,9 @@ namespace octoon
 					binding.slot = it.getVertexSlot();
 
 					auto divisor = it.getVertexDivisor();
-					if (divisor == GraphicsVertexDivisor::Vertex)
+					if (divisor == VertexAttribDivisor::Vertex)
 						binding.divisor = 0;
-					else if (divisor == GraphicsVertexDivisor::Instance)
+					else if (divisor == VertexAttribDivisor::Instance)
 						binding.divisor = 1;
 					else
 					{

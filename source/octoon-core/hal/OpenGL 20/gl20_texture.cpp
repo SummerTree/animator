@@ -199,7 +199,7 @@ namespace octoon
 		}
 
 		bool
-		GL20Texture::applySamplerWrap(GLenum target, GraphicsSamplerWrap wrap) noexcept
+		GL20Texture::applySamplerWrap(GLenum target, SamplerWrap wrap) noexcept
 		{
 			GLenum glwrap = GL20Types::asSamplerWrap(wrap);
 			if (glwrap != GL_INVALID_ENUM)
@@ -214,7 +214,7 @@ namespace octoon
 		}
 
 		bool
-		GL20Texture::applySamplerFilter(GLenum target, GraphicsSamplerFilter minFilter, GraphicsSamplerFilter magFilter) noexcept
+		GL20Texture::applySamplerFilter(GLenum target, SamplerFilter minFilter, SamplerFilter magFilter) noexcept
 		{
 			GLenum min = GL20Types::asSamplerMinFilter(minFilter);
 			GLenum mag = GL20Types::asSamplerMagFilter(magFilter);

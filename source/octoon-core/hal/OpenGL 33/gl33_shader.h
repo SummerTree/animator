@@ -50,8 +50,8 @@ namespace octoon
 			void setSamplerName(std::string_view name) noexcept;
 			const std::string& getSamplerName() const noexcept;
 
-			void setType(GraphicsUniformType type) noexcept;
-			GraphicsUniformType getType() const noexcept;
+			void setType(UniformAttributeFormat type) noexcept;
+			UniformAttributeFormat getType() const noexcept;
 
 			void setOffset(std::uint32_t offset) noexcept;
 			std::uint32_t getOffset() const noexcept;
@@ -59,8 +59,8 @@ namespace octoon
 			void setBindingPoint(std::uint32_t bindingPoint) noexcept;
 			std::uint32_t getBindingPoint() const noexcept;
 
-			void setShaderStageFlags(GraphicsShaderStageFlags flags) noexcept;
-			GraphicsShaderStageFlags getShaderStageFlags() const noexcept;
+			void setShaderStageFlags(ShaderStageFlags flags) noexcept;
+			ShaderStageFlags getShaderStageFlags() const noexcept;
 
 		private:
 			GL33GraphicsUniform(const GL33GraphicsUniform&) noexcept = delete;
@@ -71,8 +71,8 @@ namespace octoon
 			std::string _samplerName;
 			std::uint32_t _offset;
 			std::uint32_t _bindingPoint;
-			GraphicsUniformType _type;
-			GraphicsShaderStageFlags _stageFlags;
+			UniformAttributeFormat _type;
+			ShaderStageFlags _stageFlags;
 		};
 
 		class GL33GraphicsUniformBlock final : public GraphicsUniformBlock
@@ -85,8 +85,8 @@ namespace octoon
 			void setName(std::string_view name) noexcept;
 			const std::string& getName() const noexcept;
 
-			void setType(GraphicsUniformType type) noexcept;
-			GraphicsUniformType getType() const noexcept;
+			void setType(UniformAttributeFormat type) noexcept;
+			UniformAttributeFormat getType() const noexcept;
 
 			void setBlockSize(std::uint32_t size) noexcept;
 			std::uint32_t getBlockSize() const noexcept;
@@ -94,8 +94,8 @@ namespace octoon
 			void setBindingPoint(std::uint32_t bindingPoint) noexcept;
 			std::uint32_t getBindingPoint() const noexcept;
 
-			void setShaderStageFlags(GraphicsShaderStageFlags flags) noexcept;
-			GraphicsShaderStageFlags getShaderStageFlags() const noexcept;
+			void setShaderStageFlags(ShaderStageFlags flags) noexcept;
+			ShaderStageFlags getShaderStageFlags() const noexcept;
 
 			void addGraphicsUniform(GraphicsUniformPtr uniform) noexcept;
 			void removeGraphicsUniform(GraphicsUniformPtr uniform) noexcept;
@@ -110,8 +110,8 @@ namespace octoon
 			std::uint32_t _size;
 			std::uint32_t _bindingPoint;
 			GraphicsUniforms _uniforms;
-			GraphicsUniformType _type;
-			GraphicsShaderStageFlags _stageFlags;
+			UniformAttributeFormat _type;
+			ShaderStageFlags _stageFlags;
 		};
 
 		class GL33Shader final : public GraphicsShader
@@ -129,8 +129,8 @@ namespace octoon
 			const GraphicsShaderDesc& getShaderDesc() const noexcept override;
 
 		private:
-			bool HlslCodes2GLSL(GraphicsShaderStageFlags stage, const std::string& codes, const std::string& main, std::string& out);
-			bool HlslByteCodes2GLSL(GraphicsShaderStageFlags stage, const char* codes, std::string& out);
+			bool HlslCodes2GLSL(ShaderStageFlags stage, const std::string& codes, const std::string& main, std::string& out);
+			bool HlslByteCodes2GLSL(ShaderStageFlags stage, const char* codes, std::string& out);
 
 		private:
 			friend class GL33Device;
@@ -174,7 +174,7 @@ namespace octoon
 
 		private:
 			static GraphicsFormat toGraphicsFormat(GLenum type) noexcept;
-			static GraphicsUniformType toGraphicsUniformType(std::string_view name, GLenum type) noexcept;
+			static UniformAttributeFormat toGraphicsUniformType(std::string_view name, GLenum type) noexcept;
 
 		private:
 			friend class GL33Device;

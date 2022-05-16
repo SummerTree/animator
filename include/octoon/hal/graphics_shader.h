@@ -11,18 +11,18 @@ namespace octoon
 		{
 		public:
 			GraphicsShaderDesc() noexcept;
-			GraphicsShaderDesc(GraphicsShaderStageFlags stage, const std::string& code, const char* entry_point = "main",  GraphicsShaderLang lang = GraphicsShaderLang::HLSL, GraphicsShaderModel model = GraphicsShaderModel::Level4X) noexcept;
-			GraphicsShaderDesc(GraphicsShaderStageFlags stage, const std::vector<char>& code, const char* entry_point = "main", GraphicsShaderLang lang = GraphicsShaderLang::HLSL, GraphicsShaderModel model = GraphicsShaderModel::Level4X) noexcept;
+			GraphicsShaderDesc(ShaderStageFlags stage, const std::string& code, const char* entry_point = "main",  ShaderLanguage lang = ShaderLanguage::HLSL, ShaderModel model = ShaderModel::Level4X) noexcept;
+			GraphicsShaderDesc(ShaderStageFlags stage, const std::vector<char>& code, const char* entry_point = "main", ShaderLanguage lang = ShaderLanguage::HLSL, ShaderModel model = ShaderModel::Level4X) noexcept;
 			~GraphicsShaderDesc() = default;
 
-			void setLanguage(GraphicsShaderLang lang) noexcept;
-			GraphicsShaderLang getLanguage() const noexcept;
+			void setLanguage(ShaderLanguage lang) noexcept;
+			ShaderLanguage getLanguage() const noexcept;
 
-			void setShaderModel(GraphicsShaderModel model) noexcept;
-			GraphicsShaderModel getShaderModel() const noexcept;
+			void setShaderModel(ShaderModel model) noexcept;
+			ShaderModel getShaderModel() const noexcept;
 
-			void setStage(GraphicsShaderStageFlags type) noexcept;
-			GraphicsShaderStageFlags getStage() const noexcept;
+			void setStage(ShaderStageFlags type) noexcept;
+			ShaderStageFlags getStage() const noexcept;
 
 			void setByteCodes(std::string_view codes) noexcept;
 			void setByteCodes(std::string&& codes) noexcept;
@@ -35,9 +35,9 @@ namespace octoon
 		private:
 			std::string _main;
 			std::string _bytecodes;
-			GraphicsShaderLang _lang;
-			GraphicsShaderModel _model;
-			GraphicsShaderStageFlags _stage;
+			ShaderLanguage _lang;
+			ShaderModel _model;
+			ShaderStageFlags _stage;
 		};
 
 		class OCTOON_EXPORT GraphicsProgramDesc final
@@ -79,8 +79,8 @@ namespace octoon
 			virtual ~GraphicsParam() = default;
 
 			virtual const std::string& getName() const noexcept = 0;
-			virtual GraphicsUniformType getType() const noexcept = 0;
-			virtual GraphicsShaderStageFlags getShaderStageFlags() const noexcept = 0;
+			virtual UniformAttributeFormat getType() const noexcept = 0;
+			virtual ShaderStageFlags getShaderStageFlags() const noexcept = 0;
 			virtual std::uint32_t getBindingPoint() const noexcept = 0;
 
 		private:

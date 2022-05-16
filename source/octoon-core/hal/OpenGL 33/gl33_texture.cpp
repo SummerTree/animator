@@ -360,7 +360,7 @@ namespace octoon
 		}
 
 		bool
-		GL33Texture::applySamplerWrap(GLenum target, GraphicsSamplerWrap wrap) noexcept
+		GL33Texture::applySamplerWrap(GLenum target, SamplerWrap wrap) noexcept
 		{
 			GLenum glwrap = GL33Types::asSamplerWrap(wrap);
 			if (glwrap == GL_INVALID_ENUM)
@@ -377,7 +377,7 @@ namespace octoon
 		}
 
 		bool
-		GL33Texture::applySamplerFilter(GLenum target, GraphicsSamplerFilter minFilter, GraphicsSamplerFilter magFilter) noexcept
+		GL33Texture::applySamplerFilter(GLenum target, SamplerFilter minFilter, SamplerFilter magFilter) noexcept
 		{
 			GLenum min = GL33Types::asSamplerMinFilter(minFilter);
 			GLenum mag = GL33Types::asSamplerMagFilter(magFilter);

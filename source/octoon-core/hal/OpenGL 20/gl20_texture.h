@@ -32,8 +32,8 @@ namespace octoon
 			const GraphicsTextureDesc& getTextureDesc() const noexcept override;
 
 		private:
-			static bool applySamplerWrap(GLenum target, GraphicsSamplerWrap wrap) noexcept;
-			static bool applySamplerFilter(GLenum target, GraphicsSamplerFilter minFilter, GraphicsSamplerFilter magFilter) noexcept;
+			static bool applySamplerWrap(GLenum target, SamplerWrap wrap) noexcept;
+			static bool applySamplerFilter(GLenum target, SamplerFilter minFilter, SamplerFilter magFilter) noexcept;
 
 		private:
 			GLenum _target;

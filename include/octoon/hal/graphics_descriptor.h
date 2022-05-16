@@ -11,18 +11,18 @@ namespace octoon
 		{
 		public:
 			GraphicsDescriptorPoolComponent() noexcept;
-			GraphicsDescriptorPoolComponent(GraphicsUniformType type, std::uint32_t nums) noexcept;
+			GraphicsDescriptorPoolComponent(UniformAttributeFormat type, std::uint32_t nums) noexcept;
 			~GraphicsDescriptorPoolComponent() noexcept;
 
-			void setDescriptorType(GraphicsUniformType type) noexcept;
-			GraphicsUniformType getDescriptorType() const noexcept;
+			void setDescriptorType(UniformAttributeFormat type) noexcept;
+			UniformAttributeFormat getDescriptorType() const noexcept;
 
 			void setDescriptorNums(std::uint32_t nums) noexcept;
 			std::uint32_t getDescriptorNums() const noexcept;
 
 		private:
 			std::uint32_t _descriptorNums;
-			GraphicsUniformType _type;
+			UniformAttributeFormat _type;
 		};
 
 		class OCTOON_EXPORT GraphicsDescriptorSetLayoutDesc final

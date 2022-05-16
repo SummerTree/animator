@@ -60,7 +60,7 @@ namespace octoon
 						context.blitFramebuffer(framebuffer, v, nullptr, v);
 					}
 
-					context.discardFramebuffer(framebuffer, hal::GraphicsClearFlagBits::DepthStencilBit);
+					context.discardFramebuffer(framebuffer, hal::ClearFlagBits::DepthStencilBit);
 				}
 			}
 		}

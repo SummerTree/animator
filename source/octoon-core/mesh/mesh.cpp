@@ -941,17 +941,20 @@ namespace octoon
 		}
 		else
 		{
-			for (int i = 0; i < _indices.size(); i++)
+			auto vertices = _vertices.data();
+			auto numSubsets = _indices.size();
+
+			for (int i = 0; i < numSubsets; i++)
 			{
 				math::AABB aabb;
 
 				for (auto& j : _indices[i])
-					aabb.encapsulate(_vertices[j]);
+					aabb.encapsulate(vertices[j]);
 
 				_boundingBoxs[i].set(aabb);
 			}
 
-			for (std::size_t i = 0; i < _indices.size(); i++)
+			for (std::size_t i = 0; i < numSubsets; i++)
 				_boundingBox.encapsulate(_boundingBoxs[i]);
 		}
 	}

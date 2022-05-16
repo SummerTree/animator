@@ -11,25 +11,25 @@ namespace octoon
 		{
 		public:
 			GraphicsSamplerDesc() noexcept;
-			GraphicsSamplerDesc(GraphicsSamplerWrap wrap, GraphicsSamplerFilter filter, GraphicsSamplerAnis anis = GraphicsSamplerAnis::Anis0) noexcept;
+			GraphicsSamplerDesc(SamplerWrap wrap, SamplerFilter filter, GraphicsSamplerAnis anis = GraphicsSamplerAnis::Anis0) noexcept;
 			~GraphicsSamplerDesc() noexcept;
 
-			void setSamplerWrap(GraphicsSamplerWrap wrap) noexcept;
-			void setSamplerMinFilter(GraphicsSamplerFilter filter) noexcept;
-			void setSamplerMagFilter(GraphicsSamplerFilter filter) noexcept;
-			void setSamplerFilter(GraphicsSamplerFilter minFilter, GraphicsSamplerFilter magFilter) noexcept;
+			void setSamplerWrap(SamplerWrap wrap) noexcept;
+			void setSamplerMinFilter(SamplerFilter filter) noexcept;
+			void setSamplerMagFilter(SamplerFilter filter) noexcept;
+			void setSamplerFilter(SamplerFilter minFilter, SamplerFilter magFilter) noexcept;
 			void setSamplerAnis(GraphicsSamplerAnis anis) noexcept;
 
-			GraphicsSamplerWrap getSamplerWrap() const noexcept;
-			GraphicsSamplerFilter getSamplerMinFilter() const noexcept;
-			GraphicsSamplerFilter getSamplerMagFilter() const noexcept;
+			SamplerWrap getSamplerWrap() const noexcept;
+			SamplerFilter getSamplerMinFilter() const noexcept;
+			SamplerFilter getSamplerMagFilter() const noexcept;
 			GraphicsSamplerAnis getSamplerAnis() const noexcept;
 
 		private:
 			GraphicsSamplerAnis _anis;
-			GraphicsSamplerWrap _wrap;
-			GraphicsSamplerFilter _filterMin;
-			GraphicsSamplerFilter _filterMag;
+			SamplerWrap _wrap;
+			SamplerFilter _filterMin;
+			SamplerFilter _filterMag;
 		};
 
 		class OCTOON_EXPORT GraphicsSampler : public GraphicsChild

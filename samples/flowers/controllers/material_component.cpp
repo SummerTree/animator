@@ -39,7 +39,7 @@ namespace flower
 			{
 				octoon::hal::GraphicsTextureDesc textureDesc;
 				textureDesc.setSize(width, height);
-				textureDesc.setTexDim(octoon::hal::GraphicsTextureDim::Texture2D);
+				textureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
 				textureDesc.setTexFormat(octoon::hal::GraphicsFormat::R8G8B8A8UNorm);
 				auto colorTexture = renderer->getScriptableRenderContext()->createTexture(textureDesc);
 				if (!colorTexture)
@@ -47,7 +47,7 @@ namespace flower
 
 				octoon::hal::GraphicsTextureDesc depthTextureDesc;
 				depthTextureDesc.setSize(width, height);
-				depthTextureDesc.setTexDim(octoon::hal::GraphicsTextureDim::Texture2D);
+				depthTextureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
 				depthTextureDesc.setTexFormat(octoon::hal::GraphicsFormat::D16UNorm);
 				auto depthTexture = renderer->getScriptableRenderContext()->createTexture(depthTextureDesc);
 				if (!depthTexture)
@@ -70,7 +70,7 @@ namespace flower
 
 				camera_ = std::make_shared<octoon::PerspectiveCamera>(60, 1, 100);
 				camera_->setClearColor(octoon::math::float4::Zero);
-				camera_->setClearFlags(octoon::hal::GraphicsClearFlagBits::AllBit);
+				camera_->setClearFlags(octoon::hal::ClearFlagBits::AllBit);
 				camera_->setFramebuffer(framebuffer_);
 				camera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, 0, 1), octoon::math::float3::Zero, octoon::math::float3::UnitY));
 

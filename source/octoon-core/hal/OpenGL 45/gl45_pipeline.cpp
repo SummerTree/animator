@@ -83,9 +83,9 @@ namespace octoon
 				binding.stride = it.getVertexSize();
 
 				auto divisor = it.getVertexDivisor();
-				if (divisor == GraphicsVertexDivisor::Vertex)
+				if (divisor == VertexAttribDivisor::Vertex)
 					binding.divisor = 0;
-				else if (divisor == GraphicsVertexDivisor::Instance)
+				else if (divisor == VertexAttribDivisor::Instance)
 					binding.divisor = 1;
 				else
 				{

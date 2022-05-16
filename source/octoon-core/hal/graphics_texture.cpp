@@ -13,7 +13,7 @@ namespace octoon
 			, _mipBase(0)
 			, _mipLevel(1)
 			, _format(GraphicsFormat::Undefined)
-			, _dim(GraphicsTextureDim::Texture2D)
+			, _dim(TextureDimension::Texture2D)
 			, _textureUsage(GraphicsViewUsageFlagBits::SampledBit)
 			, _tiling(GraphicsImageTiling::Optimal)
 			, _usageFlags(GraphicsUsageFlagBits::ReadBit)
@@ -90,7 +90,7 @@ namespace octoon
 		}
 
 		void
-		GraphicsTextureDesc::setTexDim(GraphicsTextureDim dim) noexcept
+		GraphicsTextureDesc::setTexDim(TextureDimension dim) noexcept
 		{
 			_dim = dim;
 		}
@@ -125,7 +125,7 @@ namespace octoon
 			return _format;
 		}
 
-		GraphicsTextureDim
+		TextureDimension
 		GraphicsTextureDesc::getTexDim() const noexcept
 		{
 			return _dim;

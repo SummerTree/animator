@@ -138,8 +138,8 @@ namespace octoon::imgui
 			throw std::runtime_error("Failed to create indices bufer");
 
 		GraphicsProgramDesc programDesc;
-		programDesc.addShader(device->createShader(GraphicsShaderDesc(GraphicsShaderStageFlagBits::VertexBit, vert, "main", hal::GraphicsShaderLang::GLSL)));
-		programDesc.addShader(device->createShader(GraphicsShaderDesc(GraphicsShaderStageFlagBits::FragmentBit, frag, "main", hal::GraphicsShaderLang::GLSL)));
+		programDesc.addShader(device->createShader(GraphicsShaderDesc(ShaderStageFlagBits::VertexBit, vert, "main", hal::ShaderLanguage::GLSL)));
+		programDesc.addShader(device->createShader(GraphicsShaderDesc(ShaderStageFlagBits::FragmentBit, frag, "main", hal::ShaderLanguage::GLSL)));
 		auto program = device->createProgram(programDesc);
 		if (!program)
 			throw std::runtime_error("Failed to create shader progoram");
@@ -155,8 +155,8 @@ namespace octoon::imgui
 
 		GraphicsColorBlend blend;
 		blend.setBlendEnable(true);
-		blend.setBlendSrc(GraphicsBlendFactor::SrcAlpha);
-		blend.setBlendDest(GraphicsBlendFactor::OneMinusSrcAlpha);
+		blend.setBlendSrc(BlendMode::SrcAlpha);
+		blend.setBlendDest(BlendMode::OneMinusSrcAlpha);
 
 		std::vector<GraphicsColorBlend> blends;
 		blends.push_back(blend);
@@ -164,8 +164,8 @@ namespace octoon::imgui
 		GraphicsStateDesc stateDesc;
 		stateDesc.setColorBlends(std::move(blends));
 		stateDesc.setScissorTestEnable(true);
-		stateDesc.setPrimitiveType(GraphicsVertexType::TriangleList);
-		stateDesc.setCullMode(GraphicsCullMode::None);
+		stateDesc.setPrimitiveType(VertexType::TriangleList);
+		stateDesc.setCullMode(CullMode::Off);
 		stateDesc.setDepthEnable(false);
 
 		GraphicsPipelineDesc pipeline;
@@ -390,7 +390,7 @@ namespace octoon::imgui
 
 		GraphicsTextureDesc textureDesc;
 		textureDesc.setSize(width, height);
-		textureDesc.setTexDim(GraphicsTextureDim::Texture2D);
+		textureDesc.setTexDim(TextureDimension::Texture2D);
 		textureDesc.setTexFormat(GraphicsFormat::R8G8B8A8UNorm);
 		textureDesc.setStream(pixels);
 		textureDesc.setStreamSize(width * height * sizeof(std::uint32_t));
@@ -493,7 +493,7 @@ namespace octoon::imgui
 		if (totalVertexSize != 0 || totalIndirectSize != 0)
 		{
 			context.setVertexBufferData(0, vbo_, 0);
-			context.setIndexBufferData(ibo_, 0, GraphicsIndexType::UInt16);
+			context.setIndexBufferData(ibo_, 0, IndexFormat::UInt16);
 
 			std::uint32_t vdx_buffer_offset = 0;
 			std::uint32_t idx_buffer_offset = 0;
