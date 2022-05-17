@@ -42,7 +42,6 @@ namespace flower
 
 	RecordDock::RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
 		: behaviour_(behaviour)
-		, timer_(new QTimer(this))
 	{
 		this->setObjectName("RecordDock");
 		this->setWindowTitle(tr("Record"));
@@ -162,15 +161,6 @@ namespace flower
 		frameLayout_->addWidget(end_, 0, Qt::AlignLeft);
 		frameLayout_->addStretch();
 
-		animation_ = new QLabel();
-		animation_->setContentsMargins(20, 0, 0, 0);
-
-		summary_ = new QLabel();
-		summary_->setContentsMargins(20, 0, 0, 0);
-
-		currentFrame_ = new QLabel();
-		currentFrame_->setContentsMargins(20, 0, 0, 0);
-
 		recordButton_ = new QToolButton();
 		recordButton_->setObjectName("render");
 		recordButton_->setText(tr("Start Render"));
@@ -213,11 +203,6 @@ namespace flower
 		auto markLayout = new QVBoxLayout;
 		markLayout->addWidget(markButton_, 0, Qt::AlignCenter);
 
-		auto infoLayout = new QVBoxLayout;
-		infoLayout->addWidget(animation_);
-		infoLayout->addWidget(summary_);
-		infoLayout->addWidget(currentFrame_);
-
 		markSpoiler_ = new Spoiler(tr("Watermark"));
 		markSpoiler_->setContentLayout(*markLayout);
 
@@ -225,13 +210,9 @@ namespace flower
 		videoSpoiler_->setContentLayout(*videoLayout);
 		videoSpoiler_->toggleButton.click();
 
-		infoSpoiler_ = new Spoiler(tr("Video Information"));
-		infoSpoiler_->setContentLayout(*infoLayout);
-
 		auto contentLayout = new QVBoxLayout();
 		contentLayout->addWidget(videoSpoiler_);
 		contentLayout->addWidget(markSpoiler_);
-		contentLayout->addWidget(infoSpoiler_);
 		contentLayout->addStretch();
 
 		auto contentWidget = new QWidget;
@@ -265,7 +246,6 @@ namespace flower
 		connect(sppSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onSppChanged(int)));
 		connect(bouncesSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onBouncesChanged(int)));
 		connect(crfSpinbox, SIGNAL(valueChanged(double)), this, SLOT(onCrfChanged(double)));
-		connect(timer_, SIGNAL(timeout()), this, SLOT(timeEvent()));
 	}
 
 	RecordDock::~RecordDock() noexcept
@@ -282,7 +262,6 @@ namespace flower
 			{
 				start_->setEnabled(false);
 				end_->setEnabled(false);
-				timer_->start();
 				recordButton_->setText(tr("Stop Render"));
 			}
 			else
@@ -304,7 +283,6 @@ namespace flower
 		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
-			timer_->stop();
 			start_->setEnabled(true);
 			end_->setEnabled(true);
 			recordButton_->setText(tr("Start Render"));
@@ -470,46 +448,6 @@ namespace flower
 		}
 	}
 
-	void
-	RecordDock::timeEvent()
-	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
-		{
-			auto playerComponent = behaviour->getComponent<PlayerComponent>();
-			if (playerComponent)
-			{
-				auto time = std::max<int>(0, std::round(behaviour->getProfile()->playerModule->curTime * 30.0f));
-				currentFrame_->setText(tr("Rendering frame: %1").arg(time));
-			}
-		}
-	}
-
-	void
-	RecordDock::update()
-	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
-		{
-			auto playerComponent = dynamic_cast<PlayerComponent*>(behaviour->getComponent<PlayerComponent>());
-			auto animLength = std::max<int>(1, std::round(playerComponent->timeLength() * 30.0f));
-
-			auto startFrame = start_->value();
-			auto endFrame = end_->value();
-			auto time = std::max<int>(0, std::round(behaviour->getProfile()->playerModule->curTime * 30.0f));
-			auto timeLength = std::max<int>(1, (endFrame - startFrame) / 30.0f * behaviour->getProfile()->playerModule->recordFps);
-
-			animation_->setText(tr("Animation frame: %1").arg(animLength));
-			summary_->setText(tr("Video frame: %1").arg(timeLength));	
-			currentFrame_->setText(tr("Rendering frame: %1").arg(time));
-
-			if (!select1_->isChecked())
-			{
-				recordButton_->setEnabled(true);
-			}
-		}
-	}
-
 	void 
 	RecordDock::repaint()
 	{
@@ -535,8 +473,6 @@ namespace flower
 			sppSpinbox_->setValue(profile->playerModule->spp);
 			crfSpinbox->setValue(profile->encodeModule->crf);
 			bouncesSpinbox_->setValue(profile->offlineModule->bounces);
-
-			this->update();
 		}
 	}
 }

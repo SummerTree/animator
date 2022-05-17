@@ -26,7 +26,6 @@ namespace flower
 		RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
 		~RecordDock() noexcept;
 
-		void update();
 		void repaint();
 
 		void startRecord(QString fileName);
@@ -46,7 +45,6 @@ namespace flower
 		void speed4Event(bool checked);
 		void startEvent(int);
 		void endEvent(int);
-		void timeEvent();
 		void onSppChanged(int);
 		void onBouncesChanged(int);
 		void onCrfChanged(double);
@@ -55,9 +53,6 @@ namespace flower
 		QLabel* quality_;
 		QLabel* videoRatio_;
 		QLabel* frame_;
-		QLabel* animation_;
-		QLabel* summary_;
-		QLabel* currentFrame_;
 		QLabel* sppLabel;
 		QLabel* bouncesLabel_;
 		QLabel* crfLabel;
@@ -86,13 +81,11 @@ namespace flower
 		QHBoxLayout* videoRatioLayout_;
 		QHBoxLayout* frameLayout_;
 		QVBoxLayout* mainLayout_;
-		QTimer* timer_;
 
 		QWidget* mainWidget_;
 
 		Spoiler* markSpoiler_;
 		Spoiler* videoSpoiler_;
-		Spoiler* infoSpoiler_;
 		QScrollArea* contentWidgetArea_;
 
 		octoon::GameObjectPtr behaviour_;
