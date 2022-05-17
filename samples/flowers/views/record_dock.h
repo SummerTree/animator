@@ -89,6 +89,7 @@ namespace flower
 		QScrollArea* contentWidgetArea_;
 
 		octoon::GameObjectPtr behaviour_;
+		std::shared_ptr<FlowerProfile> profile_;
 	};
 }
 
