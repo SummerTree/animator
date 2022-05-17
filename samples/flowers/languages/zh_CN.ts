@@ -596,72 +596,72 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="48"/>
         <source>Record</source>
-        <translation type="unfinished">录制</translation>
+        <translation>录制</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="56"/>
         <source>Render Quality</source>
-        <translation type="unfinished"></translation>
+        <translation>渲染质量</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="60"/>
         <source>Ultra Render</source>
-        <translation type="unfinished"></translation>
+        <translation>高清渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="66"/>
         <source>Fast Render</source>
-        <translation type="unfinished"></translation>
+        <translation>极速渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="74"/>
         <source>Frame Per Second</source>
-        <translation type="unfinished"></translation>
+        <translation>帧率</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="78"/>
         <source>24</source>
-        <translation type="unfinished"></translation>
+        <translation>24</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="84"/>
         <source>25</source>
-        <translation type="unfinished"></translation>
+        <translation>25</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="89"/>
         <source>30</source>
-        <translation type="unfinished"></translation>
+        <translation>30</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="94"/>
         <source>60</source>
-        <translation type="unfinished"></translation>
+        <translation>60</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="104"/>
         <source>Play:</source>
-        <translation type="unfinished"></translation>
+        <translation>播放：</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="107"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>开始</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="110"/>
         <source>- End</source>
-        <translation type="unfinished"></translation>
+        <translation>- 结束</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="125"/>
         <source>Recursion depth per pixel:</source>
-        <translation type="unfinished"></translation>
+        <translation>每像素递归深度：</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="136"/>
         <source>Sample number per pixel:</source>
-        <translation type="unfinished"></translation>
+        <translation>每像素采样数:</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="154"/>
@@ -672,28 +672,28 @@ $20 (Original cost $40)</source>
         <location filename="../views/record_dock.cpp" line="176"/>
         <location filename="../views/record_dock.cpp" line="310"/>
         <source>Start Render</source>
-        <translation type="unfinished"></translation>
+        <translation>开始渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="221"/>
         <source>Watermark</source>
-        <translation type="unfinished"></translation>
+        <translation>水印</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="224"/>
         <source>Render Settings</source>
-        <translation type="unfinished">渲染设置</translation>
+        <translation>渲染设置</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="228"/>
         <source>Video Information</source>
-        <translation type="unfinished"></translation>
+        <translation>视频信息</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="286"/>
         <location filename="../views/record_dock.cpp" line="374"/>
         <source>Stop Render</source>
-        <translation type="unfinished"></translation>
+        <translation>停止渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="291"/>
