@@ -90,8 +90,28 @@ namespace flower
 		this->removeDockWidget(materialDock_.get());
 		this->removeDockWidget(recordDock_.get());
 		this->removeDockWidget(thumbnailDock_.get());
+		this->removeDockWidget(cameraDock_.get());		
+
+		this->setStatusBar(nullptr);
+		this->setCentralWidget(nullptr);
+
+		toplevelDock_.reset();
+		toolDock_.reset();
+		viewDock_.reset();
+		lightDock_.reset();
+		mainLightDock_.reset();
+		environmentDock_.reset();
+		materialDock_.reset();
+		recordDock_.reset();
+		thumbnailDock_.reset();
+		cameraDock_.reset();
+		statusBar_.reset();
 
 		FlowerProfile::save("./config/config.conf", *profile_);
+
+		behaviour_.reset();
+		profile_.reset();
+		gameApp_.reset();
 	}
 
 	void

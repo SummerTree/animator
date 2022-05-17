@@ -1,18 +1,18 @@
-#include "h265_module.h"
+#include "encode_module.h"
 
 namespace flower
 {
-	H265Module::H265Module() noexcept
+	EncodeModule::EncodeModule() noexcept
 	{
 		this->reset();
 	}
 
-	H265Module::~H265Module() noexcept
+	EncodeModule::~EncodeModule() noexcept
 	{
 	}
 
 	void
-	H265Module::setVideoQuality(VideoQuality quality_)
+	EncodeModule::setVideoQuality(VideoQuality quality_)
 	{
 		switch (quality_)
 		{
@@ -31,18 +31,19 @@ namespace flower
 	}
 
 	void
-	H265Module::reset() noexcept
+	EncodeModule::reset() noexcept
 	{
 		this->enable = true;
 
 		this->crf = 15;
+		this->encodeMode = EncodeMode::H265;
 		this->frame_type = 0;
 		this->encode_speed = 0;
 		this->quality = VideoQuality::Medium;
 	}
 
 	void 
-	H265Module::load(octoon::runtime::json& reader) noexcept
+	EncodeModule::load(octoon::runtime::json& reader) noexcept
 	{
 		if (reader.find("crf") != reader.end())
 			this->crf = reader["crf"];
@@ -53,7 +54,7 @@ namespace flower
 	}
 
 	void 
-	H265Module::save(octoon::runtime::json& writer) noexcept
+	EncodeModule::save(octoon::runtime::json& writer) noexcept
 	{
 		writer["crf"] = this->crf;
 		writer["frame_type"] = this->frame_type;

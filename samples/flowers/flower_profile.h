@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "module/h265_module.h"
+#include "module/encode_module.h"
 #include "module/physics_module.h"
 #include "module/player_module.h"
 #include "module/file_module.h"
@@ -39,7 +39,7 @@ namespace flower
 		std::shared_ptr<RecordModule> recordModule;
 		std::shared_ptr<FileModule> fileModule;
 		std::shared_ptr<EntitiesModule> entitiesModule;
-		std::shared_ptr<H265Module> h265Module;
+		std::shared_ptr<EncodeModule> encodeModule;
 		std::shared_ptr<PhysicsModule> physicsModule;
 		std::shared_ptr<PlayerModule> playerModule;
 		std::shared_ptr<OfflineModule> offlineModule;

@@ -137,7 +137,7 @@ namespace flower
 		sppLabel->setStyleSheet("color: rgb(200,200,200);");
 
 		sppSpinbox_ = new SpinBox();
-		sppSpinbox_->setMinimum(0);
+		sppSpinbox_->setMinimum(1);
 		sppSpinbox_->setMaximum(9999);
 		sppSpinbox_->setValue(0);
 		sppSpinbox_->setAlignment(Qt::AlignRight);
@@ -333,7 +333,7 @@ namespace flower
 	{
 		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
-			behaviour->getProfile()->h265Module->crf = value;
+			behaviour->getProfile()->encodeModule->crf = value;
 	}
 
 	void
@@ -369,7 +369,7 @@ namespace flower
 		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
-			behaviour->getProfile()->h265Module->setVideoQuality(quality);
+			behaviour->getProfile()->encodeModule->setVideoQuality(quality);
 
 			if (recordButton_->text() != u8"Í£Ö¹äÖÈ¾")
 			{
@@ -533,7 +533,7 @@ namespace flower
 				speed4_->click();
 
 			sppSpinbox_->setValue(profile->playerModule->spp);
-			crfSpinbox->setValue(profile->h265Module->crf);
+			crfSpinbox->setValue(profile->encodeModule->crf);
 			bouncesSpinbox_->setValue(profile->offlineModule->bounces);
 
 			this->update();

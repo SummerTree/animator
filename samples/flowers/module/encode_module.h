@@ -6,6 +6,12 @@
 
 namespace flower
 {
+	enum EncodeMode
+	{
+		H264,
+		H265
+	};
+
 	enum VideoQuality
 	{
 		Low,
@@ -13,11 +19,11 @@ namespace flower
 		High
 	};
 
-	class H265Module final : public FlowerModule
+	class EncodeModule final : public FlowerModule
 	{
 	public:
-		H265Module() noexcept;
-		virtual ~H265Module() noexcept;
+		EncodeModule() noexcept;
+		virtual ~EncodeModule() noexcept;
 
 		void setVideoQuality(VideoQuality quality);
 
@@ -28,12 +34,13 @@ namespace flower
 		virtual void save(octoon::runtime::json& reader) noexcept override;
 
 	private:
-		H265Module(const H265Module&) = delete;
-		H265Module& operator=(const H265Module&) = delete;
+		EncodeModule(const EncodeModule&) = delete;
+		EncodeModule& operator=(const EncodeModule&) = delete;
 
 	public:
 		bool enable;
 
+		EncodeMode encodeMode;
 		VideoQuality quality;
 
 		double crf;

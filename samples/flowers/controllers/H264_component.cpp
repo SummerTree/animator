@@ -27,6 +27,120 @@ namespace flower
 	void
 	H264Component::onDisable() noexcept
 	{
+		this->close();
+	}
+
+	bool
+	H264Component::create(std::string_view filepath) noexcept(false)
+	{
+		auto& context = this->getContext();
+		this->width_ = context->profile->recordModule->width;
+		this->height_ = context->profile->recordModule->height;
+		this->buf_ = std::make_unique<std::uint8_t[]>(this->width_ * this->height_ * 3);
+		this->filepath_ = filepath;
+		this->ostream_ = std::make_shared<std::ofstream>(this->filepath_ + ".tmp", std::ios_base::binary);
+		if (!this->ostream_->good())
+			throw std::runtime_error("ofstream() failed");
+
+		x264_param_t encode_param_;
+		x264_param_default(&encode_param_);
+		x264_param_default_preset(&encode_param_, "fast", "zerolatency");
+		x264_param_apply_profile(&encode_param_, "baseline");
+
+		encode_param_.b_repeat_headers = 1;
+		encode_param_.b_cabac = 1;
+		encode_param_.b_sliced_threads = 0;
+
+		encode_param_.i_frame_reference = 6;
+		encode_param_.i_bframe = 6;
+		encode_param_.i_keyint_min = 1;
+		encode_param_.i_keyint_max = std::numeric_limits<int>::infinity();
+		encode_param_.i_scenecut_threshold = 60;
+		encode_param_.i_deblocking_filter_alphac0 = 1;
+		encode_param_.i_deblocking_filter_beta = 1;
+		encode_param_.i_level_idc = 40;
+		encode_param_.i_log_level = X264_LOG_NONE;
+		encode_param_.i_width = this->width_;
+		encode_param_.i_height = this->height_;
+		encode_param_.i_threads = 1;
+		encode_param_.i_fps_num = context->profile->playerModule->recordFps;
+		encode_param_.i_fps_den = 1;
+		encode_param_.analyse.b_psnr = 1;
+		encode_param_.analyse.f_psy_rd = 0.3;
+
+		encode_param_.rc.i_rc_method = X264_RC_CRF;
+		encode_param_.rc.i_aq_mode = X264_AQ_AUTOVARIANCE;
+		encode_param_.rc.f_aq_strength = 0.8;
+		encode_param_.rc.f_qcompress = 0.5f;
+		encode_param_.rc.f_rf_constant = 10;
+		encode_param_.rc.f_rf_constant_max = this->getModel()->crf;
+		encode_param_.rc.f_rate_tolerance = 1.f;
+
+		if ((encoder_ = x264_encoder_open(&encode_param_)) == NULL)
+			return false;
+
+		encoded_frame_ = new x264_picture_t;
+		frame_ = new x264_picture_t;
+
+		x264_picture_init(encoded_frame_);
+		x264_picture_alloc(frame_, X264_CSP_I420, this->width_, this->height_);
+
+		return this->ostream_->good();
+	}
+
+	void
+	H264Component::write(const octoon::math::Vector3* data) noexcept(false)
+	{
+		if (ostream_)
+		{
+			this->convert((float*)data, this->width_, this->height_, this->buf_.get());
+
+			std::uint8_t* yuv[3];
+			yuv[0] = this->buf_.get();
+			yuv[1] = this->buf_.get() + this->width_ * this->height_;
+			yuv[2] = this->buf_.get() + this->width_ * this->height_ * 5 / 4;
+
+			int y_size = this->width_ * this->height_;
+			memcpy(frame_->img.plane[0] + 0, yuv[0], y_size);
+			memcpy(frame_->img.plane[0] + y_size, yuv[1], y_size / 4);
+			memcpy(frame_->img.plane[0] + y_size * 5 / 4, yuv[2], y_size / 4);
+
+			int iFrameSize = 0;
+			int iNal = 0;
+			x264_nal_t* pNals = NULL;
+
+			int frame_size = x264_encoder_encode(encoder_, &pNals, &iNal, frame_, encoded_frame_);
+			if (frame_size > 0 && iNal > 0)
+			{
+				for (int i = 0; i < iNal; ++i)
+				{
+					std::int32_t i_num_nal_h = 0;
+
+					if (pNals[i].i_payload > 4)
+					{
+						while (i_num_nal_h < 5 && pNals[i].p_payload[i_num_nal_h] == 0)
+							i_num_nal_h++;
+
+						static char nal_head_s[3] = { 0, 0, 0 };
+
+						if (i_num_nal_h < 3)
+						{
+							ostream_->write(nal_head_s, 3 - i_num_nal_h);
+							iFrameSize += (3 - i_num_nal_h);
+						}
+					}
+
+					ostream_->write((char*)pNals[i].p_payload, pNals[i].i_payload);
+
+					iFrameSize += pNals[i].i_payload;
+				}
+			}
+		}
+	}
+
+	void
+	H264Component::close() noexcept
+	{
 		if (this->ostream_)
 		{
 			int iFrameSize = 0;
@@ -170,114 +284,6 @@ namespace flower
 					}
 
 					avformat_free_context(oformat);
-				}
-			}
-		}
-	}
-
-	bool
-	H264Component::record(std::string_view filepath) noexcept(false)
-	{
-		auto& context = this->getContext();
-		this->width_ = context->profile->recordModule->width;
-		this->height_ = context->profile->recordModule->height;
-		this->buf_ = std::make_unique<std::uint8_t[]>(this->width_ * this->height_ * 3);
-		this->filepath_ = filepath;
-		this->ostream_ = std::make_shared<std::ofstream>(this->filepath_ + ".tmp", std::ios_base::binary);
-		if (!this->ostream_->good())
-			throw std::runtime_error("ofstream() failed");
-
-		x264_param_t encode_param_;
-		x264_param_default(&encode_param_);
-		x264_param_default_preset(&encode_param_, "fast", "zerolatency");
-		x264_param_apply_profile(&encode_param_, "baseline");
-
-		encode_param_.b_repeat_headers = 1;
-		encode_param_.b_cabac = 1;
-		encode_param_.b_sliced_threads = 0;
-
-		encode_param_.i_frame_reference = 6;
-		encode_param_.i_bframe = 6;
-		encode_param_.i_keyint_min = 1;
-		encode_param_.i_keyint_max = std::numeric_limits<int>::infinity();
-		encode_param_.i_scenecut_threshold = 60;
-		encode_param_.i_deblocking_filter_alphac0 = 1;
-		encode_param_.i_deblocking_filter_beta = 1;
-		encode_param_.i_level_idc = 40;
-		encode_param_.i_log_level = X264_LOG_NONE;
-		encode_param_.i_width = this->width_;
-		encode_param_.i_height = this->height_;
-		encode_param_.i_threads = 1;
-		encode_param_.i_fps_num = context->profile->playerModule->recordFps;
-		encode_param_.i_fps_den = 1;
-		encode_param_.analyse.b_psnr = 1;
-		encode_param_.analyse.f_psy_rd = 0.3;
-
-		encode_param_.rc.i_rc_method = X264_RC_CRF;
-		encode_param_.rc.i_aq_mode = X264_AQ_AUTOVARIANCE;
-		encode_param_.rc.f_aq_strength = 0.8;
-		encode_param_.rc.f_qcompress = 0.5f;
-		encode_param_.rc.f_rf_constant = 10;
-		encode_param_.rc.f_rf_constant_max = this->getModel()->crf;
-		encode_param_.rc.f_rate_tolerance = 1.f;
-
-		if ((encoder_ = x264_encoder_open(&encode_param_)) == NULL)
-			return false;
-
-		encoded_frame_ = new x264_picture_t;
-		frame_ = new x264_picture_t;
-
-		x264_picture_init(encoded_frame_);
-		x264_picture_alloc(frame_, X264_CSP_I420, this->width_, this->height_);
-
-		return this->ostream_->good();
-	}
-
-	void
-	H264Component::write(const octoon::math::Vector3* data) noexcept(false)
-	{
-		if (ostream_)
-		{
-			this->convert((float*)data, this->width_, this->height_, this->buf_.get());
-
-			std::uint8_t* yuv[3];
-			yuv[0] = this->buf_.get();
-			yuv[1] = this->buf_.get() + this->width_ * this->height_;
-			yuv[2] = this->buf_.get() + this->width_ * this->height_ * 5 / 4;
-
-			int y_size = this->width_ * this->height_;
-			memcpy(frame_->img.plane[0] + 0, yuv[0], y_size);
-			memcpy(frame_->img.plane[0] + y_size, yuv[1], y_size / 4);
-			memcpy(frame_->img.plane[0] + y_size * 5 / 4, yuv[2], y_size / 4);
-
-			int iFrameSize = 0;
-			int iNal = 0;
-			x264_nal_t* pNals = NULL;
-
-			int frame_size = x264_encoder_encode(encoder_, &pNals, &iNal, frame_, encoded_frame_);
-			if (frame_size > 0 && iNal > 0)
-			{
-				for (int i = 0; i < iNal; ++i)
-				{
-					std::int32_t i_num_nal_h = 0;
-
-					if (pNals[i].i_payload > 4)
-					{
-						while (i_num_nal_h < 5 && pNals[i].p_payload[i_num_nal_h] == 0)
-							i_num_nal_h++;
-
-						static char nal_head_s[3] = { 0, 0, 0 };
-
-						if (i_num_nal_h < 3)
-						{
-							ostream_->write(nal_head_s, 3 - i_num_nal_h);
-							iFrameSize += (3 - i_num_nal_h);
-						}
-					}
-
-					ostream_->write((char*)pNals[i].p_payload, pNals[i].i_payload);
-
-					iFrameSize += pNals[i].i_payload;
 				}
 			}
 		}

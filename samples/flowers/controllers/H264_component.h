@@ -1,7 +1,7 @@
 #ifndef FLOWER_H264_COMPONENT_H_
 #define FLOWER_H264_COMPONENT_H_
 
-#include "module/h265_module.h"
+#include "module/encode_module.h"
 #include "flower_component.h"
 #include <octoon/math/vector3.h>
 
@@ -10,13 +10,14 @@ struct x264_picture_t;
 
 namespace flower
 {
-	class H264Component final : public RabbitComponent<H265Module>
+	class H264Component final : public RabbitComponent<EncodeModule>
 	{
 	public:
 		H264Component() noexcept;
 
-		bool record(std::string_view filepath) noexcept(false);
+		bool create(std::string_view filepath) noexcept(false);
 		void write(const octoon::math::Vector3* data) noexcept(false);
+		void close() noexcept;
 
 		virtual const std::type_info& type_info() const noexcept
 		{
