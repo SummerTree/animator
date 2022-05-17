@@ -122,7 +122,7 @@ namespace flower
 		end_->setMaximum(99999);
 
 		bouncesLabel_ = new QLabel();
-		bouncesLabel_->setText(u8"每像素光线递归深度:");
+		bouncesLabel_->setText(u8"每像素光线弹射次数:");
 		bouncesLabel_->setStyleSheet("color: rgb(200,200,200);");
 
 		bouncesSpinbox_ = new SpinBox();
@@ -543,7 +543,7 @@ namespace flower
 
 			sppSpinbox_->setValue(profile->playerModule->spp);
 			crfSpinbox->setValue(profile->h265Module->crf);
-			bouncesSpinbox_->setValue(behaviour->getComponent<OfflineComponent>()->getMaxBounces());
+			bouncesSpinbox_->setValue(profile->offlineModule->bounces);
 
 			this->update();
 		}

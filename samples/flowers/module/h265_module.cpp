@@ -33,7 +33,7 @@ namespace flower
 	void
 	H265Module::reset() noexcept
 	{
-		this->enable = false;
+		this->enable = true;
 
 		this->crf = 15;
 		this->frame_type = 0;
