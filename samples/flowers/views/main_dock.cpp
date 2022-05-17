@@ -3,6 +3,8 @@
 #include <qdockwidget.h>
 #include <qmessagebox.h>
 
+#include "spdlog/spdlog.h"
+
 namespace flower
 {
 	MainDock::MainDock(SplashScreen* splash) noexcept
@@ -75,6 +77,8 @@ namespace flower
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::cameraSignal, this, &MainDock::onCameraSignal);
 
 		timer.start();
+
+		spdlog::debug("create main dock");
 	}
 
 	MainDock::~MainDock() noexcept
@@ -112,6 +116,8 @@ namespace flower
 		behaviour_.reset();
 		profile_.reset();
 		gameApp_.reset();
+
+		spdlog::debug("Delete main dock");
 	}
 
 	void
@@ -194,6 +200,8 @@ namespace flower
 			msg.setStandardButtons(QMessageBox::Ok);
 
 			msg.exec();
+
+			spdlog::error("Function onRecordSignal raised exception: " + std::string(e.what()));
 		}
 	}
 

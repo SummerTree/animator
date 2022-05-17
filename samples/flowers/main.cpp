@@ -23,11 +23,11 @@ std::shared_ptr<spdlog::logger> create_logger()
 	{
 		auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 		console_sink->set_level(spdlog::level::warn);
-		console_sink->set_pattern("[%H:%M:%S %z] [%n] [%^---%L---%$] [thread %t] %v");
+		console_sink->set_pattern("[%H:%M:%S %z] [%l] [%n] [%^---%L---%$] [thread %t] %v");
 
 		auto file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>("logs/log.txt", 2, 30);
 		file_sink->set_level(spdlog::level::trace);
-		file_sink->set_pattern("[%H:%M:%S %z] [%n] [%^---%L---%$] [thread %t] %v");
+		file_sink->set_pattern("[%H:%M:%S %z] [%l] [%n] [%^---%L---%$] [thread %t] %v");
 
 		std::shared_ptr<spdlog::logger> logger(new spdlog::logger("flowers_logger", { console_sink, file_sink }));
 		logger->set_level(spdlog::level::trace);
@@ -43,7 +43,8 @@ std::shared_ptr<spdlog::logger> create_logger()
 int main(int argc, char *argv[])
 {
 	auto logger = create_logger();
-	logger->info("Application started");
+	spdlog::set_default_logger(logger);
+	spdlog::info("Application started");
 
 #ifdef _WINDOWS_
 	::SetConsoleOutputCP(CP_UTF8);
@@ -63,7 +64,7 @@ int main(int argc, char *argv[])
 		// Load translation files
 		QString local = QLocale::languageToString(QLocale::system().language());
 
-		logger->info("Current machine locale: " + local.toStdString());
+		spdlog::info("Current machine locale: " + local.toStdString());
 
 		QTranslator qtTranslator;
 		if (local == "Chinese")
@@ -89,8 +90,8 @@ int main(int argc, char *argv[])
 	else
 	{
 		qWarning("Can't open the style sheet file.");
-		logger->error("Can't open the style sheet file.");
+		spdlog::error("Can't open the style sheet file.");
 	}
-	logger->info("Application exited");
+	spdlog::info("Application exited");
 	return 0;
 }
