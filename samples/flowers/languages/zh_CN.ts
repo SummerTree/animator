@@ -48,13 +48,33 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="96"/>
-        <source>aperture</source>
-        <translation>光圈</translation>
+        <source>aperture:</source>
+        <translation>光圈：</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="110"/>
-        <source>focalPoint</source>
-        <translation>焦点</translation>
+        <source>focalPoint:</source>
+        <translation>焦点：</translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="123"/>
+        <location filename="../views/camera_dock.cpp" line="188"/>
+        <location filename="../views/camera_dock.cpp" line="213"/>
+        <location filename="../views/camera_dock.cpp" line="249"/>
+        <source>Target: Empty</source>
+        <translation>目标：无</translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="180"/>
+        <location filename="../views/camera_dock.cpp" line="245"/>
+        <source>Target: %1</source>
+        <translation>目标: %1</translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="182"/>
+        <location filename="../views/camera_dock.cpp" line="239"/>
+        <source>Auto-measuring</source>
+        <translation>自动测量</translation>
     </message>
 </context>
 <context>

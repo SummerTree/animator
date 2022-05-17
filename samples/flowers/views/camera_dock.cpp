@@ -93,7 +93,7 @@ namespace flower
 		dofInfoLabel_->setStyleSheet("color: rgb(100,100,100);");
 
 		apertureLabel_ = new QLabel();
-		apertureLabel_->setText(tr("aperture"));
+		apertureLabel_->setText(tr("aperture:"));
 		apertureLabel_->setStyleSheet("color: rgb(200,200,200);");
 
 		apertureSpinbox_ = new DoubleSpinBox();
@@ -107,7 +107,7 @@ namespace flower
 		apertureSpinbox_->setDecimals(1);
 
 		focalDistanceLabel_ = new QLabel();
-		focalDistanceLabel_->setText(tr("focalPoint"));
+		focalDistanceLabel_->setText(tr("focalPoint:"));
 		focalDistanceLabel_->setStyleSheet("color: rgb(200,200,200);");
 
 		focalDistanceSpinbox_ = new DoubleSpinBox();
@@ -120,7 +120,7 @@ namespace flower
 		focalDistanceSpinbox_->setFixedWidth(100);
 
 		focalDistanceName_ = new QLabel();
-		focalDistanceName_->setText(u8"目标：无");
+		focalDistanceName_->setText(tr("Target: Empty"));
 		focalDistanceName_->setStyleSheet("color: rgb(200,200,200);");
 
 		focalTargetButton_ = new FocalTargetWindow();
@@ -177,15 +177,15 @@ namespace flower
 				auto renderer = object->getComponent<octoon::MeshRendererComponent>();
 				auto material = renderer->getMaterial(profile_->playerModule->dofTarget->mesh);
 
-				focalDistanceName_->setText(QString::fromStdString(u8"目标：" + material->getName()));
+				focalDistanceName_->setText(tr("Target: %1").arg(material->getName().c_str()));
 				focalDistanceSpinbox_->setValue(0);
-				focalDistanceSpinbox_->setSpecialValueText(u8"自动测距");
+				focalDistanceSpinbox_->setSpecialValueText(tr("Auto-measuring"));
 			}
 			else
 			{
 				profile_->playerModule->dofTarget = hit;
 
-				focalDistanceName_->setText(QString::fromStdString(u8"目标：无"));
+				focalDistanceName_->setText(tr("Target: Empty"));
 				focalDistanceSpinbox_->setValue(10);
 				focalDistanceSpinbox_->setSpecialValueText(QString());
 			}
@@ -210,6 +210,7 @@ namespace flower
 			{
 				profile_->playerModule->dofTarget = std::nullopt;
 
+				focalDistanceName_->setText(tr("Target: Empty"));
 				focalDistanceSpinbox_->setSpecialValueText(QString());
 				focalDistanceSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
 			}
@@ -235,17 +236,17 @@ namespace flower
 			if (profile_->playerModule->dofTarget)
 			{
 				focalDistanceSpinbox_->setValue(0);
-				focalDistanceSpinbox_->setSpecialValueText(u8"自动测距");
+				focalDistanceSpinbox_->setSpecialValueText(tr("Auto-measuring"));
 
 				auto object = profile_->playerModule->dofTarget->object.lock();
 				auto renderer = object->getComponent<octoon::MeshRendererComponent>();
 				auto material = renderer->getMaterial(profile_->playerModule->dofTarget->mesh);
 
-				focalDistanceName_->setText(QString::fromStdString(u8"目标：" + material->getName()));
+				focalDistanceName_->setText(tr("Target: %1").arg(material->getName().c_str()));
 			}
 			else
 			{
-				focalDistanceName_->setText(QString::fromStdString(u8"目标：无"));
+				focalDistanceName_->setText(tr("Target: Empty"));
 				focalDistanceSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
 			}
 		}
