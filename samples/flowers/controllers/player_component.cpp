@@ -430,12 +430,7 @@ namespace flower
 					auto& aabb = mesh->getBoundingBox(model->dofTarget->mesh);
 					auto center = hitObject->getComponent<octoon::TransformComponent>()->getTransform() * aabb.center();
 
-					octoon::Raycaster raycaster(octoon::math::Raycast(cameraPos, octoon::math::normalize(center - cameraPos)));
-					auto& intersects = raycaster.intersectObjects(this->getContext()->profile->entitiesModule->objects);
-					if (!intersects.empty())
-						filmCamera->setFocalDistance(intersects[0].distance);
-					else
-						filmCamera->setFocalDistance(octoon::math::distance(center, cameraPos));
+					filmCamera->setFocalDistance(octoon::math::distance(center, cameraPos));
 				}
 			}
 		}

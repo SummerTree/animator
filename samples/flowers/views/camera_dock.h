@@ -29,6 +29,9 @@ namespace flower
 		void mouseMoveEvent(QMouseEvent* event) override;
 		void mousePressEvent(QMouseEvent* event) override;
 
+	Q_SIGNALS:
+		void mouseMoveSignal();
+
 	private:
 		QPoint startPos;
 	};
@@ -40,13 +43,12 @@ namespace flower
 		CameraDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
 		~CameraDock() noexcept;
 
-		void updateTarget();
-
 		void showEvent(QShowEvent* event) override;
 
 	private Q_SLOTS:
 		void onApertureChanged(double);
 		void onFocalDistanceChanged(double);
+		void updateTarget();
 
 	public:
 		QLabel* dofInfoLabel_;

@@ -12,17 +12,17 @@
 <context>
     <name>flower::CameraDock</name>
     <message>
-        <location filename="../views/camera_dock.cpp" line="87"/>
+        <location filename="../views/camera_dock.cpp" line="89"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="94"/>
+        <location filename="../views/camera_dock.cpp" line="96"/>
         <source>aperture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="108"/>
+        <location filename="../views/camera_dock.cpp" line="110"/>
         <source>focalDistance</source>
         <translation type="unfinished"></translation>
     </message>

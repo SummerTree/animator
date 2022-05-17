@@ -55,12 +55,12 @@ namespace flower
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
+		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
 		layout->addWidget(recordButton_, 0, Qt::AlignCenter);
 		layout->addWidget(materialButton_, 0, Qt::AlignCenter);
 		layout->addWidget(lightButton_, 0, Qt::AlignCenter);
 		layout->addWidget(sunButton_, 0, Qt::AlignCenter);
 		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
-		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 
 		auto contentWidget = new QWidget;
@@ -83,7 +83,7 @@ namespace flower
 		this->setWidget(mainWidget);
 
 		lightButton_->hide();
-		cameraButton_->hide();
+		//cameraButton_->hide();
 
 		this->connect(recordButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
 		this->connect(lightButton_, SIGNAL(clicked()), this, SLOT(lightEvent()));

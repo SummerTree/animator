@@ -64,6 +64,8 @@ namespace flower
 				drag->setPixmap(QPixmap(":res/icons/target.png"));
 				drag->setHotSpot(QPoint(drag->pixmap().width() / 2, drag->pixmap().height() / 2));
 				drag->exec(Qt::MoveAction);
+
+				emit mouseMoveSignal();
 			}
 		}
 
@@ -96,8 +98,8 @@ namespace flower
 
 		apertureSpinbox_ = new DoubleSpinBox();
 		apertureSpinbox_->setMinimum(0);
-		apertureSpinbox_->setMaximum(64.0);
-		apertureSpinbox_->setValue(2.0f);
+		apertureSpinbox_->setMaximum(32.0);
+		apertureSpinbox_->setValue(0.0f);
 		apertureSpinbox_->setSingleStep(0.1f);
 		apertureSpinbox_->setAlignment(Qt::AlignRight);
 		apertureSpinbox_->setFixedWidth(100);
@@ -105,7 +107,7 @@ namespace flower
 		apertureSpinbox_->setDecimals(1);
 
 		focalDistanceLabel_ = new QLabel();
-		focalDistanceLabel_->setText(tr("focalDistance"));
+		focalDistanceLabel_->setText(tr("focalPoint"));
 		focalDistanceLabel_->setStyleSheet("color: rgb(200,200,200);");
 
 		focalDistanceSpinbox_ = new DoubleSpinBox();
@@ -152,6 +154,7 @@ namespace flower
 
 		this->setWidget(mainWidget_);
 		
+		connect(focalTargetButton_, SIGNAL(mouseMoveSignal()), this, SLOT(updateTarget()));
 		connect(apertureSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onApertureChanged(double)));
 		connect(focalDistanceSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFocalDistanceChanged(double)));
 	}
@@ -163,37 +166,37 @@ namespace flower
 	void
 	CameraDock::updateTarget()
 	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
+		auto hit = profile_->dragModule->selectedItemHover_;
+		if (hit)
 		{
-			auto hit = behaviour->getProfile()->dragModule->selectedItemHover_;
-			if (hit)
-			{
-				behaviour->getProfile()->playerModule->dofTarget = hit;
+			profile_->playerModule->dofTarget = hit;
 
-				auto object = hit->object.lock();
-				auto renderer = object->getComponent<octoon::MeshRendererComponent>();
-				auto& materials = renderer->getMaterials();
+			auto object = hit->object.lock();
+			auto renderer = object->getComponent<octoon::MeshRendererComponent>();
+			auto& materials = renderer->getMaterials();
 
-				focalDistanceName_->setText(QString::fromStdString(u8"目标：" + materials[hit->mesh]->getName()));
-				focalDistanceSpinbox_->setValue(0);
-				focalDistanceSpinbox_->setSpecialValueText(u8"自动测距");
-			}
-			else
-			{
-				focalDistanceName_->setText(QString::fromStdString(u8"目标：无"));
-				focalDistanceSpinbox_->setValue(10);
-				focalDistanceSpinbox_->setSpecialValueText(QString());
-			}
+			focalDistanceName_->setText(QString::fromStdString(u8"目标：" + materials[hit->mesh]->getName()));
+			focalDistanceSpinbox_->setValue(0);
+			focalDistanceSpinbox_->setSpecialValueText(u8"自动测距");
+		}
+		else
+		{
+			focalDistanceName_->setText(QString::fromStdString(u8"目标：无"));
+			focalDistanceSpinbox_->setValue(10);
+			focalDistanceSpinbox_->setSpecialValueText(QString());
 		}
 	}
 
 	void
 	CameraDock::onApertureChanged(double value)
 	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
-			behaviour->getProfile()->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setAperture(value);
+		if (profile_->entitiesModule->camera)
+		{
+			if (value == 32.f)
+				profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setAperture(0.0f);
+			else
+				profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setAperture(1.0f / value);
+		}
 	}
 
 	void
@@ -201,11 +204,12 @@ namespace flower
 	{
 		if (!focalDistanceSpinbox_->specialValueText().isEmpty())
 		{
+			profile_->playerModule->dofTarget = std::nullopt;
 			focalDistanceSpinbox_->setSpecialValueText(QString());
 
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
-				focalDistanceSpinbox_->setValue(behaviour->getProfile()->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
+				focalDistanceSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
 		}
 		else
 		{
@@ -218,6 +222,15 @@ namespace flower
 	void
 	CameraDock::showEvent(QShowEvent* event)
 	{
+		if (profile_->entitiesModule->camera)
+		{
+			float aperture = profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getAperture();
+			if (aperture == 0.0f)
+				apertureSpinbox_->setValue(32.0f);
+			else
+				apertureSpinbox_->setValue(1.0f / aperture);
+		}
+
 		this->repaint();
 	}
 }
