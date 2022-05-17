@@ -163,7 +163,7 @@ namespace flower
 		spoilerLayout->addWidget(this->horizontalRotationSlider);
 		spoilerLayout->addLayout(verticalRotationLayout);
 		spoilerLayout->addWidget(this->verticalRotationSlider);
-		spoilerLayout->setContentsMargins(20, 0, 0, 0);
+		spoilerLayout->setContentsMargins(20, 0, 20, 0);
 
 		this->spoiler = new Spoiler(tr("Attribute"));
 		this->spoiler->setContentLayout(*spoilerLayout);
@@ -180,7 +180,7 @@ namespace flower
 		mainLayout->addWidget(spoiler);
 		mainLayout->addStretch();
 		mainLayout->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout->setContentsMargins(10, 10, 30, 10);
+		mainLayout->setContentsMargins(10, 10, 10, 10);
 
 		auto mainWidget = new QWidget();
 		mainWidget->setLayout(mainLayout);
