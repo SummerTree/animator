@@ -147,7 +147,7 @@ namespace flower
 		mainLayout_->addLayout(focalDistanceLayout);
 		mainLayout_->addLayout(focalTargetLayout);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(0, 0, 0, 0);
+		mainLayout_->setContentsMargins(20, 0, 20, 0);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setLayout(mainLayout_);
