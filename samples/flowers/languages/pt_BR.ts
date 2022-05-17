@@ -23,7 +23,7 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="110"/>
-        <source>focalDistance</source>
+        <source>focalPoint</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
