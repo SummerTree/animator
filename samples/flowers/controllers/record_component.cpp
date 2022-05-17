@@ -255,11 +255,20 @@ namespace flower
 		this->colorBuffer_.resize(model->width * model->height);
 		this->denoiseBuffer_.resize(model->width * model->height);
 
-		if (profile->h265Module->enable)
+		if (profile->encodeModule->enable)
 		{
-			auto h265 = this->getComponent<H265Component>();
-			if (!h265->create(filepath))
-				return false;
+			if (profile->encodeModule->encodeMode == EncodeMode::H264)
+			{
+				auto h264 = this->getComponent<H264Component>();
+				if (!h264->create(filepath))
+					return false;
+			}
+			else if (profile->encodeModule->encodeMode == EncodeMode::H265)
+			{
+				auto h265 = this->getComponent<H265Component>();
+				if (!h265->create(filepath))
+					return false;
+			}
 		}
 
 		this->setupDenoise();
@@ -280,9 +289,21 @@ namespace flower
 
 		this->removeMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
 
-		auto h265 = this->getComponent<H265Component>();
-		if (h265)
-			h265->close();
+		if (profile->encodeModule->enable)
+		{
+			if (profile->encodeModule->encodeMode == EncodeMode::H264)
+			{
+				auto h264 = this->getComponent<H265Component>();
+				if (h264)
+					h264->close();
+			}
+			else if (profile->encodeModule->encodeMode == EncodeMode::H265)
+			{
+				auto h265 = this->getComponent<H265Component>();
+				if (h265)
+					h265->close();
+			}
+		}
 
 		this->shutdownDenoise();
 	}
@@ -293,12 +314,20 @@ namespace flower
 		auto& model = this->getModel();
 		auto& profile = this->getContext()->profile;
 
-		if (profile->h265Module->enable)
+		if (profile->encodeModule->enable)
 		{
 			this->captureImage();
 
-			auto h265 = this->getComponent<H265Component>();
-			h265->write(this->denoiseBuffer_.data());
+			if (profile->encodeModule->encodeMode == EncodeMode::H264)
+			{
+				auto h264 = this->getComponent<H264Component>();
+				h264->write(this->denoiseBuffer_.data());
+			}
+			else if (profile->encodeModule->encodeMode == EncodeMode::H265)
+			{
+				auto h265 = this->getComponent<H265Component>();
+				h265->write(this->denoiseBuffer_.data());
+			}
 		}
 	}
 }

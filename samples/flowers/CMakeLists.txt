@@ -35,8 +35,8 @@ SET(MODULES_LIST
 	${SOURCE_PATH}/module/entities_module.cpp
 	${SOURCE_PATH}/module/offline_module.h
 	${SOURCE_PATH}/module/offline_module.cpp
-	${SOURCE_PATH}/module/h265_module.h
-	${SOURCE_PATH}/module/h265_module.cpp
+	${SOURCE_PATH}/module/encode_module.h
+	${SOURCE_PATH}/module/encode_module.cpp
 	${SOURCE_PATH}/module/physics_module.h
 	${SOURCE_PATH}/module/physics_module.cpp
 	${SOURCE_PATH}/module/player_module.h

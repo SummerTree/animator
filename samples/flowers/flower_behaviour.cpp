@@ -88,6 +88,7 @@ namespace flower
 		entitiesComponent_ = std::make_unique<EntitiesComponent>();
 		offlineComponent_ = std::make_unique<OfflineComponent>();
 		playerComponent_ = std::make_unique<PlayerComponent>();
+		h264Component_ = std::make_unique<H264Component>();
 		h265Component_ = std::make_unique<H265Component>();
 		uiComponent_ = std::make_unique<UIComponent>();
 		markComponent_ = std::make_unique<MarkComponent>();
@@ -101,7 +102,8 @@ namespace flower
 		entitiesComponent_->init(context_, profile_->entitiesModule);
 		offlineComponent_->init(context_, profile_->offlineModule);
 		playerComponent_->init(context_, profile_->playerModule);
-		h265Component_->init(context_, profile_->h265Module);
+		h264Component_->init(context_, profile_->encodeModule);
+		h265Component_->init(context_, profile_->encodeModule);
 		uiComponent_->init(context_, profile_->recordModule);
 		markComponent_->init(context_, profile_->markModule);
 		materialComponent_->init(context_, profile_->materialModule);
@@ -109,8 +111,6 @@ namespace flower
 		dragComponent_->init(context_, profile_->dragModule);
 		gridComponent_->init(context_, profile_->gridModule);
 		lightComponent_->init(context_, profile_->entitiesModule);
-
-		this->h265Component_->setActive(true);
 
 		this->addComponent(entitiesComponent_.get());
 		this->addComponent(offlineComponent_.get());
@@ -123,6 +123,7 @@ namespace flower
 		this->addComponent(gridComponent_.get());
 		this->addComponent(lightComponent_.get());
 		this->addComponent(recordComponent_.get());
+		this->addComponent(h264Component_.get());
 		this->addComponent(h265Component_.get());
 
 		this->initializeComponents();
@@ -155,6 +156,7 @@ namespace flower
 		entitiesComponent_.reset();
 		offlineComponent_.reset();
 		playerComponent_.reset();
+		h264Component_.reset();
 		h265Component_.reset();
 		context_.reset();
 		profile_.reset();
@@ -383,7 +385,7 @@ namespace flower
 	{
 		try
 		{
-			this->offlineComponent_->setActive(profile_->h265Module->quality == VideoQuality::High);
+			this->offlineComponent_->setActive(profile_->encodeModule->quality == VideoQuality::High);
 			this->playerComponent_->render();
 
 			this->recordComponent_->startRecord(filepath);

@@ -179,12 +179,6 @@ namespace flower
 							meshRenderer->setMaterial(material, hit.mesh);
 					}
 				}
-
-				auto dofData = event->mimeData()->data("object/dof");
-				if (!dofData.isEmpty())
-				{
-					// recordWindow_->updateTarget();
-				}
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 #ifndef FLOWER_H265_COMPONENT_H_
 #define FLOWER_H265_COMPONENT_H_
 
-#include "module/h265_module.h"
+#include "module/encode_module.h"
 #include "flower_component.h"
 #include <octoon/math/vector3.h>
 
@@ -11,7 +11,7 @@ struct x265_picture;
 
 namespace flower
 {
-	class H265Component final : public RabbitComponent<H265Module>
+	class H265Component final : public RabbitComponent<EncodeModule>
 	{
 	public:
 		H265Component() noexcept;

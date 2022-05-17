@@ -7,7 +7,7 @@ namespace flower
 {
 	FlowerProfile::FlowerProfile() noexcept
 		: physicsModule(std::make_shared<PhysicsModule>())
-		, h265Module(std::make_shared<H265Module>())
+		, encodeModule(std::make_shared<EncodeModule>())
 		, playerModule(std::make_shared<PlayerModule>())
 		, fileModule(std::make_shared<FileModule>())
 		, entitiesModule(std::make_shared<EntitiesModule>())
@@ -31,7 +31,7 @@ namespace flower
 		{
 			auto json = octoon::runtime::json::parse(stream);
 			this->physicsModule->load(json["physics"]);
-			this->h265Module->load(json["h265"]);
+			this->encodeModule->load(json["h265"]);
 			this->playerModule->load(json["time"]);
 			this->fileModule->load(json["file"]);
 			this->entitiesModule->load(json["entities"]);
@@ -65,7 +65,7 @@ namespace flower
 		{
 			octoon::runtime::json json;
 			profile.physicsModule->save(json["physics"]);
-			profile.h265Module->save(json["h265"]);
+			profile.encodeModule->save(json["h265"]);
 			profile.playerModule->save(json["time"]);
 			profile.fileModule->save(json["file"]);
 			profile.entitiesModule->save(json["entities"]);
