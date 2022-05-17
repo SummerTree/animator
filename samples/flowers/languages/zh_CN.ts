@@ -666,7 +666,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="153"/>
         <source>Constant Rate Factor (CRF):</source>
-        <translation>固定码率系数(CRF)</translation>
+        <translation>固定码率系数(CRF):</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="166"/>
