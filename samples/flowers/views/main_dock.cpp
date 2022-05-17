@@ -66,23 +66,25 @@ namespace flower
 		recordDock_->hide();
 		cameraDock_->hide();
 
-		this->connect(&timer, SIGNAL(timeout()), this, SLOT(updateEvent()));
+		this->connect(&timer, &QTimer::timeout, this, &MainDock::update);
+		this->connect(thumbnailDock_.get(), &ThumbnailDock::sunSignal, this, &MainDock::onSunSignal);
+		this->connect(thumbnailDock_.get(), &ThumbnailDock::lightSignal, this, &MainDock::onLightSignal);
+		this->connect(thumbnailDock_.get(), &ThumbnailDock::recordSignal, this, &MainDock::onRecordSignal);
+		this->connect(thumbnailDock_.get(), &ThumbnailDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
+		this->connect(thumbnailDock_.get(), &ThumbnailDock::materialSignal, this, &MainDock::onMaterialSignal);
+		this->connect(thumbnailDock_.get(), &ThumbnailDock::cameraSignal, this, &MainDock::onCameraSignal);
 
 		timer.start();
-
-		connect(thumbnailDock_.get(), &ThumbnailDock::sunSignal, this, &MainDock::onSunSignal);
-		connect(thumbnailDock_.get(), &ThumbnailDock::lightSignal, this, &MainDock::onLightSignal);
-		connect(thumbnailDock_.get(), &ThumbnailDock::recordSignal, this, &MainDock::onRecordSignal);
-		connect(thumbnailDock_.get(), &ThumbnailDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
-		connect(thumbnailDock_.get(), &ThumbnailDock::materialSignal, this, &MainDock::onMaterialSignal);
-		connect(thumbnailDock_.get(), &ThumbnailDock::cameraSignal, this, &MainDock::onCameraSignal);
 	}
 
 	MainDock::~MainDock() noexcept
 	{
+		timer.stop();
+
 		this->removeToolBar(toplevelDock_.get());
 		this->removeDockWidget(toolDock_.get());
 		this->removeDockWidget(viewDock_.get());
+		this->removeDockWidget(lightDock_.get());
 		this->removeDockWidget(mainLightDock_.get());
 		this->removeDockWidget(environmentDock_.get());
 		this->removeDockWidget(materialDock_.get());
@@ -90,16 +92,6 @@ namespace flower
 		this->removeDockWidget(thumbnailDock_.get());
 
 		FlowerProfile::save("./config/config.conf", *profile_);
-	}
-
-	void 
-	MainDock::paintEvent(QPaintEvent* e) noexcept
-	{
-	}
-
-	void 
-	MainDock::resizeEvent(QResizeEvent* e) noexcept
-	{
 	}
 
 	void
@@ -120,7 +112,7 @@ namespace flower
 	void
 	MainDock::showEvent(QShowEvent* e) noexcept
 	{
-		this->setupEvent();
+		this->open();
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
 		QRect rect = QApplication::primaryScreen()->geometry();
@@ -129,23 +121,6 @@ namespace flower
 		QRect rect = QGuiApplication::screens().at(currentScreen)->geometry();
 #endif
 		this->move((rect.width() - this->width()) / 2, (rect.height() - this->height()) / 2);
-	}
-
-	void
-	MainDock::updateEvent() noexcept
-	{
-		if (gameApp_ && init_flag)
-			gameApp_->update();
-	}
-
-	void
-	MainDock::setupEvent() noexcept
-	{
-		if (!init_flag)
-		{
-			open(viewDock_->width(), viewDock_->height());
-			init_flag = true;
-		}
 	}
 
 	bool
@@ -168,7 +143,7 @@ namespace flower
 	{
 		try
 		{
-			if (!profile_->playerModule->playing_ && !profile_->recordModule->active)
+			if (!profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
 				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 				if (behaviour)
@@ -210,7 +185,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)
+				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
 				{
 					if (lightDock_->isHidden())
 						lightDock_->show();
@@ -249,7 +224,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->sunLight && !profile_->playerModule->playing_)
+				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
 				{
 					if (mainLightDock_->isHidden())
 						mainLightDock_->show();
@@ -288,7 +263,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->enviromentLight && !profile_->playerModule->playing_)
+				if (profile_->entitiesModule->enviromentLight && !profile_->playerModule->isPlaying)
 				{
 					if (environmentDock_->isHidden())
 						environmentDock_->show();
@@ -327,7 +302,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (!profile_->playerModule->playing_)
+				if (!profile_->playerModule->isPlaying)
 				{
 					if (materialDock_->isHidden())
 						materialDock_->show();
@@ -366,7 +341,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 			if (behaviour)
 			{
-				if (!profile_->playerModule->playing_)
+				if (!profile_->playerModule->isPlaying)
 				{
 					if (cameraDock_->isHidden())
 						cameraDock_->show();
@@ -398,16 +373,25 @@ namespace flower
 	}
 
 	void
-	MainDock::open(int w, int h) noexcept(false)
+	MainDock::open() noexcept(false)
 	{
 		try
 		{
-			gameApp_->setGameListener(listener_);
-			gameApp_->open((octoon::WindHandle)viewDock_->winId(), w, h, w, h);
-			gameApp_->setActive(true);
-			listener_->splash_ = nullptr;
+			if (!init_flag)
+			{
+				auto w = viewDock_->width();
+				auto h = viewDock_->height();
 
-			auto behaviour = behaviour_->addComponent<FlowerBehaviour>(profile_);
+				gameApp_->setGameListener(listener_);
+				gameApp_->open((octoon::WindHandle)viewDock_->winId(), w, h, w, h);
+				gameApp_->setActive(true);
+
+				listener_->splash_ = nullptr;
+
+				behaviour_->addComponent<FlowerBehaviour>(profile_);
+
+				init_flag = true;
+			}
 		}
 		catch (const std::exception& e)
 		{
@@ -426,5 +410,12 @@ namespace flower
 
 			exit(0);
 		}
+	}
+
+	void
+	MainDock::update() noexcept
+	{
+		if (gameApp_ && init_flag)
+			gameApp_->update();
 	}
 }

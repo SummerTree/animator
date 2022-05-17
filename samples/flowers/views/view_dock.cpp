@@ -15,6 +15,7 @@ namespace flower
 		this->setAttribute(Qt::WA_PaintOnScreen, true);
 		this->setObjectName("ViewDock");
 		this->setMouseTracking(true);
+		//this->grabKeyboard();
 		this->setUpdatesEnabled(false);
 		this->setAcceptDrops(true);
 		this->setFocusPolicy(Qt::StrongFocus);
@@ -38,14 +39,14 @@ namespace flower
 	void
 	ViewDock::mouseMoveEvent(QMouseEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->playing_)
+		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
 			gameApp_->doWindowMouseMotion((octoon::WindHandle)this->winId(), e->pos().x(), e->pos().y());
 	}
 
 	void
 	ViewDock::mousePressEvent(QMouseEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->playing_)
+		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
 		{
 			if (e->button() == Qt::LeftButton)
 				gameApp_->doWindowMouseButtonDown((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x(), e->y());
@@ -59,7 +60,7 @@ namespace flower
 	void
 	ViewDock::mouseReleaseEvent(QMouseEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->playing_)
+		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
 		{
 			if (e->button() == Qt::LeftButton)
 				gameApp_->doWindowMouseButtonUp((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x(), e->y());
@@ -73,7 +74,7 @@ namespace flower
 	void
 	ViewDock::mouseDoubleClickEvent(QMouseEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->playing_)
+		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
 		{
 			if (e->button() == Qt::LeftButton)
 				gameApp_->doWindowMouseButtonDoubleClick((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x(), e->y());
@@ -87,35 +88,35 @@ namespace flower
 	void
 	ViewDock::wheelEvent(QWheelEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->playing_)
+		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
 			gameApp_->doWindowScrool((octoon::WindHandle)this->winId(), e->angleDelta().x(), e->angleDelta().y());
 	}
 
 	void
 	ViewDock::keyPressEvent(QKeyEvent* event) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->playing_)
+		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
 			gameApp_->doWindowKeyDown((octoon::WindHandle)this->winId(), KeyCodetoInputKey(event->key()), 0, 0);
 	}
 
 	void
 	ViewDock::keyReleaseEvent(QKeyEvent* event) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->playing_ && !event->isAutoRepeat())
+		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying && !event->isAutoRepeat())
 			gameApp_->doWindowKeyUp((octoon::WindHandle)this->winId(), KeyCodetoInputKey(event->key()), 0, 0);
 	}
 
 	void
 	ViewDock::dragEnterEvent(QDragEnterEvent* event) noexcept
 	{
-		if (!profile_->playerModule->playing_)
+		if (!profile_->playerModule->isPlaying)
 			event->acceptProposedAction();
 	}
 
 	void
 	ViewDock::dragMoveEvent(QDragMoveEvent *e) noexcept
 	{
-		if (gameApp_ && !profile_->playerModule->playing_)
+		if (gameApp_ && !profile_->playerModule->isPlaying)
 			gameApp_->doWindowMouseMotion((octoon::WindHandle)this->winId(), e->pos().x(), e->pos().y());
 	}
 

@@ -34,10 +34,13 @@ namespace flower
 	void
 	DragComponent::handleMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
+		auto& model = this->getModel();
+		auto& profile = this->getContext()->profile;
+
 		auto selected = this->intersectObjects(event.button.x, event.button.y);
-		if (this->getModel()->selectedItem_ != selected)
+		if (model->selectedItem_ != selected)
 		{
-			this->getModel()->selectedItem_ = selected;
+			model->selectedItem_ = selected;
 
 			if (selected)
 			{
@@ -54,19 +57,18 @@ namespace flower
 	void
 	DragComponent::handleMouseMove(const octoon::input::InputEvent& event) noexcept
 	{
-		if (this->getModel()->selectedItem_)
-		{
-			auto selected = this->intersectObjects(event.button.x, event.button.y);
-		}
 	}
 
 	void
 	DragComponent::handleMouseHover(const octoon::input::InputEvent& event) noexcept
 	{
+		auto& model = this->getModel();
+		auto& profile = this->getContext()->profile;
+
 		auto hover = this->intersectObjects(event.motion.x, event.motion.y);
-		if (this->getModel()->selectedItemHover_ != hover)
+		if (model->selectedItemHover_ != hover)
 		{
-			this->getModel()->selectedItemHover_ = hover;
+			model->selectedItemHover_ = hover;
 
 			if (hover)
 				this->sendMessage("editor:hover", hover.value());
@@ -104,7 +106,8 @@ namespace flower
 	void
 	DragComponent::onMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
-		this->handleMouseDown(event);
+		if (event.button.button == octoon::input::InputButton::Left)
+			this->handleMouseDown(event);
 	}
 
 	void
@@ -133,9 +136,12 @@ namespace flower
 	void
 	DragComponent::onUpdate() noexcept
 	{
-		if (this->getModel()->selectedItem_)
+		auto& model = this->getModel();
+		auto& profile = this->getContext()->profile;
+
+		if (model->selectedItem_ && !profile->playerModule->isPlaying)
 		{
-			auto hit = this->getModel()->selectedItem_.value();
+			auto hit = model->selectedItem_.value();
 			auto hitObject = hit.object.lock();
 			if (hitObject)
 			{
@@ -163,7 +169,7 @@ namespace flower
 			}
 			else
 			{
-				this->getModel()->selectedItem_.emplace();
+				model->selectedItem_.emplace();
 				this->gizmoSelected_->getComponent<octoon::MeshRendererComponent>()->setVisible(false);
 			}
 		}
@@ -172,9 +178,9 @@ namespace flower
 			gizmoSelected_->getComponent<octoon::MeshRendererComponent>()->setVisible(false);
 		}
 
-		if (this->getModel()->selectedItemHover_ && this->getModel()->selectedItem_ != this->getModel()->selectedItemHover_)
+		if (model->selectedItemHover_ && model->selectedItem_ != model->selectedItemHover_ && !profile->playerModule->isPlaying)
 		{
-			auto hit = this->getModel()->selectedItemHover_.value();
+			auto hit = model->selectedItemHover_.value();
 			auto hitObject = hit.object.lock();
 			if (hitObject)
 			{
@@ -202,7 +208,7 @@ namespace flower
 			}
 			else
 			{
-				this->getModel()->selectedItemHover_.emplace();
+				model->selectedItemHover_.emplace();
 				this->gizmoHover_->getComponent<octoon::MeshRendererComponent>()->setVisible(false);
 			}
 		}

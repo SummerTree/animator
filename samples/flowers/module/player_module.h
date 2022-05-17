@@ -24,19 +24,22 @@ namespace flower
 		PlayerModule& operator=(const PlayerModule&) = delete;
 
 	public:
-		bool playing_;
+		bool isPlaying;
 
 		std::uint32_t spp;
-		std::uint32_t sppCount_;
+		std::uint32_t sppCount;
 
 		std::uint32_t endFrame;
 		std::uint32_t startFrame;
-		std::uint32_t timeLength;
 
 		float playTimeStep;
 		float normalTimeStep;
 		float recordFps;
+
 		float curTime;
+		float takeupTime;
+		float estimatedTime;
+		float timeLength;
 
 		std::optional<octoon::RaycastHit> dofTarget;
 	};

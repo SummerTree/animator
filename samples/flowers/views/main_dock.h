@@ -35,18 +35,14 @@ namespace flower
 		~MainDock() noexcept;
 
 	private Q_SLOTS:
-		void paintEvent(QPaintEvent* e) noexcept override;
-		void resizeEvent(QResizeEvent* e) noexcept override;
 		void dragEnterEvent(QDragEnterEvent* event) noexcept override;
 		void dragMoveEvent(QDragMoveEvent* event) noexcept override;
 		void dropEvent(QDropEvent* event) noexcept override;
 		void showEvent(QShowEvent* event) noexcept override;
 
-		void setupEvent() noexcept;
-		void updateEvent() noexcept;
-
 		bool eventFilter(QObject* watched, QEvent* event);
 
+	private:
 		void onSunSignal() noexcept;
 		void onLightSignal() noexcept;
 		void onRecordSignal() noexcept;
@@ -54,8 +50,8 @@ namespace flower
 		void onMaterialSignal() noexcept;
 		void onCameraSignal() noexcept;
 
-	private:
-		void open(int w, int h) noexcept(false);
+		void open() noexcept(false);
+		void update() noexcept;
 
 	private:
 		bool init_flag;

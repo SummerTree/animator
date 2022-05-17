@@ -1558,7 +1558,7 @@ namespace flower
 	MaterialListPanel::resizeEvent(QResizeEvent* e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins();
-		listWidget_->setMinimumHeight(this->height() - margins.top() - margins.bottom());
+		listWidget_->resize(this->width(), this->height() - margins.top() - margins.bottom());
 	}
 
 	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour) noexcept(false)

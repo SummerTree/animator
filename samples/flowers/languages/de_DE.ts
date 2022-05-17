@@ -284,42 +284,42 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="184"/>
-        <location filename="../views/main_dock.cpp" line="224"/>
-        <location filename="../views/main_dock.cpp" line="263"/>
-        <location filename="../views/main_dock.cpp" line="302"/>
-        <location filename="../views/main_dock.cpp" line="341"/>
-        <location filename="../views/main_dock.cpp" line="380"/>
+        <location filename="../views/main_dock.cpp" line="159"/>
+        <location filename="../views/main_dock.cpp" line="199"/>
+        <location filename="../views/main_dock.cpp" line="238"/>
+        <location filename="../views/main_dock.cpp" line="277"/>
+        <location filename="../views/main_dock.cpp" line="316"/>
+        <location filename="../views/main_dock.cpp" line="355"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="185"/>
-        <location filename="../views/main_dock.cpp" line="225"/>
+        <location filename="../views/main_dock.cpp" line="160"/>
+        <location filename="../views/main_dock.cpp" line="200"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="196"/>
-        <location filename="../views/main_dock.cpp" line="235"/>
-        <location filename="../views/main_dock.cpp" line="274"/>
-        <location filename="../views/main_dock.cpp" line="313"/>
-        <location filename="../views/main_dock.cpp" line="352"/>
-        <location filename="../views/main_dock.cpp" line="391"/>
-        <location filename="../views/main_dock.cpp" line="415"/>
+        <location filename="../views/main_dock.cpp" line="171"/>
+        <location filename="../views/main_dock.cpp" line="210"/>
+        <location filename="../views/main_dock.cpp" line="249"/>
+        <location filename="../views/main_dock.cpp" line="288"/>
+        <location filename="../views/main_dock.cpp" line="327"/>
+        <location filename="../views/main_dock.cpp" line="366"/>
+        <location filename="../views/main_dock.cpp" line="399"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="264"/>
-        <location filename="../views/main_dock.cpp" line="303"/>
-        <location filename="../views/main_dock.cpp" line="342"/>
-        <location filename="../views/main_dock.cpp" line="381"/>
+        <location filename="../views/main_dock.cpp" line="239"/>
+        <location filename="../views/main_dock.cpp" line="278"/>
+        <location filename="../views/main_dock.cpp" line="317"/>
+        <location filename="../views/main_dock.cpp" line="356"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="416"/>
+        <location filename="../views/main_dock.cpp" line="400"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -332,27 +332,27 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="35"/>
+        <location filename="../views/main_light_dock.cpp" line="34"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="39"/>
+        <location filename="../views/main_light_dock.cpp" line="38"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="64"/>
+        <location filename="../views/main_light_dock.cpp" line="63"/>
         <source>Rotation X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="89"/>
+        <location filename="../views/main_light_dock.cpp" line="88"/>
         <source>Rotation Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="114"/>
+        <location filename="../views/main_light_dock.cpp" line="113"/>
         <source>Rotation Z</source>
         <translation type="unfinished"></translation>
     </message>
@@ -495,119 +495,12 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::RecordDock</name>
     <message>
-        <location filename="../views/record_dock.cpp" line="48"/>
-        <source>Record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="56"/>
-        <source>Render Quality</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="60"/>
-        <source>Ultra Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="66"/>
-        <source>Fast Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="74"/>
-        <source>Frame Per Second</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="78"/>
-        <source>24</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="84"/>
-        <source>25</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="89"/>
-        <source>30</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="94"/>
-        <source>60</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="104"/>
-        <source>Play:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="107"/>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="110"/>
-        <source>- End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="125"/>
-        <source>Recursion depth per pixel:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="136"/>
-        <source>Sample number per pixel:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="154"/>
-        <source>Constant Rate Factor (CRF):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="179"/>
-        <location filename="../views/record_dock.cpp" line="314"/>
-        <source>Start Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="225"/>
-        <source>Watermark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="228"/>
-        <source>Render Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="232"/>
-        <source>Video Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="290"/>
-        <location filename="../views/record_dock.cpp" line="378"/>
-        <source>Stop Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="295"/>
+        <location filename="../views/record_dock.cpp" line="291"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="296"/>
-        <source>Failed to create file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="380"/>
+        <location filename="../views/record_dock.cpp" line="376"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -737,7 +630,12 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::StatusBar</name>
     <message>
-        <location filename="../views/status_bar.cpp" line="33"/>
+        <location filename="../views/status_bar.cpp" line="37"/>
+        <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/status_bar.cpp" line="39"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -871,53 +769,53 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="107"/>
-        <location filename="../views/tool_dock.cpp" line="188"/>
+        <location filename="../views/tool_dock.cpp" line="111"/>
+        <location filename="../views/tool_dock.cpp" line="192"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="107"/>
+        <location filename="../views/tool_dock.cpp" line="111"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="122"/>
+        <location filename="../views/tool_dock.cpp" line="126"/>
         <source>Opening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="122"/>
+        <location filename="../views/tool_dock.cpp" line="126"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="123"/>
+        <location filename="../views/tool_dock.cpp" line="127"/>
         <source>Open Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="151"/>
-        <location filename="../views/tool_dock.cpp" line="165"/>
-        <location filename="../views/tool_dock.cpp" line="204"/>
-        <location filename="../views/tool_dock.cpp" line="253"/>
-        <location filename="../views/tool_dock.cpp" line="292"/>
-        <location filename="../views/tool_dock.cpp" line="336"/>
+        <location filename="../views/tool_dock.cpp" line="155"/>
+        <location filename="../views/tool_dock.cpp" line="169"/>
+        <location filename="../views/tool_dock.cpp" line="208"/>
+        <location filename="../views/tool_dock.cpp" line="257"/>
+        <location filename="../views/tool_dock.cpp" line="296"/>
+        <location filename="../views/tool_dock.cpp" line="340"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="188"/>
+        <location filename="../views/tool_dock.cpp" line="192"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="242"/>
+        <location filename="../views/tool_dock.cpp" line="246"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="242"/>
+        <location filename="../views/tool_dock.cpp" line="246"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -946,47 +844,47 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="35"/>
-        <location filename="../views/toplevel_bar.cpp" line="272"/>
+        <location filename="../views/toplevel_bar.cpp" line="276"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="87"/>
-        <location filename="../views/toplevel_bar.cpp" line="154"/>
-        <location filename="../views/toplevel_bar.cpp" line="203"/>
-        <location filename="../views/toplevel_bar.cpp" line="241"/>
+        <location filename="../views/toplevel_bar.cpp" line="91"/>
+        <location filename="../views/toplevel_bar.cpp" line="158"/>
+        <location filename="../views/toplevel_bar.cpp" line="207"/>
+        <location filename="../views/toplevel_bar.cpp" line="245"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="88"/>
-        <location filename="../views/toplevel_bar.cpp" line="155"/>
-        <location filename="../views/toplevel_bar.cpp" line="204"/>
-        <location filename="../views/toplevel_bar.cpp" line="242"/>
+        <location filename="../views/toplevel_bar.cpp" line="92"/>
+        <location filename="../views/toplevel_bar.cpp" line="159"/>
+        <location filename="../views/toplevel_bar.cpp" line="208"/>
+        <location filename="../views/toplevel_bar.cpp" line="246"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="102"/>
-        <location filename="../views/toplevel_bar.cpp" line="168"/>
-        <location filename="../views/toplevel_bar.cpp" line="215"/>
-        <location filename="../views/toplevel_bar.cpp" line="253"/>
+        <location filename="../views/toplevel_bar.cpp" line="106"/>
+        <location filename="../views/toplevel_bar.cpp" line="172"/>
+        <location filename="../views/toplevel_bar.cpp" line="219"/>
+        <location filename="../views/toplevel_bar.cpp" line="257"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="117"/>
+        <location filename="../views/toplevel_bar.cpp" line="121"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="126"/>
-        <location filename="../views/toplevel_bar.cpp" line="181"/>
+        <location filename="../views/toplevel_bar.cpp" line="130"/>
+        <location filename="../views/toplevel_bar.cpp" line="185"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="283"/>
+        <location filename="../views/toplevel_bar.cpp" line="287"/>
         <source>VolumeOff</source>
         <translation type="unfinished"></translation>
     </message>
@@ -999,12 +897,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="156"/>
+        <location filename="../views/view_dock.cpp" line="157"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="157"/>
+        <location filename="../views/view_dock.cpp" line="158"/>
         <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>

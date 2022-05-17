@@ -58,7 +58,6 @@ namespace flower
 		QLabel* animation_;
 		QLabel* summary_;
 		QLabel* currentFrame_;
-		QLabel* timeTotal_;
 		QLabel* sppLabel;
 		QLabel* bouncesLabel_;
 		QLabel* crfLabel;

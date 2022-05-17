@@ -20,7 +20,7 @@ namespace flower
 	PlayerComponent::play() noexcept
 	{
 		auto& model = this->getModel();
-		model->playing_ = true;
+		model->isPlaying = true;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -63,13 +63,16 @@ namespace flower
 				}
 			}
 		}
+
+		this->timer_.reset();
 	}
 
 	void
 	PlayerComponent::pause() noexcept
 	{
 		auto& model = this->getModel();
-		model->playing_ = false;
+		model->isPlaying = false;
+		model->takeupTime = 0;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -109,7 +112,8 @@ namespace flower
 		this->reset();
 
 		auto& model = this->getModel();
-		model->playing_ = true;
+		model->isPlaying = true;
+		model->takeupTime = 0;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -118,6 +122,8 @@ namespace flower
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
 			physicsFeature->setEnableSimulate(false);
+
+		this->timer_.reset();		
 	}
 
 	void
@@ -125,7 +131,8 @@ namespace flower
 	{
 		auto& model = this->getModel();
 		model->curTime = model->startFrame / 30.0f;
-		model->playing_ = false;
+		model->isPlaying = false;
+		model->takeupTime = 0;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -232,7 +239,7 @@ namespace flower
 	PlayerComponent::sample(float delta) noexcept
 	{
 		auto& model = this->getModel();
-		model->curTime += delta;
+		model->curTime = std::max(0.0f, model->curTime + delta);
 
 		auto sound = this->getContext()->profile->entitiesModule->sound;
 		if (sound)
@@ -288,7 +295,7 @@ namespace flower
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
 		{
-			physicsFeature->simulate(delta);
+			physicsFeature->simulate(std::abs(delta));
 			physicsFeature->setEnableSimulate(true);
 		}
 
@@ -449,7 +456,7 @@ namespace flower
 		this->addMessageListener("flower:project:open", [this](const std::any& data)
 		{
 			auto& model = this->getModel();
-			model->timeLength = this->getContext()->behaviour->getComponent<PlayerComponent>()->timeLength();
+			model->timeLength = this->timeLength();
 			model->startFrame = 0;
 			model->endFrame = this->getModel()->timeLength * 30;
 
@@ -468,20 +475,26 @@ namespace flower
 		auto& model = this->getModel();
 		auto& profile = this->getContext()->profile;
 
-		if (!model->playing_)
+		if (!model->isPlaying)
 			return;
 
 		if (profile->offlineModule->getEnable() && profile->recordModule->active)
 		{
-			model->sppCount_++;
+			model->sppCount++;
 
-			if (model->sppCount_ >= model->spp)
+			if (model->sppCount >= model->spp)
 			{
 				needAnimationEvaluate_ = true;
 
 				this->sendMessage("flower:player:record");
+				this->timer_.update();
 
-				model->sppCount_ = 0;
+				auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));
+				auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
+
+				model->sppCount = 0;
+				model->takeupTime += this->timer_.frame_time();
+				model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / curFrame);
 			}
 		}
 		else
@@ -489,6 +502,13 @@ namespace flower
 			needAnimationEvaluate_ = true;
 
 			this->sendMessage("flower:player:record");
+			this->timer_.update();
+
+			auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));
+			auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
+
+			model->takeupTime += this->timer_.frame_time();
+			model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / profile->playerModule->curTime);
 		}
 	}
 
@@ -499,7 +519,7 @@ namespace flower
 
 		this->updateDofTarget();
 
-		if (!model->playing_)
+		if (!model->isPlaying)
 			return;
 
 		if (model->curTime < model->endFrame / 30.0f)

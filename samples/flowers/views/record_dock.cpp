@@ -171,9 +171,6 @@ namespace flower
 		currentFrame_ = new QLabel();
 		currentFrame_->setContentsMargins(20, 0, 0, 0);
 
-		timeTotal_ = new QLabel();
-		timeTotal_->setContentsMargins(20, 0, 0, 0);
-
 		recordButton_ = new QToolButton();
 		recordButton_->setObjectName("render");
 		recordButton_->setText(tr("Start Render"));
@@ -220,7 +217,6 @@ namespace flower
 		infoLayout->addWidget(animation_);
 		infoLayout->addWidget(summary_);
 		infoLayout->addWidget(currentFrame_);
-		infoLayout->addWidget(timeTotal_);
 
 		markSpoiler_ = new Spoiler(tr("Watermark"));
 		markSpoiler_->setContentLayout(*markLayout);
@@ -507,14 +503,9 @@ namespace flower
 			summary_->setText(tr("Video frame: %1").arg(timeLength));	
 			currentFrame_->setText(tr("Rendering frame: %1").arg(time));
 
-			if (select1_->isChecked())
-			{
-				timeTotal_->setText(tr("Estimated time: %1 min").arg((timeLength * 10 / 60)));
-			}
-			else
+			if (!select1_->isChecked())
 			{
 				recordButton_->setEnabled(true);
-				timeTotal_->setText(tr("Estimated time: %1 min").arg((timeLength / 15 / 60)));
 			}
 		}
 	}
@@ -543,7 +534,7 @@ namespace flower
 
 			sppSpinbox_->setValue(profile->playerModule->spp);
 			crfSpinbox->setValue(profile->h265Module->crf);
-			bouncesSpinbox_->setValue(behaviour->getComponent<OfflineComponent>()->getMaxBounces());
+			bouncesSpinbox_->setValue(profile->offlineModule->bounces);
 
 			this->update();
 		}

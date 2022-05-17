@@ -51,6 +51,10 @@ namespace flower
 
 		this->addWidget(mainWidget);
 
+		behaviour->addMessageListener("flower:player:finish", [this](const std::any&) {
+			this->repaint();
+		});
+
 		this->connect(&resetButton, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		this->connect(&playButton, SIGNAL(clicked()), this, SLOT(playEvent()));
 		this->connect(&leftButton, SIGNAL(clicked()), this, SLOT(leftEvent()));
@@ -136,7 +140,7 @@ namespace flower
 		{
 			try
 			{
-				if (behaviour_ && !profile_->playerModule->playing_)
+				if (behaviour_ && !profile_->playerModule->isPlaying)
 				{
 					auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 					if (behaviour->isOpen())
@@ -188,7 +192,7 @@ namespace flower
 	{
 		try
 		{
-			if (behaviour_ && !profile_->playerModule->playing_)
+			if (!profile_->playerModule->isPlaying)
 			{
 				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 				if (behaviour->isOpen())
@@ -226,7 +230,7 @@ namespace flower
 	{
 		try
 		{
-			if (!profile_->playerModule->playing_)
+			if (!profile_->playerModule->isPlaying)
 			{
 				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 				if (behaviour->isOpen())
@@ -289,7 +293,7 @@ namespace flower
 	void
 	ToplevelBar::paintEvent(QPaintEvent* e) noexcept
 	{
-		if (profile_->playerModule->playing_)
+		if (profile_->playerModule->isPlaying)
 		{
 			if (!playEnable_)
 			{

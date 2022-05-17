@@ -392,11 +392,11 @@ namespace flower
 	void
 	GizmoComponent::onLateUpdate() noexcept
 	{
-		auto selected = this->getContext()->profile->dragModule->selectedItem_;
+		auto& profile = this->getContext()->profile;
 
-		if (selected)
+		if (profile->dragModule->selectedItem_ && !profile->playerModule->isPlaying)
 		{
-			auto item = selected->object.lock();
+			auto item = profile->dragModule->selectedItem_->object.lock();
 			if (item)
 				gizmo_[gizmoMode_]->handleGizmos->setActiveDownwards(true);
 			else

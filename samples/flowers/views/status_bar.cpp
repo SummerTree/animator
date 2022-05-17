@@ -26,11 +26,17 @@ namespace flower
 		if (behaviour)
 		{
 			auto playerComponent = dynamic_cast<PlayerComponent*>(behaviour->getComponent<PlayerComponent>());
-			auto animLength = std::max<int>(1, std::round(playerComponent->timeLength() * 30.0f));
 
-			auto time = std::max<int>(0, std::round(behaviour->getProfile()->playerModule->curTime * 30.0f));
+			auto time = std::max<int>(1, std::round(profile_->playerModule->curTime * 30.0f));
+			auto timeLength = std::max<int>(1, std::round(profile_->playerModule->timeLength * 30.0f));
 
-			this->showMessage(tr("Animation Frame: %1 | Current Frame: %2").arg(animLength).arg(time));
+			ulong ulHour = profile_->playerModule->estimatedTime / 3600;
+			ulong ulMinute = (profile_->playerModule->estimatedTime - ulHour * 3600) / 60;
+
+			if (profile_->recordModule->active)
+				this->showMessage(tr("Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute").arg(timeLength).arg(time).arg(ulHour).arg(ulMinute));
+			else
+				this->showMessage(tr("Animation Frame: %1 | Current Frame: %2").arg(timeLength).arg(time));
 		}
 	}
 }
