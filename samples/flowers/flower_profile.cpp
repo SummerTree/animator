@@ -84,7 +84,7 @@ namespace flower
 		}
 		else
 		{
-			throw std::runtime_error(u8"无法创建文件: " + std::string(path));
+			throw std::runtime_error("Failed to create file: " + std::string(path));
 		}
 	}
 }
