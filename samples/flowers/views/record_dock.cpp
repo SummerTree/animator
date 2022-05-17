@@ -121,6 +121,18 @@ namespace flower
 		end_->setMinimum(0);
 		end_->setMaximum(99999);
 
+		denoiseLabel_ = new QLabel();
+		denoiseLabel_->setText(tr("Denoise:"));
+
+		denoiseButton_ = new QCheckBox();
+		denoiseButton_->setCheckState(Qt::CheckState::Checked);
+
+		auto denoiseLayout_ = new QHBoxLayout();
+		denoiseLayout_->addWidget(denoiseLabel_, 0, Qt::AlignLeft);
+		denoiseLayout_->addWidget(denoiseButton_, 0, Qt::AlignLeft);
+		denoiseLayout_->setSpacing(0);
+		denoiseLayout_->setContentsMargins(0, 0, 0, 0);
+
 		bouncesLabel_ = new QLabel();
 		bouncesLabel_->setText(tr("Recursion depth per pixel:"));
 		bouncesLabel_->setStyleSheet("color: rgb(200,200,200);");
@@ -191,6 +203,7 @@ namespace flower
 		videoLayout->addWidget(frame_);
 		videoLayout->addLayout(frameLayout_);
 		videoLayout->addSpacing(10);
+		videoLayout->addLayout(denoiseLayout_);
 		videoLayout->addWidget(sppLabel);
 		videoLayout->addWidget(sppSpinbox_);
 		videoLayout->addSpacing(10);
@@ -242,6 +255,7 @@ namespace flower
 		connect(speed2_, SIGNAL(toggled(bool)), this, SLOT(speed2Event(bool)));
 		connect(speed3_, SIGNAL(toggled(bool)), this, SLOT(speed3Event(bool)));
 		connect(speed4_, SIGNAL(toggled(bool)), this, SLOT(speed4Event(bool)));
+		connect(denoiseButton_, SIGNAL(stateChanged(int)), this, SLOT(denoiseEvent(int)));
 		connect(start_, SIGNAL(valueChanged(int)), this, SLOT(startEvent(int)));
 		connect(end_, SIGNAL(valueChanged(int)), this, SLOT(endEvent(int)));
 		connect(sppSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onSppChanged(int)));
@@ -324,36 +338,6 @@ namespace flower
 	}
 
 	void
-	RecordDock::showEvent(QShowEvent* event)
-	{
-		this->repaint();
-	}
-
-	void
-	RecordDock::closeEvent(QCloseEvent* event)
-	{
-		if (profile_->playerModule->isPlaying)
-			event->ignore();
-		else
-			event->accept();
-	}
-
-	void
-	RecordDock::resizeEvent(QResizeEvent* e) noexcept
-	{
-	}
-
-	void
-	RecordDock::paintEvent(QPaintEvent* e) noexcept
-	{
-		int left, top, bottom, right;
-		mainLayout_->getContentsMargins(&left, &top, &right, &bottom);
-		contentWidgetArea_->resize(contentWidgetArea_->size().width(), mainWidget_->size().height() - recordButton_->height() - (top + bottom) * 2);
-
-		QDockWidget::paintEvent(e);
-	}
-
-	void
 	RecordDock::clickEvent()
 	{
 		VideoQuality quality = VideoQuality::Medium;
@@ -390,6 +374,18 @@ namespace flower
 	RecordDock::select2Event(bool checked)
 	{
 		this->update();
+	}
+
+	void
+	RecordDock::denoiseEvent(int checked)
+	{
+		if (!profile_->playerModule->isPlaying)
+		{
+			if (checked == Qt::CheckState::Checked)
+				profile_->recordModule->denoise = true;
+			else
+				profile_->recordModule->denoise = false;
+		}
 	}
 
 	void
@@ -452,29 +448,54 @@ namespace flower
 		}
 	}
 
-	void 
-	RecordDock::repaint()
+	void
+	RecordDock::showEvent(QShowEvent* event)
 	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
-		{
-			int timeLength = (int)std::round(profile_->playerModule->timeLength * 30);
+		this->updateDefaultSettings();
+	}
 
-			start_->setValue(0);
-			end_->setValue(timeLength);
+	void
+	RecordDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
+	}
 
-			if (profile_->playerModule->recordFps == 24)
-				speed1_->click();
-			else if (profile_->playerModule->recordFps == 25)
-				speed2_->click();
-			else if (profile_->playerModule->recordFps == 30)
-				speed3_->click();
-			else if (profile_->playerModule->recordFps == 60)
-				speed4_->click();
+	void
+	RecordDock::resizeEvent(QResizeEvent* e) noexcept
+	{
+	}
 
-			sppSpinbox_->setValue(profile_->playerModule->spp);
-			crfSpinbox->setValue(profile_->encodeModule->crf);
-			bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
-		}
+	void
+	RecordDock::paintEvent(QPaintEvent* e) noexcept
+	{
+		int left, top, bottom, right;
+		mainLayout_->getContentsMargins(&left, &top, &right, &bottom);
+		contentWidgetArea_->resize(contentWidgetArea_->size().width(), mainWidget_->size().height() - recordButton_->height() - (top + bottom) * 2);
+
+		QDockWidget::paintEvent(e);
+	}
+
+	void 
+	RecordDock::updateDefaultSettings()
+	{
+		start_->setValue(0);
+		end_->setValue((int)std::round(profile_->playerModule->timeLength * 30));
+
+		if (profile_->playerModule->recordFps == 24)
+			speed1_->click();
+		else if (profile_->playerModule->recordFps == 25)
+			speed2_->click();
+		else if (profile_->playerModule->recordFps == 30)
+			speed3_->click();
+		else if (profile_->playerModule->recordFps == 60)
+			speed4_->click();
+
+		denoiseButton_->setCheckState(profile_->recordModule->denoise ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+		sppSpinbox_->setValue(profile_->playerModule->spp);
+		crfSpinbox->setValue(profile_->encodeModule->crf);
+		bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
 	}
 }

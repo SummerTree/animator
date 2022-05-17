@@ -27,6 +27,7 @@ namespace flower
 		bool hdr;
 		bool srgb;
 		bool active;
+		bool denoise;
 
 		std::uint32_t width;
 		std::uint32_t height;

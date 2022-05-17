@@ -39,7 +39,7 @@ namespace flower
 		auto& model = this->getContext()->profile->recordModule;
 		auto& profile = this->getContext()->profile;
 
-		if (profile->offlineModule->getEnable())
+		if (profile->offlineModule->getEnable() && profile->recordModule->denoise)
 		{
 			device_ = oidnNewDevice(OIDN_DEVICE_TYPE_DEFAULT);
 			oidnCommitDevice(device_);
@@ -99,8 +99,9 @@ namespace flower
 	{
 		auto& model = this->getModel();
 		auto& context = this->getContext();
+		auto& profile = this->getContext()->profile;
 
-		if (this->getContext()->profile->offlineModule->getEnable())
+		if (profile->offlineModule->getEnable())
 		{
 			auto videoFeature = this->getFeature<octoon::VideoFeature>();
 			videoFeature->readColorBuffer(colorBuffer_.data());
@@ -136,8 +137,8 @@ namespace flower
 				}
 			}
 		}
-
-		if (this->getContext()->profile->offlineModule->getEnable())
+		
+		if (profile->offlineModule->getEnable() && profile->recordModule->denoise)
 		{
 			auto color = oidnMapBuffer(oidnColorBuffer_, OIDN_ACCESS_WRITE_DISCARD, 0, 0);
 			auto normal = oidnMapBuffer(oidnNormalBuffer_, OIDN_ACCESS_WRITE_DISCARD, 0, 0);
@@ -163,6 +164,10 @@ namespace flower
 				std::memcpy(denoiseBuffer_.data(), output, model->width * model->height * sizeof(octoon::math::float3));
 				oidnUnmapBuffer(oidnOutputBuffer_, output);
 			}
+		}
+		else
+		{
+			std::memcpy(denoiseBuffer_.data(), colorBuffer_.data(), model->width * model->height * sizeof(octoon::math::float3));
 		}
 
 		auto markComponent = this->getComponent<MarkComponent>();
