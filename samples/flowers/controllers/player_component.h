@@ -3,6 +3,7 @@
 
 #include "../flower_component.h"
 #include "../module/player_module.h"
+#include <octoon/runtime/timer.h>
 
 namespace flower
 {
@@ -39,6 +40,8 @@ namespace flower
 
 	private:
 		bool needAnimationEvaluate_;
+
+		octoon::runtime::Timer timer_;
 	};
 }
 

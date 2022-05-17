@@ -47,7 +47,6 @@ namespace octoon
 			float last_time_;
 			float frame_time_;
 			float accumulate_time_;
-			float accumulate_fps_;
 
 			std::clock_t num_frames_;
 			std::uint8_t current_fps_index_;

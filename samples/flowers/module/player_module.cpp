@@ -24,6 +24,8 @@ namespace flower
 		this->startFrame = 0;
 		this->timeLength = 0;
 		this->curTime = 0;
+		this->takeupTime = 0;
+		this->estimatedTime = 0;
 	}
 
 	void 

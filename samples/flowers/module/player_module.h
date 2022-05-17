@@ -31,12 +31,15 @@ namespace flower
 
 		std::uint32_t endFrame;
 		std::uint32_t startFrame;
-		std::uint32_t timeLength;
 
 		float playTimeStep;
 		float normalTimeStep;
 		float recordFps;
+
 		float curTime;
+		float takeupTime;
+		float estimatedTime;
+		float timeLength;
 
 		std::optional<octoon::RaycastHit> dofTarget;
 	};

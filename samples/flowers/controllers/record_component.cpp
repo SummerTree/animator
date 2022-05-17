@@ -267,7 +267,7 @@ namespace flower
 		profile->recordModule->active = true;
 
 		this->addMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
-
+	
 		return true;
 	}
 
@@ -290,6 +290,7 @@ namespace flower
 	void
 	RecordComponent::onRecord() noexcept
 	{
+		auto& model = this->getModel();
 		auto& profile = this->getContext()->profile;
 
 		if (profile->h265Module->enable)

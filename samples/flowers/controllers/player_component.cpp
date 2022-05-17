@@ -63,6 +63,8 @@ namespace flower
 				}
 			}
 		}
+
+		this->timer_.reset();
 	}
 
 	void
@@ -70,6 +72,7 @@ namespace flower
 	{
 		auto& model = this->getModel();
 		model->isPlaying = false;
+		model->takeupTime = 0;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -110,6 +113,7 @@ namespace flower
 
 		auto& model = this->getModel();
 		model->isPlaying = true;
+		model->takeupTime = 0;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -118,6 +122,8 @@ namespace flower
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
 			physicsFeature->setEnableSimulate(false);
+
+		this->timer_.reset();		
 	}
 
 	void
@@ -126,6 +132,7 @@ namespace flower
 		auto& model = this->getModel();
 		model->curTime = model->startFrame / 30.0f;
 		model->isPlaying = false;
+		model->takeupTime = 0;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
@@ -449,7 +456,7 @@ namespace flower
 		this->addMessageListener("flower:project:open", [this](const std::any& data)
 		{
 			auto& model = this->getModel();
-			model->timeLength = this->getContext()->behaviour->getComponent<PlayerComponent>()->timeLength();
+			model->timeLength = this->timeLength();
 			model->startFrame = 0;
 			model->endFrame = this->getModel()->timeLength * 30;
 
@@ -480,8 +487,14 @@ namespace flower
 				needAnimationEvaluate_ = true;
 
 				this->sendMessage("flower:player:record");
+				this->timer_.update();
+
+				auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));
+				auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
 
 				model->sppCount = 0;
+				model->takeupTime += this->timer_.frame_time();
+				model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / curFrame);
 			}
 		}
 		else
@@ -489,6 +502,13 @@ namespace flower
 			needAnimationEvaluate_ = true;
 
 			this->sendMessage("flower:player:record");
+			this->timer_.update();
+
+			auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));
+			auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
+
+			model->takeupTime += this->timer_.frame_time();
+			model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / profile->playerModule->curTime);
 		}
 	}
 

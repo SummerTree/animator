@@ -495,12 +495,12 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::RecordDock</name>
     <message>
-        <location filename="../views/record_dock.cpp" line="295"/>
+        <location filename="../views/record_dock.cpp" line="291"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="380"/>
+        <location filename="../views/record_dock.cpp" line="376"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -603,7 +603,12 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::StatusBar</name>
     <message>
-        <location filename="../views/status_bar.cpp" line="33"/>
+        <location filename="../views/status_bar.cpp" line="37"/>
+        <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/status_bar.cpp" line="39"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
         <translation type="unfinished"></translation>
     </message>

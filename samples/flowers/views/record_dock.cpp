@@ -171,9 +171,6 @@ namespace flower
 		currentFrame_ = new QLabel();
 		currentFrame_->setContentsMargins(20, 0, 0, 0);
 
-		timeTotal_ = new QLabel();
-		timeTotal_->setContentsMargins(20, 0, 0, 0);
-
 		recordButton_ = new QToolButton();
 		recordButton_->setObjectName("render");
 		recordButton_->setText(u8"开始渲染");
@@ -220,7 +217,6 @@ namespace flower
 		infoLayout->addWidget(animation_);
 		infoLayout->addWidget(summary_);
 		infoLayout->addWidget(currentFrame_);
-		infoLayout->addWidget(timeTotal_);
 
 		markSpoiler_ = new Spoiler(u8"水印");
 		markSpoiler_->setContentLayout(*markLayout);
@@ -507,14 +503,9 @@ namespace flower
 			summary_->setText(QString(u8"视频渲染帧数：%1").arg(timeLength));	
 			currentFrame_->setText(QString(u8"当前视频渲染帧数：%1").arg(time));
 
-			if (select1_->isChecked())
-			{
-				timeTotal_->setText(QString(u8"视频渲染预估时间：%1分钟").arg((timeLength * 10 / 60)));
-			}
-			else
+			if (!select1_->isChecked())
 			{
 				recordButton_->setEnabled(true);
-				timeTotal_->setText(QString(u8"视频渲染预估时间：%1分钟").arg((timeLength / 15 / 60)));
 			}
 		}
 	}

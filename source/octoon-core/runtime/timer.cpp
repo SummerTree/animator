@@ -16,7 +16,6 @@ namespace octoon
 			, last_time_(0)
 			, frame_time_(0)
 			, accumulate_time_(0)
-			, accumulate_fps_(0)
 			, num_frames_(0)
 			, current_fps_index_(0)
 		{
@@ -115,12 +114,12 @@ namespace octoon
 			if (accumulate_time_ > 1.0f)
 			{
 				fps_ = num_frames_ / accumulate_time_;
+				fps_array_[current_fps_index_] = fps_;
 
 				num_frames_ = 0;
-				accumulate_time_--;
-				accumulate_fps_ = 0;
+				accumulate_time_ -= 1.0f;
 
-				fps_array_[current_fps_index_] = fps_;
+				float accumulate_fps_ = 0;
 
 				for (size_t i = 0; i <= current_fps_index_; i++)
 					accumulate_fps_ += fps_array_[i];

@@ -594,12 +594,12 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">关闭</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="295"/>
+        <location filename="../views/record_dock.cpp" line="291"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="380"/>
+        <location filename="../views/record_dock.cpp" line="376"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -713,7 +713,12 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::StatusBar</name>
     <message>
-        <location filename="../views/status_bar.cpp" line="33"/>
+        <location filename="../views/status_bar.cpp" line="37"/>
+        <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
+        <translation>动画帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 小时 %4 分钟</translation>
+    </message>
+    <message>
+        <location filename="../views/status_bar.cpp" line="39"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
         <translation>动画帧数: %1 | 当前帧数: %2</translation>
     </message>
