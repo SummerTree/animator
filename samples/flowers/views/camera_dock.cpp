@@ -97,9 +97,9 @@ namespace flower
 		apertureLabel_->setStyleSheet("color: rgb(200,200,200);");
 
 		apertureSpinbox_ = new DoubleSpinBox();
-		apertureSpinbox_->setMinimum(0);
-		apertureSpinbox_->setMaximum(32.0);
-		apertureSpinbox_->setValue(0.0f);
+		apertureSpinbox_->setMinimum(1.0f);
+		apertureSpinbox_->setMaximum(32.0f);
+		apertureSpinbox_->setValue(32.0f);
 		apertureSpinbox_->setSingleStep(0.1f);
 		apertureSpinbox_->setAlignment(Qt::AlignRight);
 		apertureSpinbox_->setFixedWidth(100);
@@ -147,14 +147,14 @@ namespace flower
 		mainLayout_->addLayout(focalDistanceLayout);
 		mainLayout_->addLayout(focalTargetLayout);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(20, 0, 20, 0);
+		mainLayout_->setContentsMargins(30, 0, 20, 0);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setLayout(mainLayout_);
 
 		this->setWidget(mainWidget_);
 		
-		connect(focalTargetButton_, SIGNAL(mouseMoveSignal()), this, SLOT(updateTarget()));
+		connect(focalTargetButton_, SIGNAL(mouseMoveSignal()), this, SLOT(onUpdateTarget()));
 		connect(apertureSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onApertureChanged(double)));
 		connect(focalDistanceSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFocalDistanceChanged(double)));
 	}
@@ -164,73 +164,105 @@ namespace flower
 	}
 
 	void
-	CameraDock::updateTarget()
+	CameraDock::onUpdateTarget()
 	{
-		auto hit = profile_->dragModule->selectedItemHover_;
-		if (hit)
+		if (!profile_->playerModule->isPlaying)
 		{
-			profile_->playerModule->dofTarget = hit;
+			auto hit = profile_->dragModule->selectedItemHover_;
+			if (hit)
+			{
+				profile_->playerModule->dofTarget = hit;
 
-			auto object = hit->object.lock();
-			auto renderer = object->getComponent<octoon::MeshRendererComponent>();
-			auto& materials = renderer->getMaterials();
+				auto object = hit->object.lock();
+				auto renderer = object->getComponent<octoon::MeshRendererComponent>();
+				auto material = renderer->getMaterial(profile_->playerModule->dofTarget->mesh);
 
-			focalDistanceName_->setText(QString::fromStdString(u8"目标：" + materials[hit->mesh]->getName()));
-			focalDistanceSpinbox_->setValue(0);
-			focalDistanceSpinbox_->setSpecialValueText(u8"自动测距");
-		}
-		else
-		{
-			focalDistanceName_->setText(QString::fromStdString(u8"目标：无"));
-			focalDistanceSpinbox_->setValue(10);
-			focalDistanceSpinbox_->setSpecialValueText(QString());
+				focalDistanceName_->setText(QString::fromStdString(u8"目标：" + material->getName()));
+				focalDistanceSpinbox_->setValue(0);
+				focalDistanceSpinbox_->setSpecialValueText(u8"自动测距");
+			}
+			else
+			{
+				profile_->playerModule->dofTarget = hit;
+
+				focalDistanceName_->setText(QString::fromStdString(u8"目标：无"));
+				focalDistanceSpinbox_->setValue(10);
+				focalDistanceSpinbox_->setSpecialValueText(QString());
+			}
 		}
 	}
 
 	void
 	CameraDock::onApertureChanged(double value)
 	{
-		if (profile_->entitiesModule->camera)
-		{
-			if (value == 32.f)
-				profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setAperture(0.0f);
-			else
-				profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setAperture(1.0f / value);
-		}
+		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
+			profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setAperture(value == 32.f ? 0.0f : 1.0f / value);
+		else
+			this->updateDefaultSetting();
 	}
 
 	void
 	CameraDock::onFocalDistanceChanged(double value)
 	{
-		if (!focalDistanceSpinbox_->specialValueText().isEmpty())
+		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
 		{
-			profile_->playerModule->dofTarget = std::nullopt;
-			focalDistanceSpinbox_->setSpecialValueText(QString());
+			if (!focalDistanceSpinbox_->specialValueText().isEmpty())
+			{
+				profile_->playerModule->dofTarget = std::nullopt;
 
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-			if (behaviour)
+				focalDistanceSpinbox_->setSpecialValueText(QString());
 				focalDistanceSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
+			}
+			else
+			{
+				profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setFocalDistance(value);
+			}
 		}
 		else
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-			if (behaviour)
-				behaviour->getProfile()->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setFocalDistance(value);
+			this->updateDefaultSetting();
+		}		
+	}
+
+	void
+	CameraDock::updateDefaultSetting()
+	{
+		if (profile_->entitiesModule->camera)
+		{
+			float aperture = profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getAperture();
+			apertureSpinbox_->setValue(aperture == 0.0f ? 32.0f : 1.0f / aperture);
+
+			if (profile_->playerModule->dofTarget)
+			{
+				focalDistanceSpinbox_->setValue(0);
+				focalDistanceSpinbox_->setSpecialValueText(u8"自动测距");
+
+				auto object = profile_->playerModule->dofTarget->object.lock();
+				auto renderer = object->getComponent<octoon::MeshRendererComponent>();
+				auto material = renderer->getMaterial(profile_->playerModule->dofTarget->mesh);
+
+				focalDistanceName_->setText(QString::fromStdString(u8"目标：" + material->getName()));
+			}
+			else
+			{
+				focalDistanceName_->setText(QString::fromStdString(u8"目标：无"));
+				focalDistanceSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
+			}
 		}
 	}
 
 	void
 	CameraDock::showEvent(QShowEvent* event)
 	{
-		if (profile_->entitiesModule->camera)
-		{
-			float aperture = profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getAperture();
-			if (aperture == 0.0f)
-				apertureSpinbox_->setValue(32.0f);
-			else
-				apertureSpinbox_->setValue(1.0f / aperture);
-		}
+		this->updateDefaultSetting();
+	}
 
-		this->repaint();
+	void
+	CameraDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
 	}
 }

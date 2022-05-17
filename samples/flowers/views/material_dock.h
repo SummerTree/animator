@@ -225,11 +225,12 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		MaterialDock(const octoon::GameObjectPtr& behaviour) noexcept(false);
+		MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false);
 		~MaterialDock() noexcept;
 
 		void showEvent(QShowEvent* event) noexcept override;
 		void paintEvent(QPaintEvent* e) noexcept override;
+		void closeEvent(QCloseEvent* event) override;
 
 		void updateList();
 
@@ -246,6 +247,7 @@ namespace flower
 		QScrollArea* modifyMaterialArea_;
 		QWidget* widget_;
 		octoon::GameObjectPtr behaviour_;
+		std::shared_ptr<FlowerProfile> profile_;
 	};
 }
 

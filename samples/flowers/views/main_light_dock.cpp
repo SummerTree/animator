@@ -215,6 +215,11 @@ namespace flower
 	void
 	MainLightDock::closeEvent(QCloseEvent* event)
 	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
+
 		auto x = editRotationX_->value() - 180.0f;
 		auto y = editRotationY_->value() - 180.0f;
 		auto z = editRotationZ_->value();

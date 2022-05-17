@@ -15,7 +15,6 @@ namespace flower
 		this->setAttribute(Qt::WA_PaintOnScreen, true);
 		this->setObjectName("ViewDock");
 		this->setMouseTracking(true);
-		//this->grabKeyboard();
 		this->setUpdatesEnabled(false);
 		this->setAcceptDrops(true);
 		this->setFocusPolicy(Qt::StrongFocus);
@@ -116,7 +115,7 @@ namespace flower
 	void
 	ViewDock::dragMoveEvent(QDragMoveEvent *e) noexcept
 	{
-		if (gameApp_ && !profile_->playerModule->isPlaying)
+		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
 			gameApp_->doWindowMouseMotion((octoon::WindHandle)this->winId(), e->pos().x(), e->pos().y());
 	}
 
@@ -181,11 +180,6 @@ namespace flower
 				}
 			}
 		}
-	}
-
-	void
-	ViewDock::showEvent(QShowEvent* event) noexcept
-	{
 	}
 
 	void 

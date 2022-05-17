@@ -83,7 +83,6 @@ namespace flower
 		this->setWidget(mainWidget);
 
 		lightButton_->hide();
-		//cameraButton_->hide();
 
 		this->connect(recordButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
 		this->connect(lightButton_, SIGNAL(clicked()), this, SLOT(lightEvent()));
@@ -95,6 +94,15 @@ namespace flower
 
 	ThumbnailDock::~ThumbnailDock() noexcept
 	{
+	}
+
+	void
+	ThumbnailDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
 	}
 
 	void

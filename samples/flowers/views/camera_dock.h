@@ -44,11 +44,15 @@ namespace flower
 		~CameraDock() noexcept;
 
 		void showEvent(QShowEvent* event) override;
+		void closeEvent(QCloseEvent* event) override;
 
 	private Q_SLOTS:
 		void onApertureChanged(double);
 		void onFocalDistanceChanged(double);
-		void updateTarget();
+		void onUpdateTarget();
+
+	private:
+		void updateDefaultSetting();
 
 	public:
 		QLabel* dofInfoLabel_;

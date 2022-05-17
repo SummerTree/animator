@@ -1561,8 +1561,9 @@ namespace flower
 		listWidget_->resize(this->width(), this->height() - margins.top() - margins.bottom());
 	}
 
-	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour) noexcept(false)
+	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false)
 		: behaviour_(behaviour)
+		, profile_(profile)
 	{
 		this->setObjectName("MaterialDock");
 		this->setWindowTitle(tr("Material"));
@@ -1624,6 +1625,15 @@ namespace flower
 		listPanel_->resize(widget_->size());
 		listPanel_->show();
 		this->updateList();
+	}
+
+	void
+	MaterialDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
 	}
 
 	void

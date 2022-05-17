@@ -23,6 +23,8 @@ namespace flower
 		ThumbnailDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<FlowerProfile> profile) noexcept;
 		~ThumbnailDock() noexcept;
 
+		void closeEvent(QCloseEvent* event);
+
 	private Q_SLOTS:
 		void recordEvent() noexcept;
 		void lightEvent() noexcept;

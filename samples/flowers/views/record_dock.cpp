@@ -330,6 +330,15 @@ namespace flower
 	}
 
 	void
+	RecordDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
+	}
+
+	void
 	RecordDock::resizeEvent(QResizeEvent* e) noexcept
 	{
 	}

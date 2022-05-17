@@ -43,7 +43,7 @@ namespace flower
 		mainLightDock_ = std::make_unique<MainLightDock>(behaviour_, profile_);
 		environmentDock_ = std::make_unique<EnvironmentDock>(behaviour_, profile_);
 		cameraDock_ = std::make_unique<CameraDock>(behaviour_, profile_);
-		materialDock_ = std::make_unique<MaterialDock>(behaviour_);
+		materialDock_ = std::make_unique<MaterialDock>(behaviour_, profile_);
 		statusBar_ = std::make_unique<StatusBar>(behaviour_, profile_);
 
 		this->addToolBar(toplevelDock_.get());

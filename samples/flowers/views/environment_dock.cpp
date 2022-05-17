@@ -289,6 +289,15 @@ namespace flower
 	}
 
 	void
+	EnvironmentDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
+	}
+
+	void
 	EnvironmentDock::colorMapClickEvent()
 	{
 		try

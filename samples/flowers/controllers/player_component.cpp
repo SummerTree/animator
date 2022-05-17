@@ -65,6 +65,8 @@ namespace flower
 		}
 
 		this->timer_.reset();
+
+		this->sendMessage("flower:player:play");
 	}
 
 	void
@@ -104,6 +106,8 @@ namespace flower
 				}
 			}
 		}
+
+		this->sendMessage("flower:player:pause");
 	}
 
 	void
@@ -123,7 +127,9 @@ namespace flower
 		if (physicsFeature)
 			physicsFeature->setEnableSimulate(false);
 
-		this->timer_.reset();		
+		this->timer_.reset();
+
+		this->sendMessage("flower:player:play");
 	}
 
 	void
@@ -233,6 +239,8 @@ namespace flower
 				}
 			}
 		}
+
+		this->sendMessage("flower:player:reset");
 	}
 
 	void

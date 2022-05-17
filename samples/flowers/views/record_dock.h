@@ -34,6 +34,7 @@ namespace flower
 		void showEvent(QShowEvent* event) override;
 		void paintEvent(QPaintEvent* e) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
+		void closeEvent(QCloseEvent* event) override;
 
 	private Q_SLOTS:
 		void clickEvent();
