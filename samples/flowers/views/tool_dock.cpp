@@ -18,7 +18,6 @@ namespace flower
 		, gpuOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/gpu-on.png")))
 		, audioIcon_(QIcon::fromTheme("res", QIcon(":res/icons/music.svg")))
 		, audioOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/music-on.png")))
-		, settingsIcon_(QIcon::fromTheme("res", QIcon(":res/icons/setting.png")))
 	{
 		this->setWindowTitle("Tool");
 		this->setObjectName("ToolDock");
@@ -55,13 +54,6 @@ namespace flower
 		cleanupButton_->setToolTip(tr("Cleanup Scene"));
 		cleanupButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-		settingsButton_ = new QToolButton;
-		settingsButton_->setObjectName("settings");
-		settingsButton_->setText(tr("Settings"));
-		settingsButton_->setToolTip(tr("Settings"));
-		settingsButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		settingsButton_->setIcon(settingsIcon_);
-
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
@@ -70,7 +62,6 @@ namespace flower
 		layout->addWidget(shotButton_, 0, Qt::AlignCenter);
 		layout->addWidget(audioButton_, 0, Qt::AlignCenter);
 		layout->addWidget(cleanupButton_, 0, Qt::AlignCenter);
-		layout->addWidget(settingsButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 
 		auto contentWidget = new QWidget;
@@ -101,7 +92,6 @@ namespace flower
 		this->connect(shotButton_, SIGNAL(clicked()), this, SLOT(shotEvent()));
 		this->connect(gpuButton_, SIGNAL(clicked()), this, SLOT(gpuEvent()));
 		this->connect(cleanupButton_, SIGNAL(clicked()), this, SLOT(cleanupEvent()));
-		this->connect(settingsButton_, SIGNAL(clicked()), this, SLOT(settingsEvent()));
 	}
 
 	ToolDock::~ToolDock() noexcept
@@ -354,14 +344,6 @@ namespace flower
 
 			msg.exec();
 		}
-	}
-
-	void
-	ToolDock::settingsEvent() noexcept
-	{
-		SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<FlowerBehaviour>());
-		window->setParent(this);
-		window->show();
 	}
 
 	void

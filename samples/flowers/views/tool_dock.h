@@ -14,8 +14,6 @@
 #include "flower_profile.h"
 #include "flower_behaviour.h"
 
-#include "setting_window.h"
-
 namespace flower
 {
 	class ToolDock final : public QDockWidget
@@ -31,7 +29,6 @@ namespace flower
 		void gpuEvent() noexcept;
 		void audioEvent() noexcept;
 		void cleanupEvent() noexcept;
-		void settingsEvent() noexcept;
 
 	private:
 		void paintEvent(QPaintEvent* e) noexcept override;
@@ -45,7 +42,6 @@ namespace flower
 		QIcon gpuOnIcon_;
 		QIcon audioIcon_;
 		QIcon audioOnIcon_;
-		QIcon settingsIcon_;
 
 		QToolButton* importButton_;
 		QToolButton* saveButton_;
@@ -53,7 +49,6 @@ namespace flower
 		QToolButton* gpuButton_;
 		QToolButton* audioButton_;
 		QToolButton* cleanupButton_;
-		QToolButton* settingsButton_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<FlowerProfile> profile_;
