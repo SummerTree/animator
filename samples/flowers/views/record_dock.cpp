@@ -42,6 +42,7 @@ namespace flower
 
 	RecordDock::RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
 		: behaviour_(behaviour)
+		, profile_(profile)
 	{
 		this->setObjectName("RecordDock");
 		this->setWindowTitle(tr("Record"));
@@ -293,25 +294,28 @@ namespace flower
 	void
 	RecordDock::onSppChanged(int value)
 	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
-			behaviour->getProfile()->playerModule->spp = value;
+		if (!profile_->playerModule->isPlaying)
+			profile_->playerModule->spp = value;
+		else
+			sppSpinbox_->setValue(profile_->playerModule->spp);
 	}
 
 	void
 	RecordDock::onBouncesChanged(int value)
 	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
-			behaviour->getComponent<OfflineComponent>()->setMaxBounces(value);
+		if (!profile_->playerModule->isPlaying)
+			profile_->offlineModule->bounces = value;
+		else
+			bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
 	}
 
 	void
 	RecordDock::onCrfChanged(double value)
 	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
-			behaviour->getProfile()->encodeModule->crf = value;
+		if (!profile_->playerModule->isPlaying)
+			profile_->encodeModule->crf = value;
+		else
+			crfSpinbox->setValue(profile_->encodeModule->crf);
 	}
 
 	void
@@ -347,7 +351,7 @@ namespace flower
 		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
-			behaviour->getProfile()->encodeModule->setVideoQuality(quality);
+			profile_->encodeModule->setVideoQuality(quality);
 
 			if (recordButton_->text() != tr("Stop Render"))
 			{
@@ -377,12 +381,9 @@ namespace flower
 	void
 	RecordDock::speed1Event(bool checked)
 	{
-		if (checked)
+		if (!profile_->playerModule->isPlaying && checked)
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-			if (behaviour)
-				behaviour->getProfile()->playerModule->recordFps = 24;
-
+			profile_->playerModule->recordFps = 24;
 			this->update();
 		}
 	}
@@ -390,12 +391,9 @@ namespace flower
 	void
 	RecordDock::speed2Event(bool checked)
 	{
-		if (checked)
+		if (!profile_->playerModule->isPlaying && checked)
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-			if (behaviour)
-				behaviour->getProfile()->playerModule->recordFps = 25;
-
+			profile_->playerModule->recordFps = 25;
 			this->update();
 		}
 	}
@@ -403,12 +401,9 @@ namespace flower
 	void
 	RecordDock::speed3Event(bool checked)
 	{
-		if (checked)
+		if (!profile_->playerModule->isPlaying && checked)
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-			if (behaviour)
-				behaviour->getProfile()->playerModule->recordFps = 30;
-
+			profile_->playerModule->recordFps = 32;
 			this->update();
 		}
 	}
@@ -416,12 +411,9 @@ namespace flower
 	void
 	RecordDock::speed4Event(bool checked)
 	{
-		if (checked)
+		if (!profile_->playerModule->isPlaying && checked)
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-			if (behaviour)
-				behaviour->getProfile()->playerModule->recordFps = 60;
-
+			profile_->playerModule->recordFps = 60;
 			this->update();
 		}
 	}
@@ -429,10 +421,9 @@ namespace flower
 	void
 	RecordDock::startEvent(int value)
 	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
+		if (!profile_->playerModule->isPlaying)
 		{
-			behaviour->getProfile()->playerModule->startFrame = value;
+			profile_->playerModule->startFrame = value;
 			this->update();
 		}
 	}
@@ -440,10 +431,9 @@ namespace flower
 	void
 	RecordDock::endEvent(int value)
 	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
+		if (!profile_->playerModule->isPlaying)
 		{
-			behaviour->getProfile()->playerModule->endFrame = value;
+			profile_->playerModule->endFrame = value;
 			this->update();
 		}
 	}
@@ -454,25 +444,23 @@ namespace flower
 		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
-			auto playerComponent = behaviour->getComponent<PlayerComponent>();
-			int timeLength = (int)std::round(playerComponent->timeLength() * 30);
+			int timeLength = (int)std::round(profile_->playerModule->timeLength * 30);
 
 			start_->setValue(0);
 			end_->setValue(timeLength);
 
-			auto profile = behaviour->getProfile();
-			if (profile->playerModule->recordFps == 24)
+			if (profile_->playerModule->recordFps == 24)
 				speed1_->click();
-			else if (profile->playerModule->recordFps == 25)
+			else if (profile_->playerModule->recordFps == 25)
 				speed2_->click();
-			else if (profile->playerModule->recordFps == 30)
+			else if (profile_->playerModule->recordFps == 30)
 				speed3_->click();
-			else if (profile->playerModule->recordFps == 60)
+			else if (profile_->playerModule->recordFps == 60)
 				speed4_->click();
 
-			sppSpinbox_->setValue(profile->playerModule->spp);
-			crfSpinbox->setValue(profile->encodeModule->crf);
-			bouncesSpinbox_->setValue(profile->offlineModule->bounces);
+			sppSpinbox_->setValue(profile_->playerModule->spp);
+			crfSpinbox->setValue(profile_->encodeModule->crf);
+			bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
 		}
 	}
 }

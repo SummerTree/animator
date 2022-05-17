@@ -594,93 +594,93 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">关闭</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="47"/>
+        <location filename="../views/record_dock.cpp" line="48"/>
         <source>Record</source>
         <translation>录制</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="55"/>
+        <location filename="../views/record_dock.cpp" line="56"/>
         <source>Render Quality</source>
         <translation>渲染质量</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="59"/>
+        <location filename="../views/record_dock.cpp" line="60"/>
         <source>Ultra Render</source>
         <translation>高清渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="65"/>
+        <location filename="../views/record_dock.cpp" line="66"/>
         <source>Fast Render</source>
         <translation>极速渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="73"/>
+        <location filename="../views/record_dock.cpp" line="74"/>
         <source>Frame Per Second</source>
         <translation>帧率</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="77"/>
+        <location filename="../views/record_dock.cpp" line="78"/>
         <source>24</source>
         <translation>24</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="83"/>
+        <location filename="../views/record_dock.cpp" line="84"/>
         <source>25</source>
         <translation>25</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="88"/>
+        <location filename="../views/record_dock.cpp" line="89"/>
         <source>30</source>
         <translation>30</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="93"/>
+        <location filename="../views/record_dock.cpp" line="94"/>
         <source>60</source>
         <translation>60</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="103"/>
+        <location filename="../views/record_dock.cpp" line="104"/>
         <source>Play:</source>
         <translation>播放：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="106"/>
+        <location filename="../views/record_dock.cpp" line="107"/>
         <source>Start</source>
         <translation>开始</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="109"/>
+        <location filename="../views/record_dock.cpp" line="110"/>
         <source>- End</source>
         <translation>- 结束</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="124"/>
+        <location filename="../views/record_dock.cpp" line="125"/>
         <source>Recursion depth per pixel:</source>
         <translation>每像素光线弹射次数：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="135"/>
+        <location filename="../views/record_dock.cpp" line="136"/>
         <source>Sample number per pixel:</source>
         <translation>每像素采样数:</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="153"/>
+        <location filename="../views/record_dock.cpp" line="154"/>
         <source>Constant Rate Factor (CRF):</source>
         <translation>固定码率系数(CRF):</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="166"/>
-        <location filename="../views/record_dock.cpp" line="288"/>
+        <location filename="../views/record_dock.cpp" line="167"/>
+        <location filename="../views/record_dock.cpp" line="289"/>
         <source>Start Render</source>
         <translation>开始渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="206"/>
+        <location filename="../views/record_dock.cpp" line="207"/>
         <source>Watermark</source>
         <translation>水印</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="209"/>
+        <location filename="../views/record_dock.cpp" line="210"/>
         <source>Render Settings</source>
         <translation>渲染设置</translation>
     </message>
@@ -689,28 +689,28 @@ $20 (Original cost $40)</source>
         <translation type="vanished">视频信息</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="265"/>
-        <location filename="../views/record_dock.cpp" line="352"/>
+        <location filename="../views/record_dock.cpp" line="266"/>
+        <location filename="../views/record_dock.cpp" line="356"/>
         <source>Stop Render</source>
         <translation>停止渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="270"/>
+        <location filename="../views/record_dock.cpp" line="271"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="271"/>
+        <location filename="../views/record_dock.cpp" line="272"/>
         <source>Failed to create file</source>
         <translation>创建文件失败</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="354"/>
+        <location filename="../views/record_dock.cpp" line="358"/>
         <source>MP4 Files (*.mp4)</source>
         <translation>MP4 Files (*.mp4)</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="354"/>
+        <location filename="../views/record_dock.cpp" line="358"/>
         <source>Save Video</source>
         <translation>保存视频</translation>
     </message>
