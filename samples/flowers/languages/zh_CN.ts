@@ -337,42 +337,42 @@ $20 (Original cost $40)</source>
         <translation>花楹渲染器(内测版本)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="180"/>
-        <location filename="../views/main_dock.cpp" line="220"/>
-        <location filename="../views/main_dock.cpp" line="259"/>
-        <location filename="../views/main_dock.cpp" line="298"/>
-        <location filename="../views/main_dock.cpp" line="337"/>
-        <location filename="../views/main_dock.cpp" line="376"/>
+        <location filename="../views/main_dock.cpp" line="179"/>
+        <location filename="../views/main_dock.cpp" line="219"/>
+        <location filename="../views/main_dock.cpp" line="258"/>
+        <location filename="../views/main_dock.cpp" line="297"/>
+        <location filename="../views/main_dock.cpp" line="336"/>
+        <location filename="../views/main_dock.cpp" line="375"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="181"/>
-        <location filename="../views/main_dock.cpp" line="221"/>
+        <location filename="../views/main_dock.cpp" line="180"/>
+        <location filename="../views/main_dock.cpp" line="220"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="192"/>
-        <location filename="../views/main_dock.cpp" line="231"/>
-        <location filename="../views/main_dock.cpp" line="270"/>
-        <location filename="../views/main_dock.cpp" line="309"/>
-        <location filename="../views/main_dock.cpp" line="348"/>
-        <location filename="../views/main_dock.cpp" line="387"/>
-        <location filename="../views/main_dock.cpp" line="420"/>
+        <location filename="../views/main_dock.cpp" line="191"/>
+        <location filename="../views/main_dock.cpp" line="230"/>
+        <location filename="../views/main_dock.cpp" line="269"/>
+        <location filename="../views/main_dock.cpp" line="308"/>
+        <location filename="../views/main_dock.cpp" line="347"/>
+        <location filename="../views/main_dock.cpp" line="386"/>
+        <location filename="../views/main_dock.cpp" line="419"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="260"/>
-        <location filename="../views/main_dock.cpp" line="299"/>
-        <location filename="../views/main_dock.cpp" line="338"/>
-        <location filename="../views/main_dock.cpp" line="377"/>
+        <location filename="../views/main_dock.cpp" line="259"/>
+        <location filename="../views/main_dock.cpp" line="298"/>
+        <location filename="../views/main_dock.cpp" line="337"/>
+        <location filename="../views/main_dock.cpp" line="376"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="421"/>
+        <location filename="../views/main_dock.cpp" line="420"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -656,7 +656,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="125"/>
         <source>Recursion depth per pixel:</source>
-        <translation>每像素递归深度：</translation>
+        <translation>每像素光线弹射次数：</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="136"/>
@@ -666,7 +666,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="154"/>
         <source>Constant Rate Factor (CRF):</source>
-        <translation type="unfinished"></translation>
+        <translation>固定码率系数(CRF)</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="176"/>
