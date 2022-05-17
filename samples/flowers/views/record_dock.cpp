@@ -304,9 +304,14 @@ namespace flower
 	RecordDock::onBouncesChanged(int value)
 	{
 		if (!profile_->playerModule->isPlaying)
-			profile_->offlineModule->bounces = value;
+		{
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			behaviour->getComponent<OfflineComponent>()->setMaxBounces(value);
+		}
 		else
+		{
 			bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
+		}
 	}
 
 	void

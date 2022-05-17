@@ -170,9 +170,9 @@ SET(NATIVE_FILED_DIALOG_LIST
 SOURCE_GROUP("launcher\\libs\\NativeFiledDialog" FILES ${NATIVE_FILED_DIALOG_LIST})
 
 SET(OIDN_LIST 
-	libs/oidn-1.2.3/include/OpenImageDenoise/oidn.h
-	libs/oidn-1.2.3/include/OpenImageDenoise/oidn.hpp
-	libs/oidn-1.2.3/include/OpenImageDenoise/version.h
+	libs/oidn-1.4.3/include/OpenImageDenoise/oidn.h
+	libs/oidn-1.4.3/include/OpenImageDenoise/oidn.hpp
+	libs/oidn-1.4.3/include/OpenImageDenoise/config.h
 )
 SOURCE_GROUP("launcher\\libs\\oidn" FILES ${OIDN_LIST})
 
@@ -213,20 +213,18 @@ ENDIF()
 
 TARGET_INCLUDE_DIRECTORIES(${LIB_OUTNAME} PRIVATE ${SOURCE_PATH})
 TARGET_INCLUDE_DIRECTORIES(${LIB_OUTNAME} PRIVATE ${SOURCE_PATH}/libs)
-TARGET_INCLUDE_DIRECTORIES(${LIB_OUTNAME} PRIVATE ${SOURCE_PATH}/libs/oidn-1.2.3/include)
+TARGET_INCLUDE_DIRECTORIES(${LIB_OUTNAME} PRIVATE ${SOURCE_PATH}/libs/oidn-1.4.3/include)
 TARGET_INCLUDE_DIRECTORIES(${LIB_OUTNAME} PRIVATE ${OCTOON_PATH_INCLUDE})
 
 CONAN_TARGET_LINK_LIBRARIES(${LIB_OUTNAME})
 
 TARGET_LINK_LIBRARIES(${LIB_OUTNAME} octoon)
-TARGET_LINK_LIBRARIES(${LIB_OUTNAME} ${SOURCE_PATH}/libs/oidn-1.2.3/lib/tbb.lib)
-TARGET_LINK_LIBRARIES(${LIB_OUTNAME} ${SOURCE_PATH}/libs/oidn-1.2.3/lib/tbbmalloc.lib)
-TARGET_LINK_LIBRARIES(${LIB_OUTNAME} ${SOURCE_PATH}/libs/oidn-1.2.3/lib/OpenImageDenoise.lib)
+TARGET_LINK_LIBRARIES(${LIB_OUTNAME} ${SOURCE_PATH}/libs/oidn-1.4.3/lib/tbb.lib)
+TARGET_LINK_LIBRARIES(${LIB_OUTNAME} ${SOURCE_PATH}/libs/oidn-1.4.3/lib/OpenImageDenoise.lib)
 
 TARGET_COPY_TO_OUTPUT_DIR(TARGET ${LIB_OUTNAME} FILES
-		${CMAKE_CURRENT_SOURCE_DIR}/libs/oidn-1.2.3/bin/OpenImageDenoise.dll
-		${CMAKE_CURRENT_SOURCE_DIR}/libs/oidn-1.2.3/bin/tbb.dll
-		${CMAKE_CURRENT_SOURCE_DIR}/libs/oidn-1.2.3/bin/tbbmalloc.dll
+		${CMAKE_CURRENT_SOURCE_DIR}/libs/oidn-1.4.3/bin/OpenImageDenoise.dll
+		${CMAKE_CURRENT_SOURCE_DIR}/libs/oidn-1.4.3/bin/tbb12.dll
 	)
 
 IF(OCTOON_BUILD_PLATFORM_EMSCRIPTEN)

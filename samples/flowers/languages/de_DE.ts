@@ -587,7 +587,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="266"/>
-        <location filename="../views/record_dock.cpp" line="356"/>
+        <location filename="../views/record_dock.cpp" line="361"/>
         <source>Stop Render</source>
         <translation type="unfinished"></translation>
     </message>
@@ -602,12 +602,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="358"/>
+        <location filename="../views/record_dock.cpp" line="363"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="358"/>
+        <location filename="../views/record_dock.cpp" line="363"/>
         <source>Save Video</source>
         <translation type="unfinished"></translation>
     </message>
