@@ -45,7 +45,7 @@ namespace flower
 		, timer_(new QTimer(this))
 	{
 		this->setObjectName("RecordDock");
-		this->setWindowTitle(u8"录制");
+		this->setWindowTitle(tr("Record"));
 
 		markButton_ = new QToolButton();
 		markButton_->setObjectName("mark");
@@ -53,17 +53,17 @@ namespace flower
 		markButton_->setIconSize(QSize(139, 143));
 
 		quality_ = new QLabel();
-		quality_->setText(u8"渲染质量");
+		quality_->setText(tr("Render Quality"));
 
 		select1_ = new QToolButton();
 		select1_->setObjectName("select1");
-		select1_->setText(u8"高清渲染");
+		select1_->setText(tr("Ultra Render"));
 		select1_->setCheckable(true);
 		select1_->click();
 
 		select2_ = new QToolButton();
 		select2_->setObjectName("select2");
-		select2_->setText(u8"极速渲染");
+		select2_->setText(tr("Fast Render"));
 		select2_->setCheckable(true);
 
 		group_ = new QButtonGroup();
@@ -71,27 +71,27 @@ namespace flower
 		group_->addButton(select2_, 1);
 
 		videoRatio_ = new QLabel();
-		videoRatio_->setText(u8"帧速率");
+		videoRatio_->setText(tr("Frame Per Second"));
 
 		speed1_ = new QToolButton();
 		speed1_->setObjectName("speed1");
-		speed1_->setText(u8"24");
+		speed1_->setText(tr("24"));
 		speed1_->setCheckable(true);
 		speed1_->click();
 
 		speed2_ = new QToolButton();
 		speed2_->setObjectName("speed2");
-		speed2_->setText(u8"25");
+		speed2_->setText(tr("25"));
 		speed2_->setCheckable(true);
 
 		speed3_ = new QToolButton();
 		speed3_->setObjectName("speed3");
-		speed3_->setText(u8"30");
+		speed3_->setText(tr("30"));
 		speed3_->setCheckable(true);
 
 		speed4_ = new QToolButton();
 		speed4_->setObjectName("speed4");
-		speed4_->setText(u8"60");
+		speed4_->setText(tr("60"));
 		speed4_->setCheckable(true);
 
 		speedGroup_ = new QButtonGroup();
@@ -101,13 +101,13 @@ namespace flower
 		speedGroup_->addButton(speed4_, 3);
 
 		frame_ = new QLabel();
-		frame_->setText(u8"播放:");
+		frame_->setText(tr("Play:"));
 
 		startLabel_ = new QLabel();
-		startLabel_->setText(u8"开始");
+		startLabel_->setText(tr("Start"));
 
 		endLabel_ = new QLabel();
-		endLabel_->setText(u8"- 结束");
+		endLabel_->setText(tr("- End"));
 
 		start_ = new SpinBox();
 		start_->setObjectName("start");
@@ -122,7 +122,7 @@ namespace flower
 		end_->setMaximum(99999);
 
 		bouncesLabel_ = new QLabel();
-		bouncesLabel_->setText(u8"每像素光线递归深度:");
+		bouncesLabel_->setText(tr("Recursion depth per pixel:"));
 		bouncesLabel_->setStyleSheet("color: rgb(200,200,200);");
 
 		bouncesSpinbox_ = new SpinBox();
@@ -133,7 +133,7 @@ namespace flower
 		bouncesSpinbox_->setFixedWidth(100);
 
 		sppLabel = new QLabel();
-		sppLabel->setText(u8"每像素采样数:");
+		sppLabel->setText(tr("Sample number per pixel:"));
 		sppLabel->setStyleSheet("color: rgb(200,200,200);");
 
 		sppSpinbox_ = new SpinBox();
@@ -151,7 +151,7 @@ namespace flower
 		crfSpinbox->setFixedWidth(100);
 
 		crfLabel = new QLabel();
-		crfLabel->setText(u8"压制质量(CRF):");
+		crfLabel->setText(tr("Constant Rate Factor (CRF):"));
 		crfLabel->setStyleSheet("color: rgb(200,200,200);");
 
 		frameLayout_ = new QHBoxLayout();
@@ -176,7 +176,7 @@ namespace flower
 
 		recordButton_ = new QToolButton();
 		recordButton_->setObjectName("render");
-		recordButton_->setText(u8"开始渲染");
+		recordButton_->setText(tr("Start Render"));
 		recordButton_->setContentsMargins(0, 0, 0, 0);
 
 		videoRatioLayout_ = new QHBoxLayout();
@@ -222,14 +222,14 @@ namespace flower
 		infoLayout->addWidget(currentFrame_);
 		infoLayout->addWidget(timeTotal_);
 
-		markSpoiler_ = new Spoiler(u8"水印");
+		markSpoiler_ = new Spoiler(tr("Watermark"));
 		markSpoiler_->setContentLayout(*markLayout);
 
-		videoSpoiler_ = new Spoiler(u8"渲染设置");
+		videoSpoiler_ = new Spoiler(tr("Render Settings"));
 		videoSpoiler_->setContentLayout(*videoLayout);
 		videoSpoiler_->toggleButton.click();
 
-		infoSpoiler_ = new Spoiler(u8"视频信息");
+		infoSpoiler_ = new Spoiler(tr("Video Information"));
 		infoSpoiler_->setContentLayout(*infoLayout);
 
 		auto contentLayout = new QVBoxLayout();
@@ -287,13 +287,13 @@ namespace flower
 				start_->setEnabled(false);
 				end_->setEnabled(false);
 				timer_->start();
-				recordButton_->setText(u8"停止渲染");
+				recordButton_->setText(tr("Stop Render"));
 			}
 			else
 			{
 				QMessageBox msg(this);
 				msg.setWindowTitle(tr("Error"));
-				msg.setText(u8"创建文件失败");
+				msg.setText(tr("Failed to create file"));
 				msg.setIcon(QMessageBox::Information);
 				msg.setStandardButtons(QMessageBox::Ok);
 
@@ -311,7 +311,7 @@ namespace flower
 			timer_->stop();
 			start_->setEnabled(true);
 			end_->setEnabled(true);
-			recordButton_->setText(u8"开始渲染");
+			recordButton_->setText(tr("Start Render"));
 			behaviour->stopRecord();
 		}
 	}
@@ -375,9 +375,9 @@ namespace flower
 		{
 			behaviour->getProfile()->h265Module->setVideoQuality(quality);
 
-			if (recordButton_->text() != u8"停止渲染")
+			if (recordButton_->text() != tr("Stop Render"))
 			{
-				QString fileName = QFileDialog::getSaveFileName(this, u8"录制视频", "", tr("MP4 Files (*.mp4)"));
+				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), "", tr("MP4 Files (*.mp4)"));
 				if (!fileName.isEmpty())
 					this->startRecord(fileName);
 			}
@@ -484,7 +484,7 @@ namespace flower
 			if (playerComponent)
 			{
 				auto time = std::max<int>(0, std::round(behaviour->getProfile()->playerModule->curTime * 30.0f));
-				currentFrame_->setText(QString(u8"当前视频渲染帧数：%1").arg(time));
+				currentFrame_->setText(tr("Rendering frame: %1").arg(time));
 			}
 		}
 	}
@@ -503,18 +503,18 @@ namespace flower
 			auto time = std::max<int>(0, std::round(behaviour->getProfile()->playerModule->curTime * 30.0f));
 			auto timeLength = std::max<int>(1, (endFrame - startFrame) / 30.0f * behaviour->getProfile()->playerModule->recordFps);
 
-			animation_->setText(QString(u8"视频动作帧数：%1").arg(animLength));
-			summary_->setText(QString(u8"视频渲染帧数：%1").arg(timeLength));	
-			currentFrame_->setText(QString(u8"当前视频渲染帧数：%1").arg(time));
+			animation_->setText(tr("Animation frame: %1").arg(animLength));
+			summary_->setText(tr("Video frame: %1").arg(timeLength));	
+			currentFrame_->setText(tr("Rendering frame: %1").arg(time));
 
 			if (select1_->isChecked())
 			{
-				timeTotal_->setText(QString(u8"视频渲染预估时间：%1分钟").arg((timeLength * 10 / 60)));
+				timeTotal_->setText(tr("Estimated time: %1 min").arg((timeLength * 10 / 60)));
 			}
 			else
 			{
 				recordButton_->setEnabled(true);
-				timeTotal_->setText(QString(u8"视频渲染预估时间：%1分钟").arg((timeLength / 15 / 60)));
+				timeTotal_->setText(tr("Estimated time: %1 min").arg((timeLength / 15 / 60)));
 			}
 		}
 	}
