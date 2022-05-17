@@ -333,10 +333,10 @@ namespace octoon
 			math::float3 sumVertex = math::float3::Zero;
 			math::float3 sumNormal = math::float3::Zero;
 
-			if (w0 != 0.0f) { auto& m = joints_[blend.bones[0]]; sumVertex += (m * v) * w0; sumNormal += (m * n) * w0; }
-			if (w1 != 0.0f) { auto& m = joints_[blend.bones[1]]; sumVertex += (m * v) * w1; sumNormal += (m * n) * w1; }
-			if (w2 != 0.0f) { auto& m = joints_[blend.bones[2]]; sumVertex += (m * v) * w2; sumNormal += (m * n) * w2; }
-			if (w3 != 0.0f) { auto& m = joints_[blend.bones[3]]; sumVertex += (m * v) * w3; sumNormal += (m * n) * w3; }
+			if (w0 != 0.0f) { auto& m = joints_[blend.bones[0]]; sumVertex += (m * v) * w0; sumNormal += ((math::float3x3)m * n) * w0; }
+			if (w1 != 0.0f) { auto& m = joints_[blend.bones[1]]; sumVertex += (m * v) * w1; sumNormal += ((math::float3x3)m * n) * w1; }
+			if (w2 != 0.0f) { auto& m = joints_[blend.bones[2]]; sumVertex += (m * v) * w2; sumNormal += ((math::float3x3)m * n) * w2; }
+			if (w3 != 0.0f) { auto& m = joints_[blend.bones[3]]; sumVertex += (m * v) * w3; sumNormal += ((math::float3x3)m * n) * w3; }
 
 			normals[i] = sumNormal;
 			vertices[i] = sumVertex;
