@@ -24,6 +24,8 @@ SET(VIDEO_FORWARE_LIST
 	${SOURCE_PATH}/forward_renderer.cpp
 	${HEADER_PATH}/draw_object_pass.h
 	${SOURCE_PATH}/draw_object_pass.cpp
+	${HEADER_PATH}/draw_selector_pass.h
+	${SOURCE_PATH}/draw_selector_pass.cpp
 	${HEADER_PATH}/draw_skybox_pass.h
 	${SOURCE_PATH}/draw_skybox_pass.cpp
 	${HEADER_PATH}/lights_shadow_caster_pass.h

@@ -43,7 +43,7 @@ namespace octoon
 		math::float3 color_;
 		math::float2 offset_;
 		math::float2 repeat_;
-		hal::GraphicsTexturePtr colorTexture_;
+		hal::GraphicsTexturePtr edgeTexture_;
 	};
 }
 

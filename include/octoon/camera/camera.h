@@ -56,8 +56,8 @@ namespace octoon
 
 		hal::ClearFlags clearflags_;
 
-		hal::GraphicsFramebufferPtr fbo_;
-		hal::GraphicsTexturePtr colorTexture_;
+		hal::GraphicsFramebufferPtr edgeFramebuffer_;
+		hal::GraphicsTexturePtr edgeTexture_;
 		hal::GraphicsTexturePtr depthTexture_;
 
 		mutable math::float4x4 viewProject_;
