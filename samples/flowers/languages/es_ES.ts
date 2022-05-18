@@ -739,12 +739,17 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::StatusBar</name>
     <message>
-        <location filename="../views/status_bar.cpp" line="37"/>
+        <location filename="../views/status_bar.cpp" line="38"/>
         <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/status_bar.cpp" line="39"/>
+        <location filename="../views/status_bar.cpp" line="40"/>
+        <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Minute %4 Second</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/status_bar.cpp" line="44"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
         <translation type="unfinished"></translation>
     </message>

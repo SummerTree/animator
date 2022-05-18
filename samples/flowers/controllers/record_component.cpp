@@ -26,6 +26,7 @@ namespace flower
 	RecordComponent::onEnable() noexcept
 	{
 		this->addMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
+		this->addMessageListener("flower:player:finish", std::bind(&RecordComponent::stopRecord, this));
 	}
 
 	void

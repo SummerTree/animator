@@ -248,6 +248,10 @@ namespace flower
 
 		this->setWidget(mainWidget_);
 
+		behaviour->addMessageListener("flower:player:finish", [this](const std::any&) {
+			this->updateDefaultSettings();
+		});
+
 		connect(select1_, SIGNAL(toggled(bool)), this, SLOT(select1Event(bool)));
 		connect(select2_, SIGNAL(toggled(bool)), this, SLOT(select2Event(bool)));
 		connect(speed1_, SIGNAL(toggled(bool)), this, SLOT(speed1Event(bool)));
