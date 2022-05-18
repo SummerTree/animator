@@ -700,6 +700,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="179"/>
+        <location filename="../views/record_dock.cpp" line="253"/>
         <location filename="../views/record_dock.cpp" line="336"/>
         <location filename="../views/record_dock.cpp" line="455"/>
         <source>Start Render</source>
@@ -720,7 +721,6 @@ $20 (Original cost $40)</source>
         <translation type="vanished">视频信息</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="253"/>
         <location filename="../views/record_dock.cpp" line="320"/>
         <location filename="../views/record_dock.cpp" line="453"/>
         <source>Stop Render</source>

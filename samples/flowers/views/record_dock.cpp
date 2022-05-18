@@ -250,7 +250,7 @@ namespace flower
 
 		behaviour->addMessageListener("flower:player:finish", [this](const std::any&) {
 			this->updateDefaultSettings();
-			recordButton_->setText(tr("Stop Render"));
+			recordButton_->setText(tr("Start Render"));
 		});
 
 		connect(select1_, SIGNAL(toggled(bool)), this, SLOT(select1Event(bool)));
