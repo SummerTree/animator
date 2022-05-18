@@ -1,6 +1,8 @@
 #include "client_module.h"
 #include <filesystem>
 
+#include "flower_version.h"
+
 namespace flower
 {
 	ClientModule::ClientModule() noexcept
@@ -38,7 +40,7 @@ namespace flower
 #endif
 		port = 443;
 		autoLogin = true;
-		version = "1.0.0";
+		version = FLOWERS_VERSION;
 	}
 
 	void 

@@ -5,6 +5,7 @@
 #include <qmimedata.h>
 #include <qprogressdialog.h>
 #include <QtConcurrent/qtconcurrentrun.h>
+#include "spdlog/spdlog.h"
 
 namespace flower
 {
@@ -102,6 +103,8 @@ namespace flower
 		this->connect(gpuButton_, SIGNAL(clicked()), this, SLOT(gpuEvent()));
 		this->connect(cleanupButton_, SIGNAL(clicked()), this, SLOT(cleanupEvent()));
 		this->connect(settingsButton_, SIGNAL(clicked()), this, SLOT(settingsEvent()));
+
+		spdlog::debug("create tool dock");
 	}
 
 	ToolDock::~ToolDock() noexcept
@@ -111,6 +114,7 @@ namespace flower
 	void
 	ToolDock::importEvent() noexcept
 	{
+		spdlog::debug("Entered importEvent");
 		try
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying)
@@ -175,6 +179,7 @@ namespace flower
 		}
 		catch (const std::exception& e)
 		{
+			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
 			QMessageBox msg(this);
 			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());
@@ -183,11 +188,13 @@ namespace flower
 
 			msg.exec();
 		}
+		spdlog::debug("Exited importEvent");
 	}
 
 	void 
 	ToolDock::audioEvent() noexcept
 	{
+		spdlog::debug("Entered audioEvent");
 		auto audioSignal = [this](bool enable) -> bool
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
@@ -214,6 +221,7 @@ namespace flower
 					}
 					catch (const std::exception& e)
 					{
+						spdlog::error("Function audioEvent raised exception: " + std::string(e.what()));
 						QMessageBox msg(this);
 						msg.setWindowTitle(tr("Error"));
 						msg.setText(e.what());
@@ -244,11 +252,13 @@ namespace flower
 				audioEnable_ = false;
 			}
 		}
+		spdlog::debug("Exited audioEvent");
 	}
 
 	void
 	ToolDock::shotEvent() noexcept
 	{
+		spdlog::debug("Entered shotEvent");
 		try
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
@@ -271,11 +281,13 @@ namespace flower
 
 			msg.exec();
 		}
+		spdlog::debug("Exited shotEvent");
 	}
 
 	void
 	ToolDock::gpuEvent() noexcept
 	{
+		spdlog::debug("Entered gpuEvent");
 		auto gpuSignal = [this](bool enable) -> bool
 		{
 			try
@@ -335,6 +347,7 @@ namespace flower
 	void
 	ToolDock::cleanupEvent() noexcept
 	{
+		spdlog::debug("Entered cleanupEvent");
 		try
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying)
@@ -354,11 +367,13 @@ namespace flower
 
 			msg.exec();
 		}
+		spdlog::debug("Exited cleanupEvent");
 	}
 
 	void
 	ToolDock::settingsEvent() noexcept
 	{
+		spdlog::debug("Entered settingsEvent");
 		SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<FlowerBehaviour>());
 		window->setParent(this);
 		window->show();
@@ -367,6 +382,7 @@ namespace flower
 	void
 	ToolDock::paintEvent(QPaintEvent* e) noexcept
 	{
+		spdlog::debug("Entered paintEvent");
 		if (this->profile_->offlineModule->getEnable())
 		{
 			if (!gpuEnable_)

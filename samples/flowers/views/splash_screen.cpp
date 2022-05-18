@@ -1,6 +1,8 @@
-#include "splash_screen.h"
+﻿#include "splash_screen.h"
 #include <qapplication.h>
 #include <qscreen.h>
+
+#include "flower_version.h"
 
 namespace flower
 {
@@ -40,7 +42,7 @@ namespace flower
 
 		versionInfo = new QLabel(this);
 		versionInfo->setObjectName("version");
-		versionInfo->setText(tr("Version: 1.0.0"));
+		versionInfo->setText(tr("Version: ") + QString::fromStdString(FLOWERS_VERSION));
 		versionInfo->setAlignment(Qt::AlignRight);
 
 		message = new QLabel(this);

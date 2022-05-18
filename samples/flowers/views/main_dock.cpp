@@ -241,6 +241,7 @@ namespace flower
 			msg.setStandardButtons(QMessageBox::Ok);
 
 			msg.exec();
+			spdlog::error("Function onLightSignal raised exception: " + std::string(e.what()));
 		}
 	}
 
@@ -269,6 +270,7 @@ namespace flower
 				msg.setStandardButtons(QMessageBox::Ok);
 
 				msg.exec();
+				spdlog::warn("Fail to get core component");
 			}
 		}
 		catch (const std::exception& e)
@@ -280,6 +282,7 @@ namespace flower
 			msg.setStandardButtons(QMessageBox::Ok);
 
 			msg.exec();
+			spdlog::error("Function onSunSignal raised exception: " + std::string(e.what()));
 		}
 	}
 
