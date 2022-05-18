@@ -8,6 +8,7 @@ SET(CMAKE_AUTOMOC ON)
 
 SET(MAIN_LIST
 	${SOURCE_PATH}/main.cpp
+	${SOURCE_PATH}/flower_version.h
 	${SOURCE_PATH}/flower_behaviour.h
 	${SOURCE_PATH}/flower_behaviour.cpp
 	${SOURCE_PATH}/flower_component.h
