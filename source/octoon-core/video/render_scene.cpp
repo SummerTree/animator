@@ -36,8 +36,12 @@ namespace octoon
 			for (auto& it : renderables_)
 			{
 				it->setDirty(true);
-				for (auto& mat : it->getMaterials())
-					mat->setDirty(true);
+
+				for (auto& material : it->getMaterials())
+				{
+					if (material)
+						material->setDirty(true);
+				}
 			}
 
 			this->enableGlobalIllumination_ = enable;

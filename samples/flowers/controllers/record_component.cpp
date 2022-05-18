@@ -317,7 +317,7 @@ namespace flower
 	RecordComponent::onRecord() noexcept
 	{
 		auto& profile = this->getContext()->profile;
-		if (profile->encodeModule->enable)
+		if (profile->encodeModule->enable && profile->recordModule->active)
 		{
 			this->captureImage();
 
