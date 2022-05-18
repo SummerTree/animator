@@ -25,11 +25,14 @@ namespace flower
 	void
 	RecordComponent::onEnable() noexcept
 	{
+		this->addMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
 	}
 
 	void
 	RecordComponent::onDisable() noexcept
 	{
+		this->removeMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
+
 		this->stopRecord();
 	}
 
@@ -279,8 +282,6 @@ namespace flower
 		this->setupDenoise();
 
 		profile->recordModule->active = true;
-
-		this->addMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
 	
 		return true;
 	}
@@ -291,8 +292,6 @@ namespace flower
 		auto& profile = this->getContext()->profile;
 
 		profile->recordModule->active = false;
-
-		this->removeMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
 
 		if (profile->encodeModule->enable)
 		{
