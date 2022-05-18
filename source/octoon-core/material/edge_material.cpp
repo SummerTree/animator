@@ -26,17 +26,16 @@ void main() {
 	delta += L0 - dot(texture2D(map, vUv + vec2(-map_TexelSize.x, 0.0f)).rgb, weights);
 	delta += L0 - dot(texture2D(map, vUv + vec2(0.0f, map_TexelSize.y)).rgb, weights);
 	delta += L0 - dot(texture2D(map, vUv + vec2(map_TexelSize.x, 0.0f)).rgb, weights);
-	delta += L0 - dot(texture2D(map, vUv + vec2(0.0f, -map_TexelSize.y) * 2.0f).rgb, weights);
+	delta += L0 - dot(texture2D(map, vUv + vec2(0.0f, -map_TexelSize.y)).rgb, weights);
 	delta += L0 - dot(texture2D(map, vUv + vec2(-map_TexelSize.x, 0.0f) * 2.0f).rgb, weights);
 	delta += L0 - dot(texture2D(map, vUv + vec2(0.0f, map_TexelSize.y) * 2.0f).rgb, weights);
 	delta += L0 - dot(texture2D(map, vUv + vec2(map_TexelSize.x, 0.0f) * 2.0f).rgb, weights);
 	delta += L0 - dot(texture2D(map, vUv + vec2(0.0f, -map_TexelSize.y) * 2.0f).rgb, weights);
-	delta += L0 - dot(texture2D(map, vUv + vec2(0.0f, -map_TexelSize.y) * 2.0f).rgb, weights);
+	delta += L0 - dot(texture2D(map, vUv + vec2(0.0f, -map_TexelSize.y) * 3.0f).rgb, weights);
 	delta += L0 - dot(texture2D(map, vUv + vec2(-map_TexelSize.x, 0.0f) * 3.0f).rgb, weights);
 	delta += L0 - dot(texture2D(map, vUv + vec2(0.0f, map_TexelSize.y) * 3.0f).rgb, weights);
 	delta += L0 - dot(texture2D(map, vUv + vec2(map_TexelSize.x, 0.0f) * 3.0f).rgb, weights);
-	delta += L0 - dot(texture2D(map, vUv + vec2(0.0f, -map_TexelSize.y) * 3.0f).rgb, weights);
-	delta /= 13;
+	delta /= 12;
 
 	float edge = step(1e-5, delta);
 
