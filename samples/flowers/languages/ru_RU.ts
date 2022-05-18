@@ -17,32 +17,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="96"/>
-        <source>aperture:</source>
+        <location filename="../views/camera_dock.cpp" line="92"/>
+        <source>fov:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="110"/>
-        <source>focalPoint:</source>
+        <source>aperture:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="123"/>
-        <location filename="../views/camera_dock.cpp" line="188"/>
-        <location filename="../views/camera_dock.cpp" line="213"/>
-        <location filename="../views/camera_dock.cpp" line="249"/>
+        <location filename="../views/camera_dock.cpp" line="124"/>
+        <source>Focus Distance:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="137"/>
+        <location filename="../views/camera_dock.cpp" line="208"/>
+        <location filename="../views/camera_dock.cpp" line="242"/>
+        <location filename="../views/camera_dock.cpp" line="282"/>
         <source>Target: Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="180"/>
-        <location filename="../views/camera_dock.cpp" line="245"/>
+        <location filename="../views/camera_dock.cpp" line="200"/>
+        <location filename="../views/camera_dock.cpp" line="278"/>
         <source>Target: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="182"/>
-        <location filename="../views/camera_dock.cpp" line="239"/>
+        <location filename="../views/camera_dock.cpp" line="202"/>
+        <location filename="../views/camera_dock.cpp" line="277"/>
         <source>Auto-measuring</source>
         <translation type="unfinished"></translation>
     </message>

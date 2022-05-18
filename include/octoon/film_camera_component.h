@@ -17,7 +17,7 @@ namespace octoon
 		void setFilmSize(float width) noexcept;
 		void setAperture(float aperture) noexcept;
 		void setFocalLength(float length) noexcept;
-		void setFocalDistance(float distance) noexcept;
+		void setFocusDistance(float distance) noexcept;
 		void setZoom(float zoom) noexcept;
 		void setCanvasWidth(float width) noexcept;
 		void setNear(float znear) noexcept;

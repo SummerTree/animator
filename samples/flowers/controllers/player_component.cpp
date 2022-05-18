@@ -438,7 +438,7 @@ namespace flower
 					auto& aabb = mesh->getBoundingBox(model->dofTarget->mesh);
 					auto center = hitObject->getComponent<octoon::TransformComponent>()->getTransform() * aabb.center();
 
-					filmCamera->setFocalDistance(octoon::math::distance(center, cameraPos));
+					filmCamera->setFocusDistance(octoon::math::distance(center, cameraPos));
 				}
 			}
 		}

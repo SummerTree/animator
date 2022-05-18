@@ -166,7 +166,7 @@ namespace flower
 				if (!materialData.isEmpty())
 				{
 					auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-					auto selectedItem = behaviour->getProfile()->dragModule->selectedItemHover_;
+					auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
 					if (selectedItem)
 					{
 						auto hit = selectedItem.value();

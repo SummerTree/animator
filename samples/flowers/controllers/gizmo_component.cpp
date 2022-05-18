@@ -269,7 +269,7 @@ namespace flower
 	void
 	GizmoComponent::handleMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
-		auto pickerObject = this->getContext()->profile->dragModule->selectedItem_.value().object.lock();
+		auto pickerObject = this->getContext()->profile->selectorModule->selectedItem_.value().object.lock();
 		if (!pickerObject)
 			return;
 
@@ -309,7 +309,7 @@ namespace flower
 	void
 	GizmoComponent::handleMouseMove(const octoon::input::InputEvent& event) noexcept
 	{
-		auto pickerObject = this->getContext()->profile->dragModule->selectedItem_.value().object.lock();
+		auto pickerObject = this->getContext()->profile->selectorModule->selectedItem_.value().object.lock();
 		if (!pickerObject)
 			return;
 
@@ -364,7 +364,7 @@ namespace flower
 	void
 	GizmoComponent::onMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
-		if (this->getContext()->profile->dragModule->selectedItem_)
+		if (this->getContext()->profile->selectorModule->selectedItem_)
 		{
 			if (event.button.button == octoon::input::InputButton::Code::Left)
 				this->handleMouseDown(event);
@@ -380,7 +380,7 @@ namespace flower
 	void
 	GizmoComponent::onMouseMotion(const octoon::input::InputEvent& event) noexcept
 	{
-		if (this->getContext()->profile->dragModule->selectedItem_)
+		if (this->getContext()->profile->selectorModule->selectedItem_)
 		{
 			if (this->isCapture())
 				this->handleMouseMove(event);
@@ -394,9 +394,9 @@ namespace flower
 	{
 		auto& profile = this->getContext()->profile;
 
-		if (profile->dragModule->selectedItem_ && !profile->playerModule->isPlaying)
+		if (profile->selectorModule->selectedItem_ && !profile->playerModule->isPlaying)
 		{
-			auto item = profile->dragModule->selectedItem_->object.lock();
+			auto item = profile->selectorModule->selectedItem_->object.lock();
 			if (item)
 				gizmo_[gizmoMode_]->handleGizmos->setActiveDownwards(true);
 			else

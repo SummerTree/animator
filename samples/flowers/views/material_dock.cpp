@@ -1660,7 +1660,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 			if (behaviour->isOpen())
 			{
-				auto selectedItem = behaviour->getProfile()->dragModule->selectedItem_;
+				auto selectedItem = behaviour->getProfile()->selectorModule->selectedItem_;
 				if (selectedItem)
 				{
 					auto hit = selectedItem.value();

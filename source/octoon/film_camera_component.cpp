@@ -57,9 +57,9 @@ namespace octoon
 	}
 
 	void
-	FilmCameraComponent::setFocalDistance(float distance) noexcept
+	FilmCameraComponent::setFocusDistance(float distance) noexcept
 	{
-		camera_->setFocalDistance(distance);
+		camera_->setFocusDistance(distance);
 	}
 
 	void

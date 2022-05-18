@@ -1,19 +1,19 @@
-#include "drag_component.h"
+#include "selector_component.h"
 #include "flower_behaviour.h"
 #include <octoon/mesh/cube_wireframe_mesh.h>
 
 namespace flower
 {
-	DragComponent::DragComponent() noexcept
+	SelectorComponent::SelectorComponent() noexcept
 	{
 	}
 
-	DragComponent::~DragComponent() noexcept
+	SelectorComponent::~SelectorComponent() noexcept
 	{
 	}
 
 	std::optional<octoon::RaycastHit>
-	DragComponent::intersectObjects(float x, float y) noexcept
+	SelectorComponent::intersectObjects(float x, float y) noexcept
 	{
 		auto preofile = this->getContext()->profile;
 		if (preofile->entitiesModule->camera)
@@ -32,7 +32,7 @@ namespace flower
 	}
 
 	void
-	DragComponent::handleMouseDown(const octoon::input::InputEvent& event) noexcept
+	SelectorComponent::handleMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
 		auto& model = this->getModel();
 		auto& profile = this->getContext()->profile;
@@ -55,12 +55,12 @@ namespace flower
 	}
 
 	void
-	DragComponent::handleMouseMove(const octoon::input::InputEvent& event) noexcept
+	SelectorComponent::handleMouseMove(const octoon::input::InputEvent& event) noexcept
 	{
 	}
 
 	void
-	DragComponent::handleMouseHover(const octoon::input::InputEvent& event) noexcept
+	SelectorComponent::handleMouseHover(const octoon::input::InputEvent& event) noexcept
 	{
 		auto& model = this->getModel();
 		auto& profile = this->getContext()->profile;
@@ -78,7 +78,7 @@ namespace flower
 	}
 
 	void
-	DragComponent::onEnable() noexcept
+	SelectorComponent::onEnable() noexcept
 	{
 		this->gizmoHoverMtl_ = std::make_shared<octoon::LineBasicMaterial>(octoon::math::float3(0, 1, 0));
 		this->gizmoSelectedMtl_ = std::make_shared<octoon::LineBasicMaterial>(octoon::math::float3(0, 0, 1));
@@ -97,27 +97,27 @@ namespace flower
 	}
 
 	void
-	DragComponent::onDisable() noexcept
+	SelectorComponent::onDisable() noexcept
 	{
 		this->gizmoHover_ = nullptr;
 		this->gizmoSelected_ = nullptr;
 	}
 
 	void
-	DragComponent::onMouseDown(const octoon::input::InputEvent& event) noexcept
+	SelectorComponent::onMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
 		if (event.button.button == octoon::input::InputButton::Left)
 			this->handleMouseDown(event);
 	}
 
 	void
-	DragComponent::onMouseUp(const octoon::input::InputEvent& event) noexcept
+	SelectorComponent::onMouseUp(const octoon::input::InputEvent& event) noexcept
 	{
 		this->releaseEvent();
 	}
 
 	void
-	DragComponent::onMouseMotion(const octoon::input::InputEvent& event) noexcept
+	SelectorComponent::onMouseMotion(const octoon::input::InputEvent& event) noexcept
 	{
 		auto inputFeature = this->getFeature<octoon::InputFeature>();
 		if (inputFeature)
@@ -134,7 +134,7 @@ namespace flower
 	}
 
 	void
-	DragComponent::onUpdate() noexcept
+	SelectorComponent::onUpdate() noexcept
 	{
 		auto& model = this->getModel();
 		auto& profile = this->getContext()->profile;

@@ -93,7 +93,7 @@ namespace flower
 		uiComponent_ = std::make_unique<UIComponent>();
 		markComponent_ = std::make_unique<MarkComponent>();
 		materialComponent_ = std::make_unique<MaterialComponent>();
-		dragComponent_ = std::make_unique<DragComponent>();
+		selectorComponent_ = std::make_unique<SelectorComponent>();
 		gizmoComponent_ = std::make_unique<GizmoComponent>();
 		gridComponent_ = std::make_unique<GridComponent>();
 		lightComponent_ = std::make_unique<LightComponent>();
@@ -107,8 +107,8 @@ namespace flower
 		uiComponent_->init(context_, profile_->recordModule);
 		markComponent_->init(context_, profile_->markModule);
 		materialComponent_->init(context_, profile_->materialModule);
-		gizmoComponent_->init(context_, profile_->dragModule);
-		dragComponent_->init(context_, profile_->dragModule);
+		gizmoComponent_->init(context_, profile_->selectorModule);
+		selectorComponent_->init(context_, profile_->selectorModule);
 		gridComponent_->init(context_, profile_->gridModule);
 		lightComponent_->init(context_, profile_->entitiesModule);
 
@@ -119,7 +119,7 @@ namespace flower
 		this->addComponent(uiComponent_.get());
 		this->addComponent(materialComponent_.get());
 		this->addComponent(gizmoComponent_.get());
-		this->addComponent(dragComponent_.get());
+		this->addComponent(selectorComponent_.get());
 		this->addComponent(gridComponent_.get());
 		this->addComponent(lightComponent_.get());
 		this->addComponent(recordComponent_.get());
@@ -162,7 +162,7 @@ namespace flower
 		profile_.reset();
 		uiComponent_.reset();
 		materialComponent_.reset();
-		dragComponent_.reset();
+		selectorComponent_.reset();
 		gridComponent_.reset();
 
 		auto baseFeature = this->getFeature<octoon::GameBaseFeature>();
