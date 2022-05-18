@@ -32,6 +32,8 @@ namespace octoon
 		void setMaterials(const Materials& material, bool sharedMaterial = false) noexcept;
 		const Materials& getMaterials() const noexcept;
 
+		void clearMaterials() noexcept;
+
 		bool isSharedMaterial() const noexcept;
 		void isSharedMaterial(bool sharedMaterial) noexcept;
 

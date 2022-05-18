@@ -158,13 +158,14 @@ namespace flower
 
 				if (mesh)
 				{
-					auto& box = mesh->getBoundingBox(hit.mesh).box();
-
 					auto gizmoTransform = this->gizmoSelected_->getComponent<octoon::TransformComponent>();
-					gizmoTransform->setLocalScale(box.size());
-					gizmoTransform->setLocalTranslate(hitObject->getComponent<octoon::TransformComponent>()->getTransform() * box.center());
+					gizmoTransform->setTransform(hitObject->getComponent<octoon::TransformComponent>()->getTransform());
+					gizmoTransform->getComponent<octoon::MeshFilterComponent>()->setMesh(mesh);
 
-					this->gizmoSelected_->getComponent<octoon::MeshRendererComponent>()->setVisible(true);
+					auto meshRenderer = this->gizmoSelected_->getComponent<octoon::MeshRendererComponent>();
+					meshRenderer->setVisible(true);
+					meshRenderer->clearMaterials();
+					meshRenderer->setMaterial(this->gizmoSelectedMtl_, hit.mesh);
 				}
 			}
 			else
@@ -180,10 +181,11 @@ namespace flower
 
 		if (model->selectedItemHover_ && model->selectedItem_ != model->selectedItemHover_ && !profile->playerModule->isPlaying)
 		{
-			auto hit = model->selectedItemHover_.value();
-			auto hitObject = hit.object.lock();
-			if (hitObject)
+			if (model->selectedItemHover_)
 			{
+				auto hit = model->selectedItemHover_.value();
+				auto hitObject = hit.object.lock();
+
 				octoon::MeshPtr mesh;
 				auto skinnedMesh = hit.object.lock()->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (skinnedMesh)
@@ -197,13 +199,14 @@ namespace flower
 
 				if (mesh)
 				{
-					auto& box = mesh->getBoundingBox(hit.mesh).box();
-
 					auto gizmoTransform = this->gizmoHover_->getComponent<octoon::TransformComponent>();
-					gizmoTransform->setLocalScale(box.size());
-					gizmoTransform->setLocalTranslate(hitObject->getComponent<octoon::TransformComponent>()->getTransform() * box.center());
+					gizmoTransform->setTransform(hitObject->getComponent<octoon::TransformComponent>()->getTransform());
+					gizmoTransform->getComponent<octoon::MeshFilterComponent>()->setMesh(mesh);
 
-					this->gizmoHover_->getComponent<octoon::MeshRendererComponent>()->setVisible(true);
+					auto meshRenderer = this->gizmoHover_->getComponent<octoon::MeshRendererComponent>();
+					meshRenderer->setVisible(true);
+					meshRenderer->clearMaterials();
+					meshRenderer->setMaterial(this->gizmoHoverMtl_, hit.mesh);
 				}
 			}
 			else

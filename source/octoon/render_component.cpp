@@ -89,6 +89,13 @@ namespace octoon
 		return materials_;
 	}
 
+	void
+	RenderComponent::clearMaterials() noexcept
+	{
+		materials_.clear();
+		this->onMaterialReplace(materials_);
+	}
+
 	bool
 	RenderComponent::isSharedMaterial() const noexcept
 	{

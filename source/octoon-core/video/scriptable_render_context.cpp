@@ -315,7 +315,8 @@ namespace octoon
 			for (std::size_t i = 0; i < geometry->getMaterials().size(); ++i)
 			{
 				auto& mat = geometry->getMaterial(i);
-				materialCollector.Collect(mat);
+				if (mat)
+					materialCollector.Collect(mat);
 			}
 		}
 
@@ -762,17 +763,19 @@ namespace octoon
 
 		if (geometry.getVisible())
 		{
-			for (std::size_t i = 0; i < geometry.getMaterials().size(); i++)
+			auto numMaterials = geometry.getMaterials().size();
+
+			for (std::size_t i = 0; i < numMaterials; i++)
 			{
 				auto mesh = geometry.getMesh();
-				auto material = geometry.getMaterials()[i];
+				auto material = geometry.getMaterial(i);
 				if (material && overrideMaterial)
 				{
 					if (material->getPrimitiveType() == overrideMaterial->getPrimitiveType())
 						material = overrideMaterial;
 				}
 
-				if (mesh && material)
+				if (material && mesh && i < mesh->getNumSubsets())
 				{
 					this->setMaterial(overrideMaterial ? overrideMaterial : material, camera, geometry);
 					this->drawMesh(mesh, i);
