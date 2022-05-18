@@ -250,6 +250,7 @@ namespace flower
 
 		behaviour->addMessageListener("flower:player:finish", [this](const std::any&) {
 			this->updateDefaultSettings();
+			recordButton_->setText(tr("Stop Render"));
 		});
 
 		connect(select1_, SIGNAL(toggled(bool)), this, SLOT(select1Event(bool)));
@@ -447,6 +448,11 @@ namespace flower
 	{
 		start_->setValue(0);
 		end_->setValue(profile_->playerModule->endFrame);
+
+		if (profile_->recordModule->active)
+			recordButton_->setText(tr("Stop Render"));
+		else
+			recordButton_->setText(tr("Start Render"));
 
 		auto quality = profile_->encodeModule->quality;
 		if (quality == VideoQuality::High)
