@@ -140,7 +140,7 @@ namespace flower
 		focusTargetButton_ = new FocalTargetWindow();
 		focusTargetButton_->setIcon(QIcon(":res/icons/target.png"));
 		focusTargetButton_->setIconSize(QSize(48, 48));
-		focusTargetButton_->setToolTip(u8"通过拖拽该图标到目标模型可绑定模型并开启自动测距");
+		focusTargetButton_->setToolTip(u8"拖拽该图标到目标模型可开启自动追焦");
 
 		auto fovLayout = new QHBoxLayout;
 		fovLayout->addWidget(fovLabel_);
