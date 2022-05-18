@@ -338,7 +338,10 @@ namespace flower
 	RecordDock::select1Event(bool checked)
 	{
 		if (!profile_->playerModule->isPlaying)
-			profile_->encodeModule->setVideoQuality(VideoQuality::High);
+		{
+			if (checked)
+				profile_->encodeModule->setVideoQuality(VideoQuality::High);
+		}
 		else
 			this->updateDefaultSettings();
 	}
@@ -347,7 +350,10 @@ namespace flower
 	RecordDock::select2Event(bool checked)
 	{
 		if (!profile_->playerModule->isPlaying)
-			profile_->encodeModule->setVideoQuality(VideoQuality::Medium);
+		{
+			if (checked)
+				profile_->encodeModule->setVideoQuality(VideoQuality::Medium);
+		}
 		else
 			this->updateDefaultSettings();
 	}
