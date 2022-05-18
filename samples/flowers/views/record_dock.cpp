@@ -247,8 +247,7 @@ namespace flower
 		mainWidget_->setLayout(mainLayout_);
 
 		this->setWidget(mainWidget_);
-		
-		connect(recordButton_, SIGNAL(clicked()), this, SLOT(clickEvent()));
+
 		connect(select1_, SIGNAL(toggled(bool)), this, SLOT(select1Event(bool)));
 		connect(select2_, SIGNAL(toggled(bool)), this, SLOT(select2Event(bool)));
 		connect(speed1_, SIGNAL(toggled(bool)), this, SLOT(speed1Event(bool)));
@@ -261,48 +260,11 @@ namespace flower
 		connect(sppSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onSppChanged(int)));
 		connect(bouncesSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onBouncesChanged(int)));
 		connect(crfSpinbox, SIGNAL(valueChanged(double)), this, SLOT(onCrfChanged(double)));
+		connect(recordButton_, SIGNAL(clicked(bool)), this, SLOT(recordEvent(bool)));
 	}
 
 	RecordDock::~RecordDock() noexcept
 	{
-	}
-
-	void
-	RecordDock::startRecord(QString fileName)
-	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
-		{
-			if (behaviour->startRecord(fileName.toUtf8().data()))
-			{
-				start_->setEnabled(false);
-				end_->setEnabled(false);
-				recordButton_->setText(tr("Stop Render"));
-			}
-			else
-			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Error"));
-				msg.setText(tr("Failed to create file"));
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
-			}
-		}
-	}
-
-	void
-	RecordDock::stopRecord()
-	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-		if (behaviour)
-		{
-			start_->setEnabled(true);
-			end_->setEnabled(true);
-			recordButton_->setText(tr("Start Render"));
-			behaviour->stopRecord();
-		}
 	}
 
 	void
@@ -338,28 +300,36 @@ namespace flower
 	}
 
 	void
-	RecordDock::clickEvent()
+	RecordDock::recordEvent(bool)
 	{
-		VideoQuality quality = VideoQuality::Medium;
-		if (select1_->isChecked())
-			quality = VideoQuality::High;
-		if (select2_->isChecked())
-			quality = VideoQuality::Medium;
-
 		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
 		if (behaviour)
 		{
-			profile_->encodeModule->setVideoQuality(quality);
-
-			if (recordButton_->text() != tr("Stop Render"))
+			if (!profile_->recordModule->active)
 			{
 				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), "", tr("MP4 Files (*.mp4)"));
 				if (!fileName.isEmpty())
-					this->startRecord(fileName);
+				{
+					if (behaviour->startRecord(fileName.toUtf8().data()))
+					{
+						recordButton_->setText(tr("Stop Render"));
+					}
+					else
+					{
+						QMessageBox msg(this);
+						msg.setWindowTitle(tr("Error"));
+						msg.setText(tr("Failed to create file"));
+						msg.setIcon(QMessageBox::Information);
+						msg.setStandardButtons(QMessageBox::Ok);
+
+						msg.exec();
+					}
+				}
 			}
 			else
 			{
-				this->stopRecord();
+				recordButton_->setText(tr("Start Render"));
+				behaviour->stopRecord();
 			}
 		}
 	}
@@ -367,13 +337,19 @@ namespace flower
 	void
 	RecordDock::select1Event(bool checked)
 	{
-		this->update();
+		if (!profile_->playerModule->isPlaying)
+			profile_->encodeModule->setVideoQuality(VideoQuality::High);
+		else
+			this->updateDefaultSettings();
 	}
 	
 	void
 	RecordDock::select2Event(bool checked)
 	{
-		this->update();
+		if (!profile_->playerModule->isPlaying)
+			profile_->encodeModule->setVideoQuality(VideoQuality::Medium);
+		else
+			this->updateDefaultSettings();
 	}
 
 	void
@@ -386,66 +362,101 @@ namespace flower
 			else
 				profile_->recordModule->denoise = false;
 		}
+		else
+			this->updateDefaultSettings();
 	}
 
 	void
 	RecordDock::speed1Event(bool checked)
 	{
-		if (!profile_->playerModule->isPlaying && checked)
+		if (!profile_->playerModule->isPlaying)
 		{
-			profile_->playerModule->recordFps = 24;
-			this->update();
-		}
+			if (checked)
+				profile_->playerModule->recordFps = 24;
+		}			
+		else
+			this->updateDefaultSettings();
 	}
 
 	void
 	RecordDock::speed2Event(bool checked)
 	{
-		if (!profile_->playerModule->isPlaying && checked)
+		if (!profile_->playerModule->isPlaying)
 		{
-			profile_->playerModule->recordFps = 25;
-			this->update();
+			if (checked)
+				profile_->playerModule->recordFps = 25;
 		}
+		else
+			this->updateDefaultSettings();
 	}
 
 	void
 	RecordDock::speed3Event(bool checked)
 	{
-		if (!profile_->playerModule->isPlaying && checked)
+		if (!profile_->playerModule->isPlaying)
 		{
-			profile_->playerModule->recordFps = 32;
-			this->update();
+			if (checked)
+				profile_->playerModule->recordFps = 30;
 		}
+		else
+			this->updateDefaultSettings();
 	}
 
 	void
 	RecordDock::speed4Event(bool checked)
 	{
-		if (!profile_->playerModule->isPlaying && checked)
+		if (!profile_->playerModule->isPlaying)
 		{
-			profile_->playerModule->recordFps = 60;
-			this->update();
+			if (checked)
+				profile_->playerModule->recordFps = 60;
 		}
+		else
+			this->updateDefaultSettings();
 	}
 
 	void
 	RecordDock::startEvent(int value)
 	{
 		if (!profile_->playerModule->isPlaying)
-		{
 			profile_->playerModule->startFrame = value;
-			this->update();
-		}
+		else
+			this->updateDefaultSettings();
 	}
 
 	void
 	RecordDock::endEvent(int value)
 	{
 		if (!profile_->playerModule->isPlaying)
-		{
 			profile_->playerModule->endFrame = value;
-			this->update();
-		}
+		else
+			this->updateDefaultSettings();
+	}
+
+	void 
+	RecordDock::updateDefaultSettings()
+	{
+		start_->setValue(0);
+		end_->setValue(profile_->playerModule->endFrame);
+
+		auto quality = profile_->encodeModule->quality;
+		if (quality == VideoQuality::High)
+			select1_->click();
+		else if (quality == VideoQuality::Medium)
+			select2_->click();
+
+		if (profile_->playerModule->recordFps == 24)
+			speed1_->click();
+		else if (profile_->playerModule->recordFps == 25)
+			speed2_->click();
+		else if (profile_->playerModule->recordFps == 30)
+			speed3_->click();
+		else if (profile_->playerModule->recordFps == 60)
+			speed4_->click();
+
+		denoiseButton_->setCheckState(profile_->recordModule->denoise ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+		sppSpinbox_->setValue(profile_->playerModule->spp);
+		crfSpinbox->setValue(profile_->encodeModule->crf);
+		bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
 	}
 
 	void
@@ -476,26 +487,5 @@ namespace flower
 		contentWidgetArea_->resize(contentWidgetArea_->size().width(), mainWidget_->size().height() - recordButton_->height() - (top + bottom) * 2);
 
 		QDockWidget::paintEvent(e);
-	}
-
-	void 
-	RecordDock::updateDefaultSettings()
-	{
-		start_->setValue(0);
-		end_->setValue((int)std::round(profile_->playerModule->timeLength * 30));
-
-		if (profile_->playerModule->recordFps == 24)
-			speed1_->click();
-		else if (profile_->playerModule->recordFps == 25)
-			speed2_->click();
-		else if (profile_->playerModule->recordFps == 30)
-			speed3_->click();
-		else if (profile_->playerModule->recordFps == 60)
-			speed4_->click();
-
-		denoiseButton_->setCheckState(profile_->recordModule->denoise ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
-		sppSpinbox_->setValue(profile_->playerModule->spp);
-		crfSpinbox->setValue(profile_->encodeModule->crf);
-		bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
 	}
 }

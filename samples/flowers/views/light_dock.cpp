@@ -117,14 +117,8 @@ namespace flower
 	}
 
 	void
-	LightDock::repaint()
-	{
-	}
-
-	void
 	LightDock::showEvent(QShowEvent* event)
 	{
-		this->repaint();
 	}
 
 	void

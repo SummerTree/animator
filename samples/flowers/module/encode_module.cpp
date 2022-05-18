@@ -39,7 +39,7 @@ namespace flower
 		this->encodeMode = EncodeMode::H265;
 		this->frame_type = 0;
 		this->encode_speed = 0;
-		this->quality = VideoQuality::Medium;
+		this->quality = VideoQuality::High;
 	}
 
 	void 

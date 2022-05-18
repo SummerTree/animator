@@ -695,7 +695,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="179"/>
-        <location filename="../views/record_dock.cpp" line="303"/>
+        <location filename="../views/record_dock.cpp" line="336"/>
         <source>Start Render</source>
         <translation>开始渲染</translation>
     </message>
@@ -714,28 +714,27 @@ $20 (Original cost $40)</source>
         <translation type="vanished">视频信息</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="280"/>
-        <location filename="../views/record_dock.cpp" line="354"/>
+        <location filename="../views/record_dock.cpp" line="320"/>
         <source>Stop Render</source>
         <translation>停止渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="285"/>
+        <location filename="../views/record_dock.cpp" line="325"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="286"/>
+        <location filename="../views/record_dock.cpp" line="326"/>
         <source>Failed to create file</source>
         <translation>创建文件失败</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="356"/>
+        <location filename="../views/record_dock.cpp" line="315"/>
         <source>MP4 Files (*.mp4)</source>
         <translation>MP4 Files (*.mp4)</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="356"/>
+        <location filename="../views/record_dock.cpp" line="315"/>
         <source>Save Video</source>
         <translation>保存视频</translation>
     </message>

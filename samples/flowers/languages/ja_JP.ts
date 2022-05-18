@@ -596,7 +596,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="179"/>
-        <location filename="../views/record_dock.cpp" line="303"/>
+        <location filename="../views/record_dock.cpp" line="336"/>
         <source>Start Render</source>
         <translation type="unfinished"></translation>
     </message>
@@ -611,28 +611,27 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="280"/>
-        <location filename="../views/record_dock.cpp" line="354"/>
+        <location filename="../views/record_dock.cpp" line="320"/>
         <source>Stop Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="285"/>
+        <location filename="../views/record_dock.cpp" line="325"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="286"/>
+        <location filename="../views/record_dock.cpp" line="326"/>
         <source>Failed to create file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="356"/>
+        <location filename="../views/record_dock.cpp" line="315"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="356"/>
+        <location filename="../views/record_dock.cpp" line="315"/>
         <source>Save Video</source>
         <translation type="unfinished"></translation>
     </message>

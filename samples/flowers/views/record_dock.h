@@ -27,16 +27,13 @@ namespace flower
 		RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
 		~RecordDock() noexcept;
 
-		void startRecord(QString fileName);
-		void stopRecord();
-
 		void showEvent(QShowEvent* event) override;
 		void paintEvent(QPaintEvent* e) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
 		void closeEvent(QCloseEvent* event) override;
 
 	private Q_SLOTS:
-		void clickEvent();
+		void recordEvent(bool);
 		void select1Event(bool checked);
 		void select2Event(bool checked);
 		void denoiseEvent(int checked);
