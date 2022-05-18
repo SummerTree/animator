@@ -81,6 +81,7 @@ namespace octoon
 		void drawRenderers(const Geometry& geometry, const Camera& camera, const std::shared_ptr<Material>& overrideMaterial = nullptr) noexcept;
 		void drawRenderers(const std::vector<Geometry*>& objects, const Camera& camera, const std::shared_ptr<Material>& overrideMaterial = nullptr) noexcept;
 
+		void compileMaterial(const std::shared_ptr<Material>& material, const RenderingData& renderingData);
 		void setMaterial(const std::shared_ptr<Material>& material, const Camera& camera, const Geometry& geometry);
 
 		void cleanCache() noexcept;

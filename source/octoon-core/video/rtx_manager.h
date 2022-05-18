@@ -79,7 +79,7 @@ namespace octoon
 		std::unique_ptr<Output> normalImage_;
 		std::unique_ptr<Output> albedoImage_;
 
-		hal::GraphicsTexturePtr colorTexture_;
+		hal::GraphicsTexturePtr edgeTexture_;
 		hal::GraphicsTexturePtr normalTexture_;
 		hal::GraphicsTexturePtr albedoTexture_;
 

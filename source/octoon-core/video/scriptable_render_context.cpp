@@ -2,7 +2,7 @@
 #include <octoon/video/scriptable_render_buffer.h>
 #include <octoon/video/scriptable_render_material.h>
 #include <octoon/video/rendering_data.h>
-
+#include <octoon/mesh/plane_mesh.h>
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/light/ambient_light.h>
 #include <octoon/light/directional_light.h>
@@ -670,6 +670,14 @@ namespace octoon
 	}
 
 	void
+	ScriptableRenderContext::compileMaterial(const std::shared_ptr<Material>& material, const RenderingData& renderingData)
+	{
+		auto it = this->materials_.find(material.get());
+		if (it == this->materials_.end())
+			this->materials_[material.get()] = std::make_shared<ScriptableRenderMaterial>(*this, material, renderingData);
+	}
+
+	void
 	ScriptableRenderContext::updateMaterials(const std::shared_ptr<RenderScene>& scene, RenderingData& out, bool force)
 	{
 		out.material_bundle.reset(materialCollector.CreateBundle());
@@ -702,6 +710,11 @@ namespace octoon
     ScriptableRenderContext::updateShapes(const std::shared_ptr<RenderScene>& scene, RenderingData& out, bool force)
     {
 		out.geometries = scene->getGeometries();
+		out.screenQuad = Geometry::create();
+		out.screenQuad->setMesh(PlaneMesh::create(2, 2));
+
+		auto mesh = out.screenQuad->getMesh();
+		this->buffers_[mesh.get()] = std::make_shared<ScriptableRenderBuffer>(*this, mesh);
 
 		for (auto& geometry : scene->getGeometries())
 		{

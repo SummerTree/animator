@@ -5,6 +5,7 @@
 #include <octoon/video/lights_shadow_caster_pass.h>
 #include <octoon/video/draw_object_pass.h>
 #include <octoon/video/draw_skybox_pass.h>
+#include <octoon/video/draw_selector_pass.h>
 
 namespace octoon
 {
@@ -37,12 +38,13 @@ namespace octoon
 		std::unique_ptr<DrawObjectPass> drawOpaquePass_;
 		std::unique_ptr<DrawObjectPass> drawTranparentPass_;
 		std::unique_ptr<DrawSkyboxPass> drawSkyboxPass_;
+		std::unique_ptr<DrawSelectorPass> drawSelectorPass_;
 
-		hal::GraphicsFramebufferPtr fbo_;
+		hal::GraphicsFramebufferPtr edgeFramebuffer_;
 		hal::GraphicsFramebufferPtr fbo2_;
-		hal::GraphicsTexturePtr colorTexture_;
+		hal::GraphicsTexturePtr edgeTexture_;
 		hal::GraphicsTexturePtr depthTexture_;
-		hal::GraphicsTexturePtr colorTexture2_;
+		hal::GraphicsTexturePtr colorTexture_;
 		hal::GraphicsTexturePtr depthTexture2_;
 
 		std::shared_ptr<Material> overrideMaterial_;

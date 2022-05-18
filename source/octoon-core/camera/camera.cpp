@@ -50,7 +50,7 @@ namespace octoon
 	void
 	Camera::setFramebuffer(const hal::GraphicsFramebufferPtr& framebuffer) noexcept
 	{
-		fbo_ = framebuffer;
+		edgeFramebuffer_ = framebuffer;
 	}
 
 	void
@@ -181,12 +181,12 @@ namespace octoon
 	{
 		std::uint32_t width = 1920, height = 1080;
 
-		if (!fbo_)
+		if (!edgeFramebuffer_)
 			Renderer::instance()->getFramebufferSize(width, height);
 		else
 		{
-			width = fbo_->getFramebufferDesc().getWidth();
-			height = fbo_->getFramebufferDesc().getHeight();
+			width = edgeFramebuffer_->getFramebufferDesc().getWidth();
+			height = edgeFramebuffer_->getFramebufferDesc().getHeight();
 		}
 
 		math::float4 result;
@@ -214,7 +214,7 @@ namespace octoon
 	const hal::GraphicsFramebufferPtr&
 	Camera::getFramebuffer() const noexcept
 	{
-		return fbo_;
+		return edgeFramebuffer_;
 	}
 
 	void
@@ -230,8 +230,8 @@ namespace octoon
 		colorTextureDesc.setTexMultisample(multisample);
 		colorTextureDesc.setTexDim(multisample > 0 ? hal::TextureDimension::Texture2DMultisample : hal::TextureDimension::Texture2D);
 		colorTextureDesc.setTexFormat(format);
-		colorTexture_ = Renderer::instance()->getScriptableRenderContext()->createTexture(colorTextureDesc);
-		if (!colorTexture_)
+		edgeTexture_ = Renderer::instance()->getScriptableRenderContext()->createTexture(colorTextureDesc);
+		if (!edgeTexture_)
 			throw runtime::runtime_error::create("createTexture() failed");
 
 		hal::GraphicsTextureDesc depthTextureDesc;
@@ -249,10 +249,10 @@ namespace octoon
 		framebufferDesc.setHeight(h);
 		framebufferDesc.setFramebufferLayout(Renderer::instance()->getScriptableRenderContext()->createFramebufferLayout(framebufferLayoutDesc));
 		framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture_, 0, 0));
-		framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(colorTexture_, 0, 0));
+		framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(edgeTexture_, 0, 0));
 
-		fbo_ = Renderer::instance()->getScriptableRenderContext()->createFramebuffer(framebufferDesc);
-		if (!fbo_)
+		edgeFramebuffer_ = Renderer::instance()->getScriptableRenderContext()->createFramebuffer(framebufferDesc);
+		if (!edgeFramebuffer_)
 			throw runtime::runtime_error::create("createFramebuffer() failed");
 	}
 }

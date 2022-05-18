@@ -1,6 +1,7 @@
 #include "selector_component.h"
 #include "flower_behaviour.h"
 #include <octoon/mesh/cube_wireframe_mesh.h>
+#include <octoon/material/mesh_color_material.h>
 
 namespace flower
 {
@@ -80,8 +81,8 @@ namespace flower
 	void
 	SelectorComponent::onEnable() noexcept
 	{
-		this->gizmoHoverMtl_ = std::make_shared<octoon::LineBasicMaterial>(octoon::math::float3(0, 1, 0));
-		this->gizmoSelectedMtl_ = std::make_shared<octoon::LineBasicMaterial>(octoon::math::float3(0, 0, 1));
+		this->gizmoHoverMtl_ = std::make_shared<octoon::MeshColorMaterial>(octoon::math::float3(1.0f, 0.3f, 0.5f));
+		this->gizmoSelectedMtl_ = std::make_shared<octoon::MeshColorMaterial>(octoon::math::float3(0.85f, 0.15f, 0.30f));
 
 		gizmoHover_ = octoon::GameObject::create("GizmoHover");
 		gizmoHover_->addComponent<octoon::MeshFilterComponent>(octoon::CubeWireframeMesh::create(1.0f, 1.0f, 1.0f));

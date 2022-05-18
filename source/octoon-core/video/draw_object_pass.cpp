@@ -19,7 +19,11 @@ namespace octoon
 			context.configureClear(camera->getClearFlags(), camera->getClearColor(), 1.0f, 0);
 			context.setViewport(0, math::float4((float)vp.x, (float)vp.y, (float)vp.width, (float)vp.height));
 
-			context.drawRenderers(renderingData.geometries, *camera);
+			for (auto& geometry : renderingData.geometries)
+			{
+				if (geometry->getRenderOrder() < 1)
+					context.drawRenderers(*geometry, *camera);
+			}
 		}
 	}
 }

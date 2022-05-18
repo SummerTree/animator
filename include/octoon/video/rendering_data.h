@@ -108,6 +108,7 @@ namespace octoon
 
 		std::vector<Light*> lights;
 		std::vector<Geometry*> geometries;
+		std::shared_ptr<Geometry> screenQuad;
 
 		std::unique_ptr<Bundle> material_bundle;
 		std::unique_ptr<Bundle> volume_bundle;

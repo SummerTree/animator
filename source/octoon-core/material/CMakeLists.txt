@@ -20,8 +20,10 @@ SET(MATERIAL_LIST
 	${SOURCE_PATH}/mesh_depth_material.cpp
 	${HEADER_PATH}/mesh_copy_material.h
 	${SOURCE_PATH}/mesh_copy_material.cpp
-	${HEADER_PATH}/lambert_material.h
-	${SOURCE_PATH}/lambert_material.cpp
+	${HEADER_PATH}/mesh_color_material.h
+	${SOURCE_PATH}/mesh_color_material.cpp
+	${HEADER_PATH}/edge_material.h
+	${SOURCE_PATH}/edge_material.cpp
 )
 SOURCE_GROUP(material  FILES ${MATERIAL_LIST})
 

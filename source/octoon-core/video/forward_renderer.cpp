@@ -37,6 +37,7 @@ namespace octoon
 		drawOpaquePass_ = std::make_unique<DrawObjectPass>(true);
 		drawTranparentPass_ = std::make_unique<DrawObjectPass>(false);
 		drawSkyboxPass_ = std::make_unique<DrawSkyboxPass>();
+		drawSelectorPass_ = std::make_unique<DrawSelectorPass>();
 	}
 
 	ForwardRenderer::~ForwardRenderer() noexcept
@@ -60,7 +61,7 @@ namespace octoon
 	const hal::GraphicsFramebufferPtr&
 	ForwardRenderer::getFramebuffer() const noexcept
 	{
-		return this->fbo_;
+		return this->edgeFramebuffer_;
 	}
 
 	void
@@ -84,8 +85,8 @@ namespace octoon
 			colorTextureDesc.setTexMultisample(4);
 			colorTextureDesc.setTexDim(hal::TextureDimension::Texture2DMultisample);
 			colorTextureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
-			colorTexture_ = context->createTexture(colorTextureDesc);
-			if (!colorTexture_)
+			edgeTexture_ = context->createTexture(colorTextureDesc);
+			if (!edgeTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
 			hal::GraphicsTextureDesc depthTextureDesc;
@@ -103,10 +104,10 @@ namespace octoon
 			framebufferDesc.setHeight(h);
 			framebufferDesc.setFramebufferLayout(context->createFramebufferLayout(framebufferLayoutDesc));
 			framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture_, 0, 0));
-			framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(colorTexture_, 0, 0));
+			framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(edgeTexture_, 0, 0));
 
-			fbo_ = context->createFramebuffer(framebufferDesc);
-			if (!fbo_)
+			edgeFramebuffer_ = context->createFramebuffer(framebufferDesc);
+			if (!edgeFramebuffer_)
 				throw runtime::runtime_error::create("createFramebuffer() failed");
 
 			hal::GraphicsTextureDesc colorTextureDesc2;
@@ -114,8 +115,8 @@ namespace octoon
 			colorTextureDesc2.setHeight(h);
 			colorTextureDesc2.setTexDim(hal::TextureDimension::Texture2D);
 			colorTextureDesc2.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
-			colorTexture2_ = context->createTexture(colorTextureDesc2);
-			if (!colorTexture2_)
+			colorTexture_ = context->createTexture(colorTextureDesc2);
+			if (!colorTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
 			hal::GraphicsTextureDesc depthTextureDesc2;
@@ -132,7 +133,7 @@ namespace octoon
 			framebufferDesc2.setHeight(h);
 			framebufferDesc2.setFramebufferLayout(context->createFramebufferLayout(framebufferLayoutDesc));
 			framebufferDesc2.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture2_, 0, 0));
-			framebufferDesc2.addColorAttachment(hal::GraphicsAttachmentBinding(colorTexture2_, 0, 0));
+			framebufferDesc2.addColorAttachment(hal::GraphicsAttachmentBinding(colorTexture_, 0, 0));
 
 			fbo2_ = context->createFramebuffer(framebufferDesc2);
 			if (!fbo2_)
@@ -144,8 +145,8 @@ namespace octoon
 			colorTextureDesc.setWidth(w);
 			colorTextureDesc.setHeight(h);
 			colorTextureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
-			colorTexture_ = context->createTexture(colorTextureDesc);
-			if (!colorTexture_)
+			edgeTexture_ = context->createTexture(colorTextureDesc);
+			if (!edgeTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
 			hal::GraphicsTextureDesc depthTextureDesc;
@@ -161,10 +162,10 @@ namespace octoon
 			framebufferDesc.setHeight(h);
 			framebufferDesc.setFramebufferLayout(context->createFramebufferLayout(framebufferLayoutDesc));
 			framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture_, 0, 0));
-			framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(colorTexture_, 0, 0));
+			framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(edgeTexture_, 0, 0));
 
-			fbo_ = context->createFramebuffer(framebufferDesc);
-			if (!fbo_)
+			edgeFramebuffer_ = context->createFramebuffer(framebufferDesc);
+			if (!edgeFramebuffer_)
 				throw runtime::runtime_error::create("createFramebuffer() failed");
 		}
 	}
@@ -196,7 +197,7 @@ namespace octoon
 				auto texture = fbo->getFramebufferDesc().getColorAttachment().getBindingTexture();
 				if (texture->getTextureDesc().getTexDim() == hal::TextureDimension::Texture2DMultisample)
 				{
-					if (fbo == fbo_)
+					if (fbo == edgeFramebuffer_)
 					{
 						context->blitFramebuffer(fbo, viewport, fbo2_, viewport);
 						context->discardFramebuffer(fbo, hal::ClearFlagBits::AllBit);
@@ -219,5 +220,7 @@ namespace octoon
 				}
 			}
 		}
+
+		drawSelectorPass_->Execute(*context, context->getRenderingData());
 	}
 }
