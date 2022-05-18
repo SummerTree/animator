@@ -118,12 +118,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="307"/>
+        <location filename="../views/environment_dock.cpp" line="317"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="352"/>
+        <location filename="../views/environment_dock.cpp" line="362"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>

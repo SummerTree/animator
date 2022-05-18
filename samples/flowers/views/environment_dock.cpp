@@ -285,6 +285,16 @@ namespace flower
 		this->verticalRotationSpinBox->setValue(profile_->environmentModule->offset.y);
 		this->setColor(QColor::fromRgbF(profile_->environmentModule->color.x, profile_->environmentModule->color.y, profile_->environmentModule->color.z));
 
+		if (this->profile_->entitiesModule->enviromentLight)
+		{
+			auto envLight = this->profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
+			if (envLight)
+			{
+				thumbnailToggle->setCheckable(envLight->getBackgroundMap() ? true : false);
+				backgroundToggle->setCheckable(envLight->getShowBackground());
+			}
+		}
+
 		this->repaint();
 	}
 

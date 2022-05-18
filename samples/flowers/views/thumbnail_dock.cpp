@@ -152,7 +152,10 @@ namespace flower
 	void
 	ThumbnailDock::settingsEvent() noexcept
 	{
-		SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<FlowerBehaviour>());
-		window->show();
+		if (!profile_->playerModule->isPlaying)
+		{
+			SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<FlowerBehaviour>());
+			window->show();
+		}
 	}
 }

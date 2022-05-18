@@ -18,7 +18,7 @@ namespace flower
 	{
 		this->setObjectName("MainDock");
 		this->setWindowTitle(tr("Flower Render Toolbox (Alpha Version)"));
-		this->setDockNestingEnabled(true);
+		this->setDockNestingEnabled(false);
 		this->installEventFilter(this);
 		this->setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::West);
 

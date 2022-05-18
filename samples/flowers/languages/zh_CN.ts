@@ -148,12 +148,12 @@
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="307"/>
+        <location filename="../views/environment_dock.cpp" line="317"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="352"/>
+        <location filename="../views/environment_dock.cpp" line="362"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
