@@ -511,7 +511,7 @@ namespace flower
 			auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
 
 			model->takeupTime += this->timer_.frame_time();
-			model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / profile->playerModule->curTime);
+			model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / curFrame);
 		}
 	}
 

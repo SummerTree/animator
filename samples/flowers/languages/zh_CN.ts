@@ -364,10 +364,10 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/main_dock.cpp" line="185"/>
         <location filename="../views/main_dock.cpp" line="227"/>
-        <location filename="../views/main_dock.cpp" line="266"/>
-        <location filename="../views/main_dock.cpp" line="305"/>
-        <location filename="../views/main_dock.cpp" line="344"/>
-        <location filename="../views/main_dock.cpp" line="383"/>
+        <location filename="../views/main_dock.cpp" line="267"/>
+        <location filename="../views/main_dock.cpp" line="308"/>
+        <location filename="../views/main_dock.cpp" line="347"/>
+        <location filename="../views/main_dock.cpp" line="386"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
@@ -380,24 +380,24 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/main_dock.cpp" line="197"/>
         <location filename="../views/main_dock.cpp" line="238"/>
-        <location filename="../views/main_dock.cpp" line="277"/>
-        <location filename="../views/main_dock.cpp" line="316"/>
-        <location filename="../views/main_dock.cpp" line="355"/>
-        <location filename="../views/main_dock.cpp" line="394"/>
-        <location filename="../views/main_dock.cpp" line="427"/>
+        <location filename="../views/main_dock.cpp" line="279"/>
+        <location filename="../views/main_dock.cpp" line="319"/>
+        <location filename="../views/main_dock.cpp" line="358"/>
+        <location filename="../views/main_dock.cpp" line="397"/>
+        <location filename="../views/main_dock.cpp" line="430"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="267"/>
-        <location filename="../views/main_dock.cpp" line="306"/>
-        <location filename="../views/main_dock.cpp" line="345"/>
-        <location filename="../views/main_dock.cpp" line="384"/>
+        <location filename="../views/main_dock.cpp" line="268"/>
+        <location filename="../views/main_dock.cpp" line="309"/>
+        <location filename="../views/main_dock.cpp" line="348"/>
+        <location filename="../views/main_dock.cpp" line="387"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="428"/>
+        <location filename="../views/main_dock.cpp" line="431"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -834,22 +834,26 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::SplashScreen</name>
     <message>
-        <location filename="../views/splash_screen.cpp" line="22"/>
+        <location filename="../views/splash_screen.cpp" line="24"/>
         <source>Flower Render Toolbox 2022</source>
         <translation>花楹渲染器 2022</translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="27"/>
+        <location filename="../views/splash_screen.cpp" line="29"/>
         <source>© 2022 Flowers-Softwares. All Rights Reserved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="43"/>
-        <source>Version: 1.0.0</source>
-        <translation>版本: 1.0.0</translation>
+        <location filename="../views/splash_screen.cpp" line="45"/>
+        <source>Version: </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="48"/>
+        <source>Version: 1.0.0</source>
+        <translation type="vanished">版本: 1.0.0</translation>
+    </message>
+    <message>
+        <location filename="../views/splash_screen.cpp" line="50"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
@@ -979,12 +983,12 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::ToolDock</name>
     <message>
-        <location filename="../views/tool_dock.cpp" line="29"/>
+        <location filename="../views/tool_dock.cpp" line="30"/>
         <source>Import</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="30"/>
+        <location filename="../views/tool_dock.cpp" line="31"/>
         <source>Import Resource File(.pmm, .mdl)</source>
         <translation>加载资源(.pmm, .mdl)</translation>
     </message>
@@ -997,42 +1001,42 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">录制视频</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="35"/>
+        <location filename="../views/tool_dock.cpp" line="36"/>
         <source>Music</source>
         <translation>音乐</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="36"/>
+        <location filename="../views/tool_dock.cpp" line="37"/>
         <source>Set Background Audio File</source>
         <translation>设置背景音乐</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="41"/>
+        <location filename="../views/tool_dock.cpp" line="42"/>
         <source>Screenshot</source>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="42"/>
+        <location filename="../views/tool_dock.cpp" line="43"/>
         <source>Denoising Screenshot</source>
         <translation>降噪截屏</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="47"/>
+        <location filename="../views/tool_dock.cpp" line="48"/>
         <source>Render</source>
         <translation>渲染</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="48"/>
+        <location filename="../views/tool_dock.cpp" line="49"/>
         <source>Enable High Quality Rendering</source>
         <translation>启用高质量渲染</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="53"/>
+        <location filename="../views/tool_dock.cpp" line="54"/>
         <source>Cleanup</source>
         <translation>清空</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="54"/>
+        <location filename="../views/tool_dock.cpp" line="55"/>
         <source>Cleanup Scene</source>
         <translation>清空场景</translation>
     </message>
@@ -1073,23 +1077,23 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">暂停</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="192"/>
+        <location filename="../views/tool_dock.cpp" line="199"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="246"/>
+        <location filename="../views/tool_dock.cpp" line="256"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="246"/>
+        <location filename="../views/tool_dock.cpp" line="256"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="111"/>
-        <location filename="../views/tool_dock.cpp" line="192"/>
+        <location filename="../views/tool_dock.cpp" line="115"/>
+        <location filename="../views/tool_dock.cpp" line="199"/>
         <source>Open Project</source>
         <translation>打开项目</translation>
     </message>
@@ -1098,32 +1102,32 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">设置</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="111"/>
+        <location filename="../views/tool_dock.cpp" line="115"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation>所有文件(*.pmm *.pmx *.abc *.mdl);; PMM 文件 (*.pmm);; PMX 文件 (*.pmx);; Abc 文件 (*.abc);;材质文件 (*.mdl)</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="126"/>
+        <location filename="../views/tool_dock.cpp" line="130"/>
         <source>Opening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="126"/>
+        <location filename="../views/tool_dock.cpp" line="130"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="127"/>
+        <location filename="../views/tool_dock.cpp" line="131"/>
         <source>Open Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="155"/>
-        <location filename="../views/tool_dock.cpp" line="169"/>
-        <location filename="../views/tool_dock.cpp" line="208"/>
-        <location filename="../views/tool_dock.cpp" line="257"/>
-        <location filename="../views/tool_dock.cpp" line="296"/>
-        <location filename="../views/tool_dock.cpp" line="340"/>
+        <location filename="../views/tool_dock.cpp" line="159"/>
+        <location filename="../views/tool_dock.cpp" line="174"/>
+        <location filename="../views/tool_dock.cpp" line="216"/>
+        <location filename="../views/tool_dock.cpp" line="267"/>
+        <location filename="../views/tool_dock.cpp" line="308"/>
+        <location filename="../views/tool_dock.cpp" line="353"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
