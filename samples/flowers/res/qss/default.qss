@@ -297,7 +297,7 @@ QWidget#ToolDock, QWidget#ThumbnailDock{
 	border-radius:1px;
 	border:1px solid #a5a5a5;
 }
-QWidget#ToolDock QToolButton{
+QWidget#ToolDock QToolButton, QWidget#ThumbnailDock QToolButton{
 	min-width:50px;
 	max-width:50px;
 	min-height:46px;
@@ -345,6 +345,9 @@ QWidget#ThumbnailDock QToolButton#material{
 }
 QWidget#ThumbnailDock QToolButton#camera{
 	qproperty-icon: url(":res/icons/camera.png");
+}
+QWidget#ThumbnailDock QToolButton#setting{
+	qproperty-icon: url(":res/icons/setting.png");
 }
 QWidget#MainLightDock, QWidget#EnvironmentDock, QWidget#MaterialDock, QWidget#RecordDock, QWidget#CameraDock, QWidget#LightDock
 {

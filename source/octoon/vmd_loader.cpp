@@ -271,6 +271,7 @@ namespace octoon
 		animation.setName(sjis2utf8(vmd.Header.name));
 		for (auto& it : motions)
 			animation.addClip(it.second);
+
 		return animation;
 	}
 

@@ -13,6 +13,7 @@
 #include <qdockwidget.h>
 #include "flower_profile.h"
 #include "flower_behaviour.h"
+#include "setting_window.h"
 
 namespace flower
 {
@@ -23,6 +24,8 @@ namespace flower
 		ThumbnailDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<FlowerProfile> profile) noexcept;
 		~ThumbnailDock() noexcept;
 
+		void closeEvent(QCloseEvent* event);
+
 	private Q_SLOTS:
 		void recordEvent() noexcept;
 		void lightEvent() noexcept;
@@ -30,6 +33,7 @@ namespace flower
 		void materialEvent() noexcept;
 		void environmentEvent() noexcept;
 		void cameraEvent() noexcept;
+		void settingsEvent() noexcept;
 
 	Q_SIGNALS:
 		void sunSignal();
@@ -46,6 +50,7 @@ namespace flower
 		QToolButton* environmentButton_;
 		QToolButton* materialButton_;
 		QToolButton* cameraButton_;
+		QToolButton* settingsButton_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<FlowerProfile> profile_;

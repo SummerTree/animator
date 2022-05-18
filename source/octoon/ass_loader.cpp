@@ -211,7 +211,7 @@ namespace octoon
 					auto filmCamera = object->addComponent<FilmCameraComponent>();
 					filmCamera->setFov(fov);
 					filmCamera->setAperture(aperture);
-					filmCamera->setFocalDistance(focalDist);
+					filmCamera->setFocusDistance(focalDist);
 
 					//objects.emplace_back(std::move(object));
 				}

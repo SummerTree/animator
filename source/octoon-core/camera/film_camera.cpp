@@ -10,7 +10,7 @@ namespace octoon
 		, aperture_(0.0f)
 		, filmSize_(36.0f) // 35mm
 		, focalLength_(50.0f) // 50mm
-		, focalDistance_(10.0f) // 50mm
+		, focusDistance_(10.0f) // 50mm
 		, zoom_(0.0f)
 		, sensorSize_(math::float2::One)
 		, znear_(0.1f)
@@ -68,12 +68,12 @@ namespace octoon
 	}
 
 	void
-	FilmCamera::setFocalDistance(float distance) noexcept
+	FilmCamera::setFocusDistance(float distance) noexcept
 	{
-		if (focalDistance_ != distance)
+		if (focusDistance_ != distance)
 		{
 			this->setDirty(true);
-			focalDistance_ = distance;
+			focusDistance_ = distance;
 		}
 	}
 
@@ -160,7 +160,7 @@ namespace octoon
 	float
 	FilmCamera::getFocalDistance() const noexcept
 	{
-		return this->focalDistance_;
+		return this->focusDistance_;
 	}
 
 	float

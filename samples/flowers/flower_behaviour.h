@@ -14,7 +14,7 @@
 #include "controllers/mark_component.h"
 #include "controllers/material_component.h"
 #include "controllers/client_component.h"
-#include "controllers/drag_component.h"
+#include "controllers/selector_component.h"
 #include "controllers/grid_component.h"
 #include "controllers/gizmo_component.h"
 #include "controllers/light_component.h"
@@ -96,7 +96,7 @@ namespace flower
 		std::unique_ptr<UIComponent> uiComponent_;
 		std::unique_ptr<MarkComponent> markComponent_;
 		std::unique_ptr<MaterialComponent> materialComponent_;
-		std::unique_ptr<DragComponent> dragComponent_;
+		std::unique_ptr<SelectorComponent> selectorComponent_;
 		std::unique_ptr<GridComponent> gridComponent_;
 		std::unique_ptr<GizmoComponent> gizmoComponent_;
 		std::unique_ptr<LightComponent> lightComponent_;

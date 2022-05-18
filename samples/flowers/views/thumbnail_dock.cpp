@@ -52,6 +52,12 @@ namespace flower
 		cameraButton_->setToolTip(tr("Open Camera Panel"));
 		cameraButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
+		settingsButton_ = new QToolButton;
+		settingsButton_->setObjectName("setting");
+		settingsButton_->setText(tr("Settings"));
+		settingsButton_->setToolTip(tr("Settings"));
+		settingsButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
@@ -61,6 +67,7 @@ namespace flower
 		layout->addWidget(lightButton_, 0, Qt::AlignCenter);
 		layout->addWidget(sunButton_, 0, Qt::AlignCenter);
 		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
+		layout->addWidget(settingsButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 
 		auto contentWidget = new QWidget;
@@ -83,7 +90,6 @@ namespace flower
 		this->setWidget(mainWidget);
 
 		lightButton_->hide();
-		//cameraButton_->hide();
 
 		this->connect(recordButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
 		this->connect(lightButton_, SIGNAL(clicked()), this, SLOT(lightEvent()));
@@ -91,10 +97,20 @@ namespace flower
 		this->connect(environmentButton_, SIGNAL(clicked()), this, SLOT(environmentEvent()));
 		this->connect(materialButton_, SIGNAL(clicked()), this, SLOT(materialEvent()));
 		this->connect(cameraButton_, SIGNAL(clicked()), this, SLOT(cameraEvent()));
+		this->connect(settingsButton_, SIGNAL(clicked()), this, SLOT(settingsEvent()));
 	}
 
 	ThumbnailDock::~ThumbnailDock() noexcept
 	{
+	}
+
+	void
+	ThumbnailDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
 	}
 
 	void
@@ -131,5 +147,15 @@ namespace flower
 	ThumbnailDock::cameraEvent() noexcept
 	{
 		emit cameraSignal();
+	}
+
+	void
+	ThumbnailDock::settingsEvent() noexcept
+	{
+		if (!profile_->playerModule->isPlaying)
+		{
+			SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<FlowerBehaviour>());
+			window->show();
+		}
 	}
 }

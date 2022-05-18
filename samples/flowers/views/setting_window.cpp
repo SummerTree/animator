@@ -170,7 +170,7 @@ namespace flower
 
 			listWidget_->addItem(listWidgetItems_[i].get());
 		}
-
+		
 		listWidgetItems_[0]->setSelected(true);
 
 		scrollWidget_ = std::make_unique<QWidget>(this);

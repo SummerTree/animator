@@ -163,7 +163,7 @@ namespace flower
 		spoilerLayout->addWidget(this->horizontalRotationSlider);
 		spoilerLayout->addLayout(verticalRotationLayout);
 		spoilerLayout->addWidget(this->verticalRotationSlider);
-		spoilerLayout->setContentsMargins(20, 0, 0, 0);
+		spoilerLayout->setContentsMargins(20, 0, 20, 0);
 
 		this->spoiler = new Spoiler(tr("Attribute"));
 		this->spoiler->setContentLayout(*spoilerLayout);
@@ -180,7 +180,7 @@ namespace flower
 		mainLayout->addWidget(spoiler);
 		mainLayout->addStretch();
 		mainLayout->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout->setContentsMargins(10, 10, 30, 10);
+		mainLayout->setContentsMargins(10, 10, 10, 10);
 
 		auto mainWidget = new QWidget();
 		mainWidget->setLayout(mainLayout);
@@ -285,7 +285,26 @@ namespace flower
 		this->verticalRotationSpinBox->setValue(profile_->environmentModule->offset.y);
 		this->setColor(QColor::fromRgbF(profile_->environmentModule->color.x, profile_->environmentModule->color.y, profile_->environmentModule->color.z));
 
+		if (this->profile_->entitiesModule->enviromentLight)
+		{
+			auto envLight = this->profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
+			if (envLight)
+			{
+				thumbnailToggle->setCheckable(envLight->getBackgroundMap() ? true : false);
+				backgroundToggle->setCheckable(envLight->getShowBackground());
+			}
+		}
+
 		this->repaint();
+	}
+
+	void
+	EnvironmentDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
 	}
 
 	void

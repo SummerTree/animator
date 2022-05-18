@@ -32,13 +32,13 @@ namespace flower
 		LightDock(const std::shared_ptr<flower::FlowerProfile>& profile);
 		~LightDock();
 
-		void repaint();
-
-		virtual void showEvent(QShowEvent* event) override;
-		virtual void resizeEvent(QResizeEvent* event) override;
+		void showEvent(QShowEvent* event) override;
+		void resizeEvent(QResizeEvent* event) override;
+		void closeEvent(QCloseEvent* event) override;
 
 	public:
 		LightListWindow* listWidget_;
+		std::shared_ptr<flower::FlowerProfile> profile_;
 
 		QWidget* mainWidget_;
 		QVBoxLayout* mainLayout_;

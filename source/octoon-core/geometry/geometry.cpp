@@ -118,10 +118,17 @@ namespace octoon
 		for (std::size_t i = 0; i < size; i++)
 		{
 			if (this->materials_[i] != materials[i])
+			{
+				if (materials[i])
+					materials[i]->setDirty(true);
+			}
+		}
+
+		for (std::size_t i = size; i < materials.size(); i++)
+		{
+			if (materials[i])
 				materials[i]->setDirty(true);
 		}
-		for (std::size_t i = size; i < materials.size(); i++)
-			materials[i]->setDirty(true);
 		this->setDirty(true);
 		materials_ = std::move(materials);
 	}
@@ -133,10 +140,18 @@ namespace octoon
 		for (std::size_t i = 0; i < size; i++)
 		{
 			if (this->materials_[i] != materials[i])
+			{
+				if (materials[i])
+					materials[i]->setDirty(true);
+			}				
+		}
+
+		for (std::size_t i = size; i < materials.size(); i++)
+		{
+			if (materials[i])
 				materials[i]->setDirty(true);
 		}
-		for (std::size_t i = size; i < materials.size(); i++)
-			materials[i]->setDirty(true);
+
 		this->setDirty(true);
 		materials_ = materials;
 	}

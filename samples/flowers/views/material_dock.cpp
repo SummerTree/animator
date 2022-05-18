@@ -1561,8 +1561,9 @@ namespace flower
 		listWidget_->resize(this->width(), this->height() - margins.top() - margins.bottom());
 	}
 
-	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour) noexcept(false)
+	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false)
 		: behaviour_(behaviour)
+		, profile_(profile)
 	{
 		this->setObjectName("MaterialDock");
 		this->setWindowTitle(tr("Material"));
@@ -1627,6 +1628,15 @@ namespace flower
 	}
 
 	void
+	MaterialDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
+	}
+
+	void
 	MaterialDock::paintEvent(QPaintEvent* e) noexcept
 	{
 		modifyWidget_->resize(widget_->size());
@@ -1650,7 +1660,7 @@ namespace flower
 			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 			if (behaviour->isOpen())
 			{
-				auto selectedItem = behaviour->getProfile()->dragModule->selectedItem_;
+				auto selectedItem = behaviour->getProfile()->selectorModule->selectedItem_;
 				if (selectedItem)
 				{
 					auto hit = selectedItem.value();

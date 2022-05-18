@@ -20,6 +20,7 @@ namespace flower
 		this->hdr = false;
 		this->srgb = true;
 		this->active = false;
+		this->denoise = true;
 	}
 
 	void
@@ -31,6 +32,7 @@ namespace flower
 		this->hdr = false;
 		this->srgb = true;
 		this->active = false;
+		this->denoise = true;
 	}
 
 	void 

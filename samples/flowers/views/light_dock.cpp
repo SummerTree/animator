@@ -65,6 +65,7 @@ namespace flower
 	}
 
 	LightDock::LightDock(const std::shared_ptr<flower::FlowerProfile>& profile)
+		: profile_(profile)
 	{
 		this->setObjectName("LightDock");
 		this->setWindowTitle(tr("Light"));
@@ -116,14 +117,17 @@ namespace flower
 	}
 
 	void
-	LightDock::repaint()
+	LightDock::showEvent(QShowEvent* event)
 	{
 	}
 
 	void
-	LightDock::showEvent(QShowEvent* event)
+	LightDock::closeEvent(QCloseEvent* event)
 	{
-		this->repaint();
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
 	}
 
 	void

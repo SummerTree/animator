@@ -1,5 +1,5 @@
-#ifndef FLOWER_DRAG_COMPONENT_H_
-#define FLOWER_DRAG_COMPONENT_H_
+#ifndef FLOWER_SELECTOR_COMPONENT_H_
+#define FLOWER_SELECTOR_COMPONENT_H_
 
 #include <flower_component.h>
 
@@ -7,21 +7,21 @@
 #include <octoon/game_object.h>
 #include <octoon/material/material.h>
 
-#include <module/drag_module.h>
+#include <module/selector_module.h>
 
 #include <optional>
 
 namespace flower
 {
-	class DragComponent final : public RabbitComponent<DragModule>
+	class SelectorComponent final : public RabbitComponent<SelectorModule>
 	{
 	public:
-		DragComponent() noexcept;
-		~DragComponent() noexcept;
+		SelectorComponent() noexcept;
+		~SelectorComponent() noexcept;
 
 		virtual const std::type_info& type_info() const noexcept
 		{
-			return typeid(DragComponent);
+			return typeid(SelectorComponent);
 		}
 
 	private:

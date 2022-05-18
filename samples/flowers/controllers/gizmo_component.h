@@ -7,7 +7,7 @@
 #include <octoon/game_object.h>
 #include <octoon/material/material.h>
 
-#include <module/drag_module.h>
+#include <module/selector_module.h>
 
 #include <optional>
 
@@ -33,7 +33,7 @@ namespace flower
 		TransformGizmo& operator=(const TransformGizmo&) = delete;
 	};
 
-	class GizmoComponent final : public RabbitComponent<DragModule>
+	class GizmoComponent final : public RabbitComponent<SelectorModule>
 	{
 	public:
 		GizmoComponent() noexcept;

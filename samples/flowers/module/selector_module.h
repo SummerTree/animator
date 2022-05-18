@@ -1,5 +1,5 @@
-#ifndef FLOWER_DRAG_MODULE_H_
-#define FLOWER_DRAG_MODULE_H_
+#ifndef FLOWER_SELECTOR_MODULE_H_
+#define FLOWER_SELECTOR_MODULE_H_
 
 #include <flower_model.h>
 #include <optional>
@@ -7,11 +7,11 @@
 
 namespace flower
 {
-	class DragModule final : public FlowerModule
+	class SelectorModule final : public FlowerModule
 	{
 	public:
-		DragModule() noexcept;
-		virtual ~DragModule() noexcept;
+		SelectorModule() noexcept;
+		virtual ~SelectorModule() noexcept;
 
 		virtual void reset() noexcept override;
 
@@ -19,8 +19,8 @@ namespace flower
 		virtual void save(octoon::runtime::json& reader) noexcept override;
 
 	private:
-		DragModule(const DragModule&) = delete;
-		DragModule& operator=(const DragModule&) = delete;
+		SelectorModule(const SelectorModule&) = delete;
+		SelectorModule& operator=(const SelectorModule&) = delete;
 
 	public:
 		std::optional<octoon::RaycastHit> selectedItem_;

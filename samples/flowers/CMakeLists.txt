@@ -48,8 +48,8 @@ SET(MODULES_LIST
 	${SOURCE_PATH}/module/client_module.cpp
 	${SOURCE_PATH}/module/material_module.h
 	${SOURCE_PATH}/module/material_module.cpp
-	${SOURCE_PATH}/module/drag_module.h
-	${SOURCE_PATH}/module/drag_module.cpp
+	${SOURCE_PATH}/module/selector_module.h
+	${SOURCE_PATH}/module/selector_module.cpp
 	${SOURCE_PATH}/module/grid_module.h
 	${SOURCE_PATH}/module/grid_module.cpp
 )
@@ -122,8 +122,8 @@ SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/client_component.cpp
 	${SOURCE_PATH}/controllers/material_component.h
 	${SOURCE_PATH}/controllers/material_component.cpp
-	${SOURCE_PATH}/controllers/drag_component.h
-	${SOURCE_PATH}/controllers/drag_component.cpp
+	${SOURCE_PATH}/controllers/selector_component.h
+	${SOURCE_PATH}/controllers/selector_component.cpp
 	${SOURCE_PATH}/controllers/grid_component.h
 	${SOURCE_PATH}/controllers/grid_component.cpp
 	${SOURCE_PATH}/controllers/gizmo_component.h

@@ -35,11 +35,11 @@ namespace flower
 	{
 		this->enable = true;
 
-		this->crf = 15;
+		this->crf = 18;
 		this->encodeMode = EncodeMode::H265;
 		this->frame_type = 0;
 		this->encode_speed = 0;
-		this->quality = VideoQuality::Medium;
+		this->quality = VideoQuality::High;
 	}
 
 	void 

@@ -10,6 +10,7 @@
 #include <qtoolbutton.h>
 #include <qlabel.h>
 #include <optional>
+#include <qcheckbox.h>
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qtimer.h>
@@ -26,19 +27,16 @@ namespace flower
 		RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
 		~RecordDock() noexcept;
 
-		void repaint();
-
-		void startRecord(QString fileName);
-		void stopRecord();
-
 		void showEvent(QShowEvent* event) override;
 		void paintEvent(QPaintEvent* e) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
+		void closeEvent(QCloseEvent* event) override;
 
 	private Q_SLOTS:
-		void clickEvent();
+		void recordEvent(bool);
 		void select1Event(bool checked);
 		void select2Event(bool checked);
+		void denoiseEvent(int checked);
 		void speed1Event(bool checked);
 		void speed2Event(bool checked);
 		void speed3Event(bool checked);
@@ -49,6 +47,9 @@ namespace flower
 		void onBouncesChanged(int);
 		void onCrfChanged(double);
 
+	private:
+		void updateDefaultSettings();
+
 	public:
 		QLabel* quality_;
 		QLabel* videoRatio_;
@@ -58,6 +59,7 @@ namespace flower
 		QLabel* crfLabel;
 		QLabel* startLabel_;
 		QLabel* endLabel_;
+		QLabel* denoiseLabel_;
 
 		QButtonGroup* group_;
 		QButtonGroup* speedGroup_;
@@ -70,6 +72,7 @@ namespace flower
 		QToolButton* speed4_;
 		QToolButton* recordButton_;
 		QToolButton* markButton_;
+		QCheckBox* denoiseButton_;
 
 		QSpinBox* start_;
 		QSpinBox* end_;

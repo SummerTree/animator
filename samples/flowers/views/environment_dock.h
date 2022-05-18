@@ -22,6 +22,7 @@ namespace flower
 		void repaint();
 
 		void showEvent(QShowEvent* event) override;
+		void closeEvent(QCloseEvent* event) override;
 
 	public Q_SLOTS:
 		void colorMapClickEvent();
