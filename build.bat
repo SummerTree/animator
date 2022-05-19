@@ -15,7 +15,6 @@ if %errorlevel% == 0 (
   goto ExitLabelFailure
 )
 
-
 if %errorlevel% == 0 (
   cmake --build . --config Debug
   cmake --build . --config Release
@@ -26,7 +25,7 @@ if %errorlevel% == 0 (
 if %errorlevel% == 0 (
   where makensis
   if %errorlevel% == 0 (
-    makensis samples/flowers/nsis/install.nsi
+    makensis ../samples/flowers/nsis/install.nsi
   )
 ) else (
   goto ExitLabelFailure
