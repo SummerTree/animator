@@ -290,15 +290,17 @@ namespace flower
 				{
 					octoon::VMDLoader loader;
 					auto animation = loader.loadCameraMotion(stream);
+					if (!animation.clips.empty())
+					{
+						auto animator = profile_->entitiesModule->camera->getComponent<octoon::AnimatorComponent>();
+						if (!animator)
+							animator = profile_->entitiesModule->camera->addComponent<octoon::AnimatorComponent>();
 
-					auto animator = profile_->entitiesModule->camera->getComponent<octoon::AnimatorComponent>();
-					if (!animator)
-						animator = profile_->entitiesModule->camera->addComponent<octoon::AnimatorComponent>();
+						animator->setAnimation(std::move(animation));
+						animator->sample(profile_->playerModule->curTime);
 
-					animator->setAnimation(std::move(animation));
-					animator->sample(profile_->playerModule->curTime);
-
-					unloadButton_->setEnabled(true);
+						unloadButton_->setEnabled(true);
+					}
 				}
 				else
 				{

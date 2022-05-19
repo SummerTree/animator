@@ -35,7 +35,7 @@
         <location filename="../views/camera_dock.cpp" line="139"/>
         <location filename="../views/camera_dock.cpp" line="230"/>
         <location filename="../views/camera_dock.cpp" line="264"/>
-        <location filename="../views/camera_dock.cpp" line="367"/>
+        <location filename="../views/camera_dock.cpp" line="369"/>
         <source>Target: Empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -52,13 +52,13 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="222"/>
-        <location filename="../views/camera_dock.cpp" line="363"/>
+        <location filename="../views/camera_dock.cpp" line="365"/>
         <source>Target: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="224"/>
-        <location filename="../views/camera_dock.cpp" line="362"/>
+        <location filename="../views/camera_dock.cpp" line="364"/>
         <source>Auto-measuring</source>
         <translation type="unfinished"></translation>
     </message>
@@ -68,12 +68,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="306"/>
+        <location filename="../views/camera_dock.cpp" line="308"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="307"/>
+        <location filename="../views/camera_dock.cpp" line="309"/>
         <source>Failed to open the file</source>
         <translation type="unfinished"></translation>
     </message>

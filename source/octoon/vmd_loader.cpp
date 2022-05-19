@@ -119,6 +119,78 @@ namespace octoon
 		std::vector<VMDCamera> CameraLists;
 		std::vector<VMDLight> LightLists;
 		std::vector<VMDSelfShadow> SelfShadowLists;
+
+		void load(io::istream& stream) noexcept(false)
+		{
+			if (!stream.read((char*)&this->Header, sizeof(this->Header))) {
+				throw runtime::runtime_error::create(R"(Cannot read property "Header" from stream)");
+			}
+
+			if (!stream.read((char*)&this->NumMotion, sizeof(this->NumMotion))) {
+				throw runtime::runtime_error::create(R"(Cannot read property "NumMotion" from stream)");
+			}
+
+			if (this->NumMotion > 0)
+			{
+				this->MotionLists.resize(this->NumMotion);
+
+				if (!stream.read((char*)this->MotionLists.data(), sizeof(VMDMotion) * this->NumMotion)) {
+					throw runtime::runtime_error::create(R"(Cannot read property "VMDMotion" from stream)");
+				}
+			}
+
+			if (!stream.read((char*)&this->NumMorph, sizeof(this->NumMorph))) {
+				throw runtime::runtime_error::create(R"(Cannot read property "NumMorph" from stream)");
+			}
+
+			if (this->NumMorph > 0)
+			{
+				this->MorphLists.resize(this->NumMorph);
+
+				if (!stream.read((char*)this->MorphLists.data(), sizeof(VMDMorph) * this->NumMorph)) {
+					throw runtime::runtime_error::create(R"(Cannot read property "VMDMorph" from stream)");
+				}
+			}
+
+			if (!stream.read((char*)&this->NumCamera, sizeof(this->NumCamera))) {
+				throw runtime::runtime_error::create(R"(Cannot read property "NumCamera" from stream)");
+			}
+
+			if (this->NumCamera > 0)
+			{
+				this->CameraLists.resize(this->NumCamera);
+
+				if (!stream.read((char*)this->CameraLists.data(), sizeof(VMDCamera) * this->NumCamera)) {
+					throw runtime::runtime_error::create(R"(Cannot read property "VMDCamera" from stream)");
+				}
+			}
+
+			if (!stream.read((char*)&this->NumLight, sizeof(this->NumLight))) {
+				throw runtime::runtime_error::create(R"(Cannot read property "NumLight" from stream)");
+			}
+
+			if (this->NumLight > 0)
+			{
+				this->LightLists.resize(this->NumLight);
+
+				if (!stream.read((char*)this->LightLists.data(), sizeof(VMDLight) * this->NumLight)) {
+					throw runtime::runtime_error::create(R"(Cannot read property "VMDLight" from stream)");
+				}
+			}
+
+			if (!stream.read((char*)&this->NumSelfShadow, sizeof(this->NumSelfShadow))) {
+				throw runtime::runtime_error::create(R"(Cannot read property "NumSelfShadow" from stream)");
+			}
+
+			if (this->NumSelfShadow > 0)
+			{
+				this->SelfShadowLists.resize(this->NumSelfShadow);
+
+				if (!stream.read((char*)this->SelfShadowLists.data(), sizeof(VMDSelfShadow) * this->NumSelfShadow)) {
+					throw runtime::runtime_error::create(R"(Cannot read property "VMDSelfShadow" from stream)");
+				}
+			}
+		}
 	};
 
 	std::string sjis2utf8(const std::string& sjis)
@@ -187,74 +259,7 @@ namespace octoon
 	VMDLoader::load(io::istream& stream) noexcept(false)
 	{
 		VMD vmd;
-		if (!stream.read((char*)&vmd.Header, sizeof(vmd.Header))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "Header" from stream)");
-		}
-
-		if (!stream.read((char*)&vmd.NumMotion, sizeof(vmd.NumMotion))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumMotion" from stream)");
-		}
-
-		if (vmd.NumMotion > 0)
-		{
-			vmd.MotionLists.resize(vmd.NumMotion);
-
-			if (!stream.read((char*)vmd.MotionLists.data(), sizeof(VMDMotion) * vmd.NumMotion)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDMotion" from stream)");
-			}
-		}
-
-		if (!stream.read((char*)&vmd.NumMorph, sizeof(vmd.NumMorph))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumMorph" from stream)");
-		}
-
-		if (vmd.NumMorph > 0)
-		{
-			vmd.MorphLists.resize(vmd.NumMorph);
-
-			if (!stream.read((char*)vmd.MorphLists.data(), sizeof(VMDMorph) * vmd.NumMorph)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDMorph" from stream)");
-			}
-		}
-
-		if (!stream.read((char*)&vmd.NumCamera, sizeof(vmd.NumCamera))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumCamera" from stream)");
-		}
-
-		if (vmd.NumCamera > 0)
-		{
-			vmd.CameraLists.resize(vmd.NumCamera);
-
-			if (!stream.read((char*)vmd.CameraLists.data(), sizeof(VMDCamera) * vmd.NumCamera)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDCamera" from stream)");
-			}
-		}
-
-		if (!stream.read((char*)&vmd.NumLight, sizeof(vmd.NumLight))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumLight" from stream)");
-		}
-
-		if (vmd.NumLight > 0)
-		{
-			vmd.LightLists.resize(vmd.NumLight);
-
-			if (!stream.read((char*)vmd.LightLists.data(), sizeof(VMDLight) * vmd.NumLight)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDLight" from stream)");
-			}
-		}
-
-		if (!stream.read((char*)&vmd.NumSelfShadow, sizeof(vmd.NumSelfShadow))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumSelfShadow" from stream)");
-		}
-
-		if (vmd.NumSelfShadow > 0)
-		{
-			vmd.SelfShadowLists.resize(vmd.NumSelfShadow);
-
-			if (!stream.read((char*)vmd.SelfShadowLists.data(), sizeof(VMDSelfShadow) * vmd.NumSelfShadow)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDSelfShadow" from stream)");
-			}
-		}
+		vmd.load(stream);
 
 		std::map<std::string, AnimationClip<float>> motions;
 
@@ -285,125 +290,62 @@ namespace octoon
 	VMDLoader::loadCameraMotion(io::istream& stream) noexcept(false)
 	{
 		VMD vmd;
-		if (!stream.read((char*)&vmd.Header, sizeof(vmd.Header))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "Header" from stream)");
-		}
-
-		if (!stream.read((char*)&vmd.NumMotion, sizeof(vmd.NumMotion))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumMotion" from stream)");
-		}
-
-		if (vmd.NumMotion > 0)
-		{
-			vmd.MotionLists.resize(vmd.NumMotion);
-
-			if (!stream.read((char*)vmd.MotionLists.data(), sizeof(VMDMotion) * vmd.NumMotion)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDMotion" from stream)");
-			}
-		}
-
-		if (!stream.read((char*)&vmd.NumMorph, sizeof(vmd.NumMorph))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumMorph" from stream)");
-		}
-
-		if (vmd.NumMorph > 0)
-		{
-			vmd.MorphLists.resize(vmd.NumMorph);
-
-			if (!stream.read((char*)vmd.MorphLists.data(), sizeof(VMDMorph) * vmd.NumMorph)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDMorph" from stream)");
-			}
-		}
-
-		if (!stream.read((char*)&vmd.NumCamera, sizeof(vmd.NumCamera))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumCamera" from stream)");
-		}
-
-		if (vmd.NumCamera > 0)
-		{
-			vmd.CameraLists.resize(vmd.NumCamera);
-
-			if (!stream.read((char*)vmd.CameraLists.data(), sizeof(VMDCamera) * vmd.NumCamera)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDCamera" from stream)");
-			}
-		}
-
-		if (!stream.read((char*)&vmd.NumLight, sizeof(vmd.NumLight))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumLight" from stream)");
-		}
-
-		if (vmd.NumLight > 0)
-		{
-			vmd.LightLists.resize(vmd.NumLight);
-
-			if (!stream.read((char*)vmd.LightLists.data(), sizeof(VMDLight) * vmd.NumLight)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDLight" from stream)");
-			}
-		}
-
-		if (!stream.read((char*)&vmd.NumSelfShadow, sizeof(vmd.NumSelfShadow))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumSelfShadow" from stream)");
-		}
-
-		if (vmd.NumSelfShadow > 0)
-		{
-			vmd.SelfShadowLists.resize(vmd.NumSelfShadow);
-
-			if (!stream.read((char*)vmd.SelfShadowLists.data(), sizeof(VMDSelfShadow) * vmd.NumSelfShadow)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDSelfShadow" from stream)");
-			}
-		}
-
-		Keyframes<float> distance;
-		Keyframes<float> eyeX;
-		Keyframes<float> eyeY;
-		Keyframes<float> eyeZ;
-		Keyframes<float> rotationX;
-		Keyframes<float> rotationY;
-		Keyframes<float> rotationZ;
-		Keyframes<float> fov;
-
-		distance.reserve(vmd.CameraLists.size());
-		eyeX.reserve(vmd.CameraLists.size());
-		eyeY.reserve(vmd.CameraLists.size());
-		eyeZ.reserve(vmd.CameraLists.size());
-		rotationX.reserve(vmd.CameraLists.size());
-		rotationY.reserve(vmd.CameraLists.size());
-		rotationZ.reserve(vmd.CameraLists.size());
-		fov.reserve(vmd.CameraLists.size());
-
-		for (auto& it : vmd.CameraLists)
-		{
-			auto interpolationDistance = std::make_shared<PathInterpolator<float>>(it.interpolation_distance[0] / 127.0f, it.interpolation_distance[2] / 127.0f, it.interpolation_distance[1] / 127.0f, it.interpolation_distance[3] / 127.0f);
-			auto interpolationX = std::make_shared<PathInterpolator<float>>(it.interpolation_x[0] / 127.0f, it.interpolation_x[2] / 127.0f, it.interpolation_x[2] / 127.0f, it.interpolation_x[1] / 127.0f);
-			auto interpolationY = std::make_shared<PathInterpolator<float>>(it.interpolation_y[0] / 127.0f, it.interpolation_y[2] / 127.0f, it.interpolation_y[2] / 127.0f, it.interpolation_y[1] / 127.0f);
-			auto interpolationZ = std::make_shared<PathInterpolator<float>>(it.interpolation_z[0] / 127.0f, it.interpolation_z[2] / 127.0f, it.interpolation_z[2] / 127.0f, it.interpolation_z[1] / 127.0f);
-			auto interpolationRotation = std::make_shared<PathInterpolator<float>>(it.interpolation_rotation[0] / 127.0f, it.interpolation_rotation[2] / 127.0f, it.interpolation_rotation[1] / 127.0f, it.interpolation_rotation[3] / 127.0f);
-			auto interpolationAngleView = std::make_shared<PathInterpolator<float>>(it.interpolation_angleview[0] / 127.0f, it.interpolation_angleview[2] / 127.0f, it.interpolation_angleview[1] / 127.0f, it.interpolation_angleview[3] / 127.0f);
-
-			distance.emplace_back((float)it.frame / 30.0f, it.length, interpolationDistance);
-			eyeX.emplace_back((float)it.frame / 30.0f, it.location.x, interpolationX);
-			eyeY.emplace_back((float)it.frame / 30.0f, it.location.y, interpolationY);
-			eyeZ.emplace_back((float)it.frame / 30.0f, it.location.z, interpolationZ);
-			rotationX.emplace_back((float)it.frame / 30.0f, -it.rotation.x, interpolationRotation);
-			rotationY.emplace_back((float)it.frame / 30.0f, -it.rotation.y, interpolationRotation);
-			rotationZ.emplace_back((float)it.frame / 30.0f, -it.rotation.z, interpolationRotation);
-			fov.emplace_back((float)it.frame / 30.0f, (float)it.viewingAngle, interpolationAngleView);
-		}
-		
-		AnimationClip clip;
-		clip.setCurve("LocalPosition.x", AnimationCurve(std::move(eyeX)));
-		clip.setCurve("LocalPosition.y", AnimationCurve(std::move(eyeY)));
-		clip.setCurve("LocalPosition.z", AnimationCurve(std::move(eyeZ)));
-		clip.setCurve("LocalEulerAnglesRaw.x", AnimationCurve(std::move(rotationX)));
-		clip.setCurve("LocalEulerAnglesRaw.y", AnimationCurve(std::move(rotationY)));
-		clip.setCurve("LocalEulerAnglesRaw.z", AnimationCurve(std::move(rotationZ)));
-		clip.setCurve("Transform:move", AnimationCurve(std::move(distance)));
-		clip.setCurve("Camera:fov", AnimationCurve(std::move(fov)));
+		vmd.load(stream);
 
 		Animation animation;
 		animation.setName(sjis2utf8(vmd.Header.name));
-		animation.addClip(std::move(clip));
+
+		if (vmd.NumCamera > 0)
+		{
+			Keyframes<float> distance;
+			Keyframes<float> eyeX;
+			Keyframes<float> eyeY;
+			Keyframes<float> eyeZ;
+			Keyframes<float> rotationX;
+			Keyframes<float> rotationY;
+			Keyframes<float> rotationZ;
+			Keyframes<float> fov;
+
+			distance.reserve(vmd.CameraLists.size());
+			eyeX.reserve(vmd.CameraLists.size());
+			eyeY.reserve(vmd.CameraLists.size());
+			eyeZ.reserve(vmd.CameraLists.size());
+			rotationX.reserve(vmd.CameraLists.size());
+			rotationY.reserve(vmd.CameraLists.size());
+			rotationZ.reserve(vmd.CameraLists.size());
+			fov.reserve(vmd.CameraLists.size());
+
+			for (auto& it : vmd.CameraLists)
+			{
+				auto interpolationDistance = std::make_shared<PathInterpolator<float>>(it.interpolation_distance[0] / 127.0f, it.interpolation_distance[2] / 127.0f, it.interpolation_distance[1] / 127.0f, it.interpolation_distance[3] / 127.0f);
+				auto interpolationX = std::make_shared<PathInterpolator<float>>(it.interpolation_x[0] / 127.0f, it.interpolation_x[2] / 127.0f, it.interpolation_x[2] / 127.0f, it.interpolation_x[1] / 127.0f);
+				auto interpolationY = std::make_shared<PathInterpolator<float>>(it.interpolation_y[0] / 127.0f, it.interpolation_y[2] / 127.0f, it.interpolation_y[2] / 127.0f, it.interpolation_y[1] / 127.0f);
+				auto interpolationZ = std::make_shared<PathInterpolator<float>>(it.interpolation_z[0] / 127.0f, it.interpolation_z[2] / 127.0f, it.interpolation_z[2] / 127.0f, it.interpolation_z[1] / 127.0f);
+				auto interpolationRotation = std::make_shared<PathInterpolator<float>>(it.interpolation_rotation[0] / 127.0f, it.interpolation_rotation[2] / 127.0f, it.interpolation_rotation[1] / 127.0f, it.interpolation_rotation[3] / 127.0f);
+				auto interpolationAngleView = std::make_shared<PathInterpolator<float>>(it.interpolation_angleview[0] / 127.0f, it.interpolation_angleview[2] / 127.0f, it.interpolation_angleview[1] / 127.0f, it.interpolation_angleview[3] / 127.0f);
+
+				distance.emplace_back((float)it.frame / 30.0f, it.length, interpolationDistance);
+				eyeX.emplace_back((float)it.frame / 30.0f, it.location.x, interpolationX);
+				eyeY.emplace_back((float)it.frame / 30.0f, it.location.y, interpolationY);
+				eyeZ.emplace_back((float)it.frame / 30.0f, it.location.z, interpolationZ);
+				rotationX.emplace_back((float)it.frame / 30.0f, -it.rotation.x, interpolationRotation);
+				rotationY.emplace_back((float)it.frame / 30.0f, -it.rotation.y, interpolationRotation);
+				rotationZ.emplace_back((float)it.frame / 30.0f, -it.rotation.z, interpolationRotation);
+				fov.emplace_back((float)it.frame / 30.0f, (float)it.viewingAngle, interpolationAngleView);
+			}
+
+			AnimationClip clip;
+			clip.setCurve("LocalPosition.x", AnimationCurve(std::move(eyeX)));
+			clip.setCurve("LocalPosition.y", AnimationCurve(std::move(eyeY)));
+			clip.setCurve("LocalPosition.z", AnimationCurve(std::move(eyeZ)));
+			clip.setCurve("LocalEulerAnglesRaw.x", AnimationCurve(std::move(rotationX)));
+			clip.setCurve("LocalEulerAnglesRaw.y", AnimationCurve(std::move(rotationY)));
+			clip.setCurve("LocalEulerAnglesRaw.z", AnimationCurve(std::move(rotationZ)));
+			clip.setCurve("Transform:move", AnimationCurve(std::move(distance)));
+			clip.setCurve("Camera:fov", AnimationCurve(std::move(fov)));
+
+			animation.addClip(std::move(clip));
+		}
 
 		return animation;
 	}
