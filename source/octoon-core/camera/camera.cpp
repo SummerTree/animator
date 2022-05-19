@@ -134,8 +134,21 @@ namespace octoon
 	math::float3
 	Camera::screenToWorld(const math::float3& pos) const noexcept
 	{
+		std::uint32_t framebufferWidth_, framebufferHeight_;
+		Renderer::instance()->getFramebufferSize(framebufferWidth_, framebufferHeight_);
+
 		math::float4 viewport = this->getPixelViewport();
+
+		float viewportRatio = viewport.width / viewport.height;
+
+		float framebufferHeight = std::min<float>(framebufferHeight_, framebufferWidth_ / viewportRatio);
+		float framebufferWidth = framebufferHeight * viewportRatio;
+
 		math::float4 v(pos, 1.0);
+		v.x -= (framebufferWidth_ - framebufferWidth) / 2;
+		v.y -= (framebufferHeight_ - framebufferHeight) / 2;
+		v.x *= viewport.width / framebufferWidth;
+		v.y *= viewport.height / framebufferHeight;
 
 		v.y = viewport.w - v.y; // opengl
 
@@ -152,9 +165,21 @@ namespace octoon
 	math::float3
 	Camera::screenToView(const math::float2& pos) const noexcept
 	{
+		std::uint32_t framebufferWidth_, framebufferHeight_;
+		Renderer::instance()->getFramebufferSize(framebufferWidth_, framebufferHeight_);
+
 		math::float4 viewport = this->getPixelViewport();
 
+		float viewportRatio = viewport.width / viewport.height;
+
+		float framebufferHeight = std::min<float>(framebufferHeight_, framebufferWidth_ / viewportRatio);
+		float framebufferWidth = framebufferHeight * viewportRatio;
+
 		math::float4 v(pos, 1.0, 1.0);
+		v.x -= (framebufferWidth_ - framebufferWidth) / 2;
+		v.y -= (framebufferHeight_ - framebufferHeight) / 2;
+		v.x *= viewport.width / framebufferWidth;
+		v.y *= viewport.height / framebufferHeight;
 
 		v.y = viewport.w - v.y; // opengl
 
