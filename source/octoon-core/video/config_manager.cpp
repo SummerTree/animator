@@ -77,7 +77,7 @@ namespace octoon
 						continue;
 				}
 
-				if (!use_cpu && (device_type == CL_DEVICE_TYPE_CPU))
+				if (!use_cpu && (device_type == CL_DEVICE_TYPE_CPU) || platforms[i].GetName() == "Intel(R) OpenCL HD Graphics")
 					continue;
 
 				Config cfg;

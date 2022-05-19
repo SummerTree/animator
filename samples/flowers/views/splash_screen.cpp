@@ -26,7 +26,7 @@ namespace flower
 
 		copyrightInfo = new QLabel(widget);
 		copyrightInfo->setObjectName("copyright");
-		copyrightInfo->setText(tr("© 2022 Flowers-Softwares. All Rights Reserved."));
+		copyrightInfo->setText(tr("2022 Flowers-Softwares (R). All Rights Reserved."));
 		copyrightInfo->setAlignment(Qt::AlignLeft);
 
 		vlayout = new QVBoxLayout(widget);
