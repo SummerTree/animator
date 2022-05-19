@@ -1,4 +1,4 @@
-#include "rtx_manager.h"
+#include "config_manager.h"
 #include <radeon_rays.h>
 #include <octoon/runtime/except.h>
 #include "monte_carlo_renderer.h"
@@ -29,7 +29,7 @@
 
 namespace octoon
 {
-	RtxManager::RtxManager()
+	ConfigManager::ConfigManager() noexcept(false)
 		: width_(0)
 		, height_(0)
 		, dirty_(true)
@@ -69,30 +69,19 @@ namespace octoon
 			for (unsigned int d = 0; d < platforms[i].GetDeviceCount(); ++d)
 			{
 				cl_device_type device_type = platforms[i].GetDevice(d).GetType();
-
 				if (device_type == CL_DEVICE_TYPE_GPU)
 				{
 					bool comp = (kGpuFlags[gpu_counter] & flags) == kGpuFlags[gpu_counter];
 					++gpu_counter;
 					if (!comp)
-					{
 						continue;
-					}
 				}
 
 				if (!use_cpu && (device_type == CL_DEVICE_TYPE_CPU))
-				{
 					continue;
-				}
 
 				Config cfg;
 				cfg.caninterop = false;
-
-				if (interop)
-				{
-					if (platforms[i].GetName().find("Intel") != std::string::npos)
-						continue;
-				}
 
 				if (platforms[i].GetDevice(d).HasGlInterop() && !hasprimary && interop)
 				{
@@ -135,6 +124,69 @@ namespace octoon
 
 		if (this->configs_.size() == 0)
 		{
+			use_cpu = true;
+
+			for (std::size_t i = 0; i < platforms.size(); ++i)
+			{
+				for (unsigned int d = 0; d < platforms[i].GetDeviceCount(); ++d)
+				{
+					cl_device_type device_type = platforms[i].GetDevice(d).GetType();
+					if (device_type == CL_DEVICE_TYPE_GPU)
+					{
+						bool comp = (kGpuFlags[gpu_counter] & flags) == kGpuFlags[gpu_counter];
+						++gpu_counter;
+						if (!comp)
+							continue;
+					}
+
+					if (!use_cpu && (device_type == CL_DEVICE_TYPE_CPU))
+						continue;
+
+					Config cfg;
+					cfg.caninterop = false;
+
+					if (platforms[i].GetDevice(d).HasGlInterop() && !hasprimary && interop)
+					{
+#ifdef WIN32
+						cl_context_properties props[] =
+						{
+							CL_CONTEXT_PLATFORM, (cl_context_properties)((cl_platform_id)platforms[i]),
+							CL_GL_CONTEXT_KHR, (cl_context_properties)wglGetCurrentContext(),
+							CL_WGL_HDC_KHR, (cl_context_properties)wglGetCurrentDC(),
+							0
+						};
+#elif __linux__
+						cl_context_properties props[] =
+						{
+							CL_CONTEXT_PLATFORM, (cl_context_properties)((cl_platform_id)platforms[i]),
+							CL_GL_CONTEXT_KHR, (cl_context_properties)glXGetCurrentContext(),
+							CL_GLX_DISPLAY_KHR, (cl_context_properties)glXGetCurrentDisplay(),
+							0
+						};
+#elif __APPLE__
+						CGLContextObj kCGLContext = CGLGetCurrentContext();
+						CGLShareGroupObj kCGLShareGroup = CGLGetShareGroup(kCGLContext);
+						cl_context_properties props[] = { CL_CONTEXT_PROPERTY_USE_CGL_SHAREGROUP_APPLE, (cl_context_properties)kCGLShareGroup, 0 };
+#endif
+						cfg.context = CLWContext::Create(platforms[i].GetDevice(d), props);
+						cfg.type = kPrimary;
+						cfg.caninterop = true;
+						hasprimary = true;
+					}
+					else
+					{
+						cfg.context = CLWContext::Create(platforms[i].GetDevice(d));
+						cfg.type = kSecondary;
+					}
+
+					this->configs_.push_back(std::move(cfg));
+					break;
+				}
+			}
+		}
+
+		if (this->configs_.size() == 0)
+		{
 			throw std::runtime_error("No devices was selected (probably device index type does not correspond with real device type).");
 		}
 
@@ -152,7 +204,7 @@ namespace octoon
 	}
 
 	void
-	RtxManager::setOutput(OutputType type, Output* output)
+	ConfigManager::setOutput(OutputType type, Output* output)
 	{
 		auto idx = static_cast<std::size_t>(type);
 		if (idx >= static_cast<std::size_t>(OutputType::kMax))
@@ -165,7 +217,7 @@ namespace octoon
 	}
 	
 	Output*
-	RtxManager::getOutput(OutputType type) const
+	ConfigManager::getOutput(OutputType type) const
 	{
 		auto idx = static_cast<std::size_t>(type);
 		if (idx >= static_cast<std::size_t>(OutputType::kMax))
@@ -174,7 +226,7 @@ namespace octoon
 	}
 
 	void
-	RtxManager::setMaxBounces(std::uint32_t num_bounces)
+	ConfigManager::setMaxBounces(std::uint32_t num_bounces)
 	{
 		if (!configs_.empty())
 		{
@@ -184,7 +236,7 @@ namespace octoon
 	}
 
 	std::uint32_t
-	RtxManager::getMaxBounces() const
+	ConfigManager::getMaxBounces() const
 	{
 		if (!configs_.empty())
 			return dynamic_cast<MonteCarloRenderer*>(configs_.front().pipeline.get())->getMaxBounces();
@@ -192,7 +244,7 @@ namespace octoon
 	}
 
 	void
-	RtxManager::readColorBuffer(math::float3 colorBuffer[])
+	ConfigManager::readColorBuffer(math::float3 colorBuffer[])
 	{
 		auto& desc = edgeTexture_->getTextureDesc();
 
@@ -214,7 +266,7 @@ namespace octoon
 	}
 
 	void
-	RtxManager::readAlbedoBuffer(math::float3 albedoBuffer[])
+	ConfigManager::readAlbedoBuffer(math::float3 albedoBuffer[])
 	{
 		auto& desc = albedoTexture_->getTextureDesc();
 
@@ -236,7 +288,7 @@ namespace octoon
 	}
 	
 	void
-	RtxManager::readNormalBuffer(math::float3 normalBuffer[])
+	ConfigManager::readNormalBuffer(math::float3 normalBuffer[])
 	{
 		auto& desc = normalTexture_->getTextureDesc();
 
@@ -258,13 +310,13 @@ namespace octoon
 	}
 
 	const hal::GraphicsFramebufferPtr&
-	RtxManager::getFramebuffer() const
+	ConfigManager::getFramebuffer() const
 	{
 		return this->framebuffer_;
 	}
 
 	void
-	RtxManager::generateWorkspace(Config& config, const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t width, std::uint32_t height)
+	ConfigManager::generateWorkspace(Config& config, const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t width, std::uint32_t height)
 	{
 		if (width_ != width || height_ != height)
 		{
@@ -323,7 +375,7 @@ namespace octoon
 	}
 
 	void
-	RtxManager::prepareScene(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene) noexcept
+	ConfigManager::prepareScene(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene) noexcept
 	{
 		for (auto& c : configs_)
 		{
@@ -333,7 +385,7 @@ namespace octoon
 	}
 
 	void
-	RtxManager::render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene)
+	ConfigManager::render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene)
 	{
 		this->prepareScene(context, scene);
 

@@ -4,7 +4,7 @@
 
 #include <octoon/runtime/except.h>
 
-#include "rtx_manager.h"
+#include "config_manager.h"
 
 namespace octoon
 {
@@ -36,8 +36,8 @@ namespace octoon
 	void
 	Renderer::close() noexcept
 	{
-		if (this->rtxManager_)
-			this->rtxManager_.reset();
+		if (this->pathRenderer_)
+			this->pathRenderer_.reset();
 		this->forwardRenderer_.reset();
 		this->context_.reset();
 	}
@@ -60,19 +60,19 @@ namespace octoon
 	void
 	Renderer::readColorBuffer(math::float3 data[])
 	{
-		return this->rtxManager_->readColorBuffer(data);
+		return this->pathRenderer_->readColorBuffer(data);
 	}
 
 	void
 	Renderer::readAlbedoBuffer(math::float3 data[])
 	{
-		return this->rtxManager_->readAlbedoBuffer(data);
+		return this->pathRenderer_->readAlbedoBuffer(data);
 	}
 
 	void
 	Renderer::readNormalBuffer(math::float3 data[])
 	{
-		return this->rtxManager_->readNormalBuffer(data);
+		return this->pathRenderer_->readNormalBuffer(data);
 	}
 
 	const hal::GraphicsFramebufferPtr&
@@ -81,7 +81,7 @@ namespace octoon
 		assert(this->forwardRenderer_);
 
 		if (this->enableGlobalIllumination_)
-			return this->rtxManager_->getFramebuffer();
+			return this->pathRenderer_->getFramebuffer();
 		else
 			return this->forwardRenderer_->getFramebuffer();
 	}
@@ -97,8 +97,8 @@ namespace octoon
 	{
 		numBounces_ = num_bounces;
 
-		if (rtxManager_)
-			rtxManager_->setMaxBounces(num_bounces);
+		if (pathRenderer_)
+			pathRenderer_->setMaxBounces(num_bounces);
 	}
 
 	std::uint32_t
@@ -187,19 +187,19 @@ namespace octoon
 	}
 
 	void
-	Renderer::renderSingleCamera(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept
+	Renderer::renderSingleCamera(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false)
 	{		
 		scene->sortGeometries();
 
 		if (scene->getGlobalIllumination())
 		{
-			if (!rtxManager_)
+			if (!pathRenderer_)
 			{
-				rtxManager_ = std::make_unique<RtxManager>();
-				rtxManager_->setMaxBounces(this->getMaxBounces());
+				pathRenderer_ = std::make_unique<ConfigManager>();
+				pathRenderer_->setMaxBounces(this->getMaxBounces());
 			}
 
-			this->rtxManager_->render(this->context_, scene);
+			this->pathRenderer_->render(this->context_, scene);
 		}
 		else
 		{

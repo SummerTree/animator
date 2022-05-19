@@ -224,16 +224,9 @@ namespace octoon
 	void
 	VideoFeature::onFrame() noexcept(false)
 	{
-		try
-		{
-			auto scene = this->getRenderScene();
-			if (scene)
-				Renderer::instance()->render(scene);
-		}
-		catch (const std::exception& e)
-		{
-			this->getGameListener()->onMessage(e.what());
-		}
+		auto scene = this->getRenderScene();
+		if (scene)
+			Renderer::instance()->render(scene);
 	}
 
 	void

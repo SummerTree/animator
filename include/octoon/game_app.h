@@ -15,14 +15,14 @@ namespace octoon
 	{
 	public:
 		GameApp() noexcept;
-		GameApp(WindHandle hwnd, std::uint32_t w, std::uint32_t h, std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) except;
+		GameApp(WindHandle hwnd, std::uint32_t w, std::uint32_t h, std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) noexcept(false);
 		virtual ~GameApp() noexcept;
 
-		void open(WindHandle hwnd, std::uint32_t w, std::uint32_t h, std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) except;
+		void open(WindHandle hwnd, std::uint32_t w, std::uint32_t h, std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) noexcept(false);
 		bool isOpen() const noexcept;
 		void close() noexcept;
 
-		void setActive(bool active) except;
+		void setActive(bool active) noexcept(false);
 		bool getActive() const noexcept;
 
 		void setGameListener(GameListenerPtr&& listener) noexcept;
@@ -31,54 +31,54 @@ namespace octoon
 
 		bool isQuitRequest() const noexcept;
 
-		bool openScene(const GameScenePtr& scene) except;
+		bool openScene(const GameScenePtr& scene) noexcept(false);
 		void closeScene(const GameScenePtr& name) noexcept;
 
-		bool openScene(std::string_view name) except;
+		bool openScene(std::string_view name) noexcept(false);
 		void closeScene(std::string_view name) noexcept;
 
 		GameScenePtr findScene(std::string_view name) noexcept;
 
 		template<typename T, typename ...Args, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		void addFeature(Args&&... args) except { this->addFeature(std::make_shared<T>(std::forward<Args>(args)...)); }
-		void addFeature(GameFeaturePtr&& feature) except;
+		void addFeature(GameFeaturePtr&& feature) noexcept(false);
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		T* getFeature() const noexcept { return dynamic_cast<T*>(this->getFeature(T::RTTI)); }
-		GameFeature* getFeature(const runtime::Rtti* type) const except;
-		GameFeature* getFeature(const runtime::Rtti& type) const except;
+		GameFeature* getFeature(const runtime::Rtti* type) const noexcept(false);
+		GameFeature* getFeature(const runtime::Rtti& type) const noexcept(false);
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		void removeFeature() noexcept { this->removeFeature(T::RTTI); }
-		void removeFeature(const runtime::Rtti* type) except;
-		void removeFeature(const runtime::Rtti& type) except;
-		void removeFeature(const GameFeaturePtr& feature) except;
+		void removeFeature(const runtime::Rtti* type) noexcept(false);
+		void removeFeature(const runtime::Rtti& type) noexcept(false);
+		void removeFeature(const GameFeaturePtr& feature) noexcept(false);
 
-		void sendInputEvent(const input::InputEvent& event) except;
+		void sendInputEvent(const input::InputEvent& event) noexcept(false);
 
-		void sendMessage(std::string_view event, const std::any& data = std::any()) except;
-		void addMessageListener(std::string_view event, std::function<void(const std::any&)> listener) except;
-		void removeMessageListener(std::string_view event, std::function<void(const std::any&)> listener) except;
+		void sendMessage(std::string_view event, const std::any& data = std::any()) noexcept(false);
+		void addMessageListener(std::string_view event, std::function<void(const std::any&)> listener) noexcept(false);
+		void removeMessageListener(std::string_view event, std::function<void(const std::any&)> listener) noexcept(false);
 
-		void doWindowResize(WindHandle window, std::uint32_t w, std::uint32_t h) except;
-		void doWindowFramebufferResize(WindHandle window, std::uint32_t w, std::uint32_t h) except;
-		void doWindowClose(WindHandle window) except;
-		void doWindowFocus(WindHandle window, bool focus) except;
-		void doWindowKeyDown(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) except;
-		void doWindowKeyUp(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) except;
-		void doWindowKeyPress(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) except;
-		void doWindowKeyChar(WindHandle window, std::uint16_t unicode, std::uint16_t mods) except;
-		void doWindowMouseButtonDown(WindHandle window, input::InputButton::Code button, float x, float y) except;
-		void doWindowMouseButtonUp(WindHandle window, input::InputButton::Code button, float x, float y) except;
-		void doWindowMouseButtonDoubleClick(WindHandle window, input::InputButton::Code button, float x, float y) except;
-		void doWindowMouseMotion(WindHandle window, float x, float y) except;
-		void doWindowScrool(WindHandle window, float x, float y) except;
-		void doWindowDrop(WindHandle window, std::uint32_t count, const char** file_utf8) except;
+		void doWindowResize(WindHandle window, std::uint32_t w, std::uint32_t h) noexcept(false);
+		void doWindowFramebufferResize(WindHandle window, std::uint32_t w, std::uint32_t h) noexcept(false);
+		void doWindowClose(WindHandle window) noexcept(false);
+		void doWindowFocus(WindHandle window, bool focus) noexcept(false);
+		void doWindowKeyDown(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) noexcept(false);
+		void doWindowKeyUp(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) noexcept(false);
+		void doWindowKeyPress(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) noexcept(false);
+		void doWindowKeyChar(WindHandle window, std::uint16_t unicode, std::uint16_t mods) noexcept(false);
+		void doWindowMouseButtonDown(WindHandle window, input::InputButton::Code button, float x, float y) noexcept(false);
+		void doWindowMouseButtonUp(WindHandle window, input::InputButton::Code button, float x, float y) noexcept(false);
+		void doWindowMouseButtonDoubleClick(WindHandle window, input::InputButton::Code button, float x, float y) noexcept(false);
+		void doWindowMouseMotion(WindHandle window, float x, float y) noexcept(false);
+		void doWindowScrool(WindHandle window, float x, float y) noexcept(false);
+		void doWindowDrop(WindHandle window, std::uint32_t count, const char** file_utf8) noexcept(false);
 
-		void start() except;
+		void start() noexcept(false);
 		void stop() noexcept;
 
-		void update() except;
+		void update() noexcept(false);
 
 	protected:
 		void onMessage(std::string_view message) noexcept;
