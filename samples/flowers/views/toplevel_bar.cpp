@@ -44,7 +44,7 @@ namespace flower
 		layout_.addWidget(&volumeButton);
 		layout_.addStretch();
 		layout_.setSpacing(10);
-		layout_.setContentsMargins(10, 5, 10, 10);
+		layout_.setContentsMargins(0, 0, 0, 0);
 
 		auto mainWidget = new QWidget;
 		mainWidget->setLayout(&layout_);

@@ -2,25 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>MainDock</name>
-    <message>
-        <source>Flower Render Toolbox (Alpha Version)</source>
-        <translation type="vanished">花楹渲染器(内测版本)</translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation type="vanished">警告</translation>
-    </message>
-    <message>
-        <source>Please load a project with pmm extension.</source>
-        <translation type="vanished">请加载后缀为.pmm的文件.</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">错误</translation>
-    </message>
-</context>
-<context>
     <name>MainView</name>
     <message>
         <location filename="../res/qml/MainView.qml" line="8"/>
@@ -876,7 +857,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/splash_screen.cpp" line="45"/>
         <source>Version: </source>
-        <translation>版本: </translation>
+        <translation>版本：</translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="50"/>
@@ -982,33 +963,6 @@ $20 (Original cost $40)</source>
         <location filename="../views/title_bar.cpp" line="17"/>
         <source>Close</source>
         <translation>关闭</translation>
-    </message>
-</context>
-<context>
-    <name>flower::TitleWindow</name>
-    <message>
-        <source>Minimize</source>
-        <translation type="vanished">最小化</translation>
-    </message>
-    <message>
-        <source>Maximize</source>
-        <translation type="vanished">最大化</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">关闭</translation>
-    </message>
-    <message>
-        <source>Global Settings</source>
-        <translation type="vanished">全局设置</translation>
-    </message>
-    <message>
-        <source>VIP</source>
-        <translation type="vanished">会员</translation>
-    </message>
-    <message>
-        <source>Flowers Render (Alpha Version)</source>
-        <translation type="vanished">花楹渲染器(内测版本)</translation>
     </message>
 </context>
 <context>
