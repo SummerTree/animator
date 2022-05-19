@@ -911,7 +911,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="22"/>
         <source>Open Record Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>显示录制面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="27"/>
@@ -931,17 +931,17 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="34"/>
         <source>Open Light Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>显示光源面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="40"/>
         <source>Open Main Light Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>显示主光源面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="46"/>
         <source>Open Environment Light Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>显示环境光面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="51"/>
@@ -951,13 +951,13 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="52"/>
         <source>Open Camera Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>显示相机面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="57"/>
         <location filename="../views/thumbnail_dock.cpp" line="58"/>
         <source>Settings</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="39"/>
