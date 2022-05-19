@@ -18,6 +18,7 @@
 #include "controllers/grid_component.h"
 #include "controllers/gizmo_component.h"
 #include "controllers/light_component.h"
+#include "controllers/hdri_component.h"
 
 #include <octoon/octoon.h>
 
@@ -100,6 +101,7 @@ namespace flower
 		std::unique_ptr<GridComponent> gridComponent_;
 		std::unique_ptr<GizmoComponent> gizmoComponent_;
 		std::unique_ptr<LightComponent> lightComponent_;
+		std::unique_ptr<HDRiComponent> hdriComponent_;
 
 		std::vector<IFlowerComponent*> components_;
 	};

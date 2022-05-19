@@ -2,7 +2,7 @@
 #define FLOWER_MATERIAL_COMPONENT_H_
 
 #include "../flower_component.h"
-#include "../module/material_module.h"
+#include "../module/resource_module.h"
 
 #include <set>
 #include <map>
@@ -14,7 +14,7 @@
 
 namespace flower
 {
-	class MaterialComponent final : public RabbitComponent<MaterialModule>
+	class MaterialComponent final : public RabbitComponent<ResourceModule>
 	{
 	public:
 		MaterialComponent() noexcept;
@@ -39,7 +39,8 @@ namespace flower
 		void onDisable() noexcept override;
 
 	private:
-		void initMaterials(std::string_view path);
+		void initMaterialScene();
+		void initMaterialList(std::string_view path);
 
 	private:
 		MaterialComponent(const MaterialComponent&) = delete;
@@ -57,8 +58,8 @@ namespace flower
 
 		std::shared_ptr<octoon::PerspectiveCamera> camera_;
 		std::shared_ptr<octoon::Geometry> geometry_;
-		std::shared_ptr<octoon::DirectionalLight> light_;
-		std::shared_ptr<octoon::EnvironmentLight> envlight_;
+		std::shared_ptr<octoon::DirectionalLight> directionalLight_;
+		std::shared_ptr<octoon::EnvironmentLight> environmentLight_;
 		std::shared_ptr<octoon::RenderScene> scene_;
 	};
 }

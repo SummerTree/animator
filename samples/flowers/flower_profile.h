@@ -15,7 +15,7 @@
 #include "module/sun_module.h"
 #include "module/environment_module.h"
 #include "module/client_module.h"
-#include "module/material_module.h"
+#include "module/resource_module.h"
 #include "module/selector_module.h"
 #include "module/grid_module.h"
 
@@ -47,7 +47,7 @@ namespace flower
 		std::shared_ptr<ClientModule> clientModule;
 		std::shared_ptr<SunModule> sunModule;
 		std::shared_ptr<EnvironmentModule> environmentModule;
-		std::shared_ptr<MaterialModule> materialModule;
+		std::shared_ptr<ResourceModule> resourceModule;
 		std::shared_ptr<SelectorModule> selectorModule;
 		std::shared_ptr<GridModule> gridModule;
 	};

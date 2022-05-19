@@ -46,8 +46,8 @@ SET(MODULES_LIST
 	${SOURCE_PATH}/module/mark_module.cpp
 	${SOURCE_PATH}/module/client_module.h
 	${SOURCE_PATH}/module/client_module.cpp
-	${SOURCE_PATH}/module/material_module.h
-	${SOURCE_PATH}/module/material_module.cpp
+	${SOURCE_PATH}/module/resource_module.h
+	${SOURCE_PATH}/module/resource_module.cpp
 	${SOURCE_PATH}/module/selector_module.h
 	${SOURCE_PATH}/module/selector_module.cpp
 	${SOURCE_PATH}/module/grid_module.h
@@ -98,8 +98,8 @@ SET(VIEWS_LIST
 SOURCE_GROUP("launcher\\views" FILES ${VIEWS_LIST})
 
 SET(CONTROLLERS_LIST
-	${SOURCE_PATH}/controllers/camera_window.h
-	${SOURCE_PATH}/controllers/camera_window.cpp
+	${SOURCE_PATH}/controllers/hdri_component.h
+	${SOURCE_PATH}/controllers/hdri_component.cpp
 	${SOURCE_PATH}/controllers/theme_manager.h
 	${SOURCE_PATH}/controllers/theme_manager.cpp
 	${SOURCE_PATH}/controllers/ui_component.h

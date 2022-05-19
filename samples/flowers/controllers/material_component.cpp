@@ -1,8 +1,5 @@
 #include "material_component.h"
 
-#include "../flower_profile.h"
-#include "../flower_behaviour.h"
-
 #include <octoon/mdl_loader.h>
 #include <octoon/PMREM_loader.h>
 #include <octoon/texture_loader.h>
@@ -16,6 +13,9 @@
 #include <qstring.h>
 #include <quuid.h>
 
+#include "../flower_profile.h"
+#include "../flower_behaviour.h"
+
 namespace flower
 {
 	MaterialComponent::MaterialComponent() noexcept
@@ -24,174 +24,6 @@ namespace flower
 
 	MaterialComponent::~MaterialComponent() noexcept
 	{
-	}
-
-	void
-	MaterialComponent::onEnable() noexcept
-	{
-		try
-		{
-			std::uint32_t width = 256;
-			std::uint32_t height = 256;
-
-			auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
-			if (renderer)
-			{
-				octoon::hal::GraphicsTextureDesc textureDesc;
-				textureDesc.setSize(width, height);
-				textureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
-				textureDesc.setTexFormat(octoon::hal::GraphicsFormat::R8G8B8A8UNorm);
-				auto colorTexture = renderer->getScriptableRenderContext()->createTexture(textureDesc);
-				if (!colorTexture)
-					throw std::runtime_error("createTexture() failed");
-
-				octoon::hal::GraphicsTextureDesc depthTextureDesc;
-				depthTextureDesc.setSize(width, height);
-				depthTextureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
-				depthTextureDesc.setTexFormat(octoon::hal::GraphicsFormat::D16UNorm);
-				auto depthTexture = renderer->getScriptableRenderContext()->createTexture(depthTextureDesc);
-				if (!depthTexture)
-					throw std::runtime_error("createTexture() failed");
-
-				octoon::hal::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-				framebufferLayoutDesc.addComponent(octoon::hal::GraphicsAttachmentLayout(0, octoon::hal::GraphicsImageLayout::ColorAttachmentOptimal, octoon::hal::GraphicsFormat::R8G8B8A8UNorm));
-				framebufferLayoutDesc.addComponent(octoon::hal::GraphicsAttachmentLayout(1, octoon::hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, octoon::hal::GraphicsFormat::D16UNorm));
-
-				octoon::hal::GraphicsFramebufferDesc framebufferDesc;
-				framebufferDesc.setWidth(width);
-				framebufferDesc.setHeight(height);
-				framebufferDesc.setFramebufferLayout(renderer->getScriptableRenderContext()->createFramebufferLayout(framebufferLayoutDesc));
-				framebufferDesc.setDepthStencilAttachment(octoon::hal::GraphicsAttachmentBinding(depthTexture, 0, 0));
-				framebufferDesc.addColorAttachment(octoon::hal::GraphicsAttachmentBinding(colorTexture, 0, 0));
-
-				framebuffer_ = renderer->getScriptableRenderContext()->createFramebuffer(framebufferDesc);
-				if (!framebuffer_)
-					throw std::runtime_error("createFramebuffer() failed");
-
-				camera_ = std::make_shared<octoon::PerspectiveCamera>(60, 1, 100);
-				camera_->setClearColor(octoon::math::float4::Zero);
-				camera_->setClearFlags(octoon::hal::ClearFlagBits::AllBit);
-				camera_->setFramebuffer(framebuffer_);
-				camera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, 0, 1), octoon::math::float3::Zero, octoon::math::float3::UnitY));
-
-				geometry_ = std::make_shared<octoon::Geometry>();
-				geometry_->setMesh(octoon::SphereMesh::create(0.5));
-
-				octoon::math::Quaternion q1;
-				q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75);
-				octoon::math::Quaternion q2;
-				q2.makeRotation(octoon::math::float3::UnitY, octoon::math::PI / 4.6);
-
-				light_ = std::make_shared<octoon::DirectionalLight>();
-				light_->setColor(octoon::math::float3(1, 1, 1));
-				light_->setTransform(octoon::math::float4x4(q1 * q2));
-
-				envlight_ = std::make_shared<octoon::EnvironmentLight>();
-				envlight_->setEnvironmentMap(octoon::PMREMLoader::load("../../system/hdri/Ditch-River_2k.hdr"));
-
-				scene_ = std::make_unique<octoon::RenderScene>();
-				scene_->addRenderObject(camera_.get());
-				scene_->addRenderObject(light_.get());
-				scene_->addRenderObject(envlight_.get());
-				scene_->addRenderObject(geometry_.get());
-			}
-
-			std::ifstream ifs(this->getModel()->path + "/material.json");
-			if (ifs)
-			{
-				auto uuids = nlohmann::json::parse(ifs);
-				for (auto& uuid : uuids)
-				{
-					try
-					{
-						auto path = this->getModel()->path + "/" + uuid.get<nlohmann::json::string_t>() + "/data.json";
-						this->initMaterials(path);
-					}
-					catch (...)
-					{
-					}
-				}
-			}
-
-			this->addMessageListener("editor:selected", [this](const std::any& data) {
-				if (data.has_value())
-				{
-					auto hit = std::any_cast<octoon::RaycastHit>(data);
-					if (!hit.object.lock())
-						return;
-
-					octoon::Materials materials;
-					auto renderComponent = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
-					if (renderComponent)
-						materials = renderComponent->getMaterials();
-					else
-					{
-						auto smr = hit.object.lock()->getComponent<octoon::SkinnedMeshRendererComponent>();
-						if (smr)
-							materials = smr->getMaterials();
-					}
-
-					bool dirty = false;
-
-					for (auto& mat : materials)
-					{
-						if (this->materialSets_.find((void*)mat.get()) != this->materialSets_.end())
-							continue;
-
-						auto standard = mat->downcast<octoon::MeshStandardMaterial>();
-
-						auto id = QUuid::createUuid().toString();
-						auto uuid = id.toStdString().substr(1, id.length() - 2);
-
-						auto& color = standard->getColor();
-						auto& colorMap = standard->getColorMap();
-
-						nlohmann::json item;
-						item["uuid"] = uuid;
-						item["name"] = mat->getName();
-						item["color"] = { color.x, color.y, color.z };
-
-						if (colorMap)
-							item["map"] = colorMap->getTextureDesc().getName();
-
-						this->materialList_[uuid] = item;
-						this->materials_[uuid] = mat;
-						this->materialSets_.insert((void*)mat.get());
-						this->materialsRemap_[mat] = uuid;
-						
-						dirty = true;
-					}
-
-					if (dirty)
-						this->sendMessage("editor:material:change");
-
-					this->selectedMaterial_ = this->materialsRemap_[materials[hit.mesh]];
-					this->sendMessage("editor:material:selected", this->selectedMaterial_.value());
-				}
-				else
-				{
-					this->selectedMaterial_.reset();
-				}
-			});
-		}
-		catch (...)
-		{
-		}
-	}
-
-	void
-	MaterialComponent::onDisable() noexcept
-	{
-		std::ofstream ifs(this->getModel()->path + "/material.json");
-		if (ifs)
-		{
-			nlohmann::json uuids;
-			for (auto& mat : this->materialList_)
-				uuids.push_back(mat.first);
-
-			auto data = uuids.dump();
-			ifs.write(data.c_str(), data.size());
-		}
 	}
 
 	std::optional<std::string>
@@ -324,13 +156,184 @@ namespace flower
 	}
 
 	void
-	MaterialComponent::initMaterials(std::string_view path)
+	MaterialComponent::initMaterialScene()
+	{
+		std::uint32_t width = 256;
+		std::uint32_t height = 256;
+
+		auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
+		if (renderer)
+		{
+			octoon::hal::GraphicsTextureDesc textureDesc;
+			textureDesc.setSize(width, height);
+			textureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
+			textureDesc.setTexFormat(octoon::hal::GraphicsFormat::R8G8B8A8UNorm);
+			auto colorTexture = renderer->getScriptableRenderContext()->createTexture(textureDesc);
+			if (!colorTexture)
+				throw std::runtime_error("createTexture() failed");
+
+			octoon::hal::GraphicsTextureDesc depthTextureDesc;
+			depthTextureDesc.setSize(width, height);
+			depthTextureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
+			depthTextureDesc.setTexFormat(octoon::hal::GraphicsFormat::D16UNorm);
+			auto depthTexture = renderer->getScriptableRenderContext()->createTexture(depthTextureDesc);
+			if (!depthTexture)
+				throw std::runtime_error("createTexture() failed");
+
+			octoon::hal::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+			framebufferLayoutDesc.addComponent(octoon::hal::GraphicsAttachmentLayout(0, octoon::hal::GraphicsImageLayout::ColorAttachmentOptimal, octoon::hal::GraphicsFormat::R8G8B8A8UNorm));
+			framebufferLayoutDesc.addComponent(octoon::hal::GraphicsAttachmentLayout(1, octoon::hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, octoon::hal::GraphicsFormat::D16UNorm));
+
+			octoon::hal::GraphicsFramebufferDesc framebufferDesc;
+			framebufferDesc.setWidth(width);
+			framebufferDesc.setHeight(height);
+			framebufferDesc.setFramebufferLayout(renderer->getScriptableRenderContext()->createFramebufferLayout(framebufferLayoutDesc));
+			framebufferDesc.setDepthStencilAttachment(octoon::hal::GraphicsAttachmentBinding(depthTexture, 0, 0));
+			framebufferDesc.addColorAttachment(octoon::hal::GraphicsAttachmentBinding(colorTexture, 0, 0));
+
+			framebuffer_ = renderer->getScriptableRenderContext()->createFramebuffer(framebufferDesc);
+			if (!framebuffer_)
+				throw std::runtime_error("createFramebuffer() failed");
+
+			camera_ = std::make_shared<octoon::PerspectiveCamera>(60, 1, 100);
+			camera_->setClearColor(octoon::math::float4::Zero);
+			camera_->setClearFlags(octoon::hal::ClearFlagBits::AllBit);
+			camera_->setFramebuffer(framebuffer_);
+			camera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, 0, 1), octoon::math::float3::Zero, octoon::math::float3::UnitY));
+
+			geometry_ = std::make_shared<octoon::Geometry>();
+			geometry_->setMesh(octoon::SphereMesh::create(0.5));
+
+			octoon::math::Quaternion q1;
+			q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75);
+			octoon::math::Quaternion q2;
+			q2.makeRotation(octoon::math::float3::UnitY, octoon::math::PI / 4.6);
+
+			directionalLight_ = std::make_shared<octoon::DirectionalLight>();
+			directionalLight_->setColor(octoon::math::float3(1, 1, 1));
+			directionalLight_->setTransform(octoon::math::float4x4(q1 * q2));
+
+			environmentLight_ = std::make_shared<octoon::EnvironmentLight>();
+			environmentLight_->setEnvironmentMap(octoon::PMREMLoader::load("../../system/hdri/Ditch-River_2k.hdr"));
+
+			scene_ = std::make_unique<octoon::RenderScene>();
+			scene_->addRenderObject(camera_.get());
+			scene_->addRenderObject(directionalLight_.get());
+			scene_->addRenderObject(environmentLight_.get());
+			scene_->addRenderObject(geometry_.get());
+		}
+	}
+
+	void
+	MaterialComponent::initMaterialList(std::string_view path)
 	{
 		std::ifstream ifs(path);
 		if (ifs)
 		{
-			auto json = nlohmann::json::parse(ifs);
-			this->materialList_[json["uuid"]] = json;
+			auto uuids = nlohmann::json::parse(ifs);
+			for (auto& uuid : uuids)
+			{
+				try
+				{
+					auto path = this->getModel()->materialPath + "/" + uuid.get<nlohmann::json::string_t>() + "/data.json";
+
+					std::ifstream ifs(path);
+					if (ifs)
+					{
+						auto json = nlohmann::json::parse(ifs);
+						this->materialList_[json["uuid"]] = json;
+					}
+				}
+				catch (...)
+				{
+				}
+			}
+		}
+	}
+
+	void
+	MaterialComponent::onEnable() noexcept
+	{
+		this->initMaterialScene();
+		this->initMaterialList(this->getModel()->materialPath + "/index.json");
+
+		this->addMessageListener("editor:selected", [this](const std::any& data) {
+			if (data.has_value())
+			{
+				auto hit = std::any_cast<octoon::RaycastHit>(data);
+				if (!hit.object.lock())
+					return;
+
+				octoon::Materials materials;
+				auto renderComponent = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
+				if (renderComponent)
+					materials = renderComponent->getMaterials();
+				else
+				{
+					auto smr = hit.object.lock()->getComponent<octoon::SkinnedMeshRendererComponent>();
+					if (smr)
+						materials = smr->getMaterials();
+				}
+
+				bool dirty = false;
+
+				for (auto& mat : materials)
+				{
+					if (this->materialSets_.find((void*)mat.get()) != this->materialSets_.end())
+						continue;
+
+					auto standard = mat->downcast<octoon::MeshStandardMaterial>();
+
+					auto id = QUuid::createUuid().toString();
+					auto uuid = id.toStdString().substr(1, id.length() - 2);
+
+					auto& color = standard->getColor();
+					auto& colorMap = standard->getColorMap();
+
+					nlohmann::json item;
+					item["uuid"] = uuid;
+					item["name"] = mat->getName();
+					item["color"] = { color.x, color.y, color.z };
+
+					if (colorMap)
+						item["map"] = colorMap->getTextureDesc().getName();
+
+					this->materialList_[uuid] = item;
+					this->materials_[uuid] = mat;
+					this->materialSets_.insert((void*)mat.get());
+					this->materialsRemap_[mat] = uuid;
+						
+					dirty = true;
+				}
+
+				if (dirty)
+					this->sendMessage("editor:material:change");
+
+				this->selectedMaterial_ = this->materialsRemap_[materials[hit.mesh]];
+				this->sendMessage("editor:material:selected", this->selectedMaterial_.value());
+			}
+			else
+			{
+				this->selectedMaterial_.reset();
+			}
+		});
+	}
+
+	void
+	MaterialComponent::onDisable() noexcept
+	{
+		if (!std::filesystem::exists(this->getModel()->materialPath))
+			std::filesystem::create_directory(this->getModel()->materialPath);
+
+		std::ofstream ifs(this->getModel()->materialPath + "/index.json", std::ios_base::binary);
+		if (ifs)
+		{
+			nlohmann::json uuids;
+			for (auto& mat : this->materialList_)
+				uuids.push_back(mat.first);
+
+			auto data = uuids.dump();
+			ifs.write(data.c_str(), data.size());
 		}
 	}
 }

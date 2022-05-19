@@ -1,5 +1,4 @@
 #include "ui_component.h"
-#include "controllers/camera_window.h"
 #include "controllers/theme_manager.h"
 #include "flower_behaviour.h"
 
@@ -39,7 +38,6 @@ namespace flower
 		if (!main_)
 		{
 			main_ = octoon::GameObject::create("MainView");
-			main_->addComponent<CameraWindow>();
 			main_->addComponent<ThemeManager>();
 
 			this->getContext()->behaviour->addMessageListener("editor:camera:set", std::bind([&](const std::any& data) { main_->sendMessage("editor:camera:set", data); }, std::placeholders::_1));
