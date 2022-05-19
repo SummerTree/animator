@@ -45,7 +45,7 @@ namespace flower
 		octoon::GameObjectPtr createCamera(const octoon::PMMFile& pmm) noexcept;
 		void setupBoneAnimation(const octoon::PmmModel& model, octoon::AnimationClips<float>& clips) noexcept;
 		void setupMorphAnimation(const octoon::PmmModel& model, octoon::AnimationClip<float>& clips) noexcept;
-		void setupCameraAnimation(const std::vector<octoon::PmmKeyframeCamera>& camera, octoon::AnimationClip<float>& clip) noexcept;
+		void setupCameraAnimation(const std::vector<octoon::PmmKeyframeCamera>& camera, octoon::Animation<float>& animtion) noexcept;
 
 	private:
 		void onEnable() noexcept override;

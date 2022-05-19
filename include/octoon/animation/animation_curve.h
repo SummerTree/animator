@@ -34,6 +34,7 @@ namespace octoon
 		AnimationCurve() noexcept
 			: finish(false)
 			, negative(false)
+			, time(0)
 			, timeLength(0)
 			, preWrapMode(AnimationMode::Default)
 			, postWrapMode(AnimationMode::Default)
@@ -62,19 +63,41 @@ namespace octoon
 		void assign(Keyframes&& frames_) noexcept
 		{
 			frames = std::move(frames_);
+
 			this->sort();
-			this->time = frames.front().time;
-			this->timeLength = frames.back().time;
-			this->value = frames.front().value;
+
+			if (frames.empty())
+			{
+				this->time = 0;
+				this->timeLength = 0;
+				this->value = 0;
+			}
+			else
+			{
+				this->time = frames.front().time;
+				this->timeLength = frames.back().time;
+				this->value = frames.front().value;
+			}
 		}
 
 		void assign(const Keyframes& frames_) noexcept
 		{
 			frames = frames_;
+
 			this->sort();
-			this->time = frames.front().time;
-			this->timeLength = frames.back().time;
-			this->value = frames.front().value;
+
+			if (frames.empty())
+			{
+				this->time = 0;
+				this->timeLength = 0;
+				this->value = 0;
+			}
+			else
+			{
+				this->time = frames.front().time;
+				this->timeLength = frames.back().time;
+				this->value = frames.front().value;
+			}
 		}
 
 		void insert(Keyframe<_Elem, _Time>&& frame_) noexcept

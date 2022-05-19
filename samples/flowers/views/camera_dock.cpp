@@ -5,6 +5,8 @@
 #include <qdrag.h>
 #include <qmimedata.h>
 #include <qapplication.h>
+#include <octoon/vmd_loader.h>
+#include <octoon/io/fstream.h>
 
 namespace flower
 {
@@ -107,7 +109,7 @@ namespace flower
 		dofInfoLabel_->setStyleSheet("color: rgb(100,100,100);");
 
 		apertureLabel_ = new QLabel();
-		apertureLabel_->setText(tr("aperture:"));
+		apertureLabel_->setText(tr("Aperture:"));
 		apertureLabel_->setStyleSheet("color: rgb(200,200,200);");
 
 		apertureSpinbox_ = new DoubleSpinBox();
@@ -140,7 +142,17 @@ namespace flower
 		focusTargetButton_ = new FocalTargetWindow();
 		focusTargetButton_->setIcon(QIcon(":res/icons/target.png"));
 		focusTargetButton_->setIconSize(QSize(48, 48));
-		focusTargetButton_->setToolTip(u8"拖拽该图标到目标模型可开启自动追焦");
+		focusTargetButton_->setToolTip(u8"拖拽此图标到目标模型可开启自动追焦");
+
+		loadButton_ = new QToolButton();
+		loadButton_->setObjectName("Load");
+		loadButton_->setText(tr("Load Animation"));
+		loadButton_->setContentsMargins(0, 0, 0, 0);
+
+		unloadButton_ = new QToolButton();
+		unloadButton_->setObjectName("Unload");
+		unloadButton_->setText(tr("Uninstall"));
+		unloadButton_->setContentsMargins(0, 0, 0, 0);
 
 		auto fovLayout = new QHBoxLayout;
 		fovLayout->addWidget(fovLabel_);
@@ -159,12 +171,20 @@ namespace flower
 		focusTargetLayout->addWidget(focusDistanceName_);
 		focusTargetLayout->addStretch();
 
+		auto animtionLayout = new QHBoxLayout;
+		animtionLayout->addStretch();
+		animtionLayout->addWidget(loadButton_, 0, Qt::AlignRight);
+		animtionLayout->addWidget(unloadButton_, 0, Qt::AlignLeft);
+		animtionLayout->addStretch();
+		animtionLayout->setContentsMargins(0, 0, 0, 0);
+
 		mainLayout_ = new QVBoxLayout;
 		mainLayout_->addLayout(fovLayout);
 		mainLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
 		mainLayout_->addLayout(apertureLayout);
 		mainLayout_->addLayout(focusDistanceLayout);
 		mainLayout_->addLayout(focusTargetLayout);
+		mainLayout_->addLayout(animtionLayout);
 		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(30, 5, 20, 0);
 
@@ -177,6 +197,8 @@ namespace flower
 		connect(fovSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFovChanged(double)));
 		connect(apertureSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onApertureChanged(double)));
 		connect(focusDistanceSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFocusDistanceChanged(double)));
+		connect(loadButton_, SIGNAL(clicked()), this, SLOT(onLoadAnimation()));
+		connect(unloadButton_, SIGNAL(clicked()), this, SLOT(onUnloadAnimation()));
 	}
 
 	CameraDock::~CameraDock() noexcept
@@ -255,6 +277,63 @@ namespace flower
 	}
 
 	void
+	CameraDock::onLoadAnimation()
+	{
+		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
+		{
+			QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
+			if (!filepath.isEmpty())
+			{
+				octoon::io::ifstream stream;
+
+				if (stream.open(filepath.toStdString()))
+				{
+					octoon::VMDLoader loader;
+					auto animation = loader.loadCameraMotion(stream);
+
+					auto animator = profile_->entitiesModule->camera->getComponent<octoon::AnimatorComponent>();
+					if (!animator)
+						animator = profile_->entitiesModule->camera->addComponent<octoon::AnimatorComponent>();
+
+					animator->setAnimation(std::move(animation));
+					animator->sample(profile_->playerModule->curTime);
+
+					unloadButton_->setEnabled(true);
+				}
+				else
+				{
+					QMessageBox msg(this);
+					msg.setWindowTitle(tr("Error"));
+					msg.setText(tr("Failed to open the file"));
+					msg.setIcon(QMessageBox::Information);
+					msg.setStandardButtons(QMessageBox::Ok);
+
+					msg.exec();
+				}
+			}
+		}
+	}
+
+	void
+	CameraDock::onUnloadAnimation()
+	{
+		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
+		{
+			auto mainCamera = profile_->entitiesModule->camera;
+			mainCamera->removeComponent<octoon::AnimatorComponent>();
+
+			auto transform = mainCamera->getComponent<octoon::TransformComponent>();
+			transform->setTranslate(octoon::math::float3(0, 10, -10));
+			transform->setQuaternion(octoon::math::Quaternion::Zero);
+
+			auto filmCamera = mainCamera->getComponent<octoon::FilmCameraComponent>();
+			filmCamera->setFov(60.0f);
+
+			unloadButton_->setEnabled(false);
+		}
+	}
+
+	void
 	CameraDock::updateDefaultSetting()
 	{
 		if (profile_->entitiesModule->camera)
@@ -266,6 +345,12 @@ namespace flower
 
 			fovSpinbox_->setValue(fov);
 			apertureSpinbox_->setValue(aperture == 0.0f ? 64.0f : 1.0f / aperture);
+
+			auto mainCamera = profile_->entitiesModule->camera;
+			if (mainCamera->getComponent<octoon::AnimatorComponent>())
+				unloadButton_->setEnabled(true);
+			else
+				unloadButton_->setEnabled(false);
 
 			if (profile_->playerModule->dofTarget)
 			{

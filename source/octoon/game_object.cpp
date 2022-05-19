@@ -349,8 +349,6 @@ namespace octoon
 		auto it = std::find_if(components_.begin(), components_.end(), [type](const GameComponentPtr& it) { return it->isA(type); });
 		if (it != components_.end())
 		{
-			components_.erase(it);
-
 			for (auto& compoent : components_)
 				compoent->onDetachComponent(*it);
 
@@ -362,6 +360,8 @@ namespace octoon
 
 			(*it)->onDetach();
 			(*it)->_setGameObject(nullptr);
+
+			components_.erase(it);
 		}
 	}
 

@@ -51,6 +51,8 @@ namespace flower
 		void onApertureChanged(double);
 		void onFocusDistanceChanged(double);
 		void onUpdateTarget();
+		void onLoadAnimation();
+		void onUnloadAnimation();
 
 	private:
 		void updateDefaultSetting();
@@ -66,6 +68,9 @@ namespace flower
 		QDoubleSpinBox* fovSpinbox_;
 		QDoubleSpinBox* apertureSpinbox_;
 		QDoubleSpinBox* focusDistanceSpinbox_;
+
+		QToolButton* loadButton_;
+		QToolButton* unloadButton_;
 
 		QWidget* mainWidget_;
 		QVBoxLayout* mainLayout_;
