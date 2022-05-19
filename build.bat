@@ -23,6 +23,14 @@ if %errorlevel% == 0 (
   goto ExitLabelFailure
 )
 
+if %errorlevel% == 0 (
+  where makensis
+  if %errorlevel% == 0 (
+    makensis samples/flowers/nsis/install.nsi
+  )
+) else (
+  goto ExitLabelFailure
+)
 
 :ExitLabelSuccess
 cd ..
