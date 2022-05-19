@@ -239,6 +239,8 @@ QWidget#MainDock{
 QWidget#StatusBar{
 	min-height:32;
 	color:#808080;
+	font-family: "Microsoft YaHei";
+	font-size:16px;
 	background: rgb(30, 30, 30);
 }
 QWidget#ViewDock{
