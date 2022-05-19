@@ -1,5 +1,5 @@
-#ifndef OCTOON_MODEL_PATH_GROUP_H_
-#define OCTOON_MODEL_PATH_GROUP_H_
+#ifndef OCTOON_PATH_GROUP_H_
+#define OCTOON_PATH_GROUP_H_
 
 #include <octoon/model/path.h>
 

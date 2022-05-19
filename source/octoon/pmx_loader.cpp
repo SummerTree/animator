@@ -656,7 +656,7 @@ namespace octoon
 		math::float3s vertices_;
 		math::float3s normals_;
 		math::float2s texcoords_;
-		VertexWeights weights;
+		std::vector<VertexWeight> weights;
 
 		vertices_.resize(pmx.numVertices);
 		normals_.resize(pmx.numVertices);

@@ -713,8 +713,8 @@ namespace octoon
 		out.screenQuad = Geometry::create();
 		out.screenQuad->setMesh(PlaneMesh::create(2, 2));
 
-		auto mesh = out.screenQuad->getMesh();
-		this->buffers_[mesh.get()] = std::make_shared<ScriptableRenderBuffer>(*this, mesh);
+		auto screenMesh = out.screenQuad->getMesh();
+		this->buffers_[screenMesh.get()] = std::make_shared<ScriptableRenderBuffer>(*this, screenMesh);
 
 		for (auto& geometry : scene->getGeometries())
 		{

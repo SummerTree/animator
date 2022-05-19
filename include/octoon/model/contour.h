@@ -1,5 +1,5 @@
-#ifndef OCTOON_MODEL_CONTOUR_H_
-#define OCTOON_MODEL_CONTOUR_H_
+#ifndef OCTOON_CONTOUR_H_
+#define OCTOON_CONTOUR_H_
 
 #include <octoon/model/modtypes.h>
 
