@@ -290,8 +290,8 @@ namespace flower
 			auto envLight = this->profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
 			if (envLight)
 			{
-				thumbnailToggle->setCheckable(envLight->getBackgroundMap() ? true : false);
-				backgroundToggle->setCheckable(envLight->getShowBackground());
+				thumbnailToggle->setChecked(envLight->getBackgroundMap() ? true : false);
+				backgroundToggle->setChecked(envLight->getShowBackground());
 			}
 		}
 
