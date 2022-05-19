@@ -425,9 +425,8 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/main_dock.cpp" line="431"/>
-        <location filename="../views/main_dock.cpp" line="458"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">当前的显卡不支持OpenCL或您正在使用集成显卡</translation>
     </message>
 </context>
 <context>

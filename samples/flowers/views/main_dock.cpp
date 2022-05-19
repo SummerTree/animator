@@ -455,7 +455,7 @@ namespace flower
 		{
 			QMessageBox msg(this);
 			msg.setWindowTitle(tr("Error"));
-			msg.setText(tr("Current GPU does not support OpenCL or you are using an integrated GPU accelerator."));
+			msg.setText(e.what());
 			msg.setIcon(QMessageBox::Information);
 			msg.setStandardButtons(QMessageBox::Ok);
 
