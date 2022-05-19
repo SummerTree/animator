@@ -53,6 +53,9 @@ namespace octoon
 		void setMaxBounces(std::uint32_t num_bounces);
 		std::uint32_t getMaxBounces() const;
 
+		void setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept;
+		void getFramebufferSize(std::uint32_t& w, std::uint32_t& h) const noexcept;
+
 		void readColorBuffer(math::float3 data[]);
 		void readAlbedoBuffer(math::float3 data[]);
 		void readNormalBuffer(math::float3 data[]);
@@ -70,6 +73,9 @@ namespace octoon
 
 		std::uint32_t width_;
 		std::uint32_t height_;
+
+		std::uint32_t framebufferWidth_;
+		std::uint32_t framebufferHeight_;
 
 		void* colorFramebuffer_;
 		void* normalFramebuffer_;

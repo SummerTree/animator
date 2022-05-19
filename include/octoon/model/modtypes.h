@@ -19,7 +19,6 @@ namespace octoon
 	typedef std::shared_ptr<class Contour> ContourPtr;
 	typedef std::shared_ptr<class ContourGroup> ContourGroupPtr;
 
-	typedef std::shared_ptr<IKAttr> IKAttrPtr;
 	typedef std::vector<IKAttr> InverseKinematics;
 	typedef std::vector<ContourPtr> Contours;
 	typedef std::vector<ContourGroupPtr> ContourGroups;

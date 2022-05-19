@@ -17,16 +17,16 @@ namespace octoon
 	OctoonImplementSubClass(VideoFeature, GameFeature, "VideoFeature")
 
 	VideoFeature::VideoFeature() noexcept
-		: framebuffer_w_(0)
-		, framebuffer_h_(0)
+		: framebufferWidth_(0)
+		, framebufferHeight_(0)
 		, camera_(nullptr)
 		, enableGlobalIllumination_(false)
 	{
 	}
 
 	VideoFeature::VideoFeature(std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) noexcept
-		: framebuffer_w_(framebuffer_w)
-		, framebuffer_h_(framebuffer_h)
+		: framebufferWidth_(framebuffer_w)
+		, framebufferHeight_(framebuffer_h)
 		, camera_(nullptr)
 		, enableGlobalIllumination_(false)
 	{
@@ -56,12 +56,12 @@ namespace octoon
 	void
 	VideoFeature::setFramebufferScale(std::uint32_t w, std::uint32_t h) noexcept
 	{
-		if (framebuffer_w_ != w || framebuffer_h_ != h)
+		if (framebufferWidth_ != w || framebufferHeight_ != h)
 		{
-			framebuffer_w_ = w;
-			framebuffer_h_ = h;
-
 			Renderer::instance()->setFramebufferSize(w, h);
+
+			framebufferWidth_ = w;
+			framebufferHeight_ = h;
 		}
 	}
 
@@ -172,12 +172,12 @@ namespace octoon
 	}
 
 	void
-	VideoFeature::onActivate() except
+	VideoFeature::onActivate() noexcept(false)
 	{
 		auto graphics = this->getFeature<GraphicsFeature>();
 		if (graphics)
 		{
-			Renderer::instance()->setup(graphics->getContext(), framebuffer_w_, framebuffer_h_);
+			Renderer::instance()->open(graphics->getContext(), framebufferWidth_, framebufferHeight_);
 			
 			this->mainSceneDefault_ = std::make_shared<RenderScene>();
 			this->mainSceneDefault_->setGlobalIllumination(this->enableGlobalIllumination_);

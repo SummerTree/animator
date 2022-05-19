@@ -1,5 +1,5 @@
-#ifndef OCTOON_MODEL_PATH_H_
-#define OCTOON_MODEL_PATH_H_
+#ifndef OCTOON_PATH_H_
+#define OCTOON_PATH_H_
 
 #include <octoon/model/path_edge.h>
 

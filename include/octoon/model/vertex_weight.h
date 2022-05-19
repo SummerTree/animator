@@ -1,8 +1,6 @@
 #ifndef OCTOON_VERTEX_WEIGHT_H_
 #define OCTOON_VERTEX_WEIGHT_H_
 
-#include <vector>
-
 namespace octoon
 {
 	namespace detail
@@ -40,7 +38,6 @@ namespace octoon
 	}
 
 	using VertexWeight = detail::VertexWeight<std::uint16_t, float>;
-	using VertexWeights = std::vector<VertexWeight>;
 }
 
 #endif

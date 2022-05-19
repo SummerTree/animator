@@ -1,5 +1,5 @@
-#ifndef OCTOON_MODEL_CONTOUR_GROUP_H_
-#define OCTOON_MODEL_CONTOUR_GROUP_H_
+#ifndef OCTOON_CONTOUR_GROUP_H_
+#define OCTOON_CONTOUR_GROUP_H_
 
 #include <octoon/math/math.h>
 #include <octoon/mesh/mesh.h>

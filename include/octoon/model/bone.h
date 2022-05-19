@@ -47,9 +47,6 @@ namespace octoon
 		math::float3 _scaling;
 		math::Quaternion _rotation;
 	};
-
-	using Bones = std::vector<Bone>;
-	using BonePtr = std::shared_ptr<Bone>;
 }
 
 #endif

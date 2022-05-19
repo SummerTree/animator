@@ -27,7 +27,7 @@ namespace octoon
 		Renderer() noexcept;
 		~Renderer() noexcept;
 
-		void setup(const hal::GraphicsContextPtr& context, std::uint32_t w, std::uint32_t h) except;
+		void open(const hal::GraphicsContextPtr& context, std::uint32_t w, std::uint32_t h) except;
 		void close() noexcept;
 
 		void setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept;
@@ -53,8 +53,8 @@ namespace octoon
 		void beginFrameRendering(const std::shared_ptr<RenderScene>& scene, const std::vector<Camera*>& camera) noexcept;
 		void endFrameRendering(const std::shared_ptr<RenderScene>& scene, const std::vector<Camera*>& camera) noexcept;
 
-		void beginCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept;
-		void endCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept;
+		void beginCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false);
+		void endCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false);
 		void renderSingleCamera(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false);
 
 	private:

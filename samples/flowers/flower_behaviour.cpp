@@ -93,6 +93,7 @@ namespace flower
 		uiComponent_ = std::make_unique<UIComponent>();
 		markComponent_ = std::make_unique<MarkComponent>();
 		materialComponent_ = std::make_unique<MaterialComponent>();
+		hdriComponent_ = std::make_unique<HDRiComponent>();
 		selectorComponent_ = std::make_unique<SelectorComponent>();
 		gizmoComponent_ = std::make_unique<GizmoComponent>();
 		gridComponent_ = std::make_unique<GridComponent>();
@@ -106,7 +107,8 @@ namespace flower
 		h265Component_->init(context_, profile_->encodeModule);
 		uiComponent_->init(context_, profile_->recordModule);
 		markComponent_->init(context_, profile_->markModule);
-		materialComponent_->init(context_, profile_->materialModule);
+		materialComponent_->init(context_, profile_->resourceModule);
+		hdriComponent_->init(context_, profile_->resourceModule);
 		gizmoComponent_->init(context_, profile_->selectorModule);
 		selectorComponent_->init(context_, profile_->selectorModule);
 		gridComponent_->init(context_, profile_->gridModule);
@@ -118,6 +120,7 @@ namespace flower
 		this->addComponent(markComponent_.get());
 		this->addComponent(uiComponent_.get());
 		this->addComponent(materialComponent_.get());
+		this->addComponent(hdriComponent_.get());
 		this->addComponent(gizmoComponent_.get());
 		this->addComponent(selectorComponent_.get());
 		this->addComponent(gridComponent_.get());
@@ -162,6 +165,7 @@ namespace flower
 		profile_.reset();
 		uiComponent_.reset();
 		materialComponent_.reset();
+		hdriComponent_.reset();
 		selectorComponent_.reset();
 		gridComponent_.reset();
 

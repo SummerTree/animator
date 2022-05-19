@@ -182,11 +182,11 @@ namespace flower
 
 		if (model->selectedItemHover_ && model->selectedItem_ != model->selectedItemHover_ && !profile->playerModule->isPlaying)
 		{
-			if (model->selectedItemHover_)
-			{
-				auto hit = model->selectedItemHover_.value();
-				auto hitObject = hit.object.lock();
+			auto hit = model->selectedItemHover_.value();
+			auto hitObject = hit.object.lock();
 
+			if (hitObject)
+			{
 				octoon::MeshPtr mesh;
 				auto skinnedMesh = hitObject->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (skinnedMesh)

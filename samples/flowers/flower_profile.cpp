@@ -17,7 +17,7 @@ namespace flower
 		, sunModule(std::make_shared<SunModule>())
 		, environmentModule(std::make_shared<EnvironmentModule>())
 		, clientModule(std::make_shared<ClientModule>())
-		, materialModule(std::make_shared<MaterialModule>())
+		, resourceModule(std::make_shared<ResourceModule>())
 		, selectorModule(std::make_shared<SelectorModule>())
 		, gridModule(std::make_shared<GridModule>())
 	{
@@ -31,7 +31,7 @@ namespace flower
 		{
 			auto json = octoon::runtime::json::parse(stream);
 			this->physicsModule->load(json["physics"]);
-			this->encodeModule->load(json["h265"]);
+			this->encodeModule->load(json["encode"]);
 			this->playerModule->load(json["time"]);
 			this->fileModule->load(json["file"]);
 			this->entitiesModule->load(json["entities"]);
@@ -41,7 +41,7 @@ namespace flower
 			this->sunModule->load(json["sun"]);
 			this->environmentModule->load(json["environment"]);
 			this->clientModule->load(json["client"]);
-			this->materialModule->load(json["material"]);
+			this->resourceModule->load(json["material"]);
 			this->selectorModule->load(json["drag"]);
 			this->gridModule->load(json["grid"]);
 		}
@@ -65,7 +65,7 @@ namespace flower
 		{
 			octoon::runtime::json json;
 			profile.physicsModule->save(json["physics"]);
-			profile.encodeModule->save(json["h265"]);
+			profile.encodeModule->save(json["encode"]);
 			profile.playerModule->save(json["time"]);
 			profile.fileModule->save(json["file"]);
 			profile.entitiesModule->save(json["entities"]);
@@ -75,7 +75,7 @@ namespace flower
 			profile.sunModule->save(json["sun"]);
 			profile.environmentModule->save(json["environment"]);
 			profile.clientModule->save(json["client"]);
-			profile.materialModule->save(json["material"]);
+			profile.resourceModule->save(json["material"]);
 			profile.selectorModule->save(json["drag"]);
 			profile.gridModule->save(json["grid"]);
 
