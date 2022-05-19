@@ -411,6 +411,7 @@ $20 (Original cost $40)</source>
         <location filename="../views/main_dock.cpp" line="358"/>
         <location filename="../views/main_dock.cpp" line="397"/>
         <location filename="../views/main_dock.cpp" line="430"/>
+        <location filename="../views/main_dock.cpp" line="457"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -424,6 +425,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/main_dock.cpp" line="431"/>
+        <location filename="../views/main_dock.cpp" line="458"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>

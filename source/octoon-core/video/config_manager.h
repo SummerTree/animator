@@ -32,7 +32,7 @@ namespace octoon
 		kUseCpus
 	};
 
-	class RtxManager
+	class ConfigManager
 	{
 		struct Config
 		{
@@ -45,7 +45,7 @@ namespace octoon
 		};
 
 	public:
-		RtxManager() noexcept(false);
+		ConfigManager() noexcept(false);
 
 		void setOutput(OutputType type, Output* output);
 		Output* getOutput(OutputType type) const;

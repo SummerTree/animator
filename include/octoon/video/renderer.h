@@ -55,7 +55,7 @@ namespace octoon
 
 		void beginCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept;
 		void endCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept;
-		void renderSingleCamera(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept;
+		void renderSingleCamera(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false);
 
 	private:
 		Renderer(const Renderer&) = delete;
@@ -70,7 +70,7 @@ namespace octoon
 
 		std::shared_ptr<ScriptableRenderContext> context_;
 
-		std::unique_ptr<class RtxManager> rtxManager_;
+		std::unique_ptr<class ConfigManager> pathRenderer_;
 		std::unique_ptr<class ForwardRenderer> forwardRenderer_;
 
 		std::shared_ptr<Material> overrideMaterial_;

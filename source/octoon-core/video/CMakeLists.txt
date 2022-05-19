@@ -72,8 +72,8 @@ SET(VIDEO_OPENCL_LIST
 	${SOURCE_PATH}/cl_program.cpp
 	${SOURCE_PATH}/cl_program_manager.h
 	${SOURCE_PATH}/cl_program_manager.cpp
-	${SOURCE_PATH}/rtx_manager.h
-	${SOURCE_PATH}/rtx_manager.cpp
+	${SOURCE_PATH}/config_manager.h
+	${SOURCE_PATH}/config_manager.cpp
 	${SOURCE_PATH}/path_tracing_estimator.h
 	${SOURCE_PATH}/path_tracing_estimator.cpp
 	${SOURCE_PATH}/monte_carlo_renderer.h

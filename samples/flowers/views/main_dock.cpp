@@ -446,7 +446,27 @@ namespace flower
 	void
 	MainDock::update() noexcept
 	{
-		if (gameApp_ && init_flag)
-			gameApp_->update();
+		try
+		{
+			if (gameApp_ && init_flag)
+				gameApp_->update();
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(tr("Current GPU does not support OpenCL or you are using an integrated GPU accelerator."));
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
+
+			listener_->onMessage(e.what());
+
+			gameApp_.reset();
+			gameApp_ = nullptr;
+
+			exit(0);
+		}
 	}
 }

@@ -73,7 +73,7 @@ namespace octoon
 		std::locale::global(std::locale(""));
 	}
 
-	GameApp::GameApp(WindHandle hwnd, std::uint32_t w, std::uint32_t h, std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) except
+	GameApp::GameApp(WindHandle hwnd, std::uint32_t w, std::uint32_t h, std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) noexcept(false)
 		: GameApp()
 	{
 		this->open(hwnd, w, h, framebuffer_w, framebuffer_h);
@@ -85,7 +85,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::open(WindHandle hwnd, std::uint32_t w, std::uint32_t h, std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) except
+	GameApp::open(WindHandle hwnd, std::uint32_t w, std::uint32_t h, std::uint32_t framebuffer_w, std::uint32_t framebuffer_h) noexcept(false)
 	{
 		if (server_)
 		{
@@ -170,7 +170,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::setActive(bool active) except
+	GameApp::setActive(bool active) noexcept(false)
 	{
 		if (server_)
 			server_->setActive(active);
@@ -222,7 +222,7 @@ namespace octoon
 	}
 
 	bool
-	GameApp::openScene(const GameScenePtr& scene) except
+	GameApp::openScene(const GameScenePtr& scene) noexcept(false)
 	{
 		if (server_)
 			return server_->addScene(scene);
@@ -231,7 +231,7 @@ namespace octoon
 	}
 
 	bool
-	GameApp::openScene(std::string_view name) except
+	GameApp::openScene(std::string_view name) noexcept(false)
 	{
 		if (server_)
 			return server_->openScene(name);
@@ -265,7 +265,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::addFeature(GameFeaturePtr&& feature) except
+	GameApp::addFeature(GameFeaturePtr&& feature) noexcept(false)
 	{
 		if (server_)
 			server_->addFeature(std::move(feature));
@@ -274,7 +274,7 @@ namespace octoon
 	}
 
 	GameFeature*
-	GameApp::getFeature(const runtime::Rtti* type) const except
+	GameApp::getFeature(const runtime::Rtti* type) const noexcept(false)
 	{
 		if (server_)
 			return server_->getFeature(type);
@@ -283,13 +283,13 @@ namespace octoon
 	}
 
 	GameFeature*
-	GameApp::getFeature(const runtime::Rtti& type) const except
+	GameApp::getFeature(const runtime::Rtti& type) const noexcept(false)
 	{
 		return this->getFeature(&type);
 	}
 
 	void
-	GameApp::removeFeature(const runtime::Rtti* type) except
+	GameApp::removeFeature(const runtime::Rtti* type) noexcept(false)
 	{
 		if (server_)
 			server_->removeFeature(type);
@@ -298,7 +298,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::removeFeature(const runtime::Rtti& type) except
+	GameApp::removeFeature(const runtime::Rtti& type) noexcept(false)
 	{
 		if (server_)
 			server_->removeFeature(type);
@@ -307,7 +307,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::removeFeature(const GameFeaturePtr& feature) except
+	GameApp::removeFeature(const GameFeaturePtr& feature) noexcept(false)
 	{
 		if (server_)
 			server_->removeFeature(feature);
@@ -316,7 +316,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::sendInputEvent(const input::InputEvent& event) except
+	GameApp::sendInputEvent(const input::InputEvent& event) noexcept(false)
 	{
 		assert(this->isOpen());
 		if (server_)
@@ -326,7 +326,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::sendMessage(std::string_view event, const std::any& data) except
+	GameApp::sendMessage(std::string_view event, const std::any& data) noexcept(false)
 	{
 		if (server_)
 			server_->sendMessage(event, data);
@@ -335,7 +335,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::addMessageListener(std::string_view event, std::function<void(const std::any&)> listener) except
+	GameApp::addMessageListener(std::string_view event, std::function<void(const std::any&)> listener) noexcept(false)
 	{
 		if (server_)
 			server_->addMessageListener(event, listener);
@@ -344,7 +344,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::removeMessageListener(std::string_view event, std::function<void(const std::any&)> listener) except
+	GameApp::removeMessageListener(std::string_view event, std::function<void(const std::any&)> listener) noexcept(false)
 	{
 		if (server_)
 			server_->removeMessageListener(event, listener);
@@ -353,7 +353,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::start() except
+	GameApp::start() noexcept(false)
 	{
 		assert(this->isOpen());
 		this->setActive(true);
@@ -367,7 +367,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::update() except
+	GameApp::update() noexcept(false)
 	{
 		assert(this->isOpen());
 
@@ -385,7 +385,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowResize(WindHandle window, std::uint32_t w, std::uint32_t h) except
+	GameApp::doWindowResize(WindHandle window, std::uint32_t w, std::uint32_t h) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -394,7 +394,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowFramebufferResize(WindHandle window, std::uint32_t w, std::uint32_t h) except
+	GameApp::doWindowFramebufferResize(WindHandle window, std::uint32_t w, std::uint32_t h) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -403,7 +403,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowClose(WindHandle window) except
+	GameApp::doWindowClose(WindHandle window) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -412,7 +412,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowFocus(WindHandle window, bool focus) except
+	GameApp::doWindowFocus(WindHandle window, bool focus) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -421,7 +421,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowKeyDown(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) except
+	GameApp::doWindowKeyDown(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -430,7 +430,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowKeyUp(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) except
+	GameApp::doWindowKeyUp(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -439,7 +439,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowKeyPress(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) except
+	GameApp::doWindowKeyPress(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -448,7 +448,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowKeyChar(WindHandle window, std::uint16_t unicode, std::uint16_t mods) except
+	GameApp::doWindowKeyChar(WindHandle window, std::uint16_t unicode, std::uint16_t mods) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -457,7 +457,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowMouseButtonDown(WindHandle window, input::InputButton::Code button, float x, float y) except
+	GameApp::doWindowMouseButtonDown(WindHandle window, input::InputButton::Code button, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -466,7 +466,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowMouseButtonUp(WindHandle window, input::InputButton::Code button, float x, float y) except
+	GameApp::doWindowMouseButtonUp(WindHandle window, input::InputButton::Code button, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -475,7 +475,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowMouseButtonDoubleClick(WindHandle window, input::InputButton::Code button, float x, float y) except
+	GameApp::doWindowMouseButtonDoubleClick(WindHandle window, input::InputButton::Code button, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -484,7 +484,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowMouseMotion(WindHandle window, float x, float y) except
+	GameApp::doWindowMouseMotion(WindHandle window, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -493,7 +493,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowScrool(WindHandle window, float x, float y) except
+	GameApp::doWindowScrool(WindHandle window, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
@@ -502,7 +502,7 @@ namespace octoon
 	}
 
 	void
-	GameApp::doWindowDrop(WindHandle window, std::uint32_t count, const char** file_utf8) except
+	GameApp::doWindowDrop(WindHandle window, std::uint32_t count, const char** file_utf8) noexcept(false)
 	{
 		assert(this->isOpen());
 		octoon::input::InputEvent event;
