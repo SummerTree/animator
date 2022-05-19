@@ -12,43 +12,69 @@
 <context>
     <name>flower::CameraDock</name>
     <message>
-        <location filename="../views/camera_dock.cpp" line="89"/>
+        <location filename="../views/camera_dock.cpp" line="91"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="92"/>
+        <location filename="../views/camera_dock.cpp" line="94"/>
         <source>fov:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="110"/>
-        <source>aperture:</source>
+        <location filename="../views/camera_dock.cpp" line="112"/>
+        <source>Aperture:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="124"/>
+        <location filename="../views/camera_dock.cpp" line="126"/>
         <source>Focus Distance:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="137"/>
-        <location filename="../views/camera_dock.cpp" line="208"/>
-        <location filename="../views/camera_dock.cpp" line="242"/>
-        <location filename="../views/camera_dock.cpp" line="282"/>
+        <location filename="../views/camera_dock.cpp" line="139"/>
+        <location filename="../views/camera_dock.cpp" line="230"/>
+        <location filename="../views/camera_dock.cpp" line="264"/>
+        <location filename="../views/camera_dock.cpp" line="369"/>
         <source>Target: Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="200"/>
-        <location filename="../views/camera_dock.cpp" line="278"/>
+        <location filename="../views/camera_dock.cpp" line="149"/>
+        <location filename="../views/camera_dock.cpp" line="284"/>
+        <source>Load Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="154"/>
+        <source>Uninstall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="222"/>
+        <location filename="../views/camera_dock.cpp" line="365"/>
         <source>Target: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="202"/>
-        <location filename="../views/camera_dock.cpp" line="277"/>
+        <location filename="../views/camera_dock.cpp" line="224"/>
+        <location filename="../views/camera_dock.cpp" line="364"/>
         <source>Auto-measuring</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="284"/>
+        <source>VMD Files (*.vmd)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="308"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="309"/>
+        <source>Failed to open the file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

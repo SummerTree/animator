@@ -41,7 +41,7 @@ namespace octoon
 		Animation(const AnimationClip<_Elem, _Time>& _clip) noexcept
 			: Animation()
 		{
-			clips.emplace_back(std::move(_clip));
+			clips.emplace_back(_clip);
 
 			for (auto& clip : clips)
 				state.timeLength = std::max(clip.timeLength, state.timeLength);

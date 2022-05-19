@@ -17,6 +17,7 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/daily_file_sink.h"
+
 std::shared_ptr<spdlog::logger> create_logger()
 {
 	try
@@ -37,6 +38,7 @@ std::shared_ptr<spdlog::logger> create_logger()
 	catch (const spdlog::spdlog_ex& ex)
 	{
 		std::cout << "Log init failed: " << ex.what() << std::endl;
+		return nullptr;
 	}
 }
 

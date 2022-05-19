@@ -362,6 +362,21 @@ QWidget#MainLightDock QScrollBar, QWidget#MaterialDock QScrollBar
     padding-top:9px;
     padding-bottom:9px;
 }
+QWidget#CameraDock QToolButton#Load{
+	width:210;
+	height:35;
+	color:rgb(200,200,200);
+	background-color:rgb(60,60,60);
+}
+QWidget#CameraDock QToolButton#Unload{
+	width:50;
+	height:35;
+	color:rgb(200,200,200);
+	background-color:rgb(60,60,60);
+}
+QWidget#CameraDock QToolButton#Unload:disabled {
+    color:rgb(150,150,150);
+}
 QWidget#settingTitle{
 	min-height:32;
 	max-height:32;

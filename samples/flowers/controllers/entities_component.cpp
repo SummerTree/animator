@@ -304,8 +304,8 @@ namespace flower
 	GameObjectPtr
 	EntitiesComponent::createCamera(const PMMFile& pmm) noexcept
 	{
-		AnimationClip<float> clip;
-		this->setupCameraAnimation(pmm.camera_keyframes, clip);
+		Animation<float> animtion;
+		this->setupCameraAnimation(pmm.camera_keyframes, animtion);
 
 		auto eye = octoon::math::float3(pmm.camera.eye.x, pmm.camera.eye.y, pmm.camera.eye.z);
 		auto target = octoon::math::float3(pmm.camera.target.x, pmm.camera.target.y, pmm.camera.target.z);
@@ -314,7 +314,7 @@ namespace flower
 		auto mainCamera = GameObject::create("MainCamera");
 		mainCamera->addComponent<FirstPersonCameraComponent>();
 		mainCamera->addComponent<AudioListenerComponent>();
-		mainCamera->addComponent<AnimatorComponent>(Animation(clip));
+		mainCamera->addComponent<AnimatorComponent>(animtion);
 
 		auto camera = mainCamera->addComponent<FilmCameraComponent>();
 		camera->setFov((float)pmm.camera_keyframes[0].fov);
@@ -334,7 +334,7 @@ namespace flower
 	}
 
 	void
-	EntitiesComponent::setupCameraAnimation(const std::vector<PmmKeyframeCamera>& camera_keyframes, AnimationClip<float>& clip) noexcept
+	EntitiesComponent::setupCameraAnimation(const std::vector<PmmKeyframeCamera>& camera_keyframes, Animation<float>& animation) noexcept
 	{
 		Keyframes<float> distance;
 		Keyframes<float> eyeX;
@@ -373,6 +373,7 @@ namespace flower
 			fov.emplace_back((float)it.frame / 30.0f, (float)it.fov, interpolationAngleView);
 		}
 
+		AnimationClip clip;
 		clip.setCurve("LocalPosition.x", AnimationCurve(std::move(eyeX)));
 		clip.setCurve("LocalPosition.y", AnimationCurve(std::move(eyeY)));
 		clip.setCurve("LocalPosition.z", AnimationCurve(std::move(eyeZ)));
@@ -381,6 +382,8 @@ namespace flower
 		clip.setCurve("LocalEulerAnglesRaw.z", AnimationCurve(std::move(rotationZ)));
 		clip.setCurve("Transform:move", AnimationCurve(std::move(distance)));
 		clip.setCurve("Camera:fov", AnimationCurve(std::move(fov)));
+
+		animation.addClip(std::move(clip));
 	}
 
 	void

@@ -3,6 +3,7 @@
 #include <octoon/solver_component.h>
 #include <octoon/timer_feature.h>
 #include <octoon/rigidbody_component.h>
+#include <iostream>
 
 namespace octoon
 {
@@ -152,9 +153,9 @@ namespace octoon
 	}
 
 	void
-	AnimatorComponent::setAnimation(Animation<float>&& clips) noexcept
+	AnimatorComponent::setAnimation(Animation<float>&& animtion) noexcept
 	{
-		animation_ = std::move(clips);
+		animation_ = std::move(animtion);
 	}
 
 	void

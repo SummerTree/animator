@@ -16,11 +16,11 @@ namespace flower
 		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 		this->setFeatures(DockWidgetFeature::DockWidgetMovable | DockWidgetFeature::DockWidgetFloatable);
 
-		recordButton_ = new QToolButton;
-		recordButton_->setObjectName("record");
-		recordButton_->setText(tr("Record"));
-		recordButton_->setToolTip(tr("Open Record Panel"));
-		recordButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		loadButton_ = new QToolButton;
+		loadButton_->setObjectName("record");
+		loadButton_->setText(tr("Record"));
+		loadButton_->setToolTip(tr("Open Record Panel"));
+		loadButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		materialButton_ = new QToolButton;
 		materialButton_->setObjectName("material");
@@ -62,7 +62,7 @@ namespace flower
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
 		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
-		layout->addWidget(recordButton_, 0, Qt::AlignCenter);
+		layout->addWidget(loadButton_, 0, Qt::AlignCenter);
 		layout->addWidget(materialButton_, 0, Qt::AlignCenter);
 		layout->addWidget(lightButton_, 0, Qt::AlignCenter);
 		layout->addWidget(sunButton_, 0, Qt::AlignCenter);
@@ -91,7 +91,7 @@ namespace flower
 
 		lightButton_->hide();
 
-		this->connect(recordButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
+		this->connect(loadButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
 		this->connect(lightButton_, SIGNAL(clicked()), this, SLOT(lightEvent()));
 		this->connect(sunButton_, SIGNAL(clicked()), this, SLOT(sunEvent()));
 		this->connect(environmentButton_, SIGNAL(clicked()), this, SLOT(environmentEvent()));

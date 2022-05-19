@@ -44,7 +44,7 @@ namespace flower
 		void cameraSignal();
 
 	public:
-		QToolButton* recordButton_;
+		QToolButton* loadButton_;
 		QToolButton* lightButton_;
 		QToolButton* sunButton_;
 		QToolButton* environmentButton_;

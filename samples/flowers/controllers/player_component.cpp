@@ -296,8 +296,6 @@ namespace flower
 				animation->setTime(model->curTime);
 				animation->sample();
 			}
-
-			this->updateDofTarget();
 		}
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
@@ -329,6 +327,9 @@ namespace flower
 				}
 			}
 		}
+
+		if (camera)
+			this->updateDofTarget();
 	}
 
 	void
@@ -376,8 +377,6 @@ namespace flower
 				animation->setTime(model->curTime);
 				animation->evaluate();
 			}
-
-			this->updateDofTarget();
 		}
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
@@ -386,6 +385,9 @@ namespace flower
 			if (!physicsFeature->getEnableSimulate())
 				physicsFeature->simulate(delta);
 		}
+
+		if (camera)
+			this->updateDofTarget();
 	}
 
 	float
@@ -435,10 +437,14 @@ namespace flower
 				{
 					auto meshFilter = hitObject->getComponent<octoon::MeshFilterComponent>();
 					auto mesh = meshFilter->getMesh();
-					auto& aabb = mesh->getBoundingBox(model->dofTarget->mesh);
-					auto center = hitObject->getComponent<octoon::TransformComponent>()->getTransform() * aabb.center();
 
-					filmCamera->setFocusDistance(octoon::math::distance(center, cameraPos));
+					if (mesh)
+					{
+						auto& aabb = mesh->getBoundingBox(model->dofTarget->mesh);
+						auto center = hitObject->getComponent<octoon::TransformComponent>()->getTransform() * aabb.center();
+
+						filmCamera->setFocusDistance(octoon::math::distance(center, cameraPos));
+					}
 				}
 			}
 		}

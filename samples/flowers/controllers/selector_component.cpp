@@ -188,12 +188,12 @@ namespace flower
 				auto hitObject = hit.object.lock();
 
 				octoon::MeshPtr mesh;
-				auto skinnedMesh = hit.object.lock()->getComponent<octoon::SkinnedMeshRendererComponent>();
+				auto skinnedMesh = hitObject->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (skinnedMesh)
 					mesh = skinnedMesh->getSkinnedMesh();
 				else
 				{
-					auto meshFilter = hit.object.lock()->getComponent<octoon::MeshFilterComponent>();
+					auto meshFilter = hitObject->getComponent<octoon::MeshFilterComponent>();
 					if (meshFilter)
 						mesh = meshFilter->getMesh();
 				}
