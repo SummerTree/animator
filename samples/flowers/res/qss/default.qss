@@ -253,46 +253,46 @@ QWidget#ToplevelBar{
 	margin-bottom: 4px;
 }
 QWidget#ToplevelBar QToolButton{
-	min-width:30px;
-	min-height:30px;
-	max-width:30px;
-	max-height:30px;
+	min-width:28px;
+	min-height:28px;
+	max-width:28px;
+	max-height:28px;
 }
 QWidget#ToplevelBar QToolButton#play{
 	qproperty-icon: url(":res/icons/play.png");
-	qproperty-iconSize: 26px 26px;
+	qproperty-iconSize: 24px 24px;
 }
 QWidget#ToplevelBar QToolButton#play-on{
 	qproperty-icon: url(":res/icons/play-on.png");
-	qproperty-iconSize: 26px 26px;
+	qproperty-iconSize: 24px 24px;
 }
 QWidget#ToplevelBar QToolButton#pause{
 	qproperty-icon: url(":res/icons/pause.png");
-	qproperty-iconSize: 26px 26px;
+	qproperty-iconSize: 24px 24px;
 }
 QWidget#ToplevelBar QToolButton#stop{
 	qproperty-icon: url(":res/icons/stop.png");
-	qproperty-iconSize: 26px 26px;
+	qproperty-iconSize: 24px 24px;
 }
 QWidget#ToplevelBar QToolButton#reset{
 	qproperty-icon: url(":res/icons/reset.png");
-	qproperty-iconSize: 26px 26px;
+	qproperty-iconSize: 24px 24px;
 }
 QWidget#ToplevelBar QToolButton#left{
 	qproperty-icon: url(":res/icons/left.png");
-	qproperty-iconSize: 26px 26px;
+	qproperty-iconSize: 24px 24px;
 }
 QWidget#ToplevelBar QToolButton#right{
 	qproperty-icon: url(":res/icons/right.png");
-	qproperty-iconSize: 26px 26px;
+	qproperty-iconSize: 24px 24px;
 }
 QWidget#ToplevelBar QToolButton#volumeMiddle{
 	qproperty-icon: url(":res/icons/volumeMiddle.png");
-	qproperty-iconSize: 26px 26px;
+	qproperty-iconSize: 24px 24px;
 }
 QWidget#ToplevelBar QToolButton#volumeCross{
 	qproperty-icon: url(":res/icons/volumeCross.png");
-	qproperty-iconSize: 26px 26px;
+	qproperty-iconSize: 24px 24px;
 }
 QWidget#ToolDock, QWidget#ThumbnailDock{
 	min-width:50;

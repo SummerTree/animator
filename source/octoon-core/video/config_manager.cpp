@@ -32,6 +32,8 @@ namespace octoon
 	ConfigManager::ConfigManager() noexcept(false)
 		: width_(0)
 		, height_(0)
+		, framebufferWidth_(0)
+		, framebufferHeight_(0)
 		, dirty_(true)
 	{
 		std::vector<CLWPlatform> platforms;
@@ -244,6 +246,20 @@ namespace octoon
 	}
 
 	void
+	ConfigManager::setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept
+	{
+		framebufferWidth_ = w;
+		framebufferHeight_ = h;
+	}
+
+	void
+	ConfigManager::getFramebufferSize(std::uint32_t& w, std::uint32_t& h) const noexcept
+	{
+		w = framebufferWidth_;
+		h = framebufferHeight_;
+	}
+
+	void
 	ConfigManager::readColorBuffer(math::float3 colorBuffer[])
 	{
 		auto& desc = edgeTexture_->getTextureDesc();
@@ -387,12 +403,15 @@ namespace octoon
 	void
 	ConfigManager::render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene)
 	{
+		assert(scene->getMainCamera());
+
 		this->prepareScene(context, scene);
 
 		for (auto& config : configs_)
 		{
 			auto mainCamera = scene->getMainCamera();
 			auto viewport = mainCamera->getPixelViewport();
+
 			this->generateWorkspace(config, context, (std::uint32_t)viewport.width, (std::uint32_t)viewport.height);
 
 			CompiledScene& compiledScene = config.controller->getCachedScene(scene);
@@ -405,9 +424,17 @@ namespace octoon
 			}
 
 			config.pipeline->render(context, compiledScene);
-		}
 
-		math::float4 viewport(0, 0, static_cast<float>(this->width_), static_cast<float>(this->height_));
-		context->blitFramebuffer(framebuffer_, viewport, nullptr, viewport);
+			float viewportRatio = viewport.width / viewport.height;
+
+			float framebufferHeight = std::min<float>(framebufferHeight_, framebufferWidth_ / viewportRatio);
+			float framebufferWidth = framebufferHeight * viewportRatio;
+
+			float framebufferX = (framebufferWidth_ - framebufferWidth) / 2;
+			float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
+
+			context->blitFramebuffer(framebuffer_, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
+			context->discardFramebuffer(framebuffer_, hal::ClearFlagBits::AllBit);
+		}
 	}
 }

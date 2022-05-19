@@ -14,7 +14,7 @@ namespace octoon
 		: width_(0)
 		, height_(0)
 		, enableGlobalIllumination_(false)
-		, numBounces_(3)
+		, numBounces_(5)
 	{
 	}
 
@@ -24,7 +24,7 @@ namespace octoon
 	}
 
 	void
-	Renderer::setup(const hal::GraphicsContextPtr& context, std::uint32_t w, std::uint32_t h) except
+	Renderer::open(const hal::GraphicsContextPtr& context, std::uint32_t w, std::uint32_t h) except
 	{
 		width_ = w;
 		height_ = h;
@@ -47,7 +47,12 @@ namespace octoon
 	{
 		width_ = w;
 		height_ = h;
-		this->forwardRenderer_->setFramebufferSize(w, h);
+
+		if (this->forwardRenderer_)
+			this->forwardRenderer_->setFramebufferSize(w, h);
+
+		if (this->pathRenderer_)
+			this->pathRenderer_->setFramebufferSize(w, h);
 	}
 
 	void
@@ -131,10 +136,8 @@ namespace octoon
 	}
 
 	void
-	Renderer::beginCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept
+	Renderer::beginCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false)
 	{
-		scene->setMainCamera(camera);
-
 		camera->onRenderBefore(*camera);
 
 		for (auto& it : scene->getGeometries())
@@ -148,7 +151,7 @@ namespace octoon
 	}
 
 	void
-	Renderer::endCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept
+	Renderer::endCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false)
 	{
 		for (auto& it : scene->getLights())
 		{
@@ -188,7 +191,8 @@ namespace octoon
 
 	void
 	Renderer::renderSingleCamera(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false)
-	{		
+	{
+		scene->setMainCamera(camera);
 		scene->sortGeometries();
 
 		if (scene->getGlobalIllumination())
@@ -197,6 +201,7 @@ namespace octoon
 			{
 				pathRenderer_ = std::make_unique<ConfigManager>();
 				pathRenderer_->setMaxBounces(this->getMaxBounces());
+				pathRenderer_->setFramebufferSize(this->width_, this->height_);
 			}
 
 			this->pathRenderer_->render(this->context_, scene);

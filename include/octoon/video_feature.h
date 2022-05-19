@@ -60,8 +60,8 @@ namespace octoon
 	private:
 		bool enableGlobalIllumination_;
 
-		std::uint32_t framebuffer_w_;
-		std::uint32_t framebuffer_h_;
+		std::uint32_t framebufferWidth_;
+		std::uint32_t framebufferHeight_;
 
 		CameraComponent* camera_;
 
