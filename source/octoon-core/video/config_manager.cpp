@@ -66,7 +66,7 @@ namespace octoon
 
 		std::uint32_t gpu_counter = 0;
 
-		for (std::size_t i = 0; i < platforms.size(); ++i)
+		for (std::size_t i = 0; i < platforms.size() && this->configs_.empty(); ++i)
 		{
 			for (unsigned int d = 0; d < platforms[i].GetDeviceCount(); ++d)
 			{
@@ -120,7 +120,6 @@ namespace octoon
 				}
 
 				this->configs_.push_back(std::move(cfg));
-				break;
 			}
 		}
 
