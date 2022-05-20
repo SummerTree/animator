@@ -434,7 +434,7 @@ namespace flower
 
 		this->setWidget(mainWidget);
 
-		connect(previewButton_, SIGNAL(clicked()), this, SLOT(previewClickEvent()));
+		connect(previewButton_, SIGNAL(clicked(bool)), this, SLOT(previewClickEvent(bool)));
 		connect(thumbnail, SIGNAL(clicked()), this, SLOT(thumbnailClickEvent()));
 		connect(thumbnailToggle, SIGNAL(stateChanged(int)), this, SLOT(thumbnailToggleEvent(int)));
 		connect(backgroundToggle, SIGNAL(stateChanged(int)), this, SLOT(backgroundMapCheckEvent(int)));
@@ -548,7 +548,7 @@ namespace flower
 	}
 
 	void
-	EnvironmentDock::previewClickEvent()
+	EnvironmentDock::previewClickEvent(bool checked)
 	{
 		if (!environmentListDialog_)
 		{
@@ -556,7 +556,10 @@ namespace flower
 			connect(environmentListDialog_, SIGNAL(chooseItem(QString)), this, SLOT(chooseItem(QString)));
 		}
 
-		environmentListDialog_->show();
+		if (environmentListDialog_->isHidden())
+			environmentListDialog_->show();
+		else
+			environmentListDialog_->close();
 	}
 
 	void

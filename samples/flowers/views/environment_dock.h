@@ -76,7 +76,7 @@ namespace flower
 		void closeEvent(QCloseEvent* event) override;
 
 	public Q_SLOTS:
-		void previewClickEvent();
+		void previewClickEvent(bool checked);
 		void thumbnailClickEvent();
 		void thumbnailToggleEvent(int state);
 		void backgroundMapCheckEvent(int state);

@@ -160,13 +160,13 @@
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="567"/>
+        <location filename="../views/environment_dock.cpp" line="570"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="606"/>
-        <location filename="../views/environment_dock.cpp" line="781"/>
+        <location filename="../views/environment_dock.cpp" line="609"/>
+        <location filename="../views/environment_dock.cpp" line="784"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
