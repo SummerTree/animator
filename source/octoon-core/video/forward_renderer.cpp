@@ -212,7 +212,7 @@ namespace octoon
 				{
 					float viewportRatio = viewport.width / viewport.height;
 
-					float framebufferHeight = std::min<float>(framebufferHeight_, framebufferWidth_ / viewportRatio);
+					float framebufferHeight = std::min((float)framebufferHeight_, (float)framebufferWidth_ / viewportRatio);
 					float framebufferWidth = framebufferHeight * viewportRatio;
 
 					float framebufferX = (framebufferWidth_ - framebufferWidth) / 2;

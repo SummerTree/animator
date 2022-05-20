@@ -295,7 +295,7 @@ namespace octoon
 				bool mustPrint = false;
 				while (written < max)
 				{
-					const int digit = number / cur;
+					auto digit = number / cur;
 					if (mustPrint || digit > 0 || 1 == cur)
 					{
 						// print all future zeroes from now
@@ -330,7 +330,7 @@ namespace octoon
 				bool mustPrint = false;
 				while (written < max)
 				{
-					const char digit = number / cur;
+					auto digit = number / cur;
 					if (mustPrint || digit > 0 || 1 == cur)
 					{
 						// print all future zeroes from now
