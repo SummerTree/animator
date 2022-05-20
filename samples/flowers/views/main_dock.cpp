@@ -415,6 +415,8 @@ namespace flower
 		{
 			if (!init_flag)
 			{
+				spdlog::debug("game application init");
+
 				auto w = viewDock_->width();
 				auto h = viewDock_->height();
 
@@ -424,7 +426,11 @@ namespace flower
 
 				listener_->splash_ = nullptr;
 
+				spdlog::debug("flower behaviour init");
+
 				behaviour_->addComponent<FlowerBehaviour>(profile_);
+
+				spdlog::debug("finish");
 
 				init_flag = true;
 			}

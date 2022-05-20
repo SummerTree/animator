@@ -173,6 +173,19 @@ namespace octoon
 		{
 		}
 
+		mstream::mstream(istream& stream) noexcept
+			: iostream(&buf_)
+		{
+			stream.seekg(0, std::ios_base::end);
+			std::size_t size = stream.tellg();
+			stream.seekg(0, std::ios_base::beg);
+
+			std::vector<std::uint8_t> data(size);
+			stream.read((char*)data.data(), size);
+
+			this->open(std::move(data));
+		}
+
 		mstream::mstream(std::size_t capacity, const ios_base::open_mode mode) noexcept
 			: iostream(&buf_)
 		{

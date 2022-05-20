@@ -659,8 +659,6 @@ Section "MainSection" SEC01
   File "..\..\..\lib\system\Kernels\CL\vertex.cl"
   File "..\..\..\lib\system\Kernels\CL\volumetrics.cl"
   File "..\..\..\lib\system\Kernels\CL\wavelet_denoise.cl"
-  SetOutPath "$INSTDIR\system\materials"
-  File "..\..\..\lib\system\materials\index.json"
   SetOutPath "$INSTDIR\system\sprite"
   File "..\..\..\lib\system\sprite\square.png"
   SetOutPath "$INSTDIR\system\ui"

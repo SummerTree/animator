@@ -2,6 +2,7 @@
 #include <octoon/image/image_util.h>
 #include <octoon/runtime/except.h>
 #include <octoon/io/vstream.h>
+#include <octoon/io/mstream.h>
 
 #include "image_all.h"
 
@@ -323,12 +324,14 @@ namespace octoon
 	bool
 	Image::load(istream& stream, const char* type) noexcept
 	{
-		if (stream.good())
+		io::mstream membuf(stream);
+
+		if (membuf.good())
 		{
-			ImageLoaderPtr impl = findHandler(stream, type);
+			ImageLoaderPtr impl = findHandler(membuf, type);
 			if (impl)
 			{
-				if (impl->doLoad(stream, *this))
+				if (impl->doLoad(membuf, *this))
 					return true;
 			}
 		}
