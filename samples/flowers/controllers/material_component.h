@@ -35,8 +35,8 @@ namespace flower
 		const std::shared_ptr<octoon::Material> getMaterial(std::string_view uuid) noexcept;
 
 	private:
-		void onEnable() noexcept override;
-		void onDisable() noexcept override;
+		void onEnable() noexcept(false);
+		void onDisable() noexcept;
 
 	private:
 		void initMaterialScene();

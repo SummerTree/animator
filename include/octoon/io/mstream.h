@@ -62,6 +62,7 @@ namespace octoon
 		{
 		public:
 			mstream() noexcept;
+			mstream(istream& stream) noexcept;
 			mstream(std::size_t capacity, const ios_base::open_mode mode = ios_base::in | ios_base::out) noexcept;
 			mstream(std::vector<std::uint8_t>&& buffer, const ios_base::open_mode mode = ios_base::in | ios_base::out) noexcept;
 			mstream(const std::vector<std::uint8_t>& buffer, const ios_base::open_mode mode = ios_base::in | ios_base::out) noexcept;

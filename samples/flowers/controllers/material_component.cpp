@@ -252,7 +252,7 @@ namespace flower
 	}
 
 	void
-	MaterialComponent::onEnable() noexcept
+	MaterialComponent::onEnable() noexcept(false)
 	{
 		this->initMaterialScene();
 		this->initMaterialList(this->getModel()->materialPath + "/index.json");

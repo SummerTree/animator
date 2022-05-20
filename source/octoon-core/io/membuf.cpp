@@ -47,7 +47,7 @@ namespace octoon
 		void
 		membuf::open(std::vector<std::uint8_t>&& buffer) noexcept
 		{
-			buffer_ = std::move(buffer_);
+			buffer_ = std::move(buffer);
 		}
 
 		void
