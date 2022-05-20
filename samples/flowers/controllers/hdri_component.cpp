@@ -60,8 +60,8 @@ namespace flower
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)
 			{
-				auto data = item.dump();
-				ifs.write(data.c_str(), data.size());
+				auto dump = item.dump();
+				ifs.write(dump.c_str(), dump.size());
 			}
 
 			indexList_.push_back(uuid);
@@ -142,8 +142,8 @@ namespace flower
 					auto filepath = it.path();
 					auto filename = filepath.filename();
 
-					auto it = indexSet.find(filename.string());
-					if (it == indexSet.end())
+					auto index = indexSet.find(filename.string());
+					if (index == indexSet.end())
 					{
 						if (std::filesystem::exists(filepath.append("package.json")))
 						{

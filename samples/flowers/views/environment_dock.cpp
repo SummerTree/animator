@@ -203,7 +203,7 @@ namespace flower
 				dialog.setWindowModality(Qt::WindowModal);
 				dialog.show();
 
-				for (std::size_t i = 0; i < filepaths.size(); i++)
+				for (qsizetype i = 0; i < filepaths.size(); i++)
 				{
 					dialog.setValue(i);
 
