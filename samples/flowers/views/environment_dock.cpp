@@ -314,7 +314,7 @@ namespace flower
 		{
 			if (behaviour_)
 			{
-				QString filepath = QFileDialog::getOpenFileName(this, u8"打开图像", "", tr("HDRi Files (*.hdr)"));
+				QString filepath = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr("HDRi Files (*.hdr)"));
 				if (!filepath.isEmpty())
 				{
 					auto texel = octoon::TextureLoader::load(filepath.toStdString(), true);
