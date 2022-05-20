@@ -76,17 +76,17 @@
     <message>
         <location filename="../views/camera_dock.cpp" line="284"/>
         <source>VMD Files (*.vmd)</source>
-        <translation type="unfinished"></translation>
+        <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="308"/>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="309"/>
         <source>Failed to open the file</source>
-        <translation type="unfinished"></translation>
+        <translation>打开文件失败</translation>
     </message>
 </context>
 <context>
@@ -442,12 +442,12 @@ $20 (Original cost $40)</source>
         <location filename="../views/main_dock.cpp" line="353"/>
         <location filename="../views/main_dock.cpp" line="392"/>
         <source>Fail to get core component.</source>
-        <translation type="unfinished"></translation>
+        <translation>获取核心模块失败。</translation>
     </message>
     <message>
         <location filename="../views/main_dock.cpp" line="436"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
-        <translation type="unfinished">当前的显卡不支持OpenCL或您正在使用集成显卡</translation>
+        <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
 </context>
 <context>
@@ -892,12 +892,12 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/splash_screen.cpp" line="29"/>
         <source>2022 Flowers-Softwares (R). All Rights Reserved.</source>
-        <translation type="unfinished"></translation>
+        <translation>2022 小碎花软件 (R). 保留全部解释权利.</translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="45"/>
         <source>Version: </source>
-        <translation>版本：</translation>
+        <translation>版本： </translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="50"/>
@@ -1134,17 +1134,17 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/tool_dock.cpp" line="130"/>
         <source>Opening</source>
-        <translation type="unfinished"></translation>
+        <translation>打开中</translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="130"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="131"/>
         <source>Open Progress</source>
-        <translation type="unfinished"></translation>
+        <translation>打开进度</translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="159"/>

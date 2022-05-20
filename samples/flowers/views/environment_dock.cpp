@@ -255,7 +255,7 @@ namespace flower
 		QMargins margins = mainLayout_->contentsMargins();
 		mainWidget_->resize(
 			this->width(),
-			this->height() - margins.top() - margins.bottom() - okButton_->height() - importButton_->height());
+			this->height() - (margins.top() - margins.bottom()) * 2 - okButton_->height() - importButton_->height());
 	}
 
 	void
