@@ -26,8 +26,6 @@
 !insertmacro MUI_PAGE_WELCOME
 ; License page
 !insertmacro MUI_PAGE_LICENSE "..\..\..\LICENSE"
-; Components page
-!insertmacro MUI_PAGE_COMPONENTS
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ; Instfiles page
@@ -59,7 +57,7 @@ Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
 
-Section "FlowersCore" SEC01
+Section "MainSection" SEC01
   SetOutPath "$INSTDIR\binaries\win64_Release"
   SetOverwrite try
   File "..\..\..\lib\binaries\win64_Release\D3Dcompiler_47.dll"
@@ -631,7 +629,7 @@ Section "FlowersCore" SEC01
   File "..\..\..\lib\system\fonts\DroidSansMono.ttf"
   File "..\..\..\lib\system\fonts\LICENSE.txt"
   SetOutPath "$INSTDIR\system\hdri"
-  File "..\..\..\lib\system\hdri\Ditch-River_2k.hdr"
+  File "..\..\..\lib\system\hdri\Ditch-River_1k.hdr"
   SetOutPath "$INSTDIR\system\Kernels\CL"
   File "..\..\..\lib\system\Kernels\CL\bxdf.cl"
   File "..\..\..\lib\system\Kernels\CL\bxdf_flags.cl"
@@ -690,20 +688,15 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
 SectionEnd
 
-; Section descriptions
-!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Flowers core component"
-!insertmacro MUI_FUNCTION_DESCRIPTION_END
-
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) has been remove from your computer."
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) 已成功地从你的计算机移除。"
 FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you want to remove $(^Name)?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "你确实要完全移除 $(^Name) ，其及所有的组件？" IDYES +2
   Abort
 FunctionEnd
 
@@ -743,7 +736,7 @@ Section Uninstall
   Delete "$INSTDIR\system\Kernels\CL\bxdf_uberv2.cl"
   Delete "$INSTDIR\system\Kernels\CL\bxdf_flags.cl"
   Delete "$INSTDIR\system\Kernels\CL\bxdf.cl"
-  Delete "$INSTDIR\system\hdri\Ditch-River_2k.hdr"
+  Delete "$INSTDIR\system\hdri\Ditch-River_1k.hdr"
   Delete "$INSTDIR\system\fonts\LICENSE.txt"
   Delete "$INSTDIR\system\fonts\DroidSansMono.ttf"
   Delete "$INSTDIR\system\fonts\DroidSansFallback.ttf"
