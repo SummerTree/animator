@@ -29,10 +29,10 @@ qt:qtsvg=True
 spdlog:shared=True
 
 [imports]
-bin, *.dll -> ../lib/binaries/win86_Release
-bin, *.dll -> ../lib/binaries/win86_Debug
-bin, *.dll -> ../lib/binaries/win64_Release
-bin, *.dll -> ../lib/binaries/win64_Debug
+bin, *.dll -> ../lib/binaries/win86_Release @ excludes=Qt6*.dll
+bin, *.dll -> ../lib/binaries/win86_Debug @ excludes=Qt6*.dll
+bin, *.dll -> ../lib/binaries/win64_Release @ excludes=Qt6*.dll
+bin, *.dll -> ../lib/binaries/win64_Debug @ excludes=Qt6*.dll
 
 [generators]
 cmake
