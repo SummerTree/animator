@@ -7,6 +7,7 @@
 #include <qtranslator.h>
 #include <QFile>
 #include <QMessageBox>
+#include <QDir>
 
 #include "bindings/application.h"
 
@@ -26,7 +27,7 @@ std::shared_ptr<spdlog::logger> create_logger()
 		console_sink->set_level(spdlog::level::warn);
 		console_sink->set_pattern("[%H:%M:%S %z] [%l] [%n] [%^---%L---%$] [thread %t] %v");
 
-		auto file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>("logs/log.txt", 2, 30);
+		auto file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>(QDir::homePath().toStdString() + "/.flowers/logs/log.txt", 2, 30);
 		file_sink->set_level(spdlog::level::trace);
 		file_sink->set_pattern("[%H:%M:%S %z] [%l] [%n] [%^---%L---%$] [thread %t] %v");
 
