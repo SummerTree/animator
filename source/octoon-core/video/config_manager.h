@@ -47,6 +47,8 @@ namespace octoon
 	public:
 		ConfigManager() noexcept(false);
 
+		void init();
+
 		void setOutput(OutputType type, Output* output);
 		Output* getOutput(OutputType type) const;
 
@@ -64,9 +66,12 @@ namespace octoon
 
 		void render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene);
 
+		void setCurrentRenderDeviceName(std::string name);
+		std::string getCurrentRenderDeviceName() const;
 	private:
 		void prepareScene(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene) noexcept;
 		void generateWorkspace(Config& config, const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t width, std::uint32_t height);
+		int longestCommonSubsequence(std::string text1, std::string text2) const;
 
 	private:
 		bool dirty_;
@@ -93,6 +98,8 @@ namespace octoon
 
 		std::vector<Config> configs_;
 		std::array<Output*, static_cast<std::size_t>(OutputType::kMax)> outputs_;
+
+		std::string currentRenderDeviceName;
 	};
 }
 

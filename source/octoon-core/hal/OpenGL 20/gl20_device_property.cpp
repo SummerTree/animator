@@ -43,6 +43,11 @@ namespace octoon
 
 			glGetIntegerv(GL_LINE_WIDTH, (GLint*)&_deviceProperties.strictLines);
 
+			const GLubyte* vendor = glGetString(GL_VENDOR);
+			_deviceProperties.vendor = vendor ? std::string(reinterpret_cast<const char*>(vendor)) : std::string();
+			const GLubyte* renderer = glGetString(GL_RENDERER);
+			_deviceProperties.renderer = renderer ? std::string(reinterpret_cast<const char*>(renderer)) : std::string();
+
 			return true;
 		}
 

@@ -363,7 +363,6 @@ namespace flower
 	void
 	ToolDock::paintEvent(QPaintEvent* e) noexcept
 	{
-		spdlog::debug("Entered paintEvent");
 		if (this->profile_->offlineModule->getEnable())
 		{
 			if (!gpuEnable_)

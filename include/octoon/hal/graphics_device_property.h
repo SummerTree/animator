@@ -132,6 +132,8 @@ namespace octoon
 			std::vector<TextureDimension> supportTextureDims;
 			std::vector<GraphicsFormat> supportAttribute;
 			std::vector<ShaderStageFlags> supportShaders;
+			std::string           vendor;
+			std::string           renderer;
 		};
 
 		class GraphicsDeviceProperty : public runtime::RttiInterface

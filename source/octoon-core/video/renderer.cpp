@@ -6,6 +6,8 @@
 
 #include "config_manager.h"
 
+#include "spdlog/spdlog.h"
+
 namespace octoon
 {
 	OctoonImplementSingleton(Renderer)
@@ -200,6 +202,12 @@ namespace octoon
 			if (!pathRenderer_)
 			{
 				pathRenderer_ = std::make_unique<ConfigManager>();
+				std::string gpuName = this->context_->getGraphicsContext()->getDevice()->getDeviceProperty().getDeviceProperties().renderer;
+				pathRenderer_->setCurrentRenderDeviceName(gpuName);
+
+				spdlog::info("Forward render using: " + gpuName);
+
+				pathRenderer_->init();
 				pathRenderer_->setMaxBounces(this->getMaxBounces());
 				pathRenderer_->setFramebufferSize(this->width_, this->height_);
 			}
