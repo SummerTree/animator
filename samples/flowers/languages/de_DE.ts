@@ -752,7 +752,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="29"/>
-        <source>© 2022 Flowers-Softwares. All Rights Reserved.</source>
+        <source>2022 Flowers-Softwares (R). All Rights Reserved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
