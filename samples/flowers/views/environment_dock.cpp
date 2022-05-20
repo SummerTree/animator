@@ -32,7 +32,7 @@ namespace flower
 		}
 	};
 
-	DraggableListWindow::DraggableListWindow() noexcept(false)
+	EnvironmentListWindow::EnvironmentListWindow() noexcept(false)
 	{
 		this->setResizeMode(QListView::Fixed);
 		this->setViewMode(QListView::IconMode);
@@ -42,48 +42,19 @@ namespace flower
 		this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	}
 
-	DraggableListWindow::~DraggableListWindow() noexcept
+	EnvironmentListWindow::~EnvironmentListWindow() noexcept
 	{
 	}
 
 	void
-	DraggableListWindow::mouseMoveEvent(QMouseEvent *event)
+	EnvironmentListWindow::mouseMoveEvent(QMouseEvent *event)
 	{
-		if (event->buttons() & Qt::LeftButton)
-		{
-			QPoint length = event->pos() - startPos;
-			if (length.manhattanLength() > QApplication::startDragDistance())
-			{
-				QListWidgetItem* item = this->itemAt(this->startPos);
-				if (item)
-				{
-					auto widget = this->itemWidget(item);
-					auto layout = widget->layout();
-					auto label = dynamic_cast<QLabel*>(layout->itemAt(0)->widget());
-					if (label)
-					{
-						auto mimeData = new QMimeData;
-						mimeData->setData("object/hdri", item->data(Qt::UserRole).toByteArray());
-
-						auto drag = new QDrag(this);
-						drag->setMimeData(mimeData);
-						drag->setPixmap(label->pixmap(Qt::ReturnByValue));
-						drag->setHotSpot(QPoint(drag->pixmap().width() / 2, drag->pixmap().height() / 2));
-						drag->exec(Qt::MoveAction);
-					}
-				}
-			}
-		}
-
 		QListWidget::mouseMoveEvent(event);
 	}
 
 	void
-	DraggableListWindow::mousePressEvent(QMouseEvent *event)
+	EnvironmentListWindow::mousePressEvent(QMouseEvent *event)
 	{
-		if (event->button() == Qt::LeftButton)
-			startPos = event->pos();
-
 		QListWidget::mousePressEvent(event);
 	}
 
@@ -94,7 +65,7 @@ namespace flower
 		, clickedItem_(nullptr)
 	{
 		this->setObjectName("EnvironmentDialog");
-		this->setWindowTitle(tr("Environment"));
+		this->setWindowTitle(tr("Environment Resource"));
 		this->setFixedSize(900, 600);
 		this->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
 
@@ -122,7 +93,7 @@ namespace flower
 		bottomLayout_->setSpacing(2);
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
 
-		mainWidget_ = new DraggableListWindow;
+		mainWidget_ = new EnvironmentListWindow;
 		mainWidget_->setSpacing(10);
 
 		mainLayout_ = new QVBoxLayout(this);
@@ -206,6 +177,7 @@ namespace flower
 				for (qsizetype i = 0; i < filepaths.size(); i++)
 				{
 					dialog.setValue(i);
+					dialog.setLabelText(QFileInfo(filepaths[i]).fileName());
 
 					QCoreApplication::processEvents();
 					if (dialog.wasCanceled())
@@ -254,7 +226,7 @@ namespace flower
 		QMargins margins = mainLayout_->contentsMargins();
 		mainWidget_->resize(
 			this->width(),
-			this->height() - margins.top() - margins.bottom() - okButton_->height() - importButton_->height());
+			this->height() - (margins.top() + margins.bottom()) * 2 - okButton_->height() - importButton_->height());
 	}
 
 	void
@@ -433,7 +405,7 @@ namespace flower
 
 		this->setWidget(mainWidget);
 
-		connect(previewButton_, SIGNAL(clicked()), this, SLOT(previewClickEvent()));
+		connect(previewButton_, SIGNAL(clicked(bool)), this, SLOT(previewClickEvent(bool)));
 		connect(thumbnail, SIGNAL(clicked()), this, SLOT(thumbnailClickEvent()));
 		connect(thumbnailToggle, SIGNAL(stateChanged(int)), this, SLOT(thumbnailToggleEvent(int)));
 		connect(backgroundToggle, SIGNAL(stateChanged(int)), this, SLOT(backgroundMapCheckEvent(int)));
@@ -469,7 +441,7 @@ namespace flower
 
 			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
 			if (meshRenderer)
-				meshRenderer->getMaterial()->set("diffuse", octoon::math::srgb2linear(profile_->environmentModule->color));
+				meshRenderer->getMaterial()->set("diffuse", octoon::math::srgb2linear(profile_->environmentModule->color) * profile_->environmentModule->intensity);
 		}
 
 		QPixmap pixmap(w, h);
@@ -547,7 +519,7 @@ namespace flower
 	}
 
 	void
-	EnvironmentDock::previewClickEvent()
+	EnvironmentDock::previewClickEvent(bool checked)
 	{
 		if (!environmentListDialog_)
 		{
@@ -555,7 +527,10 @@ namespace flower
 			connect(environmentListDialog_, SIGNAL(chooseItem(QString)), this, SLOT(chooseItem(QString)));
 		}
 
-		environmentListDialog_->show();
+		if (environmentListDialog_->isHidden())
+			environmentListDialog_->show();
+		else
+			environmentListDialog_->close();
 	}
 
 	void
@@ -673,6 +648,10 @@ namespace flower
 			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
 			if (environmentLight)
 				environmentLight->setIntensity(value);
+
+			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
+			if (meshRenderer)
+				meshRenderer->getMaterial()->set("diffuse", octoon::math::srgb2linear(profile_->environmentModule->color) * value);
 		}
 
 		this->profile_->environmentModule->intensity = value;

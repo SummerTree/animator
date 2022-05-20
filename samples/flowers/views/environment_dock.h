@@ -15,18 +15,15 @@
 
 namespace flower
 {
-	class DraggableListWindow final : public QListWidget
+	class EnvironmentListWindow final : public QListWidget
 	{
 		Q_OBJECT
 	public:
-		DraggableListWindow() noexcept(false);
-		~DraggableListWindow() noexcept;
+		EnvironmentListWindow() noexcept(false);
+		~EnvironmentListWindow() noexcept;
 
 		void mouseMoveEvent(QMouseEvent* event) override;
 		void mousePressEvent(QMouseEvent* event) override;
-
-	private:
-		QPoint startPos;
 	};
 
 	class EnvironmentListDialog final : public QDialog
@@ -76,7 +73,7 @@ namespace flower
 		void closeEvent(QCloseEvent* event) override;
 
 	public Q_SLOTS:
-		void previewClickEvent();
+		void previewClickEvent(bool checked);
 		void thumbnailClickEvent();
 		void thumbnailToggleEvent(int state);
 		void backgroundMapCheckEvent(int state);

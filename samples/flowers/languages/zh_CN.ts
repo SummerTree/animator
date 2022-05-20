@@ -110,63 +110,63 @@
 <context>
     <name>flower::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="279"/>
+        <location filename="../views/environment_dock.cpp" line="251"/>
         <source>Environment Light</source>
         <translation>环境光</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="287"/>
+        <location filename="../views/environment_dock.cpp" line="259"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="297"/>
+        <location filename="../views/environment_dock.cpp" line="269"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="300"/>
+        <location filename="../views/environment_dock.cpp" line="272"/>
         <source>Thumbnail</source>
         <translation>环境贴图</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="303"/>
+        <location filename="../views/environment_dock.cpp" line="275"/>
         <source>Toggle Background</source>
         <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="310"/>
+        <location filename="../views/environment_dock.cpp" line="282"/>
         <source>Intensity</source>
         <translation>光照强度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="328"/>
+        <location filename="../views/environment_dock.cpp" line="300"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="346"/>
+        <location filename="../views/environment_dock.cpp" line="318"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="364"/>
+        <location filename="../views/environment_dock.cpp" line="336"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="414"/>
+        <location filename="../views/environment_dock.cpp" line="386"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="566"/>
+        <location filename="../views/environment_dock.cpp" line="541"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="605"/>
-        <location filename="../views/environment_dock.cpp" line="780"/>
+        <location filename="../views/environment_dock.cpp" line="580"/>
+        <location filename="../views/environment_dock.cpp" line="759"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -174,40 +174,40 @@
 <context>
     <name>flower::EnvironmentListDialog</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="97"/>
-        <source>Environment</source>
-        <translation type="unfinished"></translation>
+        <location filename="../views/environment_dock.cpp" line="68"/>
+        <source>Environment Resource</source>
+        <translation>环境资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="102"/>
+        <location filename="../views/environment_dock.cpp" line="73"/>
         <source>Ok</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="106"/>
+        <location filename="../views/environment_dock.cpp" line="77"/>
         <source>Close</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="110"/>
+        <location filename="../views/environment_dock.cpp" line="81"/>
         <source>Import</source>
-        <translation type="unfinished">导入</translation>
+        <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="194"/>
+        <location filename="../views/environment_dock.cpp" line="165"/>
         <source>HDRi Files (*.hdr)</source>
-        <translation type="unfinished">HDRi 文件 (*.hdr)</translation>
+        <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="201"/>
+        <location filename="../views/environment_dock.cpp" line="172"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="201"/>
-        <location filename="../views/environment_dock.cpp" line="202"/>
+        <location filename="../views/environment_dock.cpp" line="172"/>
+        <location filename="../views/environment_dock.cpp" line="173"/>
         <source>Loading...</source>
-        <translation type="unfinished">加载中...</translation>
+        <translation>加载中...</translation>
     </message>
 </context>
 <context>
@@ -409,43 +409,43 @@ $20 (Original cost $40)</source>
         <translation>花楹渲染器(内测版本)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="193"/>
-        <location filename="../views/main_dock.cpp" line="235"/>
-        <location filename="../views/main_dock.cpp" line="275"/>
-        <location filename="../views/main_dock.cpp" line="316"/>
-        <location filename="../views/main_dock.cpp" line="355"/>
-        <location filename="../views/main_dock.cpp" line="394"/>
+        <location filename="../views/main_dock.cpp" line="190"/>
+        <location filename="../views/main_dock.cpp" line="232"/>
+        <location filename="../views/main_dock.cpp" line="272"/>
+        <location filename="../views/main_dock.cpp" line="313"/>
+        <location filename="../views/main_dock.cpp" line="352"/>
+        <location filename="../views/main_dock.cpp" line="391"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="194"/>
-        <location filename="../views/main_dock.cpp" line="236"/>
+        <location filename="../views/main_dock.cpp" line="191"/>
+        <location filename="../views/main_dock.cpp" line="233"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="205"/>
-        <location filename="../views/main_dock.cpp" line="246"/>
-        <location filename="../views/main_dock.cpp" line="287"/>
-        <location filename="../views/main_dock.cpp" line="327"/>
-        <location filename="../views/main_dock.cpp" line="366"/>
-        <location filename="../views/main_dock.cpp" line="405"/>
-        <location filename="../views/main_dock.cpp" line="438"/>
-        <location filename="../views/main_dock.cpp" line="465"/>
+        <location filename="../views/main_dock.cpp" line="202"/>
+        <location filename="../views/main_dock.cpp" line="243"/>
+        <location filename="../views/main_dock.cpp" line="284"/>
+        <location filename="../views/main_dock.cpp" line="324"/>
+        <location filename="../views/main_dock.cpp" line="363"/>
+        <location filename="../views/main_dock.cpp" line="402"/>
+        <location filename="../views/main_dock.cpp" line="435"/>
+        <location filename="../views/main_dock.cpp" line="462"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="276"/>
-        <location filename="../views/main_dock.cpp" line="317"/>
-        <location filename="../views/main_dock.cpp" line="356"/>
-        <location filename="../views/main_dock.cpp" line="395"/>
+        <location filename="../views/main_dock.cpp" line="273"/>
+        <location filename="../views/main_dock.cpp" line="314"/>
+        <location filename="../views/main_dock.cpp" line="353"/>
+        <location filename="../views/main_dock.cpp" line="392"/>
         <source>Fail to get core component.</source>
         <translation>获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="439"/>
+        <location filename="../views/main_dock.cpp" line="436"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
