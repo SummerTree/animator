@@ -1102,23 +1102,23 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">暂停</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="199"/>
+        <location filename="../views/tool_dock.cpp" line="186"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="256"/>
+        <location filename="../views/tool_dock.cpp" line="243"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="256"/>
+        <location filename="../views/tool_dock.cpp" line="243"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="115"/>
-        <location filename="../views/tool_dock.cpp" line="199"/>
+        <location filename="../views/tool_dock.cpp" line="186"/>
         <source>Open Project</source>
         <translation>打开项目</translation>
     </message>
@@ -1132,27 +1132,26 @@ $20 (Original cost $40)</source>
         <translation>所有文件(*.pmm *.pmx *.abc *.mdl);; PMM 文件 (*.pmm);; PMX 文件 (*.pmx);; Abc 文件 (*.abc);;材质文件 (*.mdl)</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="130"/>
+        <location filename="../views/tool_dock.cpp" line="128"/>
         <source>Opening</source>
         <translation>打开中</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="130"/>
+        <location filename="../views/tool_dock.cpp" line="128"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="131"/>
+        <location filename="../views/tool_dock.cpp" line="129"/>
         <source>Open Progress</source>
         <translation>打开进度</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="159"/>
-        <location filename="../views/tool_dock.cpp" line="174"/>
-        <location filename="../views/tool_dock.cpp" line="216"/>
-        <location filename="../views/tool_dock.cpp" line="267"/>
-        <location filename="../views/tool_dock.cpp" line="308"/>
-        <location filename="../views/tool_dock.cpp" line="353"/>
+        <location filename="../views/tool_dock.cpp" line="161"/>
+        <location filename="../views/tool_dock.cpp" line="203"/>
+        <location filename="../views/tool_dock.cpp" line="254"/>
+        <location filename="../views/tool_dock.cpp" line="295"/>
+        <location filename="../views/tool_dock.cpp" line="340"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>

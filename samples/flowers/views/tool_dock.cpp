@@ -115,54 +115,41 @@ namespace flower
 					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)"));
 					if (!fileName.isEmpty())
 					{
-						try
-						{
 #if 1
-							behaviour->open(fileName.toUtf8().data());
+						behaviour->open(fileName.toUtf8().data());
 #else
-							// load task
-							auto fn = [&]() {
-								behaviour->open(fileName.toUtf8().data());
-							};
-							QFuture<void> fu = QtConcurrent::run(fn);
+						// load task
+						auto fn = [&]() {
+							behaviour->open(fileName.toUtf8().data());
+						};
+						QFuture<void> fu = QtConcurrent::run(fn);
 
-							// progress dialog
-							QProgressDialog dialog(tr("Opening"), tr("Cancel"), 0, 2000, this);
-							dialog.setWindowTitle(tr("Open Progress"));
-							dialog.setWindowModality(Qt::WindowModal);
-							dialog.show();
-							for (int i = 0; i < 1900; i++)
-							{
-								dialog.setValue(i);
-								QCoreApplication::processEvents();
-								if (dialog.wasCanceled())
-									break;
-							}
-							
-							// wait finish
-							fu.waitForFinished();
-
-							// left progress
-							for (int i = 1900; i < 2000; i++)
-							{
-								dialog.setValue(i);
-								QCoreApplication::processEvents();
-								if (dialog.wasCanceled())
-									break;
-							}
-							dialog.setValue(2000);
-#endif
-						}
-						catch (const std::exception& e)
+						// progress dialog
+						QProgressDialog dialog(tr("Opening"), tr("Cancel"), 0, 2000, this);
+						dialog.setWindowTitle(tr("Open Progress"));
+						dialog.setWindowModality(Qt::WindowModal);
+						dialog.show();
+						for (int i = 0; i < 1900; i++)
 						{
-							QMessageBox msg(this);
-							msg.setWindowTitle(tr("Error"));
-							msg.setText(e.what());
-							msg.setIcon(QMessageBox::Information);
-							msg.setStandardButtons(QMessageBox::Ok);
-
-							msg.exec();
+							dialog.setValue(i);
+							QCoreApplication::processEvents();
+							if (dialog.wasCanceled())
+								break;
 						}
+							
+						// wait finish
+						fu.waitForFinished();
+
+						// left progress
+						for (int i = 1900; i < 2000; i++)
+						{
+							dialog.setValue(i);
+							QCoreApplication::processEvents();
+							if (dialog.wasCanceled())
+								break;
+						}
+						dialog.setValue(2000);
+#endif
 					}
 				}
 			}
