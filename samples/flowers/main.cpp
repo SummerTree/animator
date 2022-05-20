@@ -64,6 +64,10 @@ int main(int argc, char *argv[])
 		QApplication app(argc, argv);
 		app.setStyleSheet(styleSheet.readAll());
 
+#ifdef _WINDOWS_
+		auto filepath = app.applicationDirPath();
+		::SetCurrentDirectoryA(filepath.toStdString().c_str());
+#endif
 		// Load translation files
 		QString local = QLocale::languageToString(QLocale::system().language());
 
