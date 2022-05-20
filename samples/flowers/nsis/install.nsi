@@ -689,12 +689,12 @@ SectionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) 已成功地从你的计算机移除。"
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) ??晒??卮??????????"
 FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "你确实要完全移除 $(^Name) ，其及所有的组件？" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "?确实要?全??? $(^Name) ????????????" IDYES +2
   Abort
 FunctionEnd
 
@@ -1257,8 +1257,10 @@ Section Uninstall
   RMDir "$INSTDIR\system\sprite"
   RMDir "$INSTDIR\system\materials"
   RMDir "$INSTDIR\system\Kernels\CL"
+  RMDir "$INSTDIR\system\Kernels"
   RMDir "$INSTDIR\system\hdri"
   RMDir "$INSTDIR\system\fonts"
+  RMDir "$INSTDIR\system"
   RMDir "$INSTDIR\binaries\win64_Release\tls"
   RMDir "$INSTDIR\binaries\win64_Release\styles"
   RMDir "$INSTDIR\binaries\win64_Release\sqldrivers"
@@ -1302,6 +1304,7 @@ Section Uninstall
   RMDir "$INSTDIR\binaries\win64_Release\imageformats"
   RMDir "$INSTDIR\binaries\win64_Release\iconengines"
   RMDir "$INSTDIR\binaries\win64_Release"
+  RMDir "$INSTDIR\binaries"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
