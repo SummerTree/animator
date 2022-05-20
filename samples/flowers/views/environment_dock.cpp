@@ -32,7 +32,7 @@ namespace flower
 		}
 	};
 
-	DraggableListWindow::DraggableListWindow() noexcept(false)
+	EnvironmentListWindow::EnvironmentListWindow() noexcept(false)
 	{
 		this->setResizeMode(QListView::Fixed);
 		this->setViewMode(QListView::IconMode);
@@ -42,48 +42,19 @@ namespace flower
 		this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	}
 
-	DraggableListWindow::~DraggableListWindow() noexcept
+	EnvironmentListWindow::~EnvironmentListWindow() noexcept
 	{
 	}
 
 	void
-	DraggableListWindow::mouseMoveEvent(QMouseEvent *event)
+	EnvironmentListWindow::mouseMoveEvent(QMouseEvent *event)
 	{
-		if (event->buttons() & Qt::LeftButton)
-		{
-			QPoint length = event->pos() - startPos;
-			if (length.manhattanLength() > QApplication::startDragDistance())
-			{
-				QListWidgetItem* item = this->itemAt(this->startPos);
-				if (item)
-				{
-					auto widget = this->itemWidget(item);
-					auto layout = widget->layout();
-					auto label = dynamic_cast<QLabel*>(layout->itemAt(0)->widget());
-					if (label)
-					{
-						auto mimeData = new QMimeData;
-						mimeData->setData("object/hdri", item->data(Qt::UserRole).toByteArray());
-
-						auto drag = new QDrag(this);
-						drag->setMimeData(mimeData);
-						drag->setPixmap(label->pixmap(Qt::ReturnByValue));
-						drag->setHotSpot(QPoint(drag->pixmap().width() / 2, drag->pixmap().height() / 2));
-						drag->exec(Qt::MoveAction);
-					}
-				}
-			}
-		}
-
 		QListWidget::mouseMoveEvent(event);
 	}
 
 	void
-	DraggableListWindow::mousePressEvent(QMouseEvent *event)
+	EnvironmentListWindow::mousePressEvent(QMouseEvent *event)
 	{
-		if (event->button() == Qt::LeftButton)
-			startPos = event->pos();
-
 		QListWidget::mousePressEvent(event);
 	}
 
@@ -122,7 +93,7 @@ namespace flower
 		bottomLayout_->setSpacing(2);
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
 
-		mainWidget_ = new DraggableListWindow;
+		mainWidget_ = new EnvironmentListWindow;
 		mainWidget_->setSpacing(10);
 
 		mainLayout_ = new QVBoxLayout(this);
