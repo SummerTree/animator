@@ -431,8 +431,8 @@ $20 (Original cost $40)</source>
         <location filename="../views/main_dock.cpp" line="324"/>
         <location filename="../views/main_dock.cpp" line="363"/>
         <location filename="../views/main_dock.cpp" line="402"/>
-        <location filename="../views/main_dock.cpp" line="435"/>
-        <location filename="../views/main_dock.cpp" line="462"/>
+        <location filename="../views/main_dock.cpp" line="441"/>
+        <location filename="../views/main_dock.cpp" line="468"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -445,7 +445,7 @@ $20 (Original cost $40)</source>
         <translation>获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="436"/>
+        <location filename="../views/main_dock.cpp" line="442"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
