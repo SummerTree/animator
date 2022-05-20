@@ -1,9 +1,9 @@
 Flowers
 ======
 ###### [English](https://github.com/octoon/octoon/blob/master/README.md) &nbsp; [中文](https://github.com/octoon/octoon/blob/master/README_zh_cn.md)
-Rabbit Toolbox is a cross-platform graphic engine. It is free and open-source under [CC BY NC](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisence.  Users can easily create graphic applications by using a set of unified API. Applications can be exported to lots of platforms, including Linux, Mac OSX, Windows, Android and HTML5.
+Flowers Toolbox is a cross-platform graphic engine. It is free and open-source under [CC BY NC](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisence.  Users can easily create graphic applications by using a set of unified API. Applications can be exported to lots of platforms, including Linux, Mac OSX, Windows, Android and HTML5.
 
-Rabbit Toolbox provides a modern and powerful ECS framework to make development simple. A number of features are supported as the form of ECS system such as graphic, physics, audio and video. By attaching various component, objects can perform different tasks flexibly.
+In Flowers Toolbox, octoon game engine provides a modern and powerful ECS framework to make development simple. A number of features are supported as the form of ECS system such as graphic, physics, audio and video. By attaching various component, objects can perform different tasks flexibly.
 
 <img style="vertical-align: top;" src="./screenshots/screenshot.png">
 <img style="vertical-align: top;" src="./screenshots/record.gif">

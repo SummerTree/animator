@@ -14,11 +14,11 @@ BEGIN
     BEGIN
       VALUE "FileVersion", "1.0.0.3\0"
       VALUE "ProductVersion", "1.0.0.3\0"
-      VALUE "CompanyName", "Rabbit Software\0"
-      VALUE "FileDescription", "Rabbit Toolbox 2019\0"
-      VALUE "LegalCopyright", "Copyright (c) 2019 Rabbit Software.\0"
-      VALUE "OriginalFilename", "RabbitToolbox.exe\0"
-      VALUE "ProductName", "Rabbit Toolbox 2019\0"
+      VALUE "CompanyName", "Flowers Software\0"
+      VALUE "FileDescription", "Flowers Toolbox 2022\0"
+      VALUE "LegalCopyright", "Copyright (c) 2019 Flowers Software.\0"
+      VALUE "OriginalFilename", "FlowersToolbox.exe\0"
+      VALUE "ProductName", "Flowers Toolbox 2022\0"
     END
   END
   BLOCK "VarFileInfo"

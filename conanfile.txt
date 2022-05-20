@@ -26,6 +26,7 @@ qt:gui=True
 qt:qtshadertools=True
 qt:qtdeclarative=True
 qt:qtsvg=True
+spdlog:shared=True
 
 [imports]
 bin, *.dll -> ../lib/binaries/win86_Release

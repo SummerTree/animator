@@ -2,6 +2,7 @@
 #include "flower_behaviour.h"
 #include <qdockwidget.h>
 #include <qmessagebox.h>
+#include <QDir>
 
 #include "spdlog/spdlog.h"
 
@@ -9,12 +10,12 @@ namespace flower
 {
 	MainDock::MainDock(SplashScreen* splash) noexcept
 		: init_flag(false)
-		, profile_(FlowerProfile::load("./config/config.conf"))
+		, profile_(FlowerProfile::load(QDir::homePath().toStdString() + "/.flowers/config/config.json"))
 		, gameApp_(std::make_shared<octoon::GameApp>())
 		, behaviour_(octoon::GameObject::create())
 		, splash_(splash)
 		, timer(this)
-		, listener_(std::make_shared<SplashListener>(splash, "./log.txt"))
+		, listener_(std::make_shared<SplashListener>(splash, QDir::homePath().toStdString() + "/.flowers/log.txt"))
 	{
 		this->setObjectName("MainDock");
 		this->setWindowTitle(tr("Flower Render Toolbox (Alpha Version)"));
@@ -111,7 +112,14 @@ namespace flower
 		cameraDock_.reset();
 		statusBar_.reset();
 
-		FlowerProfile::save("./config/config.conf", *profile_);
+		QDir appFolder = QDir(QDir::homePath() + "/.flowers");
+		if (!appFolder.exists())
+			QDir::root().mkpath(QDir::homePath() + "/.flowers");
+		QDir configFolder = QDir(QDir::homePath() + "/.flowers/config");
+		if (!configFolder.exists())
+			QDir::root().mkpath(QDir::homePath() + "/.flowers/config");
+
+		FlowerProfile::save(QDir::homePath().toStdString() + "/.flowers/config/config.json", *profile_);
 
 		behaviour_.reset();
 		profile_.reset();
