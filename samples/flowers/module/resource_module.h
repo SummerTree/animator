@@ -21,6 +21,7 @@ namespace flower
 		ResourceModule& operator=(const ResourceModule&) = delete;
 
 	public:
+		std::string rootPath;
 		std::string hdriPath;
 		std::string materialPath;
 	};
