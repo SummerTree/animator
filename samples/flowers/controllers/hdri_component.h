@@ -3,6 +3,7 @@
 
 #include <flower_component.h>
 #include <octoon/game_object.h>
+#include <octoon/hal/graphics_texture.h>
 
 #include "../flower_component.h"
 #include "../module/resource_module.h"
@@ -15,7 +16,12 @@ namespace flower
 		HDRiComponent() noexcept;
 		~HDRiComponent() noexcept;
 
-		void importHDRi(std::string_view path) noexcept;
+		nlohmann::json importHDRi(std::string_view path) noexcept(false);
+		nlohmann::json getPackage(std::string_view uuid) noexcept;
+
+		void save() noexcept(false);
+
+		const nlohmann::json& getIndexList() const noexcept;
 
 		virtual const std::type_info& type_info() const noexcept
 		{
@@ -23,12 +29,16 @@ namespace flower
 		}
 
 	private:
+		void initResourceList() noexcept;
+
+	private:
 		void onEnable() noexcept override;
 		void onDisable() noexcept override;
 
 	private:
+		nlohmann::json indexList_;
 
-		std::map<std::string, nlohmann::json, std::less<>> hdriList_;
+		std::map<std::string, nlohmann::json> packageList_;
 	};
 }
 

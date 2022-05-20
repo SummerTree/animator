@@ -1541,11 +1541,11 @@ namespace flower
 
 	MaterialListPanel::MaterialListPanel()
 	{
-		listWidget_ = new MaterialListWindow;
-		listWidget_->setIconSize(QSize(100, 100));
+		mainWidget_ = new MaterialListWindow;
+		mainWidget_->setIconSize(QSize(100, 100));
 
 		mainLayout_ = new QVBoxLayout(this);
-		mainLayout_->addWidget(listWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
+		mainLayout_->addWidget(mainWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(0, 10, 0, 5);
 	}
@@ -1558,7 +1558,7 @@ namespace flower
 	MaterialListPanel::resizeEvent(QResizeEvent* e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins();
-		listWidget_->resize(this->width(), this->height() - margins.top() - margins.bottom());
+		mainWidget_->resize(this->width(), this->height() - margins.top() - margins.bottom());
 	}
 
 	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false)
@@ -1570,7 +1570,7 @@ namespace flower
 		this->setMouseTracking(true);
 
 		listPanel_ = new MaterialListPanel();
-		listPanel_->listWidget_->setFixedWidth(340);
+		listPanel_->mainWidget_->setFixedWidth(340);
 
 		modifyWidget_ = new MaterialEditWindow(behaviour);
 		modifyWidget_->hide();
@@ -1587,7 +1587,7 @@ namespace flower
 		this->setWidget(widget_);
 
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(okEvent()));
-		connect(listPanel_->listWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
+		connect(listPanel_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
 		behaviour->addMessageListener("editor:material:change", [this](const std::any&) {
 			if (this->isVisible())
@@ -1598,13 +1598,13 @@ namespace flower
 			if (this->isVisible())
 			{
 				auto uuid = QString::fromStdString(std::any_cast<std::string>(any_data));
-				auto count = this->listPanel_->listWidget_->count();
+				auto count = this->listPanel_->mainWidget_->count();
 				for (int i = 0; i < count; i++)
 				{
-					auto item = this->listPanel_->listWidget_->item(i);
+					auto item = this->listPanel_->mainWidget_->item(i);
 					if (item->data(Qt::UserRole).toString() == uuid)
 					{
-						this->listPanel_->listWidget_->setCurrentItem(item);
+						this->listPanel_->mainWidget_->setCurrentItem(item);
 						break;
 					}
 				}
@@ -1704,7 +1704,7 @@ namespace flower
 			auto materialComponent = behaviour->getComponent<MaterialComponent>();
 			auto& materials = materialComponent->getMaterialList();
 
-			listPanel_->listWidget_->clear();
+			listPanel_->mainWidget_->clear();
 
 			std::map<QString, std::shared_ptr<QPixmap>> imageTable;
 
@@ -1755,8 +1755,8 @@ namespace flower
 				QWidget* widget = new QWidget;
 				widget->setLayout(widgetLayout);
 
-				listPanel_->listWidget_->addItem(item);
-				listPanel_->listWidget_->setItemWidget(item, widget);
+				listPanel_->mainWidget_->addItem(item);
+				listPanel_->mainWidget_->setItemWidget(item, widget);
 			}
 		}
 	}

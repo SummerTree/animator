@@ -8,6 +8,11 @@
 #include <qmessagebox.h>
 #include <qfiledialog.h>
 #include <qfileinfo.h>
+#include <qevent.h>
+#include <qapplication.h>
+#include <qdrag.h>
+#include <qmimedata.h>
+#include <qprogressdialog.h>
 
 namespace flower
 {
@@ -27,15 +32,256 @@ namespace flower
 		}
 	};
 
+	DraggableListWindow::DraggableListWindow() noexcept(false)
+	{
+		this->setResizeMode(QListView::Fixed);
+		this->setViewMode(QListView::IconMode);
+		this->setMovement(QListView::Static);
+		this->setDefaultDropAction(Qt::DropAction::MoveAction);
+		this->setStyleSheet("background:transparent;");
+		this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	}
+
+	DraggableListWindow::~DraggableListWindow() noexcept
+	{
+	}
+
+	void
+	DraggableListWindow::mouseMoveEvent(QMouseEvent *event)
+	{
+		if (event->buttons() & Qt::LeftButton)
+		{
+			QPoint length = event->pos() - startPos;
+			if (length.manhattanLength() > QApplication::startDragDistance())
+			{
+				QListWidgetItem* item = this->itemAt(this->startPos);
+				if (item)
+				{
+					auto widget = this->itemWidget(item);
+					auto layout = widget->layout();
+					auto label = dynamic_cast<QLabel*>(layout->itemAt(0)->widget());
+					if (label)
+					{
+						auto mimeData = new QMimeData;
+						mimeData->setData("object/hdri", item->data(Qt::UserRole).toByteArray());
+
+						auto drag = new QDrag(this);
+						drag->setMimeData(mimeData);
+						drag->setPixmap(label->pixmap(Qt::ReturnByValue));
+						drag->setHotSpot(QPoint(drag->pixmap().width() / 2, drag->pixmap().height() / 2));
+						drag->exec(Qt::MoveAction);
+					}
+				}
+			}
+		}
+
+		QListWidget::mouseMoveEvent(event);
+	}
+
+	void
+	DraggableListWindow::mousePressEvent(QMouseEvent *event)
+	{
+		if (event->button() == Qt::LeftButton)
+			startPos = event->pos();
+
+		QListWidget::mousePressEvent(event);
+	}
+
+	EnvironmentListDialog::EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile)
+		: QDialog(parent)
+		, behaviour_(behaviour)
+		, profile_(profile)
+		, clickedItem_(nullptr)
+	{
+		this->setObjectName("EnvironmentDialog");
+		this->setWindowTitle(tr("Environment"));
+		this->setFixedSize(900, 600);
+		this->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
+
+		okButton_ = new QToolButton;
+		okButton_->setText(tr("Ok"));
+		okButton_->setFixedSize(50, 30);
+
+		closeButton_ = new QToolButton;
+		closeButton_->setText(tr("Close"));
+		closeButton_->setFixedSize(50, 30);
+
+		importButton_ = new QToolButton;
+		importButton_->setText(tr("Import"));
+		importButton_->setFixedSize(50, 30);
+
+		auto topLayout_ = new QHBoxLayout();
+		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
+		topLayout_->addStretch();
+		topLayout_->setContentsMargins(15, 0, 0, 0);
+
+		auto bottomLayout_ = new QHBoxLayout();
+		bottomLayout_->addStretch();
+		bottomLayout_->addWidget(okButton_, 0, Qt::AlignRight);
+		bottomLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
+		bottomLayout_->setSpacing(2);
+		bottomLayout_->setContentsMargins(0, 5, 15, 0);
+
+		mainWidget_ = new DraggableListWindow;
+		mainWidget_->setSpacing(10);
+
+		mainLayout_ = new QVBoxLayout(this);
+		mainLayout_->addLayout(topLayout_);
+		mainLayout_->addWidget(mainWidget_);
+		mainLayout_->addStretch();
+		mainLayout_->addLayout(bottomLayout_);
+		mainLayout_->setContentsMargins(5, 10, 5, 10);
+
+		connect(okButton_, SIGNAL(clicked()), this, SLOT(okClickEvent()));
+		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeClickEvent()));
+		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
+		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
+	}
+
+	EnvironmentListDialog::~EnvironmentListDialog() noexcept
+	{
+	}
+
+	void 
+	EnvironmentListDialog::addItem(std::string_view uuid) noexcept
+	{
+		auto hdrComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<HDRiComponent>();
+		auto package = hdrComponent->getPackage(uuid);
+		if (!package.is_null())
+		{
+			QLabel* imageLabel = new QLabel;
+			imageLabel->setFixedSize(QSize(200, 100));
+
+			QLabel* nameLabel = new QLabel();
+			nameLabel->setFixedHeight(30);
+
+			QVBoxLayout* widgetLayout = new QVBoxLayout;
+			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
+			widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
+			widgetLayout->setSpacing(0);
+			widgetLayout->setContentsMargins(0, 0, 0, 0);
+
+			QWidget* widget = new QWidget;
+			widget->setLayout(widgetLayout);
+
+			QListWidgetItem* item = new QListWidgetItem;
+			item->setData(Qt::UserRole, QString::fromStdString(std::string(uuid)));
+			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
+
+			mainWidget_->addItem(item);
+			mainWidget_->setItemWidget(item, widget);
+
+			if (package.find("preview") != package.end())
+			{
+				auto filepath = package["preview"].get<nlohmann::json::string_t>();
+				imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+			}
+
+			if (package.find("name") != package.end())
+			{
+				QFontMetrics metrics(nameLabel->font());
+
+				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
+				imageLabel->setToolTip(name);
+			}
+		}
+	}
+
+	void
+	EnvironmentListDialog::importClickEvent()
+	{
+		QStringList filepaths = QFileDialog::getOpenFileNames(this, u8"导入图像", "", tr("HDRi Files (*.hdr)"));
+		if (!filepaths.isEmpty())
+		{
+			auto hdrComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<HDRiComponent>();
+
+			try
+			{
+				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
+				dialog.setWindowTitle(tr("Loading..."));
+				dialog.setWindowModality(Qt::WindowModal);
+				dialog.show();
+
+				for (qsizetype i = 0; i < filepaths.size(); i++)
+				{
+					dialog.setValue(i);
+
+					QCoreApplication::processEvents();
+					if (dialog.wasCanceled())
+						break;
+
+					auto package = hdrComponent->importHDRi(filepaths[i].toStdString());
+					if (!package.is_null())
+						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
+				}
+
+				hdrComponent->save();
+			}
+			catch (...)
+			{
+				hdrComponent->save();
+			}
+		}
+	}
+
+	void
+	EnvironmentListDialog::itemClicked(QListWidgetItem* item)
+	{
+		clickedItem_ = item;
+	}
+
+	void
+	EnvironmentListDialog::okClickEvent()
+	{
+		if (clickedItem_)
+		{
+			auto uuid = clickedItem_->data(Qt::UserRole).toString();
+			emit chooseItem(uuid);
+			this->close();
+		}
+	}
+
+	void
+	EnvironmentListDialog::closeClickEvent()
+	{
+		this->close();
+	}
+
+	void
+	EnvironmentListDialog::resizeEvent(QResizeEvent* e) noexcept
+	{
+		QMargins margins = mainLayout_->contentsMargins();
+		mainWidget_->resize(
+			this->width(),
+			this->height() - margins.top() - margins.bottom() - okButton_->height() - importButton_->height());
+	}
+
+	void
+	EnvironmentListDialog::showEvent(QShowEvent* event) noexcept
+	{
+		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		if (behaviour)
+		{
+			mainWidget_->clear();
+
+			auto hdriComponent = behaviour->getComponent<HDRiComponent>();
+			for (auto& uuid : hdriComponent->getIndexList())
+				this->addItem(uuid.get<nlohmann::json::string_t>());
+		}
+	}
+
 	EnvironmentDock::EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile)
 		: behaviour_(behaviour)
 		, profile_(profile)
+		, environmentListDialog_(nullptr)
 	{
 		this->setWindowTitle(tr("Environment Light"));
 		this->setObjectName("EnvironmentDock");
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setFixedSize(QSize(260, 130));
+		this->previewButton_->setIconSize(this->previewButton_->size());
 
 		this->previewName_ = new QLabel;
 		this->previewName_->setText(tr("Untitled"));
@@ -116,7 +362,7 @@ namespace flower
 
 		this->resetButton_ = new QToolButton();
 		this->resetButton_->setText(tr("Reset"));
-		
+	
 		auto thumbnailTitleLayout = new QHBoxLayout();
 		thumbnailTitleLayout->addWidget(thumbnailToggle, 0, Qt::AlignLeft);
 		thumbnailTitleLayout->addSpacing(4);
@@ -187,9 +433,9 @@ namespace flower
 
 		this->setWidget(mainWidget);
 
-		connect(resetButton_, SIGNAL(clicked()), this, SLOT(resetEvent()));
-		connect(thumbnail, SIGNAL(clicked()), this, SLOT(colorMapClickEvent()));
-		connect(thumbnailToggle, SIGNAL(stateChanged(int)), this, SLOT(colorMapCheckEvent(int)));
+		connect(previewButton_, SIGNAL(clicked()), this, SLOT(previewClickEvent()));
+		connect(thumbnail, SIGNAL(clicked()), this, SLOT(thumbnailClickEvent()));
+		connect(thumbnailToggle, SIGNAL(stateChanged(int)), this, SLOT(thumbnailToggleEvent(int)));
 		connect(backgroundToggle, SIGNAL(stateChanged(int)), this, SLOT(backgroundMapCheckEvent(int)));
 		connect(colorButton, SIGNAL(clicked()), this, SLOT(colorClickEvent()));
 		connect(intensitySpinBox, SIGNAL(valueChanged(double)), this, SLOT(intensityEditEvent(double)));
@@ -199,11 +445,15 @@ namespace flower
 		connect(verticalRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(verticalRotationEditEvent(double)));
 		connect(verticalRotationSlider, SIGNAL(valueChanged(int)), this, SLOT(verticalRotationSliderEvent(int)));
 		connect(&colorSelector_, SIGNAL(currentColorChanged(const QColor&)), this, SLOT(colorChangeEvent(const QColor&)));
+		connect(resetButton_, SIGNAL(clicked()), this, SLOT(resetEvent()));
 	}
 
 	EnvironmentDock::~EnvironmentDock()
 	{
-		this->image_.reset();
+		this->previewImage_.reset();
+
+		if (environmentListDialog_)
+			delete environmentListDialog_;
 	}
 
 	void
@@ -230,18 +480,39 @@ namespace flower
 	}
 
 	void
-	EnvironmentDock::repaint()
+	EnvironmentDock::setPreviewImage(QString name, std::shared_ptr<QImage> image)
+	{
+		QFontMetrics previewMetrics(this->previewName_->font());
+
+		this->previewImage_ = image;
+		this->previewName_->setText(previewMetrics.elidedText(name, Qt::ElideRight, this->previewName_->width()));
+	}
+
+	void
+	EnvironmentDock::setThumbnailImage(QString name, const QImage& image)
+	{
+		QFontMetrics thumbnailMetrics(this->thumbnailPath->font());
+
+		this->thumbnailPath->setToolTip(name);
+		this->thumbnailPath->setText(thumbnailMetrics.elidedText(this->thumbnailPath->toolTip(), Qt::ElideRight, this->thumbnailPath->width()));
+		this->thumbnail->setIcon(QIcon(QPixmap::fromImage(image.scaled(QSize(48, 30)))));
+		this->thumbnailToggle->setChecked(false);
+		this->thumbnailToggle->setChecked(true);
+	}
+
+	void
+	EnvironmentDock::updatePreviewImage()
 	{
 		auto w = this->previewButton_->width();
 		auto h = this->previewButton_->height();
 		auto c = QColor::fromRgbF(profile_->environmentModule->color.x, profile_->environmentModule->color.y, profile_->environmentModule->color.z);
-		auto offset = this->profile_->environmentModule->offset;
 
-		if (this->image_ && this->thumbnailToggle->isChecked())
+		if (this->previewImage_ && this->thumbnailToggle->isChecked())
 		{
-			auto srcWidth = this->image_->width();
-			auto srcHeight = this->image_->height();
+			auto srcWidth = this->previewImage_->width();
+			auto srcHeight = this->previewImage_->height();
 			auto pixels = std::make_unique<std::uint8_t[]>(w * h * 3);
+			auto offset = this->profile_->environmentModule->offset;
 
 			for (std::size_t y = 0; y < h; y++)
 			{
@@ -255,7 +526,7 @@ namespace flower
 					auto vi = int(v * srcHeight);
 
 					auto dst = (y * w + x) * 3;
-					auto color = this->image_->pixelColor(ui, vi);
+					auto color = this->previewImage_->pixelColor(ui, vi);
 
 					pixels[dst] = std::clamp<float>(color.redF() * c.red(), 0, 255);
 					pixels[dst + 1] = std::clamp<float>(color.greenF() * c.green(), 0, 255);
@@ -264,7 +535,6 @@ namespace flower
 			}
 
 			previewButton_->setIcon(QPixmap::fromImage(QImage(pixels.get(), w, h, QImage::Format::Format_RGB888)));
-			previewButton_->setIconSize(QSize(w, h));
 		}
 		else
 		{
@@ -273,85 +543,58 @@ namespace flower
 			painter.setPen(Qt::NoPen);
 			painter.fillRect(QRect(0, 0, w, h), c);
 			previewButton_->setIcon(pixmap);
-			previewButton_->setIconSize(QSize(w, h));
 		}
 	}
 
 	void
-	EnvironmentDock::showEvent(QShowEvent* event)
+	EnvironmentDock::previewClickEvent()
 	{
-		this->intensitySpinBox->setValue(profile_->environmentModule->intensity);
-		this->horizontalRotationSpinBox->setValue(profile_->environmentModule->offset.x);
-		this->verticalRotationSpinBox->setValue(profile_->environmentModule->offset.y);
-		this->setColor(QColor::fromRgbF(profile_->environmentModule->color.x, profile_->environmentModule->color.y, profile_->environmentModule->color.z));
-
-		if (this->profile_->entitiesModule->enviromentLight)
+		if (!environmentListDialog_)
 		{
-			auto envLight = this->profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-			if (envLight)
-			{
-				thumbnailToggle->setChecked(envLight->getBackgroundMap() ? true : false);
-				backgroundToggle->setChecked(envLight->getShowBackground());
-			}
+			environmentListDialog_ = new EnvironmentListDialog(this, behaviour_, profile_);
+			connect(environmentListDialog_, SIGNAL(chooseItem(QString)), this, SLOT(chooseItem(QString)));
 		}
 
-		this->repaint();
+		environmentListDialog_->show();
 	}
 
 	void
-	EnvironmentDock::closeEvent(QCloseEvent* event)
-	{
-		if (profile_->playerModule->isPlaying)
-			event->ignore();
-		else
-			event->accept();
-	}
-
-	void
-	EnvironmentDock::colorMapClickEvent()
+	EnvironmentDock::thumbnailClickEvent()
 	{
 		try
 		{
-			if (behaviour_)
+			QString filepath = QFileDialog::getOpenFileName(this, u8"导入图像", "", tr("HDRi Files (*.hdr)"));
+			if (!filepath.isEmpty())
 			{
-				QString filepath = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr("HDRi Files (*.hdr)"));
-				if (!filepath.isEmpty())
+				auto texel = octoon::TextureLoader::load(filepath.toStdString());
+				if (texel)
 				{
-					auto texel = octoon::TextureLoader::load(filepath.toStdString(), true);
-					if (texel)
+					auto width = texel->getTextureDesc().getWidth();
+					auto height = texel->getTextureDesc().getHeight();
+					float* data_ = nullptr;
+
+					if (texel->map(0, 0, width, height, 0, (void**)&data_))
 					{
-						auto width = texel->getTextureDesc().getWidth();
-						auto height = texel->getTextureDesc().getHeight();
-						float* data_ = nullptr;
+						auto size = width * height * 3;
+						auto pixels = std::make_unique<std::uint8_t[]>(size);
 
-						if (texel->map(0, 0, width, height, 0, (void**)&data_))
+						for (std::size_t i = 0; i < size; i += 3)
 						{
-							auto size = width * height * 3;
-							auto pixels = std::make_unique<std::uint8_t[]>(size);
-
-							for (std::size_t i = 0; i < size; i += 3)
-							{
-								pixels[i] = std::clamp<float>(std::pow(data_[i], 1 / 2.2) * 255.0f, 0, 255);
-								pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1 / 2.2) * 255.0f, 0, 255);
-								pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1 / 2.2) * 255.0f, 0, 255);
-							}
-
-							texel->unmap();
-
-							QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-
-							QFontMetrics metrics(this->thumbnailPath->font());
-
-							this->previewName_->setText(metrics.elidedText(QFileInfo(filepath).fileName(), Qt::ElideRight, this->previewName_->width()));
-							this->thumbnailPath->setText(metrics.elidedText(filepath, Qt::ElideRight, this->thumbnailPath->width()));
-							this->thumbnailPath->setToolTip(filepath);
-							this->thumbnailToggle->setChecked(false);
-							this->thumbnail->setIcon(QIcon(QPixmap::fromImage(qimage.scaled(QSize(48, 30)))));
-							this->texture = texel;
-							this->image_ = std::make_shared<QImage>(qimage.scaled(previewButton_->size()));
-							this->setColor(QColor::fromRgbF(1, 1, 1));
-							this->thumbnailToggle->setChecked(true);
+							pixels[i] = std::clamp<float>(std::pow(data_[i], 1 / 2.2) * 255.0f, 0, 255);
+							pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1 / 2.2) * 255.0f, 0, 255);
+							pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1 / 2.2) * 255.0f, 0, 255);
 						}
+
+						texel->unmap();
+
+						QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+
+						this->texture_ = texel;
+						this->irradianceTexture_ = octoon::PMREMLoader::load(this->texture_);
+
+						this->setColor(QColor::fromRgbF(1, 1, 1));
+						this->setPreviewImage(QFileInfo(filepath).fileName(), std::make_shared<QImage>(qimage.scaled(previewButton_->size())));
+						this->setThumbnailImage(filepath, qimage);
 					}
 				}
 			}
@@ -369,7 +612,7 @@ namespace flower
 	}
 
 	void
-	EnvironmentDock::colorMapCheckEvent(int state)
+	EnvironmentDock::thumbnailToggleEvent(int state)
 	{
 		auto environmentLight = this->profile_->entitiesModule->enviromentLight;
 		if (environmentLight)
@@ -377,15 +620,15 @@ namespace flower
 			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
 			if (envLight)
 			{
-				envLight->setBackgroundMap(state == Qt::Checked ? this->texture : nullptr);
-				envLight->setEnvironmentMap(state == Qt::Checked ? octoon::PMREMLoader::load(this->texture) : nullptr);
+				envLight->setBackgroundMap(state == Qt::Checked ? this->texture_ : nullptr);
+				envLight->setEnvironmentMap(state == Qt::Checked ? this->irradianceTexture_ : nullptr);
 			}
 
 			auto material = environmentLight->getComponent<octoon::MeshRendererComponent>()->getMaterial()->downcast<octoon::MeshBasicMaterial>();
-			material->setColorMap(state == Qt::Checked && backgroundToggle->isChecked() ? this->texture : nullptr);
+			material->setColorMap(state == Qt::Checked && backgroundToggle->isChecked() ? this->texture_ : nullptr);
 		}
 
-		this->repaint();
+		this->updatePreviewImage();
 	}
 
 	void
@@ -413,7 +656,7 @@ namespace flower
 	EnvironmentDock::colorChangeEvent(const QColor& color)
 	{
 		this->setColor(color);
-		this->repaint();
+		this->updatePreviewImage();
 	}
 
 	void
@@ -466,7 +709,7 @@ namespace flower
 		}
 
 		this->horizontalRotationSlider->setValue(value * 100.0f);
-		this->repaint();
+		this->updatePreviewImage();
 	}
 
 	void
@@ -499,7 +742,48 @@ namespace flower
 		}
 
 		this->verticalRotationSlider->setValue(value * 100.0f);
-		this->repaint();
+		this->updatePreviewImage();
+	}
+
+	void
+	EnvironmentDock::chooseItem(QString uuid)
+	{
+		try
+		{
+			auto hdrComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<HDRiComponent>();
+			auto package = hdrComponent->getPackage(uuid.toStdString());
+			if (!package.is_null())
+			{
+				auto name = package["name"].get<nlohmann::json::string_t>();
+				auto hdrPath = package["path"].get<nlohmann::json::string_t>();
+				auto previewPath = package["preview"].get<nlohmann::json::string_t>();
+
+				octoon::Image image;
+				if (!image.load(hdrPath))
+					throw std::runtime_error("Cannot load the image");
+				
+				auto previewImage = std::make_shared<QImage>();
+				if (!previewImage->load(QString::fromStdString(previewPath)))
+					throw std::runtime_error("Cannot generate image for preview");
+
+				this->texture_ = octoon::TextureLoader::load(image);
+				this->irradianceTexture_ = octoon::PMREMLoader::load(this->texture_);
+
+				this->setColor(QColor::fromRgbF(1, 1, 1));
+				this->setPreviewImage(QString::fromStdString(name), previewImage);
+				this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(e.what());
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
+		}
 	}
 
 	void
@@ -510,6 +794,39 @@ namespace flower
 		this->horizontalRotationSpinBox->setValue(0.0f);
 		this->verticalRotationSpinBox->setValue(0.0f);
 		this->setColor(QColor::fromRgb(229, 229, 235));
-		this->repaint();
+		this->updatePreviewImage();
+	}
+
+	void
+	EnvironmentDock::showEvent(QShowEvent* event)
+	{
+		this->intensitySpinBox->setValue(profile_->environmentModule->intensity);
+		this->horizontalRotationSpinBox->setValue(profile_->environmentModule->offset.x);
+		this->verticalRotationSpinBox->setValue(profile_->environmentModule->offset.y);
+		this->setColor(QColor::fromRgbF(profile_->environmentModule->color.x, profile_->environmentModule->color.y, profile_->environmentModule->color.z));
+
+		if (this->profile_->entitiesModule->enviromentLight)
+		{
+			auto envLight = this->profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
+			if (envLight)
+			{
+				this->texture_ = envLight->getBackgroundMap();
+				this->irradianceTexture_ = envLight->getEnvironmentMap();
+
+				thumbnailToggle->setChecked(envLight->getBackgroundMap() ? true : false);
+				backgroundToggle->setChecked(envLight->getShowBackground());
+			}
+		}
+
+		this->updatePreviewImage();
+	}
+
+	void
+	EnvironmentDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
 	}
 }

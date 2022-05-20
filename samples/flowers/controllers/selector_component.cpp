@@ -36,7 +36,6 @@ namespace flower
 	SelectorComponent::handleMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
 		auto& model = this->getModel();
-		auto& profile = this->getContext()->profile;
 
 		auto selected = this->intersectObjects(event.button.x, event.button.y);
 		if (model->selectedItem_ != selected)
@@ -64,7 +63,6 @@ namespace flower
 	SelectorComponent::handleMouseHover(const octoon::input::InputEvent& event) noexcept
 	{
 		auto& model = this->getModel();
-		auto& profile = this->getContext()->profile;
 
 		auto hover = this->intersectObjects(event.motion.x, event.motion.y);
 		if (model->selectedItemHover_ != hover)

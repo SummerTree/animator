@@ -1,17 +1,70 @@
 #ifndef FLOWER_ENVIRONMENT_WINDOW_H_
 #define FLOWER_ENVIRONMENT_WINDOW_H_
 
-#include <qwidget.h>
+#include <qdockwidget.h>
 #include <qcheckbox.h>
 #include <qcolordialog.h>
+#include <qlistwidget.h>
+#include <qspinbox.h>
+#include <qlabel.h>
+
 #include "spoiler.h"
-#include "color_dialog.h"
 #include "flower_profile.h"
 #include "flower_behaviour.h"
 #include <octoon/hal/graphics.h>
 
 namespace flower
 {
+	class DraggableListWindow final : public QListWidget
+	{
+		Q_OBJECT
+	public:
+		DraggableListWindow() noexcept(false);
+		~DraggableListWindow() noexcept;
+
+		void mouseMoveEvent(QMouseEvent* event) override;
+		void mousePressEvent(QMouseEvent* event) override;
+
+	private:
+		QPoint startPos;
+	};
+
+	class EnvironmentListDialog final : public QDialog
+	{
+		Q_OBJECT
+	public:
+		EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false);
+		~EnvironmentListDialog() noexcept;
+
+		void resizeEvent(QResizeEvent* e) noexcept override;
+		void showEvent(QShowEvent* event) noexcept override;
+
+	public Q_SLOTS:
+		void okClickEvent();
+		void closeClickEvent();
+		void importClickEvent();
+		void itemClicked(QListWidgetItem* item);
+
+	Q_SIGNALS:
+		void chooseItem(QString uuid);
+
+	private:
+		void addItem(std::string_view uuid) noexcept;
+
+	public:
+		QListWidget* mainWidget_;
+		QVBoxLayout* mainLayout_;
+
+		QToolButton* okButton_;
+		QToolButton* closeButton_;
+		QToolButton* importButton_;
+
+		QListWidgetItem* clickedItem_;
+
+		octoon::GameObjectPtr behaviour_;
+		std::shared_ptr<flower::FlowerProfile> profile_;
+	};
+
    	class EnvironmentDock final : public QDockWidget
 	{
 		Q_OBJECT
@@ -19,14 +72,13 @@ namespace flower
 		EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile);
 		~EnvironmentDock();
 
-		void repaint();
-
 		void showEvent(QShowEvent* event) override;
 		void closeEvent(QCloseEvent* event) override;
 
 	public Q_SLOTS:
-		void colorMapClickEvent();
-		void colorMapCheckEvent(int state);
+		void previewClickEvent();
+		void thumbnailClickEvent();
+		void thumbnailToggleEvent(int state);
 		void backgroundMapCheckEvent(int state);
 		void colorClickEvent();
 		void colorChangeEvent(const QColor&);
@@ -37,9 +89,13 @@ namespace flower
 		void horizontalRotationEditEvent(double value);
 		void verticalRotationSliderEvent(int);
 		void verticalRotationEditEvent(double value);
+		void chooseItem(QString uuid);
 
 	private:
 		void setColor(const QColor& c, int w = 50, int h = 26);
+		void setPreviewImage(QString name, std::shared_ptr<QImage> image);
+		void setThumbnailImage(QString name, const QImage& image);
+		void updatePreviewImage();
 		
 	private:
 		QLabel* previewName_;
@@ -64,14 +120,17 @@ namespace flower
 		QDoubleSpinBox* horizontalRotationSpinBox;
 		QDoubleSpinBox* verticalRotationSpinBox;
 
+		EnvironmentListDialog* environmentListDialog_;
+
 		QColorDialog colorSelector_;
 
 		Spoiler* spoiler;
 
 		octoon::GameObjectPtr behaviour_;
-		octoon::hal::GraphicsTexturePtr texture;
+		octoon::hal::GraphicsTexturePtr texture_;
+		octoon::hal::GraphicsTexturePtr irradianceTexture_;
 
-		std::shared_ptr<QImage> image_;
+		std::shared_ptr<QImage> previewImage_;
 		std::shared_ptr<flower::FlowerProfile> profile_;
 	};
 }

@@ -99,63 +99,103 @@
 <context>
     <name>flower::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="34"/>
+        <location filename="../views/environment_dock.cpp" line="279"/>
         <source>Environment Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="41"/>
+        <location filename="../views/environment_dock.cpp" line="287"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="51"/>
+        <location filename="../views/environment_dock.cpp" line="297"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="54"/>
+        <location filename="../views/environment_dock.cpp" line="300"/>
         <source>Thumbnail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="57"/>
+        <location filename="../views/environment_dock.cpp" line="303"/>
         <source>Toggle Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="64"/>
+        <location filename="../views/environment_dock.cpp" line="310"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="82"/>
+        <location filename="../views/environment_dock.cpp" line="328"/>
         <source>Horizontal Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="100"/>
+        <location filename="../views/environment_dock.cpp" line="346"/>
         <source>Vertical Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="118"/>
+        <location filename="../views/environment_dock.cpp" line="364"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="168"/>
+        <location filename="../views/environment_dock.cpp" line="414"/>
         <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="317"/>
+        <location filename="../views/environment_dock.cpp" line="566"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="362"/>
+        <location filename="../views/environment_dock.cpp" line="605"/>
+        <location filename="../views/environment_dock.cpp" line="780"/>
         <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::EnvironmentListDialog</name>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="97"/>
+        <source>Environment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="102"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="106"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="110"/>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="194"/>
+        <source>HDRi Files (*.hdr)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="201"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="201"/>
+        <location filename="../views/environment_dock.cpp" line="202"/>
+        <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -330,48 +370,48 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::MainDock</name>
     <message>
-        <location filename="../views/main_dock.cpp" line="20"/>
+        <location filename="../views/main_dock.cpp" line="21"/>
         <source>Flower Render Toolbox (Alpha Version)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="185"/>
-        <location filename="../views/main_dock.cpp" line="227"/>
-        <location filename="../views/main_dock.cpp" line="267"/>
-        <location filename="../views/main_dock.cpp" line="308"/>
-        <location filename="../views/main_dock.cpp" line="347"/>
-        <location filename="../views/main_dock.cpp" line="386"/>
+        <location filename="../views/main_dock.cpp" line="193"/>
+        <location filename="../views/main_dock.cpp" line="235"/>
+        <location filename="../views/main_dock.cpp" line="275"/>
+        <location filename="../views/main_dock.cpp" line="316"/>
+        <location filename="../views/main_dock.cpp" line="355"/>
+        <location filename="../views/main_dock.cpp" line="394"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="186"/>
-        <location filename="../views/main_dock.cpp" line="228"/>
+        <location filename="../views/main_dock.cpp" line="194"/>
+        <location filename="../views/main_dock.cpp" line="236"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="197"/>
-        <location filename="../views/main_dock.cpp" line="238"/>
-        <location filename="../views/main_dock.cpp" line="279"/>
-        <location filename="../views/main_dock.cpp" line="319"/>
-        <location filename="../views/main_dock.cpp" line="358"/>
-        <location filename="../views/main_dock.cpp" line="397"/>
-        <location filename="../views/main_dock.cpp" line="430"/>
-        <location filename="../views/main_dock.cpp" line="457"/>
+        <location filename="../views/main_dock.cpp" line="205"/>
+        <location filename="../views/main_dock.cpp" line="246"/>
+        <location filename="../views/main_dock.cpp" line="287"/>
+        <location filename="../views/main_dock.cpp" line="327"/>
+        <location filename="../views/main_dock.cpp" line="366"/>
+        <location filename="../views/main_dock.cpp" line="405"/>
+        <location filename="../views/main_dock.cpp" line="438"/>
+        <location filename="../views/main_dock.cpp" line="465"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="268"/>
-        <location filename="../views/main_dock.cpp" line="309"/>
-        <location filename="../views/main_dock.cpp" line="348"/>
-        <location filename="../views/main_dock.cpp" line="387"/>
+        <location filename="../views/main_dock.cpp" line="276"/>
+        <location filename="../views/main_dock.cpp" line="317"/>
+        <location filename="../views/main_dock.cpp" line="356"/>
+        <location filename="../views/main_dock.cpp" line="395"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="431"/>
+        <location filename="../views/main_dock.cpp" line="439"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
