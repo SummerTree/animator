@@ -43,6 +43,7 @@ namespace flower
 			auto previewPath = std::filesystem::path(rootPath).append(uuid + ".png");
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");
 
+			std::filesystem::create_directory(this->getModel()->hdriPath);
 			std::filesystem::create_directory(rootPath);
 			std::filesystem::copy(filepath, hdriPath);
 
