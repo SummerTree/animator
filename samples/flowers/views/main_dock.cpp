@@ -10,7 +10,7 @@ namespace flower
 {
 	MainDock::MainDock(SplashScreen* splash) noexcept
 		: init_flag(false)
-		, profile_(FlowerProfile::load(QDir::homePath().toStdString() + "/.flowers/config/config.conf"))
+		, profile_(FlowerProfile::load(QDir::homePath().toStdString() + "/.flowers/config/config.json"))
 		, gameApp_(std::make_shared<octoon::GameApp>())
 		, behaviour_(octoon::GameObject::create())
 		, splash_(splash)
@@ -119,7 +119,7 @@ namespace flower
 		if (!configFolder.exists())
 			QDir::root().mkpath(QDir::homePath() + "/.flowers/config");
 
-		FlowerProfile::save(QDir::homePath().toStdString() + "/.flowers/config/config.conf", *profile_);
+		FlowerProfile::save(QDir::homePath().toStdString() + "/.flowers/config/config.json", *profile_);
 
 		behaviour_.reset();
 		profile_.reset();
