@@ -441,7 +441,7 @@ namespace flower
 
 			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
 			if (meshRenderer)
-				meshRenderer->getMaterial()->set("diffuse", octoon::math::srgb2linear(profile_->environmentModule->color));
+				meshRenderer->getMaterial()->set("diffuse", octoon::math::srgb2linear(profile_->environmentModule->color) * profile_->environmentModule->intensity);
 		}
 
 		QPixmap pixmap(w, h);
@@ -648,6 +648,10 @@ namespace flower
 			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
 			if (environmentLight)
 				environmentLight->setIntensity(value);
+
+			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
+			if (meshRenderer)
+				meshRenderer->getMaterial()->set("diffuse", octoon::math::srgb2linear(profile_->environmentModule->color) * value);
 		}
 
 		this->profile_->environmentModule->intensity = value;

@@ -155,7 +155,7 @@
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="580"/>
-        <location filename="../views/environment_dock.cpp" line="755"/>
+        <location filename="../views/environment_dock.cpp" line="759"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
