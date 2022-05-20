@@ -94,7 +94,7 @@ namespace flower
 		, clickedItem_(nullptr)
 	{
 		this->setObjectName("EnvironmentDialog");
-		this->setWindowTitle(tr("Environment"));
+		this->setWindowTitle(tr("Environment Resource"));
 		this->setFixedSize(900, 600);
 		this->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
 
@@ -206,6 +206,7 @@ namespace flower
 				for (qsizetype i = 0; i < filepaths.size(); i++)
 				{
 					dialog.setValue(i);
+					dialog.setLabelText(QFileInfo(filepaths[i]).fileName());
 
 					QCoreApplication::processEvents();
 					if (dialog.wasCanceled())

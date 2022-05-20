@@ -214,7 +214,7 @@ namespace flower
 			directionalLight_->setTransform(octoon::math::float4x4(q1 * q2));
 
 			environmentLight_ = std::make_shared<octoon::EnvironmentLight>();
-			environmentLight_->setEnvironmentMap(octoon::PMREMLoader::load("../../system/hdri/Ditch-River_2k.hdr"));
+			environmentLight_->setEnvironmentMap(octoon::PMREMLoader::load("../../system/hdri/Ditch-River_1k.hdr"));
 
 			scene_ = std::make_unique<octoon::RenderScene>();
 			scene_->addRenderObject(camera_.get());

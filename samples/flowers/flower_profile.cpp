@@ -41,7 +41,7 @@ namespace flower
 			this->sunModule->load(json["sun"]);
 			this->environmentModule->load(json["environment"]);
 			this->clientModule->load(json["client"]);
-			this->resourceModule->load(json["material"]);
+			this->resourceModule->load(json["resource"]);
 			this->selectorModule->load(json["drag"]);
 			this->gridModule->load(json["grid"]);
 		}
@@ -75,7 +75,7 @@ namespace flower
 			profile.sunModule->save(json["sun"]);
 			profile.environmentModule->save(json["environment"]);
 			profile.clientModule->save(json["client"]);
-			profile.resourceModule->save(json["material"]);
+			profile.resourceModule->save(json["resource"]);
 			profile.selectorModule->save(json["drag"]);
 			profile.gridModule->save(json["grid"]);
 
