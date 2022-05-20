@@ -217,7 +217,7 @@ namespace flower
 		void resizeEvent(QResizeEvent* e) noexcept override;
 
 	public:
-		QListWidget* listWidget_;
+		QListWidget* mainWidget_;
 		QVBoxLayout* mainLayout_;
 	};
 

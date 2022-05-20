@@ -99,63 +99,103 @@
 <context>
     <name>flower::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="34"/>
+        <location filename="../views/environment_dock.cpp" line="279"/>
         <source>Environment Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="41"/>
+        <location filename="../views/environment_dock.cpp" line="287"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="51"/>
+        <location filename="../views/environment_dock.cpp" line="297"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="54"/>
+        <location filename="../views/environment_dock.cpp" line="300"/>
         <source>Thumbnail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="57"/>
+        <location filename="../views/environment_dock.cpp" line="303"/>
         <source>Toggle Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="64"/>
+        <location filename="../views/environment_dock.cpp" line="310"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="82"/>
+        <location filename="../views/environment_dock.cpp" line="328"/>
         <source>Horizontal Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="100"/>
+        <location filename="../views/environment_dock.cpp" line="346"/>
         <source>Vertical Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="118"/>
+        <location filename="../views/environment_dock.cpp" line="364"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="168"/>
+        <location filename="../views/environment_dock.cpp" line="414"/>
         <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="317"/>
+        <location filename="../views/environment_dock.cpp" line="566"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="362"/>
+        <location filename="../views/environment_dock.cpp" line="605"/>
+        <location filename="../views/environment_dock.cpp" line="780"/>
         <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>flower::EnvironmentListDialog</name>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="97"/>
+        <source>Environment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="102"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="106"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="110"/>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="194"/>
+        <source>HDRi Files (*.hdr)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="201"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="201"/>
+        <location filename="../views/environment_dock.cpp" line="202"/>
+        <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
