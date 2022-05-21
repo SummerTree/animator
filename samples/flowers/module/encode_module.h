@@ -9,7 +9,8 @@ namespace flower
 	enum EncodeMode
 	{
 		H264,
-		H265
+		H265,
+		Frame
 	};
 
 	enum VideoQuality
