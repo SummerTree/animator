@@ -1,29 +1,30 @@
 #ifndef FLOWER_RECORD_DOCK_H_
 #define FLOWER_RECORD_DOCK_H_
 
-#include <qdockwidget.h>
-#include <qdialog.h>
-#include <qboxlayout.h>
-#include <qradiobutton.h>
-#include <qbuttongroup.h>
-#include <qpushbutton.h>
-#include <qtoolbutton.h>
-#include <qlabel.h>
-#include <optional>
-#include <qcheckbox.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qtimer.h>
 #include "flower_behaviour.h"
 #include "spoiler.h"
+#include <QComboBox>
 #include <octoon/game_object.h>
+#include <optional>
+#include <qboxlayout.h>
+#include <qbuttongroup.h>
+#include <qcheckbox.h>
+#include <qdialog.h>
+#include <qdockwidget.h>
+#include <qlabel.h>
+#include <qlineedit.h>
+#include <qpushbutton.h>
+#include <qradiobutton.h>
+#include <qspinbox.h>
+#include <qtimer.h>
+#include <qtoolbutton.h>
 
 namespace flower
 {
 	class RecordDock final : public QDockWidget
 	{
 		Q_OBJECT
-	public:
+	  public:
 		RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
 		~RecordDock() noexcept;
 
@@ -32,7 +33,7 @@ namespace flower
 		void resizeEvent(QResizeEvent* e) noexcept override;
 		void closeEvent(QCloseEvent* event) override;
 
-	private Q_SLOTS:
+	  private Q_SLOTS:
 		void recordEvent(bool);
 		void select1Event(bool checked);
 		void select2Event(bool checked);
@@ -47,13 +48,14 @@ namespace flower
 		void onBouncesChanged(int);
 		void onCrfChanged(double);
 
-	private:
+	  private:
 		void updateDefaultSettings();
 
-	public:
+	  public:
 		QLabel* quality_;
 		QLabel* videoRatio_;
 		QLabel* frame_;
+		QLabel* outputType_;
 		QLabel* sppLabel;
 		QLabel* bouncesLabel_;
 		QLabel* crfLabel;
@@ -63,6 +65,8 @@ namespace flower
 
 		QButtonGroup* group_;
 		QButtonGroup* speedGroup_;
+
+		QComboBox* outputTypeCombo_;
 
 		QToolButton* select1_;
 		QToolButton* select2_;
@@ -78,7 +82,7 @@ namespace flower
 		QSpinBox* end_;
 		QSpinBox* sppSpinbox_;
 		QSpinBox* bouncesSpinbox_;
-		
+
 		QDoubleSpinBox* crfSpinbox;
 
 		QHBoxLayout* videoRatioLayout_;
