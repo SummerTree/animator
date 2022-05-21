@@ -153,7 +153,7 @@ namespace flower
 					auto dump = item.dump();
 					ifs.write(dump.c_str(), dump.size());
 
-					items.push_back(item);
+					items.push_back(uuid);
 
 					this->indexList_.push_back(uuid);
 				}

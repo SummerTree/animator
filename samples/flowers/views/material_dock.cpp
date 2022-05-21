@@ -176,9 +176,9 @@ namespace flower
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = materialComponent->importMdl(filepaths[i].toStdString());
-					if (!package.is_null())
-						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
+					auto list = materialComponent->importMdl(filepaths[i].toStdString());
+					for (auto& it : list)
+						this->addItem(it.get<nlohmann::json::string_t>());
 				}
 
 				materialComponent->save();
