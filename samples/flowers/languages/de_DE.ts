@@ -99,63 +99,63 @@
 <context>
     <name>flower::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="260"/>
+        <location filename="../views/environment_dock.cpp" line="234"/>
         <source>Environment Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="268"/>
+        <location filename="../views/environment_dock.cpp" line="242"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="278"/>
+        <location filename="../views/environment_dock.cpp" line="252"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="281"/>
+        <location filename="../views/environment_dock.cpp" line="255"/>
         <source>Thumbnail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="284"/>
+        <location filename="../views/environment_dock.cpp" line="258"/>
         <source>Toggle Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="291"/>
+        <location filename="../views/environment_dock.cpp" line="265"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="309"/>
+        <location filename="../views/environment_dock.cpp" line="283"/>
         <source>Horizontal Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="327"/>
+        <location filename="../views/environment_dock.cpp" line="301"/>
         <source>Vertical Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="345"/>
+        <location filename="../views/environment_dock.cpp" line="319"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="395"/>
+        <location filename="../views/environment_dock.cpp" line="369"/>
         <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="550"/>
+        <location filename="../views/environment_dock.cpp" line="524"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="589"/>
-        <location filename="../views/environment_dock.cpp" line="768"/>
+        <location filename="../views/environment_dock.cpp" line="563"/>
+        <location filename="../views/environment_dock.cpp" line="742"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -163,38 +163,38 @@
 <context>
     <name>flower::EnvironmentListDialog</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="68"/>
+        <location filename="../views/environment_dock.cpp" line="42"/>
         <source>Environment Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="73"/>
+        <location filename="../views/environment_dock.cpp" line="47"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="77"/>
+        <location filename="../views/environment_dock.cpp" line="51"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="81"/>
+        <location filename="../views/environment_dock.cpp" line="55"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="174"/>
+        <location filename="../views/environment_dock.cpp" line="148"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="181"/>
+        <location filename="../views/environment_dock.cpp" line="155"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="181"/>
-        <location filename="../views/environment_dock.cpp" line="182"/>
+        <location filename="../views/environment_dock.cpp" line="155"/>
+        <location filename="../views/environment_dock.cpp" line="156"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -452,8 +452,14 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::MaterialDock</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="1654"/>
+        <location filename="../views/material_dock.cpp" line="1649"/>
+        <location filename="../views/material_dock.cpp" line="1733"/>
         <source>Material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/material_dock.cpp" line="1751"/>
+        <source>Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -465,121 +471,116 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="270"/>
-        <source>Material Properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/material_dock.cpp" line="278"/>
+        <location filename="../views/material_dock.cpp" line="273"/>
         <source>Base Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="279"/>
+        <location filename="../views/material_dock.cpp" line="274"/>
         <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="280"/>
+        <location filename="../views/material_dock.cpp" line="275"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="281"/>
+        <location filename="../views/material_dock.cpp" line="276"/>
         <source>Roughness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="282"/>
+        <location filename="../views/material_dock.cpp" line="277"/>
         <source>Metal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="283"/>
+        <location filename="../views/material_dock.cpp" line="278"/>
         <source>Specular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="284"/>
+        <location filename="../views/material_dock.cpp" line="279"/>
         <source>Anisotropy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="285"/>
+        <location filename="../views/material_dock.cpp" line="280"/>
         <source>Cloth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="286"/>
-        <location filename="../views/material_dock.cpp" line="320"/>
+        <location filename="../views/material_dock.cpp" line="281"/>
+        <location filename="../views/material_dock.cpp" line="315"/>
         <source>Clear Coat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="287"/>
+        <location filename="../views/material_dock.cpp" line="282"/>
         <source>Clear Coat Roughness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="288"/>
+        <location filename="../views/material_dock.cpp" line="283"/>
         <source>Subsurface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="289"/>
+        <location filename="../views/material_dock.cpp" line="284"/>
         <source>Subsurface Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="290"/>
-        <location filename="../views/material_dock.cpp" line="326"/>
+        <location filename="../views/material_dock.cpp" line="285"/>
+        <location filename="../views/material_dock.cpp" line="321"/>
         <source>Refraction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="291"/>
+        <location filename="../views/material_dock.cpp" line="286"/>
         <source>Refraction Ior</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="292"/>
+        <location filename="../views/material_dock.cpp" line="287"/>
         <source>Emissive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="323"/>
+        <location filename="../views/material_dock.cpp" line="318"/>
         <source>Subsurface Scattering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="330"/>
+        <location filename="../views/material_dock.cpp" line="325"/>
         <source>Receive Shadow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="336"/>
+        <location filename="../views/material_dock.cpp" line="331"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="814"/>
-        <location filename="../views/material_dock.cpp" line="822"/>
-        <location filename="../views/material_dock.cpp" line="830"/>
-        <location filename="../views/material_dock.cpp" line="838"/>
-        <location filename="../views/material_dock.cpp" line="846"/>
-        <location filename="../views/material_dock.cpp" line="854"/>
-        <location filename="../views/material_dock.cpp" line="862"/>
-        <location filename="../views/material_dock.cpp" line="870"/>
-        <location filename="../views/material_dock.cpp" line="878"/>
-        <location filename="../views/material_dock.cpp" line="886"/>
-        <location filename="../views/material_dock.cpp" line="894"/>
-        <location filename="../views/material_dock.cpp" line="902"/>
-        <location filename="../views/material_dock.cpp" line="910"/>
+        <location filename="../views/material_dock.cpp" line="809"/>
+        <location filename="../views/material_dock.cpp" line="817"/>
+        <location filename="../views/material_dock.cpp" line="825"/>
+        <location filename="../views/material_dock.cpp" line="833"/>
+        <location filename="../views/material_dock.cpp" line="841"/>
+        <location filename="../views/material_dock.cpp" line="849"/>
+        <location filename="../views/material_dock.cpp" line="857"/>
+        <location filename="../views/material_dock.cpp" line="865"/>
+        <location filename="../views/material_dock.cpp" line="873"/>
+        <location filename="../views/material_dock.cpp" line="881"/>
+        <location filename="../views/material_dock.cpp" line="889"/>
+        <location filename="../views/material_dock.cpp" line="897"/>
+        <location filename="../views/material_dock.cpp" line="905"/>
         <source>Open Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1104"/>
+        <location filename="../views/material_dock.cpp" line="1099"/>
         <source>material</source>
         <translation type="unfinished"></translation>
     </message>

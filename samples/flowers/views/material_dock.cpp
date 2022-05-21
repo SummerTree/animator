@@ -266,13 +266,8 @@ namespace flower
 		backButton_->setObjectName("back");
 		backButton_->setIconSize(QSize(20, 20));
 
-		title_ = new QLabel();
-		title_->setText(tr("Material Properties"));
-
 		titleLayout_ = new QHBoxLayout();
 		titleLayout_->addWidget(backButton_, 0, Qt::AlignLeft);
-		titleLayout_->addStretch();
-		titleLayout_->addWidget(title_, 0, Qt::AlignCenter);
 		titleLayout_->addStretch();
 
 		this->albedo_.init(tr("Base Color"), CreateFlags::SpoilerBit | CreateFlags::ColorBit | CreateFlags::TextureBit);
@@ -1671,7 +1666,7 @@ namespace flower
 
 		this->setWidget(widget_);
 
-		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(okEvent()));
+		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(backEvent()));
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
 		behaviour->addMessageListener("editor:material:change", [this](const std::any&) {
@@ -1731,10 +1726,11 @@ namespace flower
 	}
 
 	void
-	MaterialDock::okEvent()
+	MaterialDock::backEvent()
 	{
 		modifyWidget_->hide();
 		materialList_->show();
+		this->setWindowTitle(tr("Material"));
 	}
 
 	void
@@ -1752,6 +1748,8 @@ namespace flower
 				auto material = materialComponent->getMaterial(item->data(Qt::UserRole).toString().toStdString());
 				if (material)
 				{
+					this->setWindowTitle(tr("Material Properties"));
+
 					materialList_->hide();
 					modifyWidget_->setMaterial(material);
 					modifyWidget_->show();

@@ -180,7 +180,6 @@ namespace flower
 		Spoiler* refractionSpoiler_;
 		Spoiler* othersSpoiler_;
 
-		QLabel* title_;
 		QHBoxLayout* titleLayout_;
 		QLabel* textLabel_;
 		QLabel* imageLabel_;
@@ -234,7 +233,7 @@ namespace flower
 		void closeEvent(QCloseEvent* event) override;
 
 	private Q_SLOTS:
-		void okEvent();
+		void backEvent();
 		void itemDoubleClicked(QListWidgetItem* item);
 
 	private:
