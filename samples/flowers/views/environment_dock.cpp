@@ -32,32 +32,6 @@ namespace flower
 		}
 	};
 
-	EnvironmentListWindow::EnvironmentListWindow() noexcept(false)
-	{
-		this->setResizeMode(QListView::Fixed);
-		this->setViewMode(QListView::IconMode);
-		this->setMovement(QListView::Static);
-		this->setDefaultDropAction(Qt::DropAction::MoveAction);
-		this->setStyleSheet("background:transparent;");
-		this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	}
-
-	EnvironmentListWindow::~EnvironmentListWindow() noexcept
-	{
-	}
-
-	void
-	EnvironmentListWindow::mouseMoveEvent(QMouseEvent *event)
-	{
-		QListWidget::mouseMoveEvent(event);
-	}
-
-	void
-	EnvironmentListWindow::mousePressEvent(QMouseEvent *event)
-	{
-		QListWidget::mousePressEvent(event);
-	}
-
 	EnvironmentListDialog::EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile)
 		: QDialog(parent)
 		, behaviour_(behaviour)
@@ -93,7 +67,13 @@ namespace flower
 		bottomLayout_->setSpacing(2);
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
 
-		mainWidget_ = new EnvironmentListWindow;
+		mainWidget_ = new QListWidget;
+		mainWidget_->setResizeMode(QListView::Fixed);
+		mainWidget_->setViewMode(QListView::IconMode);
+		mainWidget_->setMovement(QListView::Static);
+		mainWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
+		mainWidget_->setStyleSheet("background:transparent;");
+		mainWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		mainWidget_->setSpacing(10);
 
 		mainLayout_ = new QVBoxLayout(this);

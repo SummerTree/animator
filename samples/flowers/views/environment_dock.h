@@ -15,17 +15,6 @@
 
 namespace flower
 {
-	class EnvironmentListWindow final : public QListWidget
-	{
-		Q_OBJECT
-	public:
-		EnvironmentListWindow() noexcept(false);
-		~EnvironmentListWindow() noexcept;
-
-		void mouseMoveEvent(QMouseEvent* event) override;
-		void mousePressEvent(QMouseEvent* event) override;
-	};
-
 	class EnvironmentListDialog final : public QDialog
 	{
 		Q_OBJECT
