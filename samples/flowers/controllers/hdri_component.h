@@ -29,7 +29,7 @@ namespace flower
 		}
 
 	private:
-		void initResourceList() noexcept(false);
+		void initPackageIndices() noexcept(false);
 
 	private:
 		void onEnable() noexcept override;

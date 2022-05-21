@@ -122,7 +122,7 @@ namespace flower
 	}
 
 	void
-	HDRiComponent::initResourceList() noexcept(false)
+	HDRiComponent::initPackageIndices() noexcept(false)
 	{
 		std::ifstream indexStream(this->getModel()->hdriPath + "/index.json");
 		if (indexStream)
@@ -174,7 +174,7 @@ namespace flower
 	HDRiComponent::onEnable() noexcept
 	{
 		if (std::filesystem::exists(this->getModel()->hdriPath))
-			this->initResourceList();
+			this->initPackageIndices();
 		else
 			std::filesystem::create_directory(this->getModel()->hdriPath);
 	}
