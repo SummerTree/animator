@@ -193,32 +193,33 @@ namespace flower
 		octoon::GameObjectPtr behaviour_;
 	};
 
-	class MaterialListWindow final : public QListWidget
-	{
-		Q_OBJECT
-	public:
-		MaterialListWindow() noexcept(false);
-		~MaterialListWindow() noexcept;
-
-		void mouseMoveEvent(QMouseEvent *event) override;
-		void mousePressEvent(QMouseEvent *event) override;
-
-	private:
-		QPoint startPos;
-	};
-
 	class MaterialListPanel final : public QWidget
 	{
 		Q_OBJECT
 	public:
-		MaterialListPanel() noexcept(false);
+		MaterialListPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false);
 		~MaterialListPanel() noexcept;
 
+		void addItem(std::string_view uuid) noexcept;
+		void addItem(const nlohmann::json& package) noexcept;
+
+		void updateItemList();
+
 		void resizeEvent(QResizeEvent* e) noexcept override;
+
+	public Q_SLOTS:
+		void itemClicked(QListWidgetItem* item);
+		void itemSelected(QListWidgetItem* item);
+
+	Q_SIGNALS:
+		void chooseItem(QString uuid);
 
 	public:
 		QListWidget* mainWidget_;
 		QVBoxLayout* mainLayout_;
+
+		octoon::GameObjectPtr behaviour_;
+		std::shared_ptr<flower::FlowerProfile> profile_;
 	};
 
 	class MaterialDock final : public QDockWidget
@@ -232,17 +233,14 @@ namespace flower
 		void paintEvent(QPaintEvent* e) noexcept override;
 		void closeEvent(QCloseEvent* event) override;
 
-		void updateList();
-
 	private Q_SLOTS:
 		void okEvent();
-		void itemClicked(QListWidgetItem* item);
 		void itemDoubleClicked(QListWidgetItem* item);
 
 	private:
 		QVBoxLayout* materialLayout_;
 		QVBoxLayout* mainLayout_;
-		MaterialListPanel* listPanel_;
+		MaterialListPanel* materialList_;
 		MaterialEditWindow* modifyWidget_;
 		QScrollArea* modifyMaterialArea_;
 		QWidget* widget_;

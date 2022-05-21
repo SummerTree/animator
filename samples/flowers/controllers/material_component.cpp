@@ -19,6 +19,8 @@
 namespace flower
 {
 	MaterialComponent::MaterialComponent() noexcept
+		: previewWidth_(128)
+		, previewHeight_(128)
 	{
 	}
 
@@ -26,19 +28,7 @@ namespace flower
 	{
 	}
 
-	std::optional<std::string>
-	MaterialComponent::getSelectedMaterial()
-	{
-		return this->selectedMaterial_;
-	}
-
-	const std::map<std::string, nlohmann::json, std::less<>>&
-	MaterialComponent::getMaterialList() const noexcept
-	{
-		return this->materialList_;
-	}
-
-	void
+	nlohmann::json
 	MaterialComponent::importMdl(std::string_view path) noexcept(false)
 	{
 		octoon::io::ifstream stream(QString::fromStdString(std::string(path)).toStdWString());
@@ -46,30 +36,170 @@ namespace flower
 		{
 			octoon::MDLLoader loader;
 			loader.load("resource", stream);
-			auto& materials = loader.getMaterials();
 
-			for (auto& mat : materials)
+			nlohmann::json items;
+
+			auto writeTexture = [](const octoon::hal::GraphicsTexturePtr& texture, std::filesystem::path rootPath) -> nlohmann::json
+			{
+				if (texture)
+				{
+					auto textureDesc = texture->getTextureDesc();
+					auto width = textureDesc.getWidth();
+					auto height = textureDesc.getHeight();
+					auto textureFormat = textureDesc.getTexFormat();
+
+					std::uint8_t* data_ = nullptr;
+
+					if (texture->map(0, 0, width, height, 0, (void**)&data_))
+					{
+						auto format = QImage::Format::Format_RGB888;
+
+						if (textureFormat == octoon::hal::GraphicsFormat::R8G8B8UNorm)
+							format = QImage::Format::Format_RGB888;
+						else if (textureFormat == octoon::hal::GraphicsFormat::R8G8B8A8UNorm)
+							format = QImage::Format::Format_RGBA8888;
+
+						QImage qimage(data_, width, height, format);
+
+						texture->unmap();
+
+						auto id = QUuid::createUuid().toString();
+						auto uuid = id.toStdString().substr(1, id.length() - 2);
+						auto outputPath = rootPath.append(uuid + ".png").string();
+
+						qimage.save(QString::fromStdString(outputPath), "png");
+
+						return outputPath;
+					}
+				}
+
+				return nlohmann::json();
+			};
+
+			auto writePreview = [this](const std::shared_ptr<octoon::MeshStandardMaterial> material, std::filesystem::path outputPath) -> nlohmann::json
+			{
+				QPixmap pixmap;
+				auto id = QUuid::createUuid().toString();
+				auto uuid = id.toStdString().substr(1, id.length() - 2);
+				auto previewPath = std::filesystem::path(outputPath).append(uuid + ".png");
+				this->createMaterialPreview(material, pixmap, previewWidth_, previewHeight_);
+				pixmap.save(QString::fromStdString(previewPath.string()), "png");
+				return previewPath.string();
+			};
+
+			auto writeFloat2 = [](const octoon::math::float2& v)
+			{
+				return nlohmann::json({ v.x, v.y });
+			};
+
+			auto writeFloat3 = [](const octoon::math::float3& v)
+			{
+				return nlohmann::json({ v.x, v.y, v.z });
+			};
+
+			for (auto& mat : loader.getMaterials())
 			{
 				auto id = QUuid::createUuid().toString();
 				auto uuid = id.toStdString().substr(1, id.length() - 2);
+				auto outputPath = std::filesystem::path(this->getModel()->materialPath).append(uuid);
 
-				auto& color = mat->getColor();
-				auto& colorMap = mat->getColorMap();
+				std::filesystem::create_directory(this->getModel()->materialPath);
+				std::filesystem::create_directory(outputPath);
 
 				nlohmann::json item;
 				item["uuid"] = uuid;
 				item["name"] = mat->getName();
-				item["color"] =  { color.x, color.y, color.z};
+				item["preview"] = writePreview(mat, outputPath);
+				item["colorMap"] = writeTexture(mat->getColorMap(), outputPath);
+				item["opacityMap"] = writeTexture(mat->getOpacityMap(), outputPath);
+				item["normalMap"] = writeTexture(mat->getNormalMap(), outputPath);
+				item["roughnessMap"] = writeTexture(mat->getRoughnessMap(), outputPath);
+				item["specularMap"] = writeTexture(mat->getSpecularMap(), outputPath);
+				item["metalnessMap"] = writeTexture(mat->getMetalnessMap(), outputPath);
+				item["emissiveMap"] = writeTexture(mat->getEmissiveMap(), outputPath);
+				item["anisotropyMap"] = writeTexture(mat->getAnisotropyMap(), outputPath);
+				item["clearCoatMap"] = writeTexture(mat->getClearCoatMap(), outputPath);
+				item["clearCoatRoughnessMap"] = writeTexture(mat->getClearCoatRoughnessMap(), outputPath);
+				item["subsurfaceMap"] = writeTexture(mat->getSubsurfaceMap(), outputPath);
+				item["subsurfaceColorMap"] = writeTexture(mat->getSubsurfaceColorMap(), outputPath);
+				item["sheenMap"] = writeTexture(mat->getSheenMap(), outputPath);
+				item["lightMap"] = writeTexture(mat->getLightMap(), outputPath);
+				item["emissiveIntensity"] = mat->getEmissiveIntensity();
+				item["opacity"] = mat->getOpacity();
+				item["smoothness"] = mat->getSmoothness();
+				item["roughness"] = mat->getRoughness();
+				item["metalness"] = mat->getMetalness();
+				item["anisotropy"] = mat->getAnisotropy();
+				item["sheen"] = mat->getSheen();
+				item["specular"] = mat->getSpecular();
+				item["refractionRatio"] = mat->getRefractionRatio();
+				item["clearCoat"] = mat->getClearCoat();
+				item["clearCoatRoughness"] = mat->getClearCoatRoughness();
+				item["subsurface"] = mat->getSubsurface();
+				item["reflectionRatio"] = mat->getReflectionRatio();
+				item["transmission"] = mat->getTransmission();
+				item["lightMapIntensity"] = mat->getLightMapIntensity();
+				item["gamma"] = mat->getGamma();
+				item["offset"] = writeFloat2(mat->getOffset());
+				item["repeat"] = writeFloat2(mat->getRepeat());
+				item["normalScale"] = writeFloat2(mat->getNormalScale());
+				item["color"] = writeFloat3(mat->getColor());
+				item["emissive"] = writeFloat3(mat->getEmissive());
+				item["subsurfaceColor"] = writeFloat3(mat->getSubsurfaceColor());
 
-				if (colorMap)
-					item["map"] = colorMap->getTextureDesc().getName();
+				std::ofstream ifs(std::filesystem::path(outputPath).append("package.json"), std::ios_base::binary);
+				if (ifs)
+				{
+					auto dump = item.dump();
+					ifs.write(dump.c_str(), dump.size());
 
-				this->materialList_[uuid] = item;
-				this->materials_[std::string(uuid)] = mat;
+					items.push_back(item);
+
+					this->indexList_.push_back(uuid);
+				}
 			}
 
+			this->save();
 			this->sendMessage("editor:material:change");
+
+			return items;
 		}
+
+		return nlohmann::json();
+	}
+
+	const nlohmann::json&
+	MaterialComponent::getIndexList() const noexcept
+	{
+		return this->indexList_;
+	}
+
+	const nlohmann::json&
+	MaterialComponent::getSceneList() const noexcept
+	{
+		return this->sceneList_;
+	}
+
+	nlohmann::json
+	MaterialComponent::getPackage(std::string_view uuid) noexcept
+	{
+		auto it = this->packageList_.find(std::string(uuid));
+		if (it == this->packageList_.end())
+		{
+			std::ifstream ifs(std::filesystem::path(this->getModel()->materialPath).append(uuid).append("package.json"));
+			if (ifs)
+			{
+				auto package = nlohmann::json::parse(ifs);
+				this->packageList_[std::string(uuid)] = package;
+				return package;
+			}
+			else
+			{
+				return nlohmann::json();
+			}			
+		}
+
+		return this->packageList_[std::string(uuid)];
 	}
 
 	const std::shared_ptr<octoon::Material>
@@ -78,24 +208,132 @@ namespace flower
 		auto material = this->materials_.find(uuid);
 		if (material == this->materials_.end())
 		{
-			auto it = this->materialList_.find(uuid);
-			if (it != this->materialList_.end())
-			{
-				auto mat = (*it).second;
+			auto package = this->getPackage(uuid);
 
-				auto standard = std::make_shared<octoon::MeshStandardMaterial>();
-				standard->setName(mat["name"].get<nlohmann::json::string_t>());
-				standard->setColor(octoon::math::float3::One);
-				standard->setColorMap(octoon::TextureLoader::load(mat["map"].get<nlohmann::json::string_t>()));
+			auto standard = std::make_shared<octoon::MeshStandardMaterial>();
+			
+			standard->setColor(octoon::math::float3::One);
+			
+			auto name = package.find("name");
+			auto colorMap = package.find("colorMap");
+			auto opacityMap = package.find("opacityMap");
+			auto normalMap = package.find("normalMap");
+			auto roughnessMap = package.find("roughnessMap");
+			auto specularMap = package.find("specularMap");
+			auto metalnessMap = package.find("metalnessMap");
+			auto emissiveMap = package.find("emissiveMap");
+			auto anisotropyMap = package.find("anisotropyMap");
+			auto clearCoatMap = package.find("clearCoatMap");
+			auto clearCoatRoughnessMap = package.find("clearCoatRoughnessMap");
+			auto subsurfaceMap = package.find("subsurfaceMap");
+			auto subsurfaceColorMap = package.find("subsurfaceColorMap");
+			auto sheenMap = package.find("sheenMap");
+			auto lightMap = package.find("lightMap");
 
-				this->materials_[std::string(uuid)] = standard;
+			if (name != package.end() && !(*name).is_null())
+				standard->setName((*name).get<nlohmann::json::string_t>());			
+			if (colorMap != package.end() && !(*colorMap).is_null())
+				standard->setColorMap(octoon::TextureLoader::load((*colorMap).get<nlohmann::json::string_t>()));			
+			if (opacityMap != package.end() && !(*opacityMap).is_null())
+				standard->setOpacityMap(octoon::TextureLoader::load((*opacityMap).get<nlohmann::json::string_t>()));			
+			if (normalMap != package.end() && !(*normalMap).is_null())
+				standard->setNormalMap(octoon::TextureLoader::load((*normalMap).get<nlohmann::json::string_t>()));			
+			if (roughnessMap != package.end() && !(*roughnessMap).is_null())
+				standard->setRoughnessMap(octoon::TextureLoader::load((*roughnessMap).get<nlohmann::json::string_t>()));			
+			if (specularMap != package.end() && !(*specularMap).is_null())
+				standard->setSpecularMap(octoon::TextureLoader::load((*specularMap).get<nlohmann::json::string_t>()));			
+			if (metalnessMap != package.end() && !(*metalnessMap).is_null())
+				standard->setMetalnessMap(octoon::TextureLoader::load((*metalnessMap).get<nlohmann::json::string_t>()));			
+			if (emissiveMap != package.end() && !(*emissiveMap).is_null())
+				standard->setEmissiveMap(octoon::TextureLoader::load((*emissiveMap).get<nlohmann::json::string_t>()));			
+			if (anisotropyMap != package.end() && !(*anisotropyMap).is_null())
+				standard->setAnisotropyMap(octoon::TextureLoader::load((*anisotropyMap).get<nlohmann::json::string_t>()));			
+			if (clearCoatMap != package.end() && !(*clearCoatMap).is_null())
+				standard->setClearCoatMap(octoon::TextureLoader::load((*clearCoatMap).get<nlohmann::json::string_t>()));			
+			if (clearCoatRoughnessMap != package.end() && !(*clearCoatRoughnessMap).is_null())
+				standard->setClearCoatRoughnessMap(octoon::TextureLoader::load((*clearCoatRoughnessMap).get<nlohmann::json::string_t>()));			
+			if (subsurfaceMap != package.end() && !(*subsurfaceMap).is_null())
+				standard->setSubsurfaceMap(octoon::TextureLoader::load((*subsurfaceMap).get<nlohmann::json::string_t>()));			
+			if (subsurfaceColorMap != package.end() && !(*subsurfaceColorMap).is_null())
+				standard->setSubsurfaceColorMap(octoon::TextureLoader::load((*subsurfaceColorMap).get<nlohmann::json::string_t>()));			
+			if (sheenMap != package.end() && !(*sheenMap).is_null())
+				standard->setSheenMap(octoon::TextureLoader::load((*sheenMap).get<nlohmann::json::string_t>()));			
+			if (lightMap != package.end() && !(*lightMap).is_null())
+				standard->setLightMap(octoon::TextureLoader::load((*lightMap).get<nlohmann::json::string_t>()));
 
-				return standard;
-			}
-			else
-			{
-				return nullptr;
-			}
+			auto emissiveIntensity = package.find("emissiveIntensity");
+			auto opacity = package.find("opacity");
+			auto smoothness = package.find("smoothness");
+			auto roughness = package.find("roughness");
+			auto metalness = package.find("metalness");
+			auto anisotropy = package.find("anisotropy");
+			auto sheen = package.find("sheen");
+			auto specular = package.find("specular");
+			auto refractionRatio = package.find("refractionRatio");
+			auto clearCoat = package.find("clearCoat");
+			auto clearCoatRoughness = package.find("clearCoatRoughness");
+			auto subsurface = package.find("subsurface");
+			auto reflectionRatio = package.find("reflectionRatio");
+			auto transmission = package.find("transmission");
+			auto lightMapIntensity = package.find("lightMapIntensity");
+			auto gamma = package.find("gamma");
+
+			if (emissiveIntensity != package.end() && !(*emissiveIntensity).is_null())
+				standard->setEmissiveIntensity((*emissiveIntensity).get<nlohmann::json::number_float_t>());
+			if (opacity != package.end() && !(*opacity).is_null())
+				standard->setOpacity((*opacity).get<nlohmann::json::number_float_t>());
+			if (smoothness != package.end() && !(*smoothness).is_null())
+				standard->setSmoothness((*smoothness).get<nlohmann::json::number_float_t>());
+			if (roughness != package.end() && !(*roughness).is_null())
+				standard->setRoughness((*roughness).get<nlohmann::json::number_float_t>());
+			if (metalness != package.end() && !(*metalness).is_null())
+				standard->setMetalness((*metalness).get<nlohmann::json::number_float_t>());
+			if (anisotropy != package.end() && !(*anisotropy).is_null())
+				standard->setAnisotropy((*anisotropy).get<nlohmann::json::number_float_t>());
+			if (sheen != package.end() && !(*sheen).is_null())
+				standard->setSheen((*sheen).get<nlohmann::json::number_float_t>());
+			if (specular != package.end() && !(*specular).is_null())
+				standard->setSpecular((*specular).get<nlohmann::json::number_float_t>());
+			if (refractionRatio != package.end() && !(*refractionRatio).is_null())
+				standard->setRefractionRatio((*refractionRatio).get<nlohmann::json::number_float_t>());
+			if (clearCoat != package.end() && !(*clearCoat).is_null())
+				standard->setClearCoat((*clearCoat).get<nlohmann::json::number_float_t>());
+			if (clearCoatRoughness != package.end() && !(*clearCoatRoughness).is_null())
+				standard->setClearCoatRoughness((*clearCoatRoughness).get<nlohmann::json::number_float_t>());
+			if (subsurface != package.end() && !(*subsurface).is_null())
+				standard->setSubsurface((*subsurface).get<nlohmann::json::number_float_t>());
+			if (reflectionRatio != package.end() && !(*reflectionRatio).is_null())
+				standard->setReflectionRatio((*reflectionRatio).get<nlohmann::json::number_float_t>());
+			if (transmission != package.end() && !(*transmission).is_null())
+				standard->setTransmission((*transmission).get<nlohmann::json::number_float_t>());
+			if (lightMapIntensity != package.end() && !(*lightMapIntensity).is_null())
+				standard->setLightMapIntensity((*lightMapIntensity).get<nlohmann::json::number_float_t>());
+			if (gamma != package.end() && !(*gamma).is_null())
+				standard->setGamma((*gamma).get<nlohmann::json::number_float_t>());
+
+			auto offset = package.find("offset");
+			auto repeat = package.find("repeat");
+			auto normalScale = package.find("normalScale");
+			auto color = package.find("color");
+			auto emissive = package.find("emissive");
+			auto subsurfaceColor = package.find("subsurfaceColor");
+
+			if (offset != package.end() && !(*offset).is_null())
+				standard->setOffset(octoon::math::float2((*offset)[0].get<nlohmann::json::number_float_t>(), (*offset)[1].get<nlohmann::json::number_float_t>()));
+			if (repeat != package.end() && !(*repeat).is_null())
+				standard->setOffset(octoon::math::float2((*repeat)[0].get<nlohmann::json::number_float_t>(), (*repeat)[1].get<nlohmann::json::number_float_t>()));
+			if (normalScale != package.end() && !(*normalScale).is_null())
+				standard->setOffset(octoon::math::float2((*normalScale)[0].get<nlohmann::json::number_float_t>(), (*normalScale)[1].get<nlohmann::json::number_float_t>()));
+			if (color != package.end() && !(*color).is_null())
+				standard->setColor(octoon::math::float3((*color)[0].get<nlohmann::json::number_float_t>(), (*color)[1].get<nlohmann::json::number_float_t>(), (*color)[2].get<nlohmann::json::number_float_t>()));
+			if (emissive != package.end() && !(*emissive).is_null())
+				standard->setEmissive(octoon::math::float3((*emissive)[0].get<nlohmann::json::number_float_t>(), (*emissive)[1].get<nlohmann::json::number_float_t>(), (*emissive)[2].get<nlohmann::json::number_float_t>()));
+			if (subsurfaceColor != package.end() && !(*subsurfaceColor).is_null())
+				standard->setSubsurfaceColor(octoon::math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
+
+			this->materials_[std::string(uuid)] = standard;
+
+			return standard;
 		}
 		else
 		{
@@ -104,17 +342,19 @@ namespace flower
 	}
 
 	void
-	MaterialComponent::repaintMaterial(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h)
+	MaterialComponent::createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h)
 	{
 		assert(material);
 
 		if (scene_)
 		{
-			geometry_->setMaterial(material);
-
 			auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
 			if (renderer)
+			{
+				geometry_->setMaterial(material);
 				renderer->render(scene_);
+				material->setDirty(true);
+			}
 
 			auto framebufferDesc = framebuffer_->getFramebufferDesc();
 			auto width = framebufferDesc.getWidth();
@@ -147,23 +387,23 @@ namespace flower
 					}
 				}
 
+				colorTexture->unmap();
+
 				pixmap.convertFromImage(image);
 				pixmap = pixmap.scaled(w, h, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-
-				colorTexture->unmap();
 			}
 		}
 	}
 
 	void
-	MaterialComponent::initMaterialScene()
+	MaterialComponent::initMaterialScene() noexcept(false)
 	{
-		std::uint32_t width = 256;
-		std::uint32_t height = 256;
-
 		auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
 		if (renderer)
 		{
+			std::uint32_t width = previewWidth_ * 2;
+			std::uint32_t height = previewHeight_ * 2;
+
 			octoon::hal::GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);
 			textureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
@@ -225,29 +465,71 @@ namespace flower
 	}
 
 	void
-	MaterialComponent::initMaterialList(std::string_view path)
+	MaterialComponent::initPackageIndices() noexcept(false)
 	{
-		std::ifstream ifs(path);
-		if (ifs)
-		{
-			auto uuids = nlohmann::json::parse(ifs);
-			for (auto& uuid : uuids)
-			{
-				try
-				{
-					auto path = this->getModel()->materialPath + "/" + uuid.get<nlohmann::json::string_t>() + "/data.json";
+		std::ifstream indexStream(this->getModel()->materialPath + "/index.json");
+		if (indexStream)
+			this->indexList_ = nlohmann::json::parse(indexStream);
 
-					std::ifstream ifs(path);
-					if (ifs)
+		bool needUpdateIndexFile = false;
+
+		std::set<std::string> indexSet;
+
+		for (auto& it : this->indexList_)
+		{
+			if (!std::filesystem::exists(std::filesystem::path(this->getModel()->materialPath).append(it.get<nlohmann::json::string_t>())))
+				needUpdateIndexFile = true;
+			else
+				indexSet.insert(it.get<nlohmann::json::string_t>());
+		}
+
+		for (auto& it : std::filesystem::directory_iterator(this->getModel()->materialPath))
+		{
+			if (std::filesystem::is_directory(it))
+			{
+				auto filepath = it.path();
+				auto filename = filepath.filename();
+
+				auto index = indexSet.find(filename.string());
+				if (index == indexSet.end())
+				{
+					if (std::filesystem::exists(filepath.append("package.json")))
 					{
-						auto json = nlohmann::json::parse(ifs);
-						this->materialList_[json["uuid"]] = json;
+						needUpdateIndexFile = true;
+						indexSet.insert(filename.string());
 					}
 				}
-				catch (...)
-				{
-				}
 			}
+		}
+
+		if (needUpdateIndexFile)
+		{
+			nlohmann::json json;
+			for (auto& it : indexSet)
+				json += it;
+
+			this->indexList_ = json;
+			this->save();
+		}
+	}
+
+	void
+	MaterialComponent::save() const noexcept
+	{
+		try
+		{
+			if (!std::filesystem::exists(this->getModel()->materialPath))
+				std::filesystem::create_directory(this->getModel()->materialPath);
+
+			std::ofstream ifs(this->getModel()->materialPath + "/index.json", std::ios_base::binary);
+			if (ifs)
+			{
+				auto data = indexList_.dump();
+				ifs.write(data.c_str(), data.size());
+			}
+		}
+		catch (...)
+		{
 		}
 	}
 
@@ -255,7 +537,11 @@ namespace flower
 	MaterialComponent::onEnable() noexcept(false)
 	{
 		this->initMaterialScene();
-		this->initMaterialList(this->getModel()->materialPath + "/index.json");
+
+		if (std::filesystem::exists(this->getModel()->materialPath))		
+			this->initPackageIndices();
+		else
+			std::filesystem::create_directory(this->getModel()->materialPath);
 
 		this->addMessageListener("editor:selected", [this](const std::any& data) {
 			if (data.has_value())
@@ -296,9 +582,11 @@ namespace flower
 					item["color"] = { color.x, color.y, color.z };
 
 					if (colorMap)
-						item["map"] = colorMap->getTextureDesc().getName();
+						item["colorMap"] = colorMap->getTextureDesc().getName();
 
-					this->materialList_[uuid] = item;
+					this->sceneList_ += uuid;
+					this->packageList_[uuid] = item;
+
 					this->materials_[uuid] = mat;
 					this->materialSets_.insert((void*)mat.get());
 					this->materialsRemap_[mat] = uuid;
@@ -309,12 +597,8 @@ namespace flower
 				if (dirty)
 					this->sendMessage("editor:material:change");
 
-				this->selectedMaterial_ = this->materialsRemap_[materials[hit.mesh]];
-				this->sendMessage("editor:material:selected", this->selectedMaterial_.value());
-			}
-			else
-			{
-				this->selectedMaterial_.reset();
+				auto selectedMaterial_ = this->materialsRemap_[materials[hit.mesh]];
+				this->sendMessage("editor:material:selected", selectedMaterial_);
 			}
 		});
 	}
@@ -322,18 +606,5 @@ namespace flower
 	void
 	MaterialComponent::onDisable() noexcept
 	{
-		if (!std::filesystem::exists(this->getModel()->materialPath))
-			std::filesystem::create_directory(this->getModel()->materialPath);
-
-		std::ofstream ifs(this->getModel()->materialPath + "/index.json", std::ios_base::binary);
-		if (ifs)
-		{
-			nlohmann::json uuids;
-			for (auto& mat : this->materialList_)
-				uuids.push_back(mat.first);
-
-			auto data = uuids.dump();
-			ifs.write(data.c_str(), data.size());
-		}
 	}
 }

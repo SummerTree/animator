@@ -94,6 +94,8 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/info_window.cpp
 	${SOURCE_PATH}/views/spoiler.h
 	${SOURCE_PATH}/views/spoiler.cpp
+	${SOURCE_PATH}/views/draggable_list_widget.h
+	${SOURCE_PATH}/views/draggable_list_widget.cpp
 )
 SOURCE_GROUP("launcher\\views" FILES ${VIEWS_LIST})
 

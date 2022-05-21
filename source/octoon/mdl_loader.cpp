@@ -902,7 +902,7 @@ namespace octoon
 		{
 			auto material_db_name = std::string(module->get_material(i));
 			auto simple_name = material_db_name.substr(material_db_name.rfind(':') + 1);
-			auto material = std::make_shared<MeshStandardMaterial>(simple_name);
+			auto material = std::make_shared<MeshStandardMaterial>(simple_name.substr(0, simple_name.find('(')));
 
 			auto materialDefinition = mi::base::make_handle(this->context_->transaction->access<mi::neuraylib::IMaterial_definition>(material_db_name.c_str()));
 			if (materialDefinition)

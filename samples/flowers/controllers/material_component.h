@@ -20,41 +20,48 @@ namespace flower
 		MaterialComponent() noexcept;
 		virtual ~MaterialComponent() noexcept;
 
+		nlohmann::json importMdl(std::string_view path) noexcept(false);
+		nlohmann::json getPackage(std::string_view uuid) noexcept;
+
+		const nlohmann::json& getIndexList() const noexcept;
+		const nlohmann::json& getSceneList() const noexcept;
+
+		void save() const noexcept;
+
+		const std::shared_ptr<octoon::Material> getMaterial(std::string_view uuid) noexcept;
+		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
+
 		virtual const std::type_info& type_info() const noexcept
 		{
 			return typeid(MaterialComponent);
 		}
-
-		void importMdl(std::string_view path) noexcept(false);
-
-		void repaintMaterial(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
-
-		std::optional<std::string> getSelectedMaterial();
-
-		const std::map<std::string, nlohmann::json, std::less<>>& getMaterialList() const noexcept;
-		const std::shared_ptr<octoon::Material> getMaterial(std::string_view uuid) noexcept;
 
 	private:
 		void onEnable() noexcept(false);
 		void onDisable() noexcept;
 
 	private:
-		void initMaterialScene();
-		void initMaterialList(std::string_view path);
+		void initMaterialScene() noexcept(false);
+		void initPackageIndices() noexcept(false);
 
 	private:
 		MaterialComponent(const MaterialComponent&) = delete;
 		MaterialComponent& operator=(const MaterialComponent&) = delete;
 
 	private:
+		std::uint32_t previewWidth_;
+		std::uint32_t previewHeight_;
+
+		nlohmann::json indexList_;
+		nlohmann::json sceneList_;
+
+		std::map<std::string, nlohmann::json> packageList_;
+
 		octoon::hal::GraphicsFramebufferPtr framebuffer_;
 
 		std::set<void*> materialSets_;
-		std::map<std::string, nlohmann::json, std::less<>> materialList_;
 		std::map<std::string, octoon::MaterialPtr, std::less<>> materials_;
 		std::map<octoon::MaterialPtr, std::string, std::less<>> materialsRemap_;
-
-		std::optional<std::string> selectedMaterial_;
 
 		std::shared_ptr<octoon::PerspectiveCamera> camera_;
 		std::shared_ptr<octoon::Geometry> geometry_;

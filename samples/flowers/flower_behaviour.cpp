@@ -1,4 +1,5 @@
 #include "flower_behaviour.h"
+#include <filesystem>
 
 namespace flower
 {
@@ -79,6 +80,15 @@ namespace flower
 	{
 		if (!profile_)
 			profile_ = FlowerProfile::load("sys:config/config.conf");
+
+		if (!std::filesystem::exists(profile_->resourceModule->rootPath))
+			std::filesystem::create_directory(profile_->resourceModule->rootPath);
+
+		if (!std::filesystem::exists(profile_->resourceModule->hdriPath))
+			std::filesystem::create_directory(profile_->resourceModule->hdriPath);
+
+		if (!std::filesystem::exists(profile_->resourceModule->materialPath))
+			std::filesystem::create_directory(profile_->resourceModule->materialPath);
 
 		context_ = std::make_shared<RabbitContext>();
 		context_->behaviour = this;

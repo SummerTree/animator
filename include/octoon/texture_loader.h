@@ -10,7 +10,7 @@ namespace octoon
 	{
 	public:
 		static hal::GraphicsTexturePtr load(std::string_view path, bool generatorMipmap = false, bool cache = true) noexcept(false);
-		static hal::GraphicsTexturePtr load(const Image& image, bool generatorMipmap = false) noexcept(false);
+		static hal::GraphicsTexturePtr load(const Image& image, std::string_view filepath, bool generatorMipmap = false) noexcept(false);
 	};
 }
 

@@ -161,23 +161,6 @@ namespace flower
 						msg.exec();
 					}
 				}
-
-				auto materialData = event->mimeData()->data("object/material");
-				if (!materialData.isEmpty())
-				{
-					auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-					auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
-					if (selectedItem)
-					{
-						auto hit = selectedItem.value();
-						auto materialComponent = behaviour->getComponent<MaterialComponent>();
-						auto material = materialComponent->getMaterial(materialData.toStdString());
-
-						auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
-						if (meshRenderer)
-							meshRenderer->setMaterial(material, hit.mesh);
-					}
-				}
 			}
 		}
 	}

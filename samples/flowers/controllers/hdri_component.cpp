@@ -73,26 +73,6 @@ namespace flower
 		return nlohmann::json();
 	}
 
-	void
-	HDRiComponent::save() noexcept(false)
-	{
-		if (!std::filesystem::exists(this->getModel()->hdriPath))
-			std::filesystem::create_directory(this->getModel()->hdriPath);
-
-		std::ofstream ifs(this->getModel()->hdriPath + "/index.json", std::ios_base::binary);
-		if (ifs)
-		{
-			auto data = indexList_.dump();
-			ifs.write(data.c_str(), data.size());
-		}
-	}
-
-	const nlohmann::json&
-	HDRiComponent::getIndexList() const noexcept
-	{
-		return this->indexList_;
-	}
-
 	nlohmann::json
 	HDRiComponent::getPackage(std::string_view uuid) noexcept
 	{
@@ -115,54 +95,25 @@ namespace flower
 		return this->packageList_[std::string(uuid)];
 	}
 
+	const nlohmann::json&
+	HDRiComponent::getIndexList() const noexcept
+	{
+		return this->indexList_;
+	}
+
 	void
-	HDRiComponent::initResourceList() noexcept
+	HDRiComponent::save() noexcept(false)
 	{
 		try
 		{
-			std::ifstream indexStream(this->getModel()->hdriPath + "/index.json");
-			if (indexStream)
-				this->indexList_ = nlohmann::json::parse(indexStream);
+			if (!std::filesystem::exists(this->getModel()->hdriPath))
+				std::filesystem::create_directory(this->getModel()->hdriPath);
 
-			bool needUpdateIndexFile = false;
-
-			std::set<std::string> indexSet;
-
-			for (auto& it : this->indexList_)
-			{		 
-				if (!std::filesystem::exists(std::filesystem::path(this->getModel()->hdriPath).append(it.get<nlohmann::json::string_t>())))
-					needUpdateIndexFile = true;
-				else
-					indexSet.insert(it.get<nlohmann::json::string_t>());
-			}
-
-			for (auto& it : std::filesystem::directory_iterator(this->getModel()->hdriPath))
+			std::ofstream ifs(this->getModel()->hdriPath + "/index.json", std::ios_base::binary);
+			if (ifs)
 			{
-				if (std::filesystem::is_directory(it))
-				{
-					auto filepath = it.path();
-					auto filename = filepath.filename();
-
-					auto index = indexSet.find(filename.string());
-					if (index == indexSet.end())
-					{
-						if (std::filesystem::exists(filepath.append("package.json")))
-						{
-							needUpdateIndexFile = true;
-							indexSet.insert(filename.string());
-						}
-					}
-				}
-			}
-
-			if (needUpdateIndexFile)
-			{
-				nlohmann::json json;
-				for (auto& it : indexSet)
-					json += it;
-
-				this->indexList_ = json;
-				this->save();
+				auto data = indexList_.dump();
+				ifs.write(data.c_str(), data.size());
 			}
 		}
 		catch (...)
@@ -171,9 +122,61 @@ namespace flower
 	}
 
 	void
+	HDRiComponent::initResourceList() noexcept(false)
+	{
+		std::ifstream indexStream(this->getModel()->hdriPath + "/index.json");
+		if (indexStream)
+			this->indexList_ = nlohmann::json::parse(indexStream);
+
+		bool needUpdateIndexFile = false;
+
+		std::set<std::string> indexSet;
+
+		for (auto& it : this->indexList_)
+		{		 
+			if (!std::filesystem::exists(std::filesystem::path(this->getModel()->hdriPath).append(it.get<nlohmann::json::string_t>())))
+				needUpdateIndexFile = true;
+			else
+				indexSet.insert(it.get<nlohmann::json::string_t>());
+		}
+
+		for (auto& it : std::filesystem::directory_iterator(this->getModel()->hdriPath))
+		{
+			if (std::filesystem::is_directory(it))
+			{
+				auto filepath = it.path();
+				auto filename = filepath.filename();
+
+				auto index = indexSet.find(filename.string());
+				if (index == indexSet.end())
+				{
+					if (std::filesystem::exists(filepath.append("package.json")))
+					{
+						needUpdateIndexFile = true;
+						indexSet.insert(filename.string());
+					}
+				}
+			}
+		}
+
+		if (needUpdateIndexFile)
+		{
+			nlohmann::json json;
+			for (auto& it : indexSet)
+				json += it;
+
+			this->indexList_ = json;
+			this->save();
+		}
+	}
+
+	void
 	HDRiComponent::onEnable() noexcept
 	{
-		this->initResourceList();
+		if (std::filesystem::exists(this->getModel()->hdriPath))
+			this->initResourceList();
+		else
+			std::filesystem::create_directory(this->getModel()->hdriPath);
 	}
 
 	void

@@ -1,4 +1,5 @@
 #include <octoon/material/mesh_standard_material.h>
+#include <octoon/hal/graphics_texture.h>
 
 static const char* standard_vert = R"(
 #include <common>
@@ -362,7 +363,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setLightTexture(const hal::GraphicsTexturePtr& map) noexcept
+	MeshStandardMaterial::setLightMap(const hal::GraphicsTexturePtr& map) noexcept
 	{
 		this->lightMap_ = map;
 		this->set("lightMap", map);
@@ -580,7 +581,7 @@ namespace octoon
 	}
 
 	const hal::GraphicsTexturePtr&
-	MeshStandardMaterial::getLightTexture() const noexcept
+	MeshStandardMaterial::getLightMap() const noexcept
 	{
 		return this->lightMap_;
 	}

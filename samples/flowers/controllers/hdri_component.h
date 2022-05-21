@@ -19,9 +19,9 @@ namespace flower
 		nlohmann::json importHDRi(std::string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 
-		void save() noexcept(false);
-
 		const nlohmann::json& getIndexList() const noexcept;
+
+		void save() noexcept(false);
 
 		virtual const std::type_info& type_info() const noexcept
 		{
@@ -29,7 +29,7 @@ namespace flower
 		}
 
 	private:
-		void initResourceList() noexcept;
+		void initResourceList() noexcept(false);
 
 	private:
 		void onEnable() noexcept override;

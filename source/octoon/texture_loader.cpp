@@ -10,7 +10,7 @@ namespace octoon
 	std::map<std::string, hal::GraphicsTexturePtr, std::less<>> textureCaches_;
 
 	hal::GraphicsTexturePtr
-	TextureLoader::load(const Image& image, bool generateMipmap) noexcept(false)
+	TextureLoader::load(const Image& image, std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
 		hal::GraphicsFormat format = hal::GraphicsFormat::Undefined;
 		switch (image.format())
@@ -54,6 +54,7 @@ namespace octoon
 		}
 
 		hal::GraphicsTextureDesc textureDesc;
+		textureDesc.setName(filepath);
 		textureDesc.setSize(image.width(), image.height(), image.depth());
 		textureDesc.setTexDim(hal::TextureDimension::Texture2D);
 		textureDesc.setTexFormat(format);
@@ -98,7 +99,7 @@ namespace octoon
 		if (!image.load(path))
 			throw runtime::runtime_error::create("Failed to open file :" + path);
 
-		auto texture = load(image, generateMipmap);
+		auto texture = load(image, filepath, generateMipmap);
 		if (cache)
 			textureCaches_[path] = texture;
 

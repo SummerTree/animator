@@ -45,7 +45,7 @@ namespace octoon
 		void setEmissiveMap(const hal::GraphicsTexturePtr& map) noexcept;
 		void setSubsurfaceMap(const hal::GraphicsTexturePtr& map) noexcept;
 		void setSubsurfaceColorMap(const hal::GraphicsTexturePtr& map) noexcept;
-		void setLightTexture(const hal::GraphicsTexturePtr& map) noexcept;
+		void setLightMap(const hal::GraphicsTexturePtr& map) noexcept;
 		void setOffset(const math::float2& offset) noexcept;
 		void setRepeat(const math::float2& repeat) noexcept;
 		void setNormalScale(const math::float2& repeat) noexcept;
@@ -85,7 +85,7 @@ namespace octoon
 		const hal::GraphicsTexturePtr& getSubsurfaceMap() const noexcept;
 		const hal::GraphicsTexturePtr& getSubsurfaceColorMap() const noexcept;
 		const hal::GraphicsTexturePtr& getEmissiveMap() const noexcept;
-		const hal::GraphicsTexturePtr& getLightTexture() const noexcept;
+		const hal::GraphicsTexturePtr& getLightMap() const noexcept;
 
 		const math::float2& getOffset() const noexcept;
 		const math::float2& getRepeat() const noexcept;

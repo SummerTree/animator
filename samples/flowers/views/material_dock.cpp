@@ -1,4 +1,5 @@
 #include "material_dock.h"
+#include "draggable_list_widget.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qevent.h>
@@ -1122,10 +1123,12 @@ namespace flower
 		if (behaviour && this->material_)
 		{
 			auto materialComponent = behaviour->getComponent<MaterialComponent>();
-			QPixmap pixmap;
-			materialComponent->repaintMaterial(this->material_, pixmap, imageLabel_->width(), imageLabel_->height());
-			this->material_->setDirty(true);
-			imageLabel_->setPixmap(pixmap);
+			if (materialComponent)
+			{
+				QPixmap pixmap;
+				materialComponent->createMaterialPreview(this->material_, pixmap, imageLabel_->width(), imageLabel_->height());
+				this->imageLabel_->setPixmap(pixmap);
+			}
 		}
 	}
 
@@ -1483,71 +1486,21 @@ namespace flower
 		this->hide();
 	}
 
-	MaterialListWindow::MaterialListWindow() noexcept(false)
+	MaterialListPanel::MaterialListPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile)
+		: behaviour_(behaviour)
+		, profile_(profile)
 	{
-		this->setResizeMode(QListView::Adjust);
-		this->setViewMode(QListView::IconMode);
-		this->setMovement(QListView::Static);
-		this->setDefaultDropAction(Qt::DropAction::MoveAction);
-		this->setSpacing(2);
-		this->setStyleSheet("background:transparent;");
-		this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	}
-
-	MaterialListWindow::~MaterialListWindow() noexcept
-	{
-	}
-
-	void
-	MaterialListWindow::mouseMoveEvent(QMouseEvent *event)
-	{
-		if (event->buttons() & Qt::LeftButton)
-		{
-			QPoint length = event->pos() - startPos;
-			if (length.manhattanLength() > QApplication::startDragDistance())
-			{
-				QListWidgetItem* item = this->itemAt(this->startPos);
-				if (item)
-				{
-					auto widget = this->itemWidget(item);
-					auto layout = widget->layout();
-					auto label = dynamic_cast<QLabel*>(layout->itemAt(0)->widget());
-					if (label)
-					{
-						auto mimeData = new QMimeData;
-						mimeData->setData("object/material", item->data(Qt::UserRole).toByteArray());
-
-						auto drag = new QDrag(this);
-						drag->setMimeData(mimeData);
-						drag->setPixmap(label->pixmap(Qt::ReturnByValue));
-						drag->setHotSpot(QPoint(drag->pixmap().width() / 2, drag->pixmap().height() / 2));
-						drag->exec(Qt::MoveAction);
-					}
-				}
-			}
-		}
-
-		QListWidget::mouseMoveEvent(event);
-	}
-
-	void
-	MaterialListWindow::mousePressEvent(QMouseEvent *event)
-	{
-		if (event->button() == Qt::LeftButton)
-			startPos = event->pos();
-
-		QListWidget::mousePressEvent(event);
-	}
-
-	MaterialListPanel::MaterialListPanel()
-	{
-		mainWidget_ = new MaterialListWindow;
-		mainWidget_->setIconSize(QSize(100, 100));
+		mainWidget_ = new DraggableListWindow;
+		mainWidget_->setSpacing(0);
+		mainWidget_->setStyleSheet("background:transparent;");
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addWidget(mainWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(0, 10, 0, 5);
+
+		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
+		connect(mainWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 	}
 
 	MaterialListPanel::~MaterialListPanel() noexcept
@@ -1561,6 +1514,138 @@ namespace flower
 		mainWidget_->resize(this->width(), this->height() - margins.top() - margins.bottom());
 	}
 
+	void
+	MaterialListPanel::itemClicked(QListWidgetItem* item)
+	{
+	}
+
+	void
+	MaterialListPanel::itemSelected(QListWidgetItem* item)
+	{
+		if (item)
+		{
+			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			if (!behaviour)
+				return;
+
+			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
+			if (selectedItem)
+			{
+				auto materialComponent = behaviour->getComponent<MaterialComponent>();
+				if (materialComponent)
+				{
+					auto hit = selectedItem.value();
+					auto uuid = item->data(Qt::UserRole).toString().toStdString();
+					auto material = materialComponent->getMaterial(uuid);
+
+					auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
+					if (meshRenderer)
+						meshRenderer->setMaterial(material, hit.mesh);
+				}
+			}
+		}
+	}
+
+	void
+	MaterialListPanel::addItem(const nlohmann::json& package) noexcept
+	{
+		try
+		{
+			if (!package.is_null())
+			{
+				QLabel* imageLabel = new QLabel;
+				imageLabel->setFixedSize(QSize(100, 100));
+
+				QLabel* nameLabel = new QLabel();
+				nameLabel->setFixedHeight(30);
+
+				QVBoxLayout* widgetLayout = new QVBoxLayout;
+				widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
+				widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
+				widgetLayout->setSpacing(0);
+				widgetLayout->setContentsMargins(0, 0, 0, 0);
+
+				QWidget* widget = new QWidget;
+				widget->setLayout(widgetLayout);
+
+				QListWidgetItem* item = new QListWidgetItem;
+				item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
+				item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
+
+				mainWidget_->addItem(item);
+				mainWidget_->setItemWidget(item, widget);
+
+				if (package.find("preview") != package.end())
+				{
+					auto filepath = package["preview"].get<nlohmann::json::string_t>();
+					imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+				}
+				else
+				{
+					auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+					if (behaviour->isOpen())
+					{
+						auto materialComponent = behaviour->getComponent<MaterialComponent>();
+						if (!materialComponent)
+							return;
+
+						auto material = materialComponent->getMaterial(package["uuid"].get<nlohmann::json::string_t>());
+						if (material)
+						{
+							QPixmap pixmap;
+							materialComponent->createMaterialPreview(material, pixmap, imageLabel->width(), imageLabel->height());
+							imageLabel->setPixmap(pixmap);
+						}
+					}
+				}
+
+				if (package.find("name") != package.end())
+				{
+					QFontMetrics metrics(nameLabel->font());
+
+					auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+					nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
+					imageLabel->setToolTip(name);
+				}
+			}
+		}
+		catch (...)
+		{
+		}
+	}
+
+	void 
+	MaterialListPanel::addItem(std::string_view uuid) noexcept
+	{
+		auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+		if (materialComponent)
+		{
+			auto package = materialComponent->getPackage(uuid);
+			if (!package.is_null())
+				this->addItem(package);
+		}
+	}
+
+	void
+	MaterialListPanel::updateItemList()
+	{
+		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		if (behaviour)
+		{
+			auto materialComponent = behaviour->getComponent<MaterialComponent>();
+			if (materialComponent)
+			{
+				mainWidget_->clear();
+
+				for (auto& it : materialComponent->getSceneList())
+					this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
+
+				for (auto& it : materialComponent->getIndexList())
+					this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
+			}
+		}
+	}
+
 	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false)
 		: behaviour_(behaviour)
 		, profile_(profile)
@@ -1569,14 +1654,14 @@ namespace flower
 		this->setWindowTitle(tr("Material"));
 		this->setMouseTracking(true);
 
-		listPanel_ = new MaterialListPanel();
-		listPanel_->mainWidget_->setFixedWidth(340);
+		materialList_ = new MaterialListPanel(behaviour, profile);
+		materialList_->mainWidget_->setFixedWidth(340);
 
 		modifyWidget_ = new MaterialEditWindow(behaviour);
 		modifyWidget_->hide();
 
 		mainLayout_ = new QVBoxLayout();
-		mainLayout_->addWidget(listPanel_, 0, Qt::AlignTop | Qt::AlignCenter);
+		mainLayout_->addWidget(materialList_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addWidget(modifyWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(0, 0, 0, 0);
@@ -1587,24 +1672,24 @@ namespace flower
 		this->setWidget(widget_);
 
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(okEvent()));
-		connect(listPanel_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
+		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
 		behaviour->addMessageListener("editor:material:change", [this](const std::any&) {
-			if (this->isVisible())
-				this->updateList();
+			if (materialList_->isVisible())
+				materialList_->updateItemList();
 		});
 
 		behaviour->addMessageListener("editor:material:selected", [this](const std::any& any_data) {
-			if (this->isVisible())
+			if (materialList_->isVisible())
 			{
 				auto uuid = QString::fromStdString(std::any_cast<std::string>(any_data));
-				auto count = this->listPanel_->mainWidget_->count();
+				auto count = this->materialList_->mainWidget_->count();
 				for (int i = 0; i < count; i++)
 				{
-					auto item = this->listPanel_->mainWidget_->item(i);
+					auto item = this->materialList_->mainWidget_->item(i);
 					if (item->data(Qt::UserRole).toString() == uuid)
 					{
-						this->listPanel_->mainWidget_->setCurrentItem(item);
+						this->materialList_->mainWidget_->setCurrentItem(item);
 						break;
 					}
 				}
@@ -1622,9 +1707,9 @@ namespace flower
 		QMargins margins = mainLayout_->contentsMargins();
 		modifyWidget_->hide();
 		modifyWidget_->resize(widget_->size());
-		listPanel_->resize(widget_->size());
-		listPanel_->show();
-		this->updateList();
+		materialList_->resize(widget_->size());
+		materialList_->show();
+		materialList_->updateItemList();
 	}
 
 	void
@@ -1640,7 +1725,7 @@ namespace flower
 	MaterialDock::paintEvent(QPaintEvent* e) noexcept
 	{
 		modifyWidget_->resize(widget_->size());
-		listPanel_->resize(widget_->size());
+		materialList_->resize(widget_->size());
 
 		QDockWidget::paintEvent(e);
 	}
@@ -1649,30 +1734,7 @@ namespace flower
 	MaterialDock::okEvent()
 	{
 		modifyWidget_->hide();
-		listPanel_->show();
-	}
-
-	void
-	MaterialDock::itemClicked(QListWidgetItem* item)
-	{
-		if (behaviour_)
-		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
-			if (behaviour->isOpen())
-			{
-				auto selectedItem = behaviour->getProfile()->selectorModule->selectedItem_;
-				if (selectedItem)
-				{
-					auto hit = selectedItem.value();
-					auto materialComponent = behaviour->getComponent<MaterialComponent>();
-					auto material = materialComponent->getMaterial(item->data(Qt::UserRole).toString().toStdString());
-
-					auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
-					if (meshRenderer)
-						meshRenderer->setMaterial(material, hit.mesh);
-				}
-			}
-		}
+		materialList_->show();
 	}
 
 	void
@@ -1681,82 +1743,19 @@ namespace flower
 		if (behaviour_)
 		{
 			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
-			if (behaviour->isOpen())
+			if (behaviour)
 			{
 				auto materialComponent = behaviour->getComponent<MaterialComponent>();
+				if (!materialComponent)
+					return;
+
 				auto material = materialComponent->getMaterial(item->data(Qt::UserRole).toString().toStdString());
 				if (material)
 				{
-					listPanel_->hide();
+					materialList_->hide();
 					modifyWidget_->setMaterial(material);
 					modifyWidget_->show();
 				}
-			}
-		}
-	}
-
-	void
-	MaterialDock::updateList()
-	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
-		if (behaviour)
-		{
-			auto materialComponent = behaviour->getComponent<MaterialComponent>();
-			auto& materials = materialComponent->getMaterialList();
-
-			listPanel_->mainWidget_->clear();
-
-			std::map<QString, std::shared_ptr<QPixmap>> imageTable;
-
-			for (auto& it : materials)
-			{
-				std::string path;
-				std::string normalName;
-				std::string textureName;
-
-				auto mat = it.second;
-				if (mat.find("preview") != mat.end())
-					textureName = mat["preview"].get<nlohmann::json::string_t>();
-
-				QListWidgetItem* item = new QListWidgetItem;
-				item->setData(Qt::UserRole, QString::fromStdString(mat["uuid"]));
-				item->setSizeHint(QSize(106, 130));
-
-				QLabel* imageLabel = new QLabel;
-				if (textureName.empty())
-				{
-					auto material = materialComponent->getMaterial(mat["uuid"].get<nlohmann::json::string_t>());
-					if (material)
-					{
-						QPixmap pixmap;
-						materialComponent->repaintMaterial(material, pixmap, 100, 100);
-						imageLabel->setPixmap(pixmap);
-					}
-				}
-				else
-				{
-					auto texpath = QString::fromStdString(path + textureName);
-					if (!imageTable[texpath])
-						imageTable[texpath] = std::make_shared<QPixmap>(texpath);
-
-					imageLabel->setPixmap(*imageTable[texpath]);
-				}
-
-				QLabel* txtLabel = new QLabel(QString::fromStdString(mat["name"]));
-				txtLabel->setFixedHeight(30);
-				txtLabel->setToolTip(txtLabel->text());
-
-				QVBoxLayout* widgetLayout = new QVBoxLayout;
-				widgetLayout->setContentsMargins(0, 0, 0, 0);
-				widgetLayout->setSpacing(0);
-				widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
-				widgetLayout->addWidget(txtLabel, 0, Qt::AlignCenter);
-
-				QWidget* widget = new QWidget;
-				widget->setLayout(widgetLayout);
-
-				listPanel_->mainWidget_->addItem(item);
-				listPanel_->mainWidget_->setItemWidget(item, widget);
 			}
 		}
 	}

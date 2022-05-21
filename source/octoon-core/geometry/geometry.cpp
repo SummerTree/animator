@@ -82,7 +82,10 @@ namespace octoon
 		if (!this->materials_.empty())
 		{
 			if (this->materials_.front() != material)
-				material->setDirty(true);
+			{
+				if (material)
+					material->setDirty(true);
+			}
 		}
 
 		this->setDirty(true);
