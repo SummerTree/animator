@@ -1721,9 +1721,14 @@ namespace flower
 		: behaviour_(behaviour)
 		, profile_(profile)
 	{
-		mainWidget_ = new DraggableListWindow;
-		mainWidget_->setSpacing(0);
+		mainWidget_ = new QListWidget;
+		mainWidget_->setResizeMode(QListView::Fixed);
+		mainWidget_->setViewMode(QListView::IconMode);
+		mainWidget_->setMovement(QListView::Static);
+		mainWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
 		mainWidget_->setStyleSheet("background:transparent;");
+		mainWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		mainWidget_->setSpacing(0);
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addWidget(mainWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
@@ -1771,7 +1776,11 @@ namespace flower
 
 					auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
 					if (meshRenderer)
-						meshRenderer->setMaterial(material, hit.mesh);
+					{
+						auto targetMaterial = meshRenderer->getMaterial(hit.mesh);
+						if (targetMaterial)
+							targetMaterial->copy(*material);
+					}
 				}
 			}
 		}

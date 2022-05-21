@@ -518,13 +518,13 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::MaterialDock</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="1882"/>
-        <location filename="../views/material_dock.cpp" line="1967"/>
+        <location filename="../views/material_dock.cpp" line="1891"/>
+        <location filename="../views/material_dock.cpp" line="1976"/>
         <source>Material</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1985"/>
+        <location filename="../views/material_dock.cpp" line="1994"/>
         <source>Material Properties</source>
         <translation type="unfinished">材质属性</translation>
     </message>
