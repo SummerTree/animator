@@ -44,16 +44,16 @@ namespace flower
 		this->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
 
 		okButton_ = new QToolButton;
+		okButton_->setObjectName("Ok");
 		okButton_->setText(tr("Ok"));
-		okButton_->setFixedSize(50, 30);
 
 		closeButton_ = new QToolButton;
+		closeButton_->setObjectName("Close");
 		closeButton_->setText(tr("Close"));
-		closeButton_->setFixedSize(50, 30);
 
 		importButton_ = new QToolButton;
+		importButton_->setObjectName("Import");
 		importButton_->setText(tr("Import"));
-		importButton_->setFixedSize(60, 30);
 
 		auto topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
@@ -146,10 +146,12 @@ namespace flower
 	void
 	EnvironmentListDialog::importClickEvent()
 	{
-		QStringList filepaths = QFileDialog::getOpenFileNames(this, u8"导入图像", "", tr("HDRi Files (*.hdr)"));
+		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
 		if (!filepaths.isEmpty())
 		{
 			auto hdrComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<HDRiComponent>();
+			if (!hdrComponent)
+				return;
 
 			try
 			{
@@ -193,9 +195,7 @@ namespace flower
 		this->close();
 
 		if (item)
-		{
 			emit itemSelected(item);
-		}
 	}
 
 	void
@@ -204,9 +204,7 @@ namespace flower
 		this->close();
 
 		if (clickedItem_)
-		{
 			emit itemSelected(clickedItem_);
-		}
 	}
 
 	void
@@ -419,9 +417,6 @@ namespace flower
 	EnvironmentDock::~EnvironmentDock()
 	{
 		this->previewImage_.reset();
-
-		if (environmentListDialog_)
-			delete environmentListDialog_;
 	}
 
 	void
@@ -519,8 +514,8 @@ namespace flower
 	{
 		if (!environmentListDialog_)
 		{
-			environmentListDialog_ = new EnvironmentListDialog(this, behaviour_, profile_);
-			connect(environmentListDialog_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
+			environmentListDialog_ = std::make_unique<EnvironmentListDialog>(this, behaviour_, profile_);
+			connect(environmentListDialog_.get(), SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 		}
 
 		if (environmentListDialog_->isHidden())
@@ -539,7 +534,7 @@ namespace flower
 			{
 				auto uuid = item->data(Qt::UserRole).toString();
 				auto package = hdrComponent->getPackage(uuid.toStdString());
-				if (!package.is_null())
+				if (package.is_object())
 				{
 					auto name = package["name"].get<nlohmann::json::string_t>();
 					auto hdrPath = package["path"].get<nlohmann::json::string_t>();
@@ -579,7 +574,7 @@ namespace flower
 	{
 		try
 		{
-			QString filepath = QFileDialog::getOpenFileName(this, u8"导入图像", "", tr("HDRi Files (*.hdr)"));
+			QString filepath = QFileDialog::getOpenFileName(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
 			if (!filepath.isEmpty())
 			{
 				auto texel = octoon::TextureLoader::load(filepath.toStdString());

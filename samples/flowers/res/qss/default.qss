@@ -150,7 +150,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical{
 QListWidget{
 	border:none;
 	color: rgb(220,220,220);
-	background-color: rgb(32,32,32);
+	background:transparent;
 }
 QListWidget::Item:hover{
 	color: rgb(220,220,220);
@@ -629,4 +629,12 @@ QWidget#EnvironmentDialog > QToolButton, QWidget#MaterialDialog > QToolButton{
 QWidget#EnvironmentDialog > QToolButton:hover, QWidget#MaterialDialog > QToolButton:hover{
 	background-color: rgba(255,255,255,30);
 	border:none;
+}
+QWidget#EnvironmentDialog > QToolButton#Import{
+	width:60;
+	height:30;
+}
+QWidget#EnvironmentDialog > QToolButton#Ok, QWidget#EnvironmentDialog > QToolButton#Close{
+	width:50;
+	height:30;
 }

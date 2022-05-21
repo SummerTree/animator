@@ -110,68 +110,73 @@
 <context>
     <name>flower::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="246"/>
+        <location filename="../views/environment_dock.cpp" line="244"/>
         <source>Environment Light</source>
         <translation>环境光</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="252"/>
+        <location filename="../views/environment_dock.cpp" line="250"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation>单击预览按钮以显示所有可替换的HDR图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="255"/>
+        <location filename="../views/environment_dock.cpp" line="253"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="265"/>
+        <location filename="../views/environment_dock.cpp" line="263"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="268"/>
+        <location filename="../views/environment_dock.cpp" line="266"/>
         <source>Thumbnail</source>
         <translation>环境贴图</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="271"/>
+        <location filename="../views/environment_dock.cpp" line="269"/>
         <source>Toggle Background</source>
         <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="278"/>
+        <location filename="../views/environment_dock.cpp" line="276"/>
         <source>Intensity</source>
         <translation>光照强度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="296"/>
+        <location filename="../views/environment_dock.cpp" line="294"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="314"/>
+        <location filename="../views/environment_dock.cpp" line="312"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="332"/>
+        <location filename="../views/environment_dock.cpp" line="330"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="382"/>
+        <location filename="../views/environment_dock.cpp" line="380"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="582"/>
+        <location filename="../views/environment_dock.cpp" line="577"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="568"/>
-        <location filename="../views/environment_dock.cpp" line="623"/>
+        <location filename="../views/environment_dock.cpp" line="577"/>
+        <source>Import Image</source>
+        <translation>加载图像</translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="563"/>
+        <location filename="../views/environment_dock.cpp" line="618"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -184,17 +189,17 @@
         <translation>环境资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="47"/>
+        <location filename="../views/environment_dock.cpp" line="48"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="51"/>
+        <location filename="../views/environment_dock.cpp" line="52"/>
         <source>Close</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="55"/>
+        <location filename="../views/environment_dock.cpp" line="56"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
@@ -204,13 +209,22 @@
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="156"/>
+        <location filename="../views/environment_dock.cpp" line="149"/>
+        <source>Import Image</source>
+        <translation type="unfinished">加载图像</translation>
+    </message>
+    <message>
+        <source>Import Resource</source>
+        <translation type="obsolete">加载资源</translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="158"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="156"/>
-        <location filename="../views/environment_dock.cpp" line="157"/>
+        <location filename="../views/environment_dock.cpp" line="158"/>
+        <location filename="../views/environment_dock.cpp" line="159"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>

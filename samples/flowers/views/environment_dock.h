@@ -108,7 +108,7 @@ namespace flower
 		QDoubleSpinBox* horizontalRotationSpinBox;
 		QDoubleSpinBox* verticalRotationSpinBox;
 
-		EnvironmentListDialog* environmentListDialog_;
+		std::unique_ptr<EnvironmentListDialog> environmentListDialog_;
 
 		QColorDialog colorSelector_;
 
