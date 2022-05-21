@@ -46,7 +46,7 @@
         <location filename="../views/camera_dock.cpp" line="139"/>
         <location filename="../views/camera_dock.cpp" line="230"/>
         <location filename="../views/camera_dock.cpp" line="264"/>
-        <location filename="../views/camera_dock.cpp" line="369"/>
+        <location filename="../views/camera_dock.cpp" line="371"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
@@ -63,13 +63,13 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="222"/>
-        <location filename="../views/camera_dock.cpp" line="365"/>
+        <location filename="../views/camera_dock.cpp" line="367"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="224"/>
-        <location filename="../views/camera_dock.cpp" line="364"/>
+        <location filename="../views/camera_dock.cpp" line="366"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>
@@ -79,12 +79,12 @@
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="308"/>
+        <location filename="../views/camera_dock.cpp" line="310"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="309"/>
+        <location filename="../views/camera_dock.cpp" line="311"/>
         <source>Failed to open the file</source>
         <translation>打开文件失败</translation>
     </message>
@@ -170,8 +170,8 @@
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="564"/>
-        <location filename="../views/environment_dock.cpp" line="743"/>
+        <location filename="../views/environment_dock.cpp" line="566"/>
+        <location filename="../views/environment_dock.cpp" line="745"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -1112,23 +1112,23 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">暂停</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="186"/>
+        <location filename="../views/tool_dock.cpp" line="188"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="243"/>
+        <location filename="../views/tool_dock.cpp" line="247"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="243"/>
+        <location filename="../views/tool_dock.cpp" line="247"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="115"/>
-        <location filename="../views/tool_dock.cpp" line="186"/>
+        <location filename="../views/tool_dock.cpp" line="188"/>
         <source>Open Project</source>
         <translation>打开项目</translation>
     </message>
@@ -1157,11 +1157,11 @@ $20 (Original cost $40)</source>
         <translation>打开进度</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="161"/>
-        <location filename="../views/tool_dock.cpp" line="203"/>
-        <location filename="../views/tool_dock.cpp" line="254"/>
-        <location filename="../views/tool_dock.cpp" line="295"/>
-        <location filename="../views/tool_dock.cpp" line="340"/>
+        <location filename="../views/tool_dock.cpp" line="163"/>
+        <location filename="../views/tool_dock.cpp" line="207"/>
+        <location filename="../views/tool_dock.cpp" line="258"/>
+        <location filename="../views/tool_dock.cpp" line="299"/>
+        <location filename="../views/tool_dock.cpp" line="344"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>

@@ -304,6 +304,8 @@ namespace flower
 				}
 				else
 				{
+					QCoreApplication::processEvents();
+
 					QMessageBox msg(this);
 					msg.setWindowTitle(tr("Error"));
 					msg.setText(tr("Failed to open the file"));

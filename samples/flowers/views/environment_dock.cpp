@@ -560,6 +560,8 @@ namespace flower
 		}
 		catch (const std::exception & e)
 		{
+			QCoreApplication::processEvents();
+
 			QMessageBox msg(this);
 			msg.setWindowTitle(tr("Error"));
 			msg.setText(e.what());

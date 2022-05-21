@@ -156,6 +156,8 @@ namespace flower
 		}
 		catch (const std::exception& e)
 		{
+			QCoreApplication::processEvents();
+
 			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
 			QMessageBox msg(this);
 			msg.setWindowTitle(tr("Error"));
@@ -198,6 +200,8 @@ namespace flower
 					}
 					catch (const std::exception& e)
 					{
+						QCoreApplication::processEvents();
+
 						spdlog::error("Function audioEvent raised exception: " + std::string(e.what()));
 						QMessageBox msg(this);
 						msg.setWindowTitle(tr("Error"));
