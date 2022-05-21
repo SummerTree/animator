@@ -108,10 +108,6 @@ namespace octoon
 	bool
 	TGAHandler::doLoad(istream& stream, Image& image) noexcept
 	{
-		stream.seekg(0, std::ios_base::end);
-		std::size_t size = stream.tellg();
-		stream.seekg(0, std::ios_base::beg);
-
 		TGAHeader hdr;
 		if (!stream.read((char*)&hdr, sizeof(hdr))) return false;
 
@@ -119,6 +115,7 @@ namespace octoon
 		std::uint32_t rows = hdr.height;
 		std::uint32_t nums = columns * rows;
 		std::uint32_t streamLength = nums * hdr.pixel_size / 8;
+		std::size_t size = stream.size();
 
 		if (hdr.id_length != 0)
 			stream.seekg(hdr.id_length, std::ios_base::cur);
