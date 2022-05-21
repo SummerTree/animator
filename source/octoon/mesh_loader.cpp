@@ -296,8 +296,10 @@ namespace octoon
 
 				if (it->springRotationConstant.x != 0.0f)
 					joint->setDriveAngularX(std::max(0.0f, it->springRotationConstant.x));
-				if (it->springRotationConstant.y != 0.0f || it->springRotationConstant.z != 0.0f)
-					joint->setDriveAngularZ(std::max(0.0f, (it->springRotationConstant.y + it->springRotationConstant.z) * 0.5f));
+				if (it->springRotationConstant.y != 0.0f)
+					joint->setDriveAngularY(std::max(0.0f, it->springRotationConstant.y));
+				if (it->springRotationConstant.y != 0.0f)
+					joint->setDriveAngularZ(std::max(0.0f, it->springRotationConstant.z));
 			}
 		}
 	}
