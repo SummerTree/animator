@@ -64,6 +64,15 @@ namespace flower
 		importButton_->setText(tr("Import"));
 		importButton_->setFixedSize(60, 30);
 
+		mainWidget_ = new QListWidget;
+		mainWidget_->setResizeMode(QListView::Fixed);
+		mainWidget_->setViewMode(QListView::IconMode);
+		mainWidget_->setMovement(QListView::Static);
+		mainWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
+		mainWidget_->setStyleSheet("background:transparent;");
+		mainWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		mainWidget_->setSpacing(8);
+
 		auto topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
 		topLayout_->addStretch();
@@ -75,15 +84,6 @@ namespace flower
 		bottomLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
 		bottomLayout_->setSpacing(2);
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
-
-		mainWidget_ = new QListWidget;
-		mainWidget_->setResizeMode(QListView::Fixed);
-		mainWidget_->setViewMode(QListView::IconMode);
-		mainWidget_->setMovement(QListView::Static);
-		mainWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
-		mainWidget_->setStyleSheet("background:transparent;");
-		mainWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		mainWidget_->setSpacing(8);
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addLayout(topLayout_);
@@ -155,10 +155,12 @@ namespace flower
 	void
 	MaterialListDialog::importClickEvent()
 	{
-		QStringList filepaths = QFileDialog::getOpenFileNames(this, u8"导入资源", "", tr("NVIDIA MDL Files (*.mdl)"));
+		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("NVIDIA MDL Files (*.mdl)"));
 		if (!filepaths.isEmpty())
 		{
 			auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+			if (!materialComponent)
+				return;
 
 			try
 			{
@@ -202,9 +204,7 @@ namespace flower
 		this->close();
 
 		if (item)
-		{
 			emit itemSelected(item);
-		}
 	}
 
 	void
@@ -213,9 +213,7 @@ namespace flower
 		this->close();
 
 		if (clickedItem_)
-		{
 			emit itemSelected(clickedItem_);
-		}
 	}
 
 	void
@@ -1794,9 +1792,11 @@ namespace flower
 			if (!package.is_null())
 			{
 				QLabel* imageLabel = new QLabel;
+				imageLabel->setObjectName("preview");
 				imageLabel->setFixedSize(QSize(100, 100));
 
 				QLabel* nameLabel = new QLabel();
+				nameLabel->setObjectName("name");
 				nameLabel->setFixedHeight(30);
 
 				QVBoxLayout* widgetLayout = new QVBoxLayout;
@@ -1861,7 +1861,7 @@ namespace flower
 		if (materialComponent)
 		{
 			auto package = materialComponent->getPackage(uuid);
-			if (!package.is_null())
+			if (package.is_object())
 				this->addItem(package);
 		}
 	}
@@ -1879,6 +1879,67 @@ namespace flower
 
 				for (auto& it : materialComponent->getSceneList())
 					this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
+			}
+		}
+	}
+
+	void
+	MaterialListPanel::updateItemList(QListWidgetItem* item)
+	{
+		auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+		if (!materialComponent)
+			return;
+
+		auto package = materialComponent->getPackage(item->data(Qt::UserRole).toString().toStdString());
+		if (package.is_object())
+		{
+			auto widget = mainWidget_->itemWidget(item);
+			if (!widget)
+				return;
+
+			QList<QLabel*> labelList = widget->findChildren<QLabel*>();
+			QLabel* nameLabel = nullptr;
+			QLabel* imageLabel = nullptr;
+
+			for (auto& label : labelList)
+			{
+				auto name = label->objectName();
+				if (label->objectName() == "preview")
+					imageLabel = label;
+				if (label->objectName() == "name")
+					nameLabel = label;
+			}
+
+			if (nameLabel && imageLabel)
+			{
+				auto material = materialComponent->getMaterial(package["uuid"].get<nlohmann::json::string_t>());
+				if (material)
+				{
+					QFontMetrics metrics(nameLabel->font());
+					nameLabel->setText(metrics.elidedText(QString::fromStdString(material->getName()), Qt::ElideRight, imageLabel->width()));
+
+					QPixmap pixmap;
+					materialComponent->createMaterialPreview(material, pixmap, imageLabel->width(), imageLabel->height());
+					imageLabel->setPixmap(pixmap);
+					imageLabel->setToolTip(QString::fromStdString(material->getName()));
+				}
+				else
+				{
+					if (package.find("preview") != package.end())
+					{
+						auto filepath = package["preview"].get<nlohmann::json::string_t>();
+						imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+					}
+
+					if (package.find("name") != package.end())
+					{
+						QFontMetrics metrics(nameLabel->font());
+
+						auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+						nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
+						imageLabel->setToolTip(name);
+					}
+				}
 			}
 		}
 	}
@@ -1972,7 +2033,7 @@ namespace flower
 	{
 		modifyWidget_->hide();
 		materialList_->show();
-		materialList_->updateItemList();
+		materialList_->updateItemList(selectedItem_);
 		this->setWindowTitle(tr("Material"));
 	}
 
@@ -1993,6 +2054,7 @@ namespace flower
 				{
 					this->setWindowTitle(tr("Material Properties"));
 
+					selectedItem_ = item;
 					materialList_->hide();
 					modifyWidget_->setMaterial(material);
 					modifyWidget_->show();

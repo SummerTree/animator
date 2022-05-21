@@ -243,15 +243,13 @@ namespace flower
 		void addItem(const nlohmann::json& package) noexcept;
 
 		void updateItemList();
+		void updateItemList(QListWidgetItem* item);
 
 		void resizeEvent(QResizeEvent* e) noexcept override;
 
 	public Q_SLOTS:
 		void itemClicked(QListWidgetItem* item);
 		void itemSelected(QListWidgetItem* item);
-
-	Q_SIGNALS:
-		void chooseItem(QString uuid);
 
 	public:
 		QListWidget* mainWidget_;
@@ -283,6 +281,7 @@ namespace flower
 		MaterialEditWindow* modifyWidget_;
 		QScrollArea* modifyMaterialArea_;
 		QWidget* widget_;
+		QListWidgetItem* selectedItem_;
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<FlowerProfile> profile_;
 	};
