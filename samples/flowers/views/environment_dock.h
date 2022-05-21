@@ -30,6 +30,7 @@ namespace flower
 		void closeClickEvent();
 		void importClickEvent();
 		void itemClicked(QListWidgetItem* item);
+		void itemDoubleClicked(QListWidgetItem* item);
 
 	Q_SIGNALS:
 		void chooseItem(QString uuid);

@@ -87,6 +87,7 @@ namespace flower
 		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeClickEvent()));
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
+		connect(mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 	}
 
 	EnvironmentListDialog::~EnvironmentListDialog() noexcept
@@ -187,13 +188,26 @@ namespace flower
 	}
 
 	void
+	EnvironmentListDialog::itemDoubleClicked(QListWidgetItem* item)
+	{
+		this->close();
+
+		if (item)
+		{
+			auto uuid = item->data(Qt::UserRole).toString();
+			emit chooseItem(uuid);
+		}
+	}
+
+	void
 	EnvironmentListDialog::okClickEvent()
 	{
+		this->close();
+
 		if (clickedItem_)
 		{
 			auto uuid = clickedItem_->data(Qt::UserRole).toString();
 			emit chooseItem(uuid);
-			this->close();
 		}
 	}
 
