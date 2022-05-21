@@ -104,58 +104,63 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="242"/>
+        <location filename="../views/environment_dock.cpp" line="240"/>
+        <source>Click the select a Preview button to locate each HDRi on your computer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="243"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="252"/>
+        <location filename="../views/environment_dock.cpp" line="253"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="255"/>
+        <location filename="../views/environment_dock.cpp" line="256"/>
         <source>Thumbnail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="258"/>
+        <location filename="../views/environment_dock.cpp" line="259"/>
         <source>Toggle Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="265"/>
+        <location filename="../views/environment_dock.cpp" line="266"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="283"/>
+        <location filename="../views/environment_dock.cpp" line="284"/>
         <source>Horizontal Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="301"/>
+        <location filename="../views/environment_dock.cpp" line="302"/>
         <source>Vertical Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="319"/>
+        <location filename="../views/environment_dock.cpp" line="320"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="369"/>
+        <location filename="../views/environment_dock.cpp" line="370"/>
         <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="524"/>
+        <location filename="../views/environment_dock.cpp" line="525"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="563"/>
-        <location filename="../views/environment_dock.cpp" line="742"/>
+        <location filename="../views/environment_dock.cpp" line="564"/>
+        <location filename="../views/environment_dock.cpp" line="743"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>

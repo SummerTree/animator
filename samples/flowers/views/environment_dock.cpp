@@ -237,6 +237,7 @@ namespace flower
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setFixedSize(QSize(260, 130));
 		this->previewButton_->setIconSize(this->previewButton_->size());
+		this->previewButton_->setToolTip(tr("Click the select a Preview button to locate each HDRi on your computer"));
 
 		this->previewName_ = new QLabel;
 		this->previewName_->setText(tr("Untitled"));
@@ -245,7 +246,7 @@ namespace flower
 
 		this->colorButton = new QToolButton;
 		this->colorButton->setIconSize(QSize(50, 30));
-
+		
 		this->thumbnail = new QToolButton;
 		this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 		this->thumbnail->setIconSize(QSize(48, 48));

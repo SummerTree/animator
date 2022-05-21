@@ -181,7 +181,7 @@ namespace flower
 	}
 
 	nlohmann::json
-	MaterialComponent::getPackage(std::string_view uuid) noexcept
+	MaterialComponent::getPackage(std::string_view uuid) noexcept(false)
 	{
 		auto it = this->packageList_.find(std::string(uuid));
 		if (it == this->packageList_.end())
@@ -203,16 +203,16 @@ namespace flower
 	}
 
 	const std::shared_ptr<octoon::Material>
-	MaterialComponent::getMaterial(std::string_view uuid) noexcept
+	MaterialComponent::getMaterial(std::string_view uuid) noexcept(false)
 	{
 		auto material = this->materials_.find(uuid);
 		if (material == this->materials_.end())
 		{
 			auto package = this->getPackage(uuid);
+			if (package.is_null())
+				return nullptr;
 
 			auto standard = std::make_shared<octoon::MeshStandardMaterial>();
-			
-			standard->setColor(octoon::math::float3::One);
 			
 			auto name = package.find("name");
 			auto colorMap = package.find("colorMap");
@@ -230,35 +230,35 @@ namespace flower
 			auto sheenMap = package.find("sheenMap");
 			auto lightMap = package.find("lightMap");
 
-			if (name != package.end() && !(*name).is_null())
+			if (name != package.end() && (*name).is_string())
 				standard->setName((*name).get<nlohmann::json::string_t>());			
-			if (colorMap != package.end() && !(*colorMap).is_null())
+			if (colorMap != package.end() && (*colorMap).is_string())
 				standard->setColorMap(octoon::TextureLoader::load((*colorMap).get<nlohmann::json::string_t>()));			
-			if (opacityMap != package.end() && !(*opacityMap).is_null())
+			if (opacityMap != package.end() && (*opacityMap).is_string())
 				standard->setOpacityMap(octoon::TextureLoader::load((*opacityMap).get<nlohmann::json::string_t>()));			
-			if (normalMap != package.end() && !(*normalMap).is_null())
+			if (normalMap != package.end() && (*normalMap).is_string())
 				standard->setNormalMap(octoon::TextureLoader::load((*normalMap).get<nlohmann::json::string_t>()));			
-			if (roughnessMap != package.end() && !(*roughnessMap).is_null())
+			if (roughnessMap != package.end() && (*roughnessMap).is_string())
 				standard->setRoughnessMap(octoon::TextureLoader::load((*roughnessMap).get<nlohmann::json::string_t>()));			
-			if (specularMap != package.end() && !(*specularMap).is_null())
+			if (specularMap != package.end() && (*specularMap).is_string())
 				standard->setSpecularMap(octoon::TextureLoader::load((*specularMap).get<nlohmann::json::string_t>()));			
-			if (metalnessMap != package.end() && !(*metalnessMap).is_null())
+			if (metalnessMap != package.end() && (*metalnessMap).is_string())
 				standard->setMetalnessMap(octoon::TextureLoader::load((*metalnessMap).get<nlohmann::json::string_t>()));			
-			if (emissiveMap != package.end() && !(*emissiveMap).is_null())
+			if (emissiveMap != package.end() && (*emissiveMap).is_string())
 				standard->setEmissiveMap(octoon::TextureLoader::load((*emissiveMap).get<nlohmann::json::string_t>()));			
-			if (anisotropyMap != package.end() && !(*anisotropyMap).is_null())
+			if (anisotropyMap != package.end() && (*anisotropyMap).is_string())
 				standard->setAnisotropyMap(octoon::TextureLoader::load((*anisotropyMap).get<nlohmann::json::string_t>()));			
-			if (clearCoatMap != package.end() && !(*clearCoatMap).is_null())
+			if (clearCoatMap != package.end() && (*clearCoatMap).is_string())
 				standard->setClearCoatMap(octoon::TextureLoader::load((*clearCoatMap).get<nlohmann::json::string_t>()));			
-			if (clearCoatRoughnessMap != package.end() && !(*clearCoatRoughnessMap).is_null())
+			if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_string())
 				standard->setClearCoatRoughnessMap(octoon::TextureLoader::load((*clearCoatRoughnessMap).get<nlohmann::json::string_t>()));			
-			if (subsurfaceMap != package.end() && !(*subsurfaceMap).is_null())
+			if (subsurfaceMap != package.end() && (*subsurfaceMap).is_string())
 				standard->setSubsurfaceMap(octoon::TextureLoader::load((*subsurfaceMap).get<nlohmann::json::string_t>()));			
-			if (subsurfaceColorMap != package.end() && !(*subsurfaceColorMap).is_null())
+			if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_string())
 				standard->setSubsurfaceColorMap(octoon::TextureLoader::load((*subsurfaceColorMap).get<nlohmann::json::string_t>()));			
-			if (sheenMap != package.end() && !(*sheenMap).is_null())
+			if (sheenMap != package.end() && (*sheenMap).is_string())
 				standard->setSheenMap(octoon::TextureLoader::load((*sheenMap).get<nlohmann::json::string_t>()));			
-			if (lightMap != package.end() && !(*lightMap).is_null())
+			if (lightMap != package.end() && (*lightMap).is_string())
 				standard->setLightMap(octoon::TextureLoader::load((*lightMap).get<nlohmann::json::string_t>()));
 
 			auto emissiveIntensity = package.find("emissiveIntensity");
@@ -278,37 +278,37 @@ namespace flower
 			auto lightMapIntensity = package.find("lightMapIntensity");
 			auto gamma = package.find("gamma");
 
-			if (emissiveIntensity != package.end() && !(*emissiveIntensity).is_null())
+			if (emissiveIntensity != package.end() && (*emissiveIntensity).is_number_float())
 				standard->setEmissiveIntensity((*emissiveIntensity).get<nlohmann::json::number_float_t>());
-			if (opacity != package.end() && !(*opacity).is_null())
+			if (opacity != package.end() && (*opacity).is_number_float())
 				standard->setOpacity((*opacity).get<nlohmann::json::number_float_t>());
-			if (smoothness != package.end() && !(*smoothness).is_null())
+			if (smoothness != package.end() && (*smoothness).is_number_float())
 				standard->setSmoothness((*smoothness).get<nlohmann::json::number_float_t>());
-			if (roughness != package.end() && !(*roughness).is_null())
+			if (roughness != package.end() && (*roughness).is_number_float())
 				standard->setRoughness((*roughness).get<nlohmann::json::number_float_t>());
-			if (metalness != package.end() && !(*metalness).is_null())
+			if (metalness != package.end() && (*metalness).is_number_float())
 				standard->setMetalness((*metalness).get<nlohmann::json::number_float_t>());
-			if (anisotropy != package.end() && !(*anisotropy).is_null())
+			if (anisotropy != package.end() && (*anisotropy).is_number_float())
 				standard->setAnisotropy((*anisotropy).get<nlohmann::json::number_float_t>());
-			if (sheen != package.end() && !(*sheen).is_null())
+			if (sheen != package.end() && (*sheen).is_number_float())
 				standard->setSheen((*sheen).get<nlohmann::json::number_float_t>());
-			if (specular != package.end() && !(*specular).is_null())
+			if (specular != package.end() && (*specular).is_number_float())
 				standard->setSpecular((*specular).get<nlohmann::json::number_float_t>());
-			if (refractionRatio != package.end() && !(*refractionRatio).is_null())
+			if (refractionRatio != package.end() && (*refractionRatio).is_number_float())
 				standard->setRefractionRatio((*refractionRatio).get<nlohmann::json::number_float_t>());
-			if (clearCoat != package.end() && !(*clearCoat).is_null())
+			if (clearCoat != package.end() && (*clearCoat).is_number_float())
 				standard->setClearCoat((*clearCoat).get<nlohmann::json::number_float_t>());
-			if (clearCoatRoughness != package.end() && !(*clearCoatRoughness).is_null())
+			if (clearCoatRoughness != package.end() && (*clearCoatRoughness).is_number_float())
 				standard->setClearCoatRoughness((*clearCoatRoughness).get<nlohmann::json::number_float_t>());
-			if (subsurface != package.end() && !(*subsurface).is_null())
+			if (subsurface != package.end() && (*subsurface).is_number_float())
 				standard->setSubsurface((*subsurface).get<nlohmann::json::number_float_t>());
-			if (reflectionRatio != package.end() && !(*reflectionRatio).is_null())
+			if (reflectionRatio != package.end() && (*reflectionRatio).is_number_float())
 				standard->setReflectionRatio((*reflectionRatio).get<nlohmann::json::number_float_t>());
-			if (transmission != package.end() && !(*transmission).is_null())
+			if (transmission != package.end() && (*transmission).is_number_float())
 				standard->setTransmission((*transmission).get<nlohmann::json::number_float_t>());
-			if (lightMapIntensity != package.end() && !(*lightMapIntensity).is_null())
+			if (lightMapIntensity != package.end() && (*lightMapIntensity).is_number_float())
 				standard->setLightMapIntensity((*lightMapIntensity).get<nlohmann::json::number_float_t>());
-			if (gamma != package.end() && !(*gamma).is_null())
+			if (gamma != package.end() && (*gamma).is_number_float())
 				standard->setGamma((*gamma).get<nlohmann::json::number_float_t>());
 
 			auto offset = package.find("offset");
@@ -318,17 +318,17 @@ namespace flower
 			auto emissive = package.find("emissive");
 			auto subsurfaceColor = package.find("subsurfaceColor");
 
-			if (offset != package.end() && !(*offset).is_null())
+			if (offset != package.end() && (*offset).is_array())
 				standard->setOffset(octoon::math::float2((*offset)[0].get<nlohmann::json::number_float_t>(), (*offset)[1].get<nlohmann::json::number_float_t>()));
-			if (repeat != package.end() && !(*repeat).is_null())
+			if (repeat != package.end() && (*repeat).is_array())
 				standard->setOffset(octoon::math::float2((*repeat)[0].get<nlohmann::json::number_float_t>(), (*repeat)[1].get<nlohmann::json::number_float_t>()));
-			if (normalScale != package.end() && !(*normalScale).is_null())
+			if (normalScale != package.end() && (*normalScale).is_array())
 				standard->setOffset(octoon::math::float2((*normalScale)[0].get<nlohmann::json::number_float_t>(), (*normalScale)[1].get<nlohmann::json::number_float_t>()));
-			if (color != package.end() && !(*color).is_null())
+			if (color != package.end() && (*color).is_array())
 				standard->setColor(octoon::math::float3((*color)[0].get<nlohmann::json::number_float_t>(), (*color)[1].get<nlohmann::json::number_float_t>(), (*color)[2].get<nlohmann::json::number_float_t>()));
-			if (emissive != package.end() && !(*emissive).is_null())
+			if (emissive != package.end() && (*emissive).is_array())
 				standard->setEmissive(octoon::math::float3((*emissive)[0].get<nlohmann::json::number_float_t>(), (*emissive)[1].get<nlohmann::json::number_float_t>(), (*emissive)[2].get<nlohmann::json::number_float_t>()));
-			if (subsurfaceColor != package.end() && !(*subsurfaceColor).is_null())
+			if (subsurfaceColor != package.end() && (*subsurfaceColor).is_array())
 				standard->setSubsurfaceColor(octoon::math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
 
 			this->materials_[std::string(uuid)] = standard;

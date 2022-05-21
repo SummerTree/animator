@@ -115,58 +115,63 @@
         <translation>环境光</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="242"/>
+        <location filename="../views/environment_dock.cpp" line="240"/>
+        <source>Click the select a Preview button to locate each HDRi on your computer</source>
+        <translation>单击预览按钮以显示所有可替换的HDR图像</translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="243"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="252"/>
+        <location filename="../views/environment_dock.cpp" line="253"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="255"/>
+        <location filename="../views/environment_dock.cpp" line="256"/>
         <source>Thumbnail</source>
         <translation>环境贴图</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="258"/>
+        <location filename="../views/environment_dock.cpp" line="259"/>
         <source>Toggle Background</source>
         <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="265"/>
+        <location filename="../views/environment_dock.cpp" line="266"/>
         <source>Intensity</source>
         <translation>光照强度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="283"/>
+        <location filename="../views/environment_dock.cpp" line="284"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="301"/>
+        <location filename="../views/environment_dock.cpp" line="302"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="319"/>
+        <location filename="../views/environment_dock.cpp" line="320"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="369"/>
+        <location filename="../views/environment_dock.cpp" line="370"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="524"/>
+        <location filename="../views/environment_dock.cpp" line="525"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="563"/>
-        <location filename="../views/environment_dock.cpp" line="742"/>
+        <location filename="../views/environment_dock.cpp" line="564"/>
+        <location filename="../views/environment_dock.cpp" line="743"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>

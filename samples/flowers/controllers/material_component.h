@@ -21,14 +21,14 @@ namespace flower
 		virtual ~MaterialComponent() noexcept;
 
 		nlohmann::json importMdl(std::string_view path) noexcept(false);
-		nlohmann::json getPackage(std::string_view uuid) noexcept;
+		nlohmann::json getPackage(std::string_view uuid) noexcept(false);
 
 		const nlohmann::json& getIndexList() const noexcept;
 		const nlohmann::json& getSceneList() const noexcept;
 
 		void save() const noexcept;
 
-		const std::shared_ptr<octoon::Material> getMaterial(std::string_view uuid) noexcept;
+		const std::shared_ptr<octoon::Material> getMaterial(std::string_view uuid) noexcept(false);
 		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
 
 		virtual const std::type_info& type_info() const noexcept
