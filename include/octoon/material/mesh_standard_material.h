@@ -94,6 +94,8 @@ namespace octoon
 		void setReceiveShadow(bool enable) noexcept;
 		bool getReceiveShadow() const noexcept;
 
+		void copy(const MeshStandardMaterial& material);
+
 		std::shared_ptr<Material> clone() const noexcept override;
 
 	private:

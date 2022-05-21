@@ -11,6 +11,7 @@
 #include <qpainter.h>
 #include <qcolordialog.h>
 #include <qtreewidget.h>
+#include <qprogressdialog.h>
 
 namespace flower
 {
@@ -39,6 +40,211 @@ namespace flower
 		painter.setPen(Qt::NoPen);
 		painter.fillRect(QRect(0, 0, w, h), color);
 		return QIcon(pixmap);
+	}
+
+	MaterialListDialog::MaterialListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour)
+		: QDialog(parent)
+		, behaviour_(behaviour)
+		, clickedItem_(nullptr)
+	{
+		this->setObjectName("MaterialDialog");
+		this->setWindowTitle(tr("Material Resource"));
+		this->setFixedSize(900, 600);
+		this->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
+
+		okButton_ = new QToolButton;
+		okButton_->setText(tr("Ok"));
+		okButton_->setFixedSize(50, 30);
+
+		closeButton_ = new QToolButton;
+		closeButton_->setText(tr("Close"));
+		closeButton_->setFixedSize(50, 30);
+
+		importButton_ = new QToolButton;
+		importButton_->setText(tr("Import"));
+		importButton_->setFixedSize(60, 30);
+
+		auto topLayout_ = new QHBoxLayout();
+		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
+		topLayout_->addStretch();
+		topLayout_->setContentsMargins(12, 0, 0, 0);
+
+		auto bottomLayout_ = new QHBoxLayout();
+		bottomLayout_->addStretch();
+		bottomLayout_->addWidget(okButton_, 0, Qt::AlignRight);
+		bottomLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
+		bottomLayout_->setSpacing(2);
+		bottomLayout_->setContentsMargins(0, 5, 15, 0);
+
+		mainWidget_ = new QListWidget;
+		mainWidget_->setResizeMode(QListView::Fixed);
+		mainWidget_->setViewMode(QListView::IconMode);
+		mainWidget_->setMovement(QListView::Static);
+		mainWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
+		mainWidget_->setStyleSheet("background:transparent;");
+		mainWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		mainWidget_->setSpacing(8);
+
+		mainLayout_ = new QVBoxLayout(this);
+		mainLayout_->addLayout(topLayout_);
+		mainLayout_->addWidget(mainWidget_);
+		mainLayout_->addStretch();
+		mainLayout_->addLayout(bottomLayout_);
+		mainLayout_->setContentsMargins(5, 10, 5, 10);
+
+		connect(okButton_, SIGNAL(clicked()), this, SLOT(okClickEvent()));
+		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeClickEvent()));
+		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
+		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
+		connect(mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
+	}
+
+	MaterialListDialog::~MaterialListDialog() noexcept
+	{
+	}
+
+	void 
+	MaterialListDialog::addItem(std::string_view uuid) noexcept
+	{
+		auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+		if (!materialComponent)
+			return;
+
+		auto package = materialComponent->getPackage(uuid);
+		if (!package.is_null())
+		{
+			QLabel* imageLabel = new QLabel;
+			imageLabel->setFixedSize(QSize(128, 128));
+
+			QLabel* nameLabel = new QLabel();
+			nameLabel->setFixedHeight(30);
+
+			QVBoxLayout* widgetLayout = new QVBoxLayout;
+			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
+			widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
+			widgetLayout->setSpacing(0);
+			widgetLayout->setContentsMargins(0, 0, 0, 0);
+
+			QWidget* widget = new QWidget;
+			widget->setLayout(widgetLayout);
+
+			QListWidgetItem* item = new QListWidgetItem;
+			item->setData(Qt::UserRole, QString::fromStdString(std::string(uuid)));
+			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
+
+			mainWidget_->addItem(item);
+			mainWidget_->setItemWidget(item, widget);
+
+			if (package.find("preview") != package.end())
+			{
+				auto filepath = package["preview"].get<nlohmann::json::string_t>();
+				imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+			}
+
+			if (package.find("name") != package.end())
+			{
+				QFontMetrics metrics(nameLabel->font());
+
+				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
+				imageLabel->setToolTip(name);
+			}
+		}
+	}
+
+	void
+	MaterialListDialog::importClickEvent()
+	{
+		QStringList filepaths = QFileDialog::getOpenFileNames(this, u8"导入资源", "", tr("NVIDIA MDL Files (*.mdl)"));
+		if (!filepaths.isEmpty())
+		{
+			auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+
+			try
+			{
+				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
+				dialog.setWindowTitle(tr("Loading..."));
+				dialog.setWindowModality(Qt::WindowModal);
+				dialog.show();
+
+				for (qsizetype i = 0; i < filepaths.size(); i++)
+				{
+					dialog.setValue(i);
+					dialog.setLabelText(QFileInfo(filepaths[i]).fileName());
+
+					QCoreApplication::processEvents();
+					if (dialog.wasCanceled())
+						break;
+
+					auto package = materialComponent->importMdl(filepaths[i].toStdString());
+					if (!package.is_null())
+						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
+				}
+
+				materialComponent->save();
+			}
+			catch (...)
+			{
+				materialComponent->save();
+			}
+		}
+	}
+
+	void
+	MaterialListDialog::itemClicked(QListWidgetItem* item)
+	{
+		clickedItem_ = item;
+	}
+
+	void
+	MaterialListDialog::itemDoubleClicked(QListWidgetItem* item)
+	{
+		this->close();
+
+		if (item)
+		{
+			emit itemSelected(item);
+		}
+	}
+
+	void
+	MaterialListDialog::okClickEvent()
+	{
+		this->close();
+
+		if (clickedItem_)
+		{
+			emit itemSelected(clickedItem_);
+		}
+	}
+
+	void
+	MaterialListDialog::closeClickEvent()
+	{
+		this->close();
+	}
+
+	void
+	MaterialListDialog::resizeEvent(QResizeEvent* e) noexcept
+	{
+		QMargins margins = mainLayout_->contentsMargins();
+		mainWidget_->resize(
+			this->width(),
+			this->height() - (margins.top() + margins.bottom()) * 2 - okButton_->height() - importButton_->height());
+	}
+
+	void
+	MaterialListDialog::showEvent(QShowEvent* event) noexcept
+	{
+		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		if (behaviour)
+		{
+			mainWidget_->clear();
+
+			auto materialComponent = behaviour->getComponent<MaterialComponent>();
+			for (auto& uuid : materialComponent->getIndexList())
+				this->addItem(uuid.get<nlohmann::json::string_t>());
+		}
 	}
 
 	void
@@ -261,14 +467,17 @@ namespace flower
 
 	MaterialEditWindow::MaterialEditWindow(const octoon::GameObjectPtr& behaviour)
 		: behaviour_(behaviour)
+		, materialListDialog_(nullptr)
 	{
 		backButton_ = new QToolButton;
 		backButton_->setObjectName("back");
 		backButton_->setIconSize(QSize(20, 20));
 
-		titleLayout_ = new QHBoxLayout();
-		titleLayout_->addWidget(backButton_, 0, Qt::AlignLeft);
-		titleLayout_->addStretch();
+		previewButton_ = new QToolButton();
+		previewButton_->setFixedSize(QSize(128, 128));
+
+		previewNameLabel_ = new QLabel();
+		previewNameLabel_->setText(tr("material"));
 
 		this->albedo_.init(tr("Base Color"), CreateFlags::SpoilerBit | CreateFlags::ColorBit | CreateFlags::TextureBit);
 		this->opacity_.init(tr("Opacity"), CreateFlags::SpoilerBit | CreateFlags::ValueBit | CreateFlags::TextureBit);
@@ -296,6 +505,20 @@ namespace flower
 		this->refractionIor_.mainLayout->setContentsMargins(0, 0, 0, 0);
 		this->refractionIor_.spinBox->setMinimum(1.0f);
 		this->refractionIor_.spinBox->setMaximum(10.0f);
+
+		auto headerLayout = new QHBoxLayout();
+		headerLayout->addWidget(backButton_, 0, Qt::AlignLeft);
+		headerLayout->addStretch();
+
+		QVBoxLayout* previewLayout = new QVBoxLayout;
+		previewLayout->setContentsMargins(0, 0, 0, 0);
+		previewLayout->setSpacing(4);
+		previewLayout->addWidget(previewButton_, 0, Qt::AlignCenter);
+		previewLayout->addWidget(previewNameLabel_, 0, Qt::AlignCenter);
+		previewLayout->setContentsMargins(0, 0, 10, 0);
+
+		QWidget* previewWidget = new QWidget;
+		previewWidget->setLayout(previewLayout);
 
 		auto clearlayout = new QVBoxLayout();
 		clearlayout->addLayout(this->clearcoat_.mainLayout);
@@ -360,12 +583,13 @@ namespace flower
 		contentWidgetArea->setWidgetResizable(true);
 
 		auto mainLayout = new QVBoxLayout(this);
-		mainLayout->addLayout(titleLayout_);
-		mainLayout->addWidget(this->createSummary(), 0, Qt::AlignCenter);
+		mainLayout->addLayout(headerLayout);
+		mainLayout->addWidget(previewWidget, 0, Qt::AlignCenter);
 		mainLayout->addWidget(contentWidgetArea);
 		mainLayout->setSpacing(5);
 		mainLayout->setContentsMargins(10, 10, 10, 10);
 
+		connect(previewButton_, SIGNAL(clicked()), this, SLOT(previewButtonClickEvent()));
 		connect(albedo_.image, SIGNAL(clicked()), this, SLOT(colorMapClickEvent()));
 		connect(albedo_.check, SIGNAL(stateChanged(int)), this, SLOT(colorMapCheckEvent(int)));
 		connect(albedo_.color, SIGNAL(clicked()), this, SLOT(colorClickEvent()));
@@ -445,7 +669,7 @@ namespace flower
 				this->material_->setColorMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -468,7 +692,7 @@ namespace flower
 				this->material_->setNormalMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -495,7 +719,7 @@ namespace flower
 				this->material_->setOpacityMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -522,7 +746,7 @@ namespace flower
 				this->material_->setRoughnessMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -549,7 +773,7 @@ namespace flower
 				this->material_->setSpecularMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -576,7 +800,7 @@ namespace flower
 				this->material_->setMetalnessMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -603,7 +827,7 @@ namespace flower
 				this->material_->setAnisotropyMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -630,7 +854,7 @@ namespace flower
 				this->material_->setSheenMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -657,7 +881,7 @@ namespace flower
 				this->material_->setClearCoatMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -684,7 +908,7 @@ namespace flower
 				this->material_->setClearCoatRoughnessMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -711,7 +935,7 @@ namespace flower
 				this->material_->setSubsurfaceMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -738,7 +962,7 @@ namespace flower
 				this->material_->setSubsurfaceMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
@@ -764,10 +988,46 @@ namespace flower
 				this->material_->setEmissiveMap(nullptr);
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 		catch (...)
 		{
+		}
+	}
+
+	void
+	MaterialEditWindow::previewButtonClickEvent()
+	{
+		if (!materialListDialog_)
+		{
+			materialListDialog_ = new MaterialListDialog(this, behaviour_);
+			connect(materialListDialog_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
+		}
+
+		if (materialListDialog_->isHidden())
+			materialListDialog_->show();
+		else
+			materialListDialog_->close();
+	}
+
+	void
+	MaterialEditWindow::itemSelected(QListWidgetItem* item)
+	{
+		auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+		if (materialComponent)
+		{
+			auto uuid = item->data(Qt::UserRole).toString().toStdString();
+
+			auto package = materialComponent->getPackage(uuid);
+			if (!package.is_null())
+			{
+				auto material = materialComponent->getMaterial(uuid);
+				if (material)
+				{
+					this->material_->copy(*material);
+					this->setMaterial(this->material_);
+				}
+			}
 		}
 	}
 
@@ -784,7 +1044,7 @@ namespace flower
 	{
 		this->albedo_.color->setIcon(createColorIcon(color));
 		this->material_->setColor(octoon::math::srgb2linear(octoon::math::float3(color.redF(), color.greenF(), color.blueF())));
-		this->repaint();
+		this->updatePreviewImage();
 	}
 
 	void
@@ -800,7 +1060,7 @@ namespace flower
 	{
 		this->emissive_.color->setIcon(createColorIcon(color));
 		this->material_->setEmissive(octoon::math::srgb2linear(octoon::math::float3(color.redF(), color.greenF(), color.blueF())));
-		this->repaint();
+		this->updatePreviewImage();
 	}
 
 	void
@@ -917,7 +1177,7 @@ namespace flower
 		else if (this->albedo_.texture)
 		{
 			this->material_->setColorMap(this->albedo_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -931,7 +1191,7 @@ namespace flower
 		else if (this->opacity_.texture)
 		{
 			this->material_->setOpacityMap(this->opacity_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -945,7 +1205,7 @@ namespace flower
 		else if (this->normal_.texture)
 		{
 			this->material_->setNormalMap(this->normal_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -959,7 +1219,7 @@ namespace flower
 		else if (this->roughness_.texture)
 		{
 			this->material_->setRoughnessMap(this->roughness_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -973,7 +1233,7 @@ namespace flower
 		else if (this->specular_.texture)
 		{
 			this->material_->setSpecularMap(this->specular_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -987,7 +1247,7 @@ namespace flower
 		else if (this->metalness_.texture)
 		{
 			this->material_->setMetalnessMap(this->metalness_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1001,7 +1261,7 @@ namespace flower
 		else if (this->anisotropy_.texture)
 		{
 			this->material_->setAnisotropyMap(this->anisotropy_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1015,7 +1275,7 @@ namespace flower
 		else if (this->sheen_.texture)
 		{
 			this->material_->setSheenMap(this->sheen_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1029,7 +1289,7 @@ namespace flower
 		else if (this->clearcoat_.texture)
 		{
 			this->material_->setClearCoatMap(this->clearcoat_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1043,7 +1303,7 @@ namespace flower
 		else if (this->clearcoatRoughness_.texture)
 		{
 			this->material_->setClearCoatRoughnessMap(this->clearcoatRoughness_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1057,7 +1317,7 @@ namespace flower
 		else if (this->subsurface_.texture)
 		{
 			this->material_->setSubsurfaceMap(this->subsurface_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1071,7 +1331,7 @@ namespace flower
 		else if (this->subsurfaceValue_.texture)
 		{
 			this->material_->setSubsurfaceColorMap(this->subsurfaceValue_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1085,34 +1345,12 @@ namespace flower
 		else if (this->emissive_.texture)
 		{
 			this->material_->setEmissiveMap(this->emissive_.texture);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
-	QWidget*
-	MaterialEditWindow::createSummary()
-	{
-		imageLabel_ = new QLabel();
-		imageLabel_->setFixedSize(QSize(128, 128));
-
-		textLabel_ = new QLabel();
-		textLabel_->setText(tr("material"));
-
-		QVBoxLayout* summaryLayout = new QVBoxLayout;
-		summaryLayout->setContentsMargins(0, 0, 0, 0);
-		summaryLayout->setSpacing(4);
-		summaryLayout->addWidget(imageLabel_, 0, Qt::AlignCenter);
-		summaryLayout->addWidget(textLabel_, 0, Qt::AlignCenter);
-		summaryLayout->setContentsMargins(0, 0, 10, 0);
-
-		QWidget* summaryWidget = new QWidget;
-		summaryWidget->setLayout(summaryLayout);
-
-		return summaryWidget;
-	}
-
 	void
-	MaterialEditWindow::repaint()
+	MaterialEditWindow::updatePreviewImage()
 	{
 		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
 		if (behaviour && this->material_)
@@ -1121,8 +1359,9 @@ namespace flower
 			if (materialComponent)
 			{
 				QPixmap pixmap;
-				materialComponent->createMaterialPreview(this->material_, pixmap, imageLabel_->width(), imageLabel_->height());
-				this->imageLabel_->setPixmap(pixmap);
+				materialComponent->createMaterialPreview(this->material_, pixmap, previewButton_->width(), previewButton_->height());
+				this->previewButton_->setIcon(pixmap);
+				this->previewButton_->setIconSize(previewButton_->size());
 			}
 		}
 	}
@@ -1130,93 +1369,90 @@ namespace flower
 	void
 	MaterialEditWindow::setMaterial(const std::shared_ptr<octoon::Material>& material)
 	{
-		if (this->material_ != material)
-		{
-			this->material_ = material->downcast_pointer<octoon::MeshStandardMaterial>();
+		this->material_ = material->downcast_pointer<octoon::MeshStandardMaterial>();
 
-			this->opacity_.resetState();
-			this->normal_.resetState();
-			this->roughness_.resetState();
-			this->specular_.resetState();
-			this->metalness_.resetState();
-			this->anisotropy_.resetState();
-			this->sheen_.resetState();
-			this->clearcoat_.resetState();
-			this->clearcoatRoughness_.resetState();
-			this->subsurface_.resetState();
-			this->subsurfaceValue_.resetState();
-			this->refraction_.resetState();
-			this->refractionIor_.resetState();
-			this->emissive_.resetState();
+		this->opacity_.resetState();
+		this->normal_.resetState();
+		this->roughness_.resetState();
+		this->specular_.resetState();
+		this->metalness_.resetState();
+		this->anisotropy_.resetState();
+		this->sheen_.resetState();
+		this->clearcoat_.resetState();
+		this->clearcoatRoughness_.resetState();
+		this->subsurface_.resetState();
+		this->subsurfaceValue_.resetState();
+		this->refraction_.resetState();
+		this->refractionIor_.resetState();
+		this->emissive_.resetState();
 
-			auto albedoColor = octoon::math::linear2srgb(material_->getColor());
-			auto emissiveColor = octoon::math::linear2srgb(material_->getEmissive());
-			auto subsurfaceColor = octoon::math::linear2srgb(material_->getSubsurfaceColor());
+		auto albedoColor = octoon::math::linear2srgb(material_->getColor());
+		auto emissiveColor = octoon::math::linear2srgb(material_->getEmissive());
+		auto subsurfaceColor = octoon::math::linear2srgb(material_->getSubsurfaceColor());
 
-			this->textLabel_->setText(QString::fromStdString(material_->getName()));
-			this->albedo_.color->setIcon(createColorIcon(QColor::fromRgbF(albedoColor.x, albedoColor.y, albedoColor.z)));
-			this->opacity_.spinBox->setValue(material_->getOpacity());
-			this->roughness_.spinBox->setValue(material_->getRoughness());
-			this->specular_.spinBox->setValue(material_->getSpecular());
-			this->metalness_.spinBox->setValue(material_->getMetalness());
-			this->anisotropy_.spinBox->setValue(material_->getAnisotropy());
-			this->sheen_.spinBox->setValue(material_->getSheen());
-			this->clearcoat_.spinBox->setValue(material_->getClearCoat());
-			this->clearcoatRoughness_.spinBox->setValue(material_->getClearCoatRoughness());
-			this->subsurface_.spinBox->setValue(material_->getSubsurface());
-			this->subsurfaceValue_.color->setIcon(createColorIcon(QColor::fromRgbF(subsurfaceColor.x, subsurfaceColor.y, subsurfaceColor.z)));
-			this->refraction_.spinBox->setValue(material_->getTransmission());
-			this->refractionIor_.spinBox->setValue(material_->getRefractionRatio());
-			this->emissive_.color->setIcon(createColorIcon(QColor::fromRgbF(emissiveColor.x, emissiveColor.y, emissiveColor.z)));
-			this->emissive_.spinBox->setValue(material_->getEmissiveIntensity());
-			this->receiveShadowCheck_->setChecked(material_->getReceiveShadow());
+		this->previewNameLabel_->setText(QString::fromStdString(material_->getName()));
+		this->albedo_.color->setIcon(createColorIcon(QColor::fromRgbF(albedoColor.x, albedoColor.y, albedoColor.z)));
+		this->opacity_.spinBox->setValue(material_->getOpacity());
+		this->roughness_.spinBox->setValue(material_->getRoughness());
+		this->specular_.spinBox->setValue(material_->getSpecular());
+		this->metalness_.spinBox->setValue(material_->getMetalness());
+		this->anisotropy_.spinBox->setValue(material_->getAnisotropy());
+		this->sheen_.spinBox->setValue(material_->getSheen());
+		this->clearcoat_.spinBox->setValue(material_->getClearCoat());
+		this->clearcoatRoughness_.spinBox->setValue(material_->getClearCoatRoughness());
+		this->subsurface_.spinBox->setValue(material_->getSubsurface());
+		this->subsurfaceValue_.color->setIcon(createColorIcon(QColor::fromRgbF(subsurfaceColor.x, subsurfaceColor.y, subsurfaceColor.z)));
+		this->refraction_.spinBox->setValue(material_->getTransmission());
+		this->refractionIor_.spinBox->setValue(material_->getRefractionRatio());
+		this->emissive_.color->setIcon(createColorIcon(QColor::fromRgbF(emissiveColor.x, emissiveColor.y, emissiveColor.z)));
+		this->emissive_.spinBox->setValue(material_->getEmissiveIntensity());
+		this->receiveShadowCheck_->setChecked(material_->getReceiveShadow());
 
-			auto colorMap = material_->getColorMap();
-			if (colorMap)
-				this->setAlbedoMap(QString::fromStdString(colorMap->getTextureDesc().getName()));
+		auto colorMap = material_->getColorMap();
+		if (colorMap)
+			this->setAlbedoMap(QString::fromStdString(colorMap->getTextureDesc().getName()));
 
-			auto opacityMap = material_->getOpacityMap();
-			if (opacityMap)
-				this->setOpacityMap(QString::fromStdString(opacityMap->getTextureDesc().getName()));
+		auto opacityMap = material_->getOpacityMap();
+		if (opacityMap)
+			this->setOpacityMap(QString::fromStdString(opacityMap->getTextureDesc().getName()));
 
-			auto normalMap = material_->getNormalMap();
-			if (normalMap)
-				this->setNormalMap(QString::fromStdString(normalMap->getTextureDesc().getName()));
+		auto normalMap = material_->getNormalMap();
+		if (normalMap)
+			this->setNormalMap(QString::fromStdString(normalMap->getTextureDesc().getName()));
 
-			auto roughnessMap = material_->getRoughnessMap();
-			if (roughnessMap)
-				this->setRoughnessMap(QString::fromStdString(roughnessMap->getTextureDesc().getName()));
+		auto roughnessMap = material_->getRoughnessMap();
+		if (roughnessMap)
+			this->setRoughnessMap(QString::fromStdString(roughnessMap->getTextureDesc().getName()));
 
-			auto metalnessMap = material_->getMetalnessMap();
-			if (metalnessMap)
-				this->setMetalnessMap(QString::fromStdString(metalnessMap->getTextureDesc().getName()));
+		auto metalnessMap = material_->getMetalnessMap();
+		if (metalnessMap)
+			this->setMetalnessMap(QString::fromStdString(metalnessMap->getTextureDesc().getName()));
 
-			auto sheenMap = material_->getSheenMap();
-			if (sheenMap)
-				this->setSheenMap(QString::fromStdString(sheenMap->getTextureDesc().getName()));
+		auto sheenMap = material_->getSheenMap();
+		if (sheenMap)
+			this->setSheenMap(QString::fromStdString(sheenMap->getTextureDesc().getName()));
 
-			auto clearcoatMap = material_->getClearCoatMap();
-			if (clearcoatMap)
-				this->setClearCoatMap(QString::fromStdString(clearcoatMap->getTextureDesc().getName()));
+		auto clearcoatMap = material_->getClearCoatMap();
+		if (clearcoatMap)
+			this->setClearCoatMap(QString::fromStdString(clearcoatMap->getTextureDesc().getName()));
 
-			auto clearcoatRoughnessMap = material_->getClearCoatRoughnessMap();
-			if (clearcoatRoughnessMap)
-				this->setClearCoatRoughnessMap(QString::fromStdString(clearcoatRoughnessMap->getTextureDesc().getName()));
+		auto clearcoatRoughnessMap = material_->getClearCoatRoughnessMap();
+		if (clearcoatRoughnessMap)
+			this->setClearCoatRoughnessMap(QString::fromStdString(clearcoatRoughnessMap->getTextureDesc().getName()));
 
-			auto subsurfaceMap = material_->getSubsurfaceMap();
-			if (subsurfaceMap)
-				this->setSubsurfaceMap(QString::fromStdString(subsurfaceMap->getTextureDesc().getName()));
+		auto subsurfaceMap = material_->getSubsurfaceMap();
+		if (subsurfaceMap)
+			this->setSubsurfaceMap(QString::fromStdString(subsurfaceMap->getTextureDesc().getName()));
 
-			auto subsurfaceColorMap = material_->getSubsurfaceColorMap();
-			if (subsurfaceColorMap)
-				this->setSubsurfaceColorMap(QString::fromStdString(subsurfaceColorMap->getTextureDesc().getName()));
+		auto subsurfaceColorMap = material_->getSubsurfaceColorMap();
+		if (subsurfaceColorMap)
+			this->setSubsurfaceColorMap(QString::fromStdString(subsurfaceColorMap->getTextureDesc().getName()));
 
-			auto emissiveColorMap = material_->getEmissiveMap();
-			if (emissiveColorMap)
-				this->setEmissiveMap(QString::fromStdString(emissiveColorMap->getTextureDesc().getName()));
+		auto emissiveColorMap = material_->getEmissiveMap();
+		if (emissiveColorMap)
+			this->setEmissiveMap(QString::fromStdString(emissiveColorMap->getTextureDesc().getName()));
 
-			this->repaint();
-		}
+		this->updatePreviewImage();
 	}
 
 	void
@@ -1233,7 +1469,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setEmissiveIntensity(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1268,7 +1504,7 @@ namespace flower
 				material_->getColorBlends().shrink_to_fit();
 			}
 
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1280,7 +1516,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setRoughness(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1298,7 +1534,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setMetalness(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1316,7 +1552,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setSpecular(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1334,7 +1570,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setAnisotropy(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1352,7 +1588,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setClearCoat(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1370,7 +1606,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setClearCoatRoughness(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1388,7 +1624,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setSheen(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1406,7 +1642,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setSubsurface(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1429,7 +1665,7 @@ namespace flower
 	{
 		this->subsurfaceValue_.color->setIcon(createColorIcon(color));
 		this->material_->setSubsurfaceColor(octoon::math::srgb2linear(octoon::math::float3(color.redF(), color.greenF(), color.blueF())));
-		this->repaint();
+		this->updatePreviewImage();
 	}
 
 	void
@@ -1440,7 +1676,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setTransmission(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1458,7 +1694,7 @@ namespace flower
 		if (this->material_)
 		{
 			material_->setRefractionRatio(value);
-			this->repaint();
+			this->updatePreviewImage();
 		}
 	}
 
@@ -1570,37 +1806,37 @@ namespace flower
 				mainWidget_->addItem(item);
 				mainWidget_->setItemWidget(item, widget);
 
-				if (package.find("preview") != package.end())
+				auto materialComponent = behaviour_->getComponent<flower::FlowerBehaviour>()->getComponent<MaterialComponent>();
+				if (!materialComponent)
+					return;
+
+				auto material = materialComponent->getMaterial(package["uuid"].get<nlohmann::json::string_t>());
+				if (material)
 				{
-					auto filepath = package["preview"].get<nlohmann::json::string_t>();
-					imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+					QFontMetrics metrics(nameLabel->font());
+					nameLabel->setText(metrics.elidedText(QString::fromStdString(material->getName()), Qt::ElideRight, imageLabel->width()));
+
+					QPixmap pixmap;
+					materialComponent->createMaterialPreview(material, pixmap, imageLabel->width(), imageLabel->height());
+					imageLabel->setPixmap(pixmap);
+					imageLabel->setToolTip(QString::fromStdString(material->getName()));
 				}
 				else
 				{
-					auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
-					if (behaviour->isOpen())
+					if (package.find("preview") != package.end())
 					{
-						auto materialComponent = behaviour->getComponent<MaterialComponent>();
-						if (!materialComponent)
-							return;
-
-						auto material = materialComponent->getMaterial(package["uuid"].get<nlohmann::json::string_t>());
-						if (material)
-						{
-							QPixmap pixmap;
-							materialComponent->createMaterialPreview(material, pixmap, imageLabel->width(), imageLabel->height());
-							imageLabel->setPixmap(pixmap);
-						}
+						auto filepath = package["preview"].get<nlohmann::json::string_t>();
+						imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
 					}
-				}
 
-				if (package.find("name") != package.end())
-				{
-					QFontMetrics metrics(nameLabel->font());
+					if (package.find("name") != package.end())
+					{
+						QFontMetrics metrics(nameLabel->font());
 
-					auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
-					nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
-					imageLabel->setToolTip(name);
+						auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+						nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
+						imageLabel->setToolTip(name);
+					}
 				}
 			}
 		}
@@ -1633,9 +1869,6 @@ namespace flower
 				mainWidget_->clear();
 
 				for (auto& it : materialComponent->getSceneList())
-					this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
-
-				for (auto& it : materialComponent->getIndexList())
 					this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
 			}
 		}
@@ -1730,6 +1963,7 @@ namespace flower
 	{
 		modifyWidget_->hide();
 		materialList_->show();
+		materialList_->updateItemList();
 		this->setWindowTitle(tr("Material"));
 	}
 

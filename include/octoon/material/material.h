@@ -153,6 +153,7 @@ namespace octoon
 
 		std::size_t hash() const noexcept;
 
+		virtual void copy(const Material& material) noexcept;
 		virtual std::shared_ptr<Material> clone() const noexcept;
 
 	private:

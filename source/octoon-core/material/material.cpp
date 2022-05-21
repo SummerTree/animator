@@ -1050,6 +1050,50 @@ namespace octoon
 		return hash(hash_string);
 	}
 
+	void
+	Material::copy(const Material& material) noexcept
+	{
+		this->setName(material.getName());
+		this->setShader(material.getShader());
+		this->setColorBlends(material.getColorBlends());
+		this->setColorBlends(material.getColorBlends());
+		this->setCullMode(material.getCullMode());
+		this->setPolygonMode(material.getPolygonMode());
+		this->setPrimitiveType(material.getPrimitiveType());
+		this->setFrontFace(material.getFrontFace());
+		this->setScissorTestEnable(material.getScissorTestEnable());
+		this->setLinear2sRGBEnable(material.getLinear2sRGBEnable());
+		this->setMultisampleEnable(material.getMultisampleEnable());
+		this->setRasterizerDiscardEnable(material.getRasterizerDiscardEnable());
+		this->setLineWidth(material.getLineWidth());
+		this->setDepthEnable(material.getDepthEnable());
+		this->setDepthWriteEnable(material.getDepthWriteEnable());
+		this->setDepthBoundsEnable(material.getDepthBoundsEnable());
+		this->setDepthMin(material.getDepthMin());
+		this->setDepthMax(material.getDepthMax());
+		this->setDepthFunc(material.getDepthFunc());
+		this->setDepthBiasEnable(material.getDepthBiasEnable());
+		this->setDepthBias(material.getDepthBias());
+		this->setDepthSlopeScaleBias(material.getDepthSlopeScaleBias());
+		this->setDepthBiasClamp(material.getDepthBiasClamp());
+		this->setDepthClampEnable(material.getDepthClampEnable());
+		this->setStencilEnable(material.getStencilEnable());
+		this->setStencilFrontRef(material.getStencilFrontRef());
+		this->setStencilFrontFunc(material.getStencilFrontFunc());
+		this->setStencilFrontReadMask(material.getStencilFrontReadMask());
+		this->setStencilFrontWriteMask(material.getStencilFrontWriteMask());
+		this->setStencilFrontFail(material.getStencilFrontFail());
+		this->setStencilFrontZFail(material.getStencilFrontZFail());
+		this->setStencilFrontPass(material.getStencilFrontPass());
+		this->setStencilBackRef(material.getStencilBackRef());
+		this->setStencilBackFunc(material.getStencilBackFunc());
+		this->setStencilBackReadMask(material.getStencilBackReadMask());
+		this->setStencilBackWriteMask(material.getStencilBackWriteMask());
+		this->setStencilBackFail(material.getStencilBackFail());
+		this->setStencilBackZFail(material.getStencilBackZFail());
+		this->setStencilBackPass(material.getStencilBackPass());
+	}
+
 	std::shared_ptr<Material>
 	Material::clone() const noexcept
 	{

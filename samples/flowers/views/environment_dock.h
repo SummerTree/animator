@@ -29,11 +29,12 @@ namespace flower
 		void okClickEvent();
 		void closeClickEvent();
 		void importClickEvent();
+
 		void itemClicked(QListWidgetItem* item);
 		void itemDoubleClicked(QListWidgetItem* item);
 
 	Q_SIGNALS:
-		void chooseItem(QString uuid);
+		void itemSelected(QListWidgetItem* item);
 
 	private:
 		void addItem(std::string_view uuid) noexcept;
@@ -76,7 +77,7 @@ namespace flower
 		void horizontalRotationEditEvent(double value);
 		void verticalRotationSliderEvent(int);
 		void verticalRotationEditEvent(double value);
-		void chooseItem(QString uuid);
+		void itemSelected(QListWidgetItem* item);
 
 	private:
 		void setColor(const QColor& c, int w = 50, int h = 26);

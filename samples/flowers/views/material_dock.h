@@ -23,6 +23,42 @@
 
 namespace flower
 {
+	class MaterialListDialog final : public QDialog
+	{
+		Q_OBJECT
+	public:
+		MaterialListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour) noexcept(false);
+		~MaterialListDialog() noexcept;
+
+		void resizeEvent(QResizeEvent* e) noexcept override;
+		void showEvent(QShowEvent* event) noexcept override;
+
+	public Q_SLOTS:
+		void okClickEvent();
+		void closeClickEvent();
+		void importClickEvent();
+		void itemClicked(QListWidgetItem* item);
+		void itemDoubleClicked(QListWidgetItem* item);
+
+	Q_SIGNALS:
+		void itemSelected(QListWidgetItem* item);
+
+	private:
+		void addItem(std::string_view uuid) noexcept;
+
+	public:
+		QListWidget* mainWidget_;
+		QVBoxLayout* mainLayout_;
+
+		QToolButton* okButton_;
+		QToolButton* closeButton_;
+		QToolButton* importButton_;
+
+		QListWidgetItem* clickedItem_;
+
+		octoon::GameObjectPtr behaviour_;
+	};
+
 	class MaterialEditWindow final : public QWidget
 	{
 		Q_OBJECT
@@ -30,12 +66,10 @@ namespace flower
 		MaterialEditWindow(const octoon::GameObjectPtr& behaviour);
 		~MaterialEditWindow();
 
-		void repaint();
+		void updatePreviewImage();
 		void setMaterial(const std::shared_ptr<octoon::Material>& material);
 
 	private:
-		QWidget* createSummary();
-
 		void setAlbedoMap(const QString& fileName);
 		void setOpacityMap(const QString& fileName);
 		void setNormalMap(const QString& fileName);
@@ -51,6 +85,11 @@ namespace flower
 		void setEmissiveMap(const QString& fileName);
 
 	public Q_SLOTS:
+		void previewButtonClickEvent();
+
+
+		void itemSelected(QListWidgetItem*);
+
 		void colorClickEvent();
 		void colorChangeEvent(const QColor &color);
 		void emissiveClickEvent();
@@ -180,14 +219,15 @@ namespace flower
 		Spoiler* refractionSpoiler_;
 		Spoiler* othersSpoiler_;
 
-		QHBoxLayout* titleLayout_;
-		QLabel* textLabel_;
-		QLabel* imageLabel_;
+		QLabel* previewNameLabel_;
+		QToolButton* previewButton_;
 		QColorDialog albedoColor_;
 		QColorDialog emissiveColor_;
 		QColorDialog subsurfaceColor_;
 		QCheckBox* receiveShadowCheck_;
 		QToolButton* backButton_;
+
+		MaterialListDialog* materialListDialog_;
 		std::shared_ptr<octoon::MeshStandardMaterial> material_;
 		octoon::GameObjectPtr behaviour_;
 	};

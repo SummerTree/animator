@@ -10,7 +10,7 @@
 #include <qpixmap.h>
 #include <octoon/video/renderer.h>
 #include <octoon/camera/perspective_camera.h>
-#include <octoon/material/material.h>
+#include <octoon/material/mesh_standard_material.h>
 
 namespace flower
 {
@@ -28,7 +28,7 @@ namespace flower
 
 		void save() const noexcept;
 
-		const std::shared_ptr<octoon::Material> getMaterial(std::string_view uuid) noexcept(false);
+		const std::shared_ptr<octoon::MeshStandardMaterial> getMaterial(std::string_view uuid) noexcept(false);
 		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
 
 		virtual const std::type_info& type_info() const noexcept
@@ -60,7 +60,7 @@ namespace flower
 		octoon::hal::GraphicsFramebufferPtr framebuffer_;
 
 		std::set<void*> materialSets_;
-		std::map<std::string, octoon::MaterialPtr, std::less<>> materials_;
+		std::map<std::string, std::shared_ptr<octoon::MeshStandardMaterial>, std::less<>> materials_;
 		std::map<octoon::MaterialPtr, std::string, std::less<>> materialsRemap_;
 
 		std::shared_ptr<octoon::PerspectiveCamera> camera_;

@@ -621,12 +621,12 @@ QWidget#ColorDialog > ColorPlane{
 	color: rgb(255,255,255);
 	background-color: rgb(255,255,255);
 }
-QWidget#EnvironmentDialog > QToolButton{
+QWidget#EnvironmentDialog > QToolButton, QWidget#MaterialDialog > QToolButton{
 	color:rgb(200,200,200);
 	background-color: rgb(50,50,50);
 	border:none;
 }
-QWidget#EnvironmentDialog > QToolButton:hover{
+QWidget#EnvironmentDialog > QToolButton:hover, QWidget#MaterialDialog > QToolButton:hover{
 	background-color: rgba(255,255,255,30);
 	border:none;
 }

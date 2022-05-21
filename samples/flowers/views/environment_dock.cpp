@@ -53,7 +53,7 @@ namespace flower
 
 		importButton_ = new QToolButton;
 		importButton_->setText(tr("Import"));
-		importButton_->setFixedSize(50, 30);
+		importButton_->setFixedSize(60, 30);
 
 		auto topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
@@ -194,8 +194,7 @@ namespace flower
 
 		if (item)
 		{
-			auto uuid = item->data(Qt::UserRole).toString();
-			emit chooseItem(uuid);
+			emit itemSelected(item);
 		}
 	}
 
@@ -206,8 +205,7 @@ namespace flower
 
 		if (clickedItem_)
 		{
-			auto uuid = clickedItem_->data(Qt::UserRole).toString();
-			emit chooseItem(uuid);
+			emit itemSelected(clickedItem_);
 		}
 	}
 
@@ -522,13 +520,58 @@ namespace flower
 		if (!environmentListDialog_)
 		{
 			environmentListDialog_ = new EnvironmentListDialog(this, behaviour_, profile_);
-			connect(environmentListDialog_, SIGNAL(chooseItem(QString)), this, SLOT(chooseItem(QString)));
+			connect(environmentListDialog_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 		}
 
 		if (environmentListDialog_->isHidden())
 			environmentListDialog_->show();
 		else
 			environmentListDialog_->close();
+	}
+
+	void
+	EnvironmentDock::itemSelected(QListWidgetItem* item)
+	{
+		try
+		{
+			auto hdrComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<HDRiComponent>();
+			if (hdrComponent)
+			{
+				auto uuid = item->data(Qt::UserRole).toString();
+				auto package = hdrComponent->getPackage(uuid.toStdString());
+				if (!package.is_null())
+				{
+					auto name = package["name"].get<nlohmann::json::string_t>();
+					auto hdrPath = package["path"].get<nlohmann::json::string_t>();
+					auto previewPath = package["preview"].get<nlohmann::json::string_t>();
+
+					octoon::Image image;
+					if (!image.load(hdrPath))
+						throw std::runtime_error("Cannot load the image");
+
+					auto previewImage = std::make_shared<QImage>();
+					if (!previewImage->load(QString::fromStdString(previewPath)))
+						throw std::runtime_error("Cannot generate image for preview");
+
+					this->texture_ = octoon::TextureLoader::load(image, hdrPath);
+					this->irradianceTexture_ = octoon::PMREMLoader::load(this->texture_);
+
+					this->setColor(QColor::fromRgbF(1, 1, 1));
+					this->setPreviewImage(QString::fromStdString(name), previewImage);
+					this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
+				}
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(e.what());
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
+		}
 	}
 
 	void
@@ -722,47 +765,6 @@ namespace flower
 
 		this->verticalRotationSlider->setValue(value * 100.0f);
 		this->updatePreviewImage();
-	}
-
-	void
-	EnvironmentDock::chooseItem(QString uuid)
-	{
-		try
-		{
-			auto hdrComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<HDRiComponent>();
-			auto package = hdrComponent->getPackage(uuid.toStdString());
-			if (!package.is_null())
-			{
-				auto name = package["name"].get<nlohmann::json::string_t>();
-				auto hdrPath = package["path"].get<nlohmann::json::string_t>();
-				auto previewPath = package["preview"].get<nlohmann::json::string_t>();
-
-				octoon::Image image;
-				if (!image.load(hdrPath))
-					throw std::runtime_error("Cannot load the image");
-				
-				auto previewImage = std::make_shared<QImage>();
-				if (!previewImage->load(QString::fromStdString(previewPath)))
-					throw std::runtime_error("Cannot generate image for preview");
-
-				this->texture_ = octoon::TextureLoader::load(image, hdrPath);
-				this->irradianceTexture_ = octoon::PMREMLoader::load(this->texture_);
-
-				this->setColor(QColor::fromRgbF(1, 1, 1));
-				this->setPreviewImage(QString::fromStdString(name), previewImage);
-				this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
-			}
-		}
-		catch (const std::exception& e)
-		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
-		}
 	}
 
 	void

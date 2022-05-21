@@ -665,32 +665,59 @@ namespace octoon
 		return this->receiveShadow_;
 	}
 
+	void
+	MeshStandardMaterial::copy(const MeshStandardMaterial& material)
+	{
+		Material::copy(material);
+
+		this->setColorMap(material.getColorMap());
+		this->setOpacityMap(material.getOpacityMap());
+		this->setNormalMap(material.getNormalMap());
+		this->setSpecularMap(material.getSpecularMap());
+		this->setRoughnessMap(material.getRoughnessMap());
+		this->setMetalnessMap(material.getMetalnessMap());
+		this->setAnisotropyMap(material.getAnisotropyMap());
+		this->setSheenMap(material.getSheenMap());
+		this->setClearCoatMap(material.getClearCoatMap());
+		this->setClearCoatRoughnessMap(material.getClearCoatRoughnessMap());
+		this->setEmissiveMap(material.getEmissiveMap());
+		this->setSubsurfaceMap(material.getSubsurfaceMap());
+		this->setSubsurfaceColorMap(material.getSubsurfaceColorMap());
+		this->setLightMap(material.getLightMap());
+
+		this->setReceiveShadow(material.getReceiveShadow());
+
+		this->setEmissiveIntensity(material.getEmissiveIntensity());
+		this->setOpacity(material.getOpacity());
+		this->setSmoothness(material.getSmoothness());
+		this->setRoughness(material.getRoughness());
+		this->setMetalness(material.getMetalness());
+		this->setAnisotropy(material.getAnisotropy());
+		this->setSheen(material.getSheen());
+		this->setSpecular(material.getSpecular());
+		this->setRefractionRatio(material.getRefractionRatio());
+		this->setClearCoat(material.getClearCoat());
+		this->setClearCoatRoughness(material.getClearCoatRoughness());
+		this->setSubsurface(material.getSubsurface());
+		this->setReflectionRatio(material.getReflectionRatio());
+		this->setTransmission(material.getTransmission());
+		this->setLightMapIntensity(material.getLightMapIntensity());
+		this->setGamma(material.getGamma());
+
+		this->setOffset(material.getOffset());
+		this->setRepeat(material.getRepeat());
+		this->setNormalScale(material.getNormalScale());
+
+		this->setColor(material.getColor());
+		this->setEmissive(material.getEmissive());
+		this->setSubsurfaceColor(material.getSubsurfaceColor());
+	}
+
 	std::shared_ptr<Material>
 	MeshStandardMaterial::clone() const noexcept
 	{
 		auto instance = std::make_shared<MeshStandardMaterial>();
-		instance->setColor(this->getColor());
-		instance->setOpacity(this->getOpacity());
-		instance->setSmoothness(this->getSmoothness());
-		instance->setMetalness(this->getMetalness());
-		instance->setAnisotropy(this->getAnisotropy());
-		instance->setSheen(this->getSheen());
-		instance->setSpecular(this->getSpecular());
-		instance->setRefractionRatio(this->getRefractionRatio());
-		instance->setClearCoat(this->getClearCoat());
-		instance->setClearCoatRoughness(this->getClearCoatRoughness());
-		instance->setEmissive(this->getEmissive());
-		instance->setColorMap(this->getColorMap());
-		instance->setRoughnessMap(this->getRoughnessMap());
-		instance->setMetalnessMap(this->getMetalnessMap());
-		instance->setAnisotropyMap(this->getAnisotropyMap());
-		instance->setSpecularMap(this->getSpecularMap());
-		instance->setClearCoatMap(this->getClearCoatMap());
-		instance->setClearCoatRoughnessMap(this->getClearCoatRoughnessMap());
-		instance->setEmissiveMap(this->getEmissiveMap());
-		instance->setGamma(this->getGamma());
-		instance->setRepeat(this->getRepeat());
-		instance->setOffset(this->getOffset());
+		instance->copy(*this);
 
 		return instance;
 	}

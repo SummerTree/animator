@@ -202,7 +202,7 @@ namespace flower
 		return this->packageList_[std::string(uuid)];
 	}
 
-	const std::shared_ptr<octoon::Material>
+	const std::shared_ptr<octoon::MeshStandardMaterial>
 	MaterialComponent::getMaterial(std::string_view uuid) noexcept(false)
 	{
 		auto material = this->materials_.find(uuid);
@@ -568,7 +568,7 @@ namespace flower
 					if (this->materialSets_.find((void*)mat.get()) != this->materialSets_.end())
 						continue;
 
-					auto standard = mat->downcast<octoon::MeshStandardMaterial>();
+					auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
 
 					auto id = QUuid::createUuid().toString();
 					auto uuid = id.toStdString().substr(1, id.length() - 2);
@@ -587,7 +587,7 @@ namespace flower
 					this->sceneList_ += uuid;
 					this->packageList_[uuid] = item;
 
-					this->materials_[uuid] = mat;
+					this->materials_[uuid] = standard;
 					this->materialSets_.insert((void*)mat.get());
 					this->materialsRemap_[mat] = uuid;
 						
