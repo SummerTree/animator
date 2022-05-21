@@ -694,7 +694,10 @@ namespace flower
 
 			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
 			if (meshRenderer)
-				meshRenderer->getMaterial()->set("diffuse", octoon::math::srgb2linear(profile_->environmentModule->color) * value);
+			{
+				auto basicMaterial = meshRenderer->getMaterial()->downcast<octoon::MeshBasicMaterial>();
+				basicMaterial->setColor(octoon::math::srgb2linear(profile_->environmentModule->color) * profile_->environmentModule->intensity);
+			}
 		}
 
 		this->profile_->environmentModule->intensity = value;
