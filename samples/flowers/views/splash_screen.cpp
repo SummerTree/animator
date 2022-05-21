@@ -17,7 +17,7 @@ namespace flower
 
 		widget = new QWidget(this);
 		widget->setObjectName("text");
-		widget->setFixedSize(320, 100);
+		widget->setFixedSize(290, 100);
 
 		englishName = new QLabel(widget);
 		englishName->setObjectName("title");
