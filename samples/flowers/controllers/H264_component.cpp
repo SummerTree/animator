@@ -79,11 +79,11 @@ namespace flower
 		if ((encoder_ = x264_encoder_open(&encode_param_)) == NULL)
 			return false;
 
-		encoded_frame_ = new x264_picture_t;
-		frame_ = new x264_picture_t;
+		encoded_frame_ = std::make_shared<x264_picture_t>();
+		frame_ = std::make_shared<x264_picture_t>();
 
-		x264_picture_init(encoded_frame_);
-		x264_picture_alloc(frame_, X264_CSP_I420, this->width_, this->height_);
+		x264_picture_init(encoded_frame_.get());
+		x264_picture_alloc(frame_.get(), X264_CSP_I420, this->width_, this->height_);
 
 		return this->ostream_->good();
 	}
@@ -109,7 +109,7 @@ namespace flower
 			int iNal = 0;
 			x264_nal_t* pNals = NULL;
 
-			int frame_size = x264_encoder_encode(encoder_, &pNals, &iNal, frame_, encoded_frame_);
+			int frame_size = x264_encoder_encode(encoder_, &pNals, &iNal, frame_.get(), encoded_frame_.get());
 			if (frame_size > 0 && iNal > 0)
 			{
 				for (int i = 0; i < iNal; ++i)
@@ -147,7 +147,7 @@ namespace flower
 			int iNal = 0;
 			x264_nal_t* pNals = NULL;
 
-			int frame_size = x264_encoder_encode(encoder_, &pNals, &iNal, frame_, encoded_frame_);
+			int frame_size = x264_encoder_encode(encoder_, &pNals, &iNal, frame_.get(), encoded_frame_.get());
 			if (frame_size > 0 && iNal > 0)
 			{
 				for (int i = 0; i < iNal; ++i)
@@ -175,8 +175,11 @@ namespace flower
 			}
 
 			x264_encoder_close(encoder_);
-			x264_picture_clean(frame_);
-			x264_picture_clean(encoded_frame_);
+			x264_picture_clean(frame_.get());
+			
+			// freee frame memory
+			frame_ = nullptr;
+			encoded_frame_ = nullptr;
 
 			this->ostream_.reset();
 

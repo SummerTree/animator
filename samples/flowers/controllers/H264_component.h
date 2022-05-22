@@ -40,8 +40,8 @@ namespace flower
 		std::uint32_t height_;
 
 		x264_t* encoder_;
-		x264_picture_t* frame_;
-		x264_picture_t* encoded_frame_;
+		std::shared_ptr<x264_picture_t> frame_;
+		std::shared_ptr<x264_picture_t> encoded_frame_;
 
 		std::unique_ptr<char[]> enc_;
 		std::unique_ptr<char[]> scratch_;
