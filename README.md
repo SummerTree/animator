@@ -3,7 +3,7 @@
 ###### [English](https://github.com/ray-cast/flowers/blob/master/README_en.md) &nbsp; [中文](https://github.com/ray-cast/flowers/blob/master/README_en.md)
 花楹渲染器是一个开源的商业动画渲染软件，本项目源码采用[知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议](http://creativecommons.org/licenses/by-nc-sa/4.0/)进行许可。提倡以简单、易用，高质量的物理演算以及渲染质量和性能。为喜爱二次元动画制作的爱好者降低视频制作门槛，用户可以轻松的迁移 [MikuMikuDance](http://www.geocities.jp/higuchuu4/index_e.htm) 的项目到本软件中制作成视频，同时编码为各大门户视频网站支持的视频编码格式。
 
-花楹渲染器的Octoon图形核心提供了一个现代化和强大的ECS框架，使该项目开发变得简单。 系统以ECS的形式支持许多功能，如：前向和逆向运动学的骨骼动画，实时渲染，全局照明渲染器，AI降噪，物理演算，布料演算，音频播放和视频输出。 通过附加各种组件，对象可以灵活地执行不同的任务。 
+花楹渲染器的图形核心提供了一个现代化和强大的ECS框架，使该项目开发变得简单。 系统以ECS的形式支持许多功能，如：前向和逆向运动学的骨骼动画，实时渲染，全局照明渲染器，AI降噪，物理演算，布料演算，音频播放和视频输出。 通过附加各种组件，对象可以灵活地执行不同的任务。 
 
 花楹渲染器拥有一个快速高效的全局照明渲染器，基于分离内核架构以避免VGPR占用瓶颈，并广泛使用GPU优化的并行图元来重构工作，以更好地适应大规模并行GPU架构，渲染器是为渐进式预览设计的，具有同步性，允许在进行渲染时控制延迟并操纵场景和摄影机。 在所有供应商中保持着高水平的性能，全局照明渲染器使用OpenCL依赖于 AMD® [RadeonRays](https://github.com/GPUOpen-LibrariesAndSDKs/RadeonRays_SDK) 光线求交引擎，同时针对AMD®GPU和APU进行了优化。
 
@@ -35,10 +35,11 @@
 * 图像文件（PNG、BMP、TGA、JPEG、DDS、HDR）
 * 音频播放（OpenAL、Wav、Flac、Mp3、Ogg）
 * 材质文件支持（[NVIDIA's Material Definition Language](https://developer.nvidia.com/mdl-sdk)）
+* 基于Qt的图形界面
 
 下载：
 ------
-* https://github.com/ray-cast/flowers/releases/download/Demo/Demo.zip
+* https://github.com/ray-cast/flowers/releases/download/Alpha1.0.0/Demo.exe
 
 编译依赖：
 ------
