@@ -201,19 +201,22 @@ namespace flower
 	void
 	MaterialListDialog::itemDoubleClicked(QListWidgetItem* item)
 	{
-		this->close();
-
 		if (item)
+		{
+			this->close();
 			emit itemSelected(item);
+		}
 	}
 
 	void
 	MaterialListDialog::okClickEvent()
 	{
-		this->close();
-
 		if (clickedItem_)
+		{
+			this->close();
 			emit itemSelected(clickedItem_);
+			clickedItem_ = nullptr;
+		}
 	}
 
 	void
