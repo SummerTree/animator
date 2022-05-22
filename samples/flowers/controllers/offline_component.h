@@ -1,12 +1,12 @@
-#ifndef FLOWER_OFFLINE_COMPONENT_H_
-#define FLOWER_OFFLINE_COMPONENT_H_
+#ifndef UNREAL_OFFLINE_COMPONENT_H_
+#define UNREAL_OFFLINE_COMPONENT_H_
 
-#include "../flower_component.h"
+#include "../unreal_component.h"
 #include "../module/offline_module.h"
 
-namespace flower
+namespace unreal
 {
-	class OfflineComponent final : public RabbitComponent<OfflineModule>
+	class OfflineComponent final : public UnrealComponent<OfflineModule>
 	{
 	public:
 		OfflineComponent() noexcept;

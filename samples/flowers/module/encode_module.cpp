@@ -1,6 +1,6 @@
 #include "encode_module.h"
 
-namespace flower
+namespace unreal
 {
 	EncodeModule::EncodeModule() noexcept
 	{
@@ -16,13 +16,13 @@ namespace flower
 	{
 		switch (quality_)
 		{
-		case flower::Low:
+		case unreal::Low:
 			this->quality = quality_;
 			break;
-		case flower::Medium:
+		case unreal::Medium:
 			this->quality = quality_;
 			break;
-		case flower::High:
+		case unreal::High:
 			this->quality = quality_;
 			break;
 		default:

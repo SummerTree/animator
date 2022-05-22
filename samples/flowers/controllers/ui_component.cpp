@@ -1,8 +1,8 @@
 #include "ui_component.h"
 #include "controllers/theme_manager.h"
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
 	UIComponent::UIComponent() noexcept
 	{
@@ -25,7 +25,7 @@ namespace flower
 	}
 
 	void
-	UIComponent::init(const std::shared_ptr<RabbitContext>& context, const std::shared_ptr<RecordModule>& model) noexcept
+	UIComponent::init(const std::shared_ptr<UnrealContext>& context, const std::shared_ptr<RecordModule>& model) noexcept
 	{
 		this->setContext(context);
 		this->setModel(model);

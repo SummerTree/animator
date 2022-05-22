@@ -7,9 +7,9 @@
 #include <QtConcurrent/qtconcurrentrun.h>
 #include "spdlog/spdlog.h"
 
-namespace flower
+namespace unreal
 {
-	ToolDock::ToolDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<FlowerProfile> profile) noexcept
+	ToolDock::ToolDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<UnrealProfile> profile) noexcept
 		: profile_(profile)
 		, gpuEnable_(false)
 		, audioEnable_(false)
@@ -109,7 +109,7 @@ namespace flower
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying)
 			{
-				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 				if (behaviour)
 				{
 					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)"));
@@ -178,7 +178,7 @@ namespace flower
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
-				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 				if (behaviour)
 				{
 					try
@@ -247,7 +247,7 @@ namespace flower
 				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image"), "", tr("PNG Files (*.png)"));
 				if (!fileName.isEmpty())
 				{
-					auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 					behaviour->renderPicture(fileName.toUtf8().data());
 				}
 			}
@@ -275,7 +275,7 @@ namespace flower
 			{
 				if (behaviour_ && !profile_->recordModule->active)
 				{
-					auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 					if (behaviour)
 					{
 						auto offline = behaviour->getComponent<OfflineComponent>();
@@ -333,7 +333,7 @@ namespace flower
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying)
 			{
-				auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 				if (behaviour->isOpen())
 					behaviour->close();
 			}

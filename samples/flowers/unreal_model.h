@@ -1,15 +1,15 @@
-#ifndef FLOWER_MODEL_H_
-#define FLOWER_MODEL_H_
+#ifndef UNREAL_MODEL_H_
+#define UNREAL_MODEL_H_
 
 #include <octoon/runtime/json.h>
 
-namespace flower
+namespace unreal
 {
-	class FlowerModule
+	class UnrealModule
 	{
 	public:
-		FlowerModule() noexcept;
-		virtual ~FlowerModule() noexcept;
+		UnrealModule() noexcept;
+		virtual ~UnrealModule() noexcept;
 
 		void setEnable(bool enable) noexcept;
 		bool getEnable() const noexcept;
@@ -21,8 +21,8 @@ namespace flower
 		virtual void save(octoon::runtime::json& reader) noexcept(false) = 0;
 
 	private:
-		FlowerModule(const FlowerModule&) = delete;
-		FlowerModule& operator=(const FlowerModule&) = delete;
+		UnrealModule(const UnrealModule&) = delete;
+		UnrealModule& operator=(const UnrealModule&) = delete;
 
 	private:
 		bool enable_;

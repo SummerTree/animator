@@ -1,20 +1,20 @@
-#ifndef FLOWER_VIEW_DOCK_H
-#define FLOWER_VIEW_DOCK_H
+#ifndef UNREAL_VIEW_DOCK_H
+#define UNREAL_VIEW_DOCK_H
 
 #include <qdockwidget.h>
 #include <qtimer.h>
 #include <qdrag.h>
 
-#include "flower_profile.h"
-#include "flower_behaviour.h"
+#include "unreal_profile.h"
+#include "unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
 	class ViewDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		ViewDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
+		ViewDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept;
 		~ViewDock() noexcept;
 
 	private Q_SLOTS:
@@ -40,7 +40,7 @@ namespace flower
 		octoon::GameAppPtr gameApp_;
 		octoon::GameObjectPtr behaviour_;
 
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 }
 

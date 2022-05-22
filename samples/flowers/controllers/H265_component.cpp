@@ -1,5 +1,5 @@
 #include "h265_component.h"
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 
 extern "C"
 {
@@ -11,7 +11,7 @@ extern "C"
 #include <fstream>
 #include <filesystem>
 
-namespace flower
+namespace unreal
 {
 	H265Component::H265Component() noexcept
 		: encoder_(nullptr)

@@ -1,16 +1,16 @@
-#ifndef FLOWER_HDRI_COMPONENT_H_
-#define FLOWER_HDRI_COMPONENT_H_
+#ifndef UNREAL_HDRI_COMPONENT_H_
+#define UNREAL_HDRI_COMPONENT_H_
 
-#include <flower_component.h>
+#include <unreal_component.h>
 #include <octoon/game_object.h>
 #include <octoon/hal/graphics_texture.h>
 
-#include "../flower_component.h"
+#include "../unreal_component.h"
 #include "../module/resource_module.h"
 
-namespace flower
+namespace unreal
 {
-	class HDRiComponent final : public RabbitComponent<ResourceModule>
+	class HDRiComponent final : public UnrealComponent<ResourceModule>
 	{
 	public:
 		HDRiComponent() noexcept;

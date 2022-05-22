@@ -1,7 +1,7 @@
-#ifndef FLOWER_RECORD_DOCK_H_
-#define FLOWER_RECORD_DOCK_H_
+#ifndef UNREAL_RECORD_DOCK_H_
+#define UNREAL_RECORD_DOCK_H_
 
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 #include "spoiler.h"
 #include <QComboBox>
 #include <octoon/game_object.h>
@@ -19,13 +19,13 @@
 #include <qtimer.h>
 #include <qtoolbutton.h>
 
-namespace flower
+namespace unreal
 {
 	class RecordDock final : public QDockWidget
 	{
 		Q_OBJECT
 	  public:
-		RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
+		RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept;
 		~RecordDock() noexcept;
 
 		void showEvent(QShowEvent* event) override;
@@ -97,7 +97,7 @@ namespace flower
 		QScrollArea* contentWidgetArea_;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<FlowerProfile> profile_;
+		std::shared_ptr<UnrealProfile> profile_;
 	};
 }
 

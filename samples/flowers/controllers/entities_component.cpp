@@ -1,6 +1,6 @@
 #include "entities_component.h"
-#include "../flower_profile.h"
-#include "../flower_behaviour.h"
+#include "../unreal_profile.h"
+#include "../unreal_behaviour.h"
 #include <octoon/ass_loader.h>
 #pragma warning(push)
 #pragma warning(disable:4245)
@@ -14,7 +14,7 @@
 using namespace octoon;
 using namespace octoon::math;
 
-namespace flower
+namespace unreal
 {
 	EntitiesComponent::EntitiesComponent() noexcept
 	{

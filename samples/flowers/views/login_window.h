@@ -1,5 +1,5 @@
-#ifndef FLOWER_LOGIN_WINDOW_H_
-#define FLOWER_LOGIN_WINDOW_H_
+#ifndef UNREAL_LOGIN_WINDOW_H_
+#define UNREAL_LOGIN_WINDOW_H_
 
 #include <qlayout.h>
 #include <qframe.h>
@@ -14,9 +14,9 @@
 #include <qstackedwidget.h>
 #include <qpropertyanimation.h>
 
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
 	class LineEdit final : public QLineEdit
 	{
@@ -132,7 +132,7 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		LoginWindow(const std::shared_ptr<flower::FlowerBehaviour>& behaviour) noexcept;
+		LoginWindow(const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept;
 		~LoginWindow() noexcept;
 
 	public Q_SLOTS:
@@ -174,7 +174,7 @@ namespace flower
 		std::unique_ptr<ForgetWidget> forgetWidget_;
 		std::unique_ptr<RegisterWidget> registerWidget_;
 
-		std::shared_ptr<flower::FlowerBehaviour> behaviour_;
+		std::shared_ptr<unreal::UnrealBehaviour> behaviour_;
 	};
 }
 

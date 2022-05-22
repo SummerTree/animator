@@ -1,5 +1,5 @@
-#ifndef FLOWER_TOOL_DOCK_H_
-#define FLOWER_TOOL_DOCK_H_
+#ifndef UNREAL_TOOL_DOCK_H_
+#define UNREAL_TOOL_DOCK_H_
 
 #include <qapplication.h>
 #include <qlayout.h>
@@ -11,16 +11,16 @@
 #include <qscrollarea.h>
 #include <QtGui/qevent.h>
 #include <qdockwidget.h>
-#include "flower_profile.h"
-#include "flower_behaviour.h"
+#include "unreal_profile.h"
+#include "unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
 	class ToolDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		ToolDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<FlowerProfile> profile) noexcept;
+		ToolDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<UnrealProfile> profile) noexcept;
 		~ToolDock() noexcept;
 
 	private Q_SLOTS:
@@ -51,7 +51,7 @@ namespace flower
 		QToolButton* cleanupButton_;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<FlowerProfile> profile_;
+		std::shared_ptr<UnrealProfile> profile_;
 	};
 }
 

@@ -1,11 +1,11 @@
-#ifndef FLOWER_RESOURCE_MODULE_H_
-#define FLOWER_RESOURCE_MODULE_H_
+#ifndef UNREAL_RESOURCE_MODULE_H_
+#define UNREAL_RESOURCE_MODULE_H_
 
-#include <flower_model.h>
+#include <unreal_model.h>
 
-namespace flower
+namespace unreal
 {
-	class ResourceModule final : public FlowerModule
+	class ResourceModule final : public UnrealModule
 	{
 	public:
 		ResourceModule() noexcept;

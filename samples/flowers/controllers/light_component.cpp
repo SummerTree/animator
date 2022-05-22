@@ -1,12 +1,12 @@
 #include "light_component.h"
 #include "../libs/nativefiledialog/nfd.h"
-#include "../flower_profile.h"
+#include "../unreal_profile.h"
 
 #include <octoon/point_light_component.h>
 #include <octoon/spot_light_component.h>
 #include <octoon/directional_light_component.h>
 
-namespace flower
+namespace unreal
 {
 	LightComponent::LightComponent() noexcept
 	{

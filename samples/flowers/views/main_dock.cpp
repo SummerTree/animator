@@ -1,5 +1,5 @@
 ﻿#include "main_dock.h"
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 #include <qdockwidget.h>
 #include <qmessagebox.h>
 #include <qsettings.h>
@@ -7,11 +7,11 @@
 
 #include "spdlog/spdlog.h"
 
-namespace flower
+namespace unreal
 {
 	MainDock::MainDock(SplashScreen* splash) noexcept
 		: init_flag(false)
-		, profile_(FlowerProfile::load(QDir::homePath().toStdString() + "/.flower/config.json"))
+		, profile_(UnrealProfile::load(QDir::homePath().toStdString() + "/.flower/config.json"))
 		, gameApp_(std::make_shared<octoon::GameApp>())
 		, behaviour_(octoon::GameObject::create())
 		, splash_(splash)
@@ -19,7 +19,7 @@ namespace flower
 		, listener_(std::make_shared<SplashListener>(splash, QDir::homePath().toStdString() + "/.flower/log.txt"))
 	{
 		this->setObjectName("MainDock");
-		this->setWindowTitle(tr("Flower Render Toolbox (Alpha Version)"));
+		this->setWindowTitle(tr("Render Toolbox (Alpha Version)"));
 		this->setDockNestingEnabled(false);
 		this->installEventFilter(this);
 		this->setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::West);
@@ -120,7 +120,7 @@ namespace flower
 		if (!appFolder.exists())
 			QDir::root().mkpath(QDir::homePath() + "/.flower");
 
-		FlowerProfile::save(QDir::homePath().toStdString() + "/.flower/config.json", *profile_);
+		UnrealProfile::save(QDir::homePath().toStdString() + "/.flower/config.json", *profile_);
 
 		behaviour_.reset();
 		profile_.reset();
@@ -202,7 +202,7 @@ namespace flower
 		{
 			if (!profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
-				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 				if (behaviour)
 				{
 					if (recordDock_->isHidden())
@@ -241,7 +241,7 @@ namespace flower
 	{
 		try
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
 				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
@@ -281,7 +281,7 @@ namespace flower
 	{
 		try
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
 				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
@@ -322,7 +322,7 @@ namespace flower
 	{
 		try
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
 				if (profile_->entitiesModule->enviromentLight && !profile_->playerModule->isPlaying)
@@ -361,7 +361,7 @@ namespace flower
 	{
 		try
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
 				if (!profile_->playerModule->isPlaying)
@@ -400,7 +400,7 @@ namespace flower
 	{
 		try
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
 				if (!profile_->playerModule->isPlaying)
@@ -454,7 +454,7 @@ namespace flower
 
 				spdlog::debug("flower behaviour init");
 
-				behaviour_->addComponent<FlowerBehaviour>(profile_);
+				behaviour_->addComponent<UnrealBehaviour>(profile_);
 
 				spdlog::debug("finish");
 

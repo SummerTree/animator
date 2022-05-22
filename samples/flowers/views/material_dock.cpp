@@ -13,7 +13,7 @@
 #include <qtreewidget.h>
 #include <qprogressdialog.h>
 
-namespace flower
+namespace unreal
 {
 	constexpr auto imageFormat = "All Files(*.jpeg *.jpg *.png *.tga );; JPEG Files (*.jpeg *.jpg);; PNG Files (*.png);; TGA Files (*.tga)";
 
@@ -106,7 +106,7 @@ namespace flower
 	void 
 	MaterialListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialComponent>();
 		if (!materialComponent)
 			return;
 
@@ -158,7 +158,7 @@ namespace flower
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("NVIDIA MDL Files (*.mdl)"));
 		if (!filepaths.isEmpty())
 		{
-			auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+			auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialComponent>();
 			if (!materialComponent)
 				return;
 
@@ -237,7 +237,7 @@ namespace flower
 	void
 	MaterialListDialog::showEvent(QShowEvent* event) noexcept
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour)
 		{
 			mainWidget_->clear();
@@ -1014,7 +1014,7 @@ namespace flower
 	void
 	MaterialEditWindow::itemSelected(QListWidgetItem* item)
 	{
-		auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialComponent>();
 		if (materialComponent)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
@@ -1357,7 +1357,7 @@ namespace flower
 	void
 	MaterialEditWindow::updatePreviewImage()
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour && this->material_)
 		{
 			auto materialComponent = behaviour->getComponent<MaterialComponent>();
@@ -1726,7 +1726,7 @@ namespace flower
 		this->hide();
 	}
 
-	MaterialListPanel::MaterialListPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile)
+	MaterialListPanel::MaterialListPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: behaviour_(behaviour)
 		, profile_(profile)
 	{
@@ -1764,7 +1764,7 @@ namespace flower
 	{
 		if (item)
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (!behaviour)
 				return;
 
@@ -1817,7 +1817,7 @@ namespace flower
 				mainWidget_->addItem(item);
 				mainWidget_->setItemWidget(item, widget);
 
-				auto materialComponent = behaviour_->getComponent<flower::FlowerBehaviour>()->getComponent<MaterialComponent>();
+				auto materialComponent = behaviour_->getComponent<unreal::UnrealBehaviour>()->getComponent<MaterialComponent>();
 				if (!materialComponent)
 					return;
 
@@ -1859,7 +1859,7 @@ namespace flower
 	void 
 	MaterialListPanel::addItem(std::string_view uuid) noexcept
 	{
-		auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
+		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialComponent>();
 		if (materialComponent)
 		{
 			auto package = materialComponent->getPackage(uuid);
@@ -1871,7 +1871,7 @@ namespace flower
 	void
 	MaterialListPanel::updateItemList()
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour)
 		{
 			auto materialComponent = behaviour->getComponent<MaterialComponent>();
@@ -1885,7 +1885,7 @@ namespace flower
 		}
 	}
 
-	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false)
+	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false)
 		: behaviour_(behaviour)
 		, profile_(profile)
 	{
@@ -1983,7 +1983,7 @@ namespace flower
 	{
 		if (behaviour_)
 		{
-			auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
 			{
 				auto materialComponent = behaviour->getComponent<MaterialComponent>();

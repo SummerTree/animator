@@ -1,5 +1,5 @@
-#ifndef FLOWER_TITLE_BAR_H_
-#define FLOWER_TITLE_BAR_H_
+#ifndef UNREAL_TITLE_BAR_H_
+#define UNREAL_TITLE_BAR_H_
 
 #include <qapplication.h>
 #include <qlayout.h>
@@ -10,7 +10,7 @@
 #include <qlabel.h>
 #include <QtGui/qevent.h>
 
-namespace flower
+namespace unreal
 {
 	class TitleBar final : public QWidget
 	{

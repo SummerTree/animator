@@ -1,12 +1,12 @@
 #include "view_dock.h"
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qmimedata.h>
 
-namespace flower
+namespace unreal
 {
-	ViewDock::ViewDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
+	ViewDock::ViewDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept
 		: QDockWidget(tr("Camera"))
 		, gameApp_(gameApp)
 		, behaviour_(behaviour)
@@ -147,7 +147,7 @@ namespace flower
 				auto lightData = event->mimeData()->data("object/light");
 				if (!lightData.isEmpty())
 				{
-					auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+					auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 					auto lightComponent = behaviour->getComponent<LightComponent>();
 
 					if (!lightComponent->createLight((LightType)lightData.toInt()))

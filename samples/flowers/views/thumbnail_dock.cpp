@@ -6,9 +6,9 @@
 #include <qprogressdialog.h>
 #include <QtConcurrent/qtconcurrentrun.h>
 
-namespace flower
+namespace unreal
 {
-	ThumbnailDock::ThumbnailDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<FlowerProfile> profile) noexcept
+	ThumbnailDock::ThumbnailDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<UnrealProfile> profile) noexcept
 		: profile_(profile)
 		, behaviour_(behaviour)
 	{
@@ -154,7 +154,7 @@ namespace flower
 	{
 		if (!profile_->playerModule->isPlaying)
 		{
-			SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<FlowerBehaviour>());
+			SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<UnrealBehaviour>());
 			window->show();
 		}
 	}

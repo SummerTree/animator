@@ -1,5 +1,5 @@
-#ifndef FLOWER_PROFILE_H_
-#define FLOWER_PROFILE_H_
+#ifndef UNREAL_PROFILE_H_
+#define UNREAL_PROFILE_H_
 
 #include <memory>
 #include <string>
@@ -19,21 +19,21 @@
 #include "module/selector_module.h"
 #include "module/grid_module.h"
 
-namespace flower
+namespace unreal
 {
-	class FlowerProfile
+	class UnrealProfile
 	{
 	public:
-		FlowerProfile() noexcept;
-		FlowerProfile(std::string_view path) noexcept(false);
-		virtual ~FlowerProfile() noexcept;
+		UnrealProfile() noexcept;
+		UnrealProfile(std::string_view path) noexcept(false);
+		virtual ~UnrealProfile() noexcept;
 
-		static std::unique_ptr<FlowerProfile> load(std::string_view path) noexcept(false);
-		static void save(std::string_view path, const FlowerProfile& profile) noexcept(false);
+		static std::unique_ptr<UnrealProfile> load(std::string_view path) noexcept(false);
+		static void save(std::string_view path, const UnrealProfile& profile) noexcept(false);
 
 	private:
-		FlowerProfile(const FlowerProfile&) = delete;
-		FlowerProfile& operator=(const FlowerProfile&) = delete;
+		UnrealProfile(const UnrealProfile&) = delete;
+		UnrealProfile& operator=(const UnrealProfile&) = delete;
 
 	public:
 		std::shared_ptr<RecordModule> recordModule;

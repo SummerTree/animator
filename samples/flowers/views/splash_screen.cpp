@@ -2,9 +2,9 @@
 #include <qapplication.h>
 #include <qscreen.h>
 
-#include "flower_version.h"
+#include "unreal_version.h"
 
-namespace flower
+namespace unreal
 {
 	SplashScreen::SplashScreen()
 	{
@@ -21,12 +21,12 @@ namespace flower
 
 		englishName = new QLabel(widget);
 		englishName->setObjectName("title");
-		englishName->setText(tr("Flower Render Toolbox 2022"));
+		englishName->setText(tr("Render Toolbox 2022"));
 		englishName->setAlignment(Qt::AlignLeft);
 
 		copyrightInfo = new QLabel(widget);
 		copyrightInfo->setObjectName("copyright");
-		copyrightInfo->setText(tr("2022 Flowers-Softwares (R). All Rights Reserved."));
+		copyrightInfo->setText(tr("2022 RenderToolbox-Softwares (R). All Rights Reserved."));
 		copyrightInfo->setAlignment(Qt::AlignLeft);
 
 		vlayout = new QVBoxLayout(widget);
@@ -42,7 +42,7 @@ namespace flower
 
 		versionInfo = new QLabel(this);
 		versionInfo->setObjectName("version");
-		versionInfo->setText(tr("Version: ") + QString::fromStdString(FLOWERS_VERSION));
+		versionInfo->setText(tr("Version: ") + QString::fromStdString(UNREAL_VERSION));
 		versionInfo->setAlignment(Qt::AlignRight);
 
 		message = new QLabel(this);

@@ -1,8 +1,8 @@
 #include "status_bar.h"
 
-namespace flower
+namespace unreal
 {
-	StatusBar::StatusBar(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile)
+	StatusBar::StatusBar(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: timer(this)
 		, behaviour_(behaviour)
 		, profile_(profile)
@@ -22,7 +22,7 @@ namespace flower
 	void
 	StatusBar::updateEvent() noexcept
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour)
 		{
 			auto time = std::max<int>(1, std::round(profile_->playerModule->curTime * 30.0f));

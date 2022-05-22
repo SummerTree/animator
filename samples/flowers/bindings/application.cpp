@@ -8,7 +8,7 @@
 #include <qquicktextdocument.h>
 #include <qapplication.h>
 
-namespace flower
+namespace unreal
 {
 	ApplicationListener::ApplicationListener(Application* app)
 		: application_(app)
@@ -24,7 +24,7 @@ namespace flower
 
 	Application::Application()
 		: behaviour_(octoon::GameObject::create())
-		, profile_(flower::FlowerProfile::load("./config/config.conf"))
+		, profile_(unreal::UnrealProfile::load("./config/config.conf"))
 	{
 		timer_ = new Timer();
 		message_ = "Loading...";
@@ -65,7 +65,7 @@ namespace flower
 				gameApp_->open((octoon::WindHandle)widget->window()->winId(), w, h, w, h);
 				gameApp_->setActive(true);
 
-				behaviour_->addComponent<flower::FlowerBehaviour>(profile_);
+				behaviour_->addComponent<unreal::UnrealBehaviour>(profile_);
 			}
 
 			return true;

@@ -1,5 +1,5 @@
-#ifndef FLOWER_SETTING_WINDOW_H_
-#define FLOWER_SETTING_WINDOW_H_
+#ifndef UNREAL_SETTING_WINDOW_H_
+#define UNREAL_SETTING_WINDOW_H_
 
 #include <qapplication.h>
 #include <qlayout.h>
@@ -17,15 +17,15 @@
 #include <qspinbox.h>
 
 #include "title_bar.h"
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
 	class SettingMainPlane final : public QWidget
 	{
 		Q_OBJECT
 	public:
-		SettingMainPlane(QWidget* parent, const std::shared_ptr<flower::FlowerBehaviour>& behaviour);
+		SettingMainPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour);
 
 		std::unique_ptr<QLabel> infoLabel;
 		std::unique_ptr<QToolButton> infoButton;
@@ -62,7 +62,7 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		SettingContextPlane(QWidget* parent, const std::shared_ptr<flower::FlowerBehaviour>& behaviour) noexcept;
+		SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept;
 		~SettingContextPlane() noexcept;
 
 	public Q_SLOTS:
@@ -75,7 +75,7 @@ namespace flower
 
 	private:
 		bool m_sign;
-		std::shared_ptr<flower::FlowerBehaviour> behaviour_;
+		std::shared_ptr<unreal::UnrealBehaviour> behaviour_;
 
 		std::unique_ptr<QListWidget> listWidget_;
 		std::unique_ptr<QListWidgetItem> listWidgetItems_[3];
@@ -92,7 +92,7 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		SettingWindow(const std::shared_ptr<flower::FlowerBehaviour>& behaviour) noexcept;
+		SettingWindow(const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept;
 		~SettingWindow() noexcept;
 
 	public Q_SLOTS:

@@ -1,11 +1,11 @@
-#ifndef FLOWER_CLIENT_MODULE_H_
-#define FLOWER_CLIENT_MODULE_H_
+#ifndef UNREAL_CLIENT_MODULE_H_
+#define UNREAL_CLIENT_MODULE_H_
 
-#include <flower_model.h>
+#include <unreal_model.h>
 
-namespace flower
+namespace unreal
 {
-	class ClientModule final : public FlowerModule
+	class ClientModule final : public UnrealModule
 	{
 	public:
 		ClientModule() noexcept;

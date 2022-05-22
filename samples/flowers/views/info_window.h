@@ -1,5 +1,5 @@
-#ifndef FLOWER_INFO_WINDOW_H_
-#define FLOWER_INFO_WINDOW_H_
+#ifndef UNREAL_INFO_WINDOW_H_
+#define UNREAL_INFO_WINDOW_H_
 
 #include <qlayout.h>
 #include <qframe.h>
@@ -15,15 +15,15 @@
 #include <qtimer.h>
 #include <future>
 
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
 	class InfoWindow final : public QFrame
 	{
 		Q_OBJECT
 	public:
-		InfoWindow(QWidget* widget, const std::shared_ptr<flower::FlowerBehaviour>& behaviour) noexcept;
+		InfoWindow(QWidget* widget, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept;
 		~InfoWindow() noexcept;
 
 	private:
@@ -83,7 +83,7 @@ namespace flower
 		std::unique_ptr<QHBoxLayout> selectLayout_;
 		std::unique_ptr<QHBoxLayout> lisenseLayout_;
 		std::unique_ptr<QVBoxLayout> layout_;
-		std::shared_ptr<flower::FlowerBehaviour> behaviour_;
+		std::shared_ptr<unreal::UnrealBehaviour> behaviour_;
 	};
 }
 

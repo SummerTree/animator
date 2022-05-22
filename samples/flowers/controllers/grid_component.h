@@ -1,13 +1,13 @@
-#ifndef FLOWER_GRID_COMPONENT_H_
-#define FLOWER_GRID_COMPONENT_H_
+#ifndef UNREAL_GRID_COMPONENT_H_
+#define UNREAL_GRID_COMPONENT_H_
 
-#include <flower_component.h>
+#include <unreal_component.h>
 #include <octoon/game_object.h>
 #include <module/grid_module.h>
 
-namespace flower
+namespace unreal
 {
-	class GridComponent final : public RabbitComponent<GridModule>
+	class GridComponent final : public UnrealComponent<GridModule>
 	{
 	public:
 		GridComponent() noexcept;

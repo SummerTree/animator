@@ -1,5 +1,5 @@
-#ifndef FLOWER_ENVIRONMENT_WINDOW_H_
-#define FLOWER_ENVIRONMENT_WINDOW_H_
+#ifndef UNREAL_ENVIRONMENT_WINDOW_H_
+#define UNREAL_ENVIRONMENT_WINDOW_H_
 
 #include <qdockwidget.h>
 #include <qcheckbox.h>
@@ -9,17 +9,17 @@
 #include <qlabel.h>
 
 #include "spoiler.h"
-#include "flower_profile.h"
-#include "flower_behaviour.h"
+#include "unreal_profile.h"
+#include "unreal_behaviour.h"
 #include <octoon/hal/graphics.h>
 
-namespace flower
+namespace unreal
 {
 	class EnvironmentListDialog final : public QDialog
 	{
 		Q_OBJECT
 	public:
-		EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false);
+		EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~EnvironmentListDialog() noexcept;
 
 		void resizeEvent(QResizeEvent* e) noexcept override;
@@ -50,14 +50,14 @@ namespace flower
 		QListWidgetItem* clickedItem_;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 
    	class EnvironmentDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile);
+		EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile);
 		~EnvironmentDock();
 
 		void showEvent(QShowEvent* event) override;
@@ -119,7 +119,7 @@ namespace flower
 		octoon::hal::GraphicsTexturePtr irradianceTexture_;
 
 		std::shared_ptr<QImage> previewImage_;
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 }
 

@@ -1,10 +1,10 @@
-#ifndef FLOWER_H265_MODULE_H_
-#define FLOWER_H265_MODULE_H_
+#ifndef UNREAL_H265_MODULE_H_
+#define UNREAL_H265_MODULE_H_
 
-#include <flower_model.h>
+#include <unreal_model.h>
 #include <cstdint>
 
-namespace flower
+namespace unreal
 {
 	enum EncodeMode
 	{
@@ -20,7 +20,7 @@ namespace flower
 		High
 	};
 
-	class EncodeModule final : public FlowerModule
+	class EncodeModule final : public UnrealModule
 	{
 	public:
 		EncodeModule() noexcept;

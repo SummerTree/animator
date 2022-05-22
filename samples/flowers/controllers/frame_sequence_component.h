@@ -1,15 +1,14 @@
+#ifndef UNREAL_FRAME_SEQUENCE_COMPONENT_H_
+#define UNREAL_FRAME_SEQUENCE_COMPONENT_H_
 
-#ifndef FLOWER_FRAME_SEQUENCE_COMPONENT_H_
-#define FLOWER_FRAME_SEQUENCE_COMPONENT_H_
-
-#include "flower_component.h"
+#include "unreal_component.h"
 #include "module/encode_module.h"
 
 #include <octoon/math/vector3.h>
 
-namespace flower
+namespace unreal
 {
-	class FrameSequenceComponent final : public RabbitComponent<EncodeModule>
+	class FrameSequenceComponent final : public UnrealComponent<EncodeModule>
 	{
 	  public:
 		FrameSequenceComponent() noexcept;

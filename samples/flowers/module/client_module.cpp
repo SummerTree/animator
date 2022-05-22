@@ -1,9 +1,9 @@
 #include "client_module.h"
 #include <filesystem>
 
-#include "flower_version.h"
+#include "unreal_version.h"
 
-namespace flower
+namespace unreal
 {
 	ClientModule::ClientModule() noexcept
 	{
@@ -40,7 +40,7 @@ namespace flower
 #endif
 		port = 443;
 		autoLogin = true;
-		version = FLOWERS_VERSION;
+		version = UNREAL_VERSION;
 	}
 
 	void 

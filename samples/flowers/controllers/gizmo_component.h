@@ -1,7 +1,7 @@
-#ifndef FLOWER_GIZMO_COMPONENT_H_
-#define FLOWER_GIZMO_COMPONENT_H_
+#ifndef UNREAL_GIZMO_COMPONENT_H_
+#define UNREAL_GIZMO_COMPONENT_H_
 
-#include <flower_component.h>
+#include <unreal_component.h>
 
 #include <octoon/game_object.h>
 #include <octoon/material/material.h>
@@ -11,7 +11,7 @@
 
 #include <optional>
 
-namespace flower
+namespace unreal
 {
 	class TransformGizmo
 	{
@@ -33,7 +33,7 @@ namespace flower
 		TransformGizmo& operator=(const TransformGizmo&) = delete;
 	};
 
-	class GizmoComponent final : public RabbitComponent<SelectorModule>
+	class GizmoComponent final : public UnrealComponent<SelectorModule>
 	{
 	  public:
 		GizmoComponent() noexcept;

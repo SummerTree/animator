@@ -3,7 +3,7 @@
 #include <octoon/transform_component.h>
 #include <octoon/directional_light_component.h>
 
-namespace flower
+namespace unreal
 {
 	class DoubleSpinBox final : public QDoubleSpinBox
 	{
@@ -21,7 +21,7 @@ namespace flower
 		}
 	};
 
-	MainLightDock::MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile)
+	MainLightDock::MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<unreal::UnrealProfile>& profile)
 		: profile_(profile)
 	{
 		this->setWindowTitle(tr("Main Light"));

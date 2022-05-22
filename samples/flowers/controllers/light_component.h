@@ -1,10 +1,10 @@
-#ifndef FLOWER_LIGHT_COMPONENT_H_
-#define FLOWER_LIGHT_COMPONENT_H_
+#ifndef UNREAL_LIGHT_COMPONENT_H_
+#define UNREAL_LIGHT_COMPONENT_H_
 
-#include "../flower_component.h"
+#include "../unreal_component.h"
 #include "../module/entities_module.h"
 
-namespace flower
+namespace unreal
 {
 	enum LightType
 	{
@@ -13,7 +13,7 @@ namespace flower
 		Directional = 2
 	};
 
-	class LightComponent final : public RabbitComponent<EntitiesModule>
+	class LightComponent final : public UnrealComponent<EntitiesModule>
 	{
 	public:
 		LightComponent() noexcept;

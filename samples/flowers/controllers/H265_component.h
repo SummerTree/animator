@@ -1,17 +1,17 @@
-#ifndef FLOWER_H265_COMPONENT_H_
-#define FLOWER_H265_COMPONENT_H_
+#ifndef UNREAL_H265_COMPONENT_H_
+#define UNREAL_H265_COMPONENT_H_
 
 #include "module/encode_module.h"
-#include "flower_component.h"
+#include "unreal_component.h"
 #include <octoon/math/vector3.h>
 
 struct x265_param;
 struct x265_encoder;
 struct x265_picture;
 
-namespace flower
+namespace unreal
 {
-	class H265Component final : public RabbitComponent<EncodeModule>
+	class H265Component final : public UnrealComponent<EncodeModule>
 	{
 	public:
 		H265Component() noexcept;

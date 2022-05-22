@@ -1,5 +1,5 @@
-#ifndef FLOWER_THUMBNAIL_DOCK_H_
-#define FLOWER_THUMBNAIL_DOCK_H_
+#ifndef UNREAL_THUMBNAIL_DOCK_H_
+#define UNREAL_THUMBNAIL_DOCK_H_
 
 #include <qapplication.h>
 #include <qlayout.h>
@@ -11,17 +11,17 @@
 #include <qscrollarea.h>
 #include <QtGui/qevent.h>
 #include <qdockwidget.h>
-#include "flower_profile.h"
-#include "flower_behaviour.h"
+#include "unreal_profile.h"
+#include "unreal_behaviour.h"
 #include "setting_window.h"
 
-namespace flower
+namespace unreal
 {
 	class ThumbnailDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		ThumbnailDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<FlowerProfile> profile) noexcept;
+		ThumbnailDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<UnrealProfile> profile) noexcept;
 		~ThumbnailDock() noexcept;
 
 		void closeEvent(QCloseEvent* event);
@@ -53,7 +53,7 @@ namespace flower
 		QToolButton* settingsButton_;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<FlowerProfile> profile_;
+		std::shared_ptr<UnrealProfile> profile_;
 	};
 }
 

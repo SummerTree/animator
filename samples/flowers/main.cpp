@@ -83,11 +83,11 @@ int main(int argc, char *argv[])
 
 		app.installTranslator(&qtTranslator);
 
-		auto splash = std::make_unique<flower::SplashScreen>();
+		auto splash = std::make_unique<unreal::SplashScreen>();
 		splash->show();
 		app.processEvents();
 
-		flower::MainDock w(splash.get());
+		unreal::MainDock w(splash.get());
 		w.show();
 
 		splash.reset();

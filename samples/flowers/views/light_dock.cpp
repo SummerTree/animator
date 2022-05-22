@@ -6,7 +6,7 @@
 #include <octoon/transform_component.h>
 #include <octoon/directional_light_component.h>
 
-namespace flower
+namespace unreal
 {
 	LightListWindow::LightListWindow() noexcept(false)
 	{
@@ -64,7 +64,7 @@ namespace flower
 		QListWidget::mousePressEvent(event);
 	}
 
-	LightDock::LightDock(const std::shared_ptr<flower::FlowerProfile>& profile)
+	LightDock::LightDock(const std::shared_ptr<unreal::UnrealProfile>& profile)
 		: profile_(profile)
 	{
 		this->setObjectName("LightDock");

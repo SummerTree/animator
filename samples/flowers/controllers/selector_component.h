@@ -1,7 +1,7 @@
-#ifndef FLOWER_SELECTOR_COMPONENT_H_
-#define FLOWER_SELECTOR_COMPONENT_H_
+#ifndef UNREAL_SELECTOR_COMPONENT_H_
+#define UNREAL_SELECTOR_COMPONENT_H_
 
-#include <flower_component.h>
+#include <unreal_component.h>
 
 #include <octoon/raycaster.h>
 #include <octoon/game_object.h>
@@ -11,9 +11,9 @@
 
 #include <optional>
 
-namespace flower
+namespace unreal
 {
-	class SelectorComponent final : public RabbitComponent<SelectorModule>
+	class SelectorComponent final : public UnrealComponent<SelectorModule>
 	{
 	public:
 		SelectorComponent() noexcept;

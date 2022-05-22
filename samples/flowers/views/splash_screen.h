@@ -1,5 +1,5 @@
-#ifndef FLOWER_SPLASH_SCREEN_H_
-#define FLOWER_SPLASH_SCREEN_H_
+#ifndef UNREAL_SPLASH_SCREEN_H_
+#define UNREAL_SPLASH_SCREEN_H_
 
 #include <qlayout.h>
 #include <qframe>
@@ -8,7 +8,7 @@
 #include <fstream>
 #include <octoon/game_listener.h>
 
-namespace flower
+namespace unreal
 {
 	class SplashScreen final : public QFrame
 	{

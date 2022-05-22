@@ -1,9 +1,9 @@
 #include "offline_component.h"
 #include "../libs/nativefiledialog/nfd.h"
-#include "../flower_profile.h"
-#include "../flower_behaviour.h"
+#include "../unreal_profile.h"
+#include "../unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
 	OfflineComponent::OfflineComponent() noexcept
 	{

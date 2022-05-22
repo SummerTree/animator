@@ -8,7 +8,7 @@
 #include <octoon/vmd_loader.h>
 #include <octoon/io/fstream.h>
 
-namespace flower
+namespace unreal
 {
 	class SpinBox final : public QSpinBox
 	{
@@ -83,7 +83,7 @@ namespace flower
 		QToolButton::mousePressEvent(event);
 	}
 
-	CameraDock::CameraDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
+	CameraDock::CameraDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept
 		: behaviour_(behaviour)
 		, profile_(profile)
 	{

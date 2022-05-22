@@ -1,16 +1,16 @@
-#ifndef FLOWER_H264_COMPONENT_H_
-#define FLOWER_H264_COMPONENT_H_
+#ifndef UNREAL_H264_COMPONENT_H_
+#define UNREAL_H264_COMPONENT_H_
 
 #include "module/encode_module.h"
-#include "flower_component.h"
+#include "unreal_component.h"
 #include <octoon/math/vector3.h>
 
 struct x264_t;
 struct x264_picture_t;
 
-namespace flower
+namespace unreal
 {
-	class H264Component final : public RabbitComponent<EncodeModule>
+	class H264Component final : public UnrealComponent<EncodeModule>
 	{
 	public:
 		H264Component() noexcept;

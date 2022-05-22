@@ -1,16 +1,16 @@
-#ifndef FLOWER_RECORD_COMPONENT_H_
-#define FLOWER_RECORD_COMPONENT_H_
+#ifndef UNREAL_RECORD_COMPONENT_H_
+#define UNREAL_RECORD_COMPONENT_H_
 
-#include <flower_component.h>
+#include <unreal_component.h>
 #include "module/record_module.h"
 
 typedef struct OIDNFilterImpl* OIDNFilter;
 typedef struct OIDNDeviceImpl* OIDNDevice;
 typedef struct OIDNBufferImpl* OIDNBuffer;
 
-namespace flower
+namespace unreal
 {
-	class RecordComponent final : public RabbitComponent<RecordModule>
+	class RecordComponent final : public UnrealComponent<RecordModule>
 	{
 	public:
 		RecordComponent() noexcept;

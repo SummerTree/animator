@@ -1,11 +1,11 @@
-#ifndef FLOWER_OFFLINE_MODULE_H_
-#define FLOWER_OFFLINE_MODULE_H_
+#ifndef UNREAL_OFFLINE_MODULE_H_
+#define UNREAL_OFFLINE_MODULE_H_
 
-#include <flower_model.h>
+#include <unreal_model.h>
 
-namespace flower
+namespace unreal
 {
-	class OfflineModule final : public FlowerModule
+	class OfflineModule final : public UnrealModule
 	{
 	public:
 		OfflineModule() noexcept;

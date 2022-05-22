@@ -1,8 +1,8 @@
-#ifndef FLOWER_BEHAVIOUR_H_
-#define FLOWER_BEHAVIOUR_H_
+#ifndef UNREAL_BEHAVIOUR_H_
+#define UNREAL_BEHAVIOUR_H_
 
-#include "flower_context.h"
-#include "flower_profile.h"
+#include "unreal_context.h"
+#include "unreal_profile.h"
 
 #include "controllers/client_component.h"
 #include "controllers/entities_component.h"
@@ -23,15 +23,15 @@
 
 #include <octoon/octoon.h>
 
-namespace flower
+namespace unreal
 {
-	class FlowerBehaviour final : public octoon::GameComponent
+	class UnrealBehaviour final : public octoon::GameComponent
 	{
-		OctoonDeclareSubClass(FlowerBehaviour, octoon::GameComponent) public : FlowerBehaviour() noexcept;
-		FlowerBehaviour(const std::shared_ptr<FlowerProfile>& profile) noexcept;
-		~FlowerBehaviour() noexcept;
+		OctoonDeclareSubClass(UnrealBehaviour, octoon::GameComponent) public : UnrealBehaviour() noexcept;
+		UnrealBehaviour(const std::shared_ptr<UnrealProfile>& profile) noexcept;
+		~UnrealBehaviour() noexcept;
 
-		const std::shared_ptr<FlowerProfile>& getProfile() const noexcept;
+		const std::shared_ptr<UnrealProfile>& getProfile() const noexcept;
 
 		void open(std::string_view filepath) noexcept(false);
 		void close() noexcept;
@@ -55,13 +55,13 @@ namespace flower
 
 		std::optional<octoon::RaycastHit> raycastHit(const octoon::math::float2& pos) noexcept;
 
-		void addComponent(IFlowerComponent* component) noexcept;
-		void removeComponent(const IFlowerComponent* component) noexcept;
-		const std::vector<IFlowerComponent*>& getComponents() const noexcept;
+		void addComponent(IUnrealComponent* component) noexcept;
+		void removeComponent(const IUnrealComponent* component) noexcept;
+		const std::vector<IUnrealComponent*>& getComponents() const noexcept;
 		void initializeComponents() noexcept(false);
 		void disableComponents() noexcept;
 
-		IFlowerComponent* getComponent(const std::type_info& type) const noexcept;
+		IUnrealComponent* getComponent(const std::type_info& type) const noexcept;
 		template <typename T>
 		T*
 		getComponent() const noexcept
@@ -88,8 +88,8 @@ namespace flower
 		void onResize(const std::any& data) noexcept;
 
 	  private:
-		std::shared_ptr<FlowerProfile> profile_;
-		std::shared_ptr<RabbitContext> context_;
+		std::shared_ptr<UnrealProfile> profile_;
+		std::shared_ptr<UnrealContext> context_;
 
 		std::unique_ptr<RecordComponent> recordComponent_;
 		std::unique_ptr<EntitiesComponent> entitiesComponent_;
@@ -107,7 +107,7 @@ namespace flower
 		std::unique_ptr<LightComponent> lightComponent_;
 		std::unique_ptr<HDRiComponent> hdriComponent_;
 
-		std::vector<IFlowerComponent*> components_;
+		std::vector<IUnrealComponent*> components_;
 	};
 }
 

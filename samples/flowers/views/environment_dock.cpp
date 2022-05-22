@@ -14,7 +14,7 @@
 #include <qmimedata.h>
 #include <qprogressdialog.h>
 
-namespace flower
+namespace unreal
 {
 	class DoubleSpinBox final : public QDoubleSpinBox
 	{
@@ -32,7 +32,7 @@ namespace flower
 		}
 	};
 
-	EnvironmentListDialog::EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile)
+	EnvironmentListDialog::EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: QDialog(parent)
 		, behaviour_(behaviour)
 		, profile_(profile)
@@ -97,7 +97,7 @@ namespace flower
 	void 
 	EnvironmentListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto hdrComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<HDRiComponent>();
+		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
 		if (!hdrComponent)
 			return;
 
@@ -149,7 +149,7 @@ namespace flower
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
 		if (!filepaths.isEmpty())
 		{
-			auto hdrComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<HDRiComponent>();
+			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
 			if (!hdrComponent)
 				return;
 
@@ -225,7 +225,7 @@ namespace flower
 	void
 	EnvironmentListDialog::showEvent(QShowEvent* event) noexcept
 	{
-		auto behaviour = behaviour_->getComponent<flower::FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour)
 		{
 			mainWidget_->clear();
@@ -236,7 +236,7 @@ namespace flower
 		}
 	}
 
-	EnvironmentDock::EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile)
+	EnvironmentDock::EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: behaviour_(behaviour)
 		, profile_(profile)
 		, environmentListDialog_(nullptr)
@@ -534,7 +534,7 @@ namespace flower
 	{
 		try
 		{
-			auto hdrComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<HDRiComponent>();
+			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
 			if (hdrComponent)
 			{
 				auto uuid = item->data(Qt::UserRole).toString();

@@ -1,5 +1,5 @@
-#ifndef FLOWER_TITLE_WINDOW_H_
-#define FLOWER_TITLE_WINDOW_H_
+#ifndef UNREAL_TITLE_WINDOW_H_
+#define UNREAL_TITLE_WINDOW_H_
 
 #include <qapplication.h>
 #include <qlayout.h>
@@ -11,15 +11,15 @@
 #include <QtGui/qevent.h>
 #include <qtoolbar.h>
 
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
 	class ToplevelBar final : public QToolBar
 	{
 		Q_OBJECT
 	public:
-		ToplevelBar(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile) noexcept;
+		ToplevelBar(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<unreal::UnrealProfile>& profile) noexcept;
 		~ToplevelBar() noexcept;
 
 		void paintEvent(QPaintEvent* e) noexcept;
@@ -52,7 +52,7 @@ namespace flower
 		QToolButton volumeButton;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 }
 

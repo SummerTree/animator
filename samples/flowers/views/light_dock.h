@@ -1,15 +1,15 @@
-#ifndef FLOWER_LIGHT_DOCK_H_
-#define FLOWER_LIGHT_DOCK_H_
+#ifndef UNREAL_LIGHT_DOCK_H_
+#define UNREAL_LIGHT_DOCK_H_
 
 #include <qwidget.h>
 #include <qlayout.h>
 #include <qscrollarea.h>
 #include <qlistwidget.h>
 
-#include "flower_profile.h"
+#include "unreal_profile.h"
 #include "color_dialog.h"
 
-namespace flower
+namespace unreal
 {
 	class LightListWindow final : public QListWidget
 	{
@@ -29,7 +29,7 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		LightDock(const std::shared_ptr<flower::FlowerProfile>& profile);
+		LightDock(const std::shared_ptr<unreal::UnrealProfile>& profile);
 		~LightDock();
 
 		void showEvent(QShowEvent* event) override;
@@ -38,7 +38,7 @@ namespace flower
 
 	public:
 		LightListWindow* listWidget_;
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<unreal::UnrealProfile> profile_;
 
 		QWidget* mainWidget_;
 		QVBoxLayout* mainLayout_;

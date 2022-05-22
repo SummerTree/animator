@@ -1,5 +1,5 @@
-#ifndef FLOWER_CAMERA_DOCK_H_
-#define FLOWER_CAMERA_DOCK_H_
+#ifndef UNREAL_CAMERA_DOCK_H_
+#define UNREAL_CAMERA_DOCK_H_
 
 #include <qdockwidget.h>
 #include <qdialog.h>
@@ -13,11 +13,11 @@
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qtimer.h>
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 #include "spoiler.h"
 #include <octoon/game_object.h>
 
-namespace flower
+namespace unreal
 {
 	class FocalTargetWindow final : public QToolButton
 	{
@@ -40,7 +40,7 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		CameraDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept;
+		CameraDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept;
 		~CameraDock() noexcept;
 
 		void showEvent(QShowEvent* event) override;
@@ -76,7 +76,7 @@ namespace flower
 		QVBoxLayout* mainLayout_;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<FlowerProfile> profile_;
+		std::shared_ptr<UnrealProfile> profile_;
 	};
 }
 

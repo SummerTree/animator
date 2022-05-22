@@ -1,14 +1,14 @@
-#ifndef FLOWER_CLIENT_COMPONENT_H_
-#define FLOWER_CLIENT_COMPONENT_H_
+#ifndef UNREAL_CLIENT_COMPONENT_H_
+#define UNREAL_CLIENT_COMPONENT_H_
 
 #include <optional>
 #include <future>
-#include "../flower_component.h"
+#include "../unreal_component.h"
 #include "../module/client_module.h"
 
-namespace flower
+namespace unreal
 {
-	class ClientComponent final : public RabbitComponent<ClientModule>
+	class ClientComponent final : public UnrealComponent<ClientModule>
 	{
 	public:
 		ClientComponent() noexcept;

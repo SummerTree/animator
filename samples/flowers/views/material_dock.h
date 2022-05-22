@@ -1,5 +1,5 @@
-#ifndef FLOWER_MATERIAL_WINDOW_H_
-#define FLOWER_MATERIAL_WINDOW_H_
+#ifndef UNREAL_MATERIAL_WINDOW_H_
+#define UNREAL_MATERIAL_WINDOW_H_
 
 #include <qwidget>
 #include <qdialog.h>
@@ -16,12 +16,12 @@
 #include <qcolordialog.h>
 #include <optional>
 
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 #include "color_dialog.h"
 #include "spoiler.h"
 #include <octoon/game_object.h>
 
-namespace flower
+namespace unreal
 {
 	class MaterialListDialog final : public QDialog
 	{
@@ -237,7 +237,7 @@ namespace flower
 	{
 		Q_OBJECT
 	public:
-		MaterialListPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false);
+		MaterialListPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~MaterialListPanel() noexcept;
 
 		void addItem(std::string_view uuid) noexcept;
@@ -256,14 +256,14 @@ namespace flower
 		QVBoxLayout* mainLayout_;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 
 	class MaterialDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false);
+		MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~MaterialDock() noexcept;
 
 		void showEvent(QShowEvent* event) noexcept override;
@@ -283,7 +283,7 @@ namespace flower
 		QWidget* widget_;
 		QListWidgetItem* selectedItem_;
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<FlowerProfile> profile_;
+		std::shared_ptr<UnrealProfile> profile_;
 	};
 }
 

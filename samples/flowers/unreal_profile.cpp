@@ -1,11 +1,11 @@
-#include "flower_profile.h"
+#include "unreal_profile.h"
 #include <fstream>
 #include <filesystem>
 #include <octoon/runtime/json.h>
 
-namespace flower
+namespace unreal
 {
-	FlowerProfile::FlowerProfile() noexcept
+	UnrealProfile::UnrealProfile() noexcept
 		: physicsModule(std::make_shared<PhysicsModule>())
 		, encodeModule(std::make_shared<EncodeModule>())
 		, playerModule(std::make_shared<PlayerModule>())
@@ -23,8 +23,8 @@ namespace flower
 	{
 	}
 
-	FlowerProfile::FlowerProfile(std::string_view path) noexcept(false)
-		: FlowerProfile()
+	UnrealProfile::UnrealProfile(std::string_view path) noexcept(false)
+		: UnrealProfile()
 	{
 		std::ifstream stream(path);
 		if (stream)
@@ -47,18 +47,18 @@ namespace flower
 		}
 	}
 
-	FlowerProfile::~FlowerProfile() noexcept
+	UnrealProfile::~UnrealProfile() noexcept
 	{
 	}
 
-	std::unique_ptr<FlowerProfile>
-	FlowerProfile::load(std::string_view path) noexcept(false)
+	std::unique_ptr<UnrealProfile>
+	UnrealProfile::load(std::string_view path) noexcept(false)
 	{
-		return std::make_unique<FlowerProfile>(path);
+		return std::make_unique<UnrealProfile>(path);
 	}
 
 	void
-	FlowerProfile::save(std::string_view path, const FlowerProfile& profile) noexcept(false)
+	UnrealProfile::save(std::string_view path, const UnrealProfile& profile) noexcept(false)
 	{
 		std::ofstream stream(path);
 		if (stream)

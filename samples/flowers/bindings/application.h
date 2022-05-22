@@ -1,5 +1,5 @@
-#ifndef FLOWER_APPLICATION_H_
-#define FLOWER_APPLICATION_H_
+#ifndef UNREAL_APPLICATION_H_
+#define UNREAL_APPLICATION_H_
 
 #include <qobject.h>
 #include <qqmlapplicationengine.h>
@@ -9,10 +9,10 @@
 
 #include "timer.h"
 
-#include "flower_profile.h"
-#include "flower_behaviour.h"
+#include "unreal_profile.h"
+#include "unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
     class Application;
     class ApplicationListener : public octoon::GameListener
@@ -52,7 +52,7 @@ namespace flower
         octoon::GameObjectPtr behaviour_;
 
         std::unique_ptr<QQmlApplicationEngine> engine_;
-        std::shared_ptr<flower::FlowerProfile> profile_;
+        std::shared_ptr<unreal::UnrealProfile> profile_;
     };
 }
 

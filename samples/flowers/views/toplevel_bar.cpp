@@ -1,9 +1,9 @@
 #include "toplevel_bar.h"
 #include <qmessagebox.h>
 
-namespace flower
+namespace unreal
 {
-	ToplevelBar::ToplevelBar(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
+	ToplevelBar::ToplevelBar(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept
 		: behaviour_(behaviour)
 		, profile_(profile)
 		, playEnable_(false)
@@ -75,7 +75,7 @@ namespace flower
 			{
 				if (behaviour_ && !profile_->recordModule->active)
 				{
-					auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+					auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 					if (behaviour->isOpen())
 					{
 						if (enable)
@@ -142,7 +142,7 @@ namespace flower
 			{
 				if (behaviour_ && !profile_->playerModule->isPlaying)
 				{
-					auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+					auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 					if (behaviour->isOpen())
 					{
 						auto player = dynamic_cast<PlayerComponent*>(behaviour->getComponent<PlayerComponent>());
@@ -194,7 +194,7 @@ namespace flower
 		{
 			if (!profile_->playerModule->isPlaying)
 			{
-				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 				if (behaviour->isOpen())
 				{
 					auto player = dynamic_cast<PlayerComponent*>(behaviour->getComponent<PlayerComponent>());
@@ -232,7 +232,7 @@ namespace flower
 		{
 			if (!profile_->playerModule->isPlaying)
 			{
-				auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 				if (behaviour->isOpen())
 				{
 					auto player = dynamic_cast<PlayerComponent*>(behaviour->getComponent<PlayerComponent>());
@@ -268,7 +268,7 @@ namespace flower
 	{
 		if (!volumeEnable_)
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour->isOpen())
 			{
 				behaviour->setVolume(1.0f);
@@ -279,7 +279,7 @@ namespace flower
 		}
 		else
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour->isOpen())
 			{
 				behaviour->setVolume(0.0f);

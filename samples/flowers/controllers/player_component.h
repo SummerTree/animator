@@ -1,13 +1,13 @@
-#ifndef FLOWER_PLAYER_COMPONENT_H_
-#define FLOWER_PLAYER_COMPONENT_H_
+#ifndef UNREAL_PLAYER_COMPONENT_H_
+#define UNREAL_PLAYER_COMPONENT_H_
 
-#include "../flower_component.h"
+#include "../unreal_component.h"
 #include "../module/player_module.h"
 #include <octoon/runtime/timer.h>
 
-namespace flower
+namespace unreal
 {
-	class PlayerComponent final : public RabbitComponent<PlayerModule>
+	class PlayerComponent final : public UnrealComponent<PlayerModule>
 	{
 	public:
 		PlayerComponent() noexcept;

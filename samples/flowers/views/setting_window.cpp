@@ -4,7 +4,7 @@
 #include <qmessagebox.h>
 #include "../controllers/client_component.h"
 
-namespace flower
+namespace unreal
 {
 	class SpinBox final : public QSpinBox
 	{
@@ -38,7 +38,7 @@ namespace flower
 		}
 	};
 
-	SettingMainPlane::SettingMainPlane(QWidget* parent, const std::shared_ptr<flower::FlowerBehaviour>& behaviour)
+	SettingMainPlane::SettingMainPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour)
 		: QWidget(parent)
 	{
 		infoLabel = std::make_unique<QLabel>(this);
@@ -51,7 +51,7 @@ namespace flower
 		infoButton->setFixedSize(190, 35);
 
 		versionLabel = std::make_unique<QLabel>(this);
-		versionLabel->setText(tr("Current Version: v") + QString::fromStdString(behaviour->getProfile()->clientModule->version));
+		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(behaviour->getProfile()->clientModule->version));
 		versionLabel->setStyleSheet("color: rgb(200,200,200);");
 
 		/*QLabel* startupLabel = new QLabel(this);
@@ -148,7 +148,7 @@ namespace flower
 	{
 	}
 
-	SettingContextPlane::SettingContextPlane(QWidget* parent, const std::shared_ptr<flower::FlowerBehaviour>& behaviour) noexcept
+	SettingContextPlane::SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept
 		: QWidget(parent)
 		, behaviour_(behaviour)
 	{
@@ -357,7 +357,7 @@ namespace flower
 		}
 	}
 
-	SettingWindow::SettingWindow(const std::shared_ptr<flower::FlowerBehaviour>& behaviour) noexcept
+	SettingWindow::SettingWindow(const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept
 		: settingTitleWindow_(std::make_unique<TitleBar>(this))
 		, settingContextPlane_(std::make_unique<SettingContextPlane>(this, behaviour))
 	{

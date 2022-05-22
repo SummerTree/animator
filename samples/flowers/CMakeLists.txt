@@ -8,17 +8,17 @@ SET(CMAKE_AUTOMOC ON)
 
 SET(MAIN_LIST
 	${SOURCE_PATH}/main.cpp
-	${SOURCE_PATH}/flower_version.h
-	${SOURCE_PATH}/flower_behaviour.h
-	${SOURCE_PATH}/flower_behaviour.cpp
-	${SOURCE_PATH}/flower_component.h
-	${SOURCE_PATH}/flower_component.cpp
-	${SOURCE_PATH}/flower_profile.h
-	${SOURCE_PATH}/flower_profile.cpp
-	${SOURCE_PATH}/flower_context.h
-	${SOURCE_PATH}/flower_context.cpp
-	${SOURCE_PATH}/flower_model.h
-	${SOURCE_PATH}/flower_model.cpp
+	${SOURCE_PATH}/unreal_version.h
+	${SOURCE_PATH}/unreal_behaviour.h
+	${SOURCE_PATH}/unreal_behaviour.cpp
+	${SOURCE_PATH}/unreal_component.h
+	${SOURCE_PATH}/unreal_component.cpp
+	${SOURCE_PATH}/unreal_profile.h
+	${SOURCE_PATH}/unreal_profile.cpp
+	${SOURCE_PATH}/unreal_context.h
+	${SOURCE_PATH}/unreal_context.cpp
+	${SOURCE_PATH}/unreal_model.h
+	${SOURCE_PATH}/unreal_model.cpp
 	${SOURCE_PATH}/resource.rc
 )
 SOURCE_GROUP("launcher" FILES ${MAIN_LIST})

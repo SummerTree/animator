@@ -3,9 +3,9 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 
-namespace flower
+namespace unreal
 {
-	InfoWindow::InfoWindow(QWidget* widget, const std::shared_ptr<flower::FlowerBehaviour>& behaviour) noexcept
+	InfoWindow::InfoWindow(QWidget* widget, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept
 		: parent_(widget)
 		, behaviour_(behaviour)
 		, allowMove_(false)

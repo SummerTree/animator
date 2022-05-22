@@ -1,7 +1,7 @@
-#ifndef FLOWER_MATERIAL_COMPONENT_H_
-#define FLOWER_MATERIAL_COMPONENT_H_
+#ifndef UNREAL_MATERIAL_COMPONENT_H_
+#define UNREAL_MATERIAL_COMPONENT_H_
 
-#include "../flower_component.h"
+#include "../unreal_component.h"
 #include "../module/resource_module.h"
 
 #include <set>
@@ -12,9 +12,9 @@
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/material/mesh_standard_material.h>
 
-namespace flower
+namespace unreal
 {
-	class MaterialComponent final : public RabbitComponent<ResourceModule>
+	class MaterialComponent final : public UnrealComponent<ResourceModule>
 	{
 	public:
 		MaterialComponent() noexcept;

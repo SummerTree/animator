@@ -1,14 +1,14 @@
-#ifndef FLOWER_COMPONENT_H_
-#define FLOWER_COMPONENT_H_
+#ifndef UNREAL_COMPONENT_H_
+#define UNREAL_COMPONENT_H_
 
-#include <flower_model.h>
-#include <flower_context.h>
+#include <unreal_model.h>
+#include <unreal_context.h>
 #include <any>
 #include <octoon/input/input_event.h>
 
-namespace flower
+namespace unreal
 {
-	class IFlowerComponent
+	class IUnrealComponent
 	{
 	public:
 		virtual const std::type_info& type_info() const noexcept = 0;
@@ -18,7 +18,7 @@ namespace flower
 
 		virtual bool isCapture() const = 0;
 
-		virtual std::shared_ptr<FlowerModule> model() const noexcept = 0;
+		virtual std::shared_ptr<UnrealModule> model() const noexcept = 0;
 
 		virtual void onEnable() noexcept(false);
 		virtual void onDisable() noexcept(false);
@@ -35,15 +35,15 @@ namespace flower
 	};
 
 	template<typename T>
-	class RabbitComponent : public IFlowerComponent
+	class UnrealComponent : public IUnrealComponent
 	{
 	public:
-		RabbitComponent() noexcept
+		UnrealComponent() noexcept
 			: handEvent_(false)
 		{
 		}
 
-		virtual ~RabbitComponent() noexcept = default;
+		virtual ~UnrealComponent() noexcept = default;
 
 		virtual void setActive(bool active) noexcept override
 		{
@@ -90,12 +90,12 @@ namespace flower
 			return this->handEvent_;
 		}
 
-		virtual void setContext(const std::shared_ptr<RabbitContext>& context) noexcept
+		virtual void setContext(const std::shared_ptr<UnrealContext>& context) noexcept
 		{
 			context_ = context;
 		}
 
-		virtual const std::shared_ptr<RabbitContext>& getContext() const noexcept
+		virtual const std::shared_ptr<UnrealContext>& getContext() const noexcept
 		{
 			return context_;
 		}
@@ -110,12 +110,12 @@ namespace flower
 			return model_;
 		}
 
-		virtual std::shared_ptr<FlowerModule> model() const noexcept
+		virtual std::shared_ptr<UnrealModule> model() const noexcept
 		{
 			return model_;
 		}
 
-		virtual void init(const std::shared_ptr<RabbitContext>& context, const std::shared_ptr<T>& model) noexcept
+		virtual void init(const std::shared_ptr<UnrealContext>& context, const std::shared_ptr<T>& model) noexcept
 		{
 			this->setModel(model);
 			this->setContext(context);
@@ -127,7 +127,7 @@ namespace flower
 			return context_->behaviour->getComponent<T>();
 		}
 
-		IFlowerComponent* getComponent(const std::type_info& type) const noexcept
+		IUnrealComponent* getComponent(const std::type_info& type) const noexcept
 		{
 			return context_->behaviour->getComponent(type);
 		}
@@ -180,7 +180,7 @@ namespace flower
 	private:
 		bool handEvent_;
 		std::shared_ptr<T> model_;
-		std::shared_ptr<RabbitContext> context_;
+		std::shared_ptr<UnrealContext> context_;
 	};
 }
 

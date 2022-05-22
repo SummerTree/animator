@@ -1,12 +1,12 @@
-#ifndef FLOWER_SUN_MODULE_H_
-#define FLOWER_SUN_MODULE_H_
+#ifndef UNREAL_SUN_MODULE_H_
+#define UNREAL_SUN_MODULE_H_
 
-#include <flower_model.h>
+#include <unreal_model.h>
 #include <octoon/math/vector3.h>
 
-namespace flower
+namespace unreal
 {
-	class SunModule final : public FlowerModule
+	class SunModule final : public UnrealModule
 	{
 	public:
 		SunModule() noexcept;

@@ -6,7 +6,7 @@
 #include <qmessagebox.h>
 #include <qmimedata.h>
 
-namespace flower
+namespace unreal
 {
 	class SpinBox final : public QSpinBox
 	{
@@ -44,7 +44,7 @@ namespace flower
 		}
 	};
 
-	RecordDock::RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
+	RecordDock::RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept
 		: behaviour_(behaviour)
 		, profile_(profile)
 	{
@@ -303,7 +303,7 @@ namespace flower
 	{
 		if (!profile_->playerModule->isPlaying)
 		{
-			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 				behaviour->getComponent<OfflineComponent>()->setMaxBounces(value);
 		}
@@ -325,7 +325,7 @@ namespace flower
 	void
 	RecordDock::recordEvent(bool)
 	{
-		auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
+		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 		if (behaviour)
 		{
 			if (!profile_->recordModule->active)

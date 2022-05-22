@@ -10,7 +10,7 @@
     </message>
 </context>
 <context>
-    <name>flower::CameraDock</name>
+    <name>unreal::CameraDock</name>
     <message>
         <location filename="../views/camera_dock.cpp" line="91"/>
         <source>Camera</source>
@@ -79,7 +79,7 @@
     </message>
 </context>
 <context>
-    <name>flower::ColorDialog</name>
+    <name>unreal::ColorDialog</name>
     <message>
         <location filename="../views/color_dialog.cpp" line="282"/>
         <source>Hue</source>
@@ -97,7 +97,7 @@
     </message>
 </context>
 <context>
-    <name>flower::EnvironmentDock</name>
+    <name>unreal::EnvironmentDock</name>
     <message>
         <location filename="../views/environment_dock.cpp" line="244"/>
         <source>Environment Light</source>
@@ -154,8 +154,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="582"/>
-        <source>HDRi Files (*.hdr)</source>
+        <location filename="../views/environment_dock.cpp" line="568"/>
+        <location filename="../views/environment_dock.cpp" line="623"/>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -164,14 +165,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="568"/>
-        <location filename="../views/environment_dock.cpp" line="623"/>
-        <source>Error</source>
+        <location filename="../views/environment_dock.cpp" line="582"/>
+        <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>flower::EnvironmentListDialog</name>
+    <name>unreal::EnvironmentListDialog</name>
     <message>
         <location filename="../views/environment_dock.cpp" line="42"/>
         <source>Environment Resource</source>
@@ -194,17 +194,12 @@
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="149"/>
-        <source>HDRi Files (*.hdr)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/environment_dock.cpp" line="149"/>
         <source>Import Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="158"/>
-        <source>Cancel</source>
+        <location filename="../views/environment_dock.cpp" line="149"/>
+        <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -213,9 +208,14 @@
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="158"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>flower::ForgetWidget</name>
+    <name>unreal::ForgetWidget</name>
     <message>
         <location filename="../views/login_window.cpp" line="157"/>
         <source>Close</source>
@@ -248,7 +248,7 @@
     </message>
 </context>
 <context>
-    <name>flower::InfoWindow</name>
+    <name>unreal::InfoWindow</name>
     <message>
         <location filename="../views/info_window.cpp" line="24"/>
         <source>Close</source>
@@ -317,7 +317,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::LightDock</name>
+    <name>unreal::LightDock</name>
     <message>
         <location filename="../views/light_dock.cpp" line="71"/>
         <source>Light</source>
@@ -340,7 +340,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::LoginWidget</name>
+    <name>unreal::LoginWidget</name>
     <message>
         <location filename="../views/login_window.cpp" line="30"/>
         <source>Close</source>
@@ -383,10 +383,10 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::MainDock</name>
+    <name>unreal::MainDock</name>
     <message>
         <location filename="../views/main_dock.cpp" line="22"/>
-        <source>Flower Render Toolbox (Alpha Version)</source>
+        <source>Render Toolbox (Alpha Version)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -432,7 +432,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::MainLightDock</name>
+    <name>unreal::MainLightDock</name>
     <message>
         <location filename="../views/main_light_dock.cpp" line="27"/>
         <source>Main Light</source>
@@ -465,7 +465,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::MaterialDock</name>
+    <name>unreal::MaterialDock</name>
     <message>
         <location filename="../views/material_dock.cpp" line="1893"/>
         <location filename="../views/material_dock.cpp" line="1978"/>
@@ -479,10 +479,15 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::MaterialEditWindow</name>
+    <name>unreal::MaterialEditWindow</name>
     <message>
         <location filename="../views/material_dock.cpp" line="273"/>
         <source> Texture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/material_dock.cpp" line="481"/>
+        <source>material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -594,14 +599,9 @@ $20 (Original cost $40)</source>
         <source>Open Image</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../views/material_dock.cpp" line="481"/>
-        <source>material</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
-    <name>flower::MaterialListDialog</name>
+    <name>unreal::MaterialListDialog</name>
     <message>
         <location filename="../views/material_dock.cpp" line="51"/>
         <source>Material Resource</source>
@@ -624,12 +624,12 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/material_dock.cpp" line="158"/>
-        <source>NVIDIA MDL Files (*.mdl)</source>
+        <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/material_dock.cpp" line="158"/>
-        <source>Import Resource</source>
+        <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -645,7 +645,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::RecordDock</name>
+    <name>unreal::RecordDock</name>
     <message>
         <location filename="../views/record_dock.cpp" line="52"/>
         <source>Record</source>
@@ -775,6 +775,16 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/record_dock.cpp" line="338"/>
+        <source>Save Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="338"/>
+        <source>MP4 Files (*.mp4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/record_dock.cpp" line="343"/>
         <location filename="../views/record_dock.cpp" line="470"/>
         <source>Stop Render</source>
@@ -790,19 +800,9 @@ $20 (Original cost $40)</source>
         <source>Failed to create file</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="338"/>
-        <source>MP4 Files (*.mp4)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="338"/>
-        <source>Save Video</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
-    <name>flower::RegisterWidget</name>
+    <name>unreal::RegisterWidget</name>
     <message>
         <location filename="../views/login_window.cpp" line="256"/>
         <source>Close</source>
@@ -815,7 +815,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::SettingContextPlane</name>
+    <name>unreal::SettingContextPlane</name>
     <message>
         <location filename="../views/setting_window.cpp" line="157"/>
         <source>Main Panel</source>
@@ -833,7 +833,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::SettingMainPlane</name>
+    <name>unreal::SettingMainPlane</name>
     <message>
         <location filename="../views/setting_window.cpp" line="45"/>
         <source>Version</source>
@@ -846,7 +846,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="54"/>
-        <source>Current Version: v</source>
+        <source>Current Version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -861,7 +861,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::SettingMainPlane2</name>
+    <name>unreal::SettingMainPlane2</name>
     <message>
         <location filename="../views/setting_window.cpp" line="118"/>
         <source>Render Settings</source>
@@ -874,15 +874,15 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::SplashScreen</name>
+    <name>unreal::SplashScreen</name>
     <message>
         <location filename="../views/splash_screen.cpp" line="24"/>
-        <source>Flower Render Toolbox 2022</source>
+        <source>Render Toolbox 2022</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="29"/>
-        <source>2022 Flowers-Softwares (R). All Rights Reserved.</source>
+        <source>2022 RenderToolbox-Softwares (R). All Rights Reserved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -897,7 +897,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::StatusBar</name>
+    <name>unreal::StatusBar</name>
     <message>
         <location filename="../views/status_bar.cpp" line="38"/>
         <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
@@ -915,7 +915,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::ThumbnailDock</name>
+    <name>unreal::ThumbnailDock</name>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="21"/>
         <source>Record</source>
@@ -947,8 +947,18 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/thumbnail_dock.cpp" line="39"/>
+        <source>Main Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/thumbnail_dock.cpp" line="40"/>
         <source>Open Main Light Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="45"/>
+        <source>Environment Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -972,19 +982,9 @@ $20 (Original cost $40)</source>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../views/thumbnail_dock.cpp" line="39"/>
-        <source>Main Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/thumbnail_dock.cpp" line="45"/>
-        <source>Environment Light</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
-    <name>flower::TitleBar</name>
+    <name>unreal::TitleBar</name>
     <message>
         <location filename="../views/title_bar.cpp" line="13"/>
         <source>Settings</source>
@@ -997,7 +997,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::ToolDock</name>
+    <name>unreal::ToolDock</name>
     <message>
         <location filename="../views/tool_dock.cpp" line="30"/>
         <source>Import</source>
@@ -1100,7 +1100,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::ToplevelBar</name>
+    <name>unreal::ToplevelBar</name>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="19"/>
         <source>Play Animation</source>
@@ -1169,7 +1169,7 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
-    <name>flower::ViewDock</name>
+    <name>unreal::ViewDock</name>
     <message>
         <location filename="../views/view_dock.cpp" line="10"/>
         <source>Camera</source>

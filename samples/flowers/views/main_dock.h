@@ -1,5 +1,5 @@
-#ifndef FLOWER_MAIN_DOCK_H_
-#define FLOWER_MAIN_DOCK_H_
+#ifndef UNREAL_MAIN_DOCK_H_
+#define UNREAL_MAIN_DOCK_H_
 
 #include <qwidget.h>
 #include <qtimer.h>
@@ -9,8 +9,8 @@
 #include <octoon/octoon.h>
 #include <octoon/game_listener.h>
 
-#include "flower_profile.h"
-#include "flower_behaviour.h"
+#include "unreal_profile.h"
+#include "unreal_behaviour.h"
 
 #include "views/splash_screen.h"
 #include "views/status_bar.h"
@@ -25,7 +25,7 @@
 #include "views/record_dock.h"
 #include "views/camera_dock.h"
 
-namespace flower
+namespace unreal
 {
 	class MainDock final : public QMainWindow
 	{
@@ -65,7 +65,7 @@ namespace flower
 		octoon::GameAppPtr gameApp_;
 		octoon::GameObjectPtr behaviour_;
 
-		std::shared_ptr<FlowerProfile> profile_;
+		std::shared_ptr<UnrealProfile> profile_;
 		std::shared_ptr<SplashListener> listener_;
 
 		std::unique_ptr<StatusBar> statusBar_;

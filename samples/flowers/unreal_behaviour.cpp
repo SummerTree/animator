@@ -1,45 +1,45 @@
-#include "flower_behaviour.h"
+#include "unreal_behaviour.h"
 #include <filesystem>
 
-namespace flower
+namespace unreal
 {
-	OctoonImplementSubClass(FlowerBehaviour, octoon::GameComponent, "FlowerBehaviour")
+	OctoonImplementSubClass(UnrealBehaviour, octoon::GameComponent, "FlowerBehaviour")
 
-		FlowerBehaviour::FlowerBehaviour() noexcept
+		UnrealBehaviour::UnrealBehaviour() noexcept
 	{
 	}
 
-	FlowerBehaviour::FlowerBehaviour(const std::shared_ptr<FlowerProfile>& profile) noexcept
+	UnrealBehaviour::UnrealBehaviour(const std::shared_ptr<UnrealProfile>& profile) noexcept
 		: profile_(profile)
 	{
 	}
 
-	FlowerBehaviour::~FlowerBehaviour() noexcept
+	UnrealBehaviour::~UnrealBehaviour() noexcept
 	{
 	}
 
 	void
-	FlowerBehaviour::addComponent(IFlowerComponent* component) noexcept
+	UnrealBehaviour::addComponent(IUnrealComponent* component) noexcept
 	{
 		components_.push_back(component);
 	}
 
 	void
-	FlowerBehaviour::removeComponent(const IFlowerComponent* component) noexcept
+	UnrealBehaviour::removeComponent(const IUnrealComponent* component) noexcept
 	{
 		auto it = std::find(components_.begin(), components_.end(), component);
 		if (it != components_.end())
 			components_.erase(it);
 	}
 
-	const std::vector<IFlowerComponent*>&
-	FlowerBehaviour::getComponents() const noexcept
+	const std::vector<IUnrealComponent*>&
+	UnrealBehaviour::getComponents() const noexcept
 	{
 		return components_;
 	}
 
-	IFlowerComponent*
-	FlowerBehaviour::getComponent(const std::type_info& type) const noexcept
+	IUnrealComponent*
+	UnrealBehaviour::getComponent(const std::type_info& type) const noexcept
 	{
 		for (auto& it : components_)
 		{
@@ -51,7 +51,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::initializeComponents() noexcept(false)
+	UnrealBehaviour::initializeComponents() noexcept(false)
 	{
 		auto feature = this->tryGetFeature<octoon::GameBaseFeature>();
 
@@ -69,17 +69,17 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::disableComponents() noexcept
+	UnrealBehaviour::disableComponents() noexcept
 	{
 		for (auto& it : components_)
 			it->onDisable();
 	}
 
 	void
-	FlowerBehaviour::onActivate() noexcept(false)
+	UnrealBehaviour::onActivate() noexcept(false)
 	{
 		if (!profile_)
-			profile_ = FlowerProfile::load("sys:config/config.conf");
+			profile_ = UnrealProfile::load("sys:config/config.conf");
 
 		if (!std::filesystem::exists(profile_->resourceModule->rootPath))
 			std::filesystem::create_directory(profile_->resourceModule->rootPath);
@@ -90,7 +90,7 @@ namespace flower
 		if (!std::filesystem::exists(profile_->resourceModule->materialPath))
 			std::filesystem::create_directory(profile_->resourceModule->materialPath);
 
-		context_ = std::make_shared<RabbitContext>();
+		context_ = std::make_shared<UnrealContext>();
 		context_->behaviour = this;
 		context_->profile = profile_.get();
 
@@ -154,17 +154,17 @@ namespace flower
 			auto gameObjectManager = baseFeature->getGameObjectManager();
 			if (gameObjectManager)
 			{
-				gameObjectManager->addMessageListener("feature:input:mousemove", std::bind(&FlowerBehaviour::onMouseMotion, this, std::placeholders::_1));
-				gameObjectManager->addMessageListener("feature:input:mousedown", std::bind(&FlowerBehaviour::onMouseDown, this, std::placeholders::_1));
-				gameObjectManager->addMessageListener("feature:input:mouseup", std::bind(&FlowerBehaviour::onMouseUp, this, std::placeholders::_1));
-				gameObjectManager->addMessageListener("feature:input:drop", std::bind(&FlowerBehaviour::onDrop, this, std::placeholders::_1));
-				gameObjectManager->addMessageListener("feature:input:resize", std::bind(&FlowerBehaviour::onResize, this, std::placeholders::_1));
+				gameObjectManager->addMessageListener("feature:input:mousemove", std::bind(&UnrealBehaviour::onMouseMotion, this, std::placeholders::_1));
+				gameObjectManager->addMessageListener("feature:input:mousedown", std::bind(&UnrealBehaviour::onMouseDown, this, std::placeholders::_1));
+				gameObjectManager->addMessageListener("feature:input:mouseup", std::bind(&UnrealBehaviour::onMouseUp, this, std::placeholders::_1));
+				gameObjectManager->addMessageListener("feature:input:drop", std::bind(&UnrealBehaviour::onDrop, this, std::placeholders::_1));
+				gameObjectManager->addMessageListener("feature:input:resize", std::bind(&UnrealBehaviour::onResize, this, std::placeholders::_1));
 			}
 		}
 	}
 
 	void
-	FlowerBehaviour::onDeactivate() noexcept
+	UnrealBehaviour::onDeactivate() noexcept
 	{
 		this->disableComponents();
 
@@ -189,16 +189,16 @@ namespace flower
 			auto gameObjectManager = baseFeature->getGameObjectManager();
 			if (gameObjectManager)
 			{
-				gameObjectManager->removeMessageListener("feature:input:mousemove", std::bind(&FlowerBehaviour::onMouseMotion, this, std::placeholders::_1));
-				gameObjectManager->removeMessageListener("feature:input:mousedown", std::bind(&FlowerBehaviour::onMouseDown, this, std::placeholders::_1));
-				gameObjectManager->removeMessageListener("feature:input:mouseup", std::bind(&FlowerBehaviour::onMouseUp, this, std::placeholders::_1));
-				gameObjectManager->removeMessageListener("feature:input:drop", std::bind(&FlowerBehaviour::onDrop, this, std::placeholders::_1));
+				gameObjectManager->removeMessageListener("feature:input:mousemove", std::bind(&UnrealBehaviour::onMouseMotion, this, std::placeholders::_1));
+				gameObjectManager->removeMessageListener("feature:input:mousedown", std::bind(&UnrealBehaviour::onMouseDown, this, std::placeholders::_1));
+				gameObjectManager->removeMessageListener("feature:input:mouseup", std::bind(&UnrealBehaviour::onMouseUp, this, std::placeholders::_1));
+				gameObjectManager->removeMessageListener("feature:input:drop", std::bind(&UnrealBehaviour::onDrop, this, std::placeholders::_1));
 			}
 		}
 	}
 
 	void
-	FlowerBehaviour::onFixedUpdate() noexcept
+	UnrealBehaviour::onFixedUpdate() noexcept
 	{
 		for (auto& it : components_)
 		{
@@ -208,7 +208,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::onUpdate() noexcept
+	UnrealBehaviour::onUpdate() noexcept
 	{
 		for (auto& it : components_)
 		{
@@ -218,7 +218,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::onLateUpdate() noexcept
+	UnrealBehaviour::onLateUpdate() noexcept
 	{
 		for (auto& it : components_)
 		{
@@ -228,7 +228,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::onDrop(const std::any& data) noexcept
+	UnrealBehaviour::onDrop(const std::any& data) noexcept
 	{
 		if (data.type() == typeid(std::vector<const char*>))
 		{
@@ -239,7 +239,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::onMouseMotion(const std::any& data) noexcept
+	UnrealBehaviour::onMouseMotion(const std::any& data) noexcept
 	{
 		auto event = std::any_cast<octoon::input::InputEvent>(data);
 		for (auto& it : components_)
@@ -266,7 +266,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::onMouseDown(const std::any& data) noexcept
+	UnrealBehaviour::onMouseDown(const std::any& data) noexcept
 	{
 		auto event = std::any_cast<octoon::input::InputEvent>(data);
 		for (auto& it : components_)
@@ -293,7 +293,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::onMouseUp(const std::any& data) noexcept
+	UnrealBehaviour::onMouseUp(const std::any& data) noexcept
 	{
 		auto event = std::any_cast<octoon::input::InputEvent>(data);
 		for (auto& it : components_)
@@ -320,7 +320,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::onResize(const std::any& data) noexcept
+	UnrealBehaviour::onResize(const std::any& data) noexcept
 	{
 		auto event = std::any_cast<octoon::input::InputEvent>(data);
 		for (auto& it : components_)
@@ -330,14 +330,14 @@ namespace flower
 		}
 	}
 
-	const std::shared_ptr<FlowerProfile>&
-	FlowerBehaviour::getProfile() const noexcept
+	const std::shared_ptr<UnrealProfile>&
+	UnrealBehaviour::getProfile() const noexcept
 	{
 		return profile_;
 	}
 
 	void
-	FlowerBehaviour::open(std::string_view path) noexcept(false)
+	UnrealBehaviour::open(std::string_view path) noexcept(false)
 	{
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".pmm")
@@ -357,19 +357,19 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::close() noexcept
+	UnrealBehaviour::close() noexcept
 	{
 		this->profile_->entitiesModule->objects.clear();
 	}
 
 	bool
-	FlowerBehaviour::isOpen() const noexcept
+	UnrealBehaviour::isOpen() const noexcept
 	{
 		return !profile_->entitiesModule->objects.empty();
 	}
 
 	void
-	FlowerBehaviour::openModel() noexcept
+	UnrealBehaviour::openModel() noexcept
 	{
 		auto pathLimits = this->profile_->fileModule->PATHLIMIT;
 		std::vector<std::string::value_type> filepath(pathLimits);
@@ -378,7 +378,7 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::saveModel() noexcept
+	UnrealBehaviour::saveModel() noexcept
 	{
 		auto pathLimits = this->profile_->fileModule->PATHLIMIT;
 		std::vector<std::string::value_type> filepath(pathLimits);
@@ -387,19 +387,19 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::play() noexcept
+	UnrealBehaviour::play() noexcept
 	{
 		playerComponent_->play();
 	}
 
 	void
-	FlowerBehaviour::pause() noexcept
+	UnrealBehaviour::pause() noexcept
 	{
 		playerComponent_->pause();
 	}
 
 	bool
-	FlowerBehaviour::startRecord(std::string_view filepath) noexcept
+	UnrealBehaviour::startRecord(std::string_view filepath) noexcept
 	{
 		try
 		{
@@ -418,45 +418,45 @@ namespace flower
 	}
 
 	void
-	FlowerBehaviour::stopRecord() noexcept
+	UnrealBehaviour::stopRecord() noexcept
 	{
 		this->playerComponent_->pause();
 		this->recordComponent_->stopRecord();
 	}
 
 	void
-	FlowerBehaviour::loadAudio(std::string_view filepath) noexcept
+	UnrealBehaviour::loadAudio(std::string_view filepath) noexcept
 	{
 		entitiesComponent_->importAudio(filepath);
 	}
 
 	void
-	FlowerBehaviour::setVolume(float volume) noexcept
+	UnrealBehaviour::setVolume(float volume) noexcept
 	{
 		entitiesComponent_->setVolume(volume);
 	}
 
 	float
-	FlowerBehaviour::getVolume() const noexcept
+	UnrealBehaviour::getVolume() const noexcept
 	{
 		return entitiesComponent_->getVolume();
 	}
 
 	void
-	FlowerBehaviour::clearAudio() noexcept
+	UnrealBehaviour::clearAudio() noexcept
 	{
 		entitiesComponent_->clearAudio();
 	}
 
 	void
-	FlowerBehaviour::renderPicture(std::string_view filepath) noexcept(false)
+	UnrealBehaviour::renderPicture(std::string_view filepath) noexcept(false)
 	{
 		recordComponent_->setActive(true);
 		recordComponent_->captureImage(filepath);
 	}
 
 	std::optional<octoon::RaycastHit>
-	FlowerBehaviour::raycastHit(const octoon::math::float2& pos) noexcept
+	UnrealBehaviour::raycastHit(const octoon::math::float2& pos) noexcept
 	{
 		if (this->profile_->entitiesModule->camera)
 		{
@@ -474,8 +474,8 @@ namespace flower
 	}
 
 	octoon::GameComponentPtr
-	FlowerBehaviour::clone() const noexcept
+	UnrealBehaviour::clone() const noexcept
 	{
-		return std::make_shared<FlowerBehaviour>();
+		return std::make_shared<UnrealBehaviour>();
 	}
 }

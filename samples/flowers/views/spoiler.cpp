@@ -1,7 +1,7 @@
 #include "spoiler.h"
 #include <qpropertyanimation.h>
 
-namespace flower
+namespace unreal
 {
 	Spoiler::Spoiler(const QString& title, const int animationDuration, QWidget* parent)
 		: QWidget(parent)

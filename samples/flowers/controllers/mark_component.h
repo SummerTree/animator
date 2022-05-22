@@ -1,12 +1,12 @@
-#ifndef FLOWER_MARK_COMPONENT_H_
-#define FLOWER_MARK_COMPONENT_H_
+#ifndef UNREAL_MARK_COMPONENT_H_
+#define UNREAL_MARK_COMPONENT_H_
 
-#include "../flower_component.h"
+#include "../unreal_component.h"
 #include "../module/mark_module.h"
 
-namespace flower
+namespace unreal
 {
-	class MarkComponent final : public RabbitComponent<MarkModule>
+	class MarkComponent final : public UnrealComponent<MarkModule>
 	{
 	public:
 		MarkComponent() noexcept;

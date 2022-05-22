@@ -1,5 +1,5 @@
-#ifndef FLOWER_SPOILER_H_
-#define FLOWER_SPOILER_H_
+#ifndef UNREAL_SPOILER_H_
+#define UNREAL_SPOILER_H_
 
 #include <qframe.h>
 #include <QParallelAnimationGroup>
@@ -7,7 +7,7 @@
 #include <qtoolbutton.h>
 #include <qgridlayout.h>
 
-namespace flower
+namespace unreal
 {
 	class Spoiler final : public QWidget
 	{

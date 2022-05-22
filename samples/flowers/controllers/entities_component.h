@@ -1,17 +1,17 @@
-#ifndef FLOWER_ENTITIES_COMPONENT_H_
-#define FLOWER_ENTITIES_COMPONENT_H_
+#ifndef UNREAL_ENTITIES_COMPONENT_H_
+#define UNREAL_ENTITIES_COMPONENT_H_
 
 #include "../utils/pmm.h"
-#include "../flower_component.h"
+#include "../unreal_component.h"
 #include "../module/file_module.h"
 #include "../module/entities_module.h"
 
 #include <optional>
 #include <octoon/octoon.h>
 
-namespace flower
+namespace unreal
 {
-	class EntitiesComponent final : public RabbitComponent<EntitiesModule>
+	class EntitiesComponent final : public UnrealComponent<EntitiesModule>
 	{
 	public:
 		EntitiesComponent() noexcept;

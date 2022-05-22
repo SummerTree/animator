@@ -1,20 +1,20 @@
-#ifndef FLOWER_MAIN_LIGHT_WINDOW_H_
-#define FLOWER_MAIN_LIGHT_WINDOW_H_
+#ifndef UNREAL_MAIN_LIGHT_WINDOW_H_
+#define UNREAL_MAIN_LIGHT_WINDOW_H_
 
 #include <qwidget.h>
 #include <qlayout.h>
 #include <qscrollarea.h>
 
-#include "flower_profile.h"
+#include "unreal_profile.h"
 #include "color_dialog.h"
 
-namespace flower
+namespace unreal
 {
 	class MainLightDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<flower::FlowerProfile>& profile);
+		MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<unreal::UnrealProfile>& profile);
 		~MainLightDock();
 
 		void repaint();
@@ -61,7 +61,7 @@ namespace flower
 		QVBoxLayout* mainLayout_;
 		QToolButton* resetButton_;
 		QWidget* mainWidget_;
-		std::shared_ptr<flower::FlowerProfile> profile_;
+		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 }
 

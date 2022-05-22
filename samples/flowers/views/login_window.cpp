@@ -4,7 +4,7 @@
 #include <qgraphicslinearlayout.h>
 #include <qapplication.h>
 
-namespace flower
+namespace unreal
 {
 	LoginWidget::LoginWidget(QWidget* parent) noexcept
 		: QWidget(parent)
@@ -346,7 +346,7 @@ namespace flower
 			passwordEdit_->setEchoMode(QLineEdit::PasswordEchoOnEdit);
 	}
 
-	LoginWindow::LoginWindow(const std::shared_ptr<flower::FlowerBehaviour>& behaviour) noexcept
+	LoginWindow::LoginWindow(const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept
 		: behaviour_(behaviour)
 		, allowMove_(false)
 		, loginWidget_(std::make_unique<LoginWidget>(this))

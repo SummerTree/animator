@@ -13,10 +13,10 @@
 #include <qstring.h>
 #include <quuid.h>
 
-#include "../flower_profile.h"
-#include "../flower_behaviour.h"
+#include "../unreal_profile.h"
+#include "../unreal_behaviour.h"
 
-namespace flower
+namespace unreal
 {
 	MaterialComponent::MaterialComponent() noexcept
 		: previewWidth_(128)
