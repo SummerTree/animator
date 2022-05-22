@@ -401,43 +401,43 @@ $20 (Original cost $40)</source>
         <translation>花楹渲染器(内测版本)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="225"/>
-        <location filename="../views/main_dock.cpp" line="276"/>
-        <location filename="../views/main_dock.cpp" line="325"/>
-        <location filename="../views/main_dock.cpp" line="375"/>
-        <location filename="../views/main_dock.cpp" line="423"/>
-        <location filename="../views/main_dock.cpp" line="473"/>
+        <location filename="../views/main_dock.cpp" line="227"/>
+        <location filename="../views/main_dock.cpp" line="280"/>
+        <location filename="../views/main_dock.cpp" line="331"/>
+        <location filename="../views/main_dock.cpp" line="383"/>
+        <location filename="../views/main_dock.cpp" line="433"/>
+        <location filename="../views/main_dock.cpp" line="483"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="226"/>
-        <location filename="../views/main_dock.cpp" line="277"/>
+        <location filename="../views/main_dock.cpp" line="228"/>
+        <location filename="../views/main_dock.cpp" line="281"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="237"/>
-        <location filename="../views/main_dock.cpp" line="287"/>
-        <location filename="../views/main_dock.cpp" line="337"/>
-        <location filename="../views/main_dock.cpp" line="386"/>
-        <location filename="../views/main_dock.cpp" line="434"/>
-        <location filename="../views/main_dock.cpp" line="484"/>
-        <location filename="../views/main_dock.cpp" line="542"/>
-        <location filename="../views/main_dock.cpp" line="569"/>
+        <location filename="../views/main_dock.cpp" line="239"/>
+        <location filename="../views/main_dock.cpp" line="291"/>
+        <location filename="../views/main_dock.cpp" line="343"/>
+        <location filename="../views/main_dock.cpp" line="394"/>
+        <location filename="../views/main_dock.cpp" line="444"/>
+        <location filename="../views/main_dock.cpp" line="494"/>
+        <location filename="../views/main_dock.cpp" line="552"/>
+        <location filename="../views/main_dock.cpp" line="579"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="326"/>
-        <location filename="../views/main_dock.cpp" line="376"/>
-        <location filename="../views/main_dock.cpp" line="424"/>
-        <location filename="../views/main_dock.cpp" line="474"/>
+        <location filename="../views/main_dock.cpp" line="332"/>
+        <location filename="../views/main_dock.cpp" line="384"/>
+        <location filename="../views/main_dock.cpp" line="434"/>
+        <location filename="../views/main_dock.cpp" line="484"/>
         <source>Fail to get core component.</source>
         <translation>获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="543"/>
+        <location filename="../views/main_dock.cpp" line="553"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
