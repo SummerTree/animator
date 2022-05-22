@@ -38,6 +38,8 @@ namespace octoon
 		void setSolverIterationCounts(std::uint32_t minPositionIters, std::uint32_t minVelocityIters) noexcept;
 		void setLinearVelocity(const math::float3& linearVelocity) noexcept;
 		void setAngularVelocity(const math::float3& angularVelocity) noexcept;
+		void setInterpolationLinearVelocity(const math::float3& value) noexcept;
+		void setInterpolationAngularVelocity(const math::float3& value) noexcept;
 
         float getDynamicFriction() const;
         float getStaticFriction() const;

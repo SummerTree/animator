@@ -133,6 +133,20 @@ namespace octoon
 	}
 
 	void
+	RigidbodyComponent::setInterpolationLinearVelocity(const math::float3& value) noexcept
+	{
+		if (rigidbody_)
+			rigidbody_->setAngularVelocity(value);
+	}
+
+	void
+	RigidbodyComponent::setInterpolationAngularVelocity(const math::float3& value) noexcept
+	{
+		if (rigidbody_)
+			rigidbody_->setAngularVelocity(value);
+	}
+
+	void
 	RigidbodyComponent::setMass(float mass) noexcept
 	{
 		if (mass_ != mass)

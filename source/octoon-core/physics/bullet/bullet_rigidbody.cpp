@@ -13,10 +13,12 @@ namespace octoon
 	{
 		btVector3 localInertia(0.0f, 0.0f, 0.0f);
 
-		rigidbody_ = std::make_unique<btRigidBody>(1.0f, nullptr, nullptr, localInertia);
+		btRigidBody::btRigidBodyConstructionInfo info(desc.mass, 0, 0, localInertia);
+		info.m_additionalDamping = true;
+
+		rigidbody_ = std::make_unique<btRigidBody>(info);
 		rigidbody_->setUserPointer(this);
 		rigidbody_->setMassProps(desc.mass, localInertia);
-		rigidbody_->updateInertiaTensor();
 		rigidbody_->setWorldTransform(transform_);
 
 		if (desc.type == PhysicsRigidbodyType::Static)
@@ -226,6 +228,18 @@ namespace octoon
 		rigidbody_->setAngularVelocity(btVector3(value.x, value.y, value.z));
 	}
 
+	void
+	BulletRigidbody::setInterpolationLinearVelocity(const math::float3& value)
+	{
+		rigidbody_->setInterpolationLinearVelocity(btVector3(value.x, value.y, value.z));
+	}
+	
+	void
+	BulletRigidbody::setInterpolationAngularVelocity(const math::float3& value)
+	{
+		rigidbody_->setInterpolationAngularVelocity(btVector3(value.x, value.y, value.z));
+	}
+
 	math::float3
 	BulletRigidbody::getLinearVelocity() const
 	{
@@ -266,7 +280,7 @@ namespace octoon
 		{
 			this->setMass(mass_);
 			this->rigidbody_->setCollisionFlags(rigidbody_->getCollisionFlags() & ~btCollisionObject::CF_KINEMATIC_OBJECT);
-			this->rigidbody_->setActivationState(WANTS_DEACTIVATION);
+			this->rigidbody_->setActivationState(ACTIVE_TAG);
 		}
 	}
 

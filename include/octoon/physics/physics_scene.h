@@ -41,6 +41,7 @@ namespace octoon
 		virtual float getFixedTimeStep() noexcept = 0;
 
 		virtual void simulate(float time) = 0;
+		virtual void reset() = 0;
 
 		virtual void fetchResults() = 0;
 

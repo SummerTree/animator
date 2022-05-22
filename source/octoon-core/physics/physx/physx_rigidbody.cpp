@@ -202,6 +202,18 @@ namespace octoon
 		rigidbody_->setAngularVelocity(physx::PxVec3(value.x, value.y, value.z));
 	}
 
+	void
+	PhysxRigidbody::setInterpolationLinearVelocity(const math::float3& value)
+	{
+		assert(false);
+	}
+
+	void
+	PhysxRigidbody::setInterpolationAngularVelocity(const math::float3& value)
+	{
+		assert(false);
+	}
+
 	math::float3
 	PhysxRigidbody::getLinearVelocity() const
 	{

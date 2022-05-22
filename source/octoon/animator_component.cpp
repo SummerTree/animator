@@ -126,10 +126,11 @@ namespace octoon
 					{
 						auto transform = child->getComponent<TransformComponent>();
 						rigidbody->setPositionAndRotation(transform->getTranslate(), transform->getQuaternion());
-						rigidbody->clearForce();
-						rigidbody->clearTorque();
 						rigidbody->setLinearVelocity(math::float3::Zero);
 						rigidbody->setAngularVelocity(math::float3::Zero);
+						rigidbody->setInterpolationLinearVelocity(math::float3::Zero);
+						rigidbody->setInterpolationAngularVelocity(math::float3::Zero);
+						rigidbody->clearForce();
 					}
 				}
 			}

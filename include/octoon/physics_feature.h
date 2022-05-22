@@ -27,6 +27,8 @@ namespace octoon
 
 		void simulate(float delta) noexcept;
 
+		void reset() noexcept;
+
 	public:
 		void onActivate() except override;
 		void onDeactivate() noexcept override;

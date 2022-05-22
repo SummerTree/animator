@@ -165,6 +165,11 @@ namespace octoon
 	}
 
 	void
+	PhysxScene::reset()
+	{
+	}
+
+	void
 	PhysxScene::fetchResults()
 	{
 		physx::PxU32 nbActiveActors;

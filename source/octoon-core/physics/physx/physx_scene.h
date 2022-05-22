@@ -35,6 +35,7 @@ namespace octoon
 		virtual float getFixedTimeStep() noexcept override;
 
 		virtual void simulate(float time) override;
+		virtual void reset() override;
 			
 		virtual void fetchResults() override;
 

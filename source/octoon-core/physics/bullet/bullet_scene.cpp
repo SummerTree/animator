@@ -125,14 +125,24 @@ namespace octoon
 	}
 
 	void
+	BulletScene::reset()
+	{
+		btDispatcher* dispatcher = dynamicsWorld_->getDispatcher();
+
+		dynamicsWorld_->getBroadphase()->resetPool(dispatcher);
+		dynamicsWorld_->getConstraintSolver()->reset();
+		dynamicsWorld_->clearForces();
+	}
+
+	void
 	BulletScene::fetchResults()
 	{
-		auto rigidbodies = this->dynamicsWorld_->getNonStaticRigidBodies();
+		auto rigidbodies = this->dynamicsWorld_->getCollisionObjectArray();
 		auto rigidbodiesNums = rigidbodies.size();
 
 		for (int i = 0; i < rigidbodiesNums; ++i)
 		{
-			btRigidBody* body = rigidbodies[i];
+			btRigidBody* body = btRigidBody::upcast(rigidbodies[i]);
 			if (body->isActive())
 			{
 				PhysicsListener* listener = static_cast<PhysicsListener*>(body->getUserPointer());

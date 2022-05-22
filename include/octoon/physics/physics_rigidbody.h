@@ -69,6 +69,9 @@ namespace octoon
 		virtual void setLinearVelocity(const math::float3& value) = 0;
 		virtual void setAngularVelocity(const math::float3& value) = 0;
 
+		virtual void setInterpolationLinearVelocity(const math::float3& value) = 0;
+		virtual void setInterpolationAngularVelocity(const math::float3& value) = 0;
+
 		virtual math::float3 getPosition() = 0;
 		virtual math::Quaternion getRotation() = 0;
 

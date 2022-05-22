@@ -77,8 +77,18 @@ namespace octoon
 	void
 	PhysicsFeature::simulate(float delta) noexcept
 	{
-		physicsScene->simulate(delta);
-		physicsScene->fetchResults();
+		if (physicsScene)
+		{
+			physicsScene->simulate(delta);
+			physicsScene->fetchResults();
+		}
+	}
+
+	void
+	PhysicsFeature::reset() noexcept
+	{
+		if (physicsScene)
+			physicsScene->reset();
 	}
 
 	void

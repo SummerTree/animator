@@ -487,7 +487,7 @@ namespace flower
 		if (physicsFeature)
 		{
 			physicsFeature->setEnableSimulate(true);
-			physicsFeature->setGravity(context->physicsModule->gravity);
+			physicsFeature->setGravity(context->physicsModule->gravity * context->physicsModule->gravityScale);
 			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
 			physicsFeature->setFixedTimeStep(this->getModel()->previewTimeStep);
 		}
