@@ -111,9 +111,7 @@ namespace octoon
 
 		for (int i = 0; i < collisionNums; ++i)
 		{
-			btCollisionObject* obj = this->dynamicsWorld_->getCollisionObjectArray()[i];
-			btRigidBody* body = btRigidBody::upcast(obj);
-
+			btRigidBody* body = btRigidBody::upcast(collision[i]);
 			if (body->getUserIndex3())
 			{
 				this->dynamicsWorld_->removeRigidBody(body);
@@ -134,11 +132,10 @@ namespace octoon
 
 		for (int i = 0; i < rigidbodiesNums; ++i)
 		{
-			btRigidBody* rigidbody = rigidbodies[i];
-
-			if (rigidbody->isActive())
+			btRigidBody* body = rigidbodies[i];
+			if (body->isActive())
 			{
-				PhysicsListener* listener = static_cast<PhysicsListener*>(rigidbody->getUserPointer());
+				PhysicsListener* listener = static_cast<PhysicsListener*>(body->getUserPointer());
 				if (listener)
 					listener->onFetchResult();
 			}
