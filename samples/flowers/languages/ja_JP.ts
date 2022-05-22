@@ -749,8 +749,8 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="192"/>
         <location filename="../views/record_dock.cpp" line="269"/>
-        <location filename="../views/record_dock.cpp" line="352"/>
-        <location filename="../views/record_dock.cpp" line="471"/>
+        <location filename="../views/record_dock.cpp" line="353"/>
+        <location filename="../views/record_dock.cpp" line="472"/>
         <source>Start Render</source>
         <translation type="unfinished"></translation>
     </message>
@@ -765,28 +765,28 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="336"/>
-        <location filename="../views/record_dock.cpp" line="469"/>
+        <location filename="../views/record_dock.cpp" line="337"/>
+        <location filename="../views/record_dock.cpp" line="470"/>
         <source>Stop Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="341"/>
+        <location filename="../views/record_dock.cpp" line="342"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="342"/>
+        <location filename="../views/record_dock.cpp" line="343"/>
         <source>Failed to create file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="331"/>
+        <location filename="../views/record_dock.cpp" line="332"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="331"/>
+        <location filename="../views/record_dock.cpp" line="332"/>
         <source>Save Video</source>
         <translation type="unfinished"></translation>
     </message>

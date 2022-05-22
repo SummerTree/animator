@@ -837,8 +837,8 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="192"/>
         <location filename="../views/record_dock.cpp" line="269"/>
-        <location filename="../views/record_dock.cpp" line="352"/>
-        <location filename="../views/record_dock.cpp" line="471"/>
+        <location filename="../views/record_dock.cpp" line="353"/>
+        <location filename="../views/record_dock.cpp" line="472"/>
         <source>Start Render</source>
         <translation>开始渲染</translation>
     </message>
@@ -857,28 +857,28 @@ $20 (Original cost $40)</source>
         <translation type="vanished">视频信息</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="336"/>
-        <location filename="../views/record_dock.cpp" line="469"/>
+        <location filename="../views/record_dock.cpp" line="337"/>
+        <location filename="../views/record_dock.cpp" line="470"/>
         <source>Stop Render</source>
         <translation>停止渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="341"/>
+        <location filename="../views/record_dock.cpp" line="342"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="342"/>
+        <location filename="../views/record_dock.cpp" line="343"/>
         <source>Failed to create file</source>
         <translation>创建文件失败</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="331"/>
+        <location filename="../views/record_dock.cpp" line="332"/>
         <source>MP4 Files (*.mp4)</source>
         <translation>MP4 Files (*.mp4)</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="331"/>
+        <location filename="../views/record_dock.cpp" line="332"/>
         <source>Save Video</source>
         <translation>保存视频</translation>
     </message>
