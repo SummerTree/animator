@@ -19,6 +19,7 @@ namespace flower
 	bool
 	FrameSequenceComponent::create(std::string_view filepath) noexcept(false)
 	{
+		return false;
 	}
 
 	void
