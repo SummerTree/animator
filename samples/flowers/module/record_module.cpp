@@ -38,8 +38,10 @@ namespace flower
 	void 
 	RecordModule::load(octoon::runtime::json& reader) noexcept
 	{
-		this->width = reader["width"];
-		this->height = reader["height"];
+		if (reader.find("width") != reader.end())
+			this->width = reader["width"];
+		if (reader.find("height") != reader.end())
+			this->height = reader["height"];
 	}
 
 	void 
