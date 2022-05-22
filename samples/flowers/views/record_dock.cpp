@@ -330,6 +330,11 @@ namespace flower
 		{
 			if (!profile_->recordModule->active)
 			{
+				if (profile_->playerModule->endFrame <= profile_->playerModule->startFrame)
+				{
+					QMessageBox::warning(this, tr("Warning"), tr("Start frame must be less than end frame."));
+					return;
+				}
 				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), "", tr("MP4 Files (*.mp4)"));
 				if (!fileName.isEmpty())
 				{
@@ -510,7 +515,14 @@ namespace flower
 	void
 	RecordDock::outputTypeEvent(int index)
 	{
-		// profile_->playerModule->;
+		if (index == 0)
+			profile_->encodeModule->encodeMode = EncodeMode::H264;
+		else if (index == 1)
+			profile_->encodeModule->encodeMode = EncodeMode::H265;
+		else if (index == 2)
+			profile_->encodeModule->encodeMode = EncodeMode::Frame;
+		else
+			throw std::runtime_error("Unsupported EncodeMode");
 	}
 
 	void

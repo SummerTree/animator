@@ -5,7 +5,7 @@ namespace flower
 {
 	OctoonImplementSubClass(FlowerBehaviour, octoon::GameComponent, "FlowerBehaviour")
 
-	FlowerBehaviour::FlowerBehaviour() noexcept
+		FlowerBehaviour::FlowerBehaviour() noexcept
 	{
 	}
 
@@ -59,7 +59,7 @@ namespace flower
 		{
 			if (feature)
 				feature->log("Initialize :" + std::string(it->type_info().name()));
-			
+
 			if (it->getActive())
 				it->onEnable();
 		}
@@ -100,6 +100,7 @@ namespace flower
 		playerComponent_ = std::make_unique<PlayerComponent>();
 		h264Component_ = std::make_unique<H264Component>();
 		h265Component_ = std::make_unique<H265Component>();
+		frameSequenceComponent_ = std::make_unique<FrameSequenceComponent>();
 		uiComponent_ = std::make_unique<UIComponent>();
 		markComponent_ = std::make_unique<MarkComponent>();
 		materialComponent_ = std::make_unique<MaterialComponent>();
@@ -115,6 +116,7 @@ namespace flower
 		playerComponent_->init(context_, profile_->playerModule);
 		h264Component_->init(context_, profile_->encodeModule);
 		h265Component_->init(context_, profile_->encodeModule);
+		frameSequenceComponent_->init(context_, profile_->encodeModule);
 		uiComponent_->init(context_, profile_->recordModule);
 		markComponent_->init(context_, profile_->markModule);
 		materialComponent_->init(context_, profile_->resourceModule);
@@ -138,6 +140,7 @@ namespace flower
 		this->addComponent(recordComponent_.get());
 		this->addComponent(h264Component_.get());
 		this->addComponent(h265Component_.get());
+		this->addComponent(frameSequenceComponent_.get());
 
 		this->initializeComponents();
 
@@ -171,6 +174,7 @@ namespace flower
 		playerComponent_.reset();
 		h264Component_.reset();
 		h265Component_.reset();
+		frameSequenceComponent_.reset();
 		context_.reset();
 		profile_.reset();
 		uiComponent_.reset();
@@ -287,7 +291,7 @@ namespace flower
 			}
 		}
 	}
-	
+
 	void
 	FlowerBehaviour::onMouseUp(const std::any& data) noexcept
 	{

@@ -278,6 +278,12 @@ namespace flower
 				if (!h265->create(filepath))
 					return false;
 			}
+			else if (profile->encodeModule->encodeMode == EncodeMode::Frame)
+			{
+				auto frameEncoder = this->getComponent<FrameSequenceComponent>();
+				if (!frameEncoder->create(filepath))
+					return false;
+			}
 			else
 			{
 				throw std::runtime_error("Unsupported encode mode.");
