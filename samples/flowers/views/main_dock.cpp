@@ -2,6 +2,7 @@
 #include "flower_behaviour.h"
 #include <qdockwidget.h>
 #include <qmessagebox.h>
+#include <qsettings.h>
 #include <QDir>
 
 #include "spdlog/spdlog.h"
@@ -77,6 +78,8 @@ namespace flower
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::materialSignal, this, &MainDock::onMaterialSignal);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::cameraSignal, this, &MainDock::onCameraSignal);
 
+		this->restoreLayout();
+
 		timer.start();
 
 		spdlog::debug("create main dock");
@@ -86,6 +89,7 @@ namespace flower
 	{
 		timer.stop();
 
+		this->saveLayout();
 		this->removeToolBar(toplevelDock_.get());
 		this->removeDockWidget(toolDock_.get());
 		this->removeDockWidget(viewDock_.get());
@@ -99,7 +103,7 @@ namespace flower
 
 		this->setStatusBar(nullptr);
 		this->setCentralWidget(nullptr);
-
+		
 		toplevelDock_.reset();
 		toolDock_.reset();
 		viewDock_.reset();
@@ -123,6 +127,28 @@ namespace flower
 		gameApp_.reset();
 
 		spdlog::debug("Delete main dock");
+	}
+
+	void
+	MainDock::restoreLayout() noexcept
+	{
+		auto layout = QDir::homePath().toStdString() + "/.flower/layout.init";
+		QSettings settings(QString::fromStdString(layout), QSettings::Format::IniFormat);
+		settings.beginGroup("MainDock");
+		restoreGeometry(settings.value("geometry").toByteArray());
+		restoreState(settings.value("state").toByteArray());
+		settings.endGroup();
+	}
+
+	void
+	MainDock::saveLayout() noexcept
+	{
+		auto layout = QDir::homePath().toStdString() + "/.flower/layout.init";
+		QSettings settings(QString::fromStdString(layout), QSettings::Format::IniFormat);
+		settings.beginGroup("MainDock");
+		settings.setValue("geometry", saveGeometry());
+		settings.setValue("state", saveState());
+		settings.endGroup();
 	}
 
 	void
