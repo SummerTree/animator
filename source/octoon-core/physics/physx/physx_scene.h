@@ -19,6 +19,9 @@ namespace octoon
 		PhysxScene(PhysxContext* context, PhysicsSceneDesc desc);
 		virtual ~PhysxScene();
 
+		virtual void setGroundEnable(bool value) noexcept override;
+		virtual bool getGroundEnable() const noexcept override;
+
 		virtual void setGravity(const math::float3& gravity) noexcept override;
 		virtual math::float3 getGravity() const noexcept override;
 

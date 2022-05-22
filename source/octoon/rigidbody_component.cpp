@@ -16,6 +16,7 @@ namespace octoon
 		, restitution_(0.0f)
 		, linearDamping_(0.5f)
 		, angularDamping_(0.5f)
+		, group_(0)
 		, groupMask_(0)
 		, sleepThreshold_(0.005)
 		, minPositionIters_(4)
@@ -75,6 +76,14 @@ namespace octoon
 			rotation_ = quat;
 			position_ = position;
 		}
+	}
+
+	void
+	RigidbodyComponent::setGroup(std::uint8_t group) noexcept
+	{
+		if (rigidbody_)
+			rigidbody_->setGroup(group);
+		group_ = group;
 	}
 
 	void
@@ -261,7 +270,7 @@ namespace octoon
 	std::uint32_t
 	RigidbodyComponent::getGroup() const noexcept
 	{
-		return this->getGameObject()->getLayer();
+		return group_;
 	}
 
 	std::uint16_t
@@ -390,13 +399,6 @@ namespace octoon
 		}
     }
 
-	void
-	RigidbodyComponent::onLayerChangeAfter() noexcept
-	{
-		if (rigidbody_)
-			rigidbody_->setGroup(this->getGameObject()->getLayer());
-	}
-
 	void 
 	RigidbodyComponent::onMoveAfter() noexcept
 	{
@@ -451,7 +453,7 @@ namespace octoon
 				rigidbody_->setRestitution(restitution_);
 				rigidbody_->setDynamicFriction(dynamicFriction_);
 				rigidbody_->setStaticFriction(staticFriction_);
-				rigidbody_->setGroup(this->getGameObject()->getLayer());
+				rigidbody_->setGroup(group_);
 				rigidbody_->setGroupMask(groupMask_);
 				rigidbody_->setKinematic(isKinematic_);
 				rigidbody_->setSleepThreshold(sleepThreshold_);

@@ -19,6 +19,9 @@ namespace octoon
 		BulletScene(PhysicsSceneDesc desc);
 		virtual ~BulletScene();
 
+		virtual void setGroundEnable(bool value) noexcept override;
+		virtual bool getGroundEnable() const noexcept override;
+
 		virtual void setGravity(const math::float3& gravity) noexcept override;
 		virtual math::float3 getGravity() const noexcept override;
 
@@ -45,7 +48,10 @@ namespace octoon
 
     private:
 		int maxSubSteps_;
+		bool groundEnabled_;
 		float fixedTimeStep_;
+		btBoxShape* groundBoxShape_;
+		btCollisionObject* groundCollisionObject_;
 		std::unique_ptr<btOverlapFilterCallback> filterCallback_;
 		std::unique_ptr<btBroadphaseInterface> broadphase_;
 		std::unique_ptr<btCollisionDispatcher> dispatcher_;

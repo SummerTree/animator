@@ -32,6 +32,7 @@ namespace octoon
         void setRestitution(float f);
 		void setLinearDamping(float value) noexcept;
 		void setAngularDamping(float value) noexcept;
+		void setGroup(std::uint8_t group) noexcept;
 		void setGroupMask(std::uint16_t groupMask) noexcept;
 		void setSleepThreshold(float threshold) noexcept;
 		void setEnableCCD(bool enable) noexcept;
@@ -76,7 +77,6 @@ namespace octoon
 
 		void onFetchResult() noexcept override;
 
-		void onLayerChangeAfter() noexcept;
 		void onMoveAfter() noexcept;
 
 	private:
@@ -94,6 +94,7 @@ namespace octoon
 		float linearDamping_;
 		float angularDamping_;
 		float sleepThreshold_;
+		std::uint8_t group_;
 		std::uint16_t groupMask_;
 		std::uint32_t minPositionIters_;
 		std::uint32_t minVelocityIters_;

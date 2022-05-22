@@ -94,6 +94,17 @@ namespace octoon
 	}
 
 	void
+	PhysxScene::setGroundEnable(bool value) noexcept
+	{
+	}
+
+	bool
+	PhysxScene::getGroundEnable() const noexcept
+	{
+		return false;
+	}
+
+	void
 	PhysxScene::setGravity(const math::float3& gravity) noexcept
 	{
 		px_scene->setGravity(physx::PxVec3(gravity.x, gravity.y, gravity.z));
