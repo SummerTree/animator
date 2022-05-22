@@ -3,9 +3,9 @@
 
 #include <flower_component.h>
 
-#include <octoon/raycaster.h>
 #include <octoon/game_object.h>
 #include <octoon/material/material.h>
+#include <octoon/raycaster.h>
 
 #include <module/selector_module.h>
 
@@ -15,7 +15,7 @@ namespace flower
 {
 	class TransformGizmo
 	{
-	public:
+	  public:
 		TransformGizmo();
 		virtual ~TransformGizmo() = default;
 
@@ -28,29 +28,30 @@ namespace flower
 		octoon::GameObjectPtr handleGizmos;
 		octoon::GameObjectPtr pickerGizmos;
 
-	private:
+	  private:
 		TransformGizmo(const TransformGizmo&) = delete;
 		TransformGizmo& operator=(const TransformGizmo&) = delete;
 	};
 
 	class GizmoComponent final : public RabbitComponent<SelectorModule>
 	{
-	public:
+	  public:
 		GizmoComponent() noexcept;
 		virtual ~GizmoComponent() noexcept;
 
-		virtual const std::type_info& type_info() const noexcept
+		virtual const std::type_info&
+		type_info() const noexcept
 		{
 			return typeid(GizmoComponent);
 		}
 
-	private:
+	  private:
 		void handleMouseDown(const octoon::input::InputEvent& event) noexcept;
 		void handleMouseUp(const octoon::input::InputEvent& event) noexcept;
 		void handleMouseMove(const octoon::input::InputEvent& event) noexcept;
 		void handleMouseHover(const octoon::input::InputEvent& event) noexcept;
 
-	private:
+	  private:
 		void onEnable() noexcept;
 		void onDisable() noexcept;
 
@@ -60,15 +61,15 @@ namespace flower
 
 		void onLateUpdate() noexcept override;
 
-	private:
+	  private:
 		std::optional<octoon::RaycastHit> intersectObjects(float x, float y, octoon::GameObjects& pickerGizmos) noexcept;
 		std::optional<octoon::RaycastHit> intersectObjects(float x, float y, octoon::GameObjectPtr& pickerGizmos) noexcept;
 
-	private:
+	  private:
 		GizmoComponent(const GizmoComponent&) = delete;
 		GizmoComponent& operator=(const GizmoComponent&) = delete;
 
-	private:
+	  private:
 		std::string axis_;
 		std::string gizmoMode_;
 		octoon::math::float3 offset_;

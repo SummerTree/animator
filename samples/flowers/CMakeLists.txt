@@ -118,6 +118,8 @@ SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/h264_component.cpp
 	${SOURCE_PATH}/controllers/h265_component.h
 	${SOURCE_PATH}/controllers/h265_component.cpp
+	${SOURCE_PATH}/controllers/frame_sequence_component.h
+	${SOURCE_PATH}/controllers/frame_sequence_component.cpp
 	${SOURCE_PATH}/controllers/mark_component.h
 	${SOURCE_PATH}/controllers/mark_component.cpp
 	${SOURCE_PATH}/controllers/client_component.h
