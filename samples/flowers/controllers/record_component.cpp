@@ -351,6 +351,15 @@ namespace unreal
 				auto h265 = this->getComponent<H265Component>();
 				h265->write(this->denoiseBuffer_.data());
 			}
+			else if (profile->encodeModule->encodeMode == EncodeMode::Frame)
+			{
+				auto frameEncoder = this->getComponent<FrameSequenceComponent>();
+				frameEncoder->write(this->denoiseBuffer_.data());
+			}
+			else
+			{
+				throw std::runtime_error("Unsupported encode mode.");
+			}
 		}
 	}
 }

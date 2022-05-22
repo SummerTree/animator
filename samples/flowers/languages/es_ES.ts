@@ -749,8 +749,8 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="193"/>
         <location filename="../views/record_dock.cpp" line="270"/>
-        <location filename="../views/record_dock.cpp" line="353"/>
-        <location filename="../views/record_dock.cpp" line="472"/>
+        <location filename="../views/record_dock.cpp" line="360"/>
+        <location filename="../views/record_dock.cpp" line="479"/>
         <source>Start Render</source>
         <translation type="unfinished"></translation>
     </message>
@@ -775,28 +775,38 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="338"/>
+        <location filename="../views/record_dock.cpp" line="341"/>
         <source>Save Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="338"/>
+        <location filename="../views/record_dock.cpp" line="341"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="343"/>
-        <location filename="../views/record_dock.cpp" line="470"/>
+        <source>Save Image Sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="343"/>
+        <source>PNG Files (*.png)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="350"/>
+        <location filename="../views/record_dock.cpp" line="477"/>
         <source>Stop Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="347"/>
+        <location filename="../views/record_dock.cpp" line="354"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="347"/>
+        <location filename="../views/record_dock.cpp" line="354"/>
         <source>Failed to create file</source>
         <translation type="unfinished"></translation>
     </message>

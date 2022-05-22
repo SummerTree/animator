@@ -335,7 +335,14 @@ namespace unreal
 					QMessageBox::warning(this, tr("Warning"), tr("Start frame must be less than end frame."));
 					return;
 				}
-				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), "", tr("MP4 Files (*.mp4)"));
+				auto encodeMode = profile_->encodeModule->encodeMode;
+				QString fileName;
+				if (encodeMode == EncodeMode::H264 || encodeMode == EncodeMode::H265)
+					fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), "", tr("MP4 Files (*.mp4)"));
+				else if (encodeMode == EncodeMode::Frame)
+					fileName = QFileDialog::getSaveFileName(this, tr("Save Image Sequence"), "", tr("PNG Files (*.png)"));
+				else
+					throw std::runtime_error("Unknown encode mode");
 				if (!fileName.isEmpty())
 				{
 					if (behaviour->startRecord(fileName.toUtf8().data()))

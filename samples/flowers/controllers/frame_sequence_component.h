@@ -36,6 +36,11 @@ namespace unreal
 		std::uint32_t height_;
 
 		std::string filepath_;
+		std::string dirpath_;
+		std::string filename_;
+		std::string basename_;
+		std::string extension_;
+		std::int32_t count_;
 	};
 
 }
