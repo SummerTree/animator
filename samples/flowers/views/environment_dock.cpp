@@ -553,7 +553,7 @@ namespace flower
 					if (!previewImage->load(QString::fromStdString(previewPath)))
 						throw std::runtime_error("Cannot generate image for preview");
 
-					this->texture_ = octoon::TextureLoader::load(image, hdrPath);
+					this->texture_ = octoon::TextureLoader::load(image, hdrPath, true);
 					this->irradianceTexture_ = octoon::PMREMLoader::load(this->texture_);
 
 					this->setColor(QColor::fromRgbF(1, 1, 1));

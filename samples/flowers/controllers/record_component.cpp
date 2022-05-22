@@ -286,7 +286,7 @@ namespace flower
 			}
 			else
 			{
-				throw std::runtime_error("Unsupported encode mode.");
+				return false;
 			}
 		}
 
