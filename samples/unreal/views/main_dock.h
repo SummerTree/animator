@@ -56,6 +56,8 @@ namespace unreal
 		void open() noexcept(false);
 		void update() noexcept;
 
+		QDockWidget* visableDock() noexcept;
+
 	private:
 		bool init_flag;
 		SplashScreen* splash_;

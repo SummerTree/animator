@@ -206,9 +206,20 @@ namespace unreal
 				if (behaviour)
 				{
 					if (recordDock_->isHidden())
+					{
+						auto widget = this->visableDock();
+						if (widget)
+						{
+							this->tabifyDockWidget(widget, recordDock_.get());
+							widget->hide();
+						}
+
 						recordDock_->show();
+					}
 					else
+					{
 						recordDock_->close();
+					}
 				}
 				else
 				{
@@ -247,9 +258,20 @@ namespace unreal
 				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
 				{
 					if (lightDock_->isHidden())
+					{
+						auto widget = this->visableDock();
+						if (widget)
+						{
+							this->tabifyDockWidget(widget, lightDock_.get());
+							widget->hide();
+						}
+
 						lightDock_->show();
+					}
 					else
+					{
 						lightDock_->close();
+					}
 				}
 			}
 			else
@@ -287,9 +309,20 @@ namespace unreal
 				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
 				{
 					if (mainLightDock_->isHidden())
+					{
+						auto widget = this->visableDock();
+						if (widget)
+						{
+							this->tabifyDockWidget(widget, mainLightDock_.get());
+							widget->hide();
+						}
+
 						mainLightDock_->show();
+					}
 					else
+					{
 						mainLightDock_->close();
+					}
 				}
 			}
 			else
@@ -328,9 +361,20 @@ namespace unreal
 				if (profile_->entitiesModule->enviromentLight && !profile_->playerModule->isPlaying)
 				{
 					if (environmentDock_->isHidden())
+					{
+						auto widget = this->visableDock();
+						if (widget)
+						{
+							this->tabifyDockWidget(widget, environmentDock_.get());
+							widget->hide();
+						}
+
 						environmentDock_->show();
+					}
 					else
+					{
 						environmentDock_->close();
+					}
 				}
 			}
 			else
@@ -367,9 +411,20 @@ namespace unreal
 				if (!profile_->playerModule->isPlaying)
 				{
 					if (materialDock_->isHidden())
+					{
+						auto widget = this->visableDock();
+						if (widget)
+						{
+							this->tabifyDockWidget(widget, materialDock_.get());
+							widget->hide();
+						}
+
 						materialDock_->show();
+					}
 					else
+					{
 						materialDock_->close();
+					}
 				}
 			}
 			else
@@ -406,9 +461,20 @@ namespace unreal
 				if (!profile_->playerModule->isPlaying)
 				{
 					if (cameraDock_->isHidden())
+					{
+						auto widget = this->visableDock();
+						if (widget)
+						{
+							this->tabifyDockWidget(widget, cameraDock_.get());
+							widget->hide();
+						}
+
 						cameraDock_->show();
+					}
 					else
+					{
 						cameraDock_->close();
+					}
 				}
 			}
 			else
@@ -432,6 +498,25 @@ namespace unreal
 
 			msg.exec();
 		}
+	}
+
+	QDockWidget*
+	MainDock::visableDock() noexcept
+	{
+		if (recordDock_->isVisible())
+			return recordDock_.get();
+		if (lightDock_->isVisible())
+			return lightDock_.get();
+		if (mainLightDock_->isVisible())
+			return mainLightDock_.get();
+		if (environmentDock_->isVisible())
+			return environmentDock_.get();
+		if (materialDock_->isVisible())
+			return materialDock_.get();
+		if (cameraDock_->isVisible())
+			return cameraDock_.get();
+
+		return nullptr;
 	}
 
 	void
