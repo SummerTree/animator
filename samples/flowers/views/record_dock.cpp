@@ -516,9 +516,9 @@ namespace flower
 	RecordDock::outputTypeEvent(int index)
 	{
 		if (index == 0)
-			profile_->encodeModule->encodeMode = EncodeMode::H264;
-		else if (index == 1)
 			profile_->encodeModule->encodeMode = EncodeMode::H265;
+		else if (index == 1)
+			profile_->encodeModule->encodeMode = EncodeMode::H264;
 		else if (index == 2)
 			profile_->encodeModule->encodeMode = EncodeMode::Frame;
 		else

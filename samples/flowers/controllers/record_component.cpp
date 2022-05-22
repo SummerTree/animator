@@ -308,7 +308,7 @@ namespace flower
 		{
 			if (profile->encodeModule->encodeMode == EncodeMode::H264)
 			{
-				auto h264 = this->getComponent<H265Component>();
+				auto h264 = this->getComponent<H264Component>();
 				if (h264)
 					h264->close();
 			}
@@ -317,6 +317,16 @@ namespace flower
 				auto h265 = this->getComponent<H265Component>();
 				if (h265)
 					h265->close();
+			}
+			else if (profile->encodeModule->encodeMode == EncodeMode::Frame)
+			{
+				auto frameEncoder = this->getComponent<FrameSequenceComponent>();
+				if (frameEncoder)
+					frameEncoder->close();
+			}
+			else
+			{
+				throw std::runtime_error("Unsupported encode mode.");
 			}
 		}
 
