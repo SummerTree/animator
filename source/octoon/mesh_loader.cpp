@@ -155,11 +155,10 @@ namespace octoon
 
 			if (!bone->getComponent<RigidbodyComponent>())
 			{
-				bone->setLayer(it->group);
-
 				auto component = bone->addComponent<RigidbodyComponent>();
 				component->setName(it->name);
 				component->setMass(it->mass);
+				component->setGroup(it->group);
 				component->setGroupMask(it->groupMask);
 				component->setRestitution(it->elasticity);
 				component->setStaticFriction(it->friction);

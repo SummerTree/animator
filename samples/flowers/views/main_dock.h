@@ -34,6 +34,9 @@ namespace flower
 		MainDock(SplashScreen* splash) noexcept;
 		~MainDock() noexcept;
 
+		void restoreLayout() noexcept;
+		void saveLayout() noexcept;
+
 	private Q_SLOTS:
 		void dragEnterEvent(QDragEnterEvent* event) noexcept override;
 		void dragMoveEvent(QDragMoveEvent* event) noexcept override;

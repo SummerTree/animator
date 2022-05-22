@@ -10,6 +10,7 @@ namespace octoon
 		, physicsScene(nullptr)
 		, gravity_(0.0f, -9.8f, 0.0f)
 		, enableSimulate_(true)
+		, enableGround_(true)
 		, maxSubSteps_(10)
 		, fixedTimeStep_(1.0f / 50.0f)
 	{
@@ -29,6 +30,21 @@ namespace octoon
 	PhysicsFeature::getEnableSimulate() const noexcept
 	{
 		return this->enableSimulate_;
+	}
+
+	void
+	PhysicsFeature::setGroundEnable(bool value) noexcept
+	{
+		if (physicsScene)
+			physicsScene->setGroundEnable(value);
+
+		this->enableGround_;
+	}
+
+	bool
+	PhysicsFeature::getGroundEnable() const noexcept
+	{
+		return this->enableGround_;
 	}
 
 	void
@@ -103,6 +119,7 @@ namespace octoon
 		physicsScene = physicsContext->createScene(physicsSceneDesc);
 		physicsScene->setMaxSubStepCount(maxSubSteps_);
 		physicsScene->setFixedTimeStep(fixedTimeStep_);
+		physicsScene->setGroundEnable(enableGround_);
 	}
 
 	void

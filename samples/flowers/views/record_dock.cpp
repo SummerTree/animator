@@ -45,7 +45,8 @@ namespace flower
 	};
 
 	RecordDock::RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept
-		: behaviour_(behaviour), profile_(profile)
+		: behaviour_(behaviour)
+		, profile_(profile)
 	{
 		this->setObjectName("RecordDock");
 		this->setWindowTitle(tr("Record"));
@@ -303,7 +304,8 @@ namespace flower
 		if (!profile_->playerModule->isPlaying)
 		{
 			auto behaviour = behaviour_->getComponent<FlowerBehaviour>();
-			behaviour->getComponent<OfflineComponent>()->setMaxBounces(value);
+			if (behaviour)
+				behaviour->getComponent<OfflineComponent>()->setMaxBounces(value);
 		}
 		else
 		{

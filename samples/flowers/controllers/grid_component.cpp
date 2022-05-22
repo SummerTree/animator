@@ -21,17 +21,12 @@ namespace flower
 		material->setDepthWriteEnable(false);
 
 		this->gizmo_ = octoon::GameObject::create("CoordinateSystem");
-		this->gizmo_->addComponent<octoon::BoxColliderComponent>(100, 100, 1);
 		this->gizmo_->addComponent<octoon::MeshFilterComponent>(octoon::PlaneMesh::create(100.0f, 100.0f, 20, 20, true));
 		this->gizmo_->addComponent<octoon::MeshRendererComponent>(material)->setRenderOrder(-1);
 
 		auto transform = this->gizmo_->getComponent<octoon::TransformComponent>();
 		transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(octoon::math::PI * 0.5f, 0, 0)));
 		transform->setTranslate(octoon::math::float3::Zero);
-
-		auto rigidbody = this->gizmo_->addComponent<octoon::RigidbodyComponent>();
-		rigidbody->setIsKinematic(true);
-		rigidbody->setGroupMask(0xFFFF);
 	}
 
 	void
