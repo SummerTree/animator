@@ -1,24 +1,25 @@
 #ifndef FLOWER_BEHAVIOUR_H_
 #define FLOWER_BEHAVIOUR_H_
 
-#include "flower_profile.h"
 #include "flower_context.h"
+#include "flower_profile.h"
 
+#include "controllers/client_component.h"
 #include "controllers/entities_component.h"
-#include "controllers/record_component.h"
-#include "controllers/offline_component.h"
-#include "controllers/player_component.h"
+#include "controllers/frame_sequence_component.h"
+#include "controllers/gizmo_component.h"
+#include "controllers/grid_component.h"
 #include "controllers/h264_component.h"
 #include "controllers/h265_component.h"
-#include "controllers/ui_component.h"
+#include "controllers/hdri_component.h"
+#include "controllers/light_component.h"
 #include "controllers/mark_component.h"
 #include "controllers/material_component.h"
-#include "controllers/client_component.h"
+#include "controllers/offline_component.h"
+#include "controllers/player_component.h"
+#include "controllers/record_component.h"
 #include "controllers/selector_component.h"
-#include "controllers/grid_component.h"
-#include "controllers/gizmo_component.h"
-#include "controllers/light_component.h"
-#include "controllers/hdri_component.h"
+#include "controllers/ui_component.h"
 
 #include <octoon/octoon.h>
 
@@ -26,9 +27,7 @@ namespace flower
 {
 	class FlowerBehaviour final : public octoon::GameComponent
 	{
-		OctoonDeclareSubClass(FlowerBehaviour, octoon::GameComponent)
-	public:
-		FlowerBehaviour() noexcept;
+		OctoonDeclareSubClass(FlowerBehaviour, octoon::GameComponent) public : FlowerBehaviour() noexcept;
 		FlowerBehaviour(const std::shared_ptr<FlowerProfile>& profile) noexcept;
 		~FlowerBehaviour() noexcept;
 
@@ -63,12 +62,16 @@ namespace flower
 		void disableComponents() noexcept;
 
 		IFlowerComponent* getComponent(const std::type_info& type) const noexcept;
-		template<typename T>
-		T* getComponent() const noexcept { return dynamic_cast<T*>(this->getComponent(typeid(T))); }
+		template <typename T>
+		T*
+		getComponent() const noexcept
+		{
+			return dynamic_cast<T*>(this->getComponent(typeid(T)));
+		}
 
 		virtual octoon::GameComponentPtr clone() const noexcept override;
 
-	private:
+	  private:
 		void onActivate() noexcept(false) override;
 		void onDeactivate() noexcept override;
 
@@ -84,7 +87,7 @@ namespace flower
 
 		void onResize(const std::any& data) noexcept;
 
-	private:
+	  private:
 		std::shared_ptr<FlowerProfile> profile_;
 		std::shared_ptr<RabbitContext> context_;
 
@@ -94,6 +97,7 @@ namespace flower
 		std::unique_ptr<PlayerComponent> playerComponent_;
 		std::unique_ptr<H264Component> h264Component_;
 		std::unique_ptr<H265Component> h265Component_;
+		std::unique_ptr<FrameSequenceComponent> frameSequenceComponent_;
 		std::unique_ptr<UIComponent> uiComponent_;
 		std::unique_ptr<MarkComponent> markComponent_;
 		std::unique_ptr<MaterialComponent> materialComponent_;
