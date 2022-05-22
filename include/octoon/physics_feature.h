@@ -16,6 +16,9 @@ namespace octoon
 		void setEnableSimulate(bool simulate) noexcept;
 		bool getEnableSimulate() const noexcept;
 
+		void setGroundEnable(bool value) noexcept;
+		bool getGroundEnable() const noexcept;
+
 		void setFixedTimeStep(float fixedTimeStep) noexcept;
 		float getFixedTimeStep() const noexcept;
 
@@ -51,6 +54,7 @@ namespace octoon
 
 	private:
 		bool enableSimulate_;
+		bool enableGround_;
 
 		int maxSubSteps_;
 		float fixedTimeStep_;
