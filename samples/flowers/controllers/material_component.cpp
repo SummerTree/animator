@@ -146,6 +146,17 @@ namespace flower
 				item["color"] = writeFloat3(mat->getColor());
 				item["emissive"] = writeFloat3(mat->getEmissive());
 				item["subsurfaceColor"] = writeFloat3(mat->getSubsurfaceColor());
+				item["depthEnable"] = mat->getDepthEnable();
+				item["depthBiasEnable"] = mat->getDepthBiasEnable();
+				item["depthBoundsEnable"] = mat->getDepthBoundsEnable();
+				item["depthClampEnable"] = mat->getDepthClampEnable();
+				item["depthWriteEnable"] = mat->getDepthWriteEnable();
+				item["stencilEnable"] = mat->getStencilEnable();
+				item["scissorTestEnable"] = mat->getScissorTestEnable();
+				item["depthMin"] = mat->getDepthMin();
+				item["depthMax"] = mat->getDepthMax();
+				item["depthBias"] = mat->getDepthBias();
+				item["depthSlopeScaleBias"] = mat->getDepthSlopeScaleBias();
 
 				std::ofstream ifs(std::filesystem::path(outputPath).append("package.json"), std::ios_base::binary);
 				if (ifs)
@@ -261,6 +272,29 @@ namespace flower
 			if (lightMap != package.end() && (*lightMap).is_string())
 				standard->setLightMap(octoon::TextureLoader::load((*lightMap).get<nlohmann::json::string_t>()));
 
+			auto depthEnable = package.find("depthEnable");
+			auto depthBiasEnable = package.find("depthBiasEnable");
+			auto depthBoundsEnable = package.find("depthBoundsEnable");
+			auto depthClampEnable = package.find("depthClampEnable");
+			auto depthWriteEnable = package.find("depthWriteEnable");
+			auto stencilEnable = package.find("stencilEnable");
+			auto scissorTestEnable = package.find("scissorTestEnable");
+
+			if (depthEnable != package.end() && (*depthEnable).is_boolean())
+				standard->setDepthEnable((*depthEnable).get<nlohmann::json::boolean_t>());
+			if (depthBiasEnable != package.end() && (*depthBiasEnable).is_boolean())
+				standard->setDepthBiasEnable((*depthBiasEnable).get<nlohmann::json::boolean_t>());
+			if (depthBoundsEnable != package.end() && (*depthBoundsEnable).is_boolean())
+				standard->setDepthBoundsEnable((*depthBoundsEnable).get<nlohmann::json::boolean_t>());
+			if (depthClampEnable != package.end() && (*depthClampEnable).is_boolean())
+				standard->setDepthClampEnable((*depthClampEnable).get<nlohmann::json::boolean_t>());
+			if (depthWriteEnable != package.end() && (*depthWriteEnable).is_boolean())
+				standard->setDepthWriteEnable((*depthWriteEnable).get<nlohmann::json::boolean_t>());
+			if (stencilEnable != package.end() && (*stencilEnable).is_boolean())
+				standard->setStencilEnable((*stencilEnable).get<nlohmann::json::boolean_t>());
+			if (scissorTestEnable != package.end() && (*scissorTestEnable).is_boolean())
+				standard->setScissorTestEnable((*scissorTestEnable).get<nlohmann::json::boolean_t>());
+
 			auto emissiveIntensity = package.find("emissiveIntensity");
 			auto opacity = package.find("opacity");
 			auto smoothness = package.find("smoothness");
@@ -277,6 +311,10 @@ namespace flower
 			auto transmission = package.find("transmission");
 			auto lightMapIntensity = package.find("lightMapIntensity");
 			auto gamma = package.find("gamma");
+			auto depthMin = package.find("depthMin");
+			auto depthMax = package.find("depthMax");
+			auto depthBias = package.find("depthBias");
+			auto depthSlopeScaleBias = package.find("depthSlopeScaleBias");
 
 			if (emissiveIntensity != package.end() && (*emissiveIntensity).is_number_float())
 				standard->setEmissiveIntensity((*emissiveIntensity).get<nlohmann::json::number_float_t>());
@@ -310,6 +348,14 @@ namespace flower
 				standard->setLightMapIntensity((*lightMapIntensity).get<nlohmann::json::number_float_t>());
 			if (gamma != package.end() && (*gamma).is_number_float())
 				standard->setGamma((*gamma).get<nlohmann::json::number_float_t>());
+			if (depthMin != package.end() && (*depthMin).is_number_float())
+				standard->setDepthMin((*depthMin).get<nlohmann::json::number_float_t>());
+			if (depthMax != package.end() && (*depthMax).is_number_float())
+				standard->setDepthMax((*depthMax).get<nlohmann::json::number_float_t>());
+			if (depthBias != package.end() && (*depthBias).is_number_float())
+				standard->setDepthBias((*depthBias).get<nlohmann::json::number_float_t>());
+			if (depthSlopeScaleBias != package.end() && (*depthSlopeScaleBias).is_number_float())
+				standard->setDepthSlopeScaleBias((*depthSlopeScaleBias).get<nlohmann::json::number_float_t>());
 
 			auto offset = package.find("offset");
 			auto repeat = package.find("repeat");
