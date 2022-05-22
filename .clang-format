@@ -32,17 +32,18 @@ BraceWrapping:
   AfterExternBlock: true
   BeforeCatch:     true
   BeforeElse:      true
-  IndentBraces:    true
+  IndentBraces:    false
   SplitEmptyFunction: true
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
+  BeforeLambdaBody: false
 BreakBeforeBinaryOperators: All
-BreakBeforeBraces: GNU
+BreakBeforeBraces: Custom
 BreakBeforeInheritanceComma: false
 BreakInheritanceList: BeforeColon
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
-BreakConstructorInitializers: BeforeColon
+BreakConstructorInitializers: BeforeComma
 BreakAfterJavaFieldAnnotations: false
 BreakStringLiterals: true
 ColumnLimit:     0
@@ -103,7 +104,7 @@ SpaceBeforeAssignmentOperators: true
 SpaceBeforeCpp11BracedList: false
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
-SpaceBeforeParens: Never
+SpaceBeforeParens: ControlStatementsExceptControlMacros
 SpaceBeforeRangeBasedForLoopColon: true
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 1
@@ -112,9 +113,10 @@ SpacesInContainerLiterals: true
 SpacesInCStyleCastParentheses: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-Standard:        Cpp11
+Standard:        Latest
 TabWidth:        4
 UseTab:          ForContinuationAndIndentation
 UseCRLF:         true
+LambdaBodyIndentation: OuterScope
 ...
 

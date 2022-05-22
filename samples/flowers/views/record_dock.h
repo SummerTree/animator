@@ -44,6 +44,7 @@ namespace flower
 		void speed4Event(bool checked);
 		void startEvent(int);
 		void endEvent(int);
+		void outputTypeEvent(int);
 		void onSppChanged(int);
 		void onBouncesChanged(int);
 		void onCrfChanged(double);

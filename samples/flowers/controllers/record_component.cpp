@@ -1,10 +1,10 @@
 #include "record_component.h"
 #include "flower_behaviour.h"
-#include <octoon/camera_component.h>
-#include <octoon/image/image.h>
-#include <octoon/hal/graphics.h>
-#include <octoon/video_feature.h>
 #include <OpenImageDenoise/oidn.hpp>
+#include <octoon/camera_component.h>
+#include <octoon/hal/graphics.h>
+#include <octoon/image/image.h>
+#include <octoon/video_feature.h>
 
 namespace flower
 {
@@ -141,7 +141,7 @@ namespace flower
 				}
 			}
 		}
-		
+
 		if (profile->offlineModule->getEnable() && profile->recordModule->denoise)
 		{
 			auto color = oidnMapBuffer(oidnColorBuffer_, OIDN_ACCESS_WRITE_DISCARD, 0, 0);
@@ -230,7 +230,7 @@ namespace flower
 			{
 				auto data = (char*)image.data();
 
-#			pragma omp parallel for num_threads(4)
+#pragma omp parallel for num_threads(4)
 				for (std::int32_t y = 0; y < height; y++)
 				{
 					for (std::uint32_t x = 0; x < width; x++)
@@ -278,12 +278,16 @@ namespace flower
 				if (!h265->create(filepath))
 					return false;
 			}
+			else
+			{
+				throw std::runtime_error("Unsupported encode mode.");
+			}
 		}
 
 		this->setupDenoise();
 
 		profile->recordModule->active = true;
-	
+
 		return true;
 	}
 
