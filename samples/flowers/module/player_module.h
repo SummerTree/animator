@@ -33,7 +33,7 @@ namespace flower
 		std::uint32_t startFrame;
 
 		float playTimeStep;
-		float normalTimeStep;
+		float previewTimeStep;
 		float recordFps;
 
 		float curTime;

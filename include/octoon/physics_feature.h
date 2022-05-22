@@ -16,6 +16,12 @@ namespace octoon
 		void setEnableSimulate(bool simulate) noexcept;
 		bool getEnableSimulate() const noexcept;
 
+		void setFixedTimeStep(float fixedTimeStep) noexcept;
+		float getFixedTimeStep() const noexcept;
+
+		void setSolverIterationCounts(std::uint32_t counts) noexcept;
+		std::uint32_t getSolverIterationCounts() const noexcept;
+
 		void setGravity(const math::float3& gravity) noexcept;
 		const math::float3& getGravity() const noexcept;
 
@@ -45,6 +51,7 @@ namespace octoon
 		bool enableSimulate_;
 
 		int maxSubSteps_;
+		float fixedTimeStep_;
 		math::float3 gravity_;
 
 		std::shared_ptr<PhysicsContext> physicsContext;

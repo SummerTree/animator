@@ -25,6 +25,8 @@ namespace flower
 	public:
 		octoon::math::float3 gravity;
 
+		float fixedTimeStep;
+
 		std::uint32_t playSolverIterationCounts;
 		std::uint32_t recordSolverIterationCounts;
 		std::uint32_t previewSolverIterationCounts;

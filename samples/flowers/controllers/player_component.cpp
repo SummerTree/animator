@@ -22,13 +22,19 @@ namespace flower
 		auto& model = this->getModel();
 		model->isPlaying = true;
 
+		auto& context = this->getContext()->profile;
+
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
-			timeFeature->setTimeStep(model->playTimeStep);
+			timeFeature->setTimeStep(1.0f / model->recordFps);
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
-			physicsFeature->setEnableSimulate(true);
+		{
+			physicsFeature->setEnableSimulate(context->physicsModule->getEnable());
+			physicsFeature->setFixedTimeStep(context->physicsModule->fixedTimeStep);
+			physicsFeature->setSolverIterationCounts(context->physicsModule->playSolverIterationCounts);
+		}
 
 		auto sound = this->getContext()->profile->entitiesModule->sound;
 		if (sound)
@@ -76,13 +82,19 @@ namespace flower
 		model->isPlaying = false;
 		model->takeupTime = 0;
 
+		auto& context = this->getContext()->profile;
+
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
-			timeFeature->setTimeStep(model->normalTimeStep);
+			timeFeature->setTimeStep(model->previewTimeStep);
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
-			physicsFeature->setEnableSimulate(true);
+		{
+			physicsFeature->setEnableSimulate(context->physicsModule->getEnable());
+			physicsFeature->setFixedTimeStep(context->physicsModule->fixedTimeStep);
+			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
+		}
 
 		auto sound = this->getContext()->profile->entitiesModule->sound;
 		if (sound)
@@ -119,13 +131,19 @@ namespace flower
 		model->isPlaying = true;
 		model->takeupTime = 0;
 
+		auto& context = this->getContext()->profile;
+
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
 			timeFeature->setTimeStep(1.0f / model->recordFps);
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
+		{
 			physicsFeature->setEnableSimulate(false);
+			physicsFeature->setFixedTimeStep(context->physicsModule->fixedTimeStep);
+			physicsFeature->setSolverIterationCounts(context->physicsModule->recordSolverIterationCounts);
+		}
 
 		this->timer_.reset();
 
@@ -140,9 +158,11 @@ namespace flower
 		model->isPlaying = false;
 		model->takeupTime = 0;
 
+		auto& context = this->getContext()->profile;
+
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
-			timeFeature->setTimeStep(model->normalTimeStep);
+			timeFeature->setTimeStep(model->previewTimeStep);
 
 		auto camera = this->getContext()->profile->entitiesModule->camera;
 		if (camera)
@@ -213,8 +233,12 @@ namespace flower
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
 		{
-			physicsFeature->simulate(timeFeature->getTimeStep());
-			physicsFeature->setEnableSimulate(true);
+			physicsFeature->setEnableSimulate(context->physicsModule->getEnable());
+			physicsFeature->setFixedTimeStep(context->physicsModule->fixedTimeStep);
+			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
+
+			if (context->physicsModule->getEnable())
+				physicsFeature->simulate(timeFeature->getTimeStep());
 		}
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
@@ -248,6 +272,8 @@ namespace flower
 	{
 		auto& model = this->getModel();
 		model->curTime = std::max(0.0f, model->curTime + delta);
+
+		auto& context = this->getContext()->profile;
 
 		auto sound = this->getContext()->profile->entitiesModule->sound;
 		if (sound)
@@ -299,10 +325,9 @@ namespace flower
 		}
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
-		if (physicsFeature)
+		if (physicsFeature && context->physicsModule->getEnable())
 		{
 			physicsFeature->simulate(std::abs(delta));
-			physicsFeature->setEnableSimulate(true);
 		}
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
@@ -337,6 +362,8 @@ namespace flower
 	{
 		auto& model = this->getModel();
 		model->curTime += delta;
+
+		auto& context = this->getContext()->profile;
 
 		for (auto& it : this->getContext()->profile->entitiesModule->objects)
 		{
@@ -380,11 +407,8 @@ namespace flower
 		}
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
-		if (physicsFeature)
-		{
-			if (!physicsFeature->getEnableSimulate())
-				physicsFeature->simulate(delta);
-		}
+		if (physicsFeature && context->physicsModule->getEnable())
+			physicsFeature->simulate(delta);
 
 		if (camera)
 			this->updateDofTarget();
@@ -454,13 +478,19 @@ namespace flower
 	PlayerComponent::onEnable() noexcept
 	{
 		auto& context = this->getContext()->profile;
-		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
-		if (physicsFeature)
-			physicsFeature->setGravity(context->physicsModule->gravity);
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
-			timeFeature->setTimeStep(this->getModel()->normalTimeStep);
+			timeFeature->setTimeStep(this->getModel()->previewTimeStep);
+
+		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
+		if (physicsFeature)
+		{
+			physicsFeature->setEnableSimulate(true);
+			physicsFeature->setGravity(context->physicsModule->gravity);
+			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
+			physicsFeature->setFixedTimeStep(this->getModel()->previewTimeStep);
+		}
 
 		this->addMessageListener("flower:project:open", [this](const std::any& data)
 		{

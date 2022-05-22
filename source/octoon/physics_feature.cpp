@@ -10,7 +10,8 @@ namespace octoon
 		, physicsScene(nullptr)
 		, gravity_(0.0f, -9.8f, 0.0f)
 		, enableSimulate_(true)
-		, maxSubSteps_(0)
+		, maxSubSteps_(10)
+		, fixedTimeStep_(1.0f / 50.0f)
 	{
 	}
 
@@ -28,6 +29,35 @@ namespace octoon
 	PhysicsFeature::getEnableSimulate() const noexcept
 	{
 		return this->enableSimulate_;
+	}
+
+	void
+	PhysicsFeature::setFixedTimeStep(float fixedTimeStep) noexcept
+	{
+		if (physicsScene)
+			physicsScene->setFixedTimeStep(fixedTimeStep);
+
+		fixedTimeStep_ = fixedTimeStep;
+	}
+
+	float
+	PhysicsFeature::getFixedTimeStep() const noexcept
+	{
+		return fixedTimeStep_;
+	}
+
+	void
+	PhysicsFeature::setSolverIterationCounts(std::uint32_t maxSubSteps) noexcept
+	{
+		if (physicsScene)
+			physicsScene->setMaxSubStepCount(maxSubSteps);
+		maxSubSteps_ = maxSubSteps;
+	}
+
+	std::uint32_t
+	PhysicsFeature::getSolverIterationCounts() const noexcept
+	{
+		return maxSubSteps_;
 	}
 
 	void
@@ -62,6 +92,7 @@ namespace octoon
 		physicsContext = PhysicsSystem::instance()->createContext(PhysicsDevice::Bullet);
 		physicsScene = physicsContext->createScene(physicsSceneDesc);
 		physicsScene->setMaxSubStepCount(maxSubSteps_);
+		physicsScene->setFixedTimeStep(fixedTimeStep_);
 	}
 
 	void
