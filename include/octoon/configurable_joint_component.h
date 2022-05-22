@@ -51,7 +51,8 @@ namespace octoon
 		void setDistanceLimit(float distance) noexcept;
 		void setTwistLimit(float min, float max) noexcept;
 		void setSwingLimit(float y, float z) noexcept;
-		void setPyramidSwingLimit(float min_y, float max_y, float min_z, float max_z) noexcept;
+		void setAngularLimit(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) noexcept;
+		void setPyramidSwingLimit(float minY, float maxY, float minZ, float maxZ) noexcept;
 
 		void setDriveMotionX(float motion) noexcept;
 		void setDriveMotionY(float motion) noexcept;

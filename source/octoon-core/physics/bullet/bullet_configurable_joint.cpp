@@ -305,7 +305,7 @@ namespace octoon
 	BulletConfigurableJoint::setAngularLimit(float min_x, float max_x, float min_y, float max_y, float min_z, float max_z)
 	{
 		_joint->setAngularLowerLimit(btVector3(min_x, min_y, min_z));
-		_joint->setAngularUpperLimit(btVector3(min_y, max_y, max_z));
+		_joint->setAngularUpperLimit(btVector3(max_x, max_y, max_z));
 	}
 
 	void

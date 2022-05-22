@@ -282,6 +282,12 @@ namespace octoon
 	}
 
 	void
+	PhysxConfigurableJoint::setAngularLimit(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
+	{
+		assert(false);
+	}
+
+	void
 	PhysxConfigurableJoint::setDriveMotionX(float motion)
 	{
 		if (motion != 0.0f)

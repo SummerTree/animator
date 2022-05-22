@@ -244,6 +244,19 @@ namespace octoon
 		highAngleZLimit_ = z;
 	}
 
+	void 
+	ConfigurableJointComponent::setAngularLimit(float minX, float maxX, float minY, float maxY, float minZ, float maxZ) noexcept
+	{
+		if (joint_)
+			joint_->setAngularLimit(minX, maxX, minY, maxY, minZ, maxZ);
+		lowAngleXLimit_ = minX;
+		lowAngleYLimit_ = minY;
+		lowAngleZLimit_ = minZ;
+		highAngleXLimit_ = maxX;
+		highAngleYLimit_ = maxY;
+		highAngleZLimit_ = maxZ;
+	}
+
 	void
 	ConfigurableJointComponent::setPyramidSwingLimit(float min_y, float max_y, float min_z, float max_z) noexcept
 	{
@@ -351,6 +364,7 @@ namespace octoon
 				joint_->setDriveAngularX(driveAngular_.x);
 				joint_->setDriveAngularY(driveAngular_.y);
 				joint_->setDriveAngularZ(driveAngular_.z);
+				joint_->setAngularLimit(lowAngleXLimit_, lowAngleYLimit_, lowAngleZLimit_, highAngleXLimit_, highAngleYLimit_, highAngleZLimit_);
 
 				this->setupConfigurableTransform(this->targetPosition_, this->targetRotation_);
 
