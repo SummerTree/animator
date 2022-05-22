@@ -66,7 +66,9 @@ namespace flower
 		MaterialEditWindow(const octoon::GameObjectPtr& behaviour);
 		~MaterialEditWindow();
 
+		void updateMaterial();
 		void updatePreviewImage();
+
 		void setMaterial(const std::shared_ptr<octoon::Material>& material);
 
 	private:
@@ -86,7 +88,6 @@ namespace flower
 
 	public Q_SLOTS:
 		void previewButtonClickEvent();
-
 
 		void itemSelected(QListWidgetItem*);
 
@@ -243,7 +244,6 @@ namespace flower
 		void addItem(const nlohmann::json& package) noexcept;
 
 		void updateItemList();
-		void updateItemList(QListWidgetItem* item);
 
 		void resizeEvent(QResizeEvent* e) noexcept override;
 

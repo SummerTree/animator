@@ -1022,8 +1022,12 @@ namespace flower
 				auto material = materialComponent->getMaterial(uuid);
 				if (material)
 				{
+					materialComponent->addMaterial(this->material_->clone());
+
 					this->material_->copy(*material);
-					this->setMaterial(this->material_);
+
+					this->updateMaterial();
+					this->updatePreviewImage();
 				}
 			}
 		}
@@ -1365,10 +1369,8 @@ namespace flower
 	}
 
 	void
-	MaterialEditWindow::setMaterial(const std::shared_ptr<octoon::Material>& material)
+	MaterialEditWindow::updateMaterial()
 	{
-		this->material_ = material->downcast_pointer<octoon::MeshStandardMaterial>();
-
 		this->opacity_.resetState();
 		this->normal_.resetState();
 		this->roughness_.resetState();
@@ -1449,7 +1451,13 @@ namespace flower
 		auto emissiveColorMap = material_->getEmissiveMap();
 		if (emissiveColorMap)
 			this->setEmissiveMap(QString::fromStdString(emissiveColorMap->getTextureDesc().getName()));
+	}
 
+	void
+	MaterialEditWindow::setMaterial(const std::shared_ptr<octoon::Material>& material)
+	{
+		this->material_ = material->downcast_pointer<octoon::MeshStandardMaterial>();
+		this->updateMaterial();
 		this->updatePreviewImage();
 	}
 
@@ -1719,13 +1727,8 @@ namespace flower
 		: behaviour_(behaviour)
 		, profile_(profile)
 	{
-		mainWidget_ = new QListWidget;
-		mainWidget_->setResizeMode(QListView::Fixed);
-		mainWidget_->setViewMode(QListView::IconMode);
-		mainWidget_->setMovement(QListView::Static);
-		mainWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
+		mainWidget_ = new DraggableListWindow;
 		mainWidget_->setStyleSheet("background:transparent;");
-		mainWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		mainWidget_->setSpacing(0);
 
 		mainLayout_ = new QVBoxLayout(this);
@@ -1774,11 +1777,7 @@ namespace flower
 
 					auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
 					if (meshRenderer)
-					{
-						auto targetMaterial = meshRenderer->getMaterial(hit.mesh);
-						if (targetMaterial)
-							targetMaterial->copy(*material);
-					}
+						meshRenderer->setMaterial(material, hit.mesh);
 				}
 			}
 		}
@@ -1883,67 +1882,6 @@ namespace flower
 		}
 	}
 
-	void
-	MaterialListPanel::updateItemList(QListWidgetItem* item)
-	{
-		auto materialComponent = behaviour_->getComponent<FlowerBehaviour>()->getComponent<MaterialComponent>();
-		if (!materialComponent)
-			return;
-
-		auto package = materialComponent->getPackage(item->data(Qt::UserRole).toString().toStdString());
-		if (package.is_object())
-		{
-			auto widget = mainWidget_->itemWidget(item);
-			if (!widget)
-				return;
-
-			QList<QLabel*> labelList = widget->findChildren<QLabel*>();
-			QLabel* nameLabel = nullptr;
-			QLabel* imageLabel = nullptr;
-
-			for (auto& label : labelList)
-			{
-				auto name = label->objectName();
-				if (label->objectName() == "preview")
-					imageLabel = label;
-				if (label->objectName() == "name")
-					nameLabel = label;
-			}
-
-			if (nameLabel && imageLabel)
-			{
-				auto material = materialComponent->getMaterial(package["uuid"].get<nlohmann::json::string_t>());
-				if (material)
-				{
-					QFontMetrics metrics(nameLabel->font());
-					nameLabel->setText(metrics.elidedText(QString::fromStdString(material->getName()), Qt::ElideRight, imageLabel->width()));
-
-					QPixmap pixmap;
-					materialComponent->createMaterialPreview(material, pixmap, imageLabel->width(), imageLabel->height());
-					imageLabel->setPixmap(pixmap);
-					imageLabel->setToolTip(QString::fromStdString(material->getName()));
-				}
-				else
-				{
-					if (package.find("preview") != package.end())
-					{
-						auto filepath = package["preview"].get<nlohmann::json::string_t>();
-						imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
-					}
-
-					if (package.find("name") != package.end())
-					{
-						QFontMetrics metrics(nameLabel->font());
-
-						auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
-						nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
-						imageLabel->setToolTip(name);
-					}
-				}
-			}
-		}
-	}
-
 	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<FlowerProfile>& profile) noexcept(false)
 		: behaviour_(behaviour)
 		, profile_(profile)
@@ -2033,7 +1971,7 @@ namespace flower
 	{
 		modifyWidget_->hide();
 		materialList_->show();
-		materialList_->updateItemList(selectedItem_);
+		materialList_->updateItemList();
 		this->setWindowTitle(tr("Material"));
 	}
 

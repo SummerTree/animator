@@ -29,6 +29,8 @@ namespace flower
 		void save() const noexcept;
 
 		const std::shared_ptr<octoon::MeshStandardMaterial> getMaterial(std::string_view uuid) noexcept(false);
+
+		bool addMaterial(const std::shared_ptr<octoon::Material>& material);
 		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
 
 		virtual const std::type_info& type_info() const noexcept

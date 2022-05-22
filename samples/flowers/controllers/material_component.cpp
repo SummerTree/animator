@@ -341,6 +341,40 @@ namespace flower
 		}
 	}
 
+	bool
+	MaterialComponent::addMaterial(const std::shared_ptr<octoon::Material>& mat)
+	{
+		if (this->materialSets_.find((void*)mat.get()) == this->materialSets_.end())
+		{
+			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
+
+			auto id = QUuid::createUuid().toString();
+			auto uuid = id.toStdString().substr(1, id.length() - 2);
+
+			auto& color = standard->getColor();
+			auto& colorMap = standard->getColorMap();
+
+			nlohmann::json item;
+			item["uuid"] = uuid;
+			item["name"] = mat->getName();
+			item["color"] = { color.x, color.y, color.z };
+
+			if (colorMap)
+				item["colorMap"] = colorMap->getTextureDesc().getName();
+
+			this->sceneList_ += uuid;
+			this->packageList_[uuid] = item;
+
+			this->materials_[uuid] = standard;
+			this->materialSets_.insert((void*)mat.get());
+			this->materialsRemap_[mat] = uuid;
+
+			return true;
+		}
+
+		return false;
+	}
+
 	void
 	MaterialComponent::createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h)
 	{
@@ -565,33 +599,7 @@ namespace flower
 
 				for (auto& mat : materials)
 				{
-					if (this->materialSets_.find((void*)mat.get()) != this->materialSets_.end())
-						continue;
-
-					auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
-
-					auto id = QUuid::createUuid().toString();
-					auto uuid = id.toStdString().substr(1, id.length() - 2);
-
-					auto& color = standard->getColor();
-					auto& colorMap = standard->getColorMap();
-
-					nlohmann::json item;
-					item["uuid"] = uuid;
-					item["name"] = mat->getName();
-					item["color"] = { color.x, color.y, color.z };
-
-					if (colorMap)
-						item["colorMap"] = colorMap->getTextureDesc().getName();
-
-					this->sceneList_ += uuid;
-					this->packageList_[uuid] = item;
-
-					this->materials_[uuid] = standard;
-					this->materialSets_.insert((void*)mat.get());
-					this->materialsRemap_[mat] = uuid;
-						
-					dirty = true;
+					dirty |= this->addMaterial(mat);
 				}
 
 				if (dirty)

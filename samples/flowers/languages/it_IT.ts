@@ -467,13 +467,13 @@ $20 (Original cost $40)</source>
 <context>
     <name>flower::MaterialDock</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="1952"/>
-        <location filename="../views/material_dock.cpp" line="2037"/>
+        <location filename="../views/material_dock.cpp" line="1890"/>
+        <location filename="../views/material_dock.cpp" line="1975"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2055"/>
+        <location filename="../views/material_dock.cpp" line="1993"/>
         <source>Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
@@ -578,19 +578,19 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1067"/>
-        <location filename="../views/material_dock.cpp" line="1075"/>
-        <location filename="../views/material_dock.cpp" line="1083"/>
-        <location filename="../views/material_dock.cpp" line="1091"/>
-        <location filename="../views/material_dock.cpp" line="1099"/>
-        <location filename="../views/material_dock.cpp" line="1107"/>
-        <location filename="../views/material_dock.cpp" line="1115"/>
-        <location filename="../views/material_dock.cpp" line="1123"/>
-        <location filename="../views/material_dock.cpp" line="1131"/>
-        <location filename="../views/material_dock.cpp" line="1139"/>
-        <location filename="../views/material_dock.cpp" line="1147"/>
-        <location filename="../views/material_dock.cpp" line="1155"/>
-        <location filename="../views/material_dock.cpp" line="1163"/>
+        <location filename="../views/material_dock.cpp" line="1071"/>
+        <location filename="../views/material_dock.cpp" line="1079"/>
+        <location filename="../views/material_dock.cpp" line="1087"/>
+        <location filename="../views/material_dock.cpp" line="1095"/>
+        <location filename="../views/material_dock.cpp" line="1103"/>
+        <location filename="../views/material_dock.cpp" line="1111"/>
+        <location filename="../views/material_dock.cpp" line="1119"/>
+        <location filename="../views/material_dock.cpp" line="1127"/>
+        <location filename="../views/material_dock.cpp" line="1135"/>
+        <location filename="../views/material_dock.cpp" line="1143"/>
+        <location filename="../views/material_dock.cpp" line="1151"/>
+        <location filename="../views/material_dock.cpp" line="1159"/>
+        <location filename="../views/material_dock.cpp" line="1167"/>
         <source>Open Image</source>
         <translation type="unfinished"></translation>
     </message>
