@@ -71,6 +71,13 @@ namespace octoon
 		return listener_;
 	}
 
+	void
+	GameServer::log(std::string_view log) noexcept
+	{
+		if (listener_)
+			listener_->onMessage(log);
+	}
+
 	bool
 	GameServer::isQuitRequest() const noexcept
 	{

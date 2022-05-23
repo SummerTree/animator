@@ -23,6 +23,8 @@ namespace octoon
 		void setGameListener(const GameListenerPtr& listener) noexcept;
 		const GameListenerPtr& getGameListener() const noexcept;
 
+		void log(std::string_view log) noexcept;
+
 		bool isQuitRequest() const noexcept;
 
 		bool openScene(std::string_view scene_name) noexcept;

@@ -7,6 +7,7 @@
 #include <octoon/hal/graphics_system.h>
 #include <octoon/input/input.h>
 #include <octoon/runtime/except.h>
+#include <octoon/game_server.h>
 
 namespace octoon
 {
@@ -124,6 +125,10 @@ namespace octoon
 		context_ = device_->createDeviceContext(contextDesc);
 		if (!context_)
 			throw runtime::runtime_error::create("createDeviceContext() failed");
+
+		this->getGameServer()->log("GraphicsFeature : Graphics Vendor: " + device_->getSystemInfo().graphicsDeviceVendor);
+		this->getGameServer()->log("GraphicsFeature : Graphics Device Name: " + device_->getSystemInfo().graphicsDeviceName);
+		this->getGameServer()->log("GraphicsFeature : Graphics Device Version: " + device_->getSystemInfo().graphicsDeviceVersion);
 	}
 
 	void
