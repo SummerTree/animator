@@ -59,6 +59,30 @@ namespace unreal
 		layoutIntensity_->addWidget(editIntensity_, 0, Qt::AlignRight);
 		layoutIntensity_->setContentsMargins(40, 5, 35, 0);
 
+		labelSize_ = new QLabel();
+		labelSize_->setText(tr("Size"));
+
+		editSize_ = new DoubleSpinBox();
+		editSize_->setFixedWidth(50);
+		editSize_->setMaximum(1.0f);
+		editSize_->setSingleStep(0.05f);
+		editSize_->setAlignment(Qt::AlignRight);
+		editSize_->setValue(profile->sunModule->size);
+		editSize_->setDecimals(1);
+
+		sliderSize_ = new QSlider();
+		sliderSize_->setObjectName("Size");
+		sliderSize_->setOrientation(Qt::Horizontal);
+		sliderSize_->setMinimum(0);
+		sliderSize_->setMaximum(100);
+		sliderSize_->setValue(profile->sunModule->size * 100.0f);
+		sliderSize_->setFixedWidth(250);
+
+		layoutSize_ = new QHBoxLayout();
+		layoutSize_->addWidget(labelSize_, 0, Qt::AlignLeft);
+		layoutSize_->addWidget(editSize_, 0, Qt::AlignRight);
+		layoutSize_->setContentsMargins(40, 5, 35, 0);
+
 		labelRotationX_ = new QLabel();
 		labelRotationX_->setText(tr("Rotation X"));
 
@@ -138,6 +162,8 @@ namespace unreal
 		scrollLayout_->addWidget(colorDialog_, 0, Qt::AlignHCenter | Qt::AlignTop);
 		scrollLayout_->addLayout(layoutIntensity_, 0);
 		scrollLayout_->addWidget(sliderIntensity_, 0, Qt::AlignHCenter);
+		scrollLayout_->addLayout(layoutSize_, 0);
+		scrollLayout_->addWidget(sliderSize_, 0, Qt::AlignHCenter);
 		scrollLayout_->addLayout(layoutRotationX_, 0);
 		scrollLayout_->addWidget(sliderRotationX_, 0, Qt::AlignHCenter);
 		scrollLayout_->addLayout(layoutRotationY_, 0);
@@ -168,6 +194,8 @@ namespace unreal
 		connect(resetButton_, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		connect(editIntensity_, SIGNAL(valueChanged(double)), this, SLOT(intensityEditEvent(double)));
 		connect(sliderIntensity_, SIGNAL(valueChanged(int)), this, SLOT(intensitySliderEvent(int)));
+		connect(editSize_, SIGNAL(valueChanged(double)), this, SLOT(sizeEditEvent(double)));
+		connect(sliderSize_, SIGNAL(valueChanged(int)), this, SLOT(sizeSliderEvent(int)));
 		connect(editRotationX_, SIGNAL(valueChanged(double)), this, SLOT(editRotationXEvent(double)));
 		connect(sliderRotationX_, SIGNAL(valueChanged(int)), this, SLOT(sliderRotationXEvent(int)));
 		connect(editRotationY_, SIGNAL(valueChanged(double)), this, SLOT(editRotationYEvent(double)));
@@ -287,6 +315,32 @@ namespace unreal
 		}
 
 		sliderIntensity_->setValue(value * 10.0f);
+	}
+
+	void
+	MainLightDock::sizeSliderEvent(int value)
+	{
+		if (profile_->entitiesModule->sunLight)
+		{
+			auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
+			if (envLight)
+				envLight->setSize(value / 100.0f);
+		}
+
+		editSize_->setValue(value / 100.0f);
+	}
+
+	void
+	MainLightDock::sizeEditEvent(double value)
+	{
+		if (profile_->entitiesModule->sunLight)
+		{
+			auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
+			if (envLight)
+				envLight->setSize(value);
+		}
+
+		sliderSize_->setValue(value * 100.0f);
 	}
 
 	void

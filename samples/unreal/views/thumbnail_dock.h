@@ -44,7 +44,7 @@ namespace unreal
 		void cameraSignal();
 
 	public:
-		QToolButton* loadButton_;
+		QToolButton* recordButton_;
 		QToolButton* lightButton_;
 		QToolButton* sunButton_;
 		QToolButton* environmentButton_;

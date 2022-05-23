@@ -457,20 +457,25 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/main_light_dock.cpp" line="38"/>
         <source>Intensity</source>
-        <translation>亮度</translation>
+        <translation>光照强度</translation>
     </message>
     <message>
         <location filename="../views/main_light_dock.cpp" line="63"/>
+        <source>Size</source>
+        <translation>光源大小</translation>
+    </message>
+    <message>
+        <location filename="../views/main_light_dock.cpp" line="87"/>
         <source>Rotation X</source>
         <translation>旋转X轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="88"/>
+        <location filename="../views/main_light_dock.cpp" line="112"/>
         <source>Rotation Y</source>
         <translation>旋转Y轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="113"/>
+        <location filename="../views/main_light_dock.cpp" line="137"/>
         <source>Rotation Z</source>
         <translation>旋转Z轴</translation>
     </message>

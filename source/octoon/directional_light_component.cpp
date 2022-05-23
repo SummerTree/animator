@@ -17,6 +17,14 @@ namespace octoon
 	DirectionalLightComponent::~DirectionalLightComponent() noexcept
 	{
 	}
+
+	void
+	DirectionalLightComponent::setSize(float value) noexcept
+	{
+		if (directionalLight_)
+			directionalLight_->setSize(value);
+		LightComponent::setSize(value);
+	}
 	
 	void
 	DirectionalLightComponent::setIntensity(float value) noexcept
@@ -107,6 +115,7 @@ namespace octoon
 		directionalLight_ = std::make_shared<DirectionalLight>();
 		directionalLight_->setLayer(this->getGameObject()->getLayer());
 		directionalLight_->setColor(this->getColor());
+		directionalLight_->setSize(this->getSize());
 		directionalLight_->setIntensity(this->getIntensity());
 		directionalLight_->setShadowBias(this->getShadowBias());
 		directionalLight_->setShadowRadius(this->getShadowRadius());

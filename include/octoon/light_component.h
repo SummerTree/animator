@@ -15,6 +15,9 @@ namespace octoon
 		virtual void setIntensity(float value) noexcept;
 		virtual float getIntensity() const noexcept;
 
+		virtual void setSize(float value) noexcept;
+		virtual float getSize() const noexcept;
+
 		virtual void setColor(const math::float3& value) noexcept;
 		virtual const math::float3& getColor() const noexcept;
 
@@ -23,6 +26,7 @@ namespace octoon
 		LightComponent& operator=(const LightComponent&) = delete;
 
 	protected:
+		float size_;
 		float intensity_;
 		math::float3 color_;
 	};

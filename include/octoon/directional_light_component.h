@@ -13,6 +13,7 @@ namespace octoon
 		DirectionalLightComponent() noexcept;
 		virtual ~DirectionalLightComponent() noexcept;
 
+		void setSize(float value) noexcept override;
 		void setIntensity(float value) noexcept override;
 		void setColor(const math::float3& value) noexcept override;
 

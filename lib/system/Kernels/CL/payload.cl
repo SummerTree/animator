@@ -229,7 +229,7 @@ typedef struct
 	int tex_background;
 	bool ibl_mirror_x;
 	float2 offset;
-	float padding2;
+	float size;
 	float padding3;
 } Light;
 

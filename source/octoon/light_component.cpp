@@ -7,6 +7,7 @@ namespace octoon
 	LightComponent::LightComponent() noexcept
 		: intensity_(1.0f)
 		, color_(math::float3::One)
+		, size_(1.0f)
 	{
 	}
 
@@ -24,6 +25,18 @@ namespace octoon
 	LightComponent::getIntensity() const noexcept
 	{
 		return this->intensity_;
+	}
+
+	void
+	LightComponent::setSize(float value) noexcept
+	{
+		size_ = value;
+	}
+
+	float
+	LightComponent::getSize() const noexcept
+	{
+		return size_;
 	}
 
 	void 

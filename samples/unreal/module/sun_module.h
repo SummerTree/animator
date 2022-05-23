@@ -25,6 +25,7 @@ namespace unreal
 		bool enable;
 
 		float intensity;
+		float size;
 		octoon::math::float3 color;
 		octoon::math::float3 rotation;
 	};

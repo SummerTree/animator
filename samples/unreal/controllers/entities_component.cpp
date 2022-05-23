@@ -513,6 +513,7 @@ namespace unreal
 	{
 		auto mainLight = octoon::GameObject::create("DirectionalLight");
 		mainLight->addComponent<octoon::DirectionalLightComponent>();
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setSize(this->getContext()->profile->sunModule->size);
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setIntensity(this->getContext()->profile->sunModule->intensity);
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setColor(this->getContext()->profile->sunModule->color);
 		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion(octoon::math::radians(this->getContext()->profile->sunModule->rotation)));

@@ -226,7 +226,9 @@ float3 DirectionalLight_Sample(// Emissive object
     // PDF
     float* pdf)
 {
-    *wo = CRAZY_HIGH_DISTANCE * -light->d;
+    float3 wh = Sample_MapToGGX(sample, light->size);
+    float3 d = CRAZY_HIGH_DISTANCE * -light->d;
+    *wo = -d + 2.f * fabs(dot(d, wh)) * wh;
     *pdf = 1.f;
     return light->intensity / PI;
 }

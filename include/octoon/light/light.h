@@ -13,9 +13,11 @@ namespace octoon
 		virtual ~Light() noexcept;
 
 		void setRange(float range) noexcept;
+		void setSize(float size) noexcept;
 		void setIntensity(float intensity) noexcept;
 		void setColor(const math::float3& color) noexcept;
 
+		float getSize() const noexcept;
 		float getRange() const noexcept;
 		float getIntensity() const noexcept;
 
@@ -32,10 +34,11 @@ namespace octoon
 		Light& operator=(const Light&) noexcept = delete;
 
 	private:
-		float lightRange_;
-		float lightIntensity_;
+		float size_;
+		float range_;
+		float intensity_;
 
-		math::float3 lightColor_;
+		math::float3 color_;
 	};
 }
 

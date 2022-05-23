@@ -450,16 +450,21 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/main_light_dock.cpp" line="63"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_light_dock.cpp" line="87"/>
         <source>Rotation X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="88"/>
+        <location filename="../views/main_light_dock.cpp" line="112"/>
         <source>Rotation Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="113"/>
+        <location filename="../views/main_light_dock.cpp" line="137"/>
         <source>Rotation Z</source>
         <translation type="unfinished"></translation>
     </message>

@@ -473,6 +473,8 @@ namespace octoon
 
 		auto& translate = light.getTranslate();
 		auto& direction = light.getForward();
+
+		auto size = light.getSize();
 		auto power = light.getColor() * light.getIntensity();
 
 		if (light.isA<PointLight>())
@@ -480,12 +482,14 @@ namespace octoon
 			clwLight->type = ClwScene::kPoint;
 			clwLight->p = RadeonRays::float3(translate.x, translate.y, translate.z);
 			clwLight->intensity = RadeonRays::float3(power.x, power.y, power.z);
+			clwLight->size = size;
 		}
 		else if (light.isA<DirectionalLight>())
 		{
 			clwLight->type = ClwScene::kDirectional;
 			clwLight->d = RadeonRays::float3(direction.x, direction.y, direction.z);
 			clwLight->intensity = RadeonRays::float3(power.x, power.y, power.z);
+			clwLight->size = size;
 		}
 		else if (light.isA<SpotLight>())
 		{
@@ -495,6 +499,7 @@ namespace octoon
 			clwLight->intensity = RadeonRays::float3(power.x, power.y, power.z);
 			clwLight->ia = light.downcast<SpotLight>()->getInnerCone().x;
 			clwLight->oa = light.downcast<SpotLight>()->getOuterCone().x;
+			clwLight->size = size;
 		}
 		else if (light.isA<EnvironmentLight>())
 		{
@@ -509,6 +514,7 @@ namespace octoon
 			clwLight->tex_background = GetTextureIndex(textureCollector, ibl.getBackgroundMap());
 			clwLight->offset = RadeonRays::float2(ibl.getOffset().x, ibl.getOffset().y);
 			clwLight->ibl_mirror_x = true;
+			clwLight->size = size;
 		}
 	}
 

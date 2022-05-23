@@ -6,9 +6,10 @@ namespace octoon
 	OctoonImplementSubClass(Light, RenderObject, "Light")
 
 	Light::Light() noexcept
-		: lightIntensity_(1.0f)
-		, lightRange_(10.0f)
-		, lightColor_(math::float3::One)
+		: intensity_(1.0f)
+		, size_(1.0f)
+		, range_(10.0f)
+		, color_(math::float3::One)
 	{
 	}
 
@@ -19,9 +20,19 @@ namespace octoon
 	void
 	Light::setIntensity(float intensity) noexcept
 	{
-		if (lightIntensity_ != intensity)
+		if (intensity_ != intensity)
 		{
-			lightIntensity_ = intensity;
+			intensity_ = intensity;
+			this->setDirty(true);
+		}
+	}
+
+	void
+	Light::setSize(float size) noexcept
+	{
+		if (size_ != size)
+		{
+			size_ = size;
 			this->setDirty(true);
 		}
 	}
@@ -29,9 +40,9 @@ namespace octoon
 	void
 	Light::setRange(float range) noexcept
 	{
-		if (lightRange_ != range)
+		if (range_ != range)
 		{
-			lightRange_ = range;
+			range_ = range;
 			this->setDirty(true);
 		}
 	}
@@ -39,9 +50,9 @@ namespace octoon
 	void
 	Light::setColor(const math::float3& color) noexcept
 	{
-		if (lightColor_ != color)
+		if (color_ != color)
 		{
-			lightColor_ = color;
+			color_ = color;
 			this->setDirty(true);
 		}
 	}
@@ -49,19 +60,25 @@ namespace octoon
 	float
 	Light::getIntensity() const noexcept
 	{
-		return lightIntensity_;
+		return intensity_;
+	}
+
+	float
+	Light::getSize() const noexcept
+	{
+		return size_;
 	}
 
 	float
 	Light::getRange() const noexcept
 	{
-		return lightRange_;
+		return range_;
 	}
 
 	const math::float3&
 	Light::getColor() const noexcept
 	{
-		return lightColor_;
+		return color_;
 	}
 
 	void
