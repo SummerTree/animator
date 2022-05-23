@@ -25,24 +25,46 @@ namespace octoon
 	}
 
 	void
+	RenderScene::setDirty(bool dirty) noexcept
+	{
+		for (auto& it : cameras_)
+			it->setDirty(dirty);
+		for (auto& it : lights_)
+			it->setDirty(dirty);
+		for (auto& it : renderables_)
+			it->setDirty(dirty);
+	}
+
+	bool
+	RenderScene::isDirty() const noexcept
+	{
+		for (auto& it : cameras_)
+		{
+			if (it->isDirty())
+				return true;
+		}
+
+		for (auto& it : lights_)
+		{
+			if (it->isDirty())
+				return true;
+		}
+
+		for (auto& it : renderables_)
+		{
+			if (it->isDirty())
+				return true;
+		}
+
+		return false;
+	}
+
+	void
 	RenderScene::setGlobalIllumination(bool enable) noexcept
 	{
 		if (this->enableGlobalIllumination_ != enable)
 		{
-			for (auto& it : cameras_)
-				it->setDirty(true);
-			for (auto& it : lights_)
-				it->setDirty(true);
-			for (auto& it : renderables_)
-			{
-				it->setDirty(true);
-
-				for (auto& material : it->getMaterials())
-				{
-					if (material)
-						material->setDirty(true);
-				}
-			}
+			this->setDirty(true);
 
 			this->enableGlobalIllumination_ = enable;
 		}

@@ -16,6 +16,9 @@ namespace octoon
 		void setMainCamera(Camera* camera) noexcept;
 		const Camera* getMainCamera() const noexcept;
 
+		void setDirty(bool dirty) noexcept;
+		bool isDirty() const noexcept;
+
 		void setGlobalIllumination(bool enable) noexcept;
 		bool getGlobalIllumination() const noexcept;
 
