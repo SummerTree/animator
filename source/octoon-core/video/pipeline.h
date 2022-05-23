@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_PIPELINE_H_
-#define OCTOON_VIDEO_PIPELINE_H_
+#ifndef OCTOON_PIPELINE_H_
+#define OCTOON_PIPELINE_H_
 
 #include <array>
 

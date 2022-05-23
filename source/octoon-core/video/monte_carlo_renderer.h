@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_MONTE_CARLO_RENDERER_H_
-#define OCTOON_VIDEO_MONTE_CARLO_RENDERER_H_
+#ifndef OCTOON_MONTE_CARLO_RENDERER_H_
+#define OCTOON_MONTE_CARLO_RENDERER_H_
 
 #include "pipeline.h"
 #include "path_tracing_estimator.h"

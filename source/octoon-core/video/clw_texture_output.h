@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_CLW_TEXTURE_OUTPUT_H_
-#define OCTOON_VIDEO_CLW_TEXTURE_OUTPUT_H_
+#ifndef OCTOON_CLW_TEXTURE_OUTPUT_H_
+#define OCTOON_CLW_TEXTURE_OUTPUT_H_
 
 #include <CLW.h>
 #include "clw_output.h"

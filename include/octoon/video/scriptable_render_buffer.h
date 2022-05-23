@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_FORWARD_BUFFER_H_
-#define OCTOON_VIDEO_FORWARD_BUFFER_H_
+#ifndef OCTOON_SCRIPTABLE_RENDER_BUFFER_H_
+#define OCTOON_SCRIPTABLE_RENDER_BUFFER_H_
 
 #include <octoon/mesh/mesh.h>
 #include <octoon/hal/graphics_data.h>

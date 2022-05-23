@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_CLW_CLASS_H_
-#define OCTOON_VIDEO_CLW_CLASS_H_
+#ifndef OCTOON_CLW_CLASS_H_
+#define OCTOON_CLW_CLASS_H_
 
 #include <string>
 #include <numeric>

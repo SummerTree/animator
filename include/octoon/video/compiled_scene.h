@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_COMPILED_SCENE_H_
-#define OCTOON_VIDEO_COMPILED_SCENE_H_
+#ifndef OCTOON_COMPILED_SCENE_H_
+#define OCTOON_COMPILED_SCENE_H_
 
 #include <octoon/math/math.h>
 

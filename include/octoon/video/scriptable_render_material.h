@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_FORWARD_MATERIAL_H_
-#define OCTOON_VIDEO_FORWARD_MATERIAL_H_
+#ifndef OCTOON_SCRIPTABLE_RENDERING_MATERIAL_H_
+#define OCTOON_SCRIPTABLE_RENDERING_MATERIAL_H_
 
 #include <octoon/camera/camera.h>
 #include <octoon/geometry/geometry.h>

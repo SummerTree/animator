@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_CL_PROGRAM_MANAGER_H_
-#define OCTOON_VIDEO_CL_PROGRAM_MANAGER_H_
+#ifndef OCTOON_CL_PROGRAM_MANAGER_H_
+#define OCTOON_CL_PROGRAM_MANAGER_H_
 
 #include <string>
 #include <stdint.h>
