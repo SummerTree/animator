@@ -878,7 +878,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/setting_window.cpp" line="54"/>
         <source>Current Version: </source>
-        <translation type="unfinished">当前版本：</translation>
+        <translation>当前版本： </translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="83"/>
@@ -985,33 +985,43 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="40"/>
         <source>Open Main Light Panel</source>
-        <translation type="unfinished">显示主光源面板</translation>
+        <translation>显示主光源面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="45"/>
         <source>Environment Light</source>
-        <translation type="unfinished">环境光</translation>
+        <translation>环境光</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="46"/>
         <source>Open Environment Light Panel</source>
-        <translation type="unfinished">显示环境光面板</translation>
+        <translation>显示环境光面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="51"/>
         <source>Camera</source>
-        <translation type="unfinished">相机</translation>
+        <translation>相机</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="52"/>
         <source>Open Camera Panel</source>
-        <translation type="unfinished">显示相机面板</translation>
+        <translation>显示相机面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="57"/>
         <location filename="../views/thumbnail_dock.cpp" line="58"/>
         <source>Settings</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="63"/>
+        <source>Motion</source>
+        <translation>动作</translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="64"/>
+        <source>Open Motion Panel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
