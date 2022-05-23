@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_FORWARD_RENDERER_H_
-#define OCTOON_VIDEO_FORWARD_RENDERER_H_
+#ifndef OCTOON_FORWARD_RENDERER_H_
+#define OCTOON_FORWARD_RENDERER_H_
 
 #include <octoon/video/render_scene.h>
 #include <octoon/video/lights_shadow_caster_pass.h>

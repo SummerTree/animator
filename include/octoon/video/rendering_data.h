@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_FORWARD_SCENE_H_
-#define OCTOON_VIDEO_FORWARD_SCENE_H_
+#ifndef OCTOON_RENDERING_DATA_H_
+#define OCTOON_RENDERING_DATA_H_
 
 #include <octoon/camera/camera.h>
 #include <octoon/light/light.h>
