@@ -101,7 +101,6 @@ namespace unreal
 		h264Component_ = std::make_unique<H264Component>();
 		h265Component_ = std::make_unique<H265Component>();
 		frameSequenceComponent_ = std::make_unique<FrameSequenceComponent>();
-		uiComponent_ = std::make_unique<UIComponent>();
 		markComponent_ = std::make_unique<MarkComponent>();
 		materialComponent_ = std::make_unique<MaterialComponent>();
 		hdriComponent_ = std::make_unique<HDRiComponent>();
@@ -117,7 +116,6 @@ namespace unreal
 		h264Component_->init(context_, profile_->encodeModule);
 		h265Component_->init(context_, profile_->encodeModule);
 		frameSequenceComponent_->init(context_, profile_->encodeModule);
-		uiComponent_->init(context_, profile_->recordModule);
 		markComponent_->init(context_, profile_->markModule);
 		materialComponent_->init(context_, profile_->resourceModule);
 		hdriComponent_->init(context_, profile_->resourceModule);
@@ -130,7 +128,6 @@ namespace unreal
 		this->addComponent(offlineComponent_.get());
 		this->addComponent(playerComponent_.get());
 		this->addComponent(markComponent_.get());
-		this->addComponent(uiComponent_.get());
 		this->addComponent(materialComponent_.get());
 		this->addComponent(hdriComponent_.get());
 		this->addComponent(gizmoComponent_.get());
@@ -177,7 +174,6 @@ namespace unreal
 		frameSequenceComponent_.reset();
 		context_.reset();
 		profile_.reset();
-		uiComponent_.reset();
 		materialComponent_.reset();
 		hdriComponent_.reset();
 		selectorComponent_.reset();

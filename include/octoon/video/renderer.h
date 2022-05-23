@@ -46,7 +46,7 @@ namespace octoon
 		const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 
 		const hal::GraphicsContextPtr& getScriptableRenderContext() const noexcept;
-		const hal::GraphicsDevicePtr& getGraphicsDevice() const noexcept;
+		const hal::GraphicsDevicePtr getGraphicsDevice() const noexcept;
 
 		void render(const std::shared_ptr<RenderScene>& scene) noexcept(false);
 

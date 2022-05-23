@@ -19,7 +19,7 @@ namespace unreal
 		void captureImage(std::string_view filepath) noexcept;
 
 		bool startRecord(std::string_view filepath) noexcept;
-		void stopRecord() noexcept;
+		void stopRecord() noexcept(false);
 
 		virtual const std::type_info& type_info() const noexcept
 		{
@@ -30,7 +30,7 @@ namespace unreal
 		virtual void onEnable() noexcept override;
 		virtual void onDisable() noexcept override;
 
-		virtual void onRecord() noexcept;
+		virtual void onRecord() noexcept(false);
 
 	private:
 		void setupDenoise() noexcept;

@@ -102,10 +102,6 @@ SOURCE_GROUP("launcher\\views" FILES ${VIEWS_LIST})
 SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/hdri_component.h
 	${SOURCE_PATH}/controllers/hdri_component.cpp
-	${SOURCE_PATH}/controllers/theme_manager.h
-	${SOURCE_PATH}/controllers/theme_manager.cpp
-	${SOURCE_PATH}/controllers/ui_component.h
-	${SOURCE_PATH}/controllers/ui_component.cpp
 	${SOURCE_PATH}/controllers/player_component.h
 	${SOURCE_PATH}/controllers/player_component.cpp
 	${SOURCE_PATH}/controllers/entities_component.h

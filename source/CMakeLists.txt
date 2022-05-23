@@ -10,7 +10,7 @@ OPTION(OCTOON_FEATURE_MODEL_ENABLE "On for enable off for disable" ON)
 OPTION(OCTOON_FEATURE_HAL_ENABLE "On for enable off for disable" ON)
 OPTION(OCTOON_FEATURE_AUDIO_ENABLE "On for enable off for disable" ON)
 OPTION(OCTOON_FEATURE_PHYSICS_ENABLE "On for enable off for disable" ON)
-OPTION(OCTOON_FEATURE_UI_ENABLE "On for enable off for disable" ON)
+OPTION(OCTOON_FEATURE_UI_ENABLE "On for enable off for disable" OFF)
 OPTION(OCTOON_FEATURE_VIDEO_ENABLE "On for enable off for disable" ON)
 OPTION(OCTOON_FEATURE_PHYSICS_ENABLE "On for enable off for disable" ON)
 

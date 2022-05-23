@@ -99,7 +99,7 @@ namespace octoon
 		return this->context_;
 	}
 
-	const hal::GraphicsDevicePtr&
+	const hal::GraphicsDevicePtr
 	Renderer::getGraphicsDevice() const noexcept
 	{
 		return this->context_->getDevice();

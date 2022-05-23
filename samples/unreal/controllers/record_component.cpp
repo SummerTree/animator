@@ -298,7 +298,7 @@ namespace unreal
 	}
 
 	void
-	RecordComponent::stopRecord() noexcept
+	RecordComponent::stopRecord() noexcept(false)
 	{
 		auto& profile = this->getContext()->profile;
 
@@ -334,7 +334,7 @@ namespace unreal
 	}
 
 	void
-	RecordComponent::onRecord() noexcept
+	RecordComponent::onRecord() noexcept(false)
 	{
 		auto& profile = this->getContext()->profile;
 		if (profile->encodeModule->enable && profile->recordModule->active)
