@@ -161,12 +161,46 @@ QListWidget::Item:selected{
 	background-color: rgb(84,84,84);
 	border-width: 0px;
 }
-QComboBox{
-	max-width: 120px;
+QComboBox {
+    border-radius:8px;
+    padding:1px 18px 1px 3px;
+    min-width:100px;
 }
-QComboBox:editable{
-    background: white;
+
+QComboBox:editable {
+    background:green;
 }
+
+QComboBox:on {
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+
+    subcontrol-position: top right;
+
+    width: 25px;
+
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    border-image: url(:/images/02.bmp);
+}
+
+QComboBox::down-arrow:on {
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 2px solid darkgray;
+    selection-background-color: green;
+}
+
 QCheckBox{
 	color:rgb(200, 200, 200);
 }
@@ -351,6 +385,9 @@ QWidget#ThumbnailDock QToolButton#camera{
 }
 QWidget#ThumbnailDock QToolButton#setting{
 	qproperty-icon: url(":res/icons/setting.png");
+}
+QWidget#ThumbnailDock QToolButton#motion{
+	qproperty-icon: url(":res/icons/dance.png");
 }
 QWidget#MainLightDock, QWidget#EnvironmentDock, QWidget#MaterialDock, QWidget#RecordDock, QWidget#CameraDock, QWidget#LightDock
 {

@@ -58,6 +58,12 @@ namespace unreal
 		settingsButton_->setToolTip(tr("Settings"));
 		settingsButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
+		motionButton_ = new QToolButton;
+		motionButton_->setObjectName("motion");
+		motionButton_->setText(tr("Motion"));
+		motionButton_->setToolTip(tr("Open Motion Panel"));
+		motionButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
 		auto layout = new QVBoxLayout;
 		layout->addWidget(materialButton_, 0, Qt::AlignCenter);
 		layout->addWidget(lightButton_, 0, Qt::AlignCenter);
@@ -66,6 +72,7 @@ namespace unreal
 		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
 		layout->addWidget(recordButton_, 0, Qt::AlignCenter);
 		layout->addWidget(settingsButton_, 0, Qt::AlignCenter);
+		layout->addWidget(motionButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
