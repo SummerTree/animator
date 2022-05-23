@@ -71,8 +71,8 @@ namespace unreal
 		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
 		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
 		layout->addWidget(recordButton_, 0, Qt::AlignCenter);
-		layout->addWidget(settingsButton_, 0, Qt::AlignCenter);
 		layout->addWidget(motionButton_, 0, Qt::AlignCenter);
+		layout->addWidget(settingsButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
@@ -105,6 +105,7 @@ namespace unreal
 		this->connect(materialButton_, SIGNAL(clicked()), this, SLOT(materialEvent()));
 		this->connect(cameraButton_, SIGNAL(clicked()), this, SLOT(cameraEvent()));
 		this->connect(settingsButton_, SIGNAL(clicked()), this, SLOT(settingsEvent()));
+		this->connect(motionButton_, SIGNAL(clicked()), this, SLOT(motionEvent()));
 	}
 
 	ThumbnailDock::~ThumbnailDock() noexcept
@@ -164,5 +165,10 @@ namespace unreal
 			SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<UnrealBehaviour>());
 			window->show();
 		}
+	}
+	void
+	ThumbnailDock::motionEvent() noexcept
+	{
+		emit motionSignal();
 	}
 }

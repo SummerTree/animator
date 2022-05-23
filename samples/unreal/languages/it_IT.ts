@@ -395,43 +395,46 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="227"/>
-        <location filename="../views/main_dock.cpp" line="280"/>
-        <location filename="../views/main_dock.cpp" line="331"/>
-        <location filename="../views/main_dock.cpp" line="383"/>
-        <location filename="../views/main_dock.cpp" line="433"/>
-        <location filename="../views/main_dock.cpp" line="483"/>
+        <location filename="../views/main_dock.cpp" line="230"/>
+        <location filename="../views/main_dock.cpp" line="270"/>
+        <location filename="../views/main_dock.cpp" line="309"/>
+        <location filename="../views/main_dock.cpp" line="349"/>
+        <location filename="../views/main_dock.cpp" line="387"/>
+        <location filename="../views/main_dock.cpp" line="425"/>
+        <location filename="../views/main_dock.cpp" line="463"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="228"/>
-        <location filename="../views/main_dock.cpp" line="281"/>
+        <location filename="../views/main_dock.cpp" line="230"/>
+        <location filename="../views/main_dock.cpp" line="270"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="239"/>
-        <location filename="../views/main_dock.cpp" line="291"/>
-        <location filename="../views/main_dock.cpp" line="343"/>
-        <location filename="../views/main_dock.cpp" line="394"/>
-        <location filename="../views/main_dock.cpp" line="444"/>
-        <location filename="../views/main_dock.cpp" line="494"/>
-        <location filename="../views/main_dock.cpp" line="552"/>
-        <location filename="../views/main_dock.cpp" line="579"/>
+        <location filename="../views/main_dock.cpp" line="236"/>
+        <location filename="../views/main_dock.cpp" line="275"/>
+        <location filename="../views/main_dock.cpp" line="315"/>
+        <location filename="../views/main_dock.cpp" line="354"/>
+        <location filename="../views/main_dock.cpp" line="392"/>
+        <location filename="../views/main_dock.cpp" line="430"/>
+        <location filename="../views/main_dock.cpp" line="468"/>
+        <location filename="../views/main_dock.cpp" line="523"/>
+        <location filename="../views/main_dock.cpp" line="550"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="332"/>
-        <location filename="../views/main_dock.cpp" line="384"/>
-        <location filename="../views/main_dock.cpp" line="434"/>
-        <location filename="../views/main_dock.cpp" line="484"/>
+        <location filename="../views/main_dock.cpp" line="309"/>
+        <location filename="../views/main_dock.cpp" line="349"/>
+        <location filename="../views/main_dock.cpp" line="387"/>
+        <location filename="../views/main_dock.cpp" line="425"/>
+        <location filename="../views/main_dock.cpp" line="463"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="553"/>
+        <location filename="../views/main_dock.cpp" line="524"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -651,6 +654,14 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/material_dock.cpp" line="167"/>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>unreal::MotionDock</name>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="16"/>
+        <source>Motion</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

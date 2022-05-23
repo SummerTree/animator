@@ -406,43 +406,46 @@ $20 (Original cost $40)</source>
         <translation>花楹渲染器(内测版本)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="227"/>
-        <location filename="../views/main_dock.cpp" line="280"/>
-        <location filename="../views/main_dock.cpp" line="331"/>
-        <location filename="../views/main_dock.cpp" line="383"/>
-        <location filename="../views/main_dock.cpp" line="433"/>
-        <location filename="../views/main_dock.cpp" line="483"/>
+        <location filename="../views/main_dock.cpp" line="230"/>
+        <location filename="../views/main_dock.cpp" line="270"/>
+        <location filename="../views/main_dock.cpp" line="309"/>
+        <location filename="../views/main_dock.cpp" line="349"/>
+        <location filename="../views/main_dock.cpp" line="387"/>
+        <location filename="../views/main_dock.cpp" line="425"/>
+        <location filename="../views/main_dock.cpp" line="463"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="228"/>
-        <location filename="../views/main_dock.cpp" line="281"/>
+        <location filename="../views/main_dock.cpp" line="230"/>
+        <location filename="../views/main_dock.cpp" line="270"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="239"/>
-        <location filename="../views/main_dock.cpp" line="291"/>
-        <location filename="../views/main_dock.cpp" line="343"/>
-        <location filename="../views/main_dock.cpp" line="394"/>
-        <location filename="../views/main_dock.cpp" line="444"/>
-        <location filename="../views/main_dock.cpp" line="494"/>
-        <location filename="../views/main_dock.cpp" line="552"/>
-        <location filename="../views/main_dock.cpp" line="579"/>
+        <location filename="../views/main_dock.cpp" line="236"/>
+        <location filename="../views/main_dock.cpp" line="275"/>
+        <location filename="../views/main_dock.cpp" line="315"/>
+        <location filename="../views/main_dock.cpp" line="354"/>
+        <location filename="../views/main_dock.cpp" line="392"/>
+        <location filename="../views/main_dock.cpp" line="430"/>
+        <location filename="../views/main_dock.cpp" line="468"/>
+        <location filename="../views/main_dock.cpp" line="523"/>
+        <location filename="../views/main_dock.cpp" line="550"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="332"/>
-        <location filename="../views/main_dock.cpp" line="384"/>
-        <location filename="../views/main_dock.cpp" line="434"/>
-        <location filename="../views/main_dock.cpp" line="484"/>
+        <location filename="../views/main_dock.cpp" line="309"/>
+        <location filename="../views/main_dock.cpp" line="349"/>
+        <location filename="../views/main_dock.cpp" line="387"/>
+        <location filename="../views/main_dock.cpp" line="425"/>
+        <location filename="../views/main_dock.cpp" line="463"/>
         <source>Fail to get core component.</source>
         <translation>获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="553"/>
+        <location filename="../views/main_dock.cpp" line="524"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
@@ -663,6 +666,118 @@ $20 (Original cost $40)</source>
         <location filename="../views/material_dock.cpp" line="167"/>
         <source>Cancel</source>
         <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>unreal::MotionDock</name>
+    <message>
+        <source>Record</source>
+        <translation type="obsolete">录制</translation>
+    </message>
+    <message>
+        <source>Render Quality</source>
+        <translation type="obsolete">渲染质量</translation>
+    </message>
+    <message>
+        <source>Ultra Render</source>
+        <translation type="obsolete">高清渲染</translation>
+    </message>
+    <message>
+        <source>Fast Render</source>
+        <translation type="obsolete">极速渲染</translation>
+    </message>
+    <message>
+        <source>Frame Per Second</source>
+        <translation type="obsolete">帧率</translation>
+    </message>
+    <message>
+        <source>24</source>
+        <translation type="obsolete">24</translation>
+    </message>
+    <message>
+        <source>25</source>
+        <translation type="obsolete">25</translation>
+    </message>
+    <message>
+        <source>30</source>
+        <translation type="obsolete">30</translation>
+    </message>
+    <message>
+        <source>60</source>
+        <translation type="obsolete">60</translation>
+    </message>
+    <message>
+        <source>Output Type</source>
+        <translation type="obsolete">输出格式</translation>
+    </message>
+    <message>
+        <source>Play:</source>
+        <translation type="obsolete">播放：</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="obsolete">开始</translation>
+    </message>
+    <message>
+        <source>- End</source>
+        <translation type="obsolete">- 结束</translation>
+    </message>
+    <message>
+        <source>Denoise:</source>
+        <translation type="obsolete">开启降噪：</translation>
+    </message>
+    <message>
+        <source>Recursion depth per pixel:</source>
+        <translation type="obsolete">每像素光线弹射次数：</translation>
+    </message>
+    <message>
+        <source>Sample number per pixel:</source>
+        <translation type="obsolete">每像素采样数:</translation>
+    </message>
+    <message>
+        <source>Constant Rate Factor (CRF):</source>
+        <translation type="obsolete">固定码率系数(CRF):</translation>
+    </message>
+    <message>
+        <source>Start Render</source>
+        <translation type="obsolete">开始渲染</translation>
+    </message>
+    <message>
+        <source>Watermark</source>
+        <translation type="obsolete">水印</translation>
+    </message>
+    <message>
+        <source>Render Settings</source>
+        <translation type="obsolete">渲染设置</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation type="obsolete">警告</translation>
+    </message>
+    <message>
+        <source>Save Video</source>
+        <translation type="obsolete">保存视频</translation>
+    </message>
+    <message>
+        <source>MP4 Files (*.mp4)</source>
+        <translation type="obsolete">MP4 Files (*.mp4)</translation>
+    </message>
+    <message>
+        <source>Stop Render</source>
+        <translation type="obsolete">停止渲染</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="obsolete">错误</translation>
+    </message>
+    <message>
+        <source>Failed to create file</source>
+        <translation type="obsolete">创建文件失败</translation>
+    </message>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="16"/>
+        <source>Motion</source>
+        <translation type="unfinished">动作</translation>
     </message>
 </context>
 <context>
