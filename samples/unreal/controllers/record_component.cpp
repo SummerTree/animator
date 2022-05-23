@@ -2,7 +2,6 @@
 #include "unreal_behaviour.h"
 #include <OpenImageDenoise/oidn.hpp>
 #include <octoon/camera_component.h>
-#include <octoon/hal/graphics.h>
 #include <octoon/image/image.h>
 #include <octoon/video_feature.h>
 

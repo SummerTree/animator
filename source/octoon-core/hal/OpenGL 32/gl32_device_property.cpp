@@ -19,19 +19,24 @@ namespace octoon
 			static_assert(sizeof(GLint) == sizeof(std::uint32_t), "not match");
 
 			GL32Types::setup();
-
+			
 			this->initTextureSupports();
 			this->initVertexSupports();
 			this->initTextureDimSupports();
 			this->initShaderSupports();
 
+			_deviceProperties.graphicsDeviceVendor = (const char*)glGetString(GL_VENDOR);
+			_deviceProperties.graphicsDeviceName = (const char*)glGetString(GL_RENDERER);
+			_deviceProperties.graphicsDeviceVersion = (const char*)glGetString(GL_VERSION);
+			_deviceProperties.graphicsShaderLevel = (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+
 			glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimension1D);
 			glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimension2D);
 			glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimension3D);
-			glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimensionCube);
+			glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxCubemapSize);
 
 			glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, (GLint*)&_deviceProperties.maxImageArrayLayers);
-			glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, (GLint*)&_deviceProperties.maxTexelBufferElements);
+			glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, (GLint*)&_deviceProperties.maxTextureSize);
 			glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, (GLint*)&_deviceProperties.maxUniformBufferRange);
 			glGetIntegerv(GL_MAX_SHADER_STORAGE_BLOCK_SIZE, (GLint*)&_deviceProperties.maxStorageBufferRange);
 
@@ -77,14 +82,18 @@ namespace octoon
 				glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxGeometryTotalOutputComponents);
 			}
 
-			glGetIntegerv(GL_MAX_COMPUTE_SHARED_MEMORY_SIZE, (GLint*)&_deviceProperties.maxComputeSharedMemorySize);
-			glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, (GLint*)&_deviceProperties.maxComputeWorkGroupCount[0]);
-			glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, (GLint*)&_deviceProperties.maxComputeWorkGroupCount[1]);
-			glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, (GLint*)&_deviceProperties.maxComputeWorkGroupCount[2]);
-			glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, (GLint*)&_deviceProperties.maxComputeWorkGroupInvocations);
-			glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, (GLint*)&_deviceProperties.maxComputeWorkGroupSize[0]);
-			glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, (GLint*)&_deviceProperties.maxComputeWorkGroupSize[1]);
-			glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, (GLint*)&_deviceProperties.maxComputeWorkGroupSize[2]);
+			if (GLEW_ARB_compute_shader)
+			{
+				glGetIntegerv(GL_MAX_COMPUTE_SHARED_MEMORY_SIZE, (GLint*)&_deviceProperties.maxComputeSharedMemorySize);
+				glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, (GLint*)&_deviceProperties.maxComputeWorkGroupSize);
+
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, (GLint*)&_deviceProperties.maxComputeWorkGroupCountX);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, (GLint*)&_deviceProperties.maxComputeWorkGroupCountY);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, (GLint*)&_deviceProperties.maxComputeWorkGroupCountZ);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, (GLint*)&_deviceProperties.maxComputeWorkGroupSizeX);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, (GLint*)&_deviceProperties.maxComputeWorkGroupSizeY);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, (GLint*)&_deviceProperties.maxComputeWorkGroupSizeZ);
+			}
 
 			glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxFragmentInputComponents);
 			glGetIntegerv(GL_MAX_DRAW_BUFFERS, (GLint*)&_deviceProperties.maxFragmentOutputAttachments);
@@ -119,11 +128,6 @@ namespace octoon
 			glGetIntegerv(GL_MAX_SAMPLE_MASK_WORDS, (GLint*)&_deviceProperties.maxSampleMaskWords);
 
 			glGetIntegerv(GL_LINE_WIDTH, (GLint*)&_deviceProperties.strictLines);
-
-			const GLubyte* vendor = glGetString(GL_VENDOR);
-			_deviceProperties.vendor = vendor ? std::string(reinterpret_cast<const char*>(vendor)) : std::string();
-			const GLubyte* renderer = glGetString(GL_RENDERER);
-			_deviceProperties.renderer = renderer ? std::string(reinterpret_cast<const char*>(renderer)) : std::string();
 
 			return true;
 		}

@@ -2,6 +2,7 @@
 #define OCTOON_GRAPHICS_DEVICE_H_
 
 #include <octoon/hal/graphics_types.h>
+#include <octoon/hal/graphics_device_property.h>
 
 namespace octoon
 {
@@ -50,7 +51,7 @@ namespace octoon
 
 			virtual void copyDescriptorSets(GraphicsDescriptorSetPtr& source, std::uint32_t descriptorCopyCount, const GraphicsDescriptorSetPtr descriptorCopies[]) noexcept = 0;
 
-			virtual const GraphicsDeviceProperty& getDeviceProperty() const noexcept = 0;
+			virtual const SystemInfo& getSystemInfo() const noexcept = 0;
 			virtual const GraphicsDeviceDesc& getDeviceDesc() const noexcept = 0;
 
 		private:

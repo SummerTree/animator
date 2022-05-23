@@ -719,7 +719,7 @@ namespace octoon
 			GL_CHECK(glBlendEquation(GL_FUNC_ADD));
 			GL_CHECK(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-			auto& deviceProperties = this->getDevice()->getDeviceProperty().getDeviceProperties();
+			auto& deviceProperties = this->getDevice()->getSystemInfo();
 			_vertexBuffers.resize(deviceProperties.maxVertexInputBindings);
 
 			GraphicsColorBlends blends(deviceProperties.maxFramebufferColorAttachments);

@@ -208,7 +208,7 @@ namespace octoon
 			if (!pathRenderer_)
 			{
 				pathRenderer_ = std::make_unique<ConfigManager>();
-				std::string gpuName = this->context_->getDevice()->getDeviceProperty().getDeviceProperties().renderer;
+				std::string gpuName = this->context_->getDevice()->getSystemInfo().graphicsDeviceName;
 				pathRenderer_->setCurrentRenderDeviceName(gpuName);
 
 				spdlog::info("Forward render using: " + gpuName);

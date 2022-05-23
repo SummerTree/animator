@@ -934,7 +934,7 @@ namespace octoon
 				glBindVertexArrayAPPLE(_inputLayout);
 			}
 
-			auto& deviceProperties = this->getDevice()->getDeviceProperty().getDeviceProperties();
+			auto& deviceProperties = this->getDevice()->getSystemInfo();
 			_vertexBuffers.resize(deviceProperties.maxVertexInputBindings);
 			_viewports.resize(deviceProperties.maxViewports, float4(0, 0, 0, 0));
 			_scissors.resize(deviceProperties.maxViewports, uint4(0, 0, 0, 0));

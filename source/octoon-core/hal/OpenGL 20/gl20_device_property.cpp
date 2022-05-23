@@ -25,9 +25,14 @@ namespace octoon
 			this->initTextureDimSupports();
 			this->initShaderSupports();
 
+			_deviceProperties.graphicsDeviceVendor = (const char*)glGetString(GL_VENDOR);
+			_deviceProperties.graphicsDeviceName = (const char*)glGetString(GL_RENDERER);
+			_deviceProperties.graphicsDeviceVersion = (const char*)glGetString(GL_VERSION);
+			_deviceProperties.graphicsShaderLevel = (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+
 			glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimension1D);
 			glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimension2D);
-			glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimensionCube);
+			glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxCubemapSize);
 
 			glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, (GLint*)&_deviceProperties.maxVertexInputAttributes);
 			glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, (GLint*)&_deviceProperties.maxVertexInputBindings);
@@ -42,11 +47,6 @@ namespace octoon
 			glGetIntegerv(GL_MAX_VIEWPORT_DIMS, (GLint*)&_deviceProperties.maxViewportDimensionsW);
 
 			glGetIntegerv(GL_LINE_WIDTH, (GLint*)&_deviceProperties.strictLines);
-
-			const GLubyte* vendor = glGetString(GL_VENDOR);
-			_deviceProperties.vendor = vendor ? std::string(reinterpret_cast<const char*>(vendor)) : std::string();
-			const GLubyte* renderer = glGetString(GL_RENDERER);
-			_deviceProperties.renderer = renderer ? std::string(reinterpret_cast<const char*>(renderer)) : std::string();
 
 			return true;
 		}

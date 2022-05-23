@@ -15,7 +15,7 @@ namespace unreal
 	PlayerModule::reset() noexcept
 	{
 		this->isPlaying = false;
-		this->spp = 100;
+		this->spp = 150;
 		this->sppCount = 0;
 		this->recordFps = 30.0f;
 		this->playTimeStep = 1.0f / 60.f;

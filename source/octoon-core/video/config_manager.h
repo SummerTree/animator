@@ -11,7 +11,6 @@
 #include "clw_render_factory.h"
 
 #include <octoon/camera/camera.h>
-#include <octoon/hal/graphics.h>
 #include <octoon/video/render_scene.h>
 #include <octoon/video/scriptable_render_context.h>
 

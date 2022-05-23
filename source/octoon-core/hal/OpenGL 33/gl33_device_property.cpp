@@ -25,25 +25,20 @@ namespace octoon
 			this->initTextureDimSupports();
 			this->initShaderSupports();
 
+			_deviceProperties.graphicsDeviceVendor = (const char*)glGetString(GL_VENDOR);
+			_deviceProperties.graphicsDeviceName = (const char*)glGetString(GL_RENDERER);
+			_deviceProperties.graphicsDeviceVersion = (const char*)glGetString(GL_VERSION);
+			_deviceProperties.graphicsShaderLevel = (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+
 			glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimension1D);
 			glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimension2D);
 			glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimension3D);
-			glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxImageDimensionCube);
+			glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, (GLint*)&_deviceProperties.maxCubemapSize);
+			glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, (GLint*)&_deviceProperties.maxTextureSize);
 
 			glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, (GLint*)&_deviceProperties.maxImageArrayLayers);
-			glGetIntegerv(GL_MAX_TEXTURE_BUFFER_SIZE, (GLint*)&_deviceProperties.maxTexelBufferElements);
 			glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, (GLint*)&_deviceProperties.maxUniformBufferRange);
 			glGetIntegerv(GL_MAX_SHADER_STORAGE_BLOCK_SIZE, (GLint*)&_deviceProperties.maxStorageBufferRange);
-			_deviceProperties.maxMemoryAllocationCount;
-			_deviceProperties.maxSamplerAllocationCount;
-			_deviceProperties.bufferImageGranularity;
-
-			if (glGetInteger64v)
-			{
-				glGetInteger64v(GL_SPARSE_BUFFER_PAGE_SIZE_ARB, (GLint64*)&_deviceProperties.sparseAddressSpaceSize);
-			}
-
-			_deviceProperties.maxBoundDescriptorSets;
 
 			glGetIntegerv(GL_MAX_FRAGMENT_IMAGE_UNIFORMS, (GLint*)&_deviceProperties.maxPerStageDescriptorSamplers);
 			glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_BLOCKS, (GLint*)&_deviceProperties.maxPerStageDescriptorUniformBuffers);
@@ -52,6 +47,7 @@ namespace octoon
 			glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxPerStageDescriptorInputAttachments);
 			glGetIntegerv(GL_MAX_FRAGMENT_IMAGE_UNIFORMS, (GLint*)&_deviceProperties.maxPerStageDescriptorStorageImages);
 			glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS, (GLint*)&_deviceProperties.maxPerStageResources);
+			glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxFragmentInputComponents);
 
 			glGetIntegerv(GL_MAX_SAMPLES, (GLint*)&_deviceProperties.maxDescriptorSetSamplers);
 			glGetIntegerv(GL_MAX_UNIFORM_BUFFER_BINDINGS, (GLint*)&_deviceProperties.maxDescriptorSetUniformBuffers);
@@ -59,7 +55,6 @@ namespace octoon
 			glGetIntegerv(GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS, (GLint*)&_deviceProperties.maxDescriptorSetStorageBuffers);
 			glGetIntegerv(GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS, (GLint*)&_deviceProperties.maxDescriptorSetStorageBuffersDynamic);
 			glGetIntegerv(GL_MAX_IMAGE_UNITS, (GLint*)&_deviceProperties.maxDescriptorSetSampledImages);
-			_deviceProperties.maxDescriptorSetStorageImages;
 			glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, (GLint*)&_deviceProperties.maxDescriptorSetInputAttachments);
 
 			glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, (GLint*)&_deviceProperties.maxVertexInputAttributes);
@@ -68,40 +63,12 @@ namespace octoon
 			glGetIntegerv(GL_MAX_VERTEX_ATTRIB_STRIDE, (GLint*)&_deviceProperties.maxVertexInputBindingStride);
 			glGetIntegerv(GL_MAX_VERTEX_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxVertexOutputComponents);
 
-			if (GLEW_ARB_tessellation_shader)
-			{
-				glGetIntegerv(GL_MAX_TESS_GEN_LEVEL, (GLint*)&_deviceProperties.maxTessellationGenerationLevel);
-				glGetIntegerv(GL_MAX_PATCH_VERTICES, (GLint*)&_deviceProperties.maxTessellationPatchSize);
-				glGetIntegerv(GL_MAX_TESS_CONTROL_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationControlPerVertexInputComponents);
-				glGetIntegerv(GL_MAX_TESS_CONTROL_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationControlPerVertexOutputComponents);
-				glGetIntegerv(GL_MAX_TESS_PATCH_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationControlPerPatchOutputComponents);
-				glGetIntegerv(GL_MAX_TESS_CONTROL_TOTAL_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationControlTotalOutputComponents);
-				glGetIntegerv(GL_MAX_TESS_EVALUATION_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationEvaluationInputComponents);
-				glGetIntegerv(GL_MAX_TESS_EVALUATION_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationEvaluationOutputComponents);
-			}
+			glGetFloatv(GL_POINT_SIZE_RANGE, &_deviceProperties.minPointSizeRange);
+			glGetFloatv(GL_POINT_SIZE_GRANULARITY, &_deviceProperties.pointSizeGranularity);
+			glGetFloatv(GL_LINE_WIDTH_RANGE, &_deviceProperties.minLineWidthRange);
+			glGetFloatv(GL_LINE_WIDTH_GRANULARITY, &_deviceProperties.lineWidthGranularity);
+			glGetIntegerv(GL_LINE_WIDTH, (GLint*)&_deviceProperties.strictLines);
 
-			if (GLEW_ARB_geometry_shader4)
-			{
-				glGetIntegerv(GL_MAX_GEOMETRY_SHADER_INVOCATIONS, (GLint*)&_deviceProperties.maxGeometryShaderInvocations);
-				glGetIntegerv(GL_MAX_GEOMETRY_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxGeometryInputComponents);
-				glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxGeometryOutputComponents);
-				glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES, (GLint*)&_deviceProperties.maxGeometryOutputVertices);
-				glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxGeometryTotalOutputComponents);
-			}
-
-			if (GLEW_ARB_compute_shader)
-			{
-				glGetIntegerv(GL_MAX_COMPUTE_SHARED_MEMORY_SIZE, (GLint*)&_deviceProperties.maxComputeSharedMemorySize);
-				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, (GLint*)&_deviceProperties.maxComputeWorkGroupCount[0]);
-				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, (GLint*)&_deviceProperties.maxComputeWorkGroupCount[1]);
-				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, (GLint*)&_deviceProperties.maxComputeWorkGroupCount[2]);
-				glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, (GLint*)&_deviceProperties.maxComputeWorkGroupInvocations);
-				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, (GLint*)&_deviceProperties.maxComputeWorkGroupSize[0]);
-				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, (GLint*)&_deviceProperties.maxComputeWorkGroupSize[1]);
-				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, (GLint*)&_deviceProperties.maxComputeWorkGroupSize[2]);
-			}
-
-			glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxFragmentInputComponents);
 			glGetIntegerv(GL_MAX_DRAW_BUFFERS, (GLint*)&_deviceProperties.maxFragmentOutputAttachments);
 			glGetIntegerv(GL_MAX_DUAL_SOURCE_DRAW_BUFFERS, (GLint*)&_deviceProperties.maxFragmentDualSrcAttachments);
 			glGetIntegerv(GL_MAX_COMBINED_SHADER_OUTPUT_RESOURCES, (GLint*)&_deviceProperties.maxFragmentCombinedOutputResources);
@@ -119,17 +86,10 @@ namespace octoon
 			glGetIntegerv(GL_VIEWPORT_SUBPIXEL_BITS, (GLint*)&_deviceProperties.viewportSubPixelBits);
 			glGetIntegerv(GL_MIN_MAP_BUFFER_ALIGNMENT, (GLint*)&_deviceProperties.minMemoryMapAlignment);
 
-			if (glGetInteger64v)
-			{
-				glGetInteger64v(GL_TEXTURE_BUFFER_OFFSET_ALIGNMENT, (GLint64*)&_deviceProperties.minTexelBufferOffsetAlignment);
-				glGetInteger64v(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, (GLint64*)&_deviceProperties.minUniformBufferOffsetAlignment);
-				glGetInteger64v(GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT, (GLint64*)&_deviceProperties.minStorageBufferOffsetAlignment);
-			}
-
 			glGetIntegerv(GL_MIN_PROGRAM_TEXEL_OFFSET, (GLint*)&_deviceProperties.minTexelOffset);
 			glGetIntegerv(GL_MAX_PROGRAM_TEXEL_OFFSET, (GLint*)&_deviceProperties.maxTexelOffset);
 			glGetIntegerv(GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET, (GLint*)&_deviceProperties.minTexelGatherOffset);
-			glGetIntegerv(GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET, (GLint*)&_deviceProperties.minTexelGatherOffset);
+			glGetIntegerv(GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET, (GLint*)&_deviceProperties.maxTexelGatherOffset);
 			glGetIntegerv(GL_MIN_FRAGMENT_INTERPOLATION_OFFSET, (GLint*)&_deviceProperties.minInterpolationOffset);
 			glGetIntegerv(GL_MAX_FRAGMENT_INTERPOLATION_OFFSET, (GLint*)&_deviceProperties.maxInterpolationOffset);
 			glGetIntegerv(GL_FRAGMENT_INTERPOLATION_OFFSET_BITS, (GLint*)&_deviceProperties.subPixelInterpolationOffsetBits);
@@ -147,33 +107,57 @@ namespace octoon
 			glGetIntegerv(GL_MAX_DEPTH_TEXTURE_SAMPLES, (GLint*)&_deviceProperties.sampledImageStencilSampleCounts);
 			glGetIntegerv(GL_MAX_COLOR_TEXTURE_SAMPLES, (GLint*)&_deviceProperties.storageImageSampleCounts);
 			glGetIntegerv(GL_MAX_SAMPLE_MASK_WORDS, (GLint*)&_deviceProperties.maxSampleMaskWords);
-
-			_deviceProperties.timestampComputeAndGraphics;
-			_deviceProperties.timestampPeriod;
-
 			glGetIntegerv(GL_MAX_CLIP_DISTANCES, (GLint*)&_deviceProperties.maxClipDistances);
+
+			if (glGetInteger64v)
+			{
+				glGetInteger64v(GL_SPARSE_BUFFER_PAGE_SIZE_ARB, (GLint64*)&_deviceProperties.sparseAddressSpaceSize);
+				glGetInteger64v(GL_TEXTURE_BUFFER_OFFSET_ALIGNMENT, (GLint64*)&_deviceProperties.minTexelBufferOffsetAlignment);
+				glGetInteger64v(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, (GLint64*)&_deviceProperties.minUniformBufferOffsetAlignment);
+				glGetInteger64v(GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT, (GLint64*)&_deviceProperties.minStorageBufferOffsetAlignment);
+			}
+
+			if (GLEW_ARB_tessellation_shader)
+			{
+				glGetIntegerv(GL_MAX_TESS_GEN_LEVEL, (GLint*)&_deviceProperties.maxTessellationGenerationLevel);
+				glGetIntegerv(GL_MAX_PATCH_VERTICES, (GLint*)&_deviceProperties.maxTessellationPatchSize);
+				glGetIntegerv(GL_MAX_TESS_CONTROL_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationControlPerVertexInputComponents);
+				glGetIntegerv(GL_MAX_TESS_CONTROL_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationControlPerVertexOutputComponents);
+				glGetIntegerv(GL_MAX_TESS_PATCH_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationControlPerPatchOutputComponents);
+				glGetIntegerv(GL_MAX_TESS_CONTROL_TOTAL_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationControlTotalOutputComponents);
+				glGetIntegerv(GL_MAX_TESS_EVALUATION_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationEvaluationInputComponents);
+				glGetIntegerv(GL_MAX_TESS_EVALUATION_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxTessellationEvaluationOutputComponents);
+			}
+
+			if (GLEW_ARB_geometry_shader4)
+			{
+				glGetIntegerv(GL_MAX_GEOMETRY_ATOMIC_COUNTERS, (GLint*)&_deviceProperties.maxGeometryAtomicCounters);
+				glGetIntegerv(GL_MAX_GEOMETRY_SHADER_STORAGE_BLOCKS, (GLint*)&_deviceProperties.maxGeometryShaderStorageBlocks);
+				glGetIntegerv(GL_MAX_GEOMETRY_INPUT_COMPONENTS, (GLint*)&_deviceProperties.maxGeometryInputComponents);
+				glGetIntegerv(GL_MAX_GEOMETRY_SHADER_INVOCATIONS, (GLint*)&_deviceProperties.maxGeometryShaderInvocations);
+				glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxGeometryOutputComponents);
+				glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES, (GLint*)&_deviceProperties.maxGeometryOutputVertices);
+				glGetIntegerv(GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS, (GLint*)&_deviceProperties.maxGeometryTotalOutputComponents);
+			}
+
+			if (GLEW_ARB_compute_shader)
+			{
+				glGetIntegerv(GL_MAX_COMPUTE_SHARED_MEMORY_SIZE, (GLint*)&_deviceProperties.maxComputeSharedMemorySize);
+				glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, (GLint*)&_deviceProperties.maxComputeWorkGroupSize);
+
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, (GLint*)&_deviceProperties.maxComputeWorkGroupCountX);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, (GLint*)&_deviceProperties.maxComputeWorkGroupCountY);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, (GLint*)&_deviceProperties.maxComputeWorkGroupCountZ);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, (GLint*)&_deviceProperties.maxComputeWorkGroupSizeX);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, (GLint*)&_deviceProperties.maxComputeWorkGroupSizeY);
+				glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, (GLint*)&_deviceProperties.maxComputeWorkGroupSizeZ);
+			}
 
 			if (GLEW_ARB_cull_distance)
 			{
 				glGetIntegerv(GL_MAX_CULL_DISTANCES, (GLint*)&_deviceProperties.maxCullDistances);
 				glGetIntegerv(GL_MAX_COMBINED_CLIP_AND_CULL_DISTANCES, (GLint*)&_deviceProperties.maxCombinedClipAndCullDistances);
 			}
-
-			glGetFloatv(GL_POINT_SIZE_RANGE, &_deviceProperties.minPointSizeRange);
-			glGetFloatv(GL_POINT_SIZE_GRANULARITY, &_deviceProperties.pointSizeGranularity);
-			glGetFloatv(GL_LINE_WIDTH_RANGE, &_deviceProperties.minLineWidthRange);
-			glGetFloatv(GL_LINE_WIDTH_GRANULARITY, &_deviceProperties.lineWidthGranularity);
-			glGetIntegerv(GL_LINE_WIDTH, (GLint*)&_deviceProperties.strictLines);
-
-			_deviceProperties.standardSampleLocations;
-			_deviceProperties.optimalBufferCopyOffsetAlignment;
-			_deviceProperties.optimalBufferCopyRowPitchAlignment;
-			_deviceProperties.nonCoherentAtomSize;
-
-			const GLubyte* vendor = glGetString(GL_VENDOR);
-			_deviceProperties.vendor = vendor ? std::string(reinterpret_cast<const char*>(vendor)) : std::string();
-			const GLubyte* renderer = glGetString(GL_RENDERER);
-			_deviceProperties.renderer = renderer ? std::string(reinterpret_cast<const char*>(renderer)) : std::string();
 			
 			return true;
 		}

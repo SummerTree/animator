@@ -832,12 +832,12 @@ namespace octoon
 			glGenVertexArrays(1, &_inputLayout);
 			glBindVertexArray(_inputLayout);
 
-			auto& deviceProperties = this->getDevice()->getDeviceProperty().getDeviceProperties();
-			_vertexBuffers.resize(deviceProperties.maxVertexInputBindings);
-			_viewports.resize(deviceProperties.maxViewports, float4(0, 0, 0, 0));
-			_scissors.resize(deviceProperties.maxViewports, uint4(0, 0, 0, 0));
+			auto& systemInfo = this->getDevice()->getSystemInfo();
+			_vertexBuffers.resize(systemInfo.maxVertexInputBindings);
+			_viewports.resize(systemInfo.maxViewports, float4(0, 0, 0, 0));
+			_scissors.resize(systemInfo.maxViewports, uint4(0, 0, 0, 0));
 
-			GraphicsColorBlends blends(deviceProperties.maxFramebufferColorAttachments);
+			GraphicsColorBlends blends(systemInfo.maxFramebufferColorAttachments);
 			_stateCaptured.setColorBlends(blends);
 
 			return true;

@@ -19,7 +19,7 @@ namespace octoon
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
 			GraphicsDevicePtr getDevice() noexcept;
 
-			const GraphicsDeviceProperties& getDeviceProperties() const noexcept;
+			const SystemInfo& getSystemInfo() const noexcept;
 
 		protected:
 			virtual bool initDeviceProperties() noexcept = 0;
@@ -99,7 +99,7 @@ namespace octoon
 
 		protected:
 			GraphicsDeviceWeakPtr _device;
-			GraphicsDeviceProperties _deviceProperties;
+			SystemInfo _deviceProperties;
 		};
 	}
 }

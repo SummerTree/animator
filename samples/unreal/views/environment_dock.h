@@ -11,7 +11,6 @@
 #include "spoiler.h"
 #include "unreal_profile.h"
 #include "unreal_behaviour.h"
-#include <octoon/hal/graphics.h>
 
 namespace unreal
 {

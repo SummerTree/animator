@@ -35,7 +35,8 @@ IF(OCTOON_FEATURE_HAL_USE_HLSL)
 ENDIF()
 
 SET(RENDERER_CORE
-	${HEADER_PATH}/graphics.h
+	${HEADER_PATH}/system_info.h
+	${SOURCE_PATH}/system_info.cpp
 	${HEADER_PATH}/graphics_child.h
 	${SOURCE_PATH}/graphics_child.cpp
 	${HEADER_PATH}/graphics_context.h

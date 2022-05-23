@@ -287,10 +287,10 @@ namespace octoon
 #endif
 		}
 
-		const GraphicsDeviceProperty&
-		GL33Device::getDeviceProperty() const noexcept
+		const SystemInfo&
+		GL33Device::getSystemInfo() const noexcept
 		{
-			return *_deviceProperty;
+			return _deviceProperty->getSystemInfo();
 		}
 
 		const GraphicsDeviceDesc&

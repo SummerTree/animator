@@ -1,6 +1,10 @@
 #include "config_manager.h"
 #include <radeon_rays.h>
 #include <octoon/runtime/except.h>
+#include <octoon/hal/graphics_device.h>
+#include <octoon/hal/graphics_context.h>
+#include <octoon/hal/graphics_texture.h>
+#include <octoon/hal/graphics_framebuffer.h>
 #include "monte_carlo_renderer.h"
 
 #ifdef __APPLE__

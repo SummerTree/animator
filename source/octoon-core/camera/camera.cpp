@@ -1,7 +1,7 @@
 #include <octoon/camera/camera.h>
 #include <octoon/video/renderer.h>
 #include <octoon/runtime/except.h>
-#include <octoon/hal/graphics.h>
+#include <octoon/hal/graphics_device.h>
 
 namespace octoon
 {

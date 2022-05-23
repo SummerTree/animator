@@ -196,10 +196,10 @@ namespace octoon
 			source->downcast<GL32DescriptorSet>()->copy(descriptorCopyCount, descriptorCopies);
 		}
 
-		const GraphicsDeviceProperty&
-		GL32Device::getDeviceProperty() const noexcept
+		const SystemInfo&
+		GL32Device::getSystemInfo() const noexcept
 		{
-			return *_deviceProperty;
+			return _deviceProperty->getSystemInfo();
 		}
 
 		const GraphicsDeviceDesc&

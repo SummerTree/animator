@@ -3,7 +3,9 @@
 
 #include <octoon/runtime/singleton.h>
 
-#include <octoon/hal/graphics.h>
+#include <octoon/hal/graphics_device.h>
+#include <octoon/hal/graphics_context.h>
+#include <octoon/hal/graphics_framebuffer.h>
 
 #include <octoon/camera/camera.h>
 #include <octoon/light/light.h>
