@@ -197,9 +197,9 @@ namespace unreal
 
 		mainLayout_ = new QVBoxLayout;
 		mainLayout_->addLayout(fovLayout);
-		mainLayout_->addLayout(focusLengthLayout);
 		mainLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
 		mainLayout_->addLayout(apertureLayout);
+		mainLayout_->addLayout(focusLengthLayout);
 		mainLayout_->addLayout(focusDistanceLayout);
 		mainLayout_->addLayout(focusTargetLayout);
 		mainLayout_->addLayout(animtionLayout);
