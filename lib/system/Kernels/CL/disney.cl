@@ -524,9 +524,9 @@ float3 Disney_Sample(DifferentialGeometry* dg, DisneyShaderData const* shader_da
 		sample.y /= (1 - shader_data->transparency);
 
 		int bxdf_flags = kBxdfFlagsBrdf;
-		if (sample.x <= shader_data->clearcoat)
+		if (sample.y <= shader_data->clearcoat)
 		{
-			sample.x /= (shader_data->clearcoat);
+			sample.y /= (shader_data->clearcoat);
 
 			int bxdf_flags = shader_data->roughness < ROUGHNESS_EPS ? kBxdfFlagsSingular : 0;
 			Bxdf_UberV2_SetSampledComponent(dg, kBxdfUberV2SampleReflection);
@@ -538,8 +538,8 @@ float3 Disney_Sample(DifferentialGeometry* dg, DisneyShaderData const* shader_da
 		}
 		else
 		{
-			sample.x -= (shader_data->clearcoat);
-			sample.x /= (1.f - shader_data->clearcoat);
+			sample.y -= (shader_data->clearcoat);
+			sample.y /= (1.f - shader_data->clearcoat);
 
 			if (sample.y < shader_data->cs_w)
 			{
