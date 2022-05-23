@@ -46,6 +46,7 @@ namespace unreal
 		environmentDock_ = std::make_unique<EnvironmentDock>(behaviour_, profile_);
 		cameraDock_ = std::make_unique<CameraDock>(behaviour_, profile_);
 		materialDock_ = std::make_unique<MaterialDock>(behaviour_, profile_);
+		motionDock_ = std::make_unique<MotionDock>(behaviour_, profile_);
 		statusBar_ = std::make_unique<StatusBar>(behaviour_, profile_);
 
 		this->addToolBar(toplevelDock_.get());
@@ -59,6 +60,7 @@ namespace unreal
 		this->splitDockWidget(mainLightDock_.get(), recordDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), environmentDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), cameraDock_.get(), Qt::Orientation::Vertical);
+		this->splitDockWidget(mainLightDock_.get(), motionDock_.get(), Qt::Orientation::Vertical);
 
 		this->setCentralWidget(viewDock_.get());
 		this->setStatusBar(statusBar_.get());
@@ -69,6 +71,7 @@ namespace unreal
 		materialDock_->hide();
 		recordDock_->hide();
 		cameraDock_->hide();
+		motionDock_->hide();
 
 		this->connect(&timer, &QTimer::timeout, this, &MainDock::update);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::sunSignal, this, &MainDock::onSunSignal);
@@ -77,6 +80,7 @@ namespace unreal
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::materialSignal, this, &MainDock::onMaterialSignal);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::cameraSignal, this, &MainDock::onCameraSignal);
+		this->connect(thumbnailDock_.get(), &ThumbnailDock::motionSignal, this, &MainDock::onMotionSignal);
 
 		this->restoreLayout();
 
@@ -223,26 +227,13 @@ namespace unreal
 				}
 				else
 				{
-					QMessageBox msg(this);
-					msg.setWindowTitle(tr("Warning"));
-					msg.setText(tr("Please load a project with pmm extension."));
-					msg.setIcon(QMessageBox::Information);
-					msg.setStandardButtons(QMessageBox::Ok);
-
-					msg.exec();
+					QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
 				}
 			}
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
-
+			QMessageBox::information(this, tr("Error"), e.what());
 			spdlog::error("Function onRecordSignal raised exception: " + std::string(e.what()));
 		}
 	}
@@ -276,24 +267,12 @@ namespace unreal
 			}
 			else
 			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Warning"));
-				msg.setText(tr("Please load a project with pmm extension."));
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
+				QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
 			}
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::information(this, tr("Error"), e.what());
 			spdlog::error("Function onLightSignal raised exception: " + std::string(e.what()));
 		}
 	}
@@ -327,25 +306,13 @@ namespace unreal
 			}
 			else
 			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Warning"));
-				msg.setText(tr("Fail to get core component."));
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
+				QMessageBox::warning(this, tr("Warning"), tr("Fail to get core component."));
 				spdlog::warn("Fail to get core component");
 			}
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::information(this, tr("Error"), e.what());
 			spdlog::error("Function onSunSignal raised exception: " + std::string(e.what()));
 		}
 	}
@@ -379,24 +346,12 @@ namespace unreal
 			}
 			else
 			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Warning"));
-				msg.setText(tr("Fail to get core component."));
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
+				QMessageBox::warning(this, tr("Warning"), tr("Fail to get core component."));
 			}
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::information(this, tr("Error"), e.what());
 		}
 	}
 
@@ -429,24 +384,12 @@ namespace unreal
 			}
 			else
 			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Warning"));
-				msg.setText(tr("Fail to get core component."));
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
+				QMessageBox::warning(this, tr("Warning"), tr("Fail to get core component."));
 			}
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 
@@ -479,24 +422,50 @@ namespace unreal
 			}
 			else
 			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Warning"));
-				msg.setText(tr("Fail to get core component."));
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
+				QMessageBox::warning(this, tr("Warning"), tr("Fail to get core component."));
 			}
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
+			QMessageBox::critical(this, tr("Error"), e.what());
+		}
+	}
 
-			msg.exec();
+	void
+	MainDock::onMotionSignal() noexcept
+	{
+		try
+		{
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+			if (behaviour)
+			{
+				if (!profile_->playerModule->isPlaying)
+				{
+					if (motionDock_->isHidden())
+					{
+						auto widget = this->visableDock();
+						if (widget)
+						{
+							this->tabifyDockWidget(widget, motionDock_.get());
+							widget->hide();
+						}
+
+						motionDock_->show();
+					}
+					else
+					{
+						motionDock_->close();
+					}
+				}
+			}
+			else
+			{
+				QMessageBox::warning(this, tr("Warning"), tr("Fail to get core component."));
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::information(this, tr("Error"), e.what());
 		}
 	}
 
@@ -515,6 +484,8 @@ namespace unreal
 			return materialDock_.get();
 		if (cameraDock_->isVisible())
 			return cameraDock_.get();
+		if (motionDock_->isVisible())
+			return motionDock_.get();
 
 		return nullptr;
 	}

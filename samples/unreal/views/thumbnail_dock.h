@@ -34,6 +34,7 @@ namespace unreal
 		void environmentEvent() noexcept;
 		void cameraEvent() noexcept;
 		void settingsEvent() noexcept;
+		void motionEvent() noexcept;
 
 	Q_SIGNALS:
 		void sunSignal();
@@ -42,6 +43,7 @@ namespace unreal
 		void materialSignal();
 		void environmentSignal();
 		void cameraSignal();
+		void motionSignal();
 
 	public:
 		QToolButton* recordButton_;

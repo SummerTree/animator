@@ -24,6 +24,7 @@
 #include "views/material_dock.h"
 #include "views/record_dock.h"
 #include "views/camera_dock.h"
+#include "views/motion_dock.h"
 
 namespace unreal
 {
@@ -52,6 +53,7 @@ namespace unreal
 		void onEnvironmentSignal() noexcept;
 		void onMaterialSignal() noexcept;
 		void onCameraSignal() noexcept;
+		void onMotionSignal() noexcept;
 
 		void open() noexcept(false);
 		void update() noexcept;
@@ -81,6 +83,7 @@ namespace unreal
 		std::unique_ptr<EnvironmentDock> environmentDock_;
 		std::unique_ptr<MaterialDock> materialDock_;
 		std::unique_ptr<CameraDock> cameraDock_;
+		std::unique_ptr<MotionDock> motionDock_;
 	};
 }
 
