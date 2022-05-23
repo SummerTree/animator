@@ -13,7 +13,7 @@ namespace octoon
 	{
 	public:
 		ScriptableRenderMaterial() noexcept;
-		ScriptableRenderMaterial(ScriptableRenderContext& context, const MaterialPtr& material, const RenderingData& scene) noexcept;
+		ScriptableRenderMaterial(hal::GraphicsContextPtr&context, const MaterialPtr& material, const RenderingData& scene) noexcept;
 		virtual ~ScriptableRenderMaterial() noexcept;
 
 		const hal::GraphicsPipelinePtr& getPipeline() const noexcept;
@@ -23,10 +23,10 @@ namespace octoon
 
 	private:
 		void updateParameters(bool force = false) noexcept;
-		void updateMaterial(ScriptableRenderContext& context, const MaterialPtr& material, const RenderingData& scene) noexcept(false);
+		void updateMaterial(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept(false);
 
-		void setupProgram(ScriptableRenderContext& context, const MaterialPtr& material, const RenderingData& scene);
-		void setupRenderState(ScriptableRenderContext& context, const MaterialPtr& material);
+		void setupProgram(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene);
+		void setupRenderState(hal::GraphicsContextPtr& context, const MaterialPtr& material);
 
 		void parseIncludes(std::string& shader);
 		void replaceLightNums(std::string& shader, const RenderingData& parameters);

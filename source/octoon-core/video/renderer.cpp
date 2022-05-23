@@ -30,8 +30,8 @@ namespace octoon
 	{
 		width_ = w;
 		height_ = h;
-		context_ = std::make_shared<ScriptableRenderContext>(context);
-		forwardRenderer_ = std::make_unique<ForwardRenderer>();
+		context_ = context;
+		forwardRenderer_ = std::make_unique<ForwardRenderer>(context);
 		forwardRenderer_->setFramebufferSize(w, h);
 	}
 
@@ -93,10 +93,16 @@ namespace octoon
 			return this->forwardRenderer_->getFramebuffer();
 	}
 
-	const std::shared_ptr<ScriptableRenderContext>&
+	const hal::GraphicsContextPtr&
 	Renderer::getScriptableRenderContext() const noexcept
 	{
 		return this->context_;
+	}
+
+	const hal::GraphicsDevicePtr&
+	Renderer::getGraphicsDevice() const noexcept
+	{
+		return this->context_->getDevice();
 	}
 
 	void
@@ -202,7 +208,7 @@ namespace octoon
 			if (!pathRenderer_)
 			{
 				pathRenderer_ = std::make_unique<ConfigManager>();
-				std::string gpuName = this->context_->getGraphicsContext()->getDevice()->getDeviceProperty().getDeviceProperties().renderer;
+				std::string gpuName = this->context_->getDevice()->getDeviceProperty().getDeviceProperties().renderer;
 				pathRenderer_->setCurrentRenderDeviceName(gpuName);
 
 				spdlog::info("Forward render using: " + gpuName);
@@ -216,7 +222,7 @@ namespace octoon
 		}
 		else
 		{
-			this->forwardRenderer_->render(this->context_, scene);
+			this->forwardRenderer_->render(scene);
 		}
 	}
 

@@ -74,7 +74,7 @@ namespace octoon
 			textureDesc.setMipNums(image.mipLevel());
 		}
 
-		auto texture = Renderer::instance()->getScriptableRenderContext()->createTexture(textureDesc);
+		auto texture = Renderer::instance()->getGraphicsDevice()->createTexture(textureDesc);
 		if (!texture)
 			return nullptr;
 

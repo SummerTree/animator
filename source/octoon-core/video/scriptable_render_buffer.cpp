@@ -8,7 +8,7 @@ namespace octoon
 	{
 	}
 
-	ScriptableRenderBuffer::ScriptableRenderBuffer(ScriptableRenderContext& context, const std::shared_ptr<Mesh>& mesh) noexcept(false)
+	ScriptableRenderBuffer::ScriptableRenderBuffer(const hal::GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false)
 	{
 		this->updateData(context, mesh);
 	}
@@ -60,7 +60,7 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderBuffer::updateData(ScriptableRenderContext& context, const std::shared_ptr<Mesh>& mesh) noexcept(false)
+	ScriptableRenderBuffer::updateData(const hal::GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false)
 	{
 		if (mesh)
 		{
@@ -83,7 +83,7 @@ namespace octoon
 				dataDesc.setStreamSize(numVertices * inputLayout.getVertexSize());
 				dataDesc.setUsage(hal::GraphicsUsageFlagBits::WriteBit);
 
-				this->vertices_ = context.createGraphicsData(dataDesc);
+				this->vertices_ = context->createGraphicsData(dataDesc);
 			}
 
 			if (numIndices > 0 && (!this->indices_ || mesh_ && mesh_->getNumIndices() != mesh->getNumIndices()))
@@ -94,7 +94,7 @@ namespace octoon
 				indiceDesc.setStreamSize(numIndices * sizeof(std::uint32_t));
 				indiceDesc.setUsage(hal::GraphicsUsageFlagBits::WriteBit);
 
-				this->indices_ = context.createGraphicsData(indiceDesc);
+				this->indices_ = context->createGraphicsData(indiceDesc);
 			}
 
 			if (numVertices > 0 && this->vertices_)

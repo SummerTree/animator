@@ -78,29 +78,14 @@ namespace octoon
 		void drawIndexedIndirect(const hal::GraphicsDataPtr& data, std::size_t offset, std::uint32_t drawCount, std::uint32_t stride) noexcept;
 
 		void drawMesh(const std::shared_ptr<Mesh>& mesh, std::size_t subset);
-		void drawRenderers(const Geometry& geometry, const Camera& camera, const std::shared_ptr<Material>& overrideMaterial = nullptr) noexcept;
-		void drawRenderers(const std::vector<Geometry*>& objects, const Camera& camera, const std::shared_ptr<Material>& overrideMaterial = nullptr) noexcept;
+		void drawRenderers(const Geometry& geometry, const Camera& camera, const RenderingData& renderingData, const std::shared_ptr<Material>& overrideMaterial = nullptr) noexcept;
+		void drawRenderers(const std::vector<Geometry*>& objects, const Camera& camera, const RenderingData& renderingData, const std::shared_ptr<Material>& overrideMaterial = nullptr) noexcept;
 
 		void compileMaterial(const std::shared_ptr<Material>& material, const RenderingData& renderingData);
-		void setMaterial(const std::shared_ptr<Material>& material, const Camera& camera, const Geometry& geometry);
-
-		void cleanCache() noexcept;
-		void compileScene(const std::shared_ptr<RenderScene>& scene) noexcept;
-		RenderingData& getRenderingData() const noexcept(false);
+		void setMaterial(const std::shared_ptr<Material>& material, const RenderingData& renderingData, const Camera& camera, const Geometry& geometry);
 
 	private:
-		void updateCamera(const std::shared_ptr<RenderScene>& scene, class RenderingData& out, bool force = false);
-		void updateLights(const std::shared_ptr<RenderScene>& scene, class RenderingData& out, bool force = false);
-		void updateMaterials(const std::shared_ptr<RenderScene>& scene, class RenderingData& out, bool force = false);
-		void updateShapes(const std::shared_ptr<RenderScene>& scene, class RenderingData& out, bool force = false);
-
-	private:
-		Collector materialCollector;
-
 		hal::GraphicsContextPtr context_;
-
-		std::shared_ptr<class RenderingData> renderingData_;
-		std::unordered_map<std::shared_ptr<RenderScene>, std::shared_ptr<RenderingData>> sceneCache_;
 
 		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderBuffer>> buffers_;
 		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderMaterial>> materials_;

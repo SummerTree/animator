@@ -255,7 +255,7 @@ namespace octoon
 		colorTextureDesc.setTexMultisample(multisample);
 		colorTextureDesc.setTexDim(multisample > 0 ? hal::TextureDimension::Texture2DMultisample : hal::TextureDimension::Texture2D);
 		colorTextureDesc.setTexFormat(format);
-		edgeTexture_ = Renderer::instance()->getScriptableRenderContext()->createTexture(colorTextureDesc);
+		edgeTexture_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createTexture(colorTextureDesc);
 		if (!edgeTexture_)
 			throw runtime::runtime_error::create("createTexture() failed");
 
@@ -265,18 +265,18 @@ namespace octoon
 		depthTextureDesc.setTexMultisample(multisample);
 		depthTextureDesc.setTexDim(multisample > 0 ? hal::TextureDimension::Texture2DMultisample : hal::TextureDimension::Texture2D);
 		depthTextureDesc.setTexFormat(depthStencil);
-		depthTexture_ = Renderer::instance()->getScriptableRenderContext()->createTexture(depthTextureDesc);
+		depthTexture_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createTexture(depthTextureDesc);
 		if (!depthTexture_)
 			throw runtime::runtime_error::create("createTexture() failed");
 
 		hal::GraphicsFramebufferDesc framebufferDesc;
 		framebufferDesc.setWidth(w);
 		framebufferDesc.setHeight(h);
-		framebufferDesc.setFramebufferLayout(Renderer::instance()->getScriptableRenderContext()->createFramebufferLayout(framebufferLayoutDesc));
+		framebufferDesc.setFramebufferLayout(Renderer::instance()->getScriptableRenderContext()->getDevice()->createFramebufferLayout(framebufferLayoutDesc));
 		framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture_, 0, 0));
 		framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(edgeTexture_, 0, 0));
 
-		edgeFramebuffer_ = Renderer::instance()->getScriptableRenderContext()->createFramebuffer(framebufferDesc);
+		edgeFramebuffer_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createFramebuffer(framebufferDesc);
 		if (!edgeFramebuffer_)
 			throw runtime::runtime_error::create("createFramebuffer() failed");
 	}

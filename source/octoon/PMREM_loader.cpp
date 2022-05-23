@@ -200,7 +200,7 @@ void main()
 			std::uint32_t width = 64 << (mipNums - 1);
 			std::uint32_t height = 32 << (mipNums - 1);
 
-			auto renderContext = Renderer::instance()->getScriptableRenderContext();
+			auto renderContext = Renderer::instance()->getGraphicsDevice();
 
 			hal::GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);

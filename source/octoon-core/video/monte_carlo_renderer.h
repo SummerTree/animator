@@ -20,7 +20,7 @@ namespace octoon
 
 		void clear(const math::float4& val) override;
 
-		void render(const std::shared_ptr<ScriptableRenderContext>& context, const CompiledScene& scene) override;
+		void render(const CompiledScene& scene) override;
 		void renderTile(const CompiledScene& scene, const math::int2& tile_origin, const math::int2& tile_size) override;
 
 	private:

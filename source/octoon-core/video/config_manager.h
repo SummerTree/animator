@@ -64,13 +64,14 @@ namespace octoon
 
 		const hal::GraphicsFramebufferPtr& getFramebuffer() const;
 
-		void render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene);
+		void render(const hal::GraphicsContextPtr& context, const std::shared_ptr<RenderScene>& scene);
 
 		void setCurrentRenderDeviceName(std::string name);
 		std::string getCurrentRenderDeviceName() const;
+
 	private:
-		void prepareScene(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene) noexcept;
-		void generateWorkspace(Config& config, const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t width, std::uint32_t height);
+		void prepareScene(const std::shared_ptr<RenderScene>& scene) noexcept;
+		void generateWorkspace(Config& config, const hal::GraphicsContextPtr& context, std::uint32_t width, std::uint32_t height);
 		int longestCommonSubsequence(std::string text1, std::string text2) const;
 
 	private:

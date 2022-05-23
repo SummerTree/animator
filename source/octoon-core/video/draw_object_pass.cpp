@@ -22,7 +22,7 @@ namespace octoon
 			for (auto& geometry : renderingData.geometries)
 			{
 				if (geometry->getRenderOrder() < 1)
-					context.drawRenderers(*geometry, *camera);
+					context.drawRenderers(*geometry, *camera, renderingData);
 			}
 		}
 	}

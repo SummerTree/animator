@@ -45,7 +45,8 @@ namespace octoon
 
 		const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 
-		const std::shared_ptr<ScriptableRenderContext>& getScriptableRenderContext() const noexcept;
+		const hal::GraphicsContextPtr& getScriptableRenderContext() const noexcept;
+		const hal::GraphicsDevicePtr& getGraphicsDevice() const noexcept;
 
 		void render(const std::shared_ptr<RenderScene>& scene) noexcept(false);
 
@@ -68,7 +69,7 @@ namespace octoon
 		std::uint32_t width_;
 		std::uint32_t height_;
 
-		std::shared_ptr<ScriptableRenderContext> context_;
+		hal::GraphicsContextPtr context_;
 
 		std::unique_ptr<class ConfigManager> pathRenderer_;
 		std::unique_ptr<class ForwardRenderer> forwardRenderer_;

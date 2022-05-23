@@ -52,7 +52,7 @@ namespace octoon
 				{
 					context.configureTarget(framebuffer);
 					context.configureClear(camera->getClearFlags(), camera->getClearColor(), 1.0f, 0);
-					context.drawRenderers(renderingData.geometries, *camera, renderingData.depthMaterial);
+					context.drawRenderers(renderingData.geometries, *camera, renderingData, renderingData.depthMaterial);
 
 					if (camera->getRenderToScreen())
 					{

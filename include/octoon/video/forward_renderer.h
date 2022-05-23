@@ -7,32 +7,43 @@
 #include <octoon/video/draw_skybox_pass.h>
 #include <octoon/video/draw_selector_pass.h>
 
+#include <octoon/video/scriptable_scene_controller.h>
+
 namespace octoon
 {
 	class OCTOON_EXPORT ForwardRenderer final
 	{
 	public:
-		ForwardRenderer() noexcept;
+		ForwardRenderer(const hal::GraphicsContextPtr& context) noexcept;
 		virtual ~ForwardRenderer() noexcept;
 
-		void render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene);
+		void render(const std::shared_ptr<RenderScene>& scene);
 		void setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept;
 		void getFramebufferSize(std::uint32_t& w, std::uint32_t& h) const noexcept;
 		const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 
 	private:
-		void setupFramebuffers(const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t w, std::uint32_t h) except;
+		void prepareScene(const std::shared_ptr<RenderScene>& scene) noexcept;
+		void setWorkBufferSize(const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t w, std::uint32_t h) except;
 
 	private:
 		ForwardRenderer(const ForwardRenderer&) = delete;
 		ForwardRenderer& operator=(const ForwardRenderer&) = delete;
 
 	private:
+		struct Config
+		{
+			std::unique_ptr<ScriptableSceneController> controller;
+			std::unique_ptr<ScriptableRenderContext> context;
+		};
+
 		std::uint32_t width_;
 		std::uint32_t height_;
 
 		std::uint32_t framebufferWidth_;
 		std::uint32_t framebufferHeight_;
+
+		std::vector<Config> configs_;
 
 		std::unique_ptr<LightsShadowCasterPass> lightsShadowCasterPass_;
 		std::unique_ptr<DrawObjectPass> drawOpaquePass_;
