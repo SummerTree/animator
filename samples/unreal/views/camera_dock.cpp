@@ -97,7 +97,7 @@ namespace unreal
 		fovSpinbox_ = new DoubleSpinBox();
 		fovSpinbox_->setMinimum(1.0f);
 		fovSpinbox_->setMaximum(120.0f);
-		fovSpinbox_->setValue(32.0f);
+		fovSpinbox_->setValue(60.0f);
 		fovSpinbox_->setSingleStep(1.0f);
 		fovSpinbox_->setAlignment(Qt::AlignRight);
 		fovSpinbox_->setFixedWidth(100);
@@ -122,9 +122,22 @@ namespace unreal
 		apertureSpinbox_->setPrefix(u8"f/");
 		apertureSpinbox_->setDecimals(1);
 
+		focalLengthLabel_ = new QLabel();
+		focalLengthLabel_->setText(tr("Focal Length:"));
+		focalLengthLabel_->setStyleSheet("color: rgb(200,200,200);");
+
 		focusDistanceLabel_ = new QLabel();
 		focusDistanceLabel_->setText(tr("Focus Distance:"));
 		focusDistanceLabel_->setStyleSheet("color: rgb(200,200,200);");
+
+		focalLengthSpinbox_ = new DoubleSpinBox();
+		focalLengthSpinbox_->setMinimum(1.0f);
+		focalLengthSpinbox_->setMaximum(1200.0f);
+		focalLengthSpinbox_->setValue(0);
+		focalLengthSpinbox_->setSingleStep(0.1f);
+		focalLengthSpinbox_->setAlignment(Qt::AlignRight);
+		focalLengthSpinbox_->setSuffix(u8"mm");
+		focalLengthSpinbox_->setFixedWidth(100);
 
 		focusDistanceSpinbox_ = new DoubleSpinBox();
 		focusDistanceSpinbox_->setMinimum(0);
@@ -162,6 +175,10 @@ namespace unreal
 		apertureLayout->addWidget(apertureLabel_);
 		apertureLayout->addWidget(apertureSpinbox_);
 
+		auto focusLengthLayout = new QHBoxLayout;
+		focusLengthLayout->addWidget(focalLengthLabel_);
+		focusLengthLayout->addWidget(focalLengthSpinbox_);
+
 		auto focusDistanceLayout = new QHBoxLayout;
 		focusDistanceLayout->addWidget(focusDistanceLabel_);
 		focusDistanceLayout->addWidget(focusDistanceSpinbox_);
@@ -180,6 +197,7 @@ namespace unreal
 
 		mainLayout_ = new QVBoxLayout;
 		mainLayout_->addLayout(fovLayout);
+		mainLayout_->addLayout(focusLengthLayout);
 		mainLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
 		mainLayout_->addLayout(apertureLayout);
 		mainLayout_->addLayout(focusDistanceLayout);
@@ -195,6 +213,7 @@ namespace unreal
 		
 		connect(focusTargetButton_, SIGNAL(mouseMoveSignal()), this, SLOT(onUpdateTarget()));
 		connect(fovSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFovChanged(double)));
+		connect(focalLengthSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFocalLengthChanged(double)));
 		connect(apertureSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onApertureChanged(double)));
 		connect(focusDistanceSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFocusDistanceChanged(double)));
 		connect(loadButton_, SIGNAL(clicked()), this, SLOT(onLoadAnimation()));
@@ -238,7 +257,22 @@ namespace unreal
 	CameraDock::onFovChanged(double value)
 	{
 		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
+		{
 			profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setFov(value);
+			focalLengthSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalLength());
+		}
+		else
+			this->updateDefaultSetting();
+	}
+
+	void
+	CameraDock::onFocalLengthChanged(double value)
+	{
+		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
+		{
+			profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setFocalLength(value);
+			fovSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFov());
+		}
 		else
 			this->updateDefaultSetting();
 	}
@@ -348,6 +382,7 @@ namespace unreal
 			float aperture = camera->getAperture();
 
 			fovSpinbox_->setValue(fov);
+			focalLengthSpinbox_->setValue(camera->getFocalLength());
 			apertureSpinbox_->setValue(aperture == 0.0f ? 64.0f : 1.0f / aperture);
 
 			auto mainCamera = profile_->entitiesModule->camera;

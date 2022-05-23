@@ -48,6 +48,7 @@ namespace unreal
 
 	private Q_SLOTS:
 		void onFovChanged(double);
+		void onFocalLengthChanged(double);
 		void onApertureChanged(double);
 		void onFocusDistanceChanged(double);
 		void onUpdateTarget();
@@ -61,12 +62,14 @@ namespace unreal
 		QLabel* dofInfoLabel_;
 		QLabel* apertureLabel_;
 		QLabel* fovLabel_;
+		QLabel* focalLengthLabel_;
 		QLabel* focusDistanceName_;
 		QLabel* focusDistanceLabel_;
 
 		QToolButton* focusTargetButton_;
 		QDoubleSpinBox* fovSpinbox_;
 		QDoubleSpinBox* apertureSpinbox_;
+		QDoubleSpinBox* focalLengthSpinbox_;
 		QDoubleSpinBox* focusDistanceSpinbox_;
 
 		QToolButton* loadButton_;

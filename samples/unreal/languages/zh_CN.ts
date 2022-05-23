@@ -39,52 +39,57 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="126"/>
+        <source>Focal Length:</source>
+        <translation>等效焦距</translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="130"/>
         <source>Focus Distance:</source>
         <translation>焦点距离：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="139"/>
-        <location filename="../views/camera_dock.cpp" line="230"/>
-        <location filename="../views/camera_dock.cpp" line="264"/>
-        <location filename="../views/camera_dock.cpp" line="371"/>
+        <location filename="../views/camera_dock.cpp" line="152"/>
+        <location filename="../views/camera_dock.cpp" line="249"/>
+        <location filename="../views/camera_dock.cpp" line="298"/>
+        <location filename="../views/camera_dock.cpp" line="406"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="149"/>
-        <location filename="../views/camera_dock.cpp" line="284"/>
+        <location filename="../views/camera_dock.cpp" line="162"/>
+        <location filename="../views/camera_dock.cpp" line="318"/>
         <source>Load Animation</source>
         <translation>加载动画</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="154"/>
+        <location filename="../views/camera_dock.cpp" line="167"/>
         <source>Uninstall</source>
         <translation>卸载</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="222"/>
-        <location filename="../views/camera_dock.cpp" line="367"/>
+        <location filename="../views/camera_dock.cpp" line="241"/>
+        <location filename="../views/camera_dock.cpp" line="402"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="224"/>
-        <location filename="../views/camera_dock.cpp" line="366"/>
+        <location filename="../views/camera_dock.cpp" line="243"/>
+        <location filename="../views/camera_dock.cpp" line="401"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="284"/>
+        <location filename="../views/camera_dock.cpp" line="318"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="310"/>
+        <location filename="../views/camera_dock.cpp" line="344"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="311"/>
+        <location filename="../views/camera_dock.cpp" line="345"/>
         <source>Failed to open the file</source>
         <translation>打开文件失败</translation>
     </message>
