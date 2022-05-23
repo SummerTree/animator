@@ -15,6 +15,7 @@ namespace octoon
 
 	private:
 		CLWImage2D image_;
+		std::vector<cl_mem> objects_;
 	};
 }
 

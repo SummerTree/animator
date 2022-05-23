@@ -6,14 +6,13 @@ namespace octoon
 		: ClwOutput(context, w, h)
 		, image_(context.CreateImage2DFromGLTexture(texture))
 	{
+		objects_.push_back(image_);
 	}
 
 	void
 	ClwTextureOutput::syncData(CLWKernel& copyKernel)
 	{
-		std::vector<cl_mem> objects;
-		objects.push_back(image_);
-		context_.AcquireGLObjects(0, objects);
+		context_.AcquireGLObjects(0, objects_);
 
 		int argc = 0;
 		copyKernel.SetArg(argc++, this->data());
@@ -25,7 +24,6 @@ namespace octoon
 		std::size_t globalsize = this->width() * this->height();
 
 		context_.Launch1D(0, ((globalsize + 63) / 64) * 64, 64, copyKernel);
-		context_.ReleaseGLObjects(0, objects);
-		context_.Finish(0);
+		context_.ReleaseGLObjects(0, objects_);
 	}
 }
