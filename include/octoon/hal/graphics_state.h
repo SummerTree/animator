@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_STATE_H_
 #define OCTOON_GRAPHICS_STATE_H_
 
-#include <octoon/hal/graphics_child.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
@@ -178,9 +178,9 @@ namespace octoon
 			GraphicsColorBlends _blends;
 		};
 
-		class OCTOON_EXPORT GraphicsState : public GraphicsChild
+		class OCTOON_EXPORT GraphicsState : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsState, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsState, GraphicsResource)
 		public:
 			GraphicsState() noexcept = default;
 			virtual ~GraphicsState() = default;

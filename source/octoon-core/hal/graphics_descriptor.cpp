@@ -6,9 +6,9 @@ namespace octoon
 	namespace hal
 	{
 		OctoonImplementSubInterface(GraphicsUniformSet, runtime::RttiInterface, "GraphicsUniformSet")
-		OctoonImplementSubInterface(GraphicsDescriptorPool, GraphicsChild, "GraphicsDescriptorPool")
-		OctoonImplementSubInterface(GraphicsDescriptorSet, GraphicsChild, "GraphicsDescriptorSet")
-		OctoonImplementSubInterface(GraphicsDescriptorSetLayout, GraphicsChild, "GraphicsDescriptorSetLayout")
+		OctoonImplementSubInterface(GraphicsDescriptorPool, GraphicsResource, "GraphicsDescriptorPool")
+		OctoonImplementSubInterface(GraphicsDescriptorSet, GraphicsResource, "GraphicsDescriptorSet")
+		OctoonImplementSubInterface(GraphicsDescriptorSetLayout, GraphicsResource, "GraphicsDescriptorSetLayout")
 
 		void
 		GraphicsDescriptorSetLayoutDesc::setUniformComponents(const GraphicsParams& component) noexcept

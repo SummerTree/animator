@@ -118,7 +118,10 @@ namespace unreal
 		recordDock_.reset();
 		thumbnailDock_.reset();
 		cameraDock_.reset();
+		motionDock_.reset();
 		statusBar_.reset();
+
+		spdlog::debug("Delete main dock");
 
 		QDir appFolder = QDir(QDir::homePath() + "/.flower");
 		if (!appFolder.exists())
@@ -126,11 +129,13 @@ namespace unreal
 
 		UnrealProfile::save(QDir::homePath().toStdString() + "/.flower/config.json", *profile_);
 
+		spdlog::debug("save profile");
+
 		behaviour_.reset();
 		profile_.reset();
 		gameApp_.reset();
 
-		spdlog::debug("Delete main dock");
+		spdlog::debug("shutdown");
 	}
 
 	void

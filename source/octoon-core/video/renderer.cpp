@@ -207,15 +207,11 @@ namespace octoon
 		{
 			if (!pathRenderer_)
 			{
-				pathRenderer_ = std::make_unique<ConfigManager>();
-				std::string gpuName = this->context_->getDevice()->getSystemInfo().graphicsDeviceName;
-				pathRenderer_->setCurrentRenderDeviceName(gpuName);
-
-				spdlog::info("Forward render using: " + gpuName);
-
-				pathRenderer_->init();
+				pathRenderer_ = std::make_unique<ConfigManager>(this->context_->getDevice()->getSystemInfo().graphicsDeviceName);
 				pathRenderer_->setMaxBounces(this->getMaxBounces());
 				pathRenderer_->setFramebufferSize(this->width_, this->height_);
+
+				spdlog::info("Forward render using: " + pathRenderer_->getCurrentRenderDeviceName());
 			}
 
 			this->pathRenderer_->render(this->context_, scene);

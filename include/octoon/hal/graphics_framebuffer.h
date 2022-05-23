@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_FRAMEBUFFER_H_
 #define OCTOON_GRAPHICS_FRAMEBUFFER_H_
 
-#include <octoon/hal/graphics_child.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
@@ -102,9 +102,9 @@ namespace octoon
 			GraphicsFramebufferLayoutPtr _framebufferLayout;
 		};
 
-		class OCTOON_EXPORT GraphicsFramebufferLayout : public GraphicsChild
+		class OCTOON_EXPORT GraphicsFramebufferLayout : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsFramebufferLayout, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsFramebufferLayout, GraphicsResource)
 		public:
 			GraphicsFramebufferLayout() noexcept = default;
 			virtual ~GraphicsFramebufferLayout() = default;
@@ -116,9 +116,9 @@ namespace octoon
 			GraphicsFramebufferLayout& operator=(const GraphicsFramebufferLayout&) noexcept = delete;
 		};
 
-		class OCTOON_EXPORT GraphicsFramebuffer : public GraphicsChild
+		class OCTOON_EXPORT GraphicsFramebuffer : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsFramebuffer, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsFramebuffer, GraphicsResource)
 		public:
 			GraphicsFramebuffer() noexcept = default;
 			virtual ~GraphicsFramebuffer() = default;

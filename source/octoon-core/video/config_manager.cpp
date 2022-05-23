@@ -35,13 +35,15 @@
 
 namespace octoon
 {
-	ConfigManager::ConfigManager() noexcept(false)
+	ConfigManager::ConfigManager(std::string_view deviceName) noexcept(false)
 		: width_(0)
 		, height_(0)
 		, framebufferWidth_(0)
 		, framebufferHeight_(0)
 		, dirty_(true)
+		, currentRenderDeviceName(deviceName)
 	{
+		this->init();
 	}
 
 	void
@@ -477,12 +479,6 @@ namespace octoon
 			context->blitFramebuffer(framebuffer_, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
 			context->discardFramebuffer(framebuffer_, hal::ClearFlagBits::AllBit);
 		}
-	}
-
-	void
-	ConfigManager::setCurrentRenderDeviceName(std::string name)
-	{
-		this->currentRenderDeviceName = name;
 	}
 
 	std::string

@@ -4,7 +4,7 @@ namespace octoon
 {
 	namespace hal
 	{
-		OctoonImplementSubInterface(GraphicsState, GraphicsChild, "GraphicsState")
+		OctoonImplementSubInterface(GraphicsState, GraphicsResource, "GraphicsState")
 
 		GraphicsColorBlend::GraphicsColorBlend() noexcept
 			: _enable(false)

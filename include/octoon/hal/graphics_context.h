@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_CONTEXT_H_
 #define OCTOON_GRAPHICS_CONTEXT_H_
 
-#include <octoon/hal/graphics_child.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
@@ -21,9 +21,9 @@ namespace octoon
 			GraphicsSwapchainPtr _swapchain;
 		};
 
-		class OCTOON_EXPORT GraphicsContext : public GraphicsChild
+		class OCTOON_EXPORT GraphicsContext : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsContext, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsContext, GraphicsResource)
 		public:
 			GraphicsContext() noexcept = default;
 			virtual ~GraphicsContext() = default;

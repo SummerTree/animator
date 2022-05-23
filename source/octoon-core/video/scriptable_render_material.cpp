@@ -2,7 +2,12 @@
 #include <octoon/video/rendering_data.h>
 #include <octoon/video/renderer.h>
 #include <octoon/material/mesh_standard_material.h>
-#include <octoon/hal/graphics.h>
+#include <octoon/hal/graphics_input_layout.h>
+#include <octoon/hal/graphics_framebuffer.h>
+#include <octoon/hal/graphics_variant.h>
+#include <octoon/hal/graphics_descriptor.h>
+#include <octoon/hal/graphics_pipeline.h>
+#include <octoon/hal/graphics_shader.h>
 #include <regex>
 
 static const char* common = R"(

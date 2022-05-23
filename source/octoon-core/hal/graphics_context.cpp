@@ -4,7 +4,7 @@ namespace octoon
 {
 	namespace hal
 	{
-		OctoonImplementSubInterface(GraphicsContext, GraphicsChild, "GraphicsContext")
+		OctoonImplementSubInterface(GraphicsContext, GraphicsResource, "GraphicsContext")
 
 		GraphicsContextDesc::GraphicsContextDesc() noexcept
 		{

@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_DESCRIPTOR_H_
 #define OCTOON_GRAPHICS_DESCRIPTOR_H_
 
-#include <octoon/hal/graphics_child.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
@@ -188,9 +188,9 @@ namespace octoon
 			GraphicsUniformSet& operator=(const GraphicsUniformSet&) noexcept = delete;
 		};
 
-		class OCTOON_EXPORT GraphicsDescriptorPool : public GraphicsChild
+		class OCTOON_EXPORT GraphicsDescriptorPool : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsDescriptorPool, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsDescriptorPool, GraphicsResource)
 		public:
 			GraphicsDescriptorPool() noexcept = default;
 			virtual ~GraphicsDescriptorPool() = default;
@@ -202,9 +202,9 @@ namespace octoon
 			GraphicsDescriptorPool& operator=(const GraphicsDescriptorPool&) = delete;
 		};
 
-		class OCTOON_EXPORT GraphicsDescriptorSetLayout : public GraphicsChild
+		class OCTOON_EXPORT GraphicsDescriptorSetLayout : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsDescriptorSetLayout, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsDescriptorSetLayout, GraphicsResource)
 		public:
 			GraphicsDescriptorSetLayout() noexcept = default;
 			virtual ~GraphicsDescriptorSetLayout() = default;
@@ -216,9 +216,9 @@ namespace octoon
 			GraphicsDescriptorSetLayout& operator=(const GraphicsDescriptorSetLayout&) = delete;
 		};
 
-		class OCTOON_EXPORT GraphicsDescriptorSet : public GraphicsChild
+		class OCTOON_EXPORT GraphicsDescriptorSet : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsDescriptorSet, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsDescriptorSet, GraphicsResource)
 		public:
 			GraphicsDescriptorSet() noexcept = default;
 			virtual ~GraphicsDescriptorSet() = default;

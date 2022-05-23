@@ -4,7 +4,7 @@ namespace octoon
 {
 	namespace hal
 	{
-		OctoonImplementSubInterface(GraphicsSwapchain, GraphicsChild, "GraphicsSwapchain")
+		OctoonImplementSubInterface(GraphicsSwapchain, GraphicsResource, "GraphicsSwapchain")
 
 		GraphicsSwapchainDesc::GraphicsSwapchainDesc() noexcept
 			: _format(GraphicsFormat::Undefined)

@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_SAMPLER_H_
 #define OCTOON_GRAPHICS_SAMPLER_H_
 
-#include <octoon/hal/graphics_child.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
@@ -32,9 +32,9 @@ namespace octoon
 			SamplerFilter _filterMag;
 		};
 
-		class OCTOON_EXPORT GraphicsSampler : public GraphicsChild
+		class OCTOON_EXPORT GraphicsSampler : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsSampler, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsSampler, GraphicsResource)
 		public:
 			GraphicsSampler() noexcept = default;
 			virtual ~GraphicsSampler() = default;

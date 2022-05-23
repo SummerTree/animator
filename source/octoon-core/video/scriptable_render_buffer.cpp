@@ -1,5 +1,6 @@
 #include <octoon/video/scriptable_render_buffer.h>
 #include <octoon/video/renderer.h>
+#include <octoon/hal/graphics_input_layout.h>
 #include <octoon/runtime/profiling_scope.h>
 
 namespace octoon

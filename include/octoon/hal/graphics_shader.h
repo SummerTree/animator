@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_SHADER_H_
 #define OCTOON_GRAPHICS_SHADER_H_
 
-#include <octoon/hal/graphics_child.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
@@ -118,9 +118,9 @@ namespace octoon
 			GraphicsUniformBlock& operator=(const GraphicsUniformBlock&) noexcept = delete;
 		};
 
-		class OCTOON_EXPORT GraphicsShader : public GraphicsChild
+		class OCTOON_EXPORT GraphicsShader : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsShader, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsShader, GraphicsResource)
 		public:
 			GraphicsShader() noexcept = default;
 			virtual ~GraphicsShader() = default;
@@ -132,9 +132,9 @@ namespace octoon
 			GraphicsShader& operator=(const GraphicsShader&) noexcept = delete;
 		};
 
-		class OCTOON_EXPORT GraphicsProgram : public GraphicsChild
+		class OCTOON_EXPORT GraphicsProgram : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsProgram, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsProgram, GraphicsResource)
 		public:
 			GraphicsProgram() noexcept = default;
 			virtual ~GraphicsProgram() = default;

@@ -1,6 +1,10 @@
 #if defined(OCTOON_FEATURE_HAL_ENABLE)
 #include <octoon/hal_feature.h>
-#include <octoon/hal/graphics.h>
+#include <octoon/hal/graphics_device.h>
+#include <octoon/hal/graphics_context.h>
+#include <octoon/hal/graphics_framebuffer.h>
+#include <octoon/hal/graphics_swapchain.h>
+#include <octoon/hal/graphics_system.h>
 #include <octoon/input/input.h>
 #include <octoon/runtime/except.h>
 

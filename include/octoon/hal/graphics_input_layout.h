@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_INPUT_LAYOUT_H_
 #define OCTOON_GRAPHICS_INPUT_LAYOUT_H_
 
-#include <octoon/hal/graphics_child.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
@@ -91,9 +91,9 @@ namespace octoon
 			GraphicsVertexBindings _bindings;
 		};
 
-		class OCTOON_EXPORT GraphicsInputLayout : public GraphicsChild
+		class OCTOON_EXPORT GraphicsInputLayout : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsInputLayout, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsInputLayout, GraphicsResource)
 		public:
 			GraphicsInputLayout() noexcept = default;
 			virtual ~GraphicsInputLayout() = default;

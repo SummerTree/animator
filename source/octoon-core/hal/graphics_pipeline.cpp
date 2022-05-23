@@ -4,8 +4,8 @@ namespace octoon
 {
 	namespace hal
 	{
-		OctoonImplementSubInterface(GraphicsPipeline, GraphicsChild, "GraphicsPipeline")
-		OctoonImplementSubInterface(GraphicsPipelineLayout, GraphicsChild, "GraphicsPipelineLayout")
+		OctoonImplementSubInterface(GraphicsPipeline, GraphicsResource, "GraphicsPipeline")
+		OctoonImplementSubInterface(GraphicsPipelineLayout, GraphicsResource, "GraphicsPipelineLayout")
 
 		GraphicsPipelineLayoutDesc::GraphicsPipelineLayoutDesc() noexcept
 		{

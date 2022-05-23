@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_PIPELINE_H_
 #define OCTOON_GRAPHICS_PIPELINE_H_
 
-#include <octoon/hal/graphics_child.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
@@ -52,9 +52,9 @@ namespace octoon
 			GraphicsDescriptorSetLayoutPtr _descriptorSetLayout;
 		};
 
-		class OCTOON_EXPORT GraphicsPipelineLayout : public GraphicsChild
+		class OCTOON_EXPORT GraphicsPipelineLayout : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsPipelineLayout, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsPipelineLayout, GraphicsResource)
 		public:
 			GraphicsPipelineLayout() noexcept = default;
 			virtual ~GraphicsPipelineLayout() = default;
@@ -66,9 +66,9 @@ namespace octoon
 			GraphicsPipelineLayout& operator=(const GraphicsPipelineLayout&) noexcept = delete;
 		};
 
-		class OCTOON_EXPORT GraphicsPipeline : public GraphicsChild
+		class OCTOON_EXPORT GraphicsPipeline : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsPipeline, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsPipeline, GraphicsResource)
 		public:
 			GraphicsPipeline() noexcept = default;
 			virtual ~GraphicsPipeline() = default;

@@ -4,7 +4,7 @@ namespace octoon
 {
 	namespace hal
 	{
-		OctoonImplementSubInterface(GraphicsSampler, GraphicsChild, "GraphicsSampler")
+		OctoonImplementSubInterface(GraphicsSampler, GraphicsResource, "GraphicsSampler")
 
 		GraphicsSamplerDesc::GraphicsSamplerDesc() noexcept
 			: _wrap(SamplerWrap::Repeat)

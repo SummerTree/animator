@@ -4,7 +4,7 @@ namespace octoon
 {
 	namespace hal
 	{
-		OctoonImplementSubInterface(GraphicsInputLayout, GraphicsChild, "GraphicsInputLayoutDesc")
+		OctoonImplementSubInterface(GraphicsInputLayout, GraphicsResource, "GraphicsInputLayoutDesc")
 
 		GraphicsVertexBinding::GraphicsVertexBinding() noexcept
 			: _divisor(VertexAttribDivisor::Vertex)

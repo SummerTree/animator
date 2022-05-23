@@ -44,9 +44,7 @@ namespace octoon
 		};
 
 	public:
-		ConfigManager() noexcept(false);
-
-		void init();
+		ConfigManager(std::string_view deviceName) noexcept(false);
 
 		void setOutput(OutputType type, Output* output);
 		Output* getOutput(OutputType type) const;
@@ -65,10 +63,10 @@ namespace octoon
 
 		void render(const hal::GraphicsContextPtr& context, const std::shared_ptr<RenderScene>& scene);
 
-		void setCurrentRenderDeviceName(std::string name);
 		std::string getCurrentRenderDeviceName() const;
 
 	private:
+		void init();
 		void prepareScene(const std::shared_ptr<RenderScene>& scene) noexcept;
 		void generateWorkspace(Config& config, const hal::GraphicsContextPtr& context, std::uint32_t width, std::uint32_t height);
 		int longestCommonSubsequence(std::string text1, std::string text2) const;

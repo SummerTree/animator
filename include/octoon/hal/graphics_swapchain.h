@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_SWAPCHAIN_H_
 #define OCTOON_GRAPHICS_SWAPCHAIN_H_
 
-#include <octoon/hal/graphics_child.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
@@ -51,9 +51,9 @@ namespace octoon
 			GraphicsFormat _depthStencilFormat;
 		};
 
-		class OCTOON_EXPORT GraphicsSwapchain : public GraphicsChild
+		class OCTOON_EXPORT GraphicsSwapchain : public GraphicsResource
 		{
-			OctoonDeclareSubInterface(GraphicsSwapchain, GraphicsChild)
+			OctoonDeclareSubInterface(GraphicsSwapchain, GraphicsResource)
 		public:
 			GraphicsSwapchain() noexcept = default;
 			virtual ~GraphicsSwapchain() = default;

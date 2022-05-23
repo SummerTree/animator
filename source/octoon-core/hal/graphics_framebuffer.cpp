@@ -4,8 +4,8 @@ namespace octoon
 {
 	namespace hal
 	{
-		OctoonImplementSubInterface(GraphicsFramebuffer, GraphicsChild, "GraphicsFramebuffer")
-		OctoonImplementSubInterface(GraphicsFramebufferLayout, GraphicsChild, "GraphicsFramebufferLayout")
+		OctoonImplementSubInterface(GraphicsFramebuffer, GraphicsResource, "GraphicsFramebuffer")
+		OctoonImplementSubInterface(GraphicsFramebufferLayout, GraphicsResource, "GraphicsFramebufferLayout")
 
 		GraphicsAttachmentLayout::GraphicsAttachmentLayout() noexcept
 			: _type(GraphicsImageLayout::Undefined)

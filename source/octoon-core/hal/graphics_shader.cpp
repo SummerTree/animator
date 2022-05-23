@@ -8,8 +8,8 @@ namespace octoon
 		OctoonImplementSubInterface(GraphicsAttribute, runtime::RttiInterface, "GraphicsAttribute")
 		OctoonImplementSubInterface(GraphicsUniform, GraphicsParam, "GraphicsUniform")
 		OctoonImplementSubInterface(GraphicsUniformBlock, GraphicsParam, "GraphicsUniformBlock")
-		OctoonImplementSubInterface(GraphicsShader, GraphicsChild, "GraphicsShader")
-		OctoonImplementSubInterface(GraphicsProgram, GraphicsChild, "GraphicsProgram")
+		OctoonImplementSubInterface(GraphicsShader, GraphicsResource, "GraphicsShader")
+		OctoonImplementSubInterface(GraphicsProgram, GraphicsResource, "GraphicsProgram")
 
 		GraphicsShaderDesc::GraphicsShaderDesc() noexcept
 			: _lang(ShaderLanguage::None)
