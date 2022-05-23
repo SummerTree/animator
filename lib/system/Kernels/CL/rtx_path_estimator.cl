@@ -397,28 +397,24 @@ KERNEL void ShadeSurface(
 			}
 		}
 
-		if (NON_BLACK(radiance))
+		if (NON_BLACK(radiance) && diffgeo.mat.shadow > 0)
 		{
-			if (diffgeo.mat.shadow > 0)
-			{
-				float3 shadow_ray_o = diffgeo.p + CRAZY_LOW_DISTANCE * s * diffgeo.ng;
-				float3 temp = diffgeo.p + wo - shadow_ray_o;
-				float3 shadow_ray_dir = normalize(temp);
-				float shadow_ray_length = length(temp);
-				int shadow_ray_mask = VISIBILITY_MASK_BOUNCE_SHADOW(bounce);
+			float3 shadow_ray_o = diffgeo.p + CRAZY_LOW_DISTANCE * s * diffgeo.ng;
+			float3 temp = diffgeo.p + wo - shadow_ray_o;
+			float3 shadow_ray_dir = normalize(temp);
+			float shadow_ray_length = length(temp);
+			int shadow_ray_mask = VISIBILITY_MASK_BOUNCE_SHADOW(bounce);
 
-				Ray_Init(shadow_rays + global_id, shadow_ray_o, shadow_ray_dir, shadow_ray_length, 0.f, shadow_ray_mask);
-				Ray_SetDoBackCulling(shadow_rays + global_id, 0);
-				Ray_SetExtra(shadow_rays + global_id, 0.f);
-			}
-
-			light_samples[global_id] = REASONABLE_RADIANCE(radiance);
+			Ray_Init(shadow_rays + global_id, shadow_ray_o, shadow_ray_dir, shadow_ray_length, 0.f, shadow_ray_mask);
+			Ray_SetDoBackCulling(shadow_rays + global_id, 0);
+			Ray_SetExtra(shadow_rays + global_id, 0.f);
 		}
 		else
 		{
 			Ray_SetInactive(shadow_rays + global_id);
-			light_samples[global_id] = 0;
 		}
+
+		light_samples[global_id] = REASONABLE_RADIANCE(radiance);
 
 		float q = max(min(0.5f, 0.2126f * throughput.x + 0.7152f * throughput.y + 0.0722f * throughput.z), 0.01f);
 		bool rr_apply = bounce > 3;
