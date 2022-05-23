@@ -118,6 +118,9 @@ namespace octoon
 
 		std::shared_ptr<Material> depthMaterial;
 		std::shared_ptr<Material> overrideMaterial;
+
+		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderBuffer>> buffers_;
+		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderMaterial>> materials_;
 	};
 }
 

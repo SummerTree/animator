@@ -63,11 +63,11 @@ namespace octoon
 			this->updateMaterials(scene, *out, true);
 			this->updateShapes(scene, *out, true);
 
-			sceneCache_[scene] = renderingData_ = out;
+			sceneCache_[scene] = out;
 		}
 		else
 		{
-			renderingData_ = (*iter).second;
+			auto& renderingData = (*iter).second;
 
 			bool should_update_lights = false;
 			for (auto& light : scene->getLights())
@@ -92,7 +92,7 @@ namespace octoon
 				}
 			}
 
-			bool should_update_materials = !renderingData_->material_bundle || materialCollector.NeedsUpdate(renderingData_->material_bundle.get(),
+			bool should_update_materials = !renderingData->material_bundle || materialCollector.NeedsUpdate(renderingData->material_bundle.get(),
 				[](runtime::RttiInterface* ptr)->bool
 			{
 				auto mat = ptr->downcast<Material>();
@@ -100,19 +100,19 @@ namespace octoon
 			});
 
 			auto camera = scene->getMainCamera();
-			bool should_update_camera = renderingData_->camera != camera || camera->isDirty();
+			bool should_update_camera = renderingData->camera != camera || camera->isDirty();
 
 			if (should_update_camera)
-				this->updateCamera(scene, *renderingData_);
+				this->updateCamera(scene, *renderingData);
 			
 			if (should_update_lights || should_update_camera)
-				this->updateLights(scene, *renderingData_);
+				this->updateLights(scene, *renderingData);
 
 			if (should_update_materials)
-				this->updateMaterials(scene, *renderingData_);
+				this->updateMaterials(scene, *renderingData);
 
 			if (should_update_shapes)
-				this->updateShapes(scene, *renderingData_);
+				this->updateShapes(scene, *renderingData);
 		}
 	}
 
@@ -124,12 +124,6 @@ namespace octoon
 			return *iter->second.get();
 		else
 			throw std::runtime_error("Scene has not been compiled");
-	}
-
-	RenderingData&
-	ScriptableSceneController::getRenderingData() const noexcept(false)
-	{
-		return *renderingData_;
 	}
 
 	void
@@ -423,13 +417,13 @@ namespace octoon
 
 		if (out.depthMaterial->isDirty())
 		{
-			this->materials_[out.depthMaterial.get()] = std::make_shared<ScriptableRenderMaterial>(this->context_, out.depthMaterial, out);
+			out.materials_[out.depthMaterial.get()] = std::make_shared<ScriptableRenderMaterial>(this->context_, out.depthMaterial, out);
 			out.depthMaterial->setDirty(false);
 		}
 
 		if (out.overrideMaterial)
 		{
-			this->materials_[out.depthMaterial.get()] = std::make_shared<ScriptableRenderMaterial>(this->context_, out.depthMaterial, out);
+			out.materials_[out.depthMaterial.get()] = std::make_shared<ScriptableRenderMaterial>(this->context_, out.depthMaterial, out);
 			out.overrideMaterial->setDirty(false);
 		}
 
@@ -440,7 +434,7 @@ namespace octoon
 			if (mat->isDirty() || force)
 			{
 				auto material = mat->downcast_pointer<Material>();
-				this->materials_[material.get()] = std::make_shared<ScriptableRenderMaterial>(this->context_, material, out);
+				out.materials_[material.get()] = std::make_shared<ScriptableRenderMaterial>(this->context_, material, out);
 			}
 		}
 	}
@@ -453,7 +447,7 @@ namespace octoon
 		out.screenQuad->setMesh(PlaneMesh::create(2.0f, 2.0f));
 
 		auto screenMesh = out.screenQuad->getMesh();
-		this->buffers_[screenMesh.get()] = std::make_shared<ScriptableRenderBuffer>(this->context_->getDevice(), screenMesh);
+		out.buffers_[screenMesh.get()] = std::make_shared<ScriptableRenderBuffer>(this->context_->getDevice(), screenMesh);
 
 		for (auto& geometry : scene->getGeometries())
 		{
@@ -463,14 +457,14 @@ namespace octoon
 			if (geometry->isDirty() || force)
 			{
 				auto mesh = geometry->getMesh();
-				auto it = this->buffers_.find(mesh.get());
-				if (it != this->buffers_.end())
+				auto it = out.buffers_.find(mesh.get());
+				if (it != out.buffers_.end())
 				{
 					(*it).second->updateData(this->context_->getDevice(), mesh);
 				}
 				else
 				{
-					this->buffers_[mesh.get()] = std::make_shared<ScriptableRenderBuffer>(this->context_->getDevice(), mesh);
+					out.buffers_[mesh.get()] = std::make_shared<ScriptableRenderBuffer>(this->context_->getDevice(), mesh);
 				}
 			}
 		}

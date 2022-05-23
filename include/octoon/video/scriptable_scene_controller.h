@@ -21,7 +21,6 @@ namespace octoon
 		void cleanCache() noexcept;
 		void compileScene(const std::shared_ptr<RenderScene>& scene) noexcept;
 		RenderingData& getCachedScene(const std::shared_ptr<RenderScene>& scene) const noexcept(false);
-		RenderingData& getRenderingData() const noexcept(false);
 
 	private:
 		void updateCamera(const std::shared_ptr<RenderScene>& scene, class RenderingData& out, bool force = false);
@@ -30,15 +29,10 @@ namespace octoon
 		void updateShapes(const std::shared_ptr<RenderScene>& scene, class RenderingData& out, bool force = false);
 
 	private:
-		Collector materialCollector;
-
 		hal::GraphicsContextPtr context_;
 
-		std::shared_ptr<class RenderingData> renderingData_;
+		Collector materialCollector;
 		std::unordered_map<std::shared_ptr<RenderScene>, std::shared_ptr<RenderingData>> sceneCache_;
-
-		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderBuffer>> buffers_;
-		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderMaterial>> materials_;
 	};
 }
 

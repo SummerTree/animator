@@ -77,7 +77,7 @@ namespace octoon
 		void drawIndirect(const hal::GraphicsDataPtr& data, std::size_t offset, std::uint32_t drawCount, std::uint32_t stride) noexcept;
 		void drawIndexedIndirect(const hal::GraphicsDataPtr& data, std::size_t offset, std::uint32_t drawCount, std::uint32_t stride) noexcept;
 
-		void drawMesh(const std::shared_ptr<Mesh>& mesh, std::size_t subset);
+		void drawMesh(const std::shared_ptr<Mesh>& mesh, std::size_t subset, const RenderingData& renderingData);
 		void drawRenderers(const Geometry& geometry, const Camera& camera, const RenderingData& renderingData, const std::shared_ptr<Material>& overrideMaterial = nullptr) noexcept;
 		void drawRenderers(const std::vector<Geometry*>& objects, const Camera& camera, const RenderingData& renderingData, const std::shared_ptr<Material>& overrideMaterial = nullptr) noexcept;
 

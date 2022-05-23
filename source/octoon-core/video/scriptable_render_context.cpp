@@ -309,11 +309,24 @@ namespace octoon
 	{
 		assert(material);
 
-		auto& pipeline = this->materials_.at(material.get());
-		pipeline->update(renderingData, camera, geometry);
+		auto it = this->materials_.find(material.get());
+		if (it == this->materials_.end())
+		{
+			auto& pipeline = renderingData.materials_.at(material.get());
+			pipeline->update(renderingData, camera, geometry);
 
-		this->setRenderPipeline(pipeline->getPipeline());
-		this->setDescriptorSet(pipeline->getDescriptorSet());
+			this->setRenderPipeline(pipeline->getPipeline());
+			this->setDescriptorSet(pipeline->getDescriptorSet());
+		}
+		else
+		{
+			auto& pipeline = this->materials_.at(material.get());
+			pipeline->update(renderingData, camera, geometry);
+
+			this->setRenderPipeline(pipeline->getPipeline());
+			this->setDescriptorSet(pipeline->getDescriptorSet());
+		}
+
 	}
 
 	void
@@ -323,16 +336,31 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::drawMesh(const std::shared_ptr<Mesh>& mesh, std::size_t subset)
+	ScriptableRenderContext::drawMesh(const std::shared_ptr<Mesh>& mesh, std::size_t subset, const RenderingData& renderingData)
 	{
-		auto& buffer = buffers_.at(mesh.get());
-		this->setVertexBufferData(0, buffer->getVertexBuffer(), 0);
-		this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::IndexFormat::UInt32);
+		auto it = this->buffers_.find(mesh.get());
+		if (it == this->buffers_.end())
+		{
+			auto& buffer = renderingData.buffers_.at(mesh.get());
+			this->setVertexBufferData(0, buffer->getVertexBuffer(), 0);
+			this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::IndexFormat::UInt32);
 
-		if (buffer->getIndexBuffer())
-			this->drawIndexed((std::uint32_t)buffer->getNumIndices(subset), 1, (std::uint32_t)buffer->getStartIndices(subset), 0, 0);
+			if (buffer->getIndexBuffer())
+				this->drawIndexed((std::uint32_t)buffer->getNumIndices(subset), 1, (std::uint32_t)buffer->getStartIndices(subset), 0, 0);
+			else
+				this->draw((std::uint32_t)buffer->getNumVertices(), 1, 0, 0);
+		}
 		else
-			this->draw((std::uint32_t)buffer->getNumVertices(), 1, 0, 0);
+		{
+			auto& buffer = buffers_.at(mesh.get());
+			this->setVertexBufferData(0, buffer->getVertexBuffer(), 0);
+			this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::IndexFormat::UInt32);
+
+			if (buffer->getIndexBuffer())
+				this->drawIndexed((std::uint32_t)buffer->getNumIndices(subset), 1, (std::uint32_t)buffer->getStartIndices(subset), 0, 0);
+			else
+				this->draw((std::uint32_t)buffer->getNumVertices(), 1, 0, 0);
+		}
 	}
 
 	void
@@ -358,7 +386,7 @@ namespace octoon
 				if (material && mesh && i < mesh->getNumSubsets())
 				{
 					this->setMaterial(overrideMaterial ? overrideMaterial : material, renderingData, camera, geometry);
-					this->drawMesh(mesh, i);
+					this->drawMesh(mesh, i, renderingData);
 				}
 			}
 		}

@@ -98,6 +98,6 @@ namespace octoon
 		context.setViewport(0, math::float4((float)vp.x, (float)vp.y, (float)vp.width, (float)vp.height));
 
 		context.setMaterial(edgeMaterial_, renderingData, *camera, *renderingData.screenQuad);
-		context.drawMesh(renderingData.screenQuad->getMesh(), 0);
+		context.drawMesh(renderingData.screenQuad->getMesh(), 0, renderingData);
 	}
 }
