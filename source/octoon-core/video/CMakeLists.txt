@@ -40,6 +40,8 @@ SET(VIDEO_FORWARE_LIST
 	${SOURCE_PATH}/scriptable_render_context.cpp
 	${HEADER_PATH}/scriptable_render_pass.h
 	${SOURCE_PATH}/scriptable_render_pass.cpp
+	${HEADER_PATH}/scriptable_scene_controller.h
+	${SOURCE_PATH}/scriptable_scene_controller.cpp
 )
 SOURCE_GROUP(renderer\\forward FILES ${VIDEO_FORWARE_LIST})
 

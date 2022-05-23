@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_ESTIMATOR_H_
-#define OCTOON_VIDEO_ESTIMATOR_H_
+#ifndef OCTOON_ESTIMATOR_H_
+#define OCTOON_ESTIMATOR_H_
 
 #include <array>
 #include <octoon/video/compiled_scene.h>

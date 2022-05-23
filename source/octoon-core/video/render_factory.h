@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_RENDER_FACTORY_H_
-#define OCTOON_VIDEO_RENDER_FACTORY_H_
+#ifndef OCTOON_RENDER_FACTORY_H_
+#define OCTOON_RENDER_FACTORY_H_
 
 #include <octoon/math/math.h>
 #include <memory>

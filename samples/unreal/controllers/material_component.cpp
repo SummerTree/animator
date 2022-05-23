@@ -488,7 +488,7 @@ namespace unreal
 			textureDesc.setSize(width, height);
 			textureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
 			textureDesc.setTexFormat(octoon::hal::GraphicsFormat::R8G8B8A8UNorm);
-			auto colorTexture = renderer->getScriptableRenderContext()->createTexture(textureDesc);
+			auto colorTexture = renderer->getGraphicsDevice()->createTexture(textureDesc);
 			if (!colorTexture)
 				throw std::runtime_error("createTexture() failed");
 
@@ -496,7 +496,7 @@ namespace unreal
 			depthTextureDesc.setSize(width, height);
 			depthTextureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
 			depthTextureDesc.setTexFormat(octoon::hal::GraphicsFormat::D16UNorm);
-			auto depthTexture = renderer->getScriptableRenderContext()->createTexture(depthTextureDesc);
+			auto depthTexture = renderer->getGraphicsDevice()->createTexture(depthTextureDesc);
 			if (!depthTexture)
 				throw std::runtime_error("createTexture() failed");
 
@@ -507,11 +507,11 @@ namespace unreal
 			octoon::hal::GraphicsFramebufferDesc framebufferDesc;
 			framebufferDesc.setWidth(width);
 			framebufferDesc.setHeight(height);
-			framebufferDesc.setFramebufferLayout(renderer->getScriptableRenderContext()->createFramebufferLayout(framebufferLayoutDesc));
+			framebufferDesc.setFramebufferLayout(renderer->getGraphicsDevice()->createFramebufferLayout(framebufferLayoutDesc));
 			framebufferDesc.setDepthStencilAttachment(octoon::hal::GraphicsAttachmentBinding(depthTexture, 0, 0));
 			framebufferDesc.addColorAttachment(octoon::hal::GraphicsAttachmentBinding(colorTexture, 0, 0));
 
-			framebuffer_ = renderer->getScriptableRenderContext()->createFramebuffer(framebufferDesc);
+			framebuffer_ = renderer->getGraphicsDevice()->createFramebuffer(framebufferDesc);
 			if (!framebuffer_)
 				throw std::runtime_error("createFramebuffer() failed");
 

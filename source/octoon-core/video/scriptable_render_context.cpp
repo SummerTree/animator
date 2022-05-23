@@ -296,457 +296,37 @@ namespace octoon
 		this->context_->drawIndexedIndirect(data, offset, drawCount, stride);
 	}
 
-	RenderingData&
-	ScriptableRenderContext::getRenderingData() const noexcept(false)
-	{
-		return *renderingData_;
-	}
-
-	void
-	ScriptableRenderContext::compileScene(const std::shared_ptr<RenderScene>& scene) noexcept
-	{
-		materialCollector.Clear();
-
-		for (auto& geometry : scene->getGeometries())
-		{
-			if (!geometry->getVisible())
-				continue;
-
-			for (std::size_t i = 0; i < geometry->getMaterials().size(); ++i)
-			{
-				auto& mat = geometry->getMaterial(i);
-				if (mat)
-					materialCollector.Collect(mat);
-			}
-		}
-
-		materialCollector.Commit();
-
-		auto iter = sceneCache_.find(scene);
-		if (iter == sceneCache_.cend())
-		{
-			auto out = std::make_shared<RenderingData>();
-
-			this->updateCamera(scene, *out, true);
-			this->updateLights(scene, *out, true);
-			this->updateMaterials(scene, *out, true);
-			this->updateShapes(scene, *out, true);
-
-			sceneCache_[scene] = renderingData_ = out;
-		}
-		else
-		{
-			renderingData_ = (*iter).second;
-
-			bool should_update_lights = false;
-			for (auto& light : scene->getLights())
-			{
-				if (light->isDirty())
-				{
-					should_update_lights = true;
-					break;
-				}
-			}
-
-			bool should_update_shapes = false;
-			for (auto& geometry : scene->getGeometries())
-			{
-				if (!geometry->getVisible())
-					continue;
-
-				if (geometry->isDirty())
-				{
-					should_update_shapes = true;
-					break;
-				}
-			}
-
-			bool should_update_materials = !renderingData_->material_bundle || materialCollector.NeedsUpdate(renderingData_->material_bundle.get(),
-				[](runtime::RttiInterface* ptr)->bool
-			{
-				auto mat = ptr->downcast<Material>();
-				return mat->isDirty();
-			});
-
-			auto camera = scene->getMainCamera();
-			bool should_update_camera = renderingData_->camera != camera || camera->isDirty();
-
-			if (should_update_camera)
-				this->updateCamera(scene, *renderingData_);
-			
-			if (should_update_lights || should_update_camera)
-				this->updateLights(scene, *renderingData_);
-
-			if (should_update_materials)
-				this->updateMaterials(scene, *renderingData_);
-
-			if (should_update_shapes)
-				this->updateShapes(scene, *renderingData_);
-		}
-	}
-
-	void
-	ScriptableRenderContext::cleanCache() noexcept
-	{
-		for (auto it = sceneCache_.begin(); it != sceneCache_.end();)
-		{
-			if ((*it).first.use_count() == 1)
-				it = sceneCache_.erase(it);
-			else
-				++it;
-		}
-	}
-
-	void
-	ScriptableRenderContext::updateCamera(const std::shared_ptr<RenderScene>& scene, RenderingData& out, bool force)
-	{
-		out.camera = scene->getMainCamera();
-	}
-
-	void
-	ScriptableRenderContext::updateLights(const std::shared_ptr<RenderScene>& scene, RenderingData& out, bool force)
-	{
-		out.reset();
-
-		for (auto& light : scene->getLights())
-		{
-			if (!light->getVisible())
-				continue;
-
-			if (light->getLayer() != out.camera->getLayer())
-				continue;
-			
-			light->onRenderBefore(*out.camera);
-
-			if (light->isA<AmbientLight>())
-			{
-				out.ambientLightColors += light->getColor() * light->getIntensity();
-			}
-			else if (light->isA<EnvironmentLight>())
-			{
-				auto it = light->downcast<EnvironmentLight>();
-				RenderingData::EnvironmentLight environmentLight;
-				environmentLight.intensity = it->getIntensity();
-				environmentLight.offset = it->getOffset();
-				environmentLight.radiance = it->getEnvironmentMap();
-				if (!it->getEnvironmentMap())
-					out.ambientLightColors += light->getColor() * light->getIntensity();
-				out.environmentLights.emplace_back(environmentLight);
-				out.numEnvironment++;
-			}
-			else if (light->isA<DirectionalLight>())
-			{
-				auto it = light->downcast<DirectionalLight>();
-				auto color = it->getColor() * it->getIntensity();
-				RenderingData::DirectionalLight directionLight;
-				directionLight.direction = math::float4(math::float3x3(out.camera->getView()) * -it->getForward(), 0);
-				directionLight.color[0] = color.x;
-				directionLight.color[1] = color.y;
-				directionLight.color[2] = color.z;
-				directionLight.shadow = it->getShadowEnable();
-
-				auto framebuffer = it->getCamera()->getFramebuffer();
-				if (framebuffer && directionLight.shadow)
-				{
-					directionLight.shadow = it->getShadowEnable();
-					directionLight.shadowBias = it->getShadowBias();
-					directionLight.shadowRadius = it->getShadowRadius();
-					directionLight.shadowMapSize = math::float2(float(framebuffer->getFramebufferDesc().getWidth()), float(framebuffer->getFramebufferDesc().getHeight()));
-
-					math::float4x4 viewport;
-					viewport.makeScale(math::float3(0.5f, 0.5f, 0.5f));
-					viewport.translate(math::float3(0.5f, 0.5f, 0.5f));
-
-					out.directionalShadows.emplace_back(framebuffer->getFramebufferDesc().getColorAttachment().getBindingTexture());
-					out.directionalShadowMatrix.push_back(viewport * it->getCamera()->getViewProjection());
-				}
-
-				out.numDirectional++;
-				out.directionalLights.emplace_back(directionLight);
-			}
-			else if (light->isA<SpotLight>())
-			{
-				auto it = light->downcast<SpotLight>();
-				RenderingData::SpotLight spotLight;
-				spotLight.color.set(it->getColor() * it->getIntensity());
-				spotLight.direction.set(math::float3x3(out.camera->getView()) * it->getForward());
-				spotLight.position.set(it->getTranslate());
-				spotLight.distance = 0;
-				spotLight.decay = 0;
-				spotLight.coneCos = it->getInnerCone().y;
-				spotLight.penumbraCos = it->getOuterCone().y;
-				spotLight.shadow = it->getShadowEnable();
-
-				if (spotLight.shadow)
-				{
-					auto framebuffer = it->getCamera()->getFramebuffer();
-					if (framebuffer)
-					{
-						spotLight.shadowBias = it->getShadowBias();
-						spotLight.shadowRadius = it->getShadowRadius();
-						spotLight.shadowMapSize = math::float2(float(framebuffer->getFramebufferDesc().getWidth()), float(framebuffer->getFramebufferDesc().getHeight()));
-
-						out.spotShadows.emplace_back(framebuffer->getFramebufferDesc().getColorAttachment().getBindingTexture());
-					}
-				}
-
-				out.spotLights.emplace_back(spotLight);
-				out.numSpot++;
-			}
-			else if (light->isA<PointLight>())
-			{
-				auto it = light->downcast<PointLight>();
-				RenderingData::PointLight pointLight;
-				pointLight.color.set(it->getColor() * it->getIntensity());
-				pointLight.position.set(it->getTranslate());
-				pointLight.distance = 0;
-				pointLight.decay = 0;
-				pointLight.shadow = it->getShadowEnable();
-
-				if (pointLight.shadow)
-				{
-					auto framebuffer = it->getCamera()->getFramebuffer();
-					if (framebuffer && pointLight.shadow)
-					{
-						pointLight.shadowBias = it->getShadowBias();
-						pointLight.shadowRadius = it->getShadowRadius();
-						pointLight.shadowMapSize = math::float2(float(framebuffer->getFramebufferDesc().getWidth()), float(framebuffer->getFramebufferDesc().getHeight()));
-
-						out.pointShadows.emplace_back(framebuffer->getFramebufferDesc().getColorAttachment().getBindingTexture());
-					}
-				}
-
-				out.pointLights.emplace_back(pointLight);
-				out.numPoint++;
-			}
-			else if (light->isA<RectangleLight>())
-			{
-				auto it = light->downcast<RectangleLight>();
-				RenderingData::RectAreaLight rectangleLight;
-				rectangleLight.color.set(it->getColor() * it->getIntensity());
-				rectangleLight.position.set(it->getTranslate());
-				rectangleLight.halfWidth.set(math::float3::One);
-				rectangleLight.halfHeight.set(math::float3::One);
-				out.rectangleLights.emplace_back(rectangleLight);
-				out.numRectangle++;
-			}
-
-			light->onRenderAfter(*out.camera);
-
-			out.lights.push_back(light);
-		}
-
-		if (out.numSpot)
-		{
-			if (!out.spotLightBuffer)
-			{
-				out.spotLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-					hal::GraphicsDataType::UniformBuffer,
-					hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
-					out.spotLights.data(),
-					sizeof(RenderingData::SpotLight) * out.numSpot
-				));
-			}
-			else
-			{
-				auto desc = out.spotLightBuffer->getDataDesc();
-				if (desc.getStreamSize() < out.spotLights.size() * sizeof(RenderingData::SpotLight))
-				{
-					out.spotLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-						hal::GraphicsDataType::UniformBuffer,
-						hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
-						out.spotLights.data(),
-						sizeof(RenderingData::SpotLight) * out.numSpot
-					));
-				}
-				else
-				{
-					void* data;
-					if (out.spotLightBuffer->map(0, desc.getStreamSize(), &data))
-						std::memcpy(data, out.spotLights.data(), out.spotLights.size() * sizeof(RenderingData::SpotLight));
-					out.spotLightBuffer->unmap();
-				}
-			}
-		}
-
-		if (out.numPoint)
-		{
-			if (!out.pointLightBuffer)
-			{
-				out.pointLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-					hal::GraphicsDataType::UniformBuffer,
-					hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
-					out.pointLights.data(),
-					sizeof(RenderingData::PointLight) * out.numPoint
-				));
-			}
-			else
-			{
-				auto desc = out.pointLightBuffer->getDataDesc();
-				if (desc.getStreamSize() < out.pointLights.size() * sizeof(RenderingData::PointLight))
-				{
-					out.pointLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-						hal::GraphicsDataType::UniformBuffer,
-						hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
-						out.pointLights.data(),
-						sizeof(RenderingData::PointLight) * out.numPoint
-					));
-				}
-				else
-				{
-					void* data;
-					if (out.pointLightBuffer->map(0, desc.getStreamSize(), &data))
-						std::memcpy(data, out.pointLights.data(), out.pointLights.size() * sizeof(RenderingData::PointLight));
-					out.pointLightBuffer->unmap();
-				}
-			}
-		}
-
-		if (out.numRectangle)
-		{
-			if (!out.rectangleLightBuffer)
-			{
-				out.rectangleLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-					hal::GraphicsDataType::UniformBuffer,
-					hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
-					out.rectangleLights.data(),
-					sizeof(RenderingData::RectAreaLight) * out.numRectangle
-				));
-			}
-			else
-			{
-				auto desc = out.rectangleLightBuffer->getDataDesc();
-				if (desc.getStreamSize() < out.rectangleLights.size() * sizeof(RenderingData::RectAreaLight))
-				{
-					out.rectangleLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-						hal::GraphicsDataType::UniformBuffer,
-						hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
-						out.rectangleLights.data(),
-						sizeof(RenderingData::RectAreaLight) * out.numRectangle
-					));
-				}
-				else
-				{
-					void* data;
-					if (out.rectangleLightBuffer->map(0, desc.getStreamSize(), &data))
-						std::memcpy(data, out.rectangleLights.data(), out.rectangleLights.size() * sizeof(RenderingData::RectAreaLight));
-					out.rectangleLightBuffer->unmap();
-				}
-			}
-		}
-
-		if (out.numDirectional)
-		{
-			if (!out.directionLightBuffer)
-			{
-				out.directionLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-					hal::GraphicsDataType::UniformBuffer,
-					hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
-					out.directionalLights.data(),
-					sizeof(RenderingData::DirectionalLight) * out.numDirectional
-				));
-			}
-			else
-			{
-				auto desc = out.directionLightBuffer->getDataDesc();
-				if (desc.getStreamSize() < out.directionalLights.size() * sizeof(RenderingData::DirectionalLight))
-				{
-					out.directionLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-						hal::GraphicsDataType::UniformBuffer,
-						hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
-						out.directionalLights.data(),
-						sizeof(RenderingData::DirectionalLight) * out.numDirectional
-					));
-				}
-				else
-				{
-					void* data;
-					if (out.directionLightBuffer->map(0, desc.getStreamSize(), &data))
-						std::memcpy(data, out.directionalLights.data(), out.directionalLights.size() * sizeof(RenderingData::DirectionalLight));
-					out.directionLightBuffer->unmap();
-				}
-			}
-		}
-	}
-
 	void
 	ScriptableRenderContext::compileMaterial(const std::shared_ptr<Material>& material, const RenderingData& renderingData)
 	{
 		auto it = this->materials_.find(material.get());
 		if (it == this->materials_.end())
-			this->materials_[material.get()] = std::make_shared<ScriptableRenderMaterial>(*this, material, renderingData);
+			this->materials_[material.get()] = std::make_shared<ScriptableRenderMaterial>(this->context_, material, renderingData);
 	}
 
 	void
-	ScriptableRenderContext::updateMaterials(const std::shared_ptr<RenderScene>& scene, RenderingData& out, bool force)
-	{
-		out.material_bundle.reset(materialCollector.CreateBundle());
-
-		if (out.depthMaterial->isDirty())
-		{
-			this->materials_[out.depthMaterial.get()] = std::make_shared<ScriptableRenderMaterial>(*this, out.depthMaterial, out);
-			out.depthMaterial->setDirty(false);
-		}
-
-		if (out.overrideMaterial)
-		{
-			this->materials_[out.depthMaterial.get()] = std::make_shared<ScriptableRenderMaterial>(*this, out.depthMaterial, out);
-			out.overrideMaterial->setDirty(false);
-		}
-
-		std::unique_ptr<Iterator> mat_iter(materialCollector.CreateIterator());
-		for (std::size_t i = 0; mat_iter->IsValid(); mat_iter->Next(), i++)
-		{
-			auto mat = mat_iter->ItemAs<Material>();
-			if (mat->isDirty() || force)
-			{
-				auto material = mat->downcast_pointer<Material>();
-				this->materials_[material.get()] = std::make_shared<ScriptableRenderMaterial>(*this, material, out);
-			}
-		}
-	}
-
-    void
-    ScriptableRenderContext::updateShapes(const std::shared_ptr<RenderScene>& scene, RenderingData& out, bool force)
-    {
-		out.geometries = scene->getGeometries();
-		out.screenQuad = Geometry::create();
-		out.screenQuad->setMesh(PlaneMesh::create(2, 2));
-
-		auto screenMesh = out.screenQuad->getMesh();
-		this->buffers_[screenMesh.get()] = std::make_shared<ScriptableRenderBuffer>(*this, screenMesh);
-
-		for (auto& geometry : scene->getGeometries())
-		{
-			if (!geometry->getVisible())
-				continue;
-
-			if (geometry->isDirty() || force)
-			{
-				auto mesh = geometry->getMesh();
-				auto it = this->buffers_.find(mesh.get());
-				if (it != this->buffers_.end())
-				{
-					(*it).second->updateData(*this, mesh);
-				}
-				else
-				{
-					this->buffers_[mesh.get()] = std::make_shared<ScriptableRenderBuffer>(*this, mesh);
-				}
-			}
-		}
-    }
-
-	void
-	ScriptableRenderContext::setMaterial(const std::shared_ptr<Material>& material, const Camera& camera, const Geometry& geometry)
+	ScriptableRenderContext::setMaterial(const std::shared_ptr<Material>& material, const RenderingData& renderingData, const Camera& camera, const Geometry& geometry)
 	{
 		assert(material);
 
-		auto& pipeline = this->materials_.at(material.get());
-		pipeline->update(*this->renderingData_, camera, geometry);
+		auto it = this->materials_.find(material.get());
+		if (it == this->materials_.end())
+		{
+			auto& pipeline = renderingData.materials_.at(material.get());
+			pipeline->update(renderingData, camera, geometry);
 
-		this->setRenderPipeline(pipeline->getPipeline());
-		this->setDescriptorSet(pipeline->getDescriptorSet());
+			this->setRenderPipeline(pipeline->getPipeline());
+			this->setDescriptorSet(pipeline->getDescriptorSet());
+		}
+		else
+		{
+			auto& pipeline = this->materials_.at(material.get());
+			pipeline->update(renderingData, camera, geometry);
+
+			this->setRenderPipeline(pipeline->getPipeline());
+			this->setDescriptorSet(pipeline->getDescriptorSet());
+		}
+
 	}
 
 	void
@@ -756,20 +336,35 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::drawMesh(const std::shared_ptr<Mesh>& mesh, std::size_t subset)
+	ScriptableRenderContext::drawMesh(const std::shared_ptr<Mesh>& mesh, std::size_t subset, const RenderingData& renderingData)
 	{
-		auto& buffer = buffers_.at(mesh.get());
-		this->setVertexBufferData(0, buffer->getVertexBuffer(), 0);
-		this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::IndexFormat::UInt32);
+		auto it = this->buffers_.find(mesh.get());
+		if (it == this->buffers_.end())
+		{
+			auto& buffer = renderingData.buffers_.at(mesh.get());
+			this->setVertexBufferData(0, buffer->getVertexBuffer(), 0);
+			this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::IndexFormat::UInt32);
 
-		if (buffer->getIndexBuffer())
-			this->drawIndexed((std::uint32_t)buffer->getNumIndices(subset), 1, (std::uint32_t)buffer->getStartIndices(subset), 0, 0);
+			if (buffer->getIndexBuffer())
+				this->drawIndexed((std::uint32_t)buffer->getNumIndices(subset), 1, (std::uint32_t)buffer->getStartIndices(subset), 0, 0);
+			else
+				this->draw((std::uint32_t)buffer->getNumVertices(), 1, 0, 0);
+		}
 		else
-			this->draw((std::uint32_t)buffer->getNumVertices(), 1, 0, 0);
+		{
+			auto& buffer = buffers_.at(mesh.get());
+			this->setVertexBufferData(0, buffer->getVertexBuffer(), 0);
+			this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::IndexFormat::UInt32);
+
+			if (buffer->getIndexBuffer())
+				this->drawIndexed((std::uint32_t)buffer->getNumIndices(subset), 1, (std::uint32_t)buffer->getStartIndices(subset), 0, 0);
+			else
+				this->draw((std::uint32_t)buffer->getNumVertices(), 1, 0, 0);
+		}
 	}
 
 	void
-	ScriptableRenderContext::drawRenderers(const Geometry& geometry, const Camera& camera, const std::shared_ptr<Material>& overrideMaterial) noexcept
+	ScriptableRenderContext::drawRenderers(const Geometry& geometry, const Camera& camera, const RenderingData& renderingData, const std::shared_ptr<Material>& overrideMaterial) noexcept
 	{
 		if (camera.getLayer() != geometry.getLayer())
 			return;
@@ -790,17 +385,17 @@ namespace octoon
 
 				if (material && mesh && i < mesh->getNumSubsets())
 				{
-					this->setMaterial(overrideMaterial ? overrideMaterial : material, camera, geometry);
-					this->drawMesh(mesh, i);
+					this->setMaterial(overrideMaterial ? overrideMaterial : material, renderingData, camera, geometry);
+					this->drawMesh(mesh, i, renderingData);
 				}
 			}
 		}
 	}
 
 	void
-	ScriptableRenderContext::drawRenderers(const std::vector<Geometry*>& geometries, const Camera& camera, const std::shared_ptr<Material>& overrideMaterial) noexcept
+	ScriptableRenderContext::drawRenderers(const std::vector<Geometry*>& geometries, const Camera& camera, const RenderingData& renderingData, const std::shared_ptr<Material>& overrideMaterial) noexcept
 	{
 		for (auto& geometry : geometries)
-			this->drawRenderers(*geometry, camera, overrideMaterial);
+			this->drawRenderers(*geometry, camera, renderingData, overrideMaterial);
 	}
 }

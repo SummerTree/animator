@@ -27,7 +27,7 @@
 
 namespace octoon
 {
-	ForwardRenderer::ForwardRenderer() noexcept
+	ForwardRenderer::ForwardRenderer(const hal::GraphicsContextPtr& context) noexcept
 		: width_(0)
 		, height_(0)
 		, framebufferWidth_(0)
@@ -38,6 +38,12 @@ namespace octoon
 		drawTranparentPass_ = std::make_unique<DrawObjectPass>(false);
 		drawSkyboxPass_ = std::make_unique<DrawSkyboxPass>();
 		drawSelectorPass_ = std::make_unique<DrawSelectorPass>();
+
+		Config config;
+		config.context = std::make_unique<ScriptableRenderContext>(context);
+		config.controller = std::make_unique<ScriptableSceneController>(context);
+
+		this->configs_.push_back(std::move(config));
 	}
 
 	ForwardRenderer::~ForwardRenderer() noexcept
@@ -65,7 +71,7 @@ namespace octoon
 	}
 
 	void
-	ForwardRenderer::setupFramebuffers(const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t w, std::uint32_t h) except
+	ForwardRenderer::setWorkBufferSize(const std::shared_ptr<ScriptableRenderContext>& context, std::uint32_t w, std::uint32_t h) except
 	{
 		if (width_ == w && height_ == h)
 			return;
@@ -171,55 +177,67 @@ namespace octoon
 	}
 
 	void
-	ForwardRenderer::render(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene)
+	ForwardRenderer::prepareScene(const std::shared_ptr<RenderScene>& scene) noexcept
+	{
+		for (auto& c : configs_)
+		{
+			c.controller->cleanCache();
+			c.controller->compileScene(scene);
+		}
+	}
+
+	void
+	ForwardRenderer::render(const std::shared_ptr<RenderScene>& scene)
 	{
 		assert(scene->getMainCamera());
 
-		context->cleanCache();
-		context->compileScene(scene);
+		this->prepareScene(scene);
 
-		lightsShadowCasterPass_->Execute(*context, context->getRenderingData());
-		drawOpaquePass_->Execute(*context, context->getRenderingData());
-		drawTranparentPass_->Execute(*context, context->getRenderingData());
-		drawSkyboxPass_->Execute(*context, context->getRenderingData());
-		drawSelectorPass_->Execute(*context, context->getRenderingData());
-
-		auto& camera = context->getRenderingData().camera;
-
-		auto fbo = camera->getFramebuffer();
-		if (fbo && camera->getRenderToScreen())
+		for (auto& c : configs_)
 		{
-			auto vp = camera->getPixelViewport();
-			auto viewport = math::float4((float)vp.x, (float)vp.y, (float)vp.width, (float)vp.height);
+			auto& renderingData = c.controller->getCachedScene(scene);
 
-			context->configureTarget(nullptr);
-			context->configureClear(hal::ClearFlagBits::AllBit, math::float4::Zero, 1.0f, 0);
+			lightsShadowCasterPass_->Execute(*c.context, renderingData);
+			drawOpaquePass_->Execute(*c.context, renderingData);
+			drawTranparentPass_->Execute(*c.context, renderingData);
+			drawSkyboxPass_->Execute(*c.context, renderingData);
+			drawSelectorPass_->Execute(*c.context, renderingData);
 
-			if (!fbo->getFramebufferDesc().getColorAttachments().empty())
+			auto fbo = renderingData.camera->getFramebuffer();
+			if (fbo && renderingData.camera->getRenderToScreen())
 			{
-				auto texture = fbo->getFramebufferDesc().getColorAttachment().getBindingTexture();
-				if (texture->getTextureDesc().getTexDim() == hal::TextureDimension::Texture2DMultisample)
+				auto vp = renderingData.camera->getPixelViewport();
+				auto viewport = math::float4((float)vp.x, (float)vp.y, (float)vp.width, (float)vp.height);
+
+				c.context->configureTarget(nullptr);
+				c.context->configureClear(hal::ClearFlagBits::AllBit, math::float4::Zero, 1.0f, 0);
+
+				if (!fbo->getFramebufferDesc().getColorAttachments().empty())
 				{
-					if (fbo == edgeFramebuffer_)
+					auto texture = fbo->getFramebufferDesc().getColorAttachment().getBindingTexture();
+					if (texture->getTextureDesc().getTexDim() == hal::TextureDimension::Texture2DMultisample)
 					{
-						context->blitFramebuffer(fbo, viewport, fbo2_, viewport);
-						context->discardFramebuffer(fbo, hal::ClearFlagBits::AllBit);
-						context->blitFramebuffer(fbo2_, viewport, nullptr, viewport);
-						context->discardFramebuffer(fbo2_, hal::ClearFlagBits::AllBit);
+						if (fbo == edgeFramebuffer_)
+						{
+							c.context->blitFramebuffer(fbo, viewport, fbo2_, viewport);
+							c.context->discardFramebuffer(fbo, hal::ClearFlagBits::AllBit);
+							c.context->blitFramebuffer(fbo2_, viewport, nullptr, viewport);
+							c.context->discardFramebuffer(fbo2_, hal::ClearFlagBits::AllBit);
+						}
 					}
-				}
-				else
-				{
-					float viewportRatio = viewport.width / viewport.height;
+					else
+					{
+						float viewportRatio = viewport.width / viewport.height;
 
-					float framebufferHeight = std::min((float)framebufferHeight_, (float)framebufferWidth_ / viewportRatio);
-					float framebufferWidth = framebufferHeight * viewportRatio;
+						float framebufferHeight = std::min((float)framebufferHeight_, (float)framebufferWidth_ / viewportRatio);
+						float framebufferWidth = framebufferHeight * viewportRatio;
 
-					float framebufferX = (framebufferWidth_ - framebufferWidth) / 2;
-					float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
+						float framebufferX = (framebufferWidth_ - framebufferWidth) / 2;
+						float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
 
-					context->blitFramebuffer(fbo, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
-					context->discardFramebuffer(fbo, hal::ClearFlagBits::AllBit);
+						c.context->blitFramebuffer(fbo, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
+						c.context->discardFramebuffer(fbo, hal::ClearFlagBits::AllBit);
+					}
 				}
 			}
 		}

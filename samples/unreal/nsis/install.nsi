@@ -650,7 +650,6 @@ Section "MainSection" SEC01
   File "..\..\..\lib\system\Kernels\CL\payload.cl"
   File "..\..\..\lib\system\Kernels\CL\ray.cl"
   File "..\..\..\lib\system\Kernels\CL\rtx_path_estimator.cl"
-  File "..\..\..\lib\system\Kernels\CL\rtx_renderer.cl"
   File "..\..\..\lib\system\Kernels\CL\sampling.cl"
   File "..\..\..\lib\system\Kernels\CL\scene.cl"
   File "..\..\..\lib\system\Kernels\CL\sh.cl"

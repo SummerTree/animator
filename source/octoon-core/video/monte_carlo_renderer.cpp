@@ -73,7 +73,7 @@ namespace octoon
 	}
 
 	void
-	MonteCarloRenderer::render(const std::shared_ptr<ScriptableRenderContext>& context, const CompiledScene& scene)
+	MonteCarloRenderer::render(const CompiledScene& scene)
 	{
 		auto output = findFirstNonZeroOutput(true, true);
 		if (output)

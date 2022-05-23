@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_FORWARD_BUFFER_H_
-#define OCTOON_VIDEO_FORWARD_BUFFER_H_
+#ifndef OCTOON_SCRIPTABLE_RENDER_BUFFER_H_
+#define OCTOON_SCRIPTABLE_RENDER_BUFFER_H_
 
 #include <octoon/mesh/mesh.h>
 #include <octoon/hal/graphics_data.h>
@@ -11,7 +11,7 @@ namespace octoon
 	{
 	public:
 		ScriptableRenderBuffer() noexcept;
-		ScriptableRenderBuffer(ScriptableRenderContext& context, const std::shared_ptr<Mesh>& mesh) noexcept(false);
+		ScriptableRenderBuffer(const hal::GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false);
 		virtual ~ScriptableRenderBuffer() noexcept;
 
 		std::size_t getNumVertices() const noexcept;
@@ -23,7 +23,7 @@ namespace octoon
 		const hal::GraphicsDataPtr& getVertexBuffer() const noexcept;
 		const hal::GraphicsDataPtr& getIndexBuffer() const noexcept;
 
-		void updateData(ScriptableRenderContext& context, const std::shared_ptr<Mesh>& mesh) noexcept(false);
+		void updateData(const hal::GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false);
 
 	private:
 		ScriptableRenderBuffer(const ScriptableRenderBuffer&) = delete;

@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_COLLECTOR_H_
-#define OCTOON_VIDEO_COLLECTOR_H_
+#ifndef OCTOON_COLLECTOR_H_
+#define OCTOON_COLLECTOR_H_
 
 #include <set>
 #include <functional>

@@ -91,13 +91,13 @@ namespace octoon
 		for (auto& geometry : renderingData.geometries)
 		{
 			if (geometry->getRenderOrder() == 1)
-				context.drawRenderers(*geometry, *camera);
+				context.drawRenderers(*geometry, *camera, renderingData);
 		}
 
 		context.configureTarget(targetFramebuffer);
 		context.setViewport(0, math::float4((float)vp.x, (float)vp.y, (float)vp.width, (float)vp.height));
 
-		context.setMaterial(edgeMaterial_, *camera, *renderingData.screenQuad);
-		context.drawMesh(renderingData.screenQuad->getMesh(), 0);
+		context.setMaterial(edgeMaterial_, renderingData, *camera, *renderingData.screenQuad);
+		context.drawMesh(renderingData.screenQuad->getMesh(), 0, renderingData);
 	}
 }

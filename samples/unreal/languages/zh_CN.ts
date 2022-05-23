@@ -1023,6 +1023,16 @@ $20 (Original cost $40)</source>
         <source>Open Motion Panel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="63"/>
+        <source>Motion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="64"/>
+        <source>Open Motion Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>unreal::TitleBar</name>

@@ -2153,7 +2153,7 @@ namespace octoon
 	{
 	}
 
-	ScriptableRenderMaterial::ScriptableRenderMaterial(ScriptableRenderContext& context, const MaterialPtr& material, const RenderingData& scene) noexcept
+	ScriptableRenderMaterial::ScriptableRenderMaterial(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept
 	{
 		this->material_ = material;
 		this->updateMaterial(context, material, scene);
@@ -2310,7 +2310,7 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderMaterial::setupProgram(ScriptableRenderContext& context, const MaterialPtr& material, const RenderingData& scene)
+	ScriptableRenderMaterial::setupProgram(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene)
 	{
 		auto shader = material->getShader();
 
@@ -2392,13 +2392,13 @@ namespace octoon
 		this->replaceLightNums(fragmentShader, scene);
 
 		hal::GraphicsProgramDesc programDesc;
-		programDesc.addShader(context.createShader(hal::GraphicsShaderDesc(hal::ShaderStageFlagBits::VertexBit, vertexShader, "main", hal::ShaderLanguage::GLSL)));
-		programDesc.addShader(context.createShader(hal::GraphicsShaderDesc(hal::ShaderStageFlagBits::FragmentBit, fragmentShader, "main", hal::ShaderLanguage::GLSL)));
-		this->program_ = context.createProgram(programDesc);
+		programDesc.addShader(context->getDevice()->createShader(hal::GraphicsShaderDesc(hal::ShaderStageFlagBits::VertexBit, vertexShader, "main", hal::ShaderLanguage::GLSL)));
+		programDesc.addShader(context->getDevice()->createShader(hal::GraphicsShaderDesc(hal::ShaderStageFlagBits::FragmentBit, fragmentShader, "main", hal::ShaderLanguage::GLSL)));
+		this->program_ = context->getDevice()->createProgram(programDesc);
 	}
 
 	void
-	ScriptableRenderMaterial::setupRenderState(ScriptableRenderContext& context, const MaterialPtr& material)
+	ScriptableRenderMaterial::setupRenderState(hal::GraphicsContextPtr& context, const MaterialPtr& material)
 	{
 		hal::GraphicsStateDesc stateDesc;
 		stateDesc.setColorBlends(material->getColorBlends());
@@ -2463,11 +2463,11 @@ namespace octoon
 		stateDesc.setStencilBackFail(material->getStencilBackFail());
 		stateDesc.setStencilBackZFail(material->getStencilBackZFail());
 		stateDesc.setStencilBackPass(material->getStencilBackPass());
-		this->renderState_ = context.createRenderState(stateDesc);
+		this->renderState_ = context->getDevice()->createRenderState(stateDesc);
 	}
 
 	void
-	ScriptableRenderMaterial::updateMaterial(ScriptableRenderContext& context, const MaterialPtr& material, const RenderingData& scene) noexcept(false)
+	ScriptableRenderMaterial::updateMaterial(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept(false)
 	{
 		if (material) {
 			this->setupRenderState(context, material);
@@ -2485,17 +2485,17 @@ namespace octoon
 			descriptor_set_layout.setUniformComponents(this->program_->getActiveParams());
 
 			hal::GraphicsPipelineDesc pipeline;
-			pipeline.setGraphicsInputLayout(context.createInputLayout(layoutDesc));
+			pipeline.setGraphicsInputLayout(context->getDevice()->createInputLayout(layoutDesc));
 			pipeline.setGraphicsState(this->renderState_);
 			pipeline.setGraphicsProgram(this->program_);
-			pipeline.setGraphicsDescriptorSetLayout(context.createDescriptorSetLayout(descriptor_set_layout));
+			pipeline.setGraphicsDescriptorSetLayout(context->getDevice()->createDescriptorSetLayout(descriptor_set_layout));
 
-			pipeline_ = context.createRenderPipeline(pipeline);
+			pipeline_ = context->getDevice()->createRenderPipeline(pipeline);
 			if (pipeline_)
 			{
 				hal::GraphicsDescriptorSetDesc descriptorSet;
 				descriptorSet.setGraphicsDescriptorSetLayout(pipeline.getDescriptorSetLayout());
-				descriptorSet_ = context.createDescriptorSet(descriptorSet);
+				descriptorSet_ = context->getDevice()->createDescriptorSet(descriptorSet);
 				if (!descriptorSet_)
 					return;
 

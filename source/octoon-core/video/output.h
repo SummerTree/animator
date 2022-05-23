@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_OUTPUT_H_
-#define OCTOON_VIDEO_OUTPUT_H_
+#ifndef OCTOON_OUTPUT_H_
+#define OCTOON_OUTPUT_H_
 
 #include <octoon/math/math.h>
 

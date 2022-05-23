@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_CLW_SCENE_CONTROLLER_H_
-#define OCTOON_VIDEO_CLW_SCENE_CONTROLLER_H_
+#ifndef OCTOON_CLW_SCENE_CONTROLLER_H_
+#define OCTOON_CLW_SCENE_CONTROLLER_H_
 
 #include <CLW.h>
 #include <map>
@@ -20,7 +20,7 @@ namespace octoon
 		ClwSceneController(const CLWContext& context, const std::shared_ptr<RadeonRays::IntersectionApi>& api, const CLProgramManager* program_manager);
 
 		void cleanCache() noexcept;
-		void compileScene(const std::shared_ptr<ScriptableRenderContext>& context, const std::shared_ptr<RenderScene>& scene) noexcept override;
+		void compileScene(const std::shared_ptr<RenderScene>& scene) noexcept override;
 		CompiledScene& getCachedScene(const std::shared_ptr<RenderScene>& scene) const noexcept(false);
 
 	private:

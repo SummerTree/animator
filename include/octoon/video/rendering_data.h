@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_FORWARD_SCENE_H_
-#define OCTOON_VIDEO_FORWARD_SCENE_H_
+#ifndef OCTOON_RENDERING_DATA_H_
+#define OCTOON_RENDERING_DATA_H_
 
 #include <octoon/camera/camera.h>
 #include <octoon/light/light.h>
@@ -118,6 +118,9 @@ namespace octoon
 
 		std::shared_ptr<Material> depthMaterial;
 		std::shared_ptr<Material> overrideMaterial;
+
+		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderBuffer>> buffers_;
+		std::unordered_map<void*, std::shared_ptr<class ScriptableRenderMaterial>> materials_;
 	};
 }
 

@@ -1,5 +1,5 @@
-#ifndef OCTOON_VIDEO_CLW_SCENE_H_
-#define OCTOON_VIDEO_CLW_SCENE_H_
+#ifndef OCTOON_CLW_SCENE_H_
+#define OCTOON_CLW_SCENE_H_
 
 #include <CLW.h>
 #include <radeon_rays.h>
