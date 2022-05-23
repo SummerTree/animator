@@ -10,6 +10,7 @@
 #include <qlabel.h>
 #include <QtGui/qevent.h>
 #include <qtoolbar.h>
+#include <QSlider>
 
 #include "unreal_behaviour.h"
 
@@ -30,6 +31,8 @@ namespace unreal
 		void leftEvent() noexcept;
 		void rightEvent() noexcept;
 		void volumeEvent() noexcept;
+		void sliderEvent(int value);
+		void volumeSliderEvent(int value);
 
 	public:
 		bool playEnable_;
@@ -50,6 +53,8 @@ namespace unreal
 		QToolButton leftButton;
 		QToolButton rightButton;
 		QToolButton volumeButton;
+
+		QSlider volumeSlider_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<unreal::UnrealProfile> profile_;
