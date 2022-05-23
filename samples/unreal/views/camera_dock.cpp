@@ -133,7 +133,7 @@ namespace unreal
 		focalLengthSpinbox_ = new DoubleSpinBox();
 		focalLengthSpinbox_->setMinimum(1.0f);
 		focalLengthSpinbox_->setMaximum(1200.0f);
-		focalLengthSpinbox_->setValue(0);
+		focalLengthSpinbox_->setValue(31.18f);
 		focalLengthSpinbox_->setSingleStep(0.1f);
 		focalLengthSpinbox_->setAlignment(Qt::AlignRight);
 		focalLengthSpinbox_->setSuffix(u8"mm");
