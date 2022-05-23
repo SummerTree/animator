@@ -9,7 +9,7 @@ namespace octoon
 	int constexpr kTileSizeY = 1440;
 
 	MonteCarloRenderer::MonteCarloRenderer(CLWContext context, const CLProgramManager* programManager, std::unique_ptr<PathTracingEstimator> estimator) noexcept
-		: ClwClass(context, programManager, "../../system/Kernels/CL/rtx_renderer.cl", "")
+		: ClwClass(context, programManager, "../../system/Kernels/CL/monte_carlo_renderer.cl", "")
 		, context_(context)
 		, estimator_(std::move(estimator))
 		, sampleCounter_(0)
