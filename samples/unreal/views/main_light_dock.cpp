@@ -212,10 +212,11 @@ namespace unreal
 	void
 	MainLightDock::repaint()
 	{
+		editSize_->setValue(profile_->sunModule->size);
+		editIntensity_->setValue(profile_->sunModule->intensity);
 		editRotationX_->setValue(profile_->sunModule->rotation.x + 180.0f);
 		editRotationY_->setValue(profile_->sunModule->rotation.y + 180.0f);
 		editRotationZ_->setValue(profile_->sunModule->rotation.z);
-		editIntensity_->setValue(profile_->sunModule->intensity);
 		colorDialog_->setCurrentColor(QColor(profile_->sunModule->color.x * 255.0f, profile_->sunModule->color.y * 255.0f, profile_->sunModule->color.z * 255.0f));
 	}
 
@@ -252,7 +253,9 @@ namespace unreal
 		auto y = editRotationY_->value() - 180.0f;
 		auto z = editRotationZ_->value();
 		auto color = colorDialog_->getCurrentColor();
+
 		profile_->sunModule->intensity = editIntensity_->value();
+		profile_->sunModule->size = editSize_->value();
 		profile_->sunModule->color = octoon::math::float3(color.redF(), color.greenF(), color.blueF());
 		profile_->sunModule->rotation = octoon::math::float3(x, y, z);
 	}
@@ -266,6 +269,8 @@ namespace unreal
 			if (sunLight)
 				sunLight->setColor(octoon::math::srgb2linear(octoon::math::float3(color.redF(), color.greenF(), color.blueF())));
 		}
+
+		profile_->sunModule->color = octoon::math::float3(color.redF(), color.greenF(), color.blueF());
 	}
 
 	void
@@ -301,6 +306,8 @@ namespace unreal
 				envLight->setIntensity(value / 10.0f);
 		}
 
+		profile_->sunModule->intensity = value / 10.0f;
+
 		editIntensity_->setValue(value / 10.0f);
 	}
 
@@ -326,6 +333,8 @@ namespace unreal
 			if (envLight)
 				envLight->setSize(value / 100.0f);
 		}
+
+		profile_->sunModule->size = value / 100.0f;
 
 		editSize_->setValue(value / 100.0f);
 	}
@@ -365,6 +374,8 @@ namespace unreal
 			}
 		}
 
+		profile_->sunModule->rotation.x = value - 180.0f;
+
 		sliderRotationX_->setValue(value);
 	}
 
@@ -390,6 +401,8 @@ namespace unreal
 			}
 		}
 
+		profile_->sunModule->rotation.y = value - 180.0f;
+
 		sliderRotationY_->setValue(value);
 	}
 
@@ -414,6 +427,8 @@ namespace unreal
 				transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
 			}
 		}
+
+		profile_->sunModule->rotation.z = value;
 
 		sliderRotationZ_->setValue(value);
 	}
