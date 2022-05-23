@@ -489,7 +489,7 @@ namespace octoon
 			clwLight->type = ClwScene::kDirectional;
 			clwLight->d = RadeonRays::float3(direction.x, direction.y, direction.z);
 			clwLight->intensity = RadeonRays::float3(power.x, power.y, power.z);
-			clwLight->size = size;
+			clwLight->size = exp2(15 * (1 - size) + 1);
 		}
 		else if (light.isA<SpotLight>())
 		{

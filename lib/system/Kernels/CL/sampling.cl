@@ -330,24 +330,6 @@ float2 Sample_MapToPolygon(int n, float2 sample, float sample1)
     return u*v1 + v*v2;
 }
 
-float3 Sample_MapToGGX(float2 sample, float roughness)
-{
-    float r1 = sample.x;
-    float r2 = sample.y;
-
-    float m = roughness * roughness;
-    float m2 = m * m;
-
-    float ndotwh = native_sqrt((1 - r2) / (1 + (m2 - 1) * r2));
-    float sintheta = native_sqrt(1.f - ndotwh * ndotwh);
-
-    float phi = 2.f * PI * r1;
-    float cosphi = native_cos(phi);
-    float sinphi = native_sin(phi);
-
-    return normalize(make_float3(cosphi * sintheta, ndotwh, sinphi * sintheta));
-}
-
 /// Power heuristic for multiple importance sampling
 float PowerHeuristic(int nf, float fpdf, int ng, float gpdf)
 {

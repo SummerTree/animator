@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cassert>
 #include <algorithm>
+#include <time.h>
 #include <octoon/math/trait.h>
 
 #undef PI
@@ -498,11 +499,33 @@ namespace octoon
 			return *reinterpret_cast<std::uint64_t*>(&fp);
 		}
 
-		void randomize() noexcept;
-		void randomize(unsigned int) noexcept;
-		int random(int min, int max) noexcept;
-		float random(float min, float max) noexcept;
-		double random(double min, double max) noexcept;
+		inline void randomize() noexcept
+		{
+			srand((unsigned int)time(NULL));
+		}
+
+		inline void randomize(unsigned int seed) noexcept
+		{
+			srand(seed);
+		}
+
+		inline int random(int min, int max) noexcept
+		{
+			int seed = rand();
+			return min + (seed ^ seed >> 15) % (max - min + 1);
+		}
+
+		inline float random(float min, float max) noexcept
+		{
+			int seed = rand();
+			return min + (max - min) * (1.0f / RAND_MAX) * seed;
+		}
+
+		inline double random(double min, double max) noexcept
+		{
+			int seed = rand();
+			return min + (max - min) * (1.0f / RAND_MAX) * seed;
+		}
 
 		std::uint32_t morton2(std::uint32_t x, std::uint32_t y) noexcept;
 		std::uint32_t morton3(std::uint32_t x, std::uint32_t y, std::uint32_t z) noexcept;

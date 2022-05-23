@@ -303,7 +303,7 @@ INLINE float3 MicrofacetRefractionGGX_Sample(DisneyShaderData const* shader_data
 		s = -s;
 	}
 
-	float3 wh = Sample_MapToGGX(sample, roughness);
+	float3 wh = MicrofacetReflectionGGX_SampleNormal(roughness, sample);
 
 	float c = dot(wi, wh);
 	float eta = etai / etat;
@@ -532,7 +532,7 @@ float3 Disney_Sample(DifferentialGeometry* dg, DisneyShaderData const* shader_da
 			Bxdf_UberV2_SetSampledComponent(dg, kBxdfUberV2SampleReflection);
 			Bxdf_SetFlags(dg, bxdf_flags | kBxdfFlagsBrdf);
 			
-			float3 wh = Sample_MapToGGX(sample, mix(0.001f, 0.1f, shader_data->clearcoat_roughness));
+			float3 wh = MicrofacetReflectionGGX_SampleNormal(mix(0.001f, 0.1f, shader_data->clearcoat_roughness), sample);
 
 			*wo = -wi + 2.f*fabs(dot(wi, wh)) * wh;
 		}

@@ -5,34 +5,6 @@ namespace octoon
 {
 	namespace math
 	{
-		void randomize() noexcept
-		{
-			srand((unsigned int)time(NULL));
-		}
-
-		void randomize(unsigned int seed) noexcept
-		{
-			srand(seed);
-		}
-
-		int random(int min, int max) noexcept
-		{
-			int seed = rand();
-			return min + (seed ^ seed >> 15) % (max - min + 1);
-		}
-
-		float random(float min, float max) noexcept
-		{
-			int seed = rand();
-			return min + (max - min) * (1.0f / RAND_MAX) * seed;
-		}
-
-		double random(double min, double max) noexcept
-		{
-			int seed = rand();
-			return min + (max - min) * (1.0f / RAND_MAX) * seed;
-		}
-
 		std::uint32_t morton2(std::uint32_t x, std::uint32_t y) noexcept
 		{
 			static auto part1By1 = [](std::uint32_t n)
