@@ -9,6 +9,7 @@ namespace octoon
 		, intersector_(intersector)
 		, maxBounces_(3)
 		, sampleCounter_(0)
+		, numRays_(0)
 	{
 		renderData_->pp = CLWParallelPrimitives(context, getFullBuildOpts().c_str());
 		renderData_->sobolmat = context.CreateBuffer<unsigned int>(1024 * 52, CL_MEM_READ_ONLY, &g_SobolMatrices[0]);
@@ -30,45 +31,50 @@ namespace octoon
 	void
 	PathTracingEstimator::setWorkBufferSize(std::size_t size)
 	{
-		renderData_->rays[0] = getContext().CreateBuffer<RadeonRays::ray>(size, CL_MEM_READ_WRITE);
-		renderData_->rays[1] = getContext().CreateBuffer<RadeonRays::ray>(size, CL_MEM_READ_WRITE);
-		renderData_->hits = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
-		renderData_->intersections = getContext().CreateBuffer<RadeonRays::Intersection>(size, CL_MEM_READ_WRITE);
-		renderData_->shadowrays = getContext().CreateBuffer<RadeonRays::ray>(size, CL_MEM_READ_WRITE);
-		renderData_->shadowhits = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
-		renderData_->lightsamples = getContext().CreateBuffer<RadeonRays::float3>(size, CL_MEM_READ_WRITE);
-		renderData_->paths = getContext().CreateBuffer<PathState>(size, CL_MEM_READ_WRITE);
+		if (numRays_ != size)
+		{
+			renderData_->rays[0] = getContext().CreateBuffer<RadeonRays::ray>(size, CL_MEM_READ_WRITE);
+			renderData_->rays[1] = getContext().CreateBuffer<RadeonRays::ray>(size, CL_MEM_READ_WRITE);
+			renderData_->hits = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
+			renderData_->intersections = getContext().CreateBuffer<RadeonRays::Intersection>(size, CL_MEM_READ_WRITE);
+			renderData_->shadowrays = getContext().CreateBuffer<RadeonRays::ray>(size, CL_MEM_READ_WRITE);
+			renderData_->shadowhits = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
+			renderData_->lightsamples = getContext().CreateBuffer<RadeonRays::float3>(size, CL_MEM_READ_WRITE);
+			renderData_->paths = getContext().CreateBuffer<PathState>(size, CL_MEM_READ_WRITE);
 
-		std::vector<std::uint32_t> random_buffer(size);
-		std::generate(random_buffer.begin(), random_buffer.end(), [](){return std::rand() + 3;});
+			std::vector<std::uint32_t> random_buffer(size);
+			std::generate(random_buffer.begin(), random_buffer.end(), []() {return std::rand() + 3; });
 
-		std::vector<int> initdata(size);
-		std::iota(initdata.begin(), initdata.end(), 0);
+			std::vector<int> initdata(size);
+			std::iota(initdata.begin(), initdata.end(), 0);
 
-		renderData_->random = getContext().CreateBuffer<std::uint32_t>(size, CL_MEM_READ_WRITE, &random_buffer[0]);
-		renderData_->iota = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, &initdata[0]);
-		renderData_->compacted_indices = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
-		renderData_->pixelindices[0] = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
-		renderData_->pixelindices[1] = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
-		renderData_->output_indices = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
-		renderData_->hitcount = getContext().CreateBuffer<int>(1, CL_MEM_READ_WRITE);
+			renderData_->random = getContext().CreateBuffer<std::uint32_t>(size, CL_MEM_READ_WRITE, &random_buffer[0]);
+			renderData_->iota = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, &initdata[0]);
+			renderData_->compacted_indices = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
+			renderData_->pixelindices[0] = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
+			renderData_->pixelindices[1] = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
+			renderData_->output_indices = getContext().CreateBuffer<int>(size, CL_MEM_READ_WRITE);
+			renderData_->hitcount = getContext().CreateBuffer<int>(1, CL_MEM_READ_WRITE);
 
-		this->getIntersector()->DeleteBuffer(renderData_->fr_rays[0]);
-		this->getIntersector()->DeleteBuffer(renderData_->fr_rays[1]);
-		this->getIntersector()->DeleteBuffer(renderData_->fr_hits);
-		this->getIntersector()->DeleteBuffer(renderData_->fr_shadowrays);
-		this->getIntersector()->DeleteBuffer(renderData_->fr_shadowhits);
-		this->getIntersector()->DeleteBuffer(renderData_->fr_intersections);
-		this->getIntersector()->DeleteBuffer(renderData_->fr_hitcount);
+			this->getIntersector()->DeleteBuffer(renderData_->fr_rays[0]);
+			this->getIntersector()->DeleteBuffer(renderData_->fr_rays[1]);
+			this->getIntersector()->DeleteBuffer(renderData_->fr_hits);
+			this->getIntersector()->DeleteBuffer(renderData_->fr_shadowrays);
+			this->getIntersector()->DeleteBuffer(renderData_->fr_shadowhits);
+			this->getIntersector()->DeleteBuffer(renderData_->fr_intersections);
+			this->getIntersector()->DeleteBuffer(renderData_->fr_hitcount);
 
-		auto intersector = this->getIntersector().get();
-		renderData_->fr_rays[0] = CreateFromOpenClBuffer(intersector, renderData_->rays[0]);
-		renderData_->fr_rays[1] = CreateFromOpenClBuffer(intersector, renderData_->rays[1]);
-		renderData_->fr_hits = CreateFromOpenClBuffer(intersector, renderData_->hits);
-		renderData_->fr_shadowrays = CreateFromOpenClBuffer(intersector, renderData_->shadowrays);
-		renderData_->fr_shadowhits = CreateFromOpenClBuffer(intersector, renderData_->shadowhits);
-		renderData_->fr_intersections = CreateFromOpenClBuffer(intersector, renderData_->intersections);
-		renderData_->fr_hitcount = CreateFromOpenClBuffer(intersector, renderData_->hitcount);
+			auto intersector = this->getIntersector().get();
+			renderData_->fr_rays[0] = CreateFromOpenClBuffer(intersector, renderData_->rays[0]);
+			renderData_->fr_rays[1] = CreateFromOpenClBuffer(intersector, renderData_->rays[1]);
+			renderData_->fr_hits = CreateFromOpenClBuffer(intersector, renderData_->hits);
+			renderData_->fr_shadowrays = CreateFromOpenClBuffer(intersector, renderData_->shadowrays);
+			renderData_->fr_shadowhits = CreateFromOpenClBuffer(intersector, renderData_->shadowhits);
+			renderData_->fr_intersections = CreateFromOpenClBuffer(intersector, renderData_->intersections);
+			renderData_->fr_hitcount = CreateFromOpenClBuffer(intersector, renderData_->hitcount);
+
+			numRays_ = size;
+		}
 	}
 
 	std::size_t

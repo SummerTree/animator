@@ -14,8 +14,6 @@ namespace octoon
 		, estimator_(std::move(estimator))
 		, sampleCounter_(0)
 	{
-		estimator_->setWorkBufferSize(kTileSizeX * kTileSizeY);
-
 		copyKernel_ = getKernel("ApplyGammaAndCopyData");
 		generateKernel_ = getKernel("GenerateTileDomain");
 		perspectiveCameraKernel_ = getKernel("PerspectiveCamera_GeneratePaths");
@@ -81,6 +79,8 @@ namespace octoon
 		if (output)
 		{
 			auto output_size = math::int2(output->width(), output->height());
+			estimator_->setWorkBufferSize(output_size.x * output_size.y);
+
 			if (output_size.x > kTileSizeX || output_size.y > kTileSizeY)
 			{
 				auto num_tiles_x = (output_size.x + kTileSizeX - 1) / kTileSizeX;
