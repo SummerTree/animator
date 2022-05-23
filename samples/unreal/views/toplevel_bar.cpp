@@ -34,6 +34,13 @@ namespace unreal
 		volumeButton.setObjectName("volumeMiddle");
 		volumeButton.setToolTip(tr("Volume"));
 		volumeButton.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
+		volumeSlider_.setObjectName("slider");
+		volumeSlider_.setToolTip(tr("Time"));
+		volumeSlider_.setOrientation(Qt::Horizontal);
+		volumeSlider_.setRange(0, 100);
+		volumeSlider_.setValue(100);
+		volumeSlider_.setFixedWidth(80);
 		
 		layout_.setObjectName("ToplevelLayout");
 		layout_.addStretch();
@@ -42,6 +49,7 @@ namespace unreal
 		layout_.addWidget(&playButton);
 		layout_.addWidget(&rightButton);
 		layout_.addWidget(&volumeButton);
+		layout_.addWidget(&volumeSlider_);
 		layout_.addStretch();
 		layout_.setSpacing(10);
 		layout_.setContentsMargins(0, 0, 0, 0);
@@ -60,6 +68,8 @@ namespace unreal
 		this->connect(&leftButton, SIGNAL(clicked()), this, SLOT(leftEvent()));
 		this->connect(&rightButton, SIGNAL(clicked()), this, SLOT(rightEvent()));
 		this->connect(&volumeButton, SIGNAL(clicked()), this, SLOT(volumeEvent()));
+		this->connect(&volumeSlider_, SIGNAL(valueChanged(int)), this, SLOT(volumeSliderEvent(int)));
+		// this->connect(&slider_, SIGNAL(valueChanged(int)), this, SLOT(sliderEvent(int)));
 	}
 
 	ToplevelBar::~ToplevelBar() noexcept
@@ -286,6 +296,51 @@ namespace unreal
 				volumeButton.setIcon(volumeOffIcon_);
 				volumeButton.setToolTip(tr("VolumeOff"));
 				volumeEnable_ = false;
+			}
+		}
+	}
+	
+	void
+	ToplevelBar::sliderEvent(int value)
+	{
+	
+		if (behaviour_ && !profile_->playerModule->isPlaying)
+		{
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+			if (behaviour->isOpen())
+			{
+				auto player = behaviour->getComponent<PlayerComponent>();
+				if (player != nullptr)
+				{
+					auto& model = player->getModel();
+					player->sample(value - model->curTime);
+				}
+			}
+			else
+			{
+				QMessageBox::information(this, tr("Warning"), tr("Please load a project with pmm extension."));
+			}
+		}
+	}
+
+	void
+	ToplevelBar::volumeSliderEvent(int value)
+	{
+		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+		if (behaviour->isOpen())
+		{
+			behaviour->setVolume(value/100.0f);
+			if (value == 0 && volumeEnable_)
+			{
+				volumeButton.setIcon(volumeOffIcon_);
+				volumeButton.setToolTip(tr("VolumeOff"));
+				volumeEnable_ = false;
+			}
+			else if (value != 0 && !volumeEnable_)
+			{
+				volumeButton.setIcon(volumeOnIcon_);
+				volumeButton.setToolTip(tr("Volume"));
+				volumeEnable_ = true;
 			}
 		}
 	}
