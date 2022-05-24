@@ -18,11 +18,19 @@ namespace octoon
 		, _enableDepthClamp(false)
 		, _enableDepthBiasClamp(false)
 		, _enableStencil(false)
+		, _enableBlend(false)
 		, _lineWidth(1.0f)
 		, _cullMode(hal::CullMode::Back)
 		, _polygonMode(hal::PolygonMode::Solid)
 		, _primitiveType(hal::VertexType::TriangleList)
 		, _frontFace(hal::FrontFace::CW)
+		, _colorWriteMask(hal::ColorWriteMask::RGBABit)
+		, _blendOp(hal::BlendOp::Add)
+		, _blendAlphaOp(hal::BlendOp::Add)
+		, _blendSrc(hal::BlendMode::SrcAlpha)
+		, _blendDest(hal::BlendMode::OneMinusSrcAlpha)
+		, _blendAlphaSrc(hal::BlendMode::SrcAlpha)
+		, _blendAlphaDest(hal::BlendMode::OneMinusSrcAlpha)
 		, _depthMin(0.0)
 		, _depthMax(1.0)
 		, _depthSlopeScaleBias(0)
@@ -318,7 +326,7 @@ namespace octoon
 	}
 
 	bool
-	Material::set(std::string_view key, const hal::GraphicsTexturePtr& value) noexcept
+	Material::set(std::string_view key, const std::shared_ptr<GraphicsTexture>& value) noexcept
 	{
 		assert(key.size());
 
@@ -479,7 +487,7 @@ namespace octoon
 	}
 
 	bool
-	Material::get(std::string_view key, hal::GraphicsTexturePtr& value) const noexcept
+	Material::get(std::string_view key, std::shared_ptr<GraphicsTexture>& value) const noexcept
 	{
 		assert(key.size());
 
@@ -532,27 +540,51 @@ namespace octoon
 	}
 
 	void
-	Material::setColorBlends(hal::GraphicsColorBlends&& blends) noexcept
+	Material::setBlendEnable(bool enable) noexcept
 	{
-		_blends = std::move(blends);
+		_enableBlend = enable;
 	}
 
 	void
-	Material::setColorBlends(const hal::GraphicsColorBlends& blends) noexcept
+	Material::setBlendOp(hal::BlendOp blendOp) noexcept
 	{
-		_blends = blends;
+		_blendOp = blendOp;
 	}
 
-	hal::GraphicsColorBlends&
-	Material::getColorBlends() noexcept
+	void
+	Material::setBlendSrc(hal::BlendMode factor) noexcept
 	{
-		return _blends;
+		_blendSrc = factor;
 	}
 
-	const hal::GraphicsColorBlends&
-	Material::getColorBlends() const noexcept
+	void
+	Material::setBlendDest(hal::BlendMode factor) noexcept
 	{
-		return _blends;
+		_blendDest = factor;
+	}
+
+	void
+	Material::setBlendAlphaOp(hal::BlendOp blendOp) noexcept
+	{
+		_blendAlphaOp = blendOp;
+	}
+
+	void
+	Material::setBlendAlphaSrc(hal::BlendMode factor) noexcept
+	{
+		_blendAlphaSrc = factor;
+	}
+
+	void
+	Material::setBlendAlphaDest(hal::BlendMode factor) noexcept
+	{
+		_blendAlphaDest = factor;
+	}
+
+	void
+	Material::setColorWriteMask(hal::ColorWriteMaskFlags mask) noexcept
+	{
+		_colorWriteMask = mask;
 	}
 
 	void
@@ -820,6 +852,54 @@ namespace octoon
 	}
 
 	bool
+	Material::getBlendEnable() const noexcept
+	{
+		return _enableBlend;
+	}
+
+	hal::BlendOp
+	Material::getBlendOp() const noexcept
+	{
+		return _blendOp;
+	}
+
+	hal::BlendMode
+	Material::getBlendSrc() const noexcept
+	{
+		return _blendSrc;
+	}
+
+	hal::BlendMode
+	Material::getBlendDest() const noexcept
+	{
+		return _blendDest;
+	}
+
+	hal::BlendOp
+	Material::getBlendAlphaOp() const noexcept
+	{
+		return _blendAlphaOp;
+	}
+
+	hal::BlendMode
+	Material::getBlendAlphaSrc() const noexcept
+	{
+		return _blendAlphaSrc;
+	}
+
+	hal::BlendMode
+	Material::getBlendAlphaDest() const noexcept
+	{
+		return _blendAlphaDest;
+	}
+
+	hal::ColorWriteMaskFlags
+	Material::getColorWriteMask() const noexcept
+	{
+		return _colorWriteMask;
+	}
+
+	bool
 	Material::getDepthEnable() const noexcept
 	{
 		return _enableDepth;
@@ -1055,8 +1135,14 @@ namespace octoon
 	{
 		this->setName(material.getName());
 		this->setShader(material.getShader());
-		this->setColorBlends(material.getColorBlends());
-		this->setColorBlends(material.getColorBlends());
+		this->setBlendEnable(material.getBlendEnable());
+		this->setBlendOp(material.getBlendOp());
+		this->setBlendSrc(material.getBlendSrc());
+		this->setBlendDest(material.getBlendDest());
+		this->setBlendAlphaOp(material.getBlendAlphaOp());
+		this->setBlendAlphaSrc(material.getBlendAlphaSrc());
+		this->setBlendAlphaDest(material.getBlendAlphaDest());
+		this->setColorWriteMask(material.getColorWriteMask());
 		this->setCullMode(material.getCullMode());
 		this->setPolygonMode(material.getPolygonMode());
 		this->setPrimitiveType(material.getPrimitiveType());

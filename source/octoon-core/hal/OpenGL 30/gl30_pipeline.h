@@ -18,7 +18,7 @@ namespace octoon
 			void close() noexcept;
 
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 			void bindVertexBuffers(GL30VertexBuffers& vbos, bool forceUpdate, std::uint32_t startVertices = 0) noexcept;
 

@@ -635,15 +635,9 @@ namespace octoon
 			}
 
 			if (it.Opacity < 1.0 || hasAlphaTexture) {
-				hal::GraphicsColorBlend blend;
-				blend.setBlendEnable(true);
-				blend.setBlendSrc(hal::BlendMode::SrcAlpha);
-				blend.setBlendDest(hal::BlendMode::OneMinusSrcAlpha);
-
-				std::vector<hal::GraphicsColorBlend> blends;
-				blends.push_back(blend);
-
-				material->setColorBlends(std::move(blends));
+				material->setBlendEnable(true);
+				material->setBlendSrc(hal::BlendMode::SrcAlpha);
+				material->setBlendDest(hal::BlendMode::OneMinusSrcAlpha);
 			}
 
 			model.materials.emplace_back(std::move(material));

@@ -48,7 +48,7 @@ namespace octoon
 		{
 			float intensity;
 			math::float2 offset;
-			hal::GraphicsTextureWeakPtr radiance;
+			std::weak_ptr<GraphicsTexture> radiance;
 		};
 
 		struct PointLight
@@ -93,11 +93,11 @@ namespace octoon
 		std::vector<DirectionalLight> directionalLights;
 		std::vector<EnvironmentLight> environmentLights;
 
-		std::vector<hal::GraphicsTexturePtr> pointShadows;
-		std::vector<hal::GraphicsTexturePtr> spotShadows;
-		std::vector<hal::GraphicsTexturePtr> rectangleShadows;
-		std::vector<hal::GraphicsTexturePtr> directionalShadows;
-		std::vector<hal::GraphicsTexturePtr> environmentShadows;
+		std::vector<std::shared_ptr<GraphicsTexture>> pointShadows;
+		std::vector<std::shared_ptr<GraphicsTexture>> spotShadows;
+		std::vector<std::shared_ptr<GraphicsTexture>> rectangleShadows;
+		std::vector<std::shared_ptr<GraphicsTexture>> directionalShadows;
+		std::vector<std::shared_ptr<GraphicsTexture>> environmentShadows;
 
 		std::vector<math::float4x4> directionalShadowMatrix;
 

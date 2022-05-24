@@ -31,7 +31,7 @@ namespace octoon
 			, _needUpdateVertexBuffers(false)
 		{
 			_stateDefault = std::make_shared<GL33GraphicsState>();
-			_stateDefault->setup(GraphicsStateDesc());
+			_stateDefault->setup(RenderStateDesc());
 		}
 
 		GL45DeviceContext::~GL45DeviceContext() noexcept
@@ -284,7 +284,7 @@ namespace octoon
 						_state = glstate;
 					}
 
-					auto glprogram = pipelineDesc.getGraphicsProgram()->downcast_pointer<GL33Program>();
+					auto glprogram = pipelineDesc.getProgram()->downcast_pointer<GL33Program>();
 					if (_program != glprogram)
 					{
 						_program = glprogram;
@@ -398,7 +398,7 @@ namespace octoon
 		}
 
 		void
-		GL45DeviceContext::generateMipmap(const GraphicsTexturePtr& texture) noexcept
+		GL45DeviceContext::generateMipmap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
 		{
 			assert(texture);
 			assert(texture->isInstanceOf<GL45Texture>());
@@ -490,7 +490,7 @@ namespace octoon
 
 			if (flags & ClearFlagBits::ColorBit)
 			{
-				auto colorWriteFlags = _stateCaptured.getColorBlends()[buffer].getColorWriteMask();
+				auto colorWriteFlags = _stateCaptured.getColorWriteMask();
 				if (colorWriteFlags != ColorWriteMask::RGBABit)
 				{
 					glColorMaski(buffer, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -592,7 +592,7 @@ namespace octoon
 		}
 
 		void
-		GL45DeviceContext::readFramebuffer(std::uint32_t i, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
+		GL45DeviceContext::readFramebuffer(std::uint32_t i, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
 		{
 			GLenum internalFormat = GL33Types::asTextureInternalFormat(texture->getTextureDesc().getTexFormat());
 			if (internalFormat == GL_INVALID_ENUM)
@@ -606,7 +606,7 @@ namespace octoon
 		}
 
 		void
-		GL45DeviceContext::readFramebufferToCube(std::uint32_t i, std::uint32_t face, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
+		GL45DeviceContext::readFramebufferToCube(std::uint32_t i, std::uint32_t face, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
 		{
 			GLenum internalFormat = GL33Types::asTextureFormat(texture->getTextureDesc().getTexFormat());
 			if (internalFormat == GL_INVALID_ENUM)
@@ -897,9 +897,6 @@ namespace octoon
 			_scissors.resize(deviceProperties.maxViewports, uint4::Zero);
 			_clearColor.resize(deviceProperties.maxFramebufferColorAttachments, float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-			GraphicsColorBlends blends(deviceProperties.maxFramebufferColorAttachments);
-			_stateCaptured.setColorBlends(blends);
-
 			return true;
 		}
 
@@ -995,7 +992,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL45DeviceContext::getDevice() noexcept
+		GL45DeviceContext::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

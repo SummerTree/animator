@@ -20,13 +20,13 @@ namespace octoon
 			GraphicsContextPtr createDeviceContext(const GraphicsContextDesc& desc) noexcept override;
 			GraphicsInputLayoutPtr createInputLayout(const GraphicsInputLayoutDesc& desc) noexcept override;
 			GraphicsDataPtr createGraphicsData(const GraphicsDataDesc& desc) noexcept override;
-			GraphicsTexturePtr createTexture(const GraphicsTextureDesc& desc) noexcept override;
+			std::shared_ptr<GraphicsTexture> createTexture(const GraphicsTextureDesc& desc) noexcept override;
 			GraphicsSamplerPtr createSampler(const GraphicsSamplerDesc& desc) noexcept override;
 			GraphicsFramebufferPtr createFramebuffer(const GraphicsFramebufferDesc& desc) noexcept override;
 			GraphicsFramebufferLayoutPtr createFramebufferLayout(const GraphicsFramebufferLayoutDesc& desc) noexcept override;
 			GraphicsShaderPtr createShader(const GraphicsShaderDesc& desc) noexcept override;
 			GraphicsProgramPtr createProgram(const GraphicsProgramDesc& desc) noexcept override;
-			GraphicsStatePtr createRenderState(const GraphicsStateDesc& desc) noexcept override;
+			std::shared_ptr<RenderState> createRenderState(const RenderStateDesc& desc) noexcept override;
 			GraphicsPipelinePtr createRenderPipeline(const GraphicsPipelineDesc& desc) noexcept override;
 			GraphicsDescriptorSetPtr createDescriptorSet(const GraphicsDescriptorSetDesc& desc) noexcept override;
 			GraphicsDescriptorSetLayoutPtr createDescriptorSetLayout(const GraphicsDescriptorSetLayoutDesc& desc) noexcept override;

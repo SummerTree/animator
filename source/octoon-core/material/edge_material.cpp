@@ -76,7 +76,7 @@ namespace octoon
 	}
 
 	void
-	EdgeMaterial::setColorMap(const hal::GraphicsTexturePtr& map) noexcept
+	EdgeMaterial::setColorMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
 	{
 		this->edgeTexture_ = map;
 		this->set("map", map);
@@ -89,7 +89,7 @@ namespace octoon
 		}
 	}
 
-	const hal::GraphicsTexturePtr&
+	const std::shared_ptr<GraphicsTexture>&
 	EdgeMaterial::getColorMap() const noexcept
 	{
 		return this->edgeTexture_;

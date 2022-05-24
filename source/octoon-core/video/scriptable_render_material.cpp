@@ -4,7 +4,7 @@
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/hal/graphics_input_layout.h>
 #include <octoon/hal/graphics_framebuffer.h>
-#include <octoon/hal/graphics_variant.h>
+#include <octoon/hal/uniform_holder.h>
 #include <octoon/hal/graphics_descriptor.h>
 #include <octoon/hal/graphics_pipeline.h>
 #include <octoon/hal/graphics_shader.h>
@@ -2381,7 +2381,7 @@ namespace octoon
 		}
 		else
 		{
-			octoon::hal::GraphicsTexturePtr texture;
+			std::shared_ptr<GraphicsTexture> texture;
 			if (material->get("map", texture) && texture)
 				fragmentShader += "#define USE_MAP\n";
 			if (material->get("opacityMap", texture) && texture)
@@ -2405,8 +2405,15 @@ namespace octoon
 	void
 	ScriptableRenderMaterial::setupRenderState(hal::GraphicsContextPtr& context, const MaterialPtr& material)
 	{
-		hal::GraphicsStateDesc stateDesc;
-		stateDesc.setColorBlends(material->getColorBlends());
+		RenderStateDesc stateDesc;
+		stateDesc.setBlendEnable(material->getBlendEnable());
+		stateDesc.setBlendOp(material->getBlendOp());
+		stateDesc.setBlendSrc(material->getBlendSrc());
+		stateDesc.setBlendDest(material->getBlendDest());
+		stateDesc.setBlendAlphaOp(material->getBlendAlphaOp());
+		stateDesc.setBlendAlphaSrc(material->getBlendAlphaSrc());
+		stateDesc.setBlendAlphaDest(material->getBlendAlphaDest());
+		stateDesc.setColorWriteMask(material->getColorWriteMask());
 		stateDesc.setCullMode(material->getCullMode());
 		stateDesc.setPolygonMode(material->getPolygonMode());
 		stateDesc.setPrimitiveType(material->getPrimitiveType());
@@ -2474,7 +2481,8 @@ namespace octoon
 	void
 	ScriptableRenderMaterial::updateMaterial(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept(false)
 	{
-		if (material) {
+		if (material)
+		{
 			this->setupRenderState(context, material);
 			this->setupProgram(context, material, scene);
 
@@ -2486,20 +2494,20 @@ namespace octoon
 
 			layoutDesc.addVertexBinding(hal::GraphicsVertexBinding(0, layoutDesc.getVertexSize()));
 
-			hal::GraphicsDescriptorSetLayoutDesc descriptor_set_layout;
-			descriptor_set_layout.setUniformComponents(this->program_->getActiveParams());
+			hal::GraphicsDescriptorSetLayoutDesc descriptorSetLayout;
+			descriptorSetLayout.setUniformComponents(this->program_->getActiveParams());
 
 			hal::GraphicsPipelineDesc pipeline;
-			pipeline.setGraphicsInputLayout(context->getDevice()->createInputLayout(layoutDesc));
-			pipeline.setGraphicsState(this->renderState_);
-			pipeline.setGraphicsProgram(this->program_);
-			pipeline.setGraphicsDescriptorSetLayout(context->getDevice()->createDescriptorSetLayout(descriptor_set_layout));
+			pipeline.setInputLayout(context->getDevice()->createInputLayout(layoutDesc));
+			pipeline.setRenderState(this->renderState_);
+			pipeline.setProgram(this->program_);
+			pipeline.setDescriptorSetLayout(context->getDevice()->createDescriptorSetLayout(descriptorSetLayout));
 
 			pipeline_ = context->getDevice()->createRenderPipeline(pipeline);
 			if (pipeline_)
 			{
 				hal::GraphicsDescriptorSetDesc descriptorSet;
-				descriptorSet.setGraphicsDescriptorSetLayout(pipeline.getDescriptorSetLayout());
+				descriptorSet.setDescriptorSetLayout(pipeline.getDescriptorSetLayout());
 				descriptorSet_ = context->getDevice()->createDescriptorSet(descriptorSet);
 				if (!descriptorSet_)
 					return;

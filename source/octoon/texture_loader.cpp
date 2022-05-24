@@ -7,9 +7,9 @@
 
 namespace octoon
 {
-	std::map<std::string, hal::GraphicsTexturePtr, std::less<>> textureCaches_;
+	std::map<std::string, std::shared_ptr<GraphicsTexture>, std::less<>> textureCaches_;
 
-	hal::GraphicsTexturePtr
+	std::shared_ptr<GraphicsTexture>
 	TextureLoader::load(const Image& image, std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
 		hal::GraphicsFormat format = hal::GraphicsFormat::Undefined;
@@ -53,7 +53,7 @@ namespace octoon
 			throw runtime::runtime_error::create("This image type is not supported by this function:");
 		}
 
-		hal::GraphicsTextureDesc textureDesc;
+		GraphicsTextureDesc textureDesc;
 		textureDesc.setName(filepath);
 		textureDesc.setSize(image.width(), image.height(), image.depth());
 		textureDesc.setTexDim(hal::TextureDimension::Texture2D);
@@ -84,7 +84,7 @@ namespace octoon
 		return texture;
 	}
 
-	hal::GraphicsTexturePtr
+	std::shared_ptr<GraphicsTexture>
 	TextureLoader::load(std::string_view filepath, bool generateMipmap, bool cache) noexcept(false)
 	{
 		assert(!filepath.empty());

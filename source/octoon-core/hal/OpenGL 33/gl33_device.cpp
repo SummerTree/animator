@@ -115,7 +115,7 @@ namespace octoon
 			return nullptr;
 		}
 
-		GraphicsTexturePtr
+		std::shared_ptr<GraphicsTexture>
 		GL33Device::createTexture(const GraphicsTextureDesc& desc) noexcept
 		{
 			if (_deviceDesc.getDeviceType() == GraphicsDeviceType::OpenGL33)
@@ -179,8 +179,8 @@ namespace octoon
 			return nullptr;
 		}
 
-		GraphicsStatePtr
-		GL33Device::createRenderState(const GraphicsStateDesc& desc) noexcept
+		std::shared_ptr<RenderState>
+		GL33Device::createRenderState(const RenderStateDesc& desc) noexcept
 		{
 			auto state = std::make_shared<GL33GraphicsState>();
 			state->setDevice(this->downcast_pointer<GL33Device>());

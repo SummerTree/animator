@@ -57,8 +57,8 @@ namespace octoon
 		return this->context_->getDevice()->createGraphicsData(desc);
 	}
 
-	hal::GraphicsTexturePtr
-	ScriptableRenderContext::createTexture(const hal::GraphicsTextureDesc& desc) noexcept
+	std::shared_ptr<GraphicsTexture>
+	ScriptableRenderContext::createTexture(const GraphicsTextureDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createTexture(desc);
 	}
@@ -93,8 +93,8 @@ namespace octoon
 		return this->context_->getDevice()->createProgram(desc);
 	}
 
-	hal::GraphicsStatePtr
-	ScriptableRenderContext::createRenderState(const hal::GraphicsStateDesc& desc) noexcept
+	std::shared_ptr<RenderState>
+	ScriptableRenderContext::createRenderState(const RenderStateDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createRenderState(desc);
 	}
@@ -255,13 +255,13 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::readFramebuffer(std::uint32_t i, const hal::GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
+	ScriptableRenderContext::readFramebuffer(std::uint32_t i, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
 	{
 		this->context_->readFramebuffer(i, texture, miplevel, x, y, width, height);
 	}
 
 	void
-	ScriptableRenderContext::readFramebufferToCube(std::uint32_t i, std::uint32_t face, const hal::GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
+	ScriptableRenderContext::readFramebufferToCube(std::uint32_t i, std::uint32_t face, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
 	{
 		this->context_->readFramebufferToCube(i, face, texture, miplevel, x, y, width, height);
 	}
@@ -330,7 +330,7 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::generateMipmap(const hal::GraphicsTexturePtr& texture) noexcept
+	ScriptableRenderContext::generateMipmap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
 	{
 		this->context_->generateMipmap(texture);
 	}

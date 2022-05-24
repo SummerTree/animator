@@ -41,12 +41,9 @@ namespace octoon
 		typedef std::shared_ptr<class GraphicsDeviceProperty> GraphicsDevicePropertyPtr;
 		typedef std::shared_ptr<class GraphicsDebug> GraphicsDebugPtr;
 		typedef std::shared_ptr<class GraphicsSwapchain> GraphicsSwapchainPtr;
-		typedef std::shared_ptr<class GraphicsResource> GraphicsResourcePtr;
 		typedef std::shared_ptr<class GraphicsContext> GraphicsContextPtr;
 		typedef std::shared_ptr<class GraphicsData> GraphicsDataPtr;
 		typedef std::shared_ptr<class GraphicsInputLayout> GraphicsInputLayoutPtr;
-		typedef std::shared_ptr<class GraphicsState> GraphicsStatePtr;
-		typedef std::shared_ptr<class GraphicsTexture> GraphicsTexturePtr;
 		typedef std::shared_ptr<class GraphicsSampler> GraphicsSamplerPtr;
 		typedef std::shared_ptr<class GraphicsFramebuffer> GraphicsFramebufferPtr;
 		typedef std::shared_ptr<class GraphicsFramebufferLayout> GraphicsFramebufferLayoutPtr;
@@ -62,10 +59,6 @@ namespace octoon
 		typedef std::shared_ptr<class GraphicsDescriptorSet> GraphicsDescriptorSetPtr;
 		typedef std::shared_ptr<class GraphicsDescriptorSetLayout> GraphicsDescriptorSetLayoutPtr;
 		typedef std::shared_ptr<class GraphicsUniformSet> GraphicsUniformSetPtr;
-		typedef std::shared_ptr<class GraphicsVariant> GraphicsVariantPtr;
-		typedef std::shared_ptr<class GraphicsCommandPool> GraphicsCommandPoolPtr;
-		typedef std::shared_ptr<class GraphicsCommandQueue> GraphicsCommandQueuePtr;
-		typedef std::shared_ptr<class GraphicsCommandList> GraphicsCommandListPtr;
 		typedef std::shared_ptr<class GraphicsSemaphore> GraphicsSemaphorePtr;
 		typedef std::shared_ptr<class GraphicsIndirect> GraphicsIndirectPtr;
 		typedef std::shared_ptr<class GraphicsDeviceDesc> GraphicsDeviceDescPtr;
@@ -73,11 +66,9 @@ namespace octoon
 		typedef std::shared_ptr<class GraphicsContextDesc> GraphicsContextDescPtr;
 		typedef std::shared_ptr<class GraphicsInputLayoutDesc> GraphicsInputLayoutDescPtr;
 		typedef std::shared_ptr<class GraphicsDataDesc> GraphicsDataDescPtr;
-		typedef std::shared_ptr<class GraphicsTextureDesc> GraphicsTextureDescPtr;
 		typedef std::shared_ptr<class GraphicsSamplerDesc> GraphicsSamplerDescPtr;
 		typedef std::shared_ptr<class GraphicsFramebufferDesc> GraphicsFramebufferDescPtr;
 		typedef std::shared_ptr<class GraphicsFramebufferLayoutDesc> GraphicsFramebufferLayoutDescPtr;
-		typedef std::shared_ptr<class GraphicsStateDesc> GraphicsStateDescPtr;
 		typedef std::shared_ptr<class GraphicsShaderDesc> GraphicsShaderDescPtr;
 		typedef std::shared_ptr<class GraphicsProgramDesc> GraphicsProgramDescPtr;
 		typedef std::shared_ptr<class GraphicsPipelineDesc> GraphicsPipelineDescPtr;
@@ -85,9 +76,6 @@ namespace octoon
 		typedef std::shared_ptr<class GraphicsDescriptorSetDesc> GraphicsDescriptorSetDescPtr;
 		typedef std::shared_ptr<class GraphicsDescriptorSetLayoutDesc> GraphicsDescriptorSetLayoutDescPtr;
 		typedef std::shared_ptr<class GraphicsDescriptorPoolDesc> GraphicsDescriptorPoolDescPtr;
-		typedef std::shared_ptr<class GraphicsCommandQueueDesc> GraphicsCommandQueueDescPtr;
-		typedef std::shared_ptr<class GraphicsCommandPoolDesc> GraphicsCommandPoolDescPtr;
-		typedef std::shared_ptr<class GraphicsCommandListDesc> GraphicsCommandListDescPtr;
 		typedef std::shared_ptr<class GraphicsSemaphoreDesc> GraphicsSemaphoreDescPtr;
 		typedef std::shared_ptr<class GraphicsVertexLayout> GraphicsVertexLayoutPtr;
 		typedef std::shared_ptr<class GraphicsVertexBinding> GraphicsVertexBindingPtr;
@@ -99,12 +87,9 @@ namespace octoon
 		typedef std::weak_ptr<class GraphicsDeviceProperty> GraphicsDevicePropertyWeakPtr;
 		typedef std::weak_ptr<class GraphicsDebug> GraphicsDebugWeakPtr;
 		typedef std::weak_ptr<class GraphicsSwapchain> GraphicsSwapchainWeakPtr;
-		typedef std::weak_ptr<class GraphicsResource> GraphicsResourceWeakPtr;
 		typedef std::weak_ptr<class GraphicsContext> GraphicsContextWeakPtr;
 		typedef std::weak_ptr<class GraphicsData> GraphicsDataWeakPtr;
 		typedef std::weak_ptr<class GraphicsInputLayout> GraphicsInputLayoutWeakPtr;
-		typedef std::weak_ptr<class GraphicsState> GraphicsStateWeakPtr;
-		typedef std::weak_ptr<class GraphicsTexture> GraphicsTextureWeakPtr;
 		typedef std::weak_ptr<class GraphicsSampler> GraphicsSamplerWeakPtr;
 		typedef std::weak_ptr<class GraphicsFramebuffer> GraphicsFramebufferWeakPtr;
 		typedef std::weak_ptr<class GraphicsFramebufferLayout> GraphicsFramebufferLayoutWeakPtr;
@@ -116,21 +101,15 @@ namespace octoon
 		typedef std::weak_ptr<class GraphicsDescriptorSet> GraphicsDescriptorSetWeakPtr;
 		typedef std::weak_ptr<class GraphicsDescriptorSetLayout> GraphicsDescriptorSetLayoutWeakPtr;
 		typedef std::weak_ptr<class GraphicsUniformSet> GraphicsUniformWeakPtr;
-		typedef std::weak_ptr<class GraphicsVariant> GraphicsVariantWeakPtr;
-		typedef std::weak_ptr<class GraphicsCommandPool> GraphicsCommandPoolWeakPtr;
-		typedef std::weak_ptr<class GraphicsCommandQueue> GraphicsCommandQueueWeakPtr;
-		typedef std::weak_ptr<class GraphicsCommandList> GraphicsCommandPoolListWeakPtr;
 		typedef std::weak_ptr<class GraphicsSemaphoreDesc> GraphicsSemaphoreDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsDeviceDesc> GraphicsDeviceDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsSwapchainDesc> GraphicsSwapchainDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsContextDesc> GraphicsContextDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsInputLayoutDesc> GraphicsInputLayoutDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsDataDesc> GraphicsDataDescWeakPtr;
-		typedef std::weak_ptr<class GraphicsTextureDesc> GraphicsTextureDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsSamplerDesc> GraphicsSamplerDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsFramebufferDesc> GraphicsFramebufferDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsFramebufferLayoutDesc> GraphicsFramebufferLayoutDescWeakPtr;
-		typedef std::weak_ptr<class GraphicsStateDesc> GraphicsStateDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsShaderDesc> GraphicsShaderDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsProgramDesc> GraphicsProgramDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsPipelineDesc> GraphicsPipelineDescWeakPtr;
@@ -138,9 +117,6 @@ namespace octoon
 		typedef std::weak_ptr<class GraphicsDescriptorSetDesc> GraphicsDescriptorSetDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsDescriptorSetLayoutDesc> GraphicsDescriptorSetLayoutDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsDescriptorPoolDesc> GraphicsDescriptorPoolDescWeakPtr;
-		typedef std::weak_ptr<class GraphicsCommandQueueDesc> GraphicsCommandQueueDescWeakPtr;
-		typedef std::weak_ptr<class GraphicsCommandPoolDesc> GraphicsCommandPoolDescWeakPtr;
-		typedef std::weak_ptr<class GraphicsCommandListDesc> GraphicsCommandListDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsSemaphoreDesc> GraphicsSemaphoreDescWeakPtr;
 		typedef std::weak_ptr<class GraphicsVertexLayout> GraphicsVertexLayoutWeakPtr;
 		typedef std::weak_ptr<class GraphicsVertexBinding> GraphicsVertexBindingWeakPtr;
@@ -151,11 +127,9 @@ namespace octoon
 		typedef std::vector<GraphicsDevicePtr> GraphicsDevices;
 		typedef std::vector<GraphicsDevicePropertyPtr> GraphicsDevicePropertys;
 		typedef std::vector<GraphicsShaderPtr> GraphicsShaders;
-		typedef std::vector<GraphicsVariantPtr> GraphicsVariants;
 		typedef std::vector<GraphicsFramebufferPtr> GraphicsFramebuffers;
 		typedef std::vector<GraphicsIndirectPtr> GraphicsIndirects;
 		typedef std::vector<GraphicsUniformSetPtr> GraphicsUniformSets;
-		typedef std::vector<GraphicsTexturePtr> GraphicsTextures;
 		typedef std::vector<GraphicsSamplerPtr> GraphicsSamplers;
 		typedef std::vector<GraphicsAttributePtr> GraphicsAttributes;
 		typedef std::vector<GraphicsParamPtr> GraphicsParams;
@@ -168,11 +142,9 @@ namespace octoon
 		typedef std::vector<GraphicsContextDescPtr> GraphicsContextDescs;
 		typedef std::vector<GraphicsInputLayoutDescPtr> GraphicsInputLayoutDescs;
 		typedef std::vector<GraphicsDataDescPtr> GraphicsDataDescs;
-		typedef std::vector<GraphicsTextureDescPtr> GraphicsTextureDescs;
 		typedef std::vector<GraphicsSamplerDescPtr> GraphicsSamplerDescs;
 		typedef std::vector<GraphicsFramebufferDescPtr> GraphicsFramebufferDescs;
 		typedef std::vector<GraphicsFramebufferLayoutDescPtr> GraphicsFramebufferLayoutDescs;
-		typedef std::vector<GraphicsStateDescPtr> GraphicsStateDescs;
 		typedef std::vector<GraphicsShaderDescPtr> GraphicsShaderDescs;
 		typedef std::vector<GraphicsProgramDescPtr> GraphicsProgramDescs;
 		typedef std::vector<GraphicsPipelineDescPtr> GraphicsPipelineDescs;
@@ -180,9 +152,6 @@ namespace octoon
 		typedef std::vector<GraphicsDescriptorSetDescPtr> GraphicsDescriptorSetDescs;
 		typedef std::vector<GraphicsDescriptorSetLayoutDescPtr> GraphicsDescriptorSetLayoutDescs;
 		typedef std::vector<GraphicsDescriptorPoolDescPtr> GraphicsDescriptorPoolDescs;
-		typedef std::vector<GraphicsCommandQueueDescPtr> GraphicsCommandQueueDescs;
-		typedef std::vector<GraphicsCommandPoolDescPtr> GraphicsCommandPoolDescs;
-		typedef std::vector<GraphicsCommandListDescPtr> GraphicsCommandListDescs;
 		typedef std::vector<GraphicsSemaphoreDescPtr> GraphicsSemaphoreDescs;
 
 		typedef std::vector<GraphicsVertexLayout> GraphicsVertexLayouts;
@@ -190,7 +159,6 @@ namespace octoon
 		typedef std::vector<GraphicsDescriptorPoolComponent> GraphicsDescriptorPoolComponents;
 		typedef std::vector<GraphicsAttachmentLayout> GraphicsAttachmentLayouts;
 		typedef std::vector<GraphicsAttachmentBinding> GraphicsAttachmentBindings;
-		typedef std::vector<class GraphicsColorBlend> GraphicsColorBlends;
 
 		typedef std::vector<GraphicsDeviceWeakPtr> GraphicsDeviceWeaks;
 		typedef std::vector<GraphicsContextWeakPtr> GraphicsContextWeaks;
@@ -770,42 +738,6 @@ namespace octoon
 		};
 
 		typedef std::uint32_t GraphicsAccessFlags;
-
-		enum class GraphicsCommandType : std::uint8_t
-		{
-			Graphics = 0,
-			Compute = 1,
-			Bundle = 2,
-			Copy = 3,
-		};
-
-		struct GraphicsCommandQueueFlagBits
-		{
-			enum Flags
-			{
-				NoneBit = 0,
-				DisableGpuTimeOutBit = 0x1
-			};
-		};
-
-		typedef std::uint32_t GraphicsCommandQueueFlags;
-
-		enum class GraphicsCommandQueuePriority : std::uint8_t
-		{
-			Normal = 0,
-			High = 1,
-		};
-
-		struct GraphicsCommandPoolFlagBits
-		{
-			enum Flags
-			{
-				TransientBit = 0x00000001,
-				ResetCommandBufferBit = 0x00000002
-			};
-		};
-
-		typedef std::uint32_t GraphicsCommandPoolFlags;
 	}
 }
 

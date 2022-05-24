@@ -39,7 +39,7 @@ namespace unreal
 
 			nlohmann::json items;
 
-			auto writeTexture = [](const octoon::hal::GraphicsTexturePtr& texture, std::filesystem::path rootPath) -> nlohmann::json
+			auto writeTexture = [](const std::shared_ptr<octoon::GraphicsTexture>& texture, std::filesystem::path rootPath) -> nlohmann::json
 			{
 				if (texture)
 				{
@@ -146,6 +146,14 @@ namespace unreal
 				item["color"] = writeFloat3(mat->getColor());
 				item["emissive"] = writeFloat3(mat->getEmissive());
 				item["subsurfaceColor"] = writeFloat3(mat->getSubsurfaceColor());
+				item["blendEnable"] = mat->getBlendEnable();
+				item["blendOp"] = mat->getBlendOp();
+				item["blendSrc"] = mat->getBlendSrc();
+				item["blendDest"] = mat->getBlendDest();
+				item["blendAlphaOp"] = mat->getBlendAlphaOp();
+				item["blendAlphaSrc"] = mat->getBlendAlphaSrc();
+				item["blendAlphaDest"] = mat->getBlendAlphaDest();
+				item["colorWriteMask"] = mat->getColorWriteMask();
 				item["depthEnable"] = mat->getDepthEnable();
 				item["depthBiasEnable"] = mat->getDepthBiasEnable();
 				item["depthBoundsEnable"] = mat->getDepthBoundsEnable();
@@ -271,6 +279,29 @@ namespace unreal
 				standard->setSheenMap(octoon::TextureLoader::load((*sheenMap).get<nlohmann::json::string_t>()));			
 			if (lightMap != package.end() && (*lightMap).is_string())
 				standard->setLightMap(octoon::TextureLoader::load((*lightMap).get<nlohmann::json::string_t>()));
+
+			auto blendEnable = package.find("blendEnable");
+			auto blendOp = package.find("blendOp");
+			auto blendSrc = package.find("blendSrc");
+			auto blendDest = package.find("blendDest");
+			auto blendAlphaOp = package.find("blendAlphaOp");
+			auto blendAlphaSrc = package.find("blendAlphaSrc");
+			auto blendAlphaDest = package.find("blendAlphaDest");
+
+			if (blendEnable != package.end() && (*blendEnable).is_boolean())
+				standard->setBlendEnable((*blendEnable).get<nlohmann::json::boolean_t>());
+			if (blendOp != package.end() && (*blendOp).is_number_unsigned())
+				standard->setBlendOp((octoon::hal::BlendOp)(*blendOp).get<nlohmann::json::number_unsigned_t>());
+			if (blendSrc != package.end() && (*blendSrc).is_number_unsigned())
+				standard->setBlendSrc((octoon::hal::BlendMode)(*blendSrc).get<nlohmann::json::number_unsigned_t>());
+			if (blendDest != package.end() && (*blendDest).is_number_unsigned())
+				standard->setBlendDest((octoon::hal::BlendMode)(*blendDest).get<nlohmann::json::number_unsigned_t>());
+			if (blendAlphaOp != package.end() && (*blendAlphaOp).is_number_unsigned())
+				standard->setBlendAlphaOp((octoon::hal::BlendOp)(*blendAlphaOp).get<nlohmann::json::number_unsigned_t>());
+			if (blendAlphaSrc != package.end() && (*blendAlphaSrc).is_number_unsigned())
+				standard->setBlendAlphaSrc((octoon::hal::BlendMode)(*blendAlphaSrc).get<nlohmann::json::number_unsigned_t>());
+			if (blendAlphaDest != package.end() && (*blendAlphaDest).is_number_unsigned())
+				standard->setBlendAlphaDest((octoon::hal::BlendMode)(*blendAlphaDest).get<nlohmann::json::number_unsigned_t>());
 
 			auto depthEnable = package.find("depthEnable");
 			auto depthBiasEnable = package.find("depthBiasEnable");
@@ -484,7 +515,7 @@ namespace unreal
 			std::uint32_t width = previewWidth_ * 2;
 			std::uint32_t height = previewHeight_ * 2;
 
-			octoon::hal::GraphicsTextureDesc textureDesc;
+			octoon::GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);
 			textureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
 			textureDesc.setTexFormat(octoon::hal::GraphicsFormat::R8G8B8A8UNorm);
@@ -492,7 +523,7 @@ namespace unreal
 			if (!colorTexture)
 				throw std::runtime_error("createTexture() failed");
 
-			octoon::hal::GraphicsTextureDesc depthTextureDesc;
+			octoon::GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setSize(width, height);
 			depthTextureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
 			depthTextureDesc.setTexFormat(octoon::hal::GraphicsFormat::D16UNorm);

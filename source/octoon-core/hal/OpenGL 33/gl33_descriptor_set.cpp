@@ -377,7 +377,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniformTexture(GraphicsTexturePtr texture, GraphicsSamplerPtr sampler) noexcept
+		GL33GraphicsUniformSet::uniformTexture(std::shared_ptr<GraphicsTexture> texture, GraphicsSamplerPtr sampler) noexcept
 		{
 			_variant.uniformTexture(texture, sampler);
 		}
@@ -574,7 +574,7 @@ namespace octoon
 			return _variant.getFloat4x4Array();
 		}
 
-		const GraphicsTexturePtr&
+		const std::shared_ptr<GraphicsTexture>&
 		GL33GraphicsUniformSet::getTexture() const noexcept
 		{
 			return _variant.getTexture();
@@ -639,7 +639,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL33DescriptorPool::getDevice() noexcept
+		GL33DescriptorPool::getDevice() const noexcept
 		{
 			return _device.lock();
 		}
@@ -678,7 +678,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL33DescriptorSetLayout::getDevice() noexcept
+		GL33DescriptorSetLayout::getDevice() const noexcept
 		{
 			return _device.lock();
 		}
@@ -1059,7 +1059,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL33DescriptorSet::getDevice() noexcept
+		GL33DescriptorSet::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

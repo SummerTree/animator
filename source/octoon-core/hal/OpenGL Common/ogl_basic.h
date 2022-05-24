@@ -7,7 +7,7 @@
 #include <octoon/hal/graphics_swapchain.h>
 #include <octoon/hal/graphics_context.h>
 #include <octoon/hal/graphics_data.h>
-#include <octoon/hal/graphics_state.h>
+#include <octoon/hal/render_state.h>
 #include <octoon/hal/graphics_sampler.h>
 #include <octoon/hal/graphics_texture.h>
 #include <octoon/hal/graphics_framebuffer.h>
@@ -15,7 +15,7 @@
 #include <octoon/hal/graphics_pipeline.h>
 #include <octoon/hal/graphics_descriptor.h>
 #include <octoon/hal/graphics_input_layout.h>
-#include <octoon/hal/graphics_variant.h>
+#include <octoon/hal/uniform_holder.h>
 
 #if OCTOON_BUILD_PLATFORM_WINDOWS
 #	include <GL/glew.h>

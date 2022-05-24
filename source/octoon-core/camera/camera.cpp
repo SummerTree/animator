@@ -249,7 +249,7 @@ namespace octoon
 		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(0, hal::GraphicsImageLayout::ColorAttachmentOptimal, format));
 		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(1, hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, depthStencil));
 
-		hal::GraphicsTextureDesc colorTextureDesc;
+		GraphicsTextureDesc colorTextureDesc;
 		colorTextureDesc.setWidth(w);
 		colorTextureDesc.setHeight(h);
 		colorTextureDesc.setTexMultisample(multisample);
@@ -259,7 +259,7 @@ namespace octoon
 		if (!edgeTexture_)
 			throw runtime::runtime_error::create("createTexture() failed");
 
-		hal::GraphicsTextureDesc depthTextureDesc;
+		GraphicsTextureDesc depthTextureDesc;
 		depthTextureDesc.setWidth(w);
 		depthTextureDesc.setHeight(h);
 		depthTextureDesc.setTexMultisample(multisample);

@@ -44,19 +44,19 @@ namespace octoon
 		}
 
 		void
-		GraphicsPipelineDesc::setGraphicsProgram(GraphicsProgramPtr program) noexcept
+		GraphicsPipelineDesc::setProgram(GraphicsProgramPtr program) noexcept
 		{
 			_program = program;
 		}
 
 		GraphicsProgramPtr
-		GraphicsPipelineDesc::getGraphicsProgram() const noexcept
+		GraphicsPipelineDesc::getProgram() const noexcept
 		{
 			return _program;
 		}
 
 		void
-		GraphicsPipelineDesc::setGraphicsInputLayout(GraphicsInputLayoutPtr layout) noexcept
+		GraphicsPipelineDesc::setInputLayout(GraphicsInputLayoutPtr layout) noexcept
 		{
 			_inputLayout = layout;
 		}
@@ -68,7 +68,7 @@ namespace octoon
 		}
 
 		void
-		GraphicsPipelineDesc::setGraphicsDescriptorSetLayout(GraphicsDescriptorSetLayoutPtr descriptorSetLayout) noexcept
+		GraphicsPipelineDesc::setDescriptorSetLayout(GraphicsDescriptorSetLayoutPtr descriptorSetLayout) noexcept
 		{
 			_descriptorSetLayout = descriptorSetLayout;
 		}
@@ -92,12 +92,12 @@ namespace octoon
 		}
 
 		void
-		GraphicsPipelineDesc::setGraphicsState(GraphicsStatePtr state) noexcept
+		GraphicsPipelineDesc::setRenderState(std::shared_ptr<RenderState> state) noexcept
 		{
 			_state = state;
 		}
 
-		GraphicsStatePtr
+		std::shared_ptr<RenderState>
 		GraphicsPipelineDesc::getGraphicsState() const noexcept
 		{
 			return _state;

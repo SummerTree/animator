@@ -38,7 +38,7 @@ namespace octoon
 		return CameraType::kPerspective;
 	}
 
-	static std::size_t GetTextureSize(const hal::GraphicsTextureDesc& desc)
+	static std::size_t GetTextureSize(const GraphicsTextureDesc& desc)
 	{
 		switch (desc.getTexFormat())
 		{
@@ -98,7 +98,7 @@ namespace octoon
 		}
 	}
 
-	int GetTextureIndex(Collector const& collector, const hal::GraphicsTexturePtr& texture)
+	int GetTextureIndex(Collector const& collector, const std::shared_ptr<GraphicsTexture>& texture)
 	{
 		return texture ? collector.GetItemIndex(texture.get()) : (-1);
 	}
@@ -351,7 +351,7 @@ namespace octoon
 	}
 
 	void
-	ClwSceneController::WriteTexture(const hal::GraphicsTexture& texture, std::size_t data_offset, void* data) const
+	ClwSceneController::WriteTexture(const GraphicsTexture& texture, std::size_t data_offset, void* data) const
 	{
 		auto& desc = texture.getTextureDesc();
 
@@ -364,7 +364,7 @@ namespace octoon
 	}
 
 	void
-	ClwSceneController::WriteTextureData(hal::GraphicsTexture& texture, void* dest) const
+	ClwSceneController::WriteTextureData(GraphicsTexture& texture, void* dest) const
 	{
 		auto& desc = texture.getTextureDesc();
 		
@@ -439,7 +439,7 @@ namespace octoon
 			std::unique_ptr<Iterator> tex_iter(textureCollector.CreateIterator());
 			for (; tex_iter->IsValid(); tex_iter->Next())
 			{
-				auto tex = tex_iter->ItemAs<hal::GraphicsTexture>();
+				auto tex = tex_iter->ItemAs<GraphicsTexture>();
 				this->WriteTexture(*tex, numTexDataBufferSize, textures + numTexturesWritten);
 
 				numTexturesWritten++;
@@ -457,7 +457,7 @@ namespace octoon
 			std::size_t numBytesWritten = 0;
 			for (tex_iter->Reset(); tex_iter->IsValid(); tex_iter->Next())
 			{
-				auto tex = tex_iter->ItemAs<hal::GraphicsTexture>();
+				auto tex = tex_iter->ItemAs<GraphicsTexture>();
 				this->WriteTextureData(*tex, data + numBytesWritten);
 				numBytesWritten += GetTextureSize(tex->getTextureDesc());
 			}

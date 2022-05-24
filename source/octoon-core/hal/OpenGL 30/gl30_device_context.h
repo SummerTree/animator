@@ -47,14 +47,14 @@ namespace octoon
 			void setIndexBufferData(const GraphicsDataPtr& data, std::intptr_t offset, IndexFormat indexType) noexcept override;
 			GraphicsDataPtr getIndexBufferData() const noexcept override;
 
-			void generateMipmap(const GraphicsTexturePtr& texture) noexcept override;
+			void generateMipmap(const std::shared_ptr<GraphicsTexture>& texture) noexcept override;
 
 			void setFramebuffer(const GraphicsFramebufferPtr& target) noexcept override;
 			void clearFramebuffer(std::uint32_t i, ClearFlags flags, const float4& color, float depth, std::int32_t stencil) noexcept override;
 			void discardFramebuffer(const GraphicsFramebufferPtr& src, ClearFlags flags) noexcept override;
 			void blitFramebuffer(const GraphicsFramebufferPtr& src, const float4& v1, const GraphicsFramebufferPtr& dest, const float4& v2) noexcept override;
-			void readFramebuffer(std::uint32_t i, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept override;
-			void readFramebufferToCube(std::uint32_t i, std::uint32_t face, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept override;
+			void readFramebuffer(std::uint32_t i, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept override;
+			void readFramebufferToCube(std::uint32_t i, std::uint32_t face, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept override;
 			GraphicsFramebufferPtr getFramebuffer() const noexcept override;
 
 			void draw(std::uint32_t numVertices, std::uint32_t numInstances, std::uint32_t startVertice, std::uint32_t startInstances) noexcept override;
@@ -73,7 +73,7 @@ namespace octoon
 		private:
 			friend class GL30Device;
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL30DeviceContext(const GL30DeviceContext&) noexcept = delete;
@@ -106,7 +106,7 @@ namespace octoon
 			GL30ProgramPtr _program;
 			GL30GraphicsStatePtr _state;
 			GL30GraphicsStatePtr _stateDefault;
-			GraphicsStateDesc _stateCaptured;
+			RenderStateDesc _stateCaptured;
 
 			bool _needUpdatePipeline;
 			bool _needUpdateDescriptor;

@@ -2,7 +2,7 @@
 #define OCTOON_CAMERA_H_
 
 #include <octoon/video/render_object.h>
-#include <octoon/hal/graphics_types.h>
+#include <octoon/hal/graphics_texture.h>
 
 namespace octoon
 {
@@ -57,8 +57,8 @@ namespace octoon
 		hal::ClearFlags clearflags_;
 
 		hal::GraphicsFramebufferPtr edgeFramebuffer_;
-		hal::GraphicsTexturePtr edgeTexture_;
-		hal::GraphicsTexturePtr depthTexture_;
+		std::shared_ptr<GraphicsTexture> edgeTexture_;
+		std::shared_ptr<GraphicsTexture> depthTexture_;
 
 		mutable math::float4x4 viewProject_;
 		mutable math::float4x4 viewProjectInverse_;

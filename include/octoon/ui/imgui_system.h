@@ -3,7 +3,15 @@
 
 #include <octoon/ui/imgui.h>
 #include <octoon/input/input.h>
-#include <octoon/hal/graphics.h>
+#include <octoon/hal/graphics_device.h>
+#include <octoon/hal/graphics_data.h>
+#include <octoon/hal/graphics_texture.h>
+#include <octoon/hal/graphics_shader.h>
+#include <octoon/hal/graphics_input_layout.h>
+#include <octoon/hal/graphics_descriptor.h>
+#include <octoon/hal/render_state.h>
+#include <octoon/hal/graphics_pipeline.h>
+#include <octoon/hal/graphics_context.h>
 
 struct ImGuiContext;
 
@@ -57,7 +65,7 @@ namespace octoon::imgui
 
 		hal::GraphicsDataPtr vbo_;
 		hal::GraphicsDataPtr ibo_;
-		hal::GraphicsTexturePtr texture_;
+		std::shared_ptr<GraphicsTexture> texture_;
 		hal::GraphicsDescriptorSetPtr descriptor_set_;
 
 		hal::GraphicsUniformSetPtr proj_;

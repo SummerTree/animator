@@ -192,8 +192,8 @@ void main()
 }
 )";
 
-	hal::GraphicsTexturePtr
-	PMREMLoader::load(const hal::GraphicsTexturePtr& environmentMap, std::uint8_t mipNums, bool cache) noexcept(false)
+	std::shared_ptr<GraphicsTexture>
+	PMREMLoader::load(const std::shared_ptr<GraphicsTexture>& environmentMap, std::uint8_t mipNums, bool cache) noexcept(false)
 	{
 		if (environmentMap)
 		{
@@ -202,7 +202,7 @@ void main()
 
 			auto renderContext = Renderer::instance()->getGraphicsDevice();
 
-			hal::GraphicsTextureDesc textureDesc;
+			GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);
 			textureDesc.setTexDim(hal::TextureDimension::Texture2D);
 			textureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
@@ -212,7 +212,7 @@ void main()
 			if (!colorTexture)
 				throw runtime::runtime_error::create("createTexture() failed");
 
-			hal::GraphicsTextureDesc depthTextureDesc;
+			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setSize(width, height);
 			depthTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
 			depthTextureDesc.setTexFormat(hal::GraphicsFormat::D16UNorm);
@@ -296,7 +296,7 @@ void main()
 		}
 	}
 
-	hal::GraphicsTexturePtr
+	std::shared_ptr<GraphicsTexture>
 	PMREMLoader::load(std::string_view filepath, std::uint8_t mipNums, bool cache) noexcept(false)
 	{
 		return load(TextureLoader::load(filepath, true, cache), mipNums, cache);

@@ -85,7 +85,7 @@ namespace octoon
 
 		try
 		{
-			hal::GraphicsTextureDesc colorTextureDesc;
+			GraphicsTextureDesc colorTextureDesc;
 			colorTextureDesc.setWidth(w);
 			colorTextureDesc.setHeight(h);
 			colorTextureDesc.setTexMultisample(4);
@@ -95,7 +95,7 @@ namespace octoon
 			if (!edgeTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
-			hal::GraphicsTextureDesc depthTextureDesc;
+			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setWidth(w);
 			depthTextureDesc.setHeight(h);
 			depthTextureDesc.setTexMultisample(4);
@@ -116,7 +116,7 @@ namespace octoon
 			if (!edgeFramebuffer_)
 				throw runtime::runtime_error::create("createFramebuffer() failed");
 
-			hal::GraphicsTextureDesc colorTextureDesc2;
+			GraphicsTextureDesc colorTextureDesc2;
 			colorTextureDesc2.setWidth(w);
 			colorTextureDesc2.setHeight(h);
 			colorTextureDesc2.setTexDim(hal::TextureDimension::Texture2D);
@@ -125,7 +125,7 @@ namespace octoon
 			if (!colorTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
-			hal::GraphicsTextureDesc depthTextureDesc2;
+			GraphicsTextureDesc depthTextureDesc2;
 			depthTextureDesc2.setWidth(w);
 			depthTextureDesc2.setHeight(h);
 			depthTextureDesc2.setTexDim(hal::TextureDimension::Texture2D);
@@ -147,7 +147,7 @@ namespace octoon
 		}
 		catch (...)
 		{
-			hal::GraphicsTextureDesc colorTextureDesc;
+			GraphicsTextureDesc colorTextureDesc;
 			colorTextureDesc.setWidth(w);
 			colorTextureDesc.setHeight(h);
 			colorTextureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
@@ -155,7 +155,7 @@ namespace octoon
 			if (!edgeTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
-			hal::GraphicsTextureDesc depthTextureDesc;
+			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setWidth(w);
 			depthTextureDesc.setHeight(h);
 			depthTextureDesc.setTexFormat(hal::GraphicsFormat::X8_D24UNormPack32);

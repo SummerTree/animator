@@ -25,8 +25,8 @@ namespace octoon
 		void setOpacity(float opacity) noexcept;
 		float getOpacity() const noexcept;
 
-		void setColorMap(const hal::GraphicsTexturePtr& map) noexcept;
-		const hal::GraphicsTexturePtr& getColorMap() const noexcept;
+		void setColorMap(const std::shared_ptr<GraphicsTexture>& map) noexcept;
+		const std::shared_ptr<GraphicsTexture>& getColorMap() const noexcept;
 
 		void setGamma(float gamma) noexcept;
 		float getGamma() const noexcept;
@@ -43,7 +43,7 @@ namespace octoon
 		math::float3 color_;
 		math::float2 offset_;
 		math::float2 repeat_;
-		hal::GraphicsTexturePtr edgeTexture_;
+		std::shared_ptr<GraphicsTexture> edgeTexture_;
 	};
 }
 

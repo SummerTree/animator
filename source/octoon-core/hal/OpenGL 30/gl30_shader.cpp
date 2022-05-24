@@ -344,7 +344,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL30Shader::getDevice() noexcept
+		GL30Shader::getDevice() const noexcept
 		{
 			return _device.lock();
 		}
@@ -692,7 +692,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL30Program::getDevice() noexcept
+		GL30Program::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

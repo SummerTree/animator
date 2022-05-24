@@ -35,7 +35,7 @@ namespace octoon
 			, _scissor(0, 0, 0, 0)
 		{
 			_stateDefault = std::make_shared<GL20GraphicsState>();
-			_stateDefault->setup(GraphicsStateDesc());
+			_stateDefault->setup(RenderStateDesc());
 		}
 
 		GL20DeviceContext::~GL20DeviceContext() noexcept
@@ -287,7 +287,7 @@ namespace octoon
 						_state = glstate;
 					}
 
-					auto glprogram = pipelineDesc.getGraphicsProgram()->downcast_pointer<GL20Program>();
+					auto glprogram = pipelineDesc.getProgram()->downcast_pointer<GL20Program>();
 					if (_program != glprogram)
 					{
 						_program = glprogram;
@@ -408,7 +408,7 @@ namespace octoon
 		}
 
 		void
-		GL20DeviceContext::generateMipmap(const GraphicsTexturePtr& texture) noexcept
+		GL20DeviceContext::generateMipmap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
 		{
 			assert(texture);
 			assert(texture->isInstanceOf<GL20Texture>());
@@ -513,7 +513,7 @@ namespace octoon
 					GL_CHECK(glDepthMask(GL_TRUE));
 				}
 
-				auto colorWriteFlags = _stateCaptured.getColorBlends()[0].getColorWriteMask();
+				auto colorWriteFlags = _stateCaptured.getColorWriteMask();
 				if (colorWriteFlags != ColorWriteMask::RGBABit)
 				{
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -570,7 +570,7 @@ namespace octoon
 		}
 
 		void
-		GL20DeviceContext::readFramebuffer(std::uint32_t i, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
+		GL20DeviceContext::readFramebuffer(std::uint32_t i, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
 		{
 			GLenum internalFormat = GL20Types::asTextureFormat(texture->getTextureDesc().getTexFormat());
 			if (internalFormat == GL_INVALID_ENUM)
@@ -587,7 +587,7 @@ namespace octoon
 		}
 
 		void
-		GL20DeviceContext::readFramebufferToCube(std::uint32_t i, std::uint32_t face, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
+		GL20DeviceContext::readFramebufferToCube(std::uint32_t i, std::uint32_t face, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept
 		{
 			GLenum internalFormat = GL20Types::asTextureFormat(texture->getTextureDesc().getTexFormat());
 			if (internalFormat == GL_INVALID_ENUM)
@@ -722,9 +722,6 @@ namespace octoon
 			auto& deviceProperties = this->getDevice()->getSystemInfo();
 			_vertexBuffers.resize(deviceProperties.maxVertexInputBindings);
 
-			GraphicsColorBlends blends(deviceProperties.maxFramebufferColorAttachments);
-			_stateCaptured.setColorBlends(blends);
-
 			return true;
 		}
 
@@ -735,7 +732,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL20DeviceContext::getDevice() noexcept
+		GL20DeviceContext::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

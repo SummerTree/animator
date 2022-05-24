@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_FRAMEBUFFER_H_
 #define OCTOON_GRAPHICS_FRAMEBUFFER_H_
 
-#include <octoon/hal/graphics_resource.h>
+#include <octoon/hal/graphics_texture.h>
 
 namespace octoon
 {
@@ -33,8 +33,8 @@ namespace octoon
 		{
 		public:
 			GraphicsAttachmentBinding() noexcept;
-			GraphicsAttachmentBinding(GraphicsTexturePtr&& texture, std::uint32_t mipLevel, std::uint32_t layer) noexcept;
-			GraphicsAttachmentBinding(const GraphicsTexturePtr& texture, std::uint32_t mipLevel, std::uint32_t layer) noexcept;
+			GraphicsAttachmentBinding(std::shared_ptr<GraphicsTexture>&& texture, std::uint32_t mipLevel, std::uint32_t layer) noexcept;
+			GraphicsAttachmentBinding(const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t mipLevel, std::uint32_t layer) noexcept;
 			~GraphicsAttachmentBinding() noexcept;
 
 			void setBindingLevel(std::uint32_t mipLevel) noexcept;
@@ -43,13 +43,13 @@ namespace octoon
 			void setBindingLayer(std::uint32_t layer) noexcept;
 			std::uint32_t getBindingLayer() const noexcept;
 
-			void setBindingTexture(GraphicsTexturePtr texture) noexcept;
-			GraphicsTexturePtr getBindingTexture() const noexcept;
+			void setBindingTexture(std::shared_ptr<GraphicsTexture> texture) noexcept;
+			std::shared_ptr<GraphicsTexture> getBindingTexture() const noexcept;
 
 		private:
 			std::uint32_t _mipLevel;
 			std::uint32_t _layer;
-			GraphicsTexturePtr _texture;
+			std::shared_ptr<GraphicsTexture> _texture;
 		};
 
 		class OCTOON_EXPORT GraphicsFramebufferLayoutDesc final

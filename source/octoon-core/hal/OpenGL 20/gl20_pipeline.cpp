@@ -24,11 +24,11 @@ namespace octoon
 		GL20Pipeline::setup(const GraphicsPipelineDesc& pipelineDesc) noexcept
 		{
 			assert(pipelineDesc.getGraphicsState());
-			assert(pipelineDesc.getGraphicsProgram());
+			assert(pipelineDesc.getProgram());
 			assert(pipelineDesc.getInputLayout());
 			assert(pipelineDesc.getDescriptorSetLayout());
 			assert(pipelineDesc.getGraphicsState()->isInstanceOf<GL20GraphicsState>());
-			assert(pipelineDesc.getGraphicsProgram()->isInstanceOf<GL20Program>());
+			assert(pipelineDesc.getProgram()->isInstanceOf<GL20Program>());
 			assert(pipelineDesc.getInputLayout()->isInstanceOf<GL20InputLayout>());
 			assert(pipelineDesc.getDescriptorSetLayout()->isInstanceOf<GL20DescriptorSetLayout>());
 
@@ -39,7 +39,7 @@ namespace octoon
 			{
 				GLuint attribIndex = GL_INVALID_INDEX;
 
-				auto& attributes = pipelineDesc.getGraphicsProgram()->getActiveAttributes();
+				auto& attributes = pipelineDesc.getProgram()->getActiveAttributes();
 				for (auto& attrib : attributes)
 				{
 					if (attrib->getSemantic() == it.getSemantic() &&
@@ -162,7 +162,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL20Pipeline::getDevice() noexcept
+		GL20Pipeline::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

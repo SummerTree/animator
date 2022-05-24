@@ -18,7 +18,7 @@ namespace octoon
 			void close() noexcept;
 
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 			bool map(std::uint32_t x, std::uint32_t y, std::uint32_t w, std::uint32_t h, std::uint32_t mipLevel, void** data) noexcept override;
 			void unmap() noexcept override;

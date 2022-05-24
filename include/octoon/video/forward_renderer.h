@@ -53,14 +53,14 @@ namespace octoon
 
 		hal::GraphicsFramebufferPtr edgeFramebuffer_;
 		hal::GraphicsFramebufferPtr fbo2_;
-		hal::GraphicsTexturePtr edgeTexture_;
-		hal::GraphicsTexturePtr depthTexture_;
-		hal::GraphicsTexturePtr colorTexture_;
-		hal::GraphicsTexturePtr depthTexture2_;
+		std::shared_ptr<GraphicsTexture> edgeTexture_;
+		std::shared_ptr<GraphicsTexture> depthTexture_;
+		std::shared_ptr<GraphicsTexture> colorTexture_;
+		std::shared_ptr<GraphicsTexture> depthTexture2_;
 
 		std::shared_ptr<Material> overrideMaterial_;
 
-		std::unordered_map<std::intptr_t, std::shared_ptr<hal::GraphicsTexture>> lightTextures_;
+		std::unordered_map<std::intptr_t, std::shared_ptr<GraphicsTexture>> lightTextures_;
 	};
 }
 

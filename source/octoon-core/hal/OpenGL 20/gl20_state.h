@@ -7,31 +7,31 @@ namespace octoon
 {
 	namespace hal
 	{
-		class GL20GraphicsState : public GraphicsState
+		class GL20GraphicsState : public RenderState
 		{
-			OctoonDeclareSubClass(GL20GraphicsState, GraphicsState)
+			OctoonDeclareSubClass(GL20GraphicsState, RenderState)
 		public:
 			GL20GraphicsState() noexcept;
 			~GL20GraphicsState() noexcept;
 
-			bool setup(const GraphicsStateDesc& desc) noexcept;
+			bool setup(const RenderStateDesc& desc) noexcept;
 			void close() noexcept;
 
-			void apply(GraphicsStateDesc& last) noexcept;
+			void apply(RenderStateDesc& last) noexcept;
 
-			const GraphicsStateDesc& getStateDesc() const noexcept override;
+			const RenderStateDesc& getStateDesc() const noexcept override;
 
 		private:
 			friend class GL20Device;
 			void setDevice(GraphicsDevicePtr device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL20GraphicsState(const GL20GraphicsState&) = delete;
 			GL20GraphicsState& operator=(const GL20GraphicsState&) = delete;
 
 		private:
-			GraphicsStateDesc _stateDesc;
+			RenderStateDesc _stateDesc;
 			GraphicsDeviceWeakPtr _device;
 		};
 	}

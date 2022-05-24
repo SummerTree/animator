@@ -176,7 +176,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL45GraphicsData::getDevice() noexcept
+		GL45GraphicsData::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

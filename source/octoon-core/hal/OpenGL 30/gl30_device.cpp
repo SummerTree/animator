@@ -79,7 +79,7 @@ namespace octoon
 			return nullptr;
 		}
 
-		GraphicsTexturePtr
+		std::shared_ptr<GraphicsTexture>
 		GL30Device::createTexture(const GraphicsTextureDesc& desc) noexcept
 		{
 			auto texture = std::make_shared<GL30Texture>();
@@ -119,8 +119,8 @@ namespace octoon
 			return nullptr;
 		}
 
-		GraphicsStatePtr
-		GL30Device::createRenderState(const GraphicsStateDesc& desc) noexcept
+		std::shared_ptr<RenderState>
+		GL30Device::createRenderState(const RenderStateDesc& desc) noexcept
 		{
 			auto state = std::make_shared<GL30GraphicsState>();
 			state->setDevice(this->downcast_pointer<GL30Device>());

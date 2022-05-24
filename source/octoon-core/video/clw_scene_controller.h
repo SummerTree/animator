@@ -32,8 +32,8 @@ namespace octoon
 		void updateLights(const std::shared_ptr<RenderScene>& scene, ClwScene& out);
 
 		void WriteLight(const std::shared_ptr<RenderScene>& scene, Light const& light, void* data) const;
-		void WriteTexture(const hal::GraphicsTexture& texture, std::size_t data_offset, void* data) const;
-		void WriteTextureData(hal::GraphicsTexture& texture, void* data) const;
+		void WriteTexture(const GraphicsTexture& texture, std::size_t data_offset, void* data) const;
+		void WriteTextureData(GraphicsTexture& texture, void* data) const;
 
 		std::optional<ClwScene::Material> getMaterialIndex(const MaterialPtr& material) const;
 

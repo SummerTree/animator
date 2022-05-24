@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_PIPELINE_H_
 #define OCTOON_GRAPHICS_PIPELINE_H_
 
-#include <octoon/hal/graphics_resource.h>
+#include <octoon/hal/render_state.h>
 
 namespace octoon
 {
@@ -29,23 +29,23 @@ namespace octoon
 			GraphicsPipelineDesc() noexcept = default;
 			~GraphicsPipelineDesc() = default;
 
-			void setGraphicsProgram(GraphicsProgramPtr program) noexcept;
-			GraphicsProgramPtr getGraphicsProgram() const noexcept;
+			void setProgram(GraphicsProgramPtr program) noexcept;
+			GraphicsProgramPtr getProgram() const noexcept;
 
-			void setGraphicsInputLayout(GraphicsInputLayoutPtr inputLayout) noexcept;
+			void setInputLayout(GraphicsInputLayoutPtr inputLayout) noexcept;
 			GraphicsInputLayoutPtr getInputLayout() const noexcept;
 
-			void setGraphicsDescriptorSetLayout(GraphicsDescriptorSetLayoutPtr descriptorSet) noexcept;
+			void setDescriptorSetLayout(GraphicsDescriptorSetLayoutPtr descriptorSet) noexcept;
 			GraphicsDescriptorSetLayoutPtr getDescriptorSetLayout() const noexcept;
 
 			void setFramebufferLayout(GraphicsFramebufferLayoutPtr framebufferLayout) noexcept;
 			GraphicsFramebufferLayoutPtr getFramebufferLayout() const noexcept;
 
-			void setGraphicsState(GraphicsStatePtr state) noexcept;
-			GraphicsStatePtr getGraphicsState() const noexcept;
+			void setRenderState(std::shared_ptr<RenderState> state) noexcept;
+			std::shared_ptr<RenderState> getGraphicsState() const noexcept;
 
 		private:
-			GraphicsStatePtr _state;
+			std::shared_ptr<RenderState> _state;
 			GraphicsProgramPtr _program;
 			GraphicsInputLayoutPtr _inputLayout;
 			GraphicsFramebufferLayoutPtr _framebufferLayout;

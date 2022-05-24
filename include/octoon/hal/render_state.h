@@ -1,51 +1,15 @@
-#ifndef OCTOON_MATERIAL_H_
-#define OCTOON_MATERIAL_H_
+#ifndef OCTOON_RENDER_STATE_H_
+#define OCTOON_RENDER_STATE_H_
 
-#include <octoon/math/math.h>
-#include <octoon/material/shader.h>
-#include <octoon/hal/render_state.h>
-#include <octoon/hal/graphics_texture.h>
+#include <octoon/hal/graphics_resource.h>
 
 namespace octoon
 {
-	enum PropertyTypeInfo
+	class OCTOON_EXPORT RenderStateDesc final
 	{
-		PropertyTypeInfoFloat = 1 << 0,
-		PropertyTypeInfoFloat2 = 1 << 1,
-		PropertyTypeInfoFloat3 = 1 << 2,
-		PropertyTypeInfoFloat4 = 1 << 3,
-		PropertyTypeInfoString = 1 << 4,
-		PropertyTypeInfoBool = 1 << 5,
-		PropertyTypeInfoInt = 1 << 6,
-		PropertyTypeInfoBuffer = 1 << 7,
-		PropertyTypeInfoTexture = 1 << 8,
-	};
-
-	struct MaterialParam
-	{
-		std::string key;
-
-		std::size_t length;
-		std::size_t type;
-
-		char* data;
-		std::shared_ptr<GraphicsTexture> texture;
-	};
-
-	class OCTOON_EXPORT Material : public runtime::RttiInterface
-	{
-		OctoonDeclareSubClass(Material, runtime::RttiInterface);
 	public:
-		Material() noexcept;
-		Material(std::string_view name) noexcept;
-		Material(const std::shared_ptr<Shader>& shader) noexcept;
-		virtual ~Material() noexcept;
-
-		void setName(std::string_view name) noexcept;
-		const std::string& getName() const noexcept;
-
-		void setShader(const std::shared_ptr<Shader>& shader) noexcept;
-		std::shared_ptr<Shader> getShader() const noexcept;
+		RenderStateDesc() noexcept;
+		~RenderStateDesc() noexcept;
 
 		void setCullMode(hal::CullMode mode) noexcept;
 		void setPolygonMode(hal::PolygonMode mode) noexcept;
@@ -141,40 +105,7 @@ namespace octoon
 		hal::StencilOp getStencilBackZFail() const noexcept;
 		hal::StencilOp getStencilBackPass() const noexcept;
 
-		bool set(std::string_view key, bool value) noexcept;
-		bool set(std::string_view key, int value) noexcept;
-		bool set(std::string_view key, float value) noexcept;
-		bool set(std::string_view key, const math::Vector2& value) noexcept;
-		bool set(std::string_view key, const math::Vector3& value) noexcept;
-		bool set(std::string_view key, const math::Vector4& value) noexcept;
-		bool set(std::string_view key, std::string_view value) noexcept;
-		bool set(std::string_view key, const std::shared_ptr<GraphicsTexture>& value) noexcept;
-		bool set(const MaterialParam& value) noexcept;
-
-		bool get(std::string_view key, int& value) const noexcept;
-		bool get(std::string_view key, float& value) const noexcept;
-		bool get(std::string_view key, math::Vector2& value) const noexcept;
-		bool get(std::string_view key, math::Vector3& value) const noexcept;
-		bool get(std::string_view key, math::Vector4& value) const noexcept;
-		bool get(std::string_view key, std::string& value) const noexcept;
-		bool get(std::string_view key, std::shared_ptr<GraphicsTexture>& value) const noexcept;
-		bool get(std::string_view key, MaterialParam& out) const noexcept;
-
-		void setDirty(bool dirty) noexcept;
-		bool isDirty() const noexcept;
-
-		const std::vector<MaterialParam>& getMaterialParams() const noexcept;
-
-		std::size_t hash() const noexcept;
-
-		virtual void copy(const Material& material) noexcept;
-		virtual std::shared_ptr<Material> clone() const noexcept;
-
 	private:
-		std::string name_;
-
-		bool dirty_;
-
 		bool _enableScissorTest;
 		bool _enableSrgb;
 		bool _enableMultisample;
@@ -226,14 +157,21 @@ namespace octoon
 		hal::StencilOp _stencilBackZFail;
 		hal::StencilOp _stencilBackPass;
 		hal::CompareFunction _stencilBackFunc;
-
-		std::shared_ptr<Shader> _shader;
-
-		std::vector<MaterialParam> _properties;
 	};
 
-	using MaterialPtr = std::shared_ptr<Material>;
-	using Materials = std::vector<MaterialPtr>;
+	class OCTOON_EXPORT RenderState : public GraphicsResource
+	{
+		OctoonDeclareSubInterface(RenderState, GraphicsResource)
+	public:
+		RenderState() noexcept = default;
+		virtual ~RenderState() = default;
+
+		virtual const RenderStateDesc& getStateDesc() const noexcept = 0;
+
+	private:
+		RenderState(const RenderState&) noexcept = delete;
+		RenderState& operator=(const RenderState&) noexcept = delete;
+	};
 }
 
 #endif

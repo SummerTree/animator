@@ -138,7 +138,7 @@ namespace octoon
 		}
 
 		bool
-		GL45Framebuffer::bindRenderTexture(GraphicsTexturePtr renderTexture, GLenum attachment, GLint level, GLint layer) noexcept
+		GL45Framebuffer::bindRenderTexture(std::shared_ptr<GraphicsTexture> renderTexture, GLenum attachment, GLint level, GLint layer) noexcept
 		{
 			assert(renderTexture);
 
@@ -180,7 +180,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL45Framebuffer::getDevice() noexcept
+		GL45Framebuffer::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

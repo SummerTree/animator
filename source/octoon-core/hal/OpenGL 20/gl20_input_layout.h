@@ -18,7 +18,7 @@ namespace octoon
 			void close() noexcept;
 
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 			const GraphicsInputLayoutDesc& getInputLayoutDesc() const noexcept override;
 

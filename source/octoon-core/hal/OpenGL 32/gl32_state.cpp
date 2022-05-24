@@ -4,7 +4,7 @@ namespace octoon
 {
 	namespace hal
 	{
-		OctoonImplementSubClass(GL32GraphicsState, GraphicsState, "GL32GraphicsState")
+		OctoonImplementSubClass(GL32GraphicsState, RenderState, "GL32GraphicsState")
 
 		GL32GraphicsState::GL32GraphicsState() noexcept
 		{
@@ -15,7 +15,7 @@ namespace octoon
 		}
 
 		bool
-		GL32GraphicsState::setup(const GraphicsStateDesc& desc) noexcept
+		GL32GraphicsState::setup(const RenderStateDesc& desc) noexcept
 		{
 			_stateDesc = desc;
 			return true;
@@ -27,88 +27,62 @@ namespace octoon
 		}
 
 		void
-		GL32GraphicsState::apply(GraphicsStateDesc& lastStateDesc) noexcept
+		GL32GraphicsState::apply(RenderStateDesc& lastStateDesc) noexcept
 		{
-			auto& srcBlends = _stateDesc.getColorBlends();
-			auto& destBlends = lastStateDesc.getColorBlends();
-
-			std::size_t srcBlendCount = srcBlends.size();
-			std::size_t destBlendCount = destBlends.size();
-			for (std::size_t i = srcBlendCount; i < destBlendCount; i++)
+			if (lastStateDesc.getBlendEnable() != _stateDesc.getBlendEnable())
 			{
-				auto& destBlend = destBlends[i];
-				if (destBlend.getBlendEnable())
+				if (_stateDesc.getBlendEnable())
+					glEnablei(GL_BLEND, 0);
+				else
+					glDisablei(GL_BLEND, 0);
+				lastStateDesc.setScissorTestEnable(_stateDesc.getBlendEnable());
+			}
+
+			if (_stateDesc.getBlendEnable())
+			{
+				if (lastStateDesc.getBlendSrc() != _stateDesc.getBlendSrc() ||
+					lastStateDesc.getBlendDest() != _stateDesc.getBlendDest() ||
+					lastStateDesc.getBlendAlphaSrc() != _stateDesc.getBlendAlphaSrc() ||
+					lastStateDesc.getBlendAlphaDest() != _stateDesc.getBlendAlphaDest())
 				{
-					glDisablei(GL_BLEND, (GLuint)i);
-					destBlend.setBlendEnable(false);
+					GLenum sfactorRGB = GL32Types::asBlendFactor(_stateDesc.getBlendSrc());
+					GLenum dfactorRGB = GL32Types::asBlendFactor(_stateDesc.getBlendDest());
+					GLenum sfactorAlpha = GL32Types::asBlendFactor(_stateDesc.getBlendAlphaSrc());
+					GLenum dfactorAlpha = GL32Types::asBlendFactor(_stateDesc.getBlendAlphaDest());
+
+					glBlendFuncSeparatei(0, sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
+
+					lastStateDesc.setBlendSrc(_stateDesc.getBlendSrc());
+					lastStateDesc.setBlendDest(_stateDesc.getBlendDest());
+					lastStateDesc.setBlendAlphaSrc(_stateDesc.getBlendAlphaSrc());
+					lastStateDesc.setBlendAlphaDest(_stateDesc.getBlendAlphaDest());
+				}
+
+				if (lastStateDesc.getBlendOp() != _stateDesc.getBlendOp() ||
+					lastStateDesc.getBlendAlphaOp() != _stateDesc.getBlendAlphaOp())
+				{
+					GLenum modeRGB = GL32Types::asBlendOperation(_stateDesc.getBlendOp());
+					GLenum modeAlpha = GL32Types::asBlendOperation(_stateDesc.getBlendAlphaOp());
+
+					glBlendEquationSeparatei(0, modeRGB, modeAlpha);
+
+					lastStateDesc.setBlendOp(_stateDesc.getBlendOp());
+					lastStateDesc.setBlendAlphaOp(_stateDesc.getBlendAlphaOp());
 				}
 			}
 
-			for (GLuint i = 0; i < srcBlendCount; i++)
+			if (lastStateDesc.getColorWriteMask() != _stateDesc.getColorWriteMask())
 			{
-				auto& srcBlend = srcBlends[i];
-				auto& destBlend = destBlends[i];
+				auto flags = _stateDesc.getColorWriteMask();
 
-				if (srcBlends[i].getBlendEnable())
-				{
-					if (!destBlend.getBlendEnable())
-					{
-						glEnablei(GL_BLEND, i);
-						destBlend.setBlendEnable(true);
-					}
+				GLboolean r = flags & ColorWriteMask::RedBit ? GL_TRUE : GL_FALSE;
+				GLboolean g = flags & ColorWriteMask::GreendBit ? GL_TRUE : GL_FALSE;
+				GLboolean b = flags & ColorWriteMask::BlurBit ? GL_TRUE : GL_FALSE;
+				GLboolean a = flags & ColorWriteMask::AlphaBit ? GL_TRUE : GL_FALSE;
 
-					if (destBlend.getBlendSrc() != srcBlend.getBlendSrc() ||
-						destBlend.getBlendDest() != srcBlend.getBlendDest() ||
-						destBlend.getBlendAlphaSrc() != srcBlend.getBlendAlphaSrc() ||
-						destBlend.getBlendAlphaDest() != srcBlend.getBlendAlphaDest())
-					{
-						GLenum sfactorRGB = GL32Types::asBlendFactor(srcBlend.getBlendSrc());
-						GLenum dfactorRGB = GL32Types::asBlendFactor(srcBlend.getBlendDest());
-						GLenum sfactorAlpha = GL32Types::asBlendFactor(srcBlend.getBlendAlphaSrc());
-						GLenum dfactorAlpha = GL32Types::asBlendFactor(srcBlend.getBlendAlphaDest());
+				glColorMaski(0, r, g, b, a);
 
-						glBlendFuncSeparatei(i, sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
-
-						destBlend.setBlendSrc(srcBlend.getBlendSrc());
-						destBlend.setBlendDest(srcBlend.getBlendDest());
-						destBlend.setBlendAlphaSrc(srcBlend.getBlendAlphaSrc());
-						destBlend.setBlendAlphaDest(srcBlend.getBlendAlphaDest());
-					}
-
-					if (destBlend.getBlendOp() != srcBlend.getBlendOp() ||
-						destBlend.getBlendAlphaOp() != srcBlend.getBlendAlphaOp())
-					{
-						GLenum modeRGB = GL32Types::asBlendOperation(srcBlend.getBlendOp());
-						GLenum modeAlpha = GL32Types::asBlendOperation(srcBlend.getBlendAlphaOp());
-
-						glBlendEquationSeparatei(i, modeRGB, modeAlpha);
-
-						destBlend.setBlendOp(srcBlend.getBlendOp());
-						destBlend.setBlendAlphaOp(srcBlend.getBlendAlphaOp());
-					}
-				}
-				else
-				{
-					if (destBlend.getBlendEnable())
-					{
-						glDisablei(GL_BLEND, i);
-						destBlend.setBlendEnable(false);
-					}
-				}
-
-				if (destBlend.getColorWriteMask() != srcBlend.getColorWriteMask())
-				{
-					auto flags = srcBlend.getColorWriteMask();
-
-					GLboolean r = flags & ColorWriteMask::RedBit ? GL_TRUE : GL_FALSE;
-					GLboolean g = flags & ColorWriteMask::GreendBit ? GL_TRUE : GL_FALSE;
-					GLboolean b = flags & ColorWriteMask::BlurBit ? GL_TRUE : GL_FALSE;
-					GLboolean a = flags & ColorWriteMask::AlphaBit ? GL_TRUE : GL_FALSE;
-
-					glColorMaski(i, r, g, b, a);
-
-					destBlend.setColorWriteMask(srcBlend.getColorWriteMask());
-				}
+				lastStateDesc.setColorWriteMask(_stateDesc.getColorWriteMask());
 			}
 
 			if (lastStateDesc.getCullMode() != _stateDesc.getCullMode())
@@ -291,7 +265,7 @@ namespace octoon
 			lastStateDesc.setPrimitiveType(_stateDesc.getPrimitiveType());
 		}
 
-		const GraphicsStateDesc&
+		const RenderStateDesc&
 		GL32GraphicsState::getStateDesc() const noexcept
 		{
 			return _stateDesc;
@@ -304,7 +278,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL32GraphicsState::getDevice() noexcept
+		GL32GraphicsState::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

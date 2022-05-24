@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_DESCRIPTOR_H_
 #define OCTOON_GRAPHICS_DESCRIPTOR_H_
 
-#include <octoon/hal/graphics_resource.h>
+#include <octoon/hal/graphics_texture.h>
 
 namespace octoon
 {
@@ -65,7 +65,7 @@ namespace octoon
 			GraphicsDescriptorSetDesc() noexcept;
 			~GraphicsDescriptorSetDesc() noexcept;
 
-			void setGraphicsDescriptorSetLayout(GraphicsDescriptorSetLayoutPtr layout) noexcept;
+			void setDescriptorSetLayout(GraphicsDescriptorSetLayoutPtr layout) noexcept;
 			GraphicsDescriptorSetLayoutPtr getDescriptorSetLayout() const noexcept;
 
 			void setGraphicsDescriptorPool(GraphicsDescriptorPoolPtr pool) noexcept;
@@ -143,7 +143,7 @@ namespace octoon
 			virtual void uniform3fmatv(std::size_t num, const float* mat3) noexcept = 0;
 			virtual void uniform4fmatv(const std::vector<float4x4>& value) noexcept = 0;
 			virtual void uniform4fmatv(std::size_t num, const float* mat4) noexcept = 0;
-			virtual void uniformTexture(GraphicsTexturePtr texture, GraphicsSamplerPtr sampler = nullptr) noexcept = 0;
+			virtual void uniformTexture(std::shared_ptr<GraphicsTexture> texture, GraphicsSamplerPtr sampler = nullptr) noexcept = 0;
 			virtual void uniformBuffer(GraphicsDataPtr ubo) noexcept = 0;
 
 			virtual bool getBool() const noexcept = 0;
@@ -177,7 +177,7 @@ namespace octoon
 			virtual const std::vector<float2x2>& getFloat2x2Array() const noexcept = 0;
 			virtual const std::vector<float3x3>& getFloat3x3Array() const noexcept = 0;
 			virtual const std::vector<float4x4>& getFloat4x4Array() const noexcept = 0;
-			virtual const GraphicsTexturePtr& getTexture() const noexcept = 0;
+			virtual const std::shared_ptr<GraphicsTexture>& getTexture() const noexcept = 0;
 			virtual const GraphicsSamplerPtr& getTextureSampler() const noexcept = 0;
 			virtual const GraphicsDataPtr& getBuffer() const noexcept = 0;
 

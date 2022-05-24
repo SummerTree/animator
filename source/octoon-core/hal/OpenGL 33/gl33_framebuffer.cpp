@@ -43,7 +43,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL33FramebufferLayout::getDevice() noexcept
+		GL33FramebufferLayout::getDevice() const noexcept
 		{
 			return _device.lock();
 		}
@@ -182,7 +182,7 @@ namespace octoon
 		}
 
 		bool
-		GL33Framebuffer::bindRenderTexture(GraphicsTexturePtr renderTexture, GLenum attachment, GLint level, GLint layer) noexcept
+		GL33Framebuffer::bindRenderTexture(std::shared_ptr<GraphicsTexture> renderTexture, GLenum attachment, GLint level, GLint layer) noexcept
 		{
 			assert(renderTexture);
 
@@ -222,7 +222,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL33Framebuffer::getDevice() noexcept
+		GL33Framebuffer::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

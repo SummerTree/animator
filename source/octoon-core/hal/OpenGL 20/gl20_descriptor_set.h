@@ -74,7 +74,7 @@ namespace octoon
 			void uniform3fmatv(std::size_t num, const float* mat3) noexcept override;
 			void uniform4fmatv(const std::vector<float4x4>& value) noexcept override;
 			void uniform4fmatv(std::size_t num, const float* mat4) noexcept override;
-			void uniformTexture(GraphicsTexturePtr texture, GraphicsSamplerPtr sampler) noexcept override;
+			void uniformTexture(std::shared_ptr<GraphicsTexture> texture, GraphicsSamplerPtr sampler) noexcept override;
 			void uniformBuffer(GraphicsDataPtr ubo) noexcept override;
 
 			bool getBool() const noexcept override;
@@ -108,7 +108,7 @@ namespace octoon
 			const std::vector<float2x2>& getFloat2x2Array() const noexcept override;
 			const std::vector<float3x3>& getFloat3x3Array() const noexcept override;
 			const std::vector<float4x4>& getFloat4x4Array() const noexcept override;
-			const GraphicsTexturePtr& getTexture() const noexcept override;
+			const std::shared_ptr<GraphicsTexture>& getTexture() const noexcept override;
 			const GraphicsSamplerPtr& getTextureSampler() const noexcept override;
 			const GraphicsDataPtr& getBuffer() const noexcept override;
 
@@ -121,7 +121,7 @@ namespace octoon
 
 		private:
 			GraphicsParamPtr _param;
-			GraphicsVariant _variant;
+			UniformHolder _variant;
 		};
 
 		class GL20DescriptorPool final : public GraphicsDescriptorPool
@@ -139,7 +139,7 @@ namespace octoon
 		private:
 			friend class GL20Device;
 			void setDevice(GraphicsDevicePtr device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL20DescriptorPool(const GL20DescriptorPool&) noexcept = delete;
@@ -165,7 +165,7 @@ namespace octoon
 		private:
 			friend class GL20Device;
 			void setDevice(GraphicsDevicePtr device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL20DescriptorSetLayout(const GL20DescriptorSetLayout&) noexcept = delete;
@@ -196,7 +196,7 @@ namespace octoon
 		private:
 			friend class GL20Device;
 			void setDevice(GraphicsDevicePtr device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL20DescriptorSet(const GL20DescriptorSet&) noexcept = delete;

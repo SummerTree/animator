@@ -435,7 +435,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL33Texture::getDevice() noexcept
+		GL33Texture::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

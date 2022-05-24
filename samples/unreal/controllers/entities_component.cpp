@@ -265,7 +265,7 @@ namespace unreal
 	}
 
 	void 
-	EntitiesComponent::importHDRi(const octoon::hal::GraphicsTexturePtr& texture) noexcept
+	EntitiesComponent::importHDRi(const std::shared_ptr<octoon::GraphicsTexture>& texture) noexcept
 	{
 		auto& environmentLight = this->getContext()->profile->entitiesModule->enviromentLight;
 		if (environmentLight)

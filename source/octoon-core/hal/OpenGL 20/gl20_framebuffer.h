@@ -22,7 +22,7 @@ namespace octoon
 		private:
 			friend class GL20Device;
 			void setDevice(GraphicsDevicePtr device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL20FramebufferLayout(const GL20FramebufferLayout&) noexcept = delete;
@@ -50,12 +50,12 @@ namespace octoon
 			const GraphicsFramebufferDesc& getFramebufferDesc() const noexcept override;
 
 		private:
-			bool bindRenderTexture(GraphicsTexturePtr target, GLenum attachment, GLint level, GLint layer) noexcept;
+			bool bindRenderTexture(std::shared_ptr<GraphicsTexture> target, GLenum attachment, GLint level, GLint layer) noexcept;
 
 		private:
 			friend class GL20Device;
 			void setDevice(GraphicsDevicePtr device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL20Framebuffer(const GL20Framebuffer&) noexcept = delete;

@@ -34,7 +34,7 @@ namespace octoon
 		private:
 			friend class GL32Device;
 			void setDevice(GraphicsDevicePtr device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GLenum _target;

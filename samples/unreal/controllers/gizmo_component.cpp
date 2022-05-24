@@ -8,14 +8,6 @@ namespace unreal
 	public:
 		GizmoMaterial(const octoon::math::float3& color, const octoon::math::float3& highlight)
 		{
-			octoon::hal::GraphicsColorBlend blend;
-			blend.setBlendEnable(true);
-			blend.setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
-			blend.setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
-
-			std::vector<octoon::hal::GraphicsColorBlend> blends;
-			blends.push_back(blend);
-
 			this->opacity_ = 0.7f;
 			this->color_ = octoon::math::srgb2linear(color);
 			this->highlightColor_ = octoon::math::srgb2linear(highlight);
@@ -24,7 +16,9 @@ namespace unreal
 			this->setDepthEnable(false);
 			this->setDepthWriteEnable(false);
 			this->setCullMode(octoon::hal::CullMode::Off);
-			this->setColorBlends(std::move(blends));
+			this->setBlendEnable(true);
+			this->setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
+			this->setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
 			this->setOpacity(this->opacity_);
 		}
 

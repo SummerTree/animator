@@ -14,16 +14,9 @@ namespace octoon
 	{
 		edgeMaterial_->setColor(math::float3(1.0f, 0.0f, 1.0f));
 		edgeMaterial_->setDepthFunc(hal::CompareFunction::Always);
-
-		octoon::hal::GraphicsColorBlend blend;
-		blend.setBlendEnable(true);
-		blend.setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
-		blend.setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
-
-		std::vector<octoon::hal::GraphicsColorBlend> blends;
-		blends.push_back(blend);
-
-		edgeMaterial_->setColorBlends(std::move(blends));
+		edgeMaterial_->setBlendEnable(true);
+		edgeMaterial_->setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
+		edgeMaterial_->setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
 	}
 
 	void
@@ -39,7 +32,7 @@ namespace octoon
 		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(0, hal::GraphicsImageLayout::ColorAttachmentOptimal, hal::GraphicsFormat::R8G8B8A8UNorm));
 		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(1, hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, hal::GraphicsFormat::D32_SFLOAT));
 
-		hal::GraphicsTextureDesc depthTextureDesc;
+		GraphicsTextureDesc depthTextureDesc;
 		depthTextureDesc.setWidth(w);
 		depthTextureDesc.setHeight(h);
 		depthTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
@@ -48,7 +41,7 @@ namespace octoon
 		if (!depthTexture_)
 			throw runtime::runtime_error::create("createTexture() failed");
 
-		hal::GraphicsTextureDesc colorTextureDesc;
+		GraphicsTextureDesc colorTextureDesc;
 		colorTextureDesc.setWidth(w);
 		colorTextureDesc.setHeight(h);
 		colorTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
@@ -79,7 +72,7 @@ namespace octoon
 
 		auto targetFramebuffer = context.getFramebuffer();
 
-		this->setupFramebuffers(context, vp.width, vp.height);
+		this->setupFramebuffers(context, (std::uint32_t)vp.width, (std::uint32_t)vp.height);
 
 		context.compileMaterial(edgeMaterial_, renderingData);
 		context.compileMaterial(copyMaterial_, renderingData);

@@ -371,7 +371,7 @@ namespace unreal
 		if (this->image) this->image->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 	}
 
-	octoon::hal::GraphicsTexturePtr
+	std::shared_ptr<octoon::GraphicsTexture>
 	MaterialEditWindow::MaterialUi::setImage(const QString& filepath)
 	{
 		auto textureData = octoon::TextureLoader::load(filepath.toStdString());
@@ -1498,19 +1498,13 @@ namespace unreal
 			material_->setOpacity(value);
 			if (value < 1.0f)
 			{
-				octoon::hal::GraphicsColorBlend blend;
-				blend.setBlendEnable(true);
-				blend.setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
-				blend.setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
-
-				std::vector<octoon::hal::GraphicsColorBlend> blends;
-				blends.push_back(blend);
-
-				material_->setColorBlends(std::move(blends));
+				material_->setBlendEnable(true);
+				material_->setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
+				material_->setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
 			}
 			else
 			{
-				material_->getColorBlends().shrink_to_fit();
+				material_->setBlendEnable(false);
 			}
 
 			this->updatePreviewImage();

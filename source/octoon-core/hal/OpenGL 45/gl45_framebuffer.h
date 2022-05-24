@@ -23,12 +23,12 @@ namespace octoon
 			const GraphicsFramebufferDesc& getFramebufferDesc() const noexcept override;
 
 		private:
-			bool bindRenderTexture(GraphicsTexturePtr target, GLenum attachment, GLint level, GLint layer) noexcept;
+			bool bindRenderTexture(std::shared_ptr<GraphicsTexture> target, GLenum attachment, GLint level, GLint layer) noexcept;
 
 		private:
 			friend class GL33Device;
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL45Framebuffer(const GL45Framebuffer&) noexcept = delete;

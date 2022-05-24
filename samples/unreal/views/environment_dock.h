@@ -114,8 +114,8 @@ namespace unreal
 		Spoiler* spoiler;
 
 		octoon::GameObjectPtr behaviour_;
-		octoon::hal::GraphicsTexturePtr texture_;
-		octoon::hal::GraphicsTexturePtr irradianceTexture_;
+		std::shared_ptr<octoon::GraphicsTexture> texture_;
+		std::shared_ptr<octoon::GraphicsTexture> irradianceTexture_;
 
 		std::shared_ptr<QImage> previewImage_;
 		std::shared_ptr<unreal::UnrealProfile> profile_;

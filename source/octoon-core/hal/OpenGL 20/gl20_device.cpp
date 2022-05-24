@@ -78,7 +78,7 @@ namespace octoon
 			return nullptr;
 		}
 
-		GraphicsTexturePtr
+		std::shared_ptr<GraphicsTexture>
 		GL20Device::createTexture(const GraphicsTextureDesc& desc) noexcept
 		{
 			auto texture = std::make_shared<GL20Texture>();
@@ -118,8 +118,8 @@ namespace octoon
 			return nullptr;
 		}
 
-		GraphicsStatePtr
-		GL20Device::createRenderState(const GraphicsStateDesc& desc) noexcept
+		std::shared_ptr<RenderState>
+		GL20Device::createRenderState(const RenderStateDesc& desc) noexcept
 		{
 			auto state = std::make_shared<GL20GraphicsState>();
 			state->setDevice(this->downcast_pointer<GL20Device>());

@@ -1,5 +1,4 @@
 #include <octoon/hal/graphics_descriptor.h>
-#include <octoon/hal/graphics_variant.h>
 
 namespace octoon
 {
@@ -138,7 +137,7 @@ namespace octoon
 		}
 
 		void
-		GraphicsDescriptorSetDesc::setGraphicsDescriptorSetLayout(GraphicsDescriptorSetLayoutPtr layout) noexcept
+		GraphicsDescriptorSetDesc::setDescriptorSetLayout(GraphicsDescriptorSetLayoutPtr layout) noexcept
 		{
 			_layout = layout;
 		}

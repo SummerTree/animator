@@ -40,7 +40,7 @@ namespace octoon
 
 		hal::GraphicsProgramPtr program_;
 		hal::GraphicsPipelinePtr pipeline_;
-		hal::GraphicsStatePtr renderState_;
+		std::shared_ptr<RenderState> renderState_;
 		hal::GraphicsDescriptorSetPtr descriptorSet_;
 
 		hal::GraphicsUniformSetPtr ambientLightColor_;

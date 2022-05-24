@@ -100,7 +100,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL32Sampler::getDevice() noexcept
+		GL32Sampler::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

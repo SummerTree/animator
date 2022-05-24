@@ -1,7 +1,7 @@
 #ifndef OCTOON_GRAPHICS_CONTEXT_H_
 #define OCTOON_GRAPHICS_CONTEXT_H_
 
-#include <octoon/hal/graphics_resource.h>
+#include <octoon/hal/graphics_texture.h>
 
 namespace octoon
 {
@@ -58,14 +58,14 @@ namespace octoon
 			virtual void setIndexBufferData(const GraphicsDataPtr& data, std::intptr_t offset, IndexFormat indexType) noexcept = 0;
 			virtual GraphicsDataPtr getIndexBufferData() const noexcept = 0;
 
-			virtual void generateMipmap(const GraphicsTexturePtr& texture) noexcept = 0;
+			virtual void generateMipmap(const std::shared_ptr<GraphicsTexture>& texture) noexcept = 0;
 
 			virtual void setFramebuffer(const GraphicsFramebufferPtr& target) noexcept = 0;
 			virtual void clearFramebuffer(std::uint32_t i, ClearFlags flags, const float4& color, float depth, std::int32_t stencil) noexcept = 0;
 			virtual void discardFramebuffer(const GraphicsFramebufferPtr& src, ClearFlags flags = ClearFlagBits::AllBit) noexcept = 0;
 			virtual void blitFramebuffer(const GraphicsFramebufferPtr& src, const float4& v1, const GraphicsFramebufferPtr& dest, const float4& v2) noexcept = 0;
-			virtual void readFramebuffer(std::uint32_t i, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept = 0;
-			virtual void readFramebufferToCube(std::uint32_t i, std::uint32_t face, const GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept = 0;
+			virtual void readFramebuffer(std::uint32_t i, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept = 0;
+			virtual void readFramebufferToCube(std::uint32_t i, std::uint32_t face, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept = 0;
 			virtual GraphicsFramebufferPtr getFramebuffer() const noexcept = 0;
 
 			virtual void draw(std::uint32_t numVertices, std::uint32_t numInstances, std::uint32_t startVertice, std::uint32_t startInstances) noexcept = 0;

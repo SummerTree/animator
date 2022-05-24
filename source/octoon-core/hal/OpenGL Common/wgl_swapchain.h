@@ -25,7 +25,7 @@ namespace octoon
 			void getWindowResolution(std::uint32_t& w, std::uint32_t& h) const noexcept override;
 
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 			void setSwapInterval(GraphicsSwapInterval interval) noexcept override;
 			GraphicsSwapInterval getSwapInterval() const noexcept override;

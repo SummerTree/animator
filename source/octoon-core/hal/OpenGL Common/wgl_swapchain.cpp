@@ -168,7 +168,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		WGLSwapchain::getDevice() noexcept
+		WGLSwapchain::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

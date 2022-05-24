@@ -153,32 +153,26 @@ namespace octoon::imgui
 		GraphicsDescriptorSetLayoutDesc descriptor_set_layout;
 		descriptor_set_layout.setUniformComponents(program->getActiveParams());
 
-		GraphicsColorBlend blend;
-		blend.setBlendEnable(true);
-		blend.setBlendSrc(BlendMode::SrcAlpha);
-		blend.setBlendDest(BlendMode::OneMinusSrcAlpha);
-
-		std::vector<GraphicsColorBlend> blends;
-		blends.push_back(blend);
-
-		GraphicsStateDesc stateDesc;
-		stateDesc.setColorBlends(std::move(blends));
+		RenderStateDesc stateDesc;
+		stateDesc.setBlendEnable(true);
+		stateDesc.setBlendSrc(BlendMode::SrcAlpha);
+		stateDesc.setBlendDest(BlendMode::OneMinusSrcAlpha);
 		stateDesc.setScissorTestEnable(true);
 		stateDesc.setPrimitiveType(VertexType::TriangleList);
 		stateDesc.setCullMode(CullMode::Off);
 		stateDesc.setDepthEnable(false);
 
 		GraphicsPipelineDesc pipeline;
-		pipeline.setGraphicsInputLayout(device->createInputLayout(layoutDesc));
-		pipeline.setGraphicsState(device->createRenderState(stateDesc));
-		pipeline.setGraphicsProgram(std::move(program));
-		pipeline.setGraphicsDescriptorSetLayout(device->createDescriptorSetLayout(descriptor_set_layout));
+		pipeline.setInputLayout(device->createInputLayout(layoutDesc));
+		pipeline.setRenderState(device->createRenderState(stateDesc));
+		pipeline.setProgram(std::move(program));
+		pipeline.setDescriptorSetLayout(device->createDescriptorSetLayout(descriptor_set_layout));
 		pipeline_ = device->createRenderPipeline(pipeline);
 		if (!pipeline_)
 			throw std::runtime_error("Failed to create render pipeline");
 
 		GraphicsDescriptorSetDesc descriptor_set;
-		descriptor_set.setGraphicsDescriptorSetLayout(pipeline.getDescriptorSetLayout());
+		descriptor_set.setDescriptorSetLayout(pipeline.getDescriptorSetLayout());
 		descriptor_set_ = device->createDescriptorSet(descriptor_set);
 		if (!descriptor_set_)
 			throw std::runtime_error("Failed to create descriptor set");

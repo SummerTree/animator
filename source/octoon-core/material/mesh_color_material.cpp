@@ -49,14 +49,14 @@ namespace octoon
 	}
 
 	void
-	MeshColorMaterial::setColorMap(const hal::GraphicsTexturePtr& map) noexcept
+	MeshColorMaterial::setColorMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
 	{
 		this->edgeTexture_ = map;
 		this->set("decal", map);
 		this->set("hasTexture", map ? true : false);
 	}
 
-	const hal::GraphicsTexturePtr&
+	const std::shared_ptr<GraphicsTexture>&
 	MeshColorMaterial::getColorMap() const noexcept
 	{
 		return this->edgeTexture_;

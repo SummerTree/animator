@@ -2,6 +2,8 @@
 #define OCTOON_GRAPHICS_DEVICE_H_
 
 #include <octoon/hal/graphics_types.h>
+#include <octoon/hal/render_state.h>
+#include <octoon/hal/graphics_texture.h>
 #include <octoon/hal/graphics_device_property.h>
 
 namespace octoon
@@ -37,11 +39,11 @@ namespace octoon
 			virtual GraphicsContextPtr createDeviceContext(const GraphicsContextDesc& desc) noexcept = 0;
 			virtual GraphicsInputLayoutPtr createInputLayout(const GraphicsInputLayoutDesc& desc) noexcept = 0;
 			virtual GraphicsDataPtr createGraphicsData(const GraphicsDataDesc& desc) noexcept = 0;
-			virtual GraphicsTexturePtr createTexture(const GraphicsTextureDesc& desc) noexcept = 0;
+			virtual std::shared_ptr<GraphicsTexture> createTexture(const GraphicsTextureDesc& desc) noexcept = 0;
 			virtual GraphicsSamplerPtr createSampler(const GraphicsSamplerDesc& desc) noexcept = 0;
 			virtual GraphicsFramebufferPtr createFramebuffer(const GraphicsFramebufferDesc& desc) noexcept = 0;
 			virtual GraphicsFramebufferLayoutPtr createFramebufferLayout(const GraphicsFramebufferLayoutDesc& desc) noexcept = 0;
-			virtual GraphicsStatePtr createRenderState(const GraphicsStateDesc& desc) noexcept = 0;
+			virtual std::shared_ptr<RenderState> createRenderState(const RenderStateDesc& desc) noexcept = 0;
 			virtual GraphicsShaderPtr createShader(const GraphicsShaderDesc& desc) noexcept = 0;
 			virtual GraphicsProgramPtr createProgram(const GraphicsProgramDesc& desc) noexcept = 0;
 			virtual GraphicsPipelinePtr createRenderPipeline(const GraphicsPipelineDesc& desc) noexcept = 0;

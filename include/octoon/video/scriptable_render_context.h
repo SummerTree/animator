@@ -1,6 +1,7 @@
 #ifndef OCTOON_SCRIPTABLE_RENDER_CONTEXT_H_
 #define OCTOON_SCRIPTABLE_RENDER_CONTEXT_H_
 
+#include <octoon/hal/render_state.h>
 #include <octoon/hal/graphics_context.h>
 #include <octoon/mesh/mesh.h>
 #include <octoon/video/collector.h>
@@ -23,19 +24,19 @@ namespace octoon
 
 		hal::GraphicsInputLayoutPtr createInputLayout(const hal::GraphicsInputLayoutDesc& desc) noexcept;
 		hal::GraphicsDataPtr createGraphicsData(const hal::GraphicsDataDesc& desc) noexcept;
-		hal::GraphicsTexturePtr createTexture(const hal::GraphicsTextureDesc& desc) noexcept;
+		std::shared_ptr<GraphicsTexture> createTexture(const GraphicsTextureDesc& desc) noexcept;
 		hal::GraphicsSamplerPtr createSampler(const hal::GraphicsSamplerDesc& desc) noexcept;
 		hal::GraphicsFramebufferPtr createFramebuffer(const hal::GraphicsFramebufferDesc& desc) noexcept;
 		hal::GraphicsFramebufferLayoutPtr createFramebufferLayout(const hal::GraphicsFramebufferLayoutDesc& desc) noexcept;
 		hal::GraphicsShaderPtr createShader(const hal::GraphicsShaderDesc& desc) noexcept;
 		hal::GraphicsProgramPtr createProgram(const hal::GraphicsProgramDesc& desc) noexcept;
-		hal::GraphicsStatePtr createRenderState(const hal::GraphicsStateDesc& desc) noexcept;
+		std::shared_ptr<RenderState> createRenderState(const RenderStateDesc& desc) noexcept;
 		hal::GraphicsPipelinePtr createRenderPipeline(const hal::GraphicsPipelineDesc& desc) noexcept;
 		hal::GraphicsDescriptorSetPtr createDescriptorSet(const hal::GraphicsDescriptorSetDesc& desc) noexcept;
 		hal::GraphicsDescriptorSetLayoutPtr createDescriptorSetLayout(const hal::GraphicsDescriptorSetLayoutDesc& desc) noexcept;
 		hal::GraphicsDescriptorPoolPtr createDescriptorPool(const hal::GraphicsDescriptorPoolDesc& desc) noexcept;
 
-		void generateMipmap(const hal::GraphicsTexturePtr& texture) noexcept;
+		void generateMipmap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
 
 		void setViewport(std::uint32_t i, const math::float4& viewport) noexcept;
 		const math::float4& getViewport(std::uint32_t i) const noexcept;
@@ -68,8 +69,8 @@ namespace octoon
 		void configureClear(hal::ClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept;
 		void discardFramebuffer(const hal::GraphicsFramebufferPtr& src, hal::ClearFlags flags = hal::ClearFlagBits::AllBit) noexcept;
 		void blitFramebuffer(const hal::GraphicsFramebufferPtr& src, const math::float4& v1, const hal::GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept;
-		void readFramebuffer(std::uint32_t i, const hal::GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept;
-		void readFramebufferToCube(std::uint32_t i, std::uint32_t face, const hal::GraphicsTexturePtr& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept;
+		void readFramebuffer(std::uint32_t i, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept;
+		void readFramebufferToCube(std::uint32_t i, std::uint32_t face, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept;
 		hal::GraphicsFramebufferPtr getFramebuffer() const noexcept;
 
 		void draw(std::uint32_t numVertices, std::uint32_t numInstances, std::uint32_t startVertice, std::uint32_t startInstances) noexcept;

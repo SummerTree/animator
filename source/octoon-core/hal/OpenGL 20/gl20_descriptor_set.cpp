@@ -376,7 +376,7 @@ namespace octoon
 		}
 
 		void
-		GL20GraphicsUniformSet::uniformTexture(GraphicsTexturePtr texture, GraphicsSamplerPtr sampler) noexcept
+		GL20GraphicsUniformSet::uniformTexture(std::shared_ptr<GraphicsTexture> texture, GraphicsSamplerPtr sampler) noexcept
 		{
 			_variant.uniformTexture(texture, sampler);
 		}
@@ -573,7 +573,7 @@ namespace octoon
 			return _variant.getFloat4x4Array();
 		}
 
-		const GraphicsTexturePtr&
+		const std::shared_ptr<GraphicsTexture>&
 		GL20GraphicsUniformSet::getTexture() const noexcept
 		{
 			return _variant.getTexture();
@@ -638,7 +638,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL20DescriptorPool::getDevice() noexcept
+		GL20DescriptorPool::getDevice() const noexcept
 		{
 			return _device.lock();
 		}
@@ -677,7 +677,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL20DescriptorSetLayout::getDevice() noexcept
+		GL20DescriptorSetLayout::getDevice() const noexcept
 		{
 			return _device.lock();
 		}
@@ -1001,7 +1001,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL20DescriptorSet::getDevice() noexcept
+		GL20DescriptorSet::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

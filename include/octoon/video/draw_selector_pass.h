@@ -22,8 +22,8 @@ namespace octoon
 		std::uint32_t width_;
 		std::uint32_t height_;
 
-		hal::GraphicsTexturePtr depthTexture_;
-		hal::GraphicsTexturePtr colorTexture_;
+		std::shared_ptr<GraphicsTexture> depthTexture_;
+		std::shared_ptr<GraphicsTexture> colorTexture_;
 
 		hal::GraphicsFramebufferPtr colorFramebuffer_;
 

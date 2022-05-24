@@ -74,7 +74,7 @@ namespace octoon
 			void uniform3fmatv(std::size_t num, const float* mat3) noexcept override;
 			void uniform4fmatv(const std::vector<float4x4>& value) noexcept override;
 			void uniform4fmatv(std::size_t num, const float* mat4) noexcept override;
-			void uniformTexture(GraphicsTexturePtr texture, GraphicsSamplerPtr sampler) noexcept override;
+			void uniformTexture(std::shared_ptr<GraphicsTexture> texture, GraphicsSamplerPtr sampler) noexcept override;
 			void uniformBuffer(GraphicsDataPtr ubo) noexcept override;
 
 			bool getBool() const noexcept override;
@@ -108,7 +108,7 @@ namespace octoon
 			const std::vector<float2x2>& getFloat2x2Array() const noexcept override;
 			const std::vector<float3x3>& getFloat3x3Array() const noexcept override;
 			const std::vector<float4x4>& getFloat4x4Array() const noexcept override;
-			const GraphicsTexturePtr& getTexture() const noexcept override;
+			const std::shared_ptr<GraphicsTexture>& getTexture() const noexcept override;
 			const GraphicsSamplerPtr& getTextureSampler() const noexcept override;
 			const GraphicsDataPtr& getBuffer() const noexcept override;
 
@@ -120,7 +120,7 @@ namespace octoon
 			GL33GraphicsUniformSet& operator=(const GL33GraphicsUniformSet&) = delete;
 
 		private:
-			GraphicsVariant _variant;
+			UniformHolder _variant;
 			GraphicsParamPtr _param;
 		};
 
@@ -139,7 +139,7 @@ namespace octoon
 		private:
 			friend class GL33Device;
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL33DescriptorPool(const GL33DescriptorPool&) noexcept = delete;
@@ -165,7 +165,7 @@ namespace octoon
 		private:
 			friend class GL33Device;
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL33DescriptorSetLayout(const GL33DescriptorSetLayout&) noexcept = delete;
@@ -196,7 +196,7 @@ namespace octoon
 		private:
 			friend class GL33Device;
 			void setDevice(const GraphicsDevicePtr& device) noexcept;
-			GraphicsDevicePtr getDevice() noexcept override;
+			GraphicsDevicePtr getDevice() const noexcept override;
 
 		private:
 			GL33DescriptorSet(const GL33DescriptorSet&) noexcept = delete;

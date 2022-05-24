@@ -37,6 +37,10 @@ ENDIF()
 SET(RENDERER_CORE
 	${HEADER_PATH}/system_info.h
 	${SOURCE_PATH}/system_info.cpp
+	${HEADER_PATH}/render_state.h
+	${SOURCE_PATH}/render_state.cpp
+	${HEADER_PATH}/uniform_holder.h
+	${SOURCE_PATH}/uniform_holder.cpp
 	${HEADER_PATH}/graphics_context.h
 	${SOURCE_PATH}/graphics_context.cpp
 	${HEADER_PATH}/graphics_data.h
@@ -57,8 +61,6 @@ SET(RENDERER_CORE
 	${SOURCE_PATH}/graphics_sampler.cpp
 	${HEADER_PATH}/graphics_shader.h
 	${SOURCE_PATH}/graphics_shader.cpp
-	${HEADER_PATH}/graphics_state.h
-	${SOURCE_PATH}/graphics_state.cpp
 	${HEADER_PATH}/graphics_swapchain.h
 	${SOURCE_PATH}/graphics_swapchain.cpp
 	${HEADER_PATH}/graphics_system.h
@@ -68,8 +70,6 @@ SET(RENDERER_CORE
 	${HEADER_PATH}/graphics_types.h
 	${HEADER_PATH}/graphics_framebuffer.h
 	${SOURCE_PATH}/graphics_framebuffer.cpp
-	${HEADER_PATH}/graphics_variant.h
-	${SOURCE_PATH}/graphics_variant.cpp
 )
 SOURCE_GROUP("hal\\common" FILES ${RENDERER_CORE})
 

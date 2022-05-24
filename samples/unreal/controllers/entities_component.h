@@ -22,7 +22,7 @@ namespace unreal
 		void importPMM(std::string_view path) noexcept(false);
 		bool importModel(std::string_view path) noexcept;
 		void importHDRi(std::string_view path) noexcept;
-		void importHDRi(const octoon::hal::GraphicsTexturePtr& texture) noexcept;
+		void importHDRi(const std::shared_ptr<octoon::GraphicsTexture>& texture) noexcept;
 
 		bool exportModel(std::string_view path) noexcept;
 

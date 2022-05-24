@@ -19,11 +19,11 @@ namespace octoon
 		void setShowBackground(bool show) noexcept;
 		bool getShowBackground() const noexcept;
 
-		void setBackgroundMap(const hal::GraphicsTexturePtr& texture) noexcept;
-		const hal::GraphicsTexturePtr& getBackgroundMap() const noexcept;
+		void setBackgroundMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
+		const std::shared_ptr<GraphicsTexture>& getBackgroundMap() const noexcept;
 
-		void setEnvironmentMap(const hal::GraphicsTexturePtr& texture) noexcept;
-		const hal::GraphicsTexturePtr& getEnvironmentMap() const noexcept;
+		void setEnvironmentMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
+		const std::shared_ptr<GraphicsTexture>& getEnvironmentMap() const noexcept;
 
 		std::shared_ptr<RenderObject> clone() const noexcept;
 
@@ -34,9 +34,9 @@ namespace octoon
 	private:
 		bool showBackground_;
 		math::float2 offset_;
-		hal::GraphicsTexturePtr radiance_;
-		hal::GraphicsTexturePtr backgroundMap_;
-		hal::GraphicsTexturePtr environmentMap_;
+		std::shared_ptr<GraphicsTexture> radiance_;
+		std::shared_ptr<GraphicsTexture> backgroundMap_;
+		std::shared_ptr<GraphicsTexture> environmentMap_;
 	};
 }
 

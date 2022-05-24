@@ -4,7 +4,7 @@ namespace octoon
 {
 	namespace hal
 	{
-		OctoonImplementSubClass(GL20GraphicsState, GraphicsState, "GL20GraphicsState")
+		OctoonImplementSubClass(GL20GraphicsState, RenderState, "GL20GraphicsState")
 
 		GL20GraphicsState::GL20GraphicsState() noexcept
 		{
@@ -15,7 +15,7 @@ namespace octoon
 		}
 
 		bool
-		GL20GraphicsState::setup(const GraphicsStateDesc& desc) noexcept
+		GL20GraphicsState::setup(const RenderStateDesc& desc) noexcept
 		{
 			_stateDesc = desc;
 			return true;
@@ -27,88 +27,62 @@ namespace octoon
 		}
 
 		void
-		GL20GraphicsState::apply(GraphicsStateDesc& lastStateDesc) noexcept
+		GL20GraphicsState::apply(RenderStateDesc& lastStateDesc) noexcept
 		{
-			auto& srcBlends = _stateDesc.getColorBlends();
-			auto& destBlends = lastStateDesc.getColorBlends();
-
-			std::size_t srcBlendCount = srcBlends.size();
-			std::size_t destBlendCount = destBlends.size();
-			for (std::size_t i = srcBlendCount; i < destBlendCount; i++)
+			if (lastStateDesc.getBlendEnable() != _stateDesc.getBlendEnable())
 			{
-				auto& destBlend = destBlends[i];
-				if (destBlend.getBlendEnable())
-				{
+				if (_stateDesc.getBlendEnable())
+					glEnable(GL_BLEND);
+				else
 					glDisable(GL_BLEND);
-					destBlend.setBlendEnable(false);
+				lastStateDesc.setScissorTestEnable(_stateDesc.getBlendEnable());
+			}
+
+			if (_stateDesc.getBlendEnable())
+			{
+				if (lastStateDesc.getBlendSrc() != _stateDesc.getBlendSrc() ||
+					lastStateDesc.getBlendDest() != _stateDesc.getBlendDest() ||
+					lastStateDesc.getBlendAlphaSrc() != _stateDesc.getBlendAlphaSrc() ||
+					lastStateDesc.getBlendAlphaDest() != _stateDesc.getBlendAlphaDest())
+				{
+					GLenum sfactorRGB = GL20Types::asBlendFactor(_stateDesc.getBlendSrc());
+					GLenum dfactorRGB = GL20Types::asBlendFactor(_stateDesc.getBlendDest());
+					GLenum sfactorAlpha = GL20Types::asBlendFactor(_stateDesc.getBlendAlphaSrc());
+					GLenum dfactorAlpha = GL20Types::asBlendFactor(_stateDesc.getBlendAlphaDest());
+
+					glBlendFuncSeparatei(0, sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
+
+					lastStateDesc.setBlendSrc(_stateDesc.getBlendSrc());
+					lastStateDesc.setBlendDest(_stateDesc.getBlendDest());
+					lastStateDesc.setBlendAlphaSrc(_stateDesc.getBlendAlphaSrc());
+					lastStateDesc.setBlendAlphaDest(_stateDesc.getBlendAlphaDest());
+				}
+
+				if (lastStateDesc.getBlendOp() != _stateDesc.getBlendOp() ||
+					lastStateDesc.getBlendAlphaOp() != _stateDesc.getBlendAlphaOp())
+				{
+					GLenum modeRGB = GL20Types::asBlendOperation(_stateDesc.getBlendOp());
+					GLenum modeAlpha = GL20Types::asBlendOperation(_stateDesc.getBlendAlphaOp());
+
+					glBlendEquationSeparatei(0, modeRGB, modeAlpha);
+
+					lastStateDesc.setBlendOp(_stateDesc.getBlendOp());
+					lastStateDesc.setBlendAlphaOp(_stateDesc.getBlendAlphaOp());
 				}
 			}
 
-			for (std::size_t i = 0; i < srcBlendCount; i++)
+			if (lastStateDesc.getColorWriteMask() != _stateDesc.getColorWriteMask())
 			{
-				auto& srcBlend = srcBlends[i];
-				auto& destBlend = destBlends[i];
+				auto flags = _stateDesc.getColorWriteMask();
 
-				if (srcBlends[i].getBlendEnable())
-				{
-					if (!destBlend.getBlendEnable())
-					{
-						glEnable(GL_BLEND);
-						destBlend.setBlendEnable(true);
-					}
+				GLboolean r = flags & ColorWriteMask::RedBit ? GL_TRUE : GL_FALSE;
+				GLboolean g = flags & ColorWriteMask::GreendBit ? GL_TRUE : GL_FALSE;
+				GLboolean b = flags & ColorWriteMask::BlurBit ? GL_TRUE : GL_FALSE;
+				GLboolean a = flags & ColorWriteMask::AlphaBit ? GL_TRUE : GL_FALSE;
 
-					if (destBlend.getBlendSrc() != srcBlend.getBlendSrc() ||
-						destBlend.getBlendDest() != srcBlend.getBlendDest() ||
-						destBlend.getBlendAlphaSrc() != srcBlend.getBlendAlphaSrc() ||
-						destBlend.getBlendAlphaDest() != srcBlend.getBlendAlphaDest())
-					{
-						GLenum sfactorRGB = GL20Types::asBlendFactor(srcBlend.getBlendSrc());
-						GLenum dfactorRGB = GL20Types::asBlendFactor(srcBlend.getBlendDest());
-						GLenum sfactorAlpha = GL20Types::asBlendFactor(srcBlend.getBlendAlphaSrc());
-						GLenum dfactorAlpha = GL20Types::asBlendFactor(srcBlend.getBlendAlphaDest());
+				glColorMaski(0, r, g, b, a);
 
-						glBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
-
-						destBlend.setBlendSrc(srcBlend.getBlendSrc());
-						destBlend.setBlendDest(srcBlend.getBlendDest());
-						destBlend.setBlendAlphaSrc(srcBlend.getBlendAlphaSrc());
-						destBlend.setBlendAlphaDest(srcBlend.getBlendAlphaDest());
-					}
-
-					if (destBlend.getBlendOp() != srcBlend.getBlendOp() ||
-						destBlend.getBlendAlphaOp() != srcBlend.getBlendAlphaOp())
-					{
-						GLenum modeRGB = GL20Types::asBlendOperation(srcBlend.getBlendOp());
-						GLenum modeAlpha = GL20Types::asBlendOperation(srcBlend.getBlendAlphaOp());
-
-						glBlendEquationSeparate(modeRGB, modeAlpha);
-
-						destBlend.setBlendOp(srcBlend.getBlendOp());
-						destBlend.setBlendAlphaOp(srcBlend.getBlendAlphaOp());
-					}
-				}
-				else
-				{
-					if (destBlend.getBlendEnable())
-					{
-						glDisable(GL_BLEND);
-						destBlend.setBlendEnable(false);
-					}
-				}
-
-				if (destBlend.getColorWriteMask() != srcBlend.getColorWriteMask())
-				{
-					auto flags = srcBlend.getColorWriteMask();
-
-					GLboolean r = flags & ColorWriteMask::RedBit ? GL_TRUE : GL_FALSE;
-					GLboolean g = flags & ColorWriteMask::GreendBit ? GL_TRUE : GL_FALSE;
-					GLboolean b = flags & ColorWriteMask::BlurBit ? GL_TRUE : GL_FALSE;
-					GLboolean a = flags & ColorWriteMask::AlphaBit ? GL_TRUE : GL_FALSE;
-
-					glColorMask(r, g, b, a);
-
-					destBlend.setColorWriteMask(srcBlend.getColorWriteMask());
-				}
+				lastStateDesc.setColorWriteMask(_stateDesc.getColorWriteMask());
 			}
 
 			if (lastStateDesc.getCullMode() != _stateDesc.getCullMode())
@@ -291,7 +265,7 @@ namespace octoon
 			lastStateDesc.setPrimitiveType(_stateDesc.getPrimitiveType());
 		}
 
-		const GraphicsStateDesc&
+		const RenderStateDesc&
 		GL20GraphicsState::getStateDesc() const noexcept
 		{
 			return _stateDesc;
@@ -304,7 +278,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		GL20GraphicsState::getDevice() noexcept
+		GL20GraphicsState::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

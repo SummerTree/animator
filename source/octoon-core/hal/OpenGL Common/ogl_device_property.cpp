@@ -57,7 +57,7 @@ namespace octoon
 		}
 
 		GraphicsDevicePtr
-		OGLDeviceProperty::getDevice() noexcept
+		OGLDeviceProperty::getDevice() const noexcept
 		{
 			return _device.lock();
 		}

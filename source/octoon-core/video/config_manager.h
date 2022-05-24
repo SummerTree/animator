@@ -68,7 +68,7 @@ namespace octoon
 	private:
 		void init();
 		void prepareScene(const std::shared_ptr<RenderScene>& scene) noexcept;
-		void generateWorkspace(Config& config, const hal::GraphicsContextPtr& context, std::uint32_t width, std::uint32_t height);
+		void generateWorkspace(Config& config, const hal::GraphicsContext& context, std::uint32_t width, std::uint32_t height);
 		int longestCommonSubsequence(std::string text1, std::string text2) const;
 
 	private:
@@ -88,9 +88,9 @@ namespace octoon
 		std::unique_ptr<Output> normalImage_;
 		std::unique_ptr<Output> albedoImage_;
 
-		hal::GraphicsTexturePtr edgeTexture_;
-		hal::GraphicsTexturePtr normalTexture_;
-		hal::GraphicsTexturePtr albedoTexture_;
+		std::shared_ptr<GraphicsTexture> edgeTexture_;
+		std::shared_ptr<GraphicsTexture> normalTexture_;
+		std::shared_ptr<GraphicsTexture> albedoTexture_;
 
 		hal::GraphicsFramebufferPtr framebuffer_;
 
