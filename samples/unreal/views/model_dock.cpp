@@ -74,7 +74,6 @@ namespace unreal
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setObjectName("preview");
 			imageLabel->setFixedSize(QSize(100, 100));
-			imageLabel->setPixmap(QPixmap(":res/icons/model.png").scaled(100, 100));
 
 			QLabel* nameLabel = new QLabel();
 			nameLabel->setObjectName("name");
@@ -100,6 +99,10 @@ namespace unreal
 			{
 				auto filepath = package["preview"].get<nlohmann::json::string_t>();
 				imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+			}
+			else
+			{
+				imageLabel->setPixmap(QPixmap(":res/icons/model.png").scaled(100, 100));
 			}
 
 			if (package.find("name") != package.end())

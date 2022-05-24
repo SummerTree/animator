@@ -74,7 +74,6 @@ namespace unreal
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setObjectName("preview");
 			imageLabel->setFixedSize(QSize(100, 100));
-			imageLabel->setPixmap(QPixmap(":res/icons/dance2.png").scaled(100, 100));
 
 			QLabel* nameLabel = new QLabel();
 			nameLabel->setObjectName("name");
@@ -95,6 +94,16 @@ namespace unreal
 
 			listWidget_->addItem(item);
 			listWidget_->setItemWidget(item, widget);
+
+			if (package.find("preview") != package.end())
+			{
+				auto filepath = package["preview"].get<nlohmann::json::string_t>();
+				imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+			}
+			else
+			{
+				imageLabel->setPixmap(QPixmap(":res/icons/dance2.png").scaled(imageLabel->size()));
+			}
 
 			if (package.find("name") != package.end())
 			{
