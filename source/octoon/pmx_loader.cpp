@@ -625,10 +625,10 @@ namespace octoon
 			if (colorMap)
 			{
 				auto textureFormat = material->getColorMap()->getTextureDesc().getTexFormat();
-				if (textureFormat == hal::GraphicsFormat::B8G8R8A8SRGB ||
-					textureFormat == hal::GraphicsFormat::B8G8R8A8UNorm ||
-					textureFormat == hal::GraphicsFormat::R8G8B8A8SRGB ||
-					textureFormat == hal::GraphicsFormat::R8G8B8A8UNorm)
+				if (textureFormat == GraphicsFormat::B8G8R8A8SRGB ||
+					textureFormat == GraphicsFormat::B8G8R8A8UNorm ||
+					textureFormat == GraphicsFormat::R8G8B8A8SRGB ||
+					textureFormat == GraphicsFormat::R8G8B8A8UNorm)
 				{
 					hasAlphaTexture = true;
 				}
@@ -636,8 +636,8 @@ namespace octoon
 
 			if (it.Opacity < 1.0 || hasAlphaTexture) {
 				material->setBlendEnable(true);
-				material->setBlendSrc(hal::BlendMode::SrcAlpha);
-				material->setBlendDest(hal::BlendMode::OneMinusSrcAlpha);
+				material->setBlendSrc(BlendMode::SrcAlpha);
+				material->setBlendDest(BlendMode::OneMinusSrcAlpha);
 			}
 
 			model.materials.emplace_back(std::move(material));

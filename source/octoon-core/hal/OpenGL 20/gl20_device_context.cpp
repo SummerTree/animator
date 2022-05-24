@@ -93,7 +93,7 @@ namespace octoon
 		}
 
 		void
-		GL20DeviceContext::setViewport(std::uint32_t i, const float4& view) noexcept
+		GL20DeviceContext::setViewport(std::uint32_t i, const math::float4& view) noexcept
 		{
 			assert(_glcontext->getActive());
 
@@ -108,14 +108,14 @@ namespace octoon
 			}
 		}
 
-		const float4&
+		const math::float4&
 		GL20DeviceContext::getViewport(std::uint32_t i) const noexcept
 		{
 			return _viewport;
 		}
 
 		void
-		GL20DeviceContext::setScissor(std::uint32_t i, const uint4& scissor) noexcept
+		GL20DeviceContext::setScissor(std::uint32_t i, const math::uint4& scissor) noexcept
 		{
 			assert(_glcontext->getActive());
 
@@ -136,7 +136,7 @@ namespace octoon
 			}
 		}
 
-		const uint4&
+		const math::uint4&
 		GL20DeviceContext::getScissor(std::uint32_t i) const noexcept
 		{
 			return _scissor;
@@ -436,7 +436,7 @@ namespace octoon
 
 					auto& framebufferDesc = framebuffer->getFramebufferDesc();
 
-					this->setViewport(0, float4(0, 0, (float)framebufferDesc.getWidth(), (float)framebufferDesc.getHeight()));
+					this->setViewport(0, math::float4(0, 0, (float)framebufferDesc.getWidth(), (float)framebufferDesc.getHeight()));
 					this->setScissor(0, _scissor);
 
 					_framebuffer = framebuffer;
@@ -458,7 +458,7 @@ namespace octoon
 		}
 
 		void
-		GL20DeviceContext::clearFramebuffer(std::uint32_t i, ClearFlags flags, const float4& color, float depth, std::int32_t stencil) noexcept
+		GL20DeviceContext::clearFramebuffer(std::uint32_t i, ClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept
 		{
 			assert(i == 0);
 
@@ -548,7 +548,7 @@ namespace octoon
 		}
 
 		void
-		GL20DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const float4& v1, const GraphicsFramebufferPtr& dest, const float4& v2) noexcept
+		GL20DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept
 		{
 			assert(src);
 			assert(src->isInstanceOf<GL20Framebuffer>());

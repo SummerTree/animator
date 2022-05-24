@@ -9,7 +9,7 @@ namespace octoon
 	{
 	}
 
-	ScriptableRenderBuffer::ScriptableRenderBuffer(const hal::GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false)
+	ScriptableRenderBuffer::ScriptableRenderBuffer(const GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false)
 	{
 		this->updateData(context, mesh);
 	}
@@ -18,13 +18,13 @@ namespace octoon
 	{
 	}
 
-	const hal::GraphicsDataPtr&
+	const GraphicsDataPtr&
 	ScriptableRenderBuffer::getVertexBuffer() const noexcept
 	{
 		return vertices_;
 	}
 
-	const hal::GraphicsDataPtr&
+	const GraphicsDataPtr&
 	ScriptableRenderBuffer::getIndexBuffer() const noexcept
 	{
 		return indices_;
@@ -61,7 +61,7 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderBuffer::updateData(const hal::GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false)
+	ScriptableRenderBuffer::updateData(const GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false)
 	{
 		if (mesh)
 		{
@@ -70,30 +70,30 @@ namespace octoon
 
 			if (numVertices > 0 && (!this->vertices_ || mesh_ && mesh_->getNumVertices() != mesh->getNumVertices()))
 			{
-				hal::GraphicsInputLayoutDesc inputLayout;
-				inputLayout.addVertexLayout(hal::GraphicsVertexLayout(0, "POSITION", 0, hal::GraphicsFormat::R32G32B32SFloat));
-				inputLayout.addVertexLayout(hal::GraphicsVertexLayout(0, "NORMAL", 0, hal::GraphicsFormat::R32G32B32SFloat));
-				inputLayout.addVertexLayout(hal::GraphicsVertexLayout(0, "TEXCOORD", 0, hal::GraphicsFormat::R32G32SFloat));
-				inputLayout.addVertexLayout(hal::GraphicsVertexLayout(0, "TEXCOORD", 1, hal::GraphicsFormat::R32G32SFloat));
+				GraphicsInputLayoutDesc inputLayout;
+				inputLayout.addVertexLayout(GraphicsVertexLayout(0, "POSITION", 0, GraphicsFormat::R32G32B32SFloat));
+				inputLayout.addVertexLayout(GraphicsVertexLayout(0, "NORMAL", 0, GraphicsFormat::R32G32B32SFloat));
+				inputLayout.addVertexLayout(GraphicsVertexLayout(0, "TEXCOORD", 0, GraphicsFormat::R32G32SFloat));
+				inputLayout.addVertexLayout(GraphicsVertexLayout(0, "TEXCOORD", 1, GraphicsFormat::R32G32SFloat));
 
-				inputLayout.addVertexBinding(hal::GraphicsVertexBinding(0, inputLayout.getVertexSize()));
+				inputLayout.addVertexBinding(GraphicsVertexBinding(0, inputLayout.getVertexSize()));
 
-				hal::GraphicsDataDesc dataDesc;
-				dataDesc.setType(hal::GraphicsDataType::StorageVertexBuffer);
+				GraphicsDataDesc dataDesc;
+				dataDesc.setType(GraphicsDataType::StorageVertexBuffer);
 				dataDesc.setStream((std::uint8_t*)nullptr);
 				dataDesc.setStreamSize(numVertices * inputLayout.getVertexSize());
-				dataDesc.setUsage(hal::GraphicsUsageFlagBits::WriteBit);
+				dataDesc.setUsage(GraphicsUsageFlagBits::WriteBit);
 
 				this->vertices_ = context->createGraphicsData(dataDesc);
 			}
 
 			if (numIndices > 0 && (!this->indices_ || mesh_ && mesh_->getNumIndices() != mesh->getNumIndices()))
 			{
-				hal::GraphicsDataDesc indiceDesc;
-				indiceDesc.setType(hal::GraphicsDataType::StorageIndexBuffer);
+				GraphicsDataDesc indiceDesc;
+				indiceDesc.setType(GraphicsDataType::StorageIndexBuffer);
 				indiceDesc.setStream(nullptr);
 				indiceDesc.setStreamSize(numIndices * sizeof(std::uint32_t));
-				indiceDesc.setUsage(hal::GraphicsUsageFlagBits::WriteBit);
+				indiceDesc.setUsage(GraphicsUsageFlagBits::WriteBit);
 
 				this->indices_ = context->createGraphicsData(indiceDesc);
 			}

@@ -11,7 +11,7 @@ namespace octoon
 	{
 	public:
 		ScriptableRenderBuffer() noexcept;
-		ScriptableRenderBuffer(const hal::GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false);
+		ScriptableRenderBuffer(const GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false);
 		virtual ~ScriptableRenderBuffer() noexcept;
 
 		std::size_t getNumVertices() const noexcept;
@@ -20,10 +20,10 @@ namespace octoon
 		std::size_t getNumIndices(std::size_t n) const noexcept;
 		std::size_t getStartIndices(std::size_t n) const noexcept;
 
-		const hal::GraphicsDataPtr& getVertexBuffer() const noexcept;
-		const hal::GraphicsDataPtr& getIndexBuffer() const noexcept;
+		const GraphicsDataPtr& getVertexBuffer() const noexcept;
+		const GraphicsDataPtr& getIndexBuffer() const noexcept;
 
-		void updateData(const hal::GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false);
+		void updateData(const GraphicsDevicePtr& context, const std::shared_ptr<Mesh>& mesh) noexcept(false);
 
 	private:
 		ScriptableRenderBuffer(const ScriptableRenderBuffer&) = delete;
@@ -36,8 +36,8 @@ namespace octoon
 
 		std::vector<std::size_t> startIndice_;
 
-		hal::GraphicsDataPtr vertices_;
-		hal::GraphicsDataPtr indices_;
+		GraphicsDataPtr vertices_;
+		GraphicsDataPtr indices_;
 
 		std::shared_ptr<Mesh> mesh_;
 	};

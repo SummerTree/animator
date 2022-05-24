@@ -17,15 +17,15 @@ namespace octoon
 		virtual void setViewport(const math::float4& viewport) noexcept;
 		virtual void setRenderToScreen(bool enable) noexcept;
 
-		virtual void setClearFlags(hal::ClearFlags clearflags) noexcept;
-		virtual void setFramebuffer(const hal::GraphicsFramebufferPtr& framebuffer) noexcept;
+		virtual void setClearFlags(ClearFlags clearflags) noexcept;
+		virtual void setFramebuffer(const GraphicsFramebufferPtr& framebuffer) noexcept;
 
 		virtual void setProjection(math::float4x4& projection) const noexcept;
 		virtual void setProjectionInverse(math::float4x4& projection) const noexcept;
 
 		virtual bool getRenderToScreen() const noexcept;
-		virtual hal::ClearFlags getClearFlags() const noexcept;
-		virtual const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
+		virtual ClearFlags getClearFlags() const noexcept;
+		virtual const GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 
 		virtual math::float3 worldToScreen(const math::float3& pos) const noexcept;
 		virtual math::float3 worldToProject(const math::float3& pos) const noexcept;
@@ -45,7 +45,7 @@ namespace octoon
 		virtual const math::float4x4& getViewProjection() const noexcept;
 		virtual const math::float4x4& getViewProjectionInverse() const noexcept;
 
-		virtual void setupFramebuffers(std::uint32_t w, std::uint32_t h, std::uint8_t multisample = 0, hal::GraphicsFormat format = hal::GraphicsFormat::R8G8B8A8UNorm, hal::GraphicsFormat depthStencil = hal::GraphicsFormat::X8_D24UNormPack32) except;
+		virtual void setupFramebuffers(std::uint32_t w, std::uint32_t h, std::uint8_t multisample = 0, GraphicsFormat format = GraphicsFormat::R8G8B8A8UNorm, GraphicsFormat depthStencil = GraphicsFormat::X8_D24UNormPack32) except;
 
 	protected:
 		math::float4 clearColor_;
@@ -54,9 +54,9 @@ namespace octoon
 
 		bool blitToScreen_;
 
-		hal::ClearFlags clearflags_;
+		ClearFlags clearflags_;
 
-		hal::GraphicsFramebufferPtr edgeFramebuffer_;
+		GraphicsFramebufferPtr edgeFramebuffer_;
 		std::shared_ptr<GraphicsTexture> edgeTexture_;
 		std::shared_ptr<GraphicsTexture> depthTexture_;
 

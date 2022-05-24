@@ -382,9 +382,9 @@ namespace unreal
 
 		switch (textureData->getTextureDesc().getTexFormat())
 		{
-		case octoon::hal::GraphicsFormat::R8G8B8SNorm:
-		case octoon::hal::GraphicsFormat::R8G8B8UNorm:
-		case octoon::hal::GraphicsFormat::R8G8B8SRGB:
+		case octoon::GraphicsFormat::R8G8B8SNorm:
+		case octoon::GraphicsFormat::R8G8B8UNorm:
+		case octoon::GraphicsFormat::R8G8B8SRGB:
 		{
 			std::uint8_t* data_ = nullptr;
 			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
@@ -394,9 +394,9 @@ namespace unreal
 			}
 		}
 		break;
-		case octoon::hal::GraphicsFormat::R8G8B8A8SNorm:
-		case octoon::hal::GraphicsFormat::R8G8B8A8UNorm:
-		case octoon::hal::GraphicsFormat::R8G8B8A8SRGB:
+		case octoon::GraphicsFormat::R8G8B8A8SNorm:
+		case octoon::GraphicsFormat::R8G8B8A8UNorm:
+		case octoon::GraphicsFormat::R8G8B8A8SRGB:
 		{
 			std::uint8_t* data_ = nullptr;
 			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
@@ -406,9 +406,9 @@ namespace unreal
 			}
 		}
 		break;
-		case octoon::hal::GraphicsFormat::B8G8R8SNorm:
-		case octoon::hal::GraphicsFormat::B8G8R8UNorm:
-		case octoon::hal::GraphicsFormat::B8G8R8SRGB:
+		case octoon::GraphicsFormat::B8G8R8SNorm:
+		case octoon::GraphicsFormat::B8G8R8UNorm:
+		case octoon::GraphicsFormat::B8G8R8SRGB:
 		{
 			std::uint8_t* data_ = nullptr;
 			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
@@ -427,9 +427,9 @@ namespace unreal
 			}
 		}
 		break;
-		case octoon::hal::GraphicsFormat::B8G8R8A8SNorm:
-		case octoon::hal::GraphicsFormat::B8G8R8A8UNorm:
-		case octoon::hal::GraphicsFormat::B8G8R8A8SRGB:
+		case octoon::GraphicsFormat::B8G8R8A8SNorm:
+		case octoon::GraphicsFormat::B8G8R8A8UNorm:
+		case octoon::GraphicsFormat::B8G8R8A8SRGB:
 		{
 			std::uint8_t* data_ = nullptr;
 			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
@@ -1499,8 +1499,8 @@ namespace unreal
 			if (value < 1.0f)
 			{
 				material_->setBlendEnable(true);
-				material_->setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
-				material_->setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
+				material_->setBlendSrc(octoon::BlendMode::SrcAlpha);
+				material_->setBlendDest(octoon::BlendMode::OneMinusSrcAlpha);
 			}
 			else
 			{

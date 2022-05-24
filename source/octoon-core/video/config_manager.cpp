@@ -310,7 +310,7 @@ namespace octoon
 		void* data = nullptr;
 		if (edgeTexture_->map(0, 0, desc.getWidth(), desc.getHeight(), 0, &data))
 		{
-			if (desc.getTexFormat() == octoon::hal::GraphicsFormat::R32G32B32A32SFloat)
+			if (desc.getTexFormat() == octoon::GraphicsFormat::R32G32B32A32SFloat)
 			{
 				for (std::size_t i = 0; i < desc.getWidth() * desc.getHeight(); ++i)
 					colorBuffer[i] = (((octoon::math::float4*)data) + i)->xyz();
@@ -332,7 +332,7 @@ namespace octoon
 		void* data = nullptr;
 		if (albedoTexture_->map(0, 0, desc.getWidth(), desc.getHeight(), 0, &data))
 		{
-			if (desc.getTexFormat() == octoon::hal::GraphicsFormat::R32G32B32A32SFloat)
+			if (desc.getTexFormat() == octoon::GraphicsFormat::R32G32B32A32SFloat)
 			{
 				for (std::size_t i = 0; i < desc.getWidth() * desc.getHeight(); ++i)
 					albedoBuffer[i] = (((octoon::math::float4*)data) + i)->xyz();
@@ -354,7 +354,7 @@ namespace octoon
 		void* data = nullptr;
 		if (normalTexture_->map(0, 0, desc.getWidth(), desc.getHeight(), 0, &data))
 		{
-			if (desc.getTexFormat() == octoon::hal::GraphicsFormat::R32G32B32A32SFloat)
+			if (desc.getTexFormat() == octoon::GraphicsFormat::R32G32B32A32SFloat)
 			{
 				for (std::size_t i = 0; i < desc.getWidth() * desc.getHeight(); ++i)
 					normalBuffer[i] = (((octoon::math::float4*)data) + i)->xyz();
@@ -368,14 +368,14 @@ namespace octoon
 		}
 	}
 
-	const hal::GraphicsFramebufferPtr&
+	const GraphicsFramebufferPtr&
 	ConfigManager::getFramebuffer() const
 	{
 		return this->framebuffer_;
 	}
 
 	void
-	ConfigManager::generateWorkspace(Config& config, const hal::GraphicsContext& context, std::uint32_t width, std::uint32_t height)
+	ConfigManager::generateWorkspace(Config& config, const GraphicsContext& context, std::uint32_t width, std::uint32_t height)
 	{
 		if (width_ != width || height_ != height)
 		{
@@ -385,8 +385,8 @@ namespace octoon
 			GraphicsTextureDesc colorTextureDesc;
 			colorTextureDesc.setWidth(this->width_);
 			colorTextureDesc.setHeight(this->height_);
-			colorTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
-			colorTextureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32A32SFloat);
+			colorTextureDesc.setTexDim(TextureDimension::Texture2D);
+			colorTextureDesc.setTexFormat(GraphicsFormat::R32G32B32A32SFloat);
 			edgeTexture_ = context.getDevice()->createTexture(colorTextureDesc);
 			if (!edgeTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
@@ -402,22 +402,22 @@ namespace octoon
 			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setWidth(this->width_);
 			depthTextureDesc.setHeight(this->height_);
-			depthTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
-			depthTextureDesc.setTexFormat(hal::GraphicsFormat::D32_SFLOAT);
+			depthTextureDesc.setTexDim(TextureDimension::Texture2D);
+			depthTextureDesc.setTexFormat(GraphicsFormat::D32_SFLOAT);
 			auto depthTexture_ = context.getDevice()->createTexture(depthTextureDesc);
 			if (!depthTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
-			hal::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-			framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(0, hal::GraphicsImageLayout::ColorAttachmentOptimal, hal::GraphicsFormat::R32G32B32SFloat));
-			framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(1, hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, hal::GraphicsFormat::D32_SFLOAT));
+			GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R32G32B32SFloat));
+			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(1, GraphicsImageLayout::DepthStencilAttachmentOptimal, GraphicsFormat::D32_SFLOAT));
 
-			hal::GraphicsFramebufferDesc framebufferDesc;
+			GraphicsFramebufferDesc framebufferDesc;
 			framebufferDesc.setWidth(this->width_);
 			framebufferDesc.setHeight(this->height_);
 			framebufferDesc.setFramebufferLayout(context.getDevice()->createFramebufferLayout(framebufferLayoutDesc));
-			framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture_, 0, 0));
-			framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(edgeTexture_, 0, 0));
+			framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture_, 0, 0));
+			framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(edgeTexture_, 0, 0));
 
 			this->framebuffer_ = context.getDevice()->createFramebuffer(framebufferDesc);
 			if (!this->framebuffer_)
@@ -444,7 +444,7 @@ namespace octoon
 	}
 
 	void
-	ConfigManager::render(const hal::GraphicsContextPtr& context, const std::shared_ptr<RenderScene>& scene)
+	ConfigManager::render(const GraphicsContextPtr& context, const std::shared_ptr<RenderScene>& scene)
 	{
 		assert(scene->getMainCamera());
 
@@ -477,7 +477,7 @@ namespace octoon
 			float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
 
 			context->blitFramebuffer(framebuffer_, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
-			context->discardFramebuffer(framebuffer_, hal::ClearFlagBits::AllBit);
+			context->discardFramebuffer(framebuffer_, ClearFlagBits::AllBit);
 		}
 	}
 

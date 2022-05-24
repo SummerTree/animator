@@ -43,7 +43,7 @@ void main() {
 		this->setColor(color);
 		this->setOpacity(1.0f);
 		this->setDepthEnable(false);
-		this->setPrimitiveType(octoon::hal::VertexType::PointList);
+		this->setPrimitiveType(octoon::VertexType::PointList);
 		this->setShader(std::make_shared<Shader>(point_vert, point_frag));
 	}
 

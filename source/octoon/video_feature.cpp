@@ -71,7 +71,7 @@ namespace octoon
 		Renderer::instance()->getFramebufferSize(w, h);
 	}
 
-	const hal::GraphicsFramebufferPtr&
+	const GraphicsFramebufferPtr&
 	VideoFeature::getFramebuffer() const noexcept
 	{
 		return Renderer::instance()->getFramebuffer();

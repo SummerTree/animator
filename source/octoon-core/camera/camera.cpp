@@ -15,7 +15,7 @@ namespace octoon
 		, projectInverse_(math::float4x4::One)
 		, viewProject_(math::float4x4::One)
 		, viewProjectInverse_(math::float4x4::One)
-		, clearflags_(hal::ClearFlagBits::AllBit)
+		, clearflags_(ClearFlagBits::AllBit)
 	{
 	}
 
@@ -42,13 +42,13 @@ namespace octoon
 	}
 
 	void
-	Camera::setClearFlags(hal::ClearFlags clearflags) noexcept
+	Camera::setClearFlags(ClearFlags clearflags) noexcept
 	{
 		clearflags_ = clearflags;
 	}
 
 	void
-	Camera::setFramebuffer(const hal::GraphicsFramebufferPtr& framebuffer) noexcept
+	Camera::setFramebuffer(const GraphicsFramebufferPtr& framebuffer) noexcept
 	{
 		edgeFramebuffer_ = framebuffer;
 	}
@@ -230,30 +230,30 @@ namespace octoon
 		return blitToScreen_;
 	}
 
-	hal::ClearFlags
+	ClearFlags
 	Camera::getClearFlags() const noexcept
 	{
 		return clearflags_;
 	}
 
-	const hal::GraphicsFramebufferPtr&
+	const GraphicsFramebufferPtr&
 	Camera::getFramebuffer() const noexcept
 	{
 		return edgeFramebuffer_;
 	}
 
 	void
-	Camera::setupFramebuffers(std::uint32_t w, std::uint32_t h, std::uint8_t multisample, hal::GraphicsFormat format, hal::GraphicsFormat depthStencil) except
+	Camera::setupFramebuffers(std::uint32_t w, std::uint32_t h, std::uint8_t multisample, GraphicsFormat format, GraphicsFormat depthStencil) except
 	{
-		hal::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(0, hal::GraphicsImageLayout::ColorAttachmentOptimal, format));
-		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(1, hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, depthStencil));
+		GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+		framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, format));
+		framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(1, GraphicsImageLayout::DepthStencilAttachmentOptimal, depthStencil));
 
 		GraphicsTextureDesc colorTextureDesc;
 		colorTextureDesc.setWidth(w);
 		colorTextureDesc.setHeight(h);
 		colorTextureDesc.setTexMultisample(multisample);
-		colorTextureDesc.setTexDim(multisample > 0 ? hal::TextureDimension::Texture2DMultisample : hal::TextureDimension::Texture2D);
+		colorTextureDesc.setTexDim(multisample > 0 ? TextureDimension::Texture2DMultisample : TextureDimension::Texture2D);
 		colorTextureDesc.setTexFormat(format);
 		edgeTexture_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createTexture(colorTextureDesc);
 		if (!edgeTexture_)
@@ -263,18 +263,18 @@ namespace octoon
 		depthTextureDesc.setWidth(w);
 		depthTextureDesc.setHeight(h);
 		depthTextureDesc.setTexMultisample(multisample);
-		depthTextureDesc.setTexDim(multisample > 0 ? hal::TextureDimension::Texture2DMultisample : hal::TextureDimension::Texture2D);
+		depthTextureDesc.setTexDim(multisample > 0 ? TextureDimension::Texture2DMultisample : TextureDimension::Texture2D);
 		depthTextureDesc.setTexFormat(depthStencil);
 		depthTexture_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createTexture(depthTextureDesc);
 		if (!depthTexture_)
 			throw runtime::runtime_error::create("createTexture() failed");
 
-		hal::GraphicsFramebufferDesc framebufferDesc;
+		GraphicsFramebufferDesc framebufferDesc;
 		framebufferDesc.setWidth(w);
 		framebufferDesc.setHeight(h);
 		framebufferDesc.setFramebufferLayout(Renderer::instance()->getScriptableRenderContext()->getDevice()->createFramebufferLayout(framebufferLayoutDesc));
-		framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture_, 0, 0));
-		framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(edgeTexture_, 0, 0));
+		framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture_, 0, 0));
+		framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(edgeTexture_, 0, 0));
 
 		edgeFramebuffer_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createFramebuffer(framebufferDesc);
 		if (!edgeFramebuffer_)

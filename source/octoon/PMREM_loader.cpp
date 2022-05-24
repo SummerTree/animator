@@ -204,8 +204,8 @@ void main()
 
 			GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);
-			textureDesc.setTexDim(hal::TextureDimension::Texture2D);
-			textureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
+			textureDesc.setTexDim(TextureDimension::Texture2D);
+			textureDesc.setTexFormat(GraphicsFormat::R32G32B32SFloat);
 			textureDesc.setMipBase(0);
 			textureDesc.setMipNums(8);
 			auto colorTexture = renderContext->createTexture(textureDesc);
@@ -214,28 +214,28 @@ void main()
 
 			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setSize(width, height);
-			depthTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
-			depthTextureDesc.setTexFormat(hal::GraphicsFormat::D16UNorm);
+			depthTextureDesc.setTexDim(TextureDimension::Texture2D);
+			depthTextureDesc.setTexFormat(GraphicsFormat::D16UNorm);
 			depthTextureDesc.setMipBase(0);
 			depthTextureDesc.setMipNums(8);
 			auto depthTexture = renderContext->createTexture(depthTextureDesc);
 			if (!depthTexture)
 				throw runtime::runtime_error::create("createTexture() failed");
 
-			hal::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-			framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(0, hal::GraphicsImageLayout::ColorAttachmentOptimal, hal::GraphicsFormat::R32G32B32SFloat));
-			framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(1, hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, hal::GraphicsFormat::D16UNorm));
+			GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R32G32B32SFloat));
+			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(1, GraphicsImageLayout::DepthStencilAttachmentOptimal, GraphicsFormat::D16UNorm));
 
-			std::vector<hal::GraphicsFramebufferPtr> framebuffers(mipNums);
+			std::vector<GraphicsFramebufferPtr> framebuffers(mipNums);
 
 			for (std::uint8_t i = 0; i < mipNums; i++)
 			{
-				hal::GraphicsFramebufferDesc framebufferDesc;
+				GraphicsFramebufferDesc framebufferDesc;
 				framebufferDesc.setWidth(width >> i);
 				framebufferDesc.setHeight(height >> i);
 				framebufferDesc.setFramebufferLayout(renderContext->createFramebufferLayout(framebufferLayoutDesc));
-				framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture, i, 0));
-				framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(colorTexture, i, 0));
+				framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture, i, 0));
+				framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture, i, 0));
 
 				framebuffers[i] = renderContext->createFramebuffer(framebufferDesc);
 				if (!framebuffers[i])

@@ -21,10 +21,10 @@ namespace octoon::imgui
 	{
 	public:
 		System() noexcept;
-		System(const hal::GraphicsDevicePtr& device) noexcept;
+		System(const GraphicsDevicePtr& device) noexcept;
 		~System() noexcept;
 
-		void open(const hal::GraphicsDevicePtr& device) except;
+		void open(const GraphicsDevicePtr& device) except;
 		void close() noexcept;
 
 		bool injectMouseMove(float absx, float absy) noexcept;
@@ -51,7 +51,7 @@ namespace octoon::imgui
 		void newFrame() noexcept;
 		void endFrame() noexcept;
 
-		void render(hal::GraphicsContext& context) noexcept;
+		void render(GraphicsContext& context) noexcept;
 
 	private:
 		System(const System&) noexcept = delete;
@@ -63,16 +63,16 @@ namespace octoon::imgui
 
 		ImGuiContext* imguiContext_;
 
-		hal::GraphicsDataPtr vbo_;
-		hal::GraphicsDataPtr ibo_;
+		GraphicsDataPtr vbo_;
+		GraphicsDataPtr ibo_;
 		std::shared_ptr<GraphicsTexture> texture_;
-		hal::GraphicsDescriptorSetPtr descriptor_set_;
+		GraphicsDescriptorSetPtr descriptor_set_;
 
-		hal::GraphicsUniformSetPtr proj_;
-		hal::GraphicsUniformSetPtr decal_;
+		GraphicsUniformSetPtr proj_;
+		GraphicsUniformSetPtr decal_;
 
-		hal::GraphicsDevicePtr device_;
-		hal::GraphicsPipelinePtr pipeline_;
+		GraphicsDevicePtr device_;
+		GraphicsPipelinePtr pipeline_;
 	};
 }
 

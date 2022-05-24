@@ -29,7 +29,7 @@ namespace octoon
 		Renderer() noexcept;
 		~Renderer() noexcept;
 
-		void open(const hal::GraphicsContextPtr& context, std::uint32_t w, std::uint32_t h) except;
+		void open(const GraphicsContextPtr& context, std::uint32_t w, std::uint32_t h) except;
 		void close() noexcept;
 
 		void setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept;
@@ -45,10 +45,10 @@ namespace octoon
 		void readAlbedoBuffer(math::float3 data[]);
 		void readNormalBuffer(math::float3 data[]);
 
-		const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
+		const GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 
-		const hal::GraphicsContextPtr& getScriptableRenderContext() const noexcept;
-		const hal::GraphicsDevicePtr getGraphicsDevice() const noexcept;
+		const GraphicsContextPtr& getScriptableRenderContext() const noexcept;
+		const GraphicsDevicePtr getGraphicsDevice() const noexcept;
 
 		void render(const std::shared_ptr<RenderScene>& scene) noexcept(false);
 
@@ -71,7 +71,7 @@ namespace octoon
 		std::uint32_t width_;
 		std::uint32_t height_;
 
-		hal::GraphicsContextPtr context_;
+		GraphicsContextPtr context_;
 
 		std::unique_ptr<class ConfigManager> pathRenderer_;
 		std::unique_ptr<class ForwardRenderer> forwardRenderer_;

@@ -45,7 +45,7 @@ namespace octoon
 		void setOverrideMaterial(const std::shared_ptr<Material>& material) noexcept;
 		std::shared_ptr<Material> getOverrideMaterial() const noexcept;
 
-		const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
+		const GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 
 	private:
 		void onActivate() except override;

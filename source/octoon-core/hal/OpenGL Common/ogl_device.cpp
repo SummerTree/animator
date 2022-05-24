@@ -17,7 +17,7 @@ namespace octoon
 		{
 		}
 
-		GraphicsSwapchainPtr
+		std::shared_ptr<GraphicsSwapchain>
 		OGLDevice::createSwapchain(const GraphicsSwapchainDesc& desc) noexcept
 		{
 			auto swapchain = std::make_shared<OGLSwapchain>();

@@ -41,7 +41,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform2i(const int2& value) noexcept
+		GL33GraphicsUniformSet::uniform2i(const math::int2& value) noexcept
 		{
 			_variant.uniform2i(value);
 		}
@@ -53,7 +53,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform3i(const int3& value) noexcept
+		GL33GraphicsUniformSet::uniform3i(const math::int3& value) noexcept
 		{
 			_variant.uniform3i(value);
 		}
@@ -65,7 +65,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform4i(const int4& value) noexcept
+		GL33GraphicsUniformSet::uniform4i(const math::int4& value) noexcept
 		{
 			_variant.uniform4i(value);
 		}
@@ -83,7 +83,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform2ui(const uint2& value) noexcept
+		GL33GraphicsUniformSet::uniform2ui(const math::uint2& value) noexcept
 		{
 			_variant.uniform2ui(value);
 		}
@@ -95,7 +95,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform3ui(const uint3& value) noexcept
+		GL33GraphicsUniformSet::uniform3ui(const math::uint3& value) noexcept
 		{
 			_variant.uniform3ui(value);
 		}
@@ -107,7 +107,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform4ui(const uint4& value) noexcept
+		GL33GraphicsUniformSet::uniform4ui(const math::uint4& value) noexcept
 		{
 			_variant.uniform4ui(value);
 		}
@@ -125,7 +125,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform2f(const float2& value) noexcept
+		GL33GraphicsUniformSet::uniform2f(const math::float2& value) noexcept
 		{
 			_variant.uniform2f(value);
 		}
@@ -137,7 +137,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform3f(const float3& value) noexcept
+		GL33GraphicsUniformSet::uniform3f(const math::float3& value) noexcept
 		{
 			_variant.uniform3f(value);
 		}
@@ -149,7 +149,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform4f(const float4& value) noexcept
+		GL33GraphicsUniformSet::uniform4f(const math::float4& value) noexcept
 		{
 			_variant.uniform4f(value);
 		}
@@ -161,7 +161,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform2fmat(const float2x2& value) noexcept
+		GL33GraphicsUniformSet::uniform2fmat(const math::float2x2& value) noexcept
 		{
 			_variant.uniform2fmat(value);
 		}
@@ -173,7 +173,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform3fmat(const float3x3& value) noexcept
+		GL33GraphicsUniformSet::uniform3fmat(const math::float3x3& value) noexcept
 		{
 			_variant.uniform3fmat(value);
 		}
@@ -185,7 +185,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform4fmat(const float4x4& value) noexcept
+		GL33GraphicsUniformSet::uniform4fmat(const math::float4x4& value) noexcept
 		{
 			_variant.uniform4fmat(value);
 		}
@@ -197,7 +197,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform1iv(const std::vector<int1>& value) noexcept
+		GL33GraphicsUniformSet::uniform1iv(const std::vector<math::int1>& value) noexcept
 		{
 			_variant.uniform1iv(value);
 		}
@@ -209,7 +209,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform2iv(const std::vector<int2>& value) noexcept
+		GL33GraphicsUniformSet::uniform2iv(const std::vector<math::int2>& value) noexcept
 		{
 			_variant.uniform2iv(value);
 		}
@@ -221,7 +221,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform3iv(const std::vector<int3>& value) noexcept
+		GL33GraphicsUniformSet::uniform3iv(const std::vector<math::int3>& value) noexcept
 		{
 			_variant.uniform3iv(value);
 		}
@@ -233,7 +233,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform4iv(const std::vector<int4>& value) noexcept
+		GL33GraphicsUniformSet::uniform4iv(const std::vector<math::int4>& value) noexcept
 		{
 			_variant.uniform4iv(value);
 		}
@@ -245,7 +245,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform1uiv(const std::vector<uint1>& value) noexcept
+		GL33GraphicsUniformSet::uniform1uiv(const std::vector<math::uint1>& value) noexcept
 		{
 			_variant.uniform1uiv(value);
 		}
@@ -257,7 +257,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform2uiv(const std::vector<uint2>& value) noexcept
+		GL33GraphicsUniformSet::uniform2uiv(const std::vector<math::uint2>& value) noexcept
 		{
 			_variant.uniform2uiv(value);
 		}
@@ -269,7 +269,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform3uiv(const std::vector<uint3>& value) noexcept
+		GL33GraphicsUniformSet::uniform3uiv(const std::vector<math::uint3>& value) noexcept
 		{
 			_variant.uniform3uiv(value);
 		}
@@ -281,7 +281,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform4uiv(const std::vector<uint4>& value) noexcept
+		GL33GraphicsUniformSet::uniform4uiv(const std::vector<math::uint4>& value) noexcept
 		{
 			_variant.uniform4uiv(value);
 		}
@@ -293,7 +293,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform1fv(const std::vector<float1>& value) noexcept
+		GL33GraphicsUniformSet::uniform1fv(const std::vector<math::float1>& value) noexcept
 		{
 			_variant.uniform1fv(value);
 		}
@@ -305,7 +305,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform2fv(const std::vector<float2>& value) noexcept
+		GL33GraphicsUniformSet::uniform2fv(const std::vector<math::float2>& value) noexcept
 		{
 			_variant.uniform2fv(value);
 		}
@@ -317,7 +317,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform3fv(const std::vector<float3>& value) noexcept
+		GL33GraphicsUniformSet::uniform3fv(const std::vector<math::float3>& value) noexcept
 		{
 			_variant.uniform3fv(value);
 		}
@@ -329,7 +329,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform4fv(const std::vector<float4>& value) noexcept
+		GL33GraphicsUniformSet::uniform4fv(const std::vector<math::float4>& value) noexcept
 		{
 			_variant.uniform4fv(value);
 		}
@@ -341,7 +341,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform2fmatv(const std::vector<float2x2>& value) noexcept
+		GL33GraphicsUniformSet::uniform2fmatv(const std::vector<math::float2x2>& value) noexcept
 		{
 			_variant.uniform2fmatv(value);
 		}
@@ -353,7 +353,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform3fmatv(const std::vector<float3x3>& value) noexcept
+		GL33GraphicsUniformSet::uniform3fmatv(const std::vector<math::float3x3>& value) noexcept
 		{
 			_variant.uniform3fmatv(value);
 		}
@@ -365,7 +365,7 @@ namespace octoon
 		}
 
 		void
-		GL33GraphicsUniformSet::uniform4fmatv(const std::vector<float4x4>& value) noexcept
+		GL33GraphicsUniformSet::uniform4fmatv(const std::vector<math::float4x4>& value) noexcept
 		{
 			_variant.uniform4fmatv(value);
 		}
@@ -400,43 +400,43 @@ namespace octoon
 			return _variant.getInt();
 		}
 
-		const int2&
+		const math::int2&
 		GL33GraphicsUniformSet::getInt2() const noexcept
 		{
 			return _variant.getInt2();
 		}
 
-		const int3&
+		const math::int3&
 		GL33GraphicsUniformSet::getInt3() const noexcept
 		{
 			return _variant.getInt3();
 		}
 
-		const int4&
+		const math::int4&
 		GL33GraphicsUniformSet::getInt4() const noexcept
 		{
 			return _variant.getInt4();
 		}
 
-		uint1
+		math::uint1
 		GL33GraphicsUniformSet::getUInt() const noexcept
 		{
 			return _variant.getUInt();
 		}
 
-		const uint2&
+		const math::uint2&
 		GL33GraphicsUniformSet::getUInt2() const noexcept
 		{
 			return _variant.getUInt2();
 		}
 
-		const uint3&
+		const math::uint3&
 		GL33GraphicsUniformSet::getUInt3() const noexcept
 		{
 			return _variant.getUInt3();
 		}
 
-		const uint4&
+		const math::uint4&
 		GL33GraphicsUniformSet::getUInt4() const noexcept
 		{
 			return _variant.getUInt4();
@@ -448,127 +448,127 @@ namespace octoon
 			return _variant.getFloat();
 		}
 
-		const float2&
+		const math::float2&
 		GL33GraphicsUniformSet::getFloat2() const noexcept
 		{
 			return _variant.getFloat2();
 		}
 
-		const float3&
+		const math::float3&
 		GL33GraphicsUniformSet::getFloat3() const noexcept
 		{
 			return _variant.getFloat3();
 		}
 
-		const float4&
+		const math::float4&
 		GL33GraphicsUniformSet::getFloat4() const noexcept
 		{
 			return _variant.getFloat4();
 		}
 
-		const float2x2&
+		const math::float2x2&
 		GL33GraphicsUniformSet::getFloat2x2() const noexcept
 		{
 			return _variant.getFloat2x2();
 		}
 
-		const float3x3&
+		const math::float3x3&
 		GL33GraphicsUniformSet::getFloat3x3() const noexcept
 		{
 			return _variant.getFloat3x3();
 		}
 
-		const float4x4&
+		const math::float4x4&
 		GL33GraphicsUniformSet::getFloat4x4() const noexcept
 		{
 			return _variant.getFloat4x4();
 		}
 
-		const std::vector<int1>&
+		const std::vector<math::int1>&
 		GL33GraphicsUniformSet::getIntArray() const noexcept
 		{
 			return _variant.getIntArray();
 		}
 
-		const std::vector<int2>&
+		const std::vector<math::int2>&
 		GL33GraphicsUniformSet::getInt2Array() const noexcept
 		{
 			return _variant.getInt2Array();
 		}
 
-		const std::vector<int3>&
+		const std::vector<math::int3>&
 		GL33GraphicsUniformSet::getInt3Array() const noexcept
 		{
 			return _variant.getInt3Array();
 		}
 
-		const std::vector<int4>&
+		const std::vector<math::int4>&
 		GL33GraphicsUniformSet::getInt4Array() const noexcept
 		{
 			return _variant.getInt4Array();
 		}
 
-		const std::vector<uint1>&
+		const std::vector<math::uint1>&
 		GL33GraphicsUniformSet::getUIntArray() const noexcept
 		{
 			return _variant.getUIntArray();
 		}
 
-		const std::vector<uint2>&
+		const std::vector<math::uint2>&
 		GL33GraphicsUniformSet::getUInt2Array() const noexcept
 		{
 			return _variant.getUInt2Array();
 		}
 
-		const std::vector<uint3>&
+		const std::vector<math::uint3>&
 		GL33GraphicsUniformSet::getUInt3Array() const noexcept
 		{
 			return _variant.getUInt3Array();
 		}
 
-		const std::vector<uint4>&
+		const std::vector<math::uint4>&
 		GL33GraphicsUniformSet::getUInt4Array() const noexcept
 		{
 			return _variant.getUInt4Array();
 		}
 
-		const std::vector<float1>&
+		const std::vector<math::float1>&
 		GL33GraphicsUniformSet::getFloatArray() const noexcept
 		{
 			return _variant.getFloatArray();
 		}
 
-		const std::vector<float2>&
+		const std::vector<math::float2>&
 		GL33GraphicsUniformSet::getFloat2Array() const noexcept
 		{
 			return _variant.getFloat2Array();
 		}
 
-		const std::vector<float3>&
+		const std::vector<math::float3>&
 		GL33GraphicsUniformSet::getFloat3Array() const noexcept
 		{
 			return _variant.getFloat3Array();
 		}
 
-		const std::vector<float4>&
+		const std::vector<math::float4>&
 		GL33GraphicsUniformSet::getFloat4Array() const noexcept
 		{
 			return _variant.getFloat4Array();
 		}
 
-		const std::vector<float2x2>&
+		const std::vector<math::float2x2>&
 		GL33GraphicsUniformSet::getFloat2x2Array() const noexcept
 		{
 			return _variant.getFloat2x2Array();
 		}
 
-		const std::vector<float3x3>&
+		const std::vector<math::float3x3>&
 		GL33GraphicsUniformSet::getFloat3x3Array() const noexcept
 		{
 			return _variant.getFloat3x3Array();
 		}
 
-		const std::vector<float4x4>&
+		const std::vector<math::float4x4>&
 		GL33GraphicsUniformSet::getFloat4x4Array() const noexcept
 		{
 			return _variant.getFloat4x4Array();

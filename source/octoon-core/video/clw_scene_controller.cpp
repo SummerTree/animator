@@ -42,25 +42,25 @@ namespace octoon
 	{
 		switch (desc.getTexFormat())
 		{
-		case hal::GraphicsFormat::B8G8R8SRGB:
-		case hal::GraphicsFormat::B8G8R8SNorm:
-		case hal::GraphicsFormat::B8G8R8UNorm:
-		case hal::GraphicsFormat::R8G8B8SRGB:
-		case hal::GraphicsFormat::R8G8B8SNorm:
-		case hal::GraphicsFormat::R8G8B8UNorm:
+		case GraphicsFormat::B8G8R8SRGB:
+		case GraphicsFormat::B8G8R8SNorm:
+		case GraphicsFormat::B8G8R8UNorm:
+		case GraphicsFormat::R8G8B8SRGB:
+		case GraphicsFormat::R8G8B8SNorm:
+		case GraphicsFormat::R8G8B8UNorm:
 			return align16(desc.getWidth() * desc.getHeight() * sizeof(math::uchar4));
-		case hal::GraphicsFormat::B8G8R8A8SRGB:
-		case hal::GraphicsFormat::B8G8R8A8SNorm:
-		case hal::GraphicsFormat::B8G8R8A8UNorm:
-		case hal::GraphicsFormat::R8G8B8A8SRGB:
-		case hal::GraphicsFormat::R8G8B8A8SNorm:
-		case hal::GraphicsFormat::R8G8B8A8UNorm:
+		case GraphicsFormat::B8G8R8A8SRGB:
+		case GraphicsFormat::B8G8R8A8SNorm:
+		case GraphicsFormat::B8G8R8A8UNorm:
+		case GraphicsFormat::R8G8B8A8SRGB:
+		case GraphicsFormat::R8G8B8A8SNorm:
+		case GraphicsFormat::R8G8B8A8UNorm:
 			return align16(desc.getStreamSize());
-		case hal::GraphicsFormat::R16G16B16A16SFloat:
+		case GraphicsFormat::R16G16B16A16SFloat:
 			return align16(desc.getStreamSize());
-		case hal::GraphicsFormat::R32G32B32A32SFloat:
+		case GraphicsFormat::R32G32B32A32SFloat:
 			return align16(desc.getStreamSize());
-		case hal::GraphicsFormat::R32G32B32SFloat:
+		case GraphicsFormat::R32G32B32SFloat:
 			return align16(desc.getWidth() * desc.getHeight() * sizeof(math::float4));
 		default:
 			assert(false);
@@ -68,29 +68,29 @@ namespace octoon
 		}
 	}
 
-	static ClwScene::TextureFormat GetTextureFormat(hal::GraphicsFormat texture)
+	static ClwScene::TextureFormat GetTextureFormat(GraphicsFormat texture)
 	{
 		switch (texture)
 		{
-		case hal::GraphicsFormat::B8G8R8SRGB:
-		case hal::GraphicsFormat::B8G8R8SNorm:
-		case hal::GraphicsFormat::B8G8R8UNorm:
-		case hal::GraphicsFormat::B8G8R8A8SRGB:
-		case hal::GraphicsFormat::B8G8R8A8SNorm:
-		case hal::GraphicsFormat::B8G8R8A8UNorm:
+		case GraphicsFormat::B8G8R8SRGB:
+		case GraphicsFormat::B8G8R8SNorm:
+		case GraphicsFormat::B8G8R8UNorm:
+		case GraphicsFormat::B8G8R8A8SRGB:
+		case GraphicsFormat::B8G8R8A8SNorm:
+		case GraphicsFormat::B8G8R8A8UNorm:
 			return ClwScene::TextureFormat::BGRA8;
-		case hal::GraphicsFormat::R8G8B8SRGB:
-		case hal::GraphicsFormat::R8G8B8SNorm:
-		case hal::GraphicsFormat::R8G8B8UNorm:
-		case hal::GraphicsFormat::R8G8B8A8SRGB:
-		case hal::GraphicsFormat::R8G8B8A8SNorm:
-		case hal::GraphicsFormat::R8G8B8A8UNorm:
+		case GraphicsFormat::R8G8B8SRGB:
+		case GraphicsFormat::R8G8B8SNorm:
+		case GraphicsFormat::R8G8B8UNorm:
+		case GraphicsFormat::R8G8B8A8SRGB:
+		case GraphicsFormat::R8G8B8A8SNorm:
+		case GraphicsFormat::R8G8B8A8UNorm:
 			return ClwScene::TextureFormat::RGBA8;
-		case hal::GraphicsFormat::R16G16B16A16SFloat:
+		case GraphicsFormat::R16G16B16A16SFloat:
 			return ClwScene::TextureFormat::RGBA16;
-		case hal::GraphicsFormat::R32G32B32SFloat:
+		case GraphicsFormat::R32G32B32SFloat:
 			return ClwScene::TextureFormat::RGBA32;
-		case hal::GraphicsFormat::R32G32B32A32SFloat:
+		case GraphicsFormat::R32G32B32A32SFloat:
 			return ClwScene::TextureFormat::RGBA32;
 		default:
 			assert(false);
@@ -370,12 +370,12 @@ namespace octoon
 		
 		switch (desc.getTexFormat())
 		{
-		case hal::GraphicsFormat::B8G8R8A8SRGB:
-		case hal::GraphicsFormat::B8G8R8A8UNorm:
-		case hal::GraphicsFormat::R8G8B8A8SRGB:
-		case hal::GraphicsFormat::R8G8B8A8UNorm:
-		case hal::GraphicsFormat::R16G16B16A16SFloat:
-		case hal::GraphicsFormat::R32G32B32A32SFloat:
+		case GraphicsFormat::B8G8R8A8SRGB:
+		case GraphicsFormat::B8G8R8A8UNorm:
+		case GraphicsFormat::R8G8B8A8SRGB:
+		case GraphicsFormat::R8G8B8A8UNorm:
+		case GraphicsFormat::R16G16B16A16SFloat:
+		case GraphicsFormat::R32G32B32A32SFloat:
 		{
 			char* data = nullptr;
 			if (texture.map(0, 0, desc.getWidth(), desc.getHeight(), 0, (void**)&data))
@@ -385,12 +385,12 @@ namespace octoon
 			}
 		}
 		break;
-		case hal::GraphicsFormat::B8G8R8SRGB:
-		case hal::GraphicsFormat::B8G8R8SNorm:
-		case hal::GraphicsFormat::B8G8R8UNorm:
-		case hal::GraphicsFormat::R8G8B8SRGB:
-		case hal::GraphicsFormat::R8G8B8SNorm:
-		case hal::GraphicsFormat::R8G8B8UNorm:
+		case GraphicsFormat::B8G8R8SRGB:
+		case GraphicsFormat::B8G8R8SNorm:
+		case GraphicsFormat::B8G8R8UNorm:
+		case GraphicsFormat::R8G8B8SRGB:
+		case GraphicsFormat::R8G8B8SNorm:
+		case GraphicsFormat::R8G8B8UNorm:
 		{
 			math::uchar3* data = nullptr;
 			if (texture.map(0, 0, desc.getWidth(), desc.getHeight(), 0, (void**)&data))
@@ -402,7 +402,7 @@ namespace octoon
 			}
 		}
 		break;
-		case hal::GraphicsFormat::R32G32B32SFloat:
+		case GraphicsFormat::R32G32B32SFloat:
 		{
 			math::float3* data = nullptr;
 			if (texture.map(0, 0, desc.getWidth(), desc.getHeight(), 0, (void**)&data))

@@ -18,36 +18,36 @@ namespace octoon
 		, _enableStencil(false)
 		, _enableBlend(false)
 		, _lineWidth(1.0f)
-		, _cullMode(hal::CullMode::Back)
-		, _polygonMode(hal::PolygonMode::Solid)
-		, _primitiveType(hal::VertexType::TriangleList)
-		, _frontFace(hal::FrontFace::CW)
-		, _colorWriteMask(hal::ColorWriteMask::RGBABit)
-		, _blendOp(hal::BlendOp::Add)
-		, _blendAlphaOp(hal::BlendOp::Add)
-		, _blendSrc(hal::BlendMode::SrcAlpha)
-		, _blendDest(hal::BlendMode::OneMinusSrcAlpha)
-		, _blendAlphaSrc(hal::BlendMode::SrcAlpha)
-		, _blendAlphaDest(hal::BlendMode::OneMinusSrcAlpha)
+		, _cullMode(CullMode::Back)
+		, _polygonMode(PolygonMode::Solid)
+		, _primitiveType(VertexType::TriangleList)
+		, _frontFace(FrontFace::CW)
+		, _colorWriteMask(ColorWriteMask::RGBABit)
+		, _blendOp(BlendOp::Add)
+		, _blendAlphaOp(BlendOp::Add)
+		, _blendSrc(BlendMode::SrcAlpha)
+		, _blendDest(BlendMode::OneMinusSrcAlpha)
+		, _blendAlphaSrc(BlendMode::SrcAlpha)
+		, _blendAlphaDest(BlendMode::OneMinusSrcAlpha)
 		, _depthMin(0.0)
 		, _depthMax(1.0)
 		, _depthSlopeScaleBias(0)
 		, _depthBias(0)
-		, _depthFunc(hal::CompareFunction::Lequal)
+		, _depthFunc(CompareFunction::Lequal)
 		, _stencilFrontRef(0)
 		, _stencilBackRef(0)
 		, _stencilFrontReadMask(0xFFFFFFFF)
 		, _stencilFrontWriteMask(0xFFFFFFFF)
 		, _stencilBackReadMask(0xFFFFFFFF)
 		, _stencilBackWriteMask(0xFFFFFFFF)
-		, _stencilFrontFunc(hal::CompareFunction::Always)
-		, _stencilBackFunc(hal::CompareFunction::Always)
-		, _stencilFrontFail(hal::StencilOp::Keep)
-		, _stencilFrontZFail(hal::StencilOp::Keep)
-		, _stencilFrontPass(hal::StencilOp::Keep)
-		, _stencilBackFail(hal::StencilOp::Keep)
-		, _stencilBackZFail(hal::StencilOp::Keep)
-		, _stencilBackPass(hal::StencilOp::Keep)
+		, _stencilFrontFunc(CompareFunction::Always)
+		, _stencilBackFunc(CompareFunction::Always)
+		, _stencilFrontFail(StencilOp::Keep)
+		, _stencilFrontZFail(StencilOp::Keep)
+		, _stencilFrontPass(StencilOp::Keep)
+		, _stencilBackFail(StencilOp::Keep)
+		, _stencilBackZFail(StencilOp::Keep)
+		, _stencilBackPass(StencilOp::Keep)
 	{
 	}
 
@@ -56,25 +56,25 @@ namespace octoon
 	}
 
 	void
-	RenderStateDesc::setCullMode(hal::CullMode mode) noexcept
+	RenderStateDesc::setCullMode(CullMode mode) noexcept
 	{
 		_cullMode = mode;
 	}
 
 	void
-	RenderStateDesc::setPolygonMode(hal::PolygonMode mode) noexcept
+	RenderStateDesc::setPolygonMode(PolygonMode mode) noexcept
 	{
 		_polygonMode = mode;
 	}
 
 	void
-	RenderStateDesc::setPrimitiveType(hal::VertexType type) noexcept
+	RenderStateDesc::setPrimitiveType(VertexType type) noexcept
 	{
 		_primitiveType = type;
 	}
 
 	void
-	RenderStateDesc::setFrontFace(hal::FrontFace face) noexcept
+	RenderStateDesc::setFrontFace(FrontFace face) noexcept
 	{
 		_frontFace = face;
 	}
@@ -116,43 +116,43 @@ namespace octoon
 	}
 
 	void
-	RenderStateDesc::setBlendOp(hal::BlendOp blendOp) noexcept
+	RenderStateDesc::setBlendOp(BlendOp blendOp) noexcept
 	{
 		_blendOp = blendOp;
 	}
 
 	void
-	RenderStateDesc::setBlendSrc(hal::BlendMode factor) noexcept
+	RenderStateDesc::setBlendSrc(BlendMode factor) noexcept
 	{
 		_blendSrc = factor;
 	}
 
 	void
-	RenderStateDesc::setBlendDest(hal::BlendMode factor) noexcept
+	RenderStateDesc::setBlendDest(BlendMode factor) noexcept
 	{
 		_blendDest = factor;
 	}
 
 	void
-	RenderStateDesc::setBlendAlphaOp(hal::BlendOp blendOp) noexcept
+	RenderStateDesc::setBlendAlphaOp(BlendOp blendOp) noexcept
 	{
 		_blendAlphaOp = blendOp;
 	}
 
 	void
-	RenderStateDesc::setBlendAlphaSrc(hal::BlendMode factor) noexcept
+	RenderStateDesc::setBlendAlphaSrc(BlendMode factor) noexcept
 	{
 		_blendAlphaSrc = factor;
 	}
 
 	void
-	RenderStateDesc::setBlendAlphaDest(hal::BlendMode factor) noexcept
+	RenderStateDesc::setBlendAlphaDest(BlendMode factor) noexcept
 	{
 		_blendAlphaDest = factor;
 	}
 
 	void
-	RenderStateDesc::setColorWriteMask(hal::ColorWriteMaskFlags mask) noexcept
+	RenderStateDesc::setColorWriteMask(ColorWriteMaskFlags mask) noexcept
 	{
 		_colorWriteMask = mask;
 	}
@@ -188,7 +188,7 @@ namespace octoon
 	}
 
 	void
-	RenderStateDesc::setDepthFunc(hal::CompareFunction func) noexcept
+	RenderStateDesc::setDepthFunc(CompareFunction func) noexcept
 	{
 		_depthFunc = func;
 	}
@@ -236,7 +236,7 @@ namespace octoon
 	}
 
 	void
-	RenderStateDesc::setStencilFrontFunc(hal::CompareFunction func) noexcept
+	RenderStateDesc::setStencilFrontFunc(CompareFunction func) noexcept
 	{
 		_stencilFrontFunc = func;
 	}
@@ -254,19 +254,19 @@ namespace octoon
 	}
 
 	void
-	RenderStateDesc::setStencilFrontFail(hal::StencilOp stencilOp) noexcept
+	RenderStateDesc::setStencilFrontFail(StencilOp stencilOp) noexcept
 	{
 		_stencilFrontFail = stencilOp;
 	}
 
 	void
-	RenderStateDesc::setStencilFrontZFail(hal::StencilOp stencilOp) noexcept
+	RenderStateDesc::setStencilFrontZFail(StencilOp stencilOp) noexcept
 	{
 		_stencilFrontZFail = stencilOp;
 	}
 
 	void
-	RenderStateDesc::setStencilFrontPass(hal::StencilOp stencilOp) noexcept
+	RenderStateDesc::setStencilFrontPass(StencilOp stencilOp) noexcept
 	{
 		_stencilFrontPass = stencilOp;
 	}
@@ -278,7 +278,7 @@ namespace octoon
 	}
 
 	void
-	RenderStateDesc::setStencilBackFunc(hal::CompareFunction func) noexcept
+	RenderStateDesc::setStencilBackFunc(CompareFunction func) noexcept
 	{
 		_stencilBackFunc = func;
 	}
@@ -296,42 +296,42 @@ namespace octoon
 	}
 
 	void
-	RenderStateDesc::setStencilBackFail(hal::StencilOp stencilOp) noexcept
+	RenderStateDesc::setStencilBackFail(StencilOp stencilOp) noexcept
 	{
 		_stencilBackFail = stencilOp;
 	}
 
 	void
-	RenderStateDesc::setStencilBackZFail(hal::StencilOp stencilOp) noexcept
+	RenderStateDesc::setStencilBackZFail(StencilOp stencilOp) noexcept
 	{
 		_stencilBackZFail = stencilOp;
 	}
 
 	void
-	RenderStateDesc::setStencilBackPass(hal::StencilOp stencilOp) noexcept
+	RenderStateDesc::setStencilBackPass(StencilOp stencilOp) noexcept
 	{
 		_stencilBackPass = stencilOp;
 	}
 
-	hal::CullMode
+	CullMode
 	RenderStateDesc::getCullMode() const noexcept
 	{
 		return _cullMode;
 	}
 
-	hal::PolygonMode
+	PolygonMode
 	RenderStateDesc::getPolygonMode() const noexcept
 	{
 		return _polygonMode;
 	}
 
-	hal::VertexType
+	VertexType
 	RenderStateDesc::getPrimitiveType() const noexcept
 	{
 		return _primitiveType;
 	}
 
-	hal::FrontFace
+	FrontFace
 	RenderStateDesc::getFrontFace() const noexcept
 	{
 		return _frontFace;
@@ -373,43 +373,43 @@ namespace octoon
 		return _enableBlend;
 	}
 
-	hal::BlendOp
+	BlendOp
 	RenderStateDesc::getBlendOp() const noexcept
 	{
 		return _blendOp;
 	}
 
-	hal::BlendMode
+	BlendMode
 	RenderStateDesc::getBlendSrc() const noexcept
 	{
 		return _blendSrc;
 	}
 
-	hal::BlendMode
+	BlendMode
 	RenderStateDesc::getBlendDest() const noexcept
 	{
 		return _blendDest;
 	}
 
-	hal::BlendOp
+	BlendOp
 	RenderStateDesc::getBlendAlphaOp() const noexcept
 	{
 		return _blendAlphaOp;
 	}
 
-	hal::BlendMode
+	BlendMode
 	RenderStateDesc::getBlendAlphaSrc() const noexcept
 	{
 		return _blendAlphaSrc;
 	}
 
-	hal::BlendMode
+	BlendMode
 	RenderStateDesc::getBlendAlphaDest() const noexcept
 	{
 		return _blendAlphaDest;
 	}
 
-	hal::ColorWriteMaskFlags
+	ColorWriteMaskFlags
 	RenderStateDesc::getColorWriteMask() const noexcept
 	{
 		return _colorWriteMask;
@@ -445,7 +445,7 @@ namespace octoon
 		return _depthMax;
 	}
 
-	hal::CompareFunction
+	CompareFunction
 	RenderStateDesc::getDepthFunc() const noexcept
 	{
 		return _depthFunc;
@@ -493,7 +493,7 @@ namespace octoon
 		return _stencilFrontRef;
 	}
 
-	hal::CompareFunction
+	CompareFunction
 	RenderStateDesc::getStencilFrontFunc() const noexcept
 	{
 		return _stencilFrontFunc;
@@ -511,19 +511,19 @@ namespace octoon
 		return _stencilFrontWriteMask;
 	}
 
-	hal::StencilOp
+	StencilOp
 	RenderStateDesc::getStencilFrontFail() const noexcept
 	{
 		return _stencilFrontFail;
 	}
 
-	hal::StencilOp
+	StencilOp
 	RenderStateDesc::getStencilFrontZFail() const noexcept
 	{
 		return _stencilFrontZFail;
 	}
 
-	hal::StencilOp
+	StencilOp
 	RenderStateDesc::getStencilFrontPass() const noexcept
 	{
 		return _stencilFrontPass;
@@ -535,7 +535,7 @@ namespace octoon
 		return _stencilBackRef;
 	}
 
-	hal::CompareFunction
+	CompareFunction
 	RenderStateDesc::getStencilBackFunc() const noexcept
 	{
 		return _stencilBackFunc;
@@ -553,19 +553,19 @@ namespace octoon
 		return _stencilBackWriteMask;
 	}
 
-	hal::StencilOp
+	StencilOp
 	RenderStateDesc::getStencilBackFail() const noexcept
 	{
 		return _stencilBackFail;
 	}
 
-	hal::StencilOp
+	StencilOp
 	RenderStateDesc::getStencilBackZFail() const noexcept
 	{
 		return _stencilBackZFail;
 	}
 
-	hal::StencilOp
+	StencilOp
 	RenderStateDesc::getStencilBackPass() const noexcept
 	{
 		return _stencilBackPass;

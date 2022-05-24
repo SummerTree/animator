@@ -45,7 +45,7 @@ namespace octoon
 		this->setColor(color);
 		this->setOpacity(1.0f);
 		this->setDepthEnable(false);
-		this->setPrimitiveType(octoon::hal::VertexType::LineList);
+		this->setPrimitiveType(octoon::VertexType::LineList);
 		this->setShader(std::make_shared<Shader>(line_vert, line_frag));
 	}
 

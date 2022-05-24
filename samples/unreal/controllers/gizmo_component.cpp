@@ -15,10 +15,10 @@ namespace unreal
 			this->setColor(this->color_);
 			this->setDepthEnable(false);
 			this->setDepthWriteEnable(false);
-			this->setCullMode(octoon::hal::CullMode::Off);
+			this->setCullMode(octoon::CullMode::Off);
 			this->setBlendEnable(true);
-			this->setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
-			this->setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
+			this->setBlendSrc(octoon::BlendMode::SrcAlpha);
+			this->setBlendDest(octoon::BlendMode::OneMinusSrcAlpha);
 			this->setOpacity(this->opacity_);
 		}
 
@@ -51,7 +51,7 @@ namespace unreal
 		auto planeGeometry = octoon::PlaneMesh::create(50, 50);
 
 		auto material = std::make_shared<octoon::MeshBasicMaterial>();
-		material->setCullMode(octoon::hal::CullMode::Off);
+		material->setCullMode(octoon::CullMode::Off);
 
 		auto XY = octoon::GameObject::create("XY");
 		XY->addComponent<octoon::MeshFilterComponent>(planeGeometry);

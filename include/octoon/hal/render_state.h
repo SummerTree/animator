@@ -11,31 +11,31 @@ namespace octoon
 		RenderStateDesc() noexcept;
 		~RenderStateDesc() noexcept;
 
-		void setCullMode(hal::CullMode mode) noexcept;
-		void setPolygonMode(hal::PolygonMode mode) noexcept;
-		void setPrimitiveType(hal::VertexType type) noexcept;
-		void setFrontFace(hal::FrontFace face) noexcept;
+		void setCullMode(CullMode mode) noexcept;
+		void setPolygonMode(PolygonMode mode) noexcept;
+		void setPrimitiveType(VertexType type) noexcept;
+		void setFrontFace(FrontFace face) noexcept;
 		void setScissorTestEnable(bool enable) noexcept;
 		void setLinear2sRGBEnable(bool enable) noexcept;
 		void setMultisampleEnable(bool enable) noexcept;
 		void setRasterizerDiscardEnable(bool enable) noexcept;
 		void setLineWidth(float width) noexcept;
-		void setColorWriteMask(hal::ColorWriteMaskFlags mask) noexcept;
+		void setColorWriteMask(ColorWriteMaskFlags mask) noexcept;
 
 		void setBlendEnable(bool enable) noexcept;
-		void setBlendOp(hal::BlendOp blendop) noexcept;
-		void setBlendSrc(hal::BlendMode factor) noexcept;
-		void setBlendDest(hal::BlendMode factor) noexcept;
-		void setBlendAlphaOp(hal::BlendOp blendop) noexcept;
-		void setBlendAlphaSrc(hal::BlendMode factor) noexcept;
-		void setBlendAlphaDest(hal::BlendMode factor) noexcept;
+		void setBlendOp(BlendOp blendop) noexcept;
+		void setBlendSrc(BlendMode factor) noexcept;
+		void setBlendDest(BlendMode factor) noexcept;
+		void setBlendAlphaOp(BlendOp blendop) noexcept;
+		void setBlendAlphaSrc(BlendMode factor) noexcept;
+		void setBlendAlphaDest(BlendMode factor) noexcept;
 
 		void setDepthEnable(bool enable) noexcept;
 		void setDepthWriteEnable(bool enable) noexcept;
 		void setDepthBoundsEnable(bool enable) noexcept;
 		void setDepthMin(float mix) noexcept;
 		void setDepthMax(float max) noexcept;
-		void setDepthFunc(hal::CompareFunction func) noexcept;
+		void setDepthFunc(CompareFunction func) noexcept;
 		void setDepthBiasEnable(bool enable) noexcept;
 		void setDepthBias(float bias) noexcept;
 		void setDepthSlopeScaleBias(float bias) noexcept;
@@ -44,38 +44,38 @@ namespace octoon
 
 		void setStencilEnable(bool enable) noexcept;
 		void setStencilFrontRef(std::uint32_t ref) noexcept;
-		void setStencilFrontFunc(hal::CompareFunction func) noexcept;
+		void setStencilFrontFunc(CompareFunction func) noexcept;
 		void setStencilFrontReadMask(std::uint32_t mask) noexcept;
 		void setStencilFrontWriteMask(std::uint32_t mask) noexcept;
-		void setStencilFrontFail(hal::StencilOp stencilOp) noexcept;
-		void setStencilFrontZFail(hal::StencilOp stencilOp) noexcept;
-		void setStencilFrontPass(hal::StencilOp stencilOp) noexcept;
+		void setStencilFrontFail(StencilOp stencilOp) noexcept;
+		void setStencilFrontZFail(StencilOp stencilOp) noexcept;
+		void setStencilFrontPass(StencilOp stencilOp) noexcept;
 		void setStencilBackRef(std::uint32_t ref) noexcept;
-		void setStencilBackFunc(hal::CompareFunction func) noexcept;
+		void setStencilBackFunc(CompareFunction func) noexcept;
 		void setStencilBackReadMask(std::uint32_t mask) noexcept;
 		void setStencilBackWriteMask(std::uint32_t mask) noexcept;
-		void setStencilBackFail(hal::StencilOp stencilOp) noexcept;
-		void setStencilBackZFail(hal::StencilOp stencilOp) noexcept;
-		void setStencilBackPass(hal::StencilOp stencilOp) noexcept;
+		void setStencilBackFail(StencilOp stencilOp) noexcept;
+		void setStencilBackZFail(StencilOp stencilOp) noexcept;
+		void setStencilBackPass(StencilOp stencilOp) noexcept;
 
-		hal::CullMode getCullMode() const noexcept;
-		hal::PolygonMode getPolygonMode() const noexcept;
-		hal::VertexType getPrimitiveType() const noexcept;
-		hal::FrontFace getFrontFace() const noexcept;
+		CullMode getCullMode() const noexcept;
+		PolygonMode getPolygonMode() const noexcept;
+		VertexType getPrimitiveType() const noexcept;
+		FrontFace getFrontFace() const noexcept;
 		bool getScissorTestEnable() const noexcept;
 		bool getLinear2sRGBEnable() const noexcept;
 		bool getMultisampleEnable() const noexcept;
 		bool getRasterizerDiscardEnable() const noexcept;
 		float getLineWidth() const noexcept;
-		hal::ColorWriteMaskFlags getColorWriteMask() const noexcept;
+		ColorWriteMaskFlags getColorWriteMask() const noexcept;
 
 		bool getBlendEnable() const noexcept;
-		hal::BlendOp getBlendOp() const noexcept;
-		hal::BlendMode getBlendSrc() const noexcept;
-		hal::BlendMode getBlendDest() const noexcept;
-		hal::BlendOp getBlendAlphaOp() const noexcept;
-		hal::BlendMode getBlendAlphaSrc() const noexcept;
-		hal::BlendMode getBlendAlphaDest() const noexcept;
+		BlendOp getBlendOp() const noexcept;
+		BlendMode getBlendSrc() const noexcept;
+		BlendMode getBlendDest() const noexcept;
+		BlendOp getBlendAlphaOp() const noexcept;
+		BlendMode getBlendAlphaSrc() const noexcept;
+		BlendMode getBlendAlphaDest() const noexcept;
 
 		bool getDepthEnable() const noexcept;
 		bool getDepthWriteEnable() const noexcept;
@@ -87,23 +87,23 @@ namespace octoon
 		float getDepthMax() const noexcept;
 		float getDepthBias() const noexcept;
 		float getDepthSlopeScaleBias() const noexcept;
-		hal::CompareFunction getDepthFunc() const noexcept;
+		CompareFunction getDepthFunc() const noexcept;
 
 		bool getStencilEnable() const noexcept;
-		hal::CompareFunction getStencilFrontFunc() const noexcept;
+		CompareFunction getStencilFrontFunc() const noexcept;
 		std::uint32_t getStencilFrontRef() const noexcept;
 		std::uint32_t getStencilFrontReadMask() const noexcept;
 		std::uint32_t getStencilFrontWriteMask() const noexcept;
-		hal::StencilOp getStencilFrontFail() const noexcept;
-		hal::StencilOp getStencilFrontZFail() const noexcept;
-		hal::StencilOp getStencilFrontPass() const noexcept;
-		hal::CompareFunction getStencilBackFunc() const noexcept;
+		StencilOp getStencilFrontFail() const noexcept;
+		StencilOp getStencilFrontZFail() const noexcept;
+		StencilOp getStencilFrontPass() const noexcept;
+		CompareFunction getStencilBackFunc() const noexcept;
 		std::uint32_t getStencilBackRef() const noexcept;
 		std::uint32_t getStencilBackReadMask() const noexcept;
 		std::uint32_t getStencilBackWriteMask() const noexcept;
-		hal::StencilOp getStencilBackFail() const noexcept;
-		hal::StencilOp getStencilBackZFail() const noexcept;
-		hal::StencilOp getStencilBackPass() const noexcept;
+		StencilOp getStencilBackFail() const noexcept;
+		StencilOp getStencilBackZFail() const noexcept;
+		StencilOp getStencilBackPass() const noexcept;
 
 	private:
 		bool _enableScissorTest;
@@ -119,44 +119,44 @@ namespace octoon
 		bool _enableStencil;
 		bool _enableBlend;
 
-		hal::BlendOp _blendOp;
-		hal::BlendOp _blendAlphaOp;
+		BlendOp _blendOp;
+		BlendOp _blendAlphaOp;
 
-		hal::BlendMode _blendSrc;
-		hal::BlendMode _blendDest;
-		hal::BlendMode _blendAlphaSrc;
-		hal::BlendMode _blendAlphaDest;
+		BlendMode _blendSrc;
+		BlendMode _blendDest;
+		BlendMode _blendAlphaSrc;
+		BlendMode _blendAlphaDest;
 
-		hal::ColorWriteMaskFlags _colorWriteMask;
+		ColorWriteMaskFlags _colorWriteMask;
 
 		float _lineWidth;
 
-		hal::CullMode    _cullMode;
-		hal::PolygonMode _polygonMode;
-		hal::VertexType  _primitiveType;
-		hal::FrontFace   _frontFace;
+		CullMode    _cullMode;
+		PolygonMode _polygonMode;
+		VertexType  _primitiveType;
+		FrontFace   _frontFace;
 
 		float _depthMin;
 		float _depthMax;
 		float _depthBias;
 		float _depthSlopeScaleBias;
-		hal::CompareFunction _depthFunc;
+		CompareFunction _depthFunc;
 
 		std::uint32_t _stencilFrontRef;
 		std::uint32_t _stencilFrontReadMask;
 		std::uint32_t _stencilFrontWriteMask;
-		hal::StencilOp _stencilFrontFail;
-		hal::StencilOp _stencilFrontZFail;
-		hal::StencilOp _stencilFrontPass;
-		hal::CompareFunction _stencilFrontFunc;
+		StencilOp _stencilFrontFail;
+		StencilOp _stencilFrontZFail;
+		StencilOp _stencilFrontPass;
+		CompareFunction _stencilFrontFunc;
 
 		std::uint32_t _stencilBackRef;
 		std::uint32_t _stencilBackReadMask;
 		std::uint32_t _stencilBackWriteMask;
-		hal::StencilOp _stencilBackFail;
-		hal::StencilOp _stencilBackZFail;
-		hal::StencilOp _stencilBackPass;
-		hal::CompareFunction _stencilBackFunc;
+		StencilOp _stencilBackFail;
+		StencilOp _stencilBackZFail;
+		StencilOp _stencilBackPass;
+		CompareFunction _stencilBackFunc;
 	};
 
 	class OCTOON_EXPORT RenderState : public GraphicsResource

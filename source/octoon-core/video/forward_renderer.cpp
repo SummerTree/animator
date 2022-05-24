@@ -27,7 +27,7 @@
 
 namespace octoon
 {
-	ForwardRenderer::ForwardRenderer(const hal::GraphicsContextPtr& context) noexcept
+	ForwardRenderer::ForwardRenderer(const GraphicsContextPtr& context) noexcept
 		: width_(0)
 		, height_(0)
 		, framebufferWidth_(0)
@@ -64,7 +64,7 @@ namespace octoon
 		h = framebufferHeight_;
 	}
 
-	const hal::GraphicsFramebufferPtr&
+	const GraphicsFramebufferPtr&
 	ForwardRenderer::getFramebuffer() const noexcept
 	{
 		return this->edgeFramebuffer_;
@@ -79,9 +79,9 @@ namespace octoon
 		this->width_ = w;
 		this->height_ = h;
 
-		hal::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(0, hal::GraphicsImageLayout::ColorAttachmentOptimal, hal::GraphicsFormat::R32G32B32SFloat));
-		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(1, hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, hal::GraphicsFormat::X8_D24UNormPack32));
+		GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+		framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R32G32B32SFloat));
+		framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(1, GraphicsImageLayout::DepthStencilAttachmentOptimal, GraphicsFormat::X8_D24UNormPack32));
 
 		try
 		{
@@ -89,8 +89,8 @@ namespace octoon
 			colorTextureDesc.setWidth(w);
 			colorTextureDesc.setHeight(h);
 			colorTextureDesc.setTexMultisample(4);
-			colorTextureDesc.setTexDim(hal::TextureDimension::Texture2DMultisample);
-			colorTextureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
+			colorTextureDesc.setTexDim(TextureDimension::Texture2DMultisample);
+			colorTextureDesc.setTexFormat(GraphicsFormat::R32G32B32SFloat);
 			edgeTexture_ = context->createTexture(colorTextureDesc);
 			if (!edgeTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
@@ -99,18 +99,18 @@ namespace octoon
 			depthTextureDesc.setWidth(w);
 			depthTextureDesc.setHeight(h);
 			depthTextureDesc.setTexMultisample(4);
-			depthTextureDesc.setTexDim(hal::TextureDimension::Texture2DMultisample);
-			depthTextureDesc.setTexFormat(hal::GraphicsFormat::X8_D24UNormPack32);
+			depthTextureDesc.setTexDim(TextureDimension::Texture2DMultisample);
+			depthTextureDesc.setTexFormat(GraphicsFormat::X8_D24UNormPack32);
 			depthTexture_ = context->createTexture(depthTextureDesc);
 			if (!depthTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
-			hal::GraphicsFramebufferDesc framebufferDesc;
+			GraphicsFramebufferDesc framebufferDesc;
 			framebufferDesc.setWidth(w);
 			framebufferDesc.setHeight(h);
 			framebufferDesc.setFramebufferLayout(context->createFramebufferLayout(framebufferLayoutDesc));
-			framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture_, 0, 0));
-			framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(edgeTexture_, 0, 0));
+			framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture_, 0, 0));
+			framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(edgeTexture_, 0, 0));
 
 			edgeFramebuffer_ = context->createFramebuffer(framebufferDesc);
 			if (!edgeFramebuffer_)
@@ -119,8 +119,8 @@ namespace octoon
 			GraphicsTextureDesc colorTextureDesc2;
 			colorTextureDesc2.setWidth(w);
 			colorTextureDesc2.setHeight(h);
-			colorTextureDesc2.setTexDim(hal::TextureDimension::Texture2D);
-			colorTextureDesc2.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
+			colorTextureDesc2.setTexDim(TextureDimension::Texture2D);
+			colorTextureDesc2.setTexFormat(GraphicsFormat::R32G32B32SFloat);
 			colorTexture_ = context->createTexture(colorTextureDesc2);
 			if (!colorTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
@@ -128,18 +128,18 @@ namespace octoon
 			GraphicsTextureDesc depthTextureDesc2;
 			depthTextureDesc2.setWidth(w);
 			depthTextureDesc2.setHeight(h);
-			depthTextureDesc2.setTexDim(hal::TextureDimension::Texture2D);
-			depthTextureDesc2.setTexFormat(hal::GraphicsFormat::X8_D24UNormPack32);
+			depthTextureDesc2.setTexDim(TextureDimension::Texture2D);
+			depthTextureDesc2.setTexFormat(GraphicsFormat::X8_D24UNormPack32);
 			depthTexture2_ = context->createTexture(depthTextureDesc2);
 			if (!depthTexture2_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
-			hal::GraphicsFramebufferDesc framebufferDesc2;
+			GraphicsFramebufferDesc framebufferDesc2;
 			framebufferDesc2.setWidth(w);
 			framebufferDesc2.setHeight(h);
 			framebufferDesc2.setFramebufferLayout(context->createFramebufferLayout(framebufferLayoutDesc));
-			framebufferDesc2.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture2_, 0, 0));
-			framebufferDesc2.addColorAttachment(hal::GraphicsAttachmentBinding(colorTexture_, 0, 0));
+			framebufferDesc2.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture2_, 0, 0));
+			framebufferDesc2.addColorAttachment(GraphicsAttachmentBinding(colorTexture_, 0, 0));
 
 			fbo2_ = context->createFramebuffer(framebufferDesc2);
 			if (!fbo2_)
@@ -150,7 +150,7 @@ namespace octoon
 			GraphicsTextureDesc colorTextureDesc;
 			colorTextureDesc.setWidth(w);
 			colorTextureDesc.setHeight(h);
-			colorTextureDesc.setTexFormat(hal::GraphicsFormat::R32G32B32SFloat);
+			colorTextureDesc.setTexFormat(GraphicsFormat::R32G32B32SFloat);
 			edgeTexture_ = context->createTexture(colorTextureDesc);
 			if (!edgeTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
@@ -158,17 +158,17 @@ namespace octoon
 			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setWidth(w);
 			depthTextureDesc.setHeight(h);
-			depthTextureDesc.setTexFormat(hal::GraphicsFormat::X8_D24UNormPack32);
+			depthTextureDesc.setTexFormat(GraphicsFormat::X8_D24UNormPack32);
 			depthTexture_ = context->createTexture(depthTextureDesc);
 			if (!depthTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
-			hal::GraphicsFramebufferDesc framebufferDesc;
+			GraphicsFramebufferDesc framebufferDesc;
 			framebufferDesc.setWidth(w);
 			framebufferDesc.setHeight(h);
 			framebufferDesc.setFramebufferLayout(context->createFramebufferLayout(framebufferLayoutDesc));
-			framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture_, 0, 0));
-			framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(edgeTexture_, 0, 0));
+			framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture_, 0, 0));
+			framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(edgeTexture_, 0, 0));
 
 			edgeFramebuffer_ = context->createFramebuffer(framebufferDesc);
 			if (!edgeFramebuffer_)
@@ -210,19 +210,19 @@ namespace octoon
 				auto viewport = math::float4((float)vp.x, (float)vp.y, (float)vp.width, (float)vp.height);
 
 				c.context->configureTarget(nullptr);
-				c.context->configureClear(hal::ClearFlagBits::AllBit, math::float4::Zero, 1.0f, 0);
+				c.context->configureClear(ClearFlagBits::AllBit, math::float4::Zero, 1.0f, 0);
 
 				if (!fbo->getFramebufferDesc().getColorAttachments().empty())
 				{
 					auto texture = fbo->getFramebufferDesc().getColorAttachment().getBindingTexture();
-					if (texture->getTextureDesc().getTexDim() == hal::TextureDimension::Texture2DMultisample)
+					if (texture->getTextureDesc().getTexDim() == TextureDimension::Texture2DMultisample)
 					{
 						if (fbo == edgeFramebuffer_)
 						{
 							c.context->blitFramebuffer(fbo, viewport, fbo2_, viewport);
-							c.context->discardFramebuffer(fbo, hal::ClearFlagBits::AllBit);
+							c.context->discardFramebuffer(fbo, ClearFlagBits::AllBit);
 							c.context->blitFramebuffer(fbo2_, viewport, nullptr, viewport);
-							c.context->discardFramebuffer(fbo2_, hal::ClearFlagBits::AllBit);
+							c.context->discardFramebuffer(fbo2_, ClearFlagBits::AllBit);
 						}
 					}
 					else
@@ -236,7 +236,7 @@ namespace octoon
 						float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
 
 						c.context->blitFramebuffer(fbo, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
-						c.context->discardFramebuffer(fbo, hal::ClearFlagBits::AllBit);
+						c.context->discardFramebuffer(fbo, ClearFlagBits::AllBit);
 					}
 				}
 			}

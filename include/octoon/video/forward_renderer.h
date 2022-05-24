@@ -14,13 +14,13 @@ namespace octoon
 	class OCTOON_EXPORT ForwardRenderer final
 	{
 	public:
-		ForwardRenderer(const hal::GraphicsContextPtr& context) noexcept;
+		ForwardRenderer(const GraphicsContextPtr& context) noexcept;
 		virtual ~ForwardRenderer() noexcept;
 
 		void render(const std::shared_ptr<RenderScene>& scene);
 		void setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept;
 		void getFramebufferSize(std::uint32_t& w, std::uint32_t& h) const noexcept;
-		const hal::GraphicsFramebufferPtr& getFramebuffer() const noexcept;
+		const GraphicsFramebufferPtr& getFramebuffer() const noexcept;
 
 	private:
 		void prepareScene(const std::shared_ptr<RenderScene>& scene) noexcept;
@@ -51,8 +51,8 @@ namespace octoon
 		std::unique_ptr<DrawSkyboxPass> drawSkyboxPass_;
 		std::unique_ptr<DrawSelectorPass> drawSelectorPass_;
 
-		hal::GraphicsFramebufferPtr edgeFramebuffer_;
-		hal::GraphicsFramebufferPtr fbo2_;
+		GraphicsFramebufferPtr edgeFramebuffer_;
+		GraphicsFramebufferPtr fbo2_;
 		std::shared_ptr<GraphicsTexture> edgeTexture_;
 		std::shared_ptr<GraphicsTexture> depthTexture_;
 		std::shared_ptr<GraphicsTexture> colorTexture_;

@@ -13,20 +13,20 @@ namespace octoon
 	{
 	public:
 		ScriptableRenderMaterial() noexcept;
-		ScriptableRenderMaterial(hal::GraphicsContextPtr&context, const MaterialPtr& material, const RenderingData& scene) noexcept;
+		ScriptableRenderMaterial(GraphicsContextPtr&context, const MaterialPtr& material, const RenderingData& scene) noexcept;
 		virtual ~ScriptableRenderMaterial() noexcept;
 
-		const hal::GraphicsPipelinePtr& getPipeline() const noexcept;
-		const hal::GraphicsDescriptorSetPtr& getDescriptorSet() const noexcept;
+		const GraphicsPipelinePtr& getPipeline() const noexcept;
+		const GraphicsDescriptorSetPtr& getDescriptorSet() const noexcept;
 
 		void update(const RenderingData& context, const Camera& camera, const Geometry& geometry) noexcept;
 
 	private:
 		void updateParameters(bool force = false) noexcept;
-		void updateMaterial(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept(false);
+		void updateMaterial(GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept(false);
 
-		void setupProgram(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene);
-		void setupRenderState(hal::GraphicsContextPtr& context, const MaterialPtr& material);
+		void setupProgram(GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene);
+		void setupRenderState(GraphicsContextPtr& context, const MaterialPtr& material);
 
 		void parseIncludes(std::string& shader);
 		void replaceLightNums(std::string& shader, const RenderingData& parameters);
@@ -38,31 +38,31 @@ namespace octoon
 	private:
 		MaterialPtr material_;
 
-		hal::GraphicsProgramPtr program_;
-		hal::GraphicsPipelinePtr pipeline_;
+		GraphicsProgramPtr program_;
+		GraphicsPipelinePtr pipeline_;
 		std::shared_ptr<RenderState> renderState_;
-		hal::GraphicsDescriptorSetPtr descriptorSet_;
+		GraphicsDescriptorSetPtr descriptorSet_;
 
-		hal::GraphicsUniformSetPtr ambientLightColor_;
-		hal::GraphicsUniformSetPtr directionalLights_;
-		hal::GraphicsUniformSetPtr pointLights_;
-		hal::GraphicsUniformSetPtr spotLights_;
-		hal::GraphicsUniformSetPtr rectAreaLights_;
-		hal::GraphicsUniformSetPtr hemisphereLights_;
-		hal::GraphicsUniformSetPtr flipEnvMap_;
-		hal::GraphicsUniformSetPtr envMap_;
-		hal::GraphicsUniformSetPtr envMapIntensity_;
-		hal::GraphicsUniformSetPtr envMapOffset_;
+		GraphicsUniformSetPtr ambientLightColor_;
+		GraphicsUniformSetPtr directionalLights_;
+		GraphicsUniformSetPtr pointLights_;
+		GraphicsUniformSetPtr spotLights_;
+		GraphicsUniformSetPtr rectAreaLights_;
+		GraphicsUniformSetPtr hemisphereLights_;
+		GraphicsUniformSetPtr flipEnvMap_;
+		GraphicsUniformSetPtr envMap_;
+		GraphicsUniformSetPtr envMapIntensity_;
+		GraphicsUniformSetPtr envMapOffset_;
 
-		hal::GraphicsUniformSetPtr viewMatrix_;
-		hal::GraphicsUniformSetPtr viewProjMatrix_;
-		hal::GraphicsUniformSetPtr normalMatrix_;
-		hal::GraphicsUniformSetPtr modelMatrix_;
-		hal::GraphicsUniformSetPtr modelViewMatrix_;
-		hal::GraphicsUniformSetPtr projectionMatrix_;
+		GraphicsUniformSetPtr viewMatrix_;
+		GraphicsUniformSetPtr viewProjMatrix_;
+		GraphicsUniformSetPtr normalMatrix_;
+		GraphicsUniformSetPtr modelMatrix_;
+		GraphicsUniformSetPtr modelViewMatrix_;
+		GraphicsUniformSetPtr projectionMatrix_;
 
-		std::vector<hal::GraphicsUniformSetPtr> directionalShadowMaps_;
-		std::vector<hal::GraphicsUniformSetPtr> directionalShadowMatrixs_;
+		std::vector<GraphicsUniformSetPtr> directionalShadowMaps_;
+		std::vector<GraphicsUniformSetPtr> directionalShadowMatrixs_;
 	};
 }
 

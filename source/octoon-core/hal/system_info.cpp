@@ -125,25 +125,25 @@ namespace octoon
 	}
 
 	bool
-	SystemInfo::isTextureSupport(hal::GraphicsFormat format) const noexcept
+	SystemInfo::isTextureSupport(GraphicsFormat format) const noexcept
 	{
 		return std::find(supportTextures.begin(), supportTextures.end(), format) != supportTextures.end();
 	}
 
 	bool
-	SystemInfo::isTextureDimSupport(hal::TextureDimension dimension) const noexcept
+	SystemInfo::isTextureDimSupport(TextureDimension dimension) const noexcept
 	{
 		return std::find(supportTextureDims.begin(), supportTextureDims.end(), dimension) != supportTextureDims.end();
 	}
 
 	bool
-	SystemInfo::isVertexSupport(hal::GraphicsFormat format) const noexcept
+	SystemInfo::isVertexSupport(GraphicsFormat format) const noexcept
 	{
 		return std::find(supportAttribute.begin(), supportAttribute.end(), format) != supportAttribute.end();
 	}
 
 	bool
-	SystemInfo::isShaderSupport(hal::ShaderStageFlags stage) const noexcept
+	SystemInfo::isShaderSupport(ShaderStageFlags stage) const noexcept
 	{
 		return std::find(supportShaders.begin(), supportShaders.end(), stage) != supportShaders.end();
 	}

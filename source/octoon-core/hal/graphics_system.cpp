@@ -20,102 +20,99 @@
 
 namespace octoon
 {
-	namespace hal
+	OctoonImplementSingleton(GraphicsSystem)
+
+	GraphicsSystem::GraphicsSystem() noexcept
 	{
-		OctoonImplementSingleton(GraphicsSystem)
+	}
 
-		GraphicsSystem::GraphicsSystem() noexcept
-		{
-		}
+	GraphicsSystem::~GraphicsSystem() noexcept
+	{
+		this->close();
+	}
 
-		GraphicsSystem::~GraphicsSystem() noexcept
-		{
-			this->close();
-		}
+	void
+	GraphicsSystem::close() noexcept
+	{
+		for (auto& it : _devices)
+			it.reset();
+	}
 
-		void
-		GraphicsSystem::close() noexcept
-		{
-			for (auto& it : _devices)
-				it.reset();
-		}
-
-		GraphicsDevicePtr
-		GraphicsSystem::createDevice(const GraphicsDeviceDesc& deviceDesc) noexcept
-		{
-			GraphicsDeviceType deviceType = deviceDesc.getDeviceType();
+	GraphicsDevicePtr
+	GraphicsSystem::createDevice(const GraphicsDeviceDesc& deviceDesc) noexcept
+	{
+		GraphicsDeviceType deviceType = deviceDesc.getDeviceType();
 
 #if defined(OCTOON_FEATURE_HAL_USE_OPENGL20)
-			if (deviceType == GraphicsDeviceType::OpenGL20)
+		if (deviceType == GraphicsDeviceType::OpenGL20)
+		{
+			auto device = std::make_shared<hal::GL20Device>();
+			if (device->setup(deviceDesc))
 			{
-				auto device = std::make_shared<GL20Device>();
-				if (device->setup(deviceDesc))
-				{
-					_devices.push_back(device);
-					return device;
-				}
-
-				return nullptr;
+				_devices.push_back(device);
+				return device;
 			}
+
+			return nullptr;
+		}
 #endif
 #if defined(OCTOON_FEATURE_HAL_USE_OPENGL30)
-			if (deviceType == GraphicsDeviceType::OpenGL30)
+		if (deviceType == GraphicsDeviceType::OpenGL30)
+		{
+			auto device = std::make_shared<hal::GL30Device>();
+			if (device->setup(deviceDesc))
 			{
-				auto device = std::make_shared<GL30Device>();
-				if (device->setup(deviceDesc))
-				{
-					_devices.push_back(device);
-					return device;
-				}
-
-				return nullptr;
+				_devices.push_back(device);
+				return device;
 			}
+
+			return nullptr;
+		}
 #endif
 #if defined(OCTOON_FEATURE_HAL_USE_OPENGL32)
-			if (deviceType == GraphicsDeviceType::OpenGL32)
+		if (deviceType == GraphicsDeviceType::OpenGL32)
+		{
+			auto device = std::make_shared<hal::GL32Device>();
+			if (device->setup(deviceDesc))
 			{
-				auto device = std::make_shared<GL32Device>();
-				if (device->setup(deviceDesc))
-				{
-					_devices.push_back(device);
-					return device;
-				}
-
-				return nullptr;
+				_devices.push_back(device);
+				return device;
 			}
+
+			return nullptr;
+		}
 #endif
 #if defined(OCTOON_FEATURE_HAL_USE_OPENGL33)
-			if (deviceType == GraphicsDeviceType::OpenGL45 ||
-				deviceType == GraphicsDeviceType::OpenGL33)
+		if (deviceType == GraphicsDeviceType::OpenGL45 ||
+			deviceType == GraphicsDeviceType::OpenGL33)
+		{
+			auto device = std::make_shared<hal::GL33Device>();
+			if (device->setup(deviceDesc))
 			{
-				auto device = std::make_shared<GL33Device>();
-				if (device->setup(deviceDesc))
-				{
-					_devices.push_back(device);
-					return device;
-				}
-
-				return nullptr;
+				_devices.push_back(device);
+				return device;
 			}
+
+			return nullptr;
+		}
 
 #endif
 #if defined(OCTOON_FEATURE_HAL_USE_VULKAN)
-			if (deviceType == GraphicsDeviceType::Vulkan)
+		if (deviceType == GraphicsDeviceType::Vulkan)
+		{
+			if (!VulkanSystem::instance()->open())
+				return false;
+
+			auto device = std::make_shared<VulkanDevice>();
+			if (device->setup(deviceDesc))
 			{
-				if (!VulkanSystem::instance()->open())
-					return false;
+				_devices.push_back(device);
+				return device;
+			}
 
-				auto device = std::make_shared<VulkanDevice>();
-				if (device->setup(deviceDesc))
-				{
-					_devices.push_back(device);
-					return device;
-				}
-
-				return nullptr;
-	}
-#endif
 			return nullptr;
-		}
+}
+#endif
+		return nullptr;
 	}
 }

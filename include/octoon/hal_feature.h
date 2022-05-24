@@ -2,7 +2,9 @@
 #define OCTOON_HAL_FEATURE_H_
 
 #include <octoon/game_feature.h>
-#include <octoon/hal/graphics_types.h>
+#include <octoon/hal/graphics_swapchain.h>
+#include <octoon/hal/graphics_context.h>
+#include <octoon/hal/graphics_device.h>
 
 namespace octoon
 {
@@ -17,9 +19,9 @@ namespace octoon
 		void setFramebufferScale(std::uint32_t w, std::uint32_t h) noexcept;
 		void getFramebufferScale(std::uint32_t& w, std::uint32_t& h) noexcept;
 
-		const hal::GraphicsDevicePtr& getDevice() const noexcept;
-		const hal::GraphicsSwapchainPtr& getSwapchain() const noexcept;
-		const hal::GraphicsContextPtr& getContext() const noexcept;
+		const std::shared_ptr<GraphicsDevice>& getDevice() const noexcept;
+		const std::shared_ptr<GraphicsSwapchain>& getSwapchain() const noexcept;
+		const std::shared_ptr<GraphicsContext>& getContext() const noexcept;
 
 	private:
 		void onActivate() except override;
@@ -37,9 +39,9 @@ namespace octoon
 		std::uint32_t framebuffer_w_;
 		std::uint32_t framebuffer_h_;
 
-		hal::GraphicsDevicePtr device_;
-		hal::GraphicsSwapchainPtr swapchain_;
-		hal::GraphicsContextPtr context_;
+		std::shared_ptr<GraphicsDevice> device_;
+		std::shared_ptr<GraphicsSwapchain> swapchain_;
+		std::shared_ptr<GraphicsContext> context_;
 	};
 }
 

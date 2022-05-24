@@ -2,16 +2,13 @@
 
 namespace octoon
 {
-	namespace hal
+	OctoonImplementSubInterface(GraphicsDeviceProperty, runtime::RttiInterface, "GraphicsDeviceProperty")
+
+	GraphicsDeviceProperty::GraphicsDeviceProperty() noexcept
 	{
-		OctoonImplementSubInterface(GraphicsDeviceProperty, runtime::RttiInterface, "GraphicsDeviceProperty")
+	}
 
-		GraphicsDeviceProperty::GraphicsDeviceProperty() noexcept
-		{
-		}
-
-		GraphicsDeviceProperty::~GraphicsDeviceProperty() noexcept
-		{
-		}
+	GraphicsDeviceProperty::~GraphicsDeviceProperty() noexcept
+	{
 	}
 }

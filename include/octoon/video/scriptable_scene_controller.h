@@ -15,7 +15,7 @@ namespace octoon
 	{
 	public:
 		ScriptableSceneController();
-		ScriptableSceneController(const hal::GraphicsContextPtr& context);
+		ScriptableSceneController(const GraphicsContextPtr& context);
 		~ScriptableSceneController();
 
 		void cleanCache() noexcept;
@@ -29,7 +29,7 @@ namespace octoon
 		void updateShapes(const std::shared_ptr<RenderScene>& scene, class RenderingData& out, bool force = false);
 
 	private:
-		hal::GraphicsContextPtr context_;
+		GraphicsContextPtr context_;
 
 		Collector materialCollector;
 		std::unordered_map<std::shared_ptr<RenderScene>, std::shared_ptr<RenderingData>> sceneCache_;

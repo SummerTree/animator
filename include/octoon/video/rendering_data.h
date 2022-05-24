@@ -101,10 +101,10 @@ namespace octoon
 
 		std::vector<math::float4x4> directionalShadowMatrix;
 
-		hal::GraphicsDataPtr spotLightBuffer;
-		hal::GraphicsDataPtr pointLightBuffer;
-		hal::GraphicsDataPtr rectangleLightBuffer;
-		hal::GraphicsDataPtr directionLightBuffer;
+		GraphicsDataPtr spotLightBuffer;
+		GraphicsDataPtr pointLightBuffer;
+		GraphicsDataPtr rectangleLightBuffer;
+		GraphicsDataPtr directionLightBuffer;
 
 		std::vector<Light*> lights;
 		std::vector<Geometry*> geometries;

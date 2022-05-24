@@ -11,8 +11,8 @@ namespace octoon
 		UniformHolder() noexcept;
 		virtual ~UniformHolder() noexcept;
 
-		void setType(hal::UniformAttributeFormat type) noexcept(false);
-		hal::UniformAttributeFormat getType() const noexcept;
+		void setType(UniformAttributeFormat type) noexcept(false);
+		UniformAttributeFormat getType() const noexcept;
 
 		void uniform1b(bool value) noexcept;
 		void uniform1f(float i1) noexcept;
@@ -73,8 +73,8 @@ namespace octoon
 		void uniform2fmatv(const std::vector<math::float2x2>& value) noexcept;
 		void uniform3fmatv(const std::vector<math::float3x3>& value) noexcept;
 		void uniform4fmatv(const std::vector<math::float4x4>& value) noexcept;
-		void uniformTexture(std::shared_ptr<GraphicsTexture> texture, hal::GraphicsSamplerPtr sampler = nullptr) noexcept;
-		void uniformBuffer(hal::GraphicsDataPtr ubo) noexcept;
+		void uniformTexture(std::shared_ptr<GraphicsTexture> texture, GraphicsSamplerPtr sampler = nullptr) noexcept;
+		void uniformBuffer(GraphicsDataPtr ubo) noexcept;
 
 		bool getBool() const noexcept;
 		int getInt() const noexcept;
@@ -108,8 +108,8 @@ namespace octoon
 		const std::vector<math::float3x3>& getFloat3x3Array() const noexcept;
 		const std::vector<math::float4x4>& getFloat4x4Array() const noexcept;
 		const std::shared_ptr<GraphicsTexture>& getTexture() const noexcept;
-		const hal::GraphicsSamplerPtr& getTextureSampler() const noexcept;
-		const hal::GraphicsDataPtr& getBuffer() const noexcept;
+		const GraphicsSamplerPtr& getTextureSampler() const noexcept;
+		const GraphicsDataPtr& getBuffer() const noexcept;
 
 	private:
 		UniformHolder(const UniformHolder&) noexcept = delete;
@@ -119,7 +119,7 @@ namespace octoon
 		struct TexturePack
 		{
 			std::shared_ptr<GraphicsTexture> image;
-			hal::GraphicsSamplerPtr sampler;
+			GraphicsSamplerPtr sampler;
 		};
 
 		union
@@ -147,10 +147,10 @@ namespace octoon
 			std::vector<math::float3x3>* m3array_;
 			std::vector<math::float4x4>* m4array_;
 			TexturePack* texture_;
-			hal::GraphicsDataPtr* ubo_;
+			GraphicsDataPtr* ubo_;
 		};
 
-		hal::UniformAttributeFormat type_;
+		UniformAttributeFormat type_;
 	};
 }
 

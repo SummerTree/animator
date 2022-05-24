@@ -59,16 +59,16 @@ namespace octoon
 		void readAlbedoBuffer(math::float3 data[]);
 		void readNormalBuffer(math::float3 data[]);
 
-		const hal::GraphicsFramebufferPtr& getFramebuffer() const;
+		const GraphicsFramebufferPtr& getFramebuffer() const;
 
-		void render(const hal::GraphicsContextPtr& context, const std::shared_ptr<RenderScene>& scene);
+		void render(const GraphicsContextPtr& context, const std::shared_ptr<RenderScene>& scene);
 
 		std::string getCurrentRenderDeviceName() const;
 
 	private:
 		void init();
 		void prepareScene(const std::shared_ptr<RenderScene>& scene) noexcept;
-		void generateWorkspace(Config& config, const hal::GraphicsContext& context, std::uint32_t width, std::uint32_t height);
+		void generateWorkspace(Config& config, const GraphicsContext& context, std::uint32_t width, std::uint32_t height);
 		int longestCommonSubsequence(std::string text1, std::string text2) const;
 
 	private:
@@ -92,7 +92,7 @@ namespace octoon
 		std::shared_ptr<GraphicsTexture> normalTexture_;
 		std::shared_ptr<GraphicsTexture> albedoTexture_;
 
-		hal::GraphicsFramebufferPtr framebuffer_;
+		GraphicsFramebufferPtr framebuffer_;
 
 		std::vector<Config> configs_;
 		std::array<Output*, static_cast<std::size_t>(OutputType::kMax)> outputs_;

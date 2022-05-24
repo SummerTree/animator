@@ -122,7 +122,7 @@ namespace unreal
 				void* data = nullptr;
 				if (colorTexture->map(0, 0, desc.getWidth(), desc.getHeight(), 0, &data))
 				{
-					if (desc.getTexFormat() == octoon::hal::GraphicsFormat::R32G32B32A32SFloat)
+					if (desc.getTexFormat() == octoon::GraphicsFormat::R32G32B32A32SFloat)
 					{
 						for (std::size_t i = 0; i < desc.getWidth() * desc.getHeight(); ++i)
 							colorBuffer_[i] = (((octoon::math::float4*)data) + i)->xyz();

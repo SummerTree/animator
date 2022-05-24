@@ -6,22 +6,19 @@
 
 namespace octoon
 {
-	namespace hal
+	class GraphicsDeviceProperty : public runtime::RttiInterface
 	{
-		class GraphicsDeviceProperty : public runtime::RttiInterface
-		{
-			OctoonDeclareSubInterface(GraphicsDeviceProperty, runtime::RttiInterface)
-		public:
-			GraphicsDeviceProperty() noexcept;
-			virtual ~GraphicsDeviceProperty() noexcept;
+		OctoonDeclareSubInterface(GraphicsDeviceProperty, runtime::RttiInterface)
+	public:
+		GraphicsDeviceProperty() noexcept;
+		virtual ~GraphicsDeviceProperty() noexcept;
 
-			virtual const SystemInfo& getSystemInfo() const noexcept = 0;
+		virtual const SystemInfo& getSystemInfo() const noexcept = 0;
 
-		private:
-			GraphicsDeviceProperty(const GraphicsDeviceProperty&) = delete;
-			GraphicsDeviceProperty& operator=(const GraphicsDeviceProperty&) = delete;
-		};
-	}
+	private:
+		GraphicsDeviceProperty(const GraphicsDeviceProperty&) = delete;
+		GraphicsDeviceProperty& operator=(const GraphicsDeviceProperty&) = delete;
+	};
 }
 
 #endif

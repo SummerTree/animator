@@ -54,9 +54,9 @@ namespace unreal
 					{
 						auto format = QImage::Format::Format_RGB888;
 
-						if (textureFormat == octoon::hal::GraphicsFormat::R8G8B8UNorm)
+						if (textureFormat == octoon::GraphicsFormat::R8G8B8UNorm)
 							format = QImage::Format::Format_RGB888;
-						else if (textureFormat == octoon::hal::GraphicsFormat::R8G8B8A8UNorm)
+						else if (textureFormat == octoon::GraphicsFormat::R8G8B8A8UNorm)
 							format = QImage::Format::Format_RGBA8888;
 
 						QImage qimage(data_, width, height, format);
@@ -291,17 +291,17 @@ namespace unreal
 			if (blendEnable != package.end() && (*blendEnable).is_boolean())
 				standard->setBlendEnable((*blendEnable).get<nlohmann::json::boolean_t>());
 			if (blendOp != package.end() && (*blendOp).is_number_unsigned())
-				standard->setBlendOp((octoon::hal::BlendOp)(*blendOp).get<nlohmann::json::number_unsigned_t>());
+				standard->setBlendOp((octoon::BlendOp)(*blendOp).get<nlohmann::json::number_unsigned_t>());
 			if (blendSrc != package.end() && (*blendSrc).is_number_unsigned())
-				standard->setBlendSrc((octoon::hal::BlendMode)(*blendSrc).get<nlohmann::json::number_unsigned_t>());
+				standard->setBlendSrc((octoon::BlendMode)(*blendSrc).get<nlohmann::json::number_unsigned_t>());
 			if (blendDest != package.end() && (*blendDest).is_number_unsigned())
-				standard->setBlendDest((octoon::hal::BlendMode)(*blendDest).get<nlohmann::json::number_unsigned_t>());
+				standard->setBlendDest((octoon::BlendMode)(*blendDest).get<nlohmann::json::number_unsigned_t>());
 			if (blendAlphaOp != package.end() && (*blendAlphaOp).is_number_unsigned())
-				standard->setBlendAlphaOp((octoon::hal::BlendOp)(*blendAlphaOp).get<nlohmann::json::number_unsigned_t>());
+				standard->setBlendAlphaOp((octoon::BlendOp)(*blendAlphaOp).get<nlohmann::json::number_unsigned_t>());
 			if (blendAlphaSrc != package.end() && (*blendAlphaSrc).is_number_unsigned())
-				standard->setBlendAlphaSrc((octoon::hal::BlendMode)(*blendAlphaSrc).get<nlohmann::json::number_unsigned_t>());
+				standard->setBlendAlphaSrc((octoon::BlendMode)(*blendAlphaSrc).get<nlohmann::json::number_unsigned_t>());
 			if (blendAlphaDest != package.end() && (*blendAlphaDest).is_number_unsigned())
-				standard->setBlendAlphaDest((octoon::hal::BlendMode)(*blendAlphaDest).get<nlohmann::json::number_unsigned_t>());
+				standard->setBlendAlphaDest((octoon::BlendMode)(*blendAlphaDest).get<nlohmann::json::number_unsigned_t>());
 
 			auto depthEnable = package.find("depthEnable");
 			auto depthBiasEnable = package.find("depthBiasEnable");
@@ -517,30 +517,30 @@ namespace unreal
 
 			octoon::GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);
-			textureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
-			textureDesc.setTexFormat(octoon::hal::GraphicsFormat::R8G8B8A8UNorm);
+			textureDesc.setTexDim(octoon::TextureDimension::Texture2D);
+			textureDesc.setTexFormat(octoon::GraphicsFormat::R8G8B8A8UNorm);
 			auto colorTexture = renderer->getGraphicsDevice()->createTexture(textureDesc);
 			if (!colorTexture)
 				throw std::runtime_error("createTexture() failed");
 
 			octoon::GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setSize(width, height);
-			depthTextureDesc.setTexDim(octoon::hal::TextureDimension::Texture2D);
-			depthTextureDesc.setTexFormat(octoon::hal::GraphicsFormat::D16UNorm);
+			depthTextureDesc.setTexDim(octoon::TextureDimension::Texture2D);
+			depthTextureDesc.setTexFormat(octoon::GraphicsFormat::D16UNorm);
 			auto depthTexture = renderer->getGraphicsDevice()->createTexture(depthTextureDesc);
 			if (!depthTexture)
 				throw std::runtime_error("createTexture() failed");
 
-			octoon::hal::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-			framebufferLayoutDesc.addComponent(octoon::hal::GraphicsAttachmentLayout(0, octoon::hal::GraphicsImageLayout::ColorAttachmentOptimal, octoon::hal::GraphicsFormat::R8G8B8A8UNorm));
-			framebufferLayoutDesc.addComponent(octoon::hal::GraphicsAttachmentLayout(1, octoon::hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, octoon::hal::GraphicsFormat::D16UNorm));
+			octoon::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+			framebufferLayoutDesc.addComponent(octoon::GraphicsAttachmentLayout(0, octoon::GraphicsImageLayout::ColorAttachmentOptimal, octoon::GraphicsFormat::R8G8B8A8UNorm));
+			framebufferLayoutDesc.addComponent(octoon::GraphicsAttachmentLayout(1, octoon::GraphicsImageLayout::DepthStencilAttachmentOptimal, octoon::GraphicsFormat::D16UNorm));
 
-			octoon::hal::GraphicsFramebufferDesc framebufferDesc;
+			octoon::GraphicsFramebufferDesc framebufferDesc;
 			framebufferDesc.setWidth(width);
 			framebufferDesc.setHeight(height);
 			framebufferDesc.setFramebufferLayout(renderer->getGraphicsDevice()->createFramebufferLayout(framebufferLayoutDesc));
-			framebufferDesc.setDepthStencilAttachment(octoon::hal::GraphicsAttachmentBinding(depthTexture, 0, 0));
-			framebufferDesc.addColorAttachment(octoon::hal::GraphicsAttachmentBinding(colorTexture, 0, 0));
+			framebufferDesc.setDepthStencilAttachment(octoon::GraphicsAttachmentBinding(depthTexture, 0, 0));
+			framebufferDesc.addColorAttachment(octoon::GraphicsAttachmentBinding(colorTexture, 0, 0));
 
 			framebuffer_ = renderer->getGraphicsDevice()->createFramebuffer(framebufferDesc);
 			if (!framebuffer_)
@@ -548,7 +548,7 @@ namespace unreal
 
 			camera_ = std::make_shared<octoon::PerspectiveCamera>(60, 1, 100);
 			camera_->setClearColor(octoon::math::float4::Zero);
-			camera_->setClearFlags(octoon::hal::ClearFlagBits::AllBit);
+			camera_->setClearFlags(octoon::ClearFlagBits::AllBit);
 			camera_->setFramebuffer(framebuffer_);
 			camera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, 0, 1), octoon::math::float3::Zero, octoon::math::float3::UnitY));
 

@@ -20,11 +20,11 @@ namespace octoon
 			void renderBegin() noexcept;
 			void renderEnd() noexcept;
 
-			void setViewport(std::uint32_t i, const float4& viewport) noexcept;
-			const float4& getViewport(std::uint32_t i) const noexcept;
+			void setViewport(std::uint32_t i, const math::float4& viewport) noexcept;
+			const math::float4& getViewport(std::uint32_t i) const noexcept;
 
-			void setScissor(std::uint32_t i, const uint4& scissor) noexcept;
-			const uint4& getScissor(std::uint32_t i) const noexcept;
+			void setScissor(std::uint32_t i, const math::uint4& scissor) noexcept;
+			const math::uint4& getScissor(std::uint32_t i) const noexcept;
 
 			void setStencilCompareMask(StencilFaceFlags face, std::uint32_t mask) noexcept;
 			std::uint32_t getStencilCompareMask(StencilFaceFlags face) noexcept;
@@ -50,9 +50,9 @@ namespace octoon
 			void generateMipmap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
 
 			void setFramebuffer(const GraphicsFramebufferPtr& target) noexcept;
-			void clearFramebuffer(std::uint32_t i, ClearFlags flags, const float4& color, float depth, std::int32_t stencil) noexcept;
+			void clearFramebuffer(std::uint32_t i, ClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept;
 			void discardFramebuffer(const GraphicsFramebufferPtr& src, ClearFlags flags) noexcept;
-			void blitFramebuffer(const GraphicsFramebufferPtr& src, const float4& v1, const GraphicsFramebufferPtr& dest, const float4& v2) noexcept;
+			void blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept;
 			void readFramebuffer(std::uint32_t i, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept;
 			void readFramebufferToCube(std::uint32_t i, std::uint32_t face, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept;
 			GraphicsFramebufferPtr getFramebuffer() const noexcept;
@@ -108,9 +108,9 @@ namespace octoon
 			GLuint _inputLayout;
 			GLenum  _indexType;
 			GLintptr _indexOffset;
-			std::vector<float4> _clearColor;
-			std::vector<float4> _viewports;
-			std::vector<uint4> _scissors;
+			std::vector<math::float4> _clearColor;
+			std::vector<math::float4> _viewports;
+			std::vector<math::uint4> _scissors;
 
 			GraphicsDeviceWeakPtr _device;
 		};

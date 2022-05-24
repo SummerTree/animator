@@ -11,10 +11,10 @@ namespace octoon
 		SystemInfo() noexcept;
 		~SystemInfo() noexcept;
 
-		bool isTextureSupport(hal::GraphicsFormat format) const noexcept;
-		bool isTextureDimSupport(hal::TextureDimension dimension) const noexcept;
-		bool isVertexSupport(hal::GraphicsFormat format) const noexcept;
-		bool isShaderSupport(hal::ShaderStageFlags stage) const noexcept;
+		bool isTextureSupport(GraphicsFormat format) const noexcept;
+		bool isTextureDimSupport(TextureDimension dimension) const noexcept;
+		bool isVertexSupport(GraphicsFormat format) const noexcept;
+		bool isShaderSupport(ShaderStageFlags stage) const noexcept;
 
 		std::string           graphicsDeviceVendor;
 		std::string           graphicsDeviceName;
@@ -109,15 +109,15 @@ namespace octoon
 		std::uint32_t         maxFramebufferHeight;
 		std::uint32_t         maxFramebufferLayers;
 		std::uint32_t         maxFramebufferColorAttachments;
-		hal::GraphicsSampleFlags   framebufferColorSampleCounts;
-		hal::GraphicsSampleFlags   framebufferDepthSampleCounts;
-		hal::GraphicsSampleFlags   framebufferStencilSampleCounts;
-		hal::GraphicsSampleFlags   framebufferNoAttachmentsSampleCounts;
-		hal::GraphicsSampleFlags   sampledImageColorSampleCounts;
-		hal::GraphicsSampleFlags   sampledImageIntegerSampleCounts;
-		hal::GraphicsSampleFlags   sampledImageDepthSampleCounts;
-		hal::GraphicsSampleFlags   sampledImageStencilSampleCounts;
-		hal::GraphicsSampleFlags   storageImageSampleCounts;
+		GraphicsSampleFlags   framebufferColorSampleCounts;
+		GraphicsSampleFlags   framebufferDepthSampleCounts;
+		GraphicsSampleFlags   framebufferStencilSampleCounts;
+		GraphicsSampleFlags   framebufferNoAttachmentsSampleCounts;
+		GraphicsSampleFlags   sampledImageColorSampleCounts;
+		GraphicsSampleFlags   sampledImageIntegerSampleCounts;
+		GraphicsSampleFlags   sampledImageDepthSampleCounts;
+		GraphicsSampleFlags   sampledImageStencilSampleCounts;
+		GraphicsSampleFlags   storageImageSampleCounts;
 		std::uint32_t         maxSampleMaskWords;
 		std::uint32_t         timestampComputeAndGraphics;
 		float                 timestampPeriod;
@@ -136,10 +136,10 @@ namespace octoon
 		std::uint64_t         optimalBufferCopyOffsetAlignment;
 		std::uint64_t         optimalBufferCopyRowPitchAlignment;
 		std::uint64_t         nonCoherentAtomSize;
-		std::vector<hal::GraphicsFormat> supportTextures;
-		std::vector<hal::TextureDimension> supportTextureDims;
-		std::vector<hal::GraphicsFormat> supportAttribute;
-		std::vector<hal::ShaderStageFlags> supportShaders;
+		std::vector<GraphicsFormat> supportTextures;
+		std::vector<TextureDimension> supportTextureDims;
+		std::vector<GraphicsFormat> supportAttribute;
+		std::vector<ShaderStageFlags> supportShaders;
 	};
 }
 

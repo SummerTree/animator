@@ -13,10 +13,10 @@ namespace octoon
 		, copyMaterial_(MeshCopyMaterial::create())
 	{
 		edgeMaterial_->setColor(math::float3(1.0f, 0.0f, 1.0f));
-		edgeMaterial_->setDepthFunc(hal::CompareFunction::Always);
+		edgeMaterial_->setDepthFunc(CompareFunction::Always);
 		edgeMaterial_->setBlendEnable(true);
-		edgeMaterial_->setBlendSrc(octoon::hal::BlendMode::SrcAlpha);
-		edgeMaterial_->setBlendDest(octoon::hal::BlendMode::OneMinusSrcAlpha);
+		edgeMaterial_->setBlendSrc(BlendMode::SrcAlpha);
+		edgeMaterial_->setBlendDest(BlendMode::OneMinusSrcAlpha);
 	}
 
 	void
@@ -28,15 +28,15 @@ namespace octoon
 		this->width_ = w;
 		this->height_ = h;
 
-		hal::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(0, hal::GraphicsImageLayout::ColorAttachmentOptimal, hal::GraphicsFormat::R8G8B8A8UNorm));
-		framebufferLayoutDesc.addComponent(hal::GraphicsAttachmentLayout(1, hal::GraphicsImageLayout::DepthStencilAttachmentOptimal, hal::GraphicsFormat::D32_SFLOAT));
+		GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+		framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R8G8B8A8UNorm));
+		framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(1, GraphicsImageLayout::DepthStencilAttachmentOptimal, GraphicsFormat::D32_SFLOAT));
 
 		GraphicsTextureDesc depthTextureDesc;
 		depthTextureDesc.setWidth(w);
 		depthTextureDesc.setHeight(h);
-		depthTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
-		depthTextureDesc.setTexFormat(hal::GraphicsFormat::D32_SFLOAT);
+		depthTextureDesc.setTexDim(TextureDimension::Texture2D);
+		depthTextureDesc.setTexFormat(GraphicsFormat::D32_SFLOAT);
 		depthTexture_ = context.createTexture(depthTextureDesc);
 		if (!depthTexture_)
 			throw runtime::runtime_error::create("createTexture() failed");
@@ -44,18 +44,18 @@ namespace octoon
 		GraphicsTextureDesc colorTextureDesc;
 		colorTextureDesc.setWidth(w);
 		colorTextureDesc.setHeight(h);
-		colorTextureDesc.setTexDim(hal::TextureDimension::Texture2D);
-		colorTextureDesc.setTexFormat(hal::GraphicsFormat::R8G8B8A8UNorm);
+		colorTextureDesc.setTexDim(TextureDimension::Texture2D);
+		colorTextureDesc.setTexFormat(GraphicsFormat::R8G8B8A8UNorm);
 		colorTexture_ = context.createTexture(colorTextureDesc);
 		if (!colorTexture_)
 			throw runtime::runtime_error::create("createTexture() failed");
 
-		hal::GraphicsFramebufferDesc framebufferDesc;
+		GraphicsFramebufferDesc framebufferDesc;
 		framebufferDesc.setWidth(w);
 		framebufferDesc.setHeight(h);
 		framebufferDesc.setFramebufferLayout(context.createFramebufferLayout(framebufferLayoutDesc));
-		framebufferDesc.setDepthStencilAttachment(hal::GraphicsAttachmentBinding(depthTexture_, 0, 0));
-		framebufferDesc.addColorAttachment(hal::GraphicsAttachmentBinding(colorTexture_, 0, 0));
+		framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture_, 0, 0));
+		framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture_, 0, 0));
 
 		colorFramebuffer_ = context.createFramebuffer(framebufferDesc);
 		if (!colorFramebuffer_)
@@ -78,7 +78,7 @@ namespace octoon
 		context.compileMaterial(copyMaterial_, renderingData);
 
 		context.configureTarget(colorFramebuffer_);
-		context.configureClear(hal::ClearFlagBits::AllBit, math::float4::Zero, 1.0f, 0);
+		context.configureClear(ClearFlagBits::AllBit, math::float4::Zero, 1.0f, 0);
 		context.setViewport(0, math::float4((float)vp.x, (float)vp.y, (float)vp.width, (float)vp.height));
 
 		for (auto& geometry : renderingData.geometries)

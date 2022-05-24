@@ -6,27 +6,24 @@
 
 namespace octoon
 {
-	namespace hal
+	class OCTOON_EXPORT GraphicsSystem final
 	{
-		class OCTOON_EXPORT GraphicsSystem final
-		{
-			OctoonDeclareSingleton(GraphicsSystem)
-		public:
-			GraphicsSystem() noexcept;
-			~GraphicsSystem() noexcept;
+		OctoonDeclareSingleton(GraphicsSystem)
+	public:
+		GraphicsSystem() noexcept;
+		~GraphicsSystem() noexcept;
 
-			void close() noexcept;
+		void close() noexcept;
 
-			GraphicsDevicePtr createDevice(const GraphicsDeviceDesc& desc) noexcept;
+		GraphicsDevicePtr createDevice(const GraphicsDeviceDesc& desc) noexcept;
 
-		private:
-			GraphicsSystem(const GraphicsSystem&) = delete;
-			GraphicsSystem& operator=(const GraphicsSystem&) = delete;
+	private:
+		GraphicsSystem(const GraphicsSystem&) = delete;
+		GraphicsSystem& operator=(const GraphicsSystem&) = delete;
 
-		private:
-			GraphicsDeviceWeaks _devices;
-		};
-	}
+	private:
+		GraphicsDeviceWeaks _devices;
+	};
 }
 
 #endif

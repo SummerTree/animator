@@ -51,19 +51,19 @@ namespace octoon
 		h = framebuffer_h_;
 	}
 
-	const hal::GraphicsDevicePtr&
+	const GraphicsDevicePtr&
 	GraphicsFeature::getDevice() const noexcept
 	{
 		return device_;
 	}
 
-	const hal::GraphicsSwapchainPtr&
+	const std::shared_ptr<GraphicsSwapchain>&
 	GraphicsFeature::getSwapchain() const noexcept
 	{
 		return swapchain_;
 	}
 
-	const hal::GraphicsContextPtr&
+	const std::shared_ptr<GraphicsContext>&
 	GraphicsFeature::getContext() const noexcept
 	{
 		return context_;
@@ -74,11 +74,11 @@ namespace octoon
 	{
 		this->addMessageListener("feature:input:event", std::bind(&GraphicsFeature::onInputEvent, this, std::placeholders::_1));
 
-		hal::GraphicsDeviceDesc deviceDesc;
+		GraphicsDeviceDesc deviceDesc;
 #if defined(OCTOON_BUILD_PLATFORM_EMSCRIPTEN)
-		deviceDesc.setDeviceType(hal::GraphicsDeviceType::OpenGL20);
+		deviceDesc.setDeviceType(GraphicsDeviceType::OpenGL20);
 #else
-		deviceDesc.setDeviceType(hal::GraphicsDeviceType::OpenGL33);
+		deviceDesc.setDeviceType(GraphicsDeviceType::OpenGL33);
 #endif
 
 #if defined(__DEBUG__)
@@ -86,20 +86,20 @@ namespace octoon
 #else
 		deviceDesc.setDebugControl(false);
 #endif
-		device_ = hal::GraphicsSystem::instance()->createDevice(deviceDesc);
+		device_ = GraphicsSystem::instance()->createDevice(deviceDesc);
 		if (!device_)
 			throw runtime::runtime_error::create("createDevice() failed");
 
 		try
 		{
-			hal::GraphicsSwapchainDesc swapchainDesc;
+			GraphicsSwapchainDesc swapchainDesc;
 			swapchainDesc.setWindHandle(window_);
 			swapchainDesc.setWidth(framebuffer_w_);
 			swapchainDesc.setHeight(framebuffer_h_);
-			swapchainDesc.setSwapInterval(hal::GraphicsSwapInterval::Free);
+			swapchainDesc.setSwapInterval(GraphicsSwapInterval::Free);
 			swapchainDesc.setImageNums(2);
-			swapchainDesc.setColorFormat(hal::GraphicsFormat::B8G8R8A8UNorm);
-			swapchainDesc.setDepthStencilFormat(hal::GraphicsFormat::X8_D24UNormPack32);
+			swapchainDesc.setColorFormat(GraphicsFormat::B8G8R8A8UNorm);
+			swapchainDesc.setDepthStencilFormat(GraphicsFormat::X8_D24UNormPack32);
 			swapchainDesc.setMultiSample(4);
 			swapchain_ = device_->createSwapchain(swapchainDesc);
 			if (!swapchain_)
@@ -107,20 +107,20 @@ namespace octoon
 		}
 		catch (...)
 		{
-			hal::GraphicsSwapchainDesc swapchainDesc;
+			GraphicsSwapchainDesc swapchainDesc;
 			swapchainDesc.setWindHandle(window_);
 			swapchainDesc.setWidth(framebuffer_w_);
 			swapchainDesc.setHeight(framebuffer_h_);
-			swapchainDesc.setSwapInterval(hal::GraphicsSwapInterval::Free);
+			swapchainDesc.setSwapInterval(GraphicsSwapInterval::Free);
 			swapchainDesc.setImageNums(2);
-			swapchainDesc.setColorFormat(hal::GraphicsFormat::B8G8R8A8UNorm);
-			swapchainDesc.setDepthStencilFormat(hal::GraphicsFormat::X8_D24UNormPack32);
+			swapchainDesc.setColorFormat(GraphicsFormat::B8G8R8A8UNorm);
+			swapchainDesc.setDepthStencilFormat(GraphicsFormat::X8_D24UNormPack32);
 			swapchain_ = device_->createSwapchain(swapchainDesc);
 			if (!swapchain_)
 				throw runtime::runtime_error::create("createSwapchain() failed");
 		}
 
-		hal::GraphicsContextDesc contextDesc;
+		GraphicsContextDesc contextDesc;
 		contextDesc.setSwapchain(swapchain_);
 		context_ = device_->createDeviceContext(contextDesc);
 		if (!context_)
@@ -155,7 +155,7 @@ namespace octoon
 	{
 		context_->renderBegin();
 		context_->setFramebuffer(nullptr);
-		context_->clearFramebuffer(0, hal::ClearFlagBits::AllBit, math::float4::Zero, 1.0, 0);
+		context_->clearFramebuffer(0, ClearFlagBits::AllBit, math::float4::Zero, 1.0, 0);
 	}
 
 	void

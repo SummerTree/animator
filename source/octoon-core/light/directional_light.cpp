@@ -25,7 +25,7 @@ namespace octoon
 		if (this->shadowEnable_ != enable)
 		{
 			if (this->shadowCamera_ && enable)
-				this->shadowCamera_->setupFramebuffers(shadowSize_.x, shadowSize_.y, 0, hal::GraphicsFormat::R8G8B8A8UNorm, hal::GraphicsFormat::D32_SFLOAT);
+				this->shadowCamera_->setupFramebuffers(shadowSize_.x, shadowSize_.y, 0, GraphicsFormat::R8G8B8A8UNorm, GraphicsFormat::D32_SFLOAT);
 			this->setDirty(true);
 			this->shadowEnable_ = enable;
 		}
@@ -69,7 +69,7 @@ namespace octoon
 		if (this->shadowSize_ != size)
 		{
 			if (this->shadowCamera_ && this->shadowEnable_)
-				this->shadowCamera_->setupFramebuffers(size.x, size.y, 0, hal::GraphicsFormat::R8G8B8A8UNorm, hal::GraphicsFormat::D32_SFLOAT);
+				this->shadowCamera_->setupFramebuffers(size.x, size.y, 0, GraphicsFormat::R8G8B8A8UNorm, GraphicsFormat::D32_SFLOAT);
 			this->shadowSize_ = size;
 		}
 	}

@@ -25,7 +25,7 @@ namespace octoon
 		std::shared_ptr<GraphicsTexture> depthTexture_;
 		std::shared_ptr<GraphicsTexture> colorTexture_;
 
-		hal::GraphicsFramebufferPtr colorFramebuffer_;
+		GraphicsFramebufferPtr colorFramebuffer_;
 
 		std::shared_ptr<EdgeMaterial> edgeMaterial_;
 		std::shared_ptr<MeshCopyMaterial> copyMaterial_;

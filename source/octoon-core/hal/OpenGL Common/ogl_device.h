@@ -14,7 +14,7 @@ namespace octoon
 			OGLDevice() noexcept;
 			~OGLDevice() noexcept;
 
-			GraphicsSwapchainPtr createSwapchain(const GraphicsSwapchainDesc& desc) noexcept override;
+			std::shared_ptr<GraphicsSwapchain> createSwapchain(const GraphicsSwapchainDesc& desc) noexcept override;
 
 			void message(const char* message, ...) noexcept;
 

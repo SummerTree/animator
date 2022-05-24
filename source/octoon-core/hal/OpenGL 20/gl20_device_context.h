@@ -20,11 +20,11 @@ namespace octoon
 			void renderBegin() noexcept override;
 			void renderEnd() noexcept override;
 
-			void setViewport(std::uint32_t i, const float4& viewport) noexcept override;
-			const float4& getViewport(std::uint32_t i) const noexcept override;
+			void setViewport(std::uint32_t i, const math::float4& viewport) noexcept override;
+			const math::float4& getViewport(std::uint32_t i) const noexcept override;
 
-			void setScissor(std::uint32_t i, const uint4& scissor) noexcept override;
-			const uint4& getScissor(std::uint32_t i) const noexcept override;
+			void setScissor(std::uint32_t i, const math::uint4& scissor) noexcept override;
+			const math::uint4& getScissor(std::uint32_t i) const noexcept override;
 
 			void setStencilCompareMask(StencilFaceFlags face, std::uint32_t mask) noexcept override;
 			std::uint32_t getStencilCompareMask(StencilFaceFlags face) noexcept override;
@@ -50,9 +50,9 @@ namespace octoon
 			void generateMipmap(const std::shared_ptr<GraphicsTexture>& texture) noexcept override;
 
 			void setFramebuffer(const GraphicsFramebufferPtr& target) noexcept override;
-			void clearFramebuffer(std::uint32_t i, ClearFlags flags, const float4& color, float depth, std::int32_t stencil) noexcept override;
+			void clearFramebuffer(std::uint32_t i, ClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept override;
 			void discardFramebuffer(const GraphicsFramebufferPtr& src, std::uint32_t i) noexcept override;
-			void blitFramebuffer(const GraphicsFramebufferPtr& src, const float4& v1, const GraphicsFramebufferPtr& dest, const float4& v2) noexcept override;
+			void blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept override;
 			void readFramebuffer(std::uint32_t i, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept override;
 			void readFramebufferToCube(std::uint32_t i, std::uint32_t face, const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t miplevel, std::uint32_t x, std::uint32_t y, std::uint32_t width, std::uint32_t height) noexcept override;
 			GraphicsFramebufferPtr getFramebuffer() const noexcept override;
@@ -82,10 +82,10 @@ namespace octoon
 		private:
 			GLfloat _clearDepth;
 			GLint   _clearStencil;
-			float4 _clearColor;
+			math::float4 _clearColor;
 
-			float4 _viewport;
-			uint4 _scissor;
+			math::float4 _viewport;
+			math::uint4 _scissor;
 
 			GLenum  _indexType;
 			GLintptr _indexOffset;

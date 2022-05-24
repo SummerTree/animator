@@ -24,7 +24,7 @@ namespace octoon
 	{
 	}
 
-	ScriptableSceneController::ScriptableSceneController(const hal::GraphicsContextPtr& context)
+	ScriptableSceneController::ScriptableSceneController(const GraphicsContextPtr& context)
 		: context_(context)
 	{
 	}
@@ -281,9 +281,9 @@ namespace octoon
 		{
 			if (!out.spotLightBuffer)
 			{
-				out.spotLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-					hal::GraphicsDataType::UniformBuffer,
-					hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
+				out.spotLightBuffer = this->context_->getDevice()->createGraphicsData(GraphicsDataDesc(
+					GraphicsDataType::UniformBuffer,
+					GraphicsUsageFlagBits::ReadBit | GraphicsUsageFlagBits::WriteBit,
 					out.spotLights.data(),
 					sizeof(RenderingData::SpotLight) * out.numSpot
 				));
@@ -293,9 +293,9 @@ namespace octoon
 				auto desc = out.spotLightBuffer->getDataDesc();
 				if (desc.getStreamSize() < out.spotLights.size() * sizeof(RenderingData::SpotLight))
 				{
-					out.spotLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-						hal::GraphicsDataType::UniformBuffer,
-						hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
+					out.spotLightBuffer = this->context_->getDevice()->createGraphicsData(GraphicsDataDesc(
+						GraphicsDataType::UniformBuffer,
+						GraphicsUsageFlagBits::ReadBit | GraphicsUsageFlagBits::WriteBit,
 						out.spotLights.data(),
 						sizeof(RenderingData::SpotLight) * out.numSpot
 					));
@@ -314,9 +314,9 @@ namespace octoon
 		{
 			if (!out.pointLightBuffer)
 			{
-				out.pointLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-					hal::GraphicsDataType::UniformBuffer,
-					hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
+				out.pointLightBuffer = this->context_->getDevice()->createGraphicsData(GraphicsDataDesc(
+					GraphicsDataType::UniformBuffer,
+					GraphicsUsageFlagBits::ReadBit | GraphicsUsageFlagBits::WriteBit,
 					out.pointLights.data(),
 					sizeof(RenderingData::PointLight) * out.numPoint
 				));
@@ -326,9 +326,9 @@ namespace octoon
 				auto desc = out.pointLightBuffer->getDataDesc();
 				if (desc.getStreamSize() < out.pointLights.size() * sizeof(RenderingData::PointLight))
 				{
-					out.pointLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-						hal::GraphicsDataType::UniformBuffer,
-						hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
+					out.pointLightBuffer = this->context_->getDevice()->createGraphicsData(GraphicsDataDesc(
+						GraphicsDataType::UniformBuffer,
+						GraphicsUsageFlagBits::ReadBit | GraphicsUsageFlagBits::WriteBit,
 						out.pointLights.data(),
 						sizeof(RenderingData::PointLight) * out.numPoint
 					));
@@ -347,9 +347,9 @@ namespace octoon
 		{
 			if (!out.rectangleLightBuffer)
 			{
-				out.rectangleLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-					hal::GraphicsDataType::UniformBuffer,
-					hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
+				out.rectangleLightBuffer = this->context_->getDevice()->createGraphicsData(GraphicsDataDesc(
+					GraphicsDataType::UniformBuffer,
+					GraphicsUsageFlagBits::ReadBit | GraphicsUsageFlagBits::WriteBit,
 					out.rectangleLights.data(),
 					sizeof(RenderingData::RectAreaLight) * out.numRectangle
 				));
@@ -359,9 +359,9 @@ namespace octoon
 				auto desc = out.rectangleLightBuffer->getDataDesc();
 				if (desc.getStreamSize() < out.rectangleLights.size() * sizeof(RenderingData::RectAreaLight))
 				{
-					out.rectangleLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-						hal::GraphicsDataType::UniformBuffer,
-						hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
+					out.rectangleLightBuffer = this->context_->getDevice()->createGraphicsData(GraphicsDataDesc(
+						GraphicsDataType::UniformBuffer,
+						GraphicsUsageFlagBits::ReadBit | GraphicsUsageFlagBits::WriteBit,
 						out.rectangleLights.data(),
 						sizeof(RenderingData::RectAreaLight) * out.numRectangle
 					));
@@ -380,9 +380,9 @@ namespace octoon
 		{
 			if (!out.directionLightBuffer)
 			{
-				out.directionLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-					hal::GraphicsDataType::UniformBuffer,
-					hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
+				out.directionLightBuffer = this->context_->getDevice()->createGraphicsData(GraphicsDataDesc(
+					GraphicsDataType::UniformBuffer,
+					GraphicsUsageFlagBits::ReadBit | GraphicsUsageFlagBits::WriteBit,
 					out.directionalLights.data(),
 					sizeof(RenderingData::DirectionalLight) * out.numDirectional
 				));
@@ -392,9 +392,9 @@ namespace octoon
 				auto desc = out.directionLightBuffer->getDataDesc();
 				if (desc.getStreamSize() < out.directionalLights.size() * sizeof(RenderingData::DirectionalLight))
 				{
-					out.directionLightBuffer = this->context_->getDevice()->createGraphicsData(hal::GraphicsDataDesc(
-						hal::GraphicsDataType::UniformBuffer,
-						hal::GraphicsUsageFlagBits::ReadBit | hal::GraphicsUsageFlagBits::WriteBit,
+					out.directionLightBuffer = this->context_->getDevice()->createGraphicsData(GraphicsDataDesc(
+						GraphicsDataType::UniformBuffer,
+						GraphicsUsageFlagBits::ReadBit | GraphicsUsageFlagBits::WriteBit,
 						out.directionalLights.data(),
 						sizeof(RenderingData::DirectionalLight) * out.numDirectional
 					));

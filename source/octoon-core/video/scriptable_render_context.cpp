@@ -24,7 +24,7 @@ namespace octoon
 	{
 	}
 
-	ScriptableRenderContext::ScriptableRenderContext(const hal::GraphicsContextPtr& context)
+	ScriptableRenderContext::ScriptableRenderContext(const GraphicsContextPtr& context)
 		: context_(context)
 	{
 	}
@@ -34,25 +34,25 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::setGraphicsContext(const hal::GraphicsContextPtr& context) noexcept(false)
+	ScriptableRenderContext::setGraphicsContext(const GraphicsContextPtr& context) noexcept(false)
 	{
 		this->context_ = context;
 	}
 
-	const hal::GraphicsContextPtr&
+	const GraphicsContextPtr&
 	ScriptableRenderContext::getGraphicsContext() const noexcept(false)
 	{
 		return this->context_;
 	}
 
-	hal::GraphicsInputLayoutPtr
-	ScriptableRenderContext::createInputLayout(const hal::GraphicsInputLayoutDesc& desc) noexcept
+	GraphicsInputLayoutPtr
+	ScriptableRenderContext::createInputLayout(const GraphicsInputLayoutDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createInputLayout(desc);
 	}
 
-	hal::GraphicsDataPtr
-	ScriptableRenderContext::createGraphicsData(const hal::GraphicsDataDesc& desc) noexcept
+	GraphicsDataPtr
+	ScriptableRenderContext::createGraphicsData(const GraphicsDataDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createGraphicsData(desc);
 	}
@@ -63,32 +63,32 @@ namespace octoon
 		return this->context_->getDevice()->createTexture(desc);
 	}
 
-	hal::GraphicsSamplerPtr
-	ScriptableRenderContext::createSampler(const hal::GraphicsSamplerDesc& desc) noexcept
+	GraphicsSamplerPtr
+	ScriptableRenderContext::createSampler(const GraphicsSamplerDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createSampler(desc);
 	}
 
-	hal::GraphicsFramebufferPtr
-	ScriptableRenderContext::createFramebuffer(const hal::GraphicsFramebufferDesc& desc) noexcept
+	GraphicsFramebufferPtr
+	ScriptableRenderContext::createFramebuffer(const GraphicsFramebufferDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createFramebuffer(desc);
 	}
 
-	hal::GraphicsFramebufferLayoutPtr
-	ScriptableRenderContext::createFramebufferLayout(const hal::GraphicsFramebufferLayoutDesc& desc) noexcept
+	GraphicsFramebufferLayoutPtr
+	ScriptableRenderContext::createFramebufferLayout(const GraphicsFramebufferLayoutDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createFramebufferLayout(desc);
 	}
 
-	hal::GraphicsShaderPtr
-	ScriptableRenderContext::createShader(const hal::GraphicsShaderDesc& desc) noexcept
+	GraphicsShaderPtr
+	ScriptableRenderContext::createShader(const GraphicsShaderDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createShader(desc);
 	}
 
-	hal::GraphicsProgramPtr
-	ScriptableRenderContext::createProgram(const hal::GraphicsProgramDesc& desc) noexcept
+	GraphicsProgramPtr
+	ScriptableRenderContext::createProgram(const GraphicsProgramDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createProgram(desc);
 	}
@@ -99,26 +99,26 @@ namespace octoon
 		return this->context_->getDevice()->createRenderState(desc);
 	}
 
-	hal::GraphicsPipelinePtr
-	ScriptableRenderContext::createRenderPipeline(const hal::GraphicsPipelineDesc& desc) noexcept
+	GraphicsPipelinePtr
+	ScriptableRenderContext::createRenderPipeline(const GraphicsPipelineDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createRenderPipeline(desc);
 	}
 
-	hal::GraphicsDescriptorSetPtr
-	ScriptableRenderContext::createDescriptorSet(const hal::GraphicsDescriptorSetDesc& desc) noexcept
+	GraphicsDescriptorSetPtr
+	ScriptableRenderContext::createDescriptorSet(const GraphicsDescriptorSetDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createDescriptorSet(desc);
 	}
 
-	hal::GraphicsDescriptorSetLayoutPtr
-	ScriptableRenderContext::createDescriptorSetLayout(const hal::GraphicsDescriptorSetLayoutDesc& desc) noexcept
+	GraphicsDescriptorSetLayoutPtr
+	ScriptableRenderContext::createDescriptorSetLayout(const GraphicsDescriptorSetLayoutDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createDescriptorSetLayout(desc);
 	}
 
-	hal::GraphicsDescriptorPoolPtr
-	ScriptableRenderContext::createDescriptorPool(const hal::GraphicsDescriptorPoolDesc& desc) noexcept
+	GraphicsDescriptorPoolPtr
+	ScriptableRenderContext::createDescriptorPool(const GraphicsDescriptorPoolDesc& desc) noexcept
 	{
 		return this->context_->getDevice()->createDescriptorPool(desc);
 	}
@@ -148,108 +148,108 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::setStencilCompareMask(hal::StencilFaceFlags face, std::uint32_t mask) noexcept
+	ScriptableRenderContext::setStencilCompareMask(StencilFaceFlags face, std::uint32_t mask) noexcept
 	{
 		this->context_->setStencilCompareMask(face, mask);
 	}
 	std::uint32_t
-	ScriptableRenderContext::getStencilCompareMask(hal::StencilFaceFlags face) noexcept
+	ScriptableRenderContext::getStencilCompareMask(StencilFaceFlags face) noexcept
 	{
 		return this->context_->getStencilCompareMask(face);
 	}
 
 	void
-	ScriptableRenderContext::setStencilReference(hal::StencilFaceFlags face, std::uint32_t reference) noexcept
+	ScriptableRenderContext::setStencilReference(StencilFaceFlags face, std::uint32_t reference) noexcept
 	{
 		this->context_->setStencilReference(face, reference);
 	}
 
 	std::uint32_t
-	ScriptableRenderContext::getStencilReference(hal::StencilFaceFlags face) noexcept
+	ScriptableRenderContext::getStencilReference(StencilFaceFlags face) noexcept
 	{
 		return this->context_->getStencilReference(face);
 	}
 
 	void
-	ScriptableRenderContext::setStencilWriteMask(hal::StencilFaceFlags face, std::uint32_t mask) noexcept
+	ScriptableRenderContext::setStencilWriteMask(StencilFaceFlags face, std::uint32_t mask) noexcept
 	{
 		this->context_->setStencilWriteMask(face, mask);
 	}
 
 	std::uint32_t
-	ScriptableRenderContext::getStencilWriteMask(hal::StencilFaceFlags face) noexcept
+	ScriptableRenderContext::getStencilWriteMask(StencilFaceFlags face) noexcept
 	{
 		return this->context_->getStencilWriteMask(face);
 	}
 
 	void
-	ScriptableRenderContext::setRenderPipeline(const hal::GraphicsPipelinePtr& pipeline) noexcept
+	ScriptableRenderContext::setRenderPipeline(const GraphicsPipelinePtr& pipeline) noexcept
 	{
 		this->context_->setRenderPipeline(pipeline);
 	}
 
-	hal::GraphicsPipelinePtr
+	GraphicsPipelinePtr
 	ScriptableRenderContext::getRenderPipeline() const noexcept
 	{
 		return this->context_->getRenderPipeline();
 	}
 
 	void
-	ScriptableRenderContext::setDescriptorSet(const hal::GraphicsDescriptorSetPtr& descriptorSet) noexcept
+	ScriptableRenderContext::setDescriptorSet(const GraphicsDescriptorSetPtr& descriptorSet) noexcept
 	{
 		this->context_->setDescriptorSet(descriptorSet);
 	}
 
-	hal::GraphicsDescriptorSetPtr
+	GraphicsDescriptorSetPtr
 	ScriptableRenderContext::getDescriptorSet() const noexcept
 	{
 		return this->context_->getDescriptorSet();
 	}
 
 	void
-	ScriptableRenderContext::setVertexBufferData(std::uint32_t i, const hal::GraphicsDataPtr& data, std::intptr_t offset) noexcept
+	ScriptableRenderContext::setVertexBufferData(std::uint32_t i, const GraphicsDataPtr& data, std::intptr_t offset) noexcept
 	{
 		this->context_->setVertexBufferData(i, data, offset);
 	}
 
-	hal::GraphicsDataPtr
+	GraphicsDataPtr
 	ScriptableRenderContext::getVertexBufferData(std::uint32_t i) const noexcept
 	{
 		return this->context_->getVertexBufferData(i);
 	}
 
 	void
-	ScriptableRenderContext::setIndexBufferData(const hal::GraphicsDataPtr& data, std::intptr_t offset, hal::IndexFormat indexType) noexcept
+	ScriptableRenderContext::setIndexBufferData(const GraphicsDataPtr& data, std::intptr_t offset, IndexFormat indexType) noexcept
 	{
 		this->context_->setIndexBufferData(data, offset, indexType);
 	}
 
-	hal::GraphicsDataPtr
+	GraphicsDataPtr
 	ScriptableRenderContext::getIndexBufferData() const noexcept
 	{
 		return this->context_->getIndexBufferData();
 	}
 
 	void
-	ScriptableRenderContext::configureTarget(const hal::GraphicsFramebufferPtr& target) noexcept
+	ScriptableRenderContext::configureTarget(const GraphicsFramebufferPtr& target) noexcept
 	{
 		this->context_->setFramebuffer(target);
 	}
 
 	void
-	ScriptableRenderContext::configureClear(hal::ClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept
+	ScriptableRenderContext::configureClear(ClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept
 	{
 		this->context_->clearFramebuffer(0, flags, color, depth, stencil);
 	}
 
 	void
-	ScriptableRenderContext::discardFramebuffer(const hal::GraphicsFramebufferPtr& src, hal::ClearFlags flags) noexcept
+	ScriptableRenderContext::discardFramebuffer(const GraphicsFramebufferPtr& src, ClearFlags flags) noexcept
 	{
 		this->context_->discardFramebuffer(src, flags);
 	}
 
 	void
-	ScriptableRenderContext::blitFramebuffer(const hal::GraphicsFramebufferPtr& src, const math::float4& v1, const hal::GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept
+	ScriptableRenderContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept
 	{
 		this->context_->blitFramebuffer(src, v1, dest, v2);
 	}
@@ -266,7 +266,7 @@ namespace octoon
 		this->context_->readFramebufferToCube(i, face, texture, miplevel, x, y, width, height);
 	}
 
-	hal::GraphicsFramebufferPtr
+	GraphicsFramebufferPtr
 	ScriptableRenderContext::getFramebuffer() const noexcept
 	{
 		return this->context_->getFramebuffer();
@@ -285,13 +285,13 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::drawIndirect(const hal::GraphicsDataPtr& data, std::size_t offset, std::uint32_t drawCount, std::uint32_t stride) noexcept
+	ScriptableRenderContext::drawIndirect(const GraphicsDataPtr& data, std::size_t offset, std::uint32_t drawCount, std::uint32_t stride) noexcept
 	{
 		this->context_->drawIndirect(data, offset, drawCount, stride);
 	}
 
 	void
-	ScriptableRenderContext::drawIndexedIndirect(const hal::GraphicsDataPtr& data, std::size_t offset, std::uint32_t drawCount, std::uint32_t stride) noexcept
+	ScriptableRenderContext::drawIndexedIndirect(const GraphicsDataPtr& data, std::size_t offset, std::uint32_t drawCount, std::uint32_t stride) noexcept
 	{
 		this->context_->drawIndexedIndirect(data, offset, drawCount, stride);
 	}
@@ -343,7 +343,7 @@ namespace octoon
 		{
 			auto& buffer = renderingData.buffers_.at(mesh.get());
 			this->setVertexBufferData(0, buffer->getVertexBuffer(), 0);
-			this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::IndexFormat::UInt32);
+			this->setIndexBufferData(buffer->getIndexBuffer(), 0, IndexFormat::UInt32);
 
 			if (buffer->getIndexBuffer())
 				this->drawIndexed((std::uint32_t)buffer->getNumIndices(subset), 1, (std::uint32_t)buffer->getStartIndices(subset), 0, 0);
@@ -354,7 +354,7 @@ namespace octoon
 		{
 			auto& buffer = buffers_.at(mesh.get());
 			this->setVertexBufferData(0, buffer->getVertexBuffer(), 0);
-			this->setIndexBufferData(buffer->getIndexBuffer(), 0, hal::IndexFormat::UInt32);
+			this->setIndexBufferData(buffer->getIndexBuffer(), 0, IndexFormat::UInt32);
 
 			if (buffer->getIndexBuffer())
 				this->drawIndexed((std::uint32_t)buffer->getNumIndices(subset), 1, (std::uint32_t)buffer->getStartIndices(subset), 0, 0);

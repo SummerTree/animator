@@ -26,18 +26,18 @@ namespace octoon
 		void setStream(const void* data) noexcept;
 		void setStreamSize(std::size_t size) noexcept;
 
-		void setTexFormat(hal::GraphicsFormat format) noexcept;
-		void setTexDim(hal::TextureDimension mapping) noexcept;
-		void setTexTiling(hal::GraphicsImageTiling tiling) noexcept;
-		void setTexUsage(hal::GraphicsViewUsageFlags flags) noexcept;
+		void setTexFormat(GraphicsFormat format) noexcept;
+		void setTexDim(TextureDimension mapping) noexcept;
+		void setTexTiling(GraphicsImageTiling tiling) noexcept;
+		void setTexUsage(GraphicsViewUsageFlags flags) noexcept;
 		void setTexMultisample(std::uint32_t samples) noexcept;
-		void setUsageFlagBits(hal::GraphicsUsageFlags flags) noexcept;
+		void setUsageFlagBits(GraphicsUsageFlags flags) noexcept;
 
-		hal::GraphicsFormat getTexFormat()  const noexcept;
-		hal::TextureDimension getTexDim() const noexcept;
-		hal::GraphicsImageTiling getTexTiling() const noexcept;
-		hal::GraphicsViewUsageFlags getTexUsage() const noexcept;
-		hal::GraphicsUsageFlags getUsageFlagBits() const noexcept;
+		GraphicsFormat getTexFormat()  const noexcept;
+		TextureDimension getTexDim() const noexcept;
+		GraphicsImageTiling getTexTiling() const noexcept;
+		GraphicsViewUsageFlags getTexUsage() const noexcept;
+		GraphicsUsageFlags getUsageFlagBits() const noexcept;
 
 		const std::string& getName() const noexcept;
 
@@ -69,11 +69,11 @@ namespace octoon
 
 		std::uint32_t _samples;
 
-		hal::GraphicsFormat _format;
-		hal::TextureDimension _dim;
-		hal::GraphicsImageTiling _tiling;
-		hal::GraphicsViewUsageFlags _textureUsage;
-		hal::GraphicsUsageFlags _usageFlags;
+		GraphicsFormat _format;
+		TextureDimension _dim;
+		GraphicsImageTiling _tiling;
+		GraphicsViewUsageFlags _textureUsage;
+		GraphicsUsageFlags _usageFlags;
 
 		const void* _data;
 		std::size_t _dataSize;

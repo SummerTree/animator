@@ -49,7 +49,7 @@ namespace octoon
 	void
 	EnvironmentLight::setBackgroundMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
 	{
-		assert(!texture || texture->getTextureDesc().getTexDim() == hal::TextureDimension::Cube || texture->getTextureDesc().getTexDim() == hal::TextureDimension::Texture2D);
+		assert(!texture || texture->getTextureDesc().getTexDim() == TextureDimension::Cube || texture->getTextureDesc().getTexDim() == TextureDimension::Texture2D);
 		if (backgroundMap_ != texture)
 		{
 			backgroundMap_ = texture;
@@ -66,7 +66,7 @@ namespace octoon
 	void
 	EnvironmentLight::setEnvironmentMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
 	{
-		assert(!texture || texture->getTextureDesc().getTexDim() == hal::TextureDimension::Cube || texture->getTextureDesc().getTexDim() == hal::TextureDimension::Texture2D);
+		assert(!texture || texture->getTextureDesc().getTexDim() == TextureDimension::Cube || texture->getTextureDesc().getTexDim() == TextureDimension::Texture2D);
 		if (environmentMap_ != texture)
 		{
 			environmentMap_ = texture;

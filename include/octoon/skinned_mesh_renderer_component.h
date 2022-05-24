@@ -81,7 +81,7 @@ namespace octoon
 		GameObjects transforms_;
 
 		math::float4x4s joints_;
-		hal::GraphicsDataPtr jointData_;
+		GraphicsDataPtr jointData_;
 
 		MeshPtr mesh_;
 		MeshPtr skinnedMesh_;

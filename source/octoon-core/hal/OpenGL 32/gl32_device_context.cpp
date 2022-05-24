@@ -98,7 +98,7 @@ namespace octoon
 		}
 
 		void
-		GL32DeviceContext::setViewport(std::uint32_t i, const float4& view) noexcept
+		GL32DeviceContext::setViewport(std::uint32_t i, const math::float4& view) noexcept
 		{
 			assert(_glcontext->getActive());
 
@@ -113,14 +113,14 @@ namespace octoon
 			}
 		}
 
-		const float4&
+		const math::float4&
 		GL32DeviceContext::getViewport(std::uint32_t i) const noexcept
 		{
 			return _viewports[i];
 		}
 
 		void
-		GL32DeviceContext::setScissor(std::uint32_t i, const uint4& scissor) noexcept
+		GL32DeviceContext::setScissor(std::uint32_t i, const math::uint4& scissor) noexcept
 		{
 			assert(_glcontext->getActive());
 
@@ -141,7 +141,7 @@ namespace octoon
 			}
 		}
 
-		const uint4&
+		const math::uint4&
 		GL32DeviceContext::getScissor(std::uint32_t i) const noexcept
 		{
 			return _scissors[i];
@@ -444,7 +444,7 @@ namespace octoon
 					std::uint32_t viewportCount = std::max<std::uint32_t>(1, static_cast<std::uint32_t>(colorAttachment.size()));
 					for (std::uint32_t i = 0; i < viewportCount; i++)
 					{
-						this->setViewport(i, float4(0, 0, (float)framebufferDesc.getWidth(), (float)framebufferDesc.getHeight()));
+						this->setViewport(i, math::float4(0, 0, (float)framebufferDesc.getWidth(), (float)framebufferDesc.getHeight()));
 						this->setScissor(i, _scissors[i]);
 					}
 
@@ -461,7 +461,7 @@ namespace octoon
 		}
 
 		void
-		GL32DeviceContext::clearFramebuffer(std::uint32_t i, ClearFlags flags, const float4& color, float depth, std::int32_t stencil) noexcept
+		GL32DeviceContext::clearFramebuffer(std::uint32_t i, ClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept
 		{
 			assert(_glcontext->getActive());
 
@@ -542,7 +542,7 @@ namespace octoon
 		}
 
 		void
-		GL32DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const float4& v1, const GraphicsFramebufferPtr& dest, const float4& v2) noexcept
+		GL32DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept
 		{
 			assert(src);
 			assert(src->isInstanceOf<GL32Framebuffer>());
@@ -834,8 +834,8 @@ namespace octoon
 
 			auto& systemInfo = this->getDevice()->getSystemInfo();
 			_vertexBuffers.resize(systemInfo.maxVertexInputBindings);
-			_viewports.resize(systemInfo.maxViewports, float4(0, 0, 0, 0));
-			_scissors.resize(systemInfo.maxViewports, uint4(0, 0, 0, 0));
+			_viewports.resize(systemInfo.maxViewports, math::float4(0, 0, 0, 0));
+			_scissors.resize(systemInfo.maxViewports, math::uint4(0, 0, 0, 0));
 
 			return true;
 		}

@@ -26,7 +26,7 @@ namespace octoon
 	}
 
 	void
-	Renderer::open(const hal::GraphicsContextPtr& context, std::uint32_t w, std::uint32_t h) except
+	Renderer::open(const GraphicsContextPtr& context, std::uint32_t w, std::uint32_t h) except
 	{
 		width_ = w;
 		height_ = h;
@@ -82,7 +82,7 @@ namespace octoon
 		return this->pathRenderer_->readNormalBuffer(data);
 	}
 
-	const hal::GraphicsFramebufferPtr&
+	const GraphicsFramebufferPtr&
 	Renderer::getFramebuffer() const noexcept
 	{
 		assert(this->forwardRenderer_);
@@ -93,13 +93,13 @@ namespace octoon
 			return this->forwardRenderer_->getFramebuffer();
 	}
 
-	const hal::GraphicsContextPtr&
+	const GraphicsContextPtr&
 	Renderer::getScriptableRenderContext() const noexcept
 	{
 		return this->context_;
 	}
 
-	const hal::GraphicsDevicePtr
+	const GraphicsDevicePtr
 	Renderer::getGraphicsDevice() const noexcept
 	{
 		return this->context_->getDevice();

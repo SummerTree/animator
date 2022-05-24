@@ -10,11 +10,11 @@ namespace octoon
 		, _layer(1)
 		, _mipBase(0)
 		, _mipLevel(1)
-		, _format(hal::GraphicsFormat::Undefined)
-		, _dim(hal::TextureDimension::Texture2D)
-		, _textureUsage(hal::GraphicsViewUsageFlagBits::SampledBit)
-		, _tiling(hal::GraphicsImageTiling::Optimal)
-		, _usageFlags(hal::GraphicsUsageFlagBits::ReadBit)
+		, _format(GraphicsFormat::Undefined)
+		, _dim(TextureDimension::Texture2D)
+		, _textureUsage(GraphicsViewUsageFlagBits::SampledBit)
+		, _tiling(GraphicsImageTiling::Optimal)
+		, _usageFlags(GraphicsUsageFlagBits::ReadBit)
 		, _data(nullptr)
 		, _dataSize(0)
 		, _samples(0)
@@ -82,25 +82,25 @@ namespace octoon
 	}
 
 	void
-	GraphicsTextureDesc::setTexFormat(hal::GraphicsFormat format) noexcept
+	GraphicsTextureDesc::setTexFormat(GraphicsFormat format) noexcept
 	{
 		_format = format;
 	}
 
 	void
-	GraphicsTextureDesc::setTexDim(hal::TextureDimension dim) noexcept
+	GraphicsTextureDesc::setTexDim(TextureDimension dim) noexcept
 	{
 		_dim = dim;
 	}
 
 	void
-	GraphicsTextureDesc::setTexTiling(hal::GraphicsImageTiling tiling) noexcept
+	GraphicsTextureDesc::setTexTiling(GraphicsImageTiling tiling) noexcept
 	{
 		_tiling = tiling;
 	}
 
 	void
-	GraphicsTextureDesc::setTexUsage(hal::GraphicsViewUsageFlags flags) noexcept
+	GraphicsTextureDesc::setTexUsage(GraphicsViewUsageFlags flags) noexcept
 	{
 		_textureUsage = flags;
 	}
@@ -112,30 +112,30 @@ namespace octoon
 	}
 
 	void
-	GraphicsTextureDesc::setUsageFlagBits(hal::GraphicsUsageFlags flags) noexcept
+	GraphicsTextureDesc::setUsageFlagBits(GraphicsUsageFlags flags) noexcept
 	{
 		_usageFlags = flags;
 	}
 
-	hal::GraphicsFormat
+	GraphicsFormat
 	GraphicsTextureDesc::getTexFormat() const noexcept
 	{
 		return _format;
 	}
 
-	hal::TextureDimension
+	TextureDimension
 	GraphicsTextureDesc::getTexDim() const noexcept
 	{
 		return _dim;
 	}
 
-	hal::GraphicsViewUsageFlags
+	GraphicsViewUsageFlags
 	GraphicsTextureDesc::getTexUsage() const noexcept
 	{
 		return _textureUsage;
 	}
 
-	hal::GraphicsImageTiling
+	GraphicsImageTiling
 	GraphicsTextureDesc::getTexTiling() const noexcept
 	{
 		return _tiling;
@@ -147,7 +147,7 @@ namespace octoon
 		return _samples;
 	}
 
-	hal::GraphicsUsageFlags
+	GraphicsUsageFlags
 	GraphicsTextureDesc::getUsageFlagBits() const noexcept
 	{
 		return _usageFlags;

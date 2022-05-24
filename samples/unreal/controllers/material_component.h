@@ -59,7 +59,7 @@ namespace unreal
 
 		std::map<std::string, nlohmann::json> packageList_;
 
-		octoon::hal::GraphicsFramebufferPtr framebuffer_;
+		octoon::GraphicsFramebufferPtr framebuffer_;
 
 		std::set<void*> materialSets_;
 		std::map<std::string, std::shared_ptr<octoon::MeshStandardMaterial>, std::less<>> materials_;

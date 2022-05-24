@@ -12,7 +12,7 @@ namespace octoon
 		GraphicsResource() noexcept;
 		virtual ~GraphicsResource() noexcept;
 
-		virtual hal::GraphicsDevicePtr getDevice() const noexcept = 0;
+		virtual GraphicsDevicePtr getDevice() const noexcept = 0;
 
 	private:
 		GraphicsResource(const GraphicsResource&) = delete;

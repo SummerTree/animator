@@ -984,8 +984,8 @@ namespace octoon
 							if (param.texture || v < 1.0f)
 							{
 								material->setBlendEnable(true);
-								material->setBlendSrc(hal::BlendMode::SrcAlpha);
-								material->setBlendDest(hal::BlendMode::OneMinusSrcAlpha);
+								material->setBlendSrc(BlendMode::SrcAlpha);
+								material->setBlendDest(BlendMode::OneMinusSrcAlpha);
 							}
 						}
 						else if (param_name == "normal")

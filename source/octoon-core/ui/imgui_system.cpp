@@ -7,8 +7,6 @@
 #include <cstring> // std::memcpy
 #include <stdexcept> // std::runtime_error
 
-using namespace octoon::hal;
-
 namespace octoon::imgui
 {
 #if defined(OCTOON_BUILD_PLATFORM_EMSCRIPTEN) || defined(OCTOON_BUILD_PLATFORM_ANDROID)
@@ -71,7 +69,7 @@ namespace octoon::imgui
 	{
 	}
 
-	System::System(const hal::GraphicsDevicePtr& device) noexcept
+	System::System(const GraphicsDevicePtr& device) noexcept
 		: System()
 	{
 		this->open(device);
@@ -138,8 +136,8 @@ namespace octoon::imgui
 			throw std::runtime_error("Failed to create indices bufer");
 
 		GraphicsProgramDesc programDesc;
-		programDesc.addShader(device->createShader(GraphicsShaderDesc(ShaderStageFlagBits::VertexBit, vert, "main", hal::ShaderLanguage::GLSL)));
-		programDesc.addShader(device->createShader(GraphicsShaderDesc(ShaderStageFlagBits::FragmentBit, frag, "main", hal::ShaderLanguage::GLSL)));
+		programDesc.addShader(device->createShader(GraphicsShaderDesc(ShaderStageFlagBits::VertexBit, vert, "main", ShaderLanguage::GLSL)));
+		programDesc.addShader(device->createShader(GraphicsShaderDesc(ShaderStageFlagBits::FragmentBit, frag, "main", ShaderLanguage::GLSL)));
 		auto program = device->createProgram(programDesc);
 		if (!program)
 			throw std::runtime_error("Failed to create shader progoram");
@@ -412,7 +410,7 @@ namespace octoon::imgui
 	}
 
 	void
-	System::render(hal::GraphicsContext& context) noexcept
+	System::render(GraphicsContext& context) noexcept
 	{
 		assert(vbo_ && ibo_);
 
@@ -482,7 +480,7 @@ namespace octoon::imgui
 
 		context.setFramebuffer(nullptr);
 		context.setViewport(0, float4(0, 0, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y));
-		context.setScissor(0, uint4(0, 0, (std::uint32_t)io.DisplayFramebufferScale.x, (std::uint32_t)io.DisplayFramebufferScale.y));
+		context.setScissor(0, math::uint4(0, 0, (std::uint32_t)io.DisplayFramebufferScale.x, (std::uint32_t)io.DisplayFramebufferScale.y));
 
 		if (totalVertexSize != 0 || totalIndirectSize != 0)
 		{
@@ -504,7 +502,7 @@ namespace octoon::imgui
 					else
 						decal_->uniformTexture(nullptr);
 
-					uint4 scissor((int)cmd->ClipRect.x, (int)cmd->ClipRect.y, (int)(cmd->ClipRect.z - cmd->ClipRect.x), (int)(cmd->ClipRect.w - cmd->ClipRect.y));
+					math::uint4 scissor((int)cmd->ClipRect.x, (int)cmd->ClipRect.y, (int)(cmd->ClipRect.z - cmd->ClipRect.x), (int)(cmd->ClipRect.w - cmd->ClipRect.y));
 
 					context.setScissor(0, scissor);
 

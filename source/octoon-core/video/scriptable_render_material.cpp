@@ -2158,7 +2158,7 @@ namespace octoon
 	{
 	}
 
-	ScriptableRenderMaterial::ScriptableRenderMaterial(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept
+	ScriptableRenderMaterial::ScriptableRenderMaterial(GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept
 	{
 		this->material_ = material;
 		this->updateMaterial(context, material, scene);
@@ -2190,13 +2190,13 @@ namespace octoon
 		pipeline_.reset();
 	}
 
-	const hal::GraphicsPipelinePtr&
+	const GraphicsPipelinePtr&
 	ScriptableRenderMaterial::getPipeline() const noexcept
 	{
 		return pipeline_;
 	}
 
-	const hal::GraphicsDescriptorSetPtr&
+	const GraphicsDescriptorSetPtr&
 	ScriptableRenderMaterial::getDescriptorSet() const noexcept
 	{
 		return descriptorSet_;
@@ -2315,7 +2315,7 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderMaterial::setupProgram(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene)
+	ScriptableRenderMaterial::setupProgram(GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene)
 	{
 		auto shader = material->getShader();
 
@@ -2396,14 +2396,14 @@ namespace octoon
 		this->replaceLightNums(vertexShader, scene);
 		this->replaceLightNums(fragmentShader, scene);
 
-		hal::GraphicsProgramDesc programDesc;
-		programDesc.addShader(context->getDevice()->createShader(hal::GraphicsShaderDesc(hal::ShaderStageFlagBits::VertexBit, vertexShader, "main", hal::ShaderLanguage::GLSL)));
-		programDesc.addShader(context->getDevice()->createShader(hal::GraphicsShaderDesc(hal::ShaderStageFlagBits::FragmentBit, fragmentShader, "main", hal::ShaderLanguage::GLSL)));
+		GraphicsProgramDesc programDesc;
+		programDesc.addShader(context->getDevice()->createShader(GraphicsShaderDesc(ShaderStageFlagBits::VertexBit, vertexShader, "main", ShaderLanguage::GLSL)));
+		programDesc.addShader(context->getDevice()->createShader(GraphicsShaderDesc(ShaderStageFlagBits::FragmentBit, fragmentShader, "main", ShaderLanguage::GLSL)));
 		this->program_ = context->getDevice()->createProgram(programDesc);
 	}
 
 	void
-	ScriptableRenderMaterial::setupRenderState(hal::GraphicsContextPtr& context, const MaterialPtr& material)
+	ScriptableRenderMaterial::setupRenderState(GraphicsContextPtr& context, const MaterialPtr& material)
 	{
 		RenderStateDesc stateDesc;
 		stateDesc.setBlendEnable(material->getBlendEnable());
@@ -2479,25 +2479,25 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderMaterial::updateMaterial(hal::GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept(false)
+	ScriptableRenderMaterial::updateMaterial(GraphicsContextPtr& context, const MaterialPtr& material, const RenderingData& scene) noexcept(false)
 	{
 		if (material)
 		{
 			this->setupRenderState(context, material);
 			this->setupProgram(context, material, scene);
 
-			hal::GraphicsInputLayoutDesc layoutDesc;
-			layoutDesc.addVertexLayout(hal::GraphicsVertexLayout(0, "POSITION", 0, hal::GraphicsFormat::R32G32B32SFloat));
-			layoutDesc.addVertexLayout(hal::GraphicsVertexLayout(0, "NORMAL", 0, hal::GraphicsFormat::R32G32B32SFloat));
-			layoutDesc.addVertexLayout(hal::GraphicsVertexLayout(0, "TEXCOORD", 0, hal::GraphicsFormat::R32G32SFloat));
-			layoutDesc.addVertexLayout(hal::GraphicsVertexLayout(0, "TEXCOORD", 1, hal::GraphicsFormat::R32G32SFloat));
+			GraphicsInputLayoutDesc layoutDesc;
+			layoutDesc.addVertexLayout(GraphicsVertexLayout(0, "POSITION", 0, GraphicsFormat::R32G32B32SFloat));
+			layoutDesc.addVertexLayout(GraphicsVertexLayout(0, "NORMAL", 0, GraphicsFormat::R32G32B32SFloat));
+			layoutDesc.addVertexLayout(GraphicsVertexLayout(0, "TEXCOORD", 0, GraphicsFormat::R32G32SFloat));
+			layoutDesc.addVertexLayout(GraphicsVertexLayout(0, "TEXCOORD", 1, GraphicsFormat::R32G32SFloat));
 
-			layoutDesc.addVertexBinding(hal::GraphicsVertexBinding(0, layoutDesc.getVertexSize()));
+			layoutDesc.addVertexBinding(GraphicsVertexBinding(0, layoutDesc.getVertexSize()));
 
-			hal::GraphicsDescriptorSetLayoutDesc descriptorSetLayout;
+			GraphicsDescriptorSetLayoutDesc descriptorSetLayout;
 			descriptorSetLayout.setUniformComponents(this->program_->getActiveParams());
 
-			hal::GraphicsPipelineDesc pipeline;
+			GraphicsPipelineDesc pipeline;
 			pipeline.setInputLayout(context->getDevice()->createInputLayout(layoutDesc));
 			pipeline.setRenderState(this->renderState_);
 			pipeline.setProgram(this->program_);
@@ -2506,7 +2506,7 @@ namespace octoon
 			pipeline_ = context->getDevice()->createRenderPipeline(pipeline);
 			if (pipeline_)
 			{
-				hal::GraphicsDescriptorSetDesc descriptorSet;
+				GraphicsDescriptorSetDesc descriptorSet;
 				descriptorSet.setDescriptorSetLayout(pipeline.getDescriptorSetLayout());
 				descriptorSet_ = context->getDevice()->createDescriptorSet(descriptorSet);
 				if (!descriptorSet_)
@@ -2515,67 +2515,67 @@ namespace octoon
 				auto begin = descriptorSet_->getUniformSets().begin();
 				auto end = descriptorSet_->getUniformSets().end();
 
-				auto modelMatrix = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "modelMatrix"; });
+				auto modelMatrix = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "modelMatrix"; });
 				if (modelMatrix != end)
 					modelMatrix_ = *modelMatrix;
 
-				auto viewMatrix = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "viewMatrix"; });
+				auto viewMatrix = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "viewMatrix"; });
 				if (viewMatrix != end)
 					viewMatrix_ = *viewMatrix;
 
-				auto viewProjMatrix = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "viewProjMatrix"; });
+				auto viewProjMatrix = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "viewProjMatrix"; });
 				if (viewProjMatrix != end)
 					viewProjMatrix_ = *viewProjMatrix;
 
-				auto normalMatrix = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "normalMatrix"; });
+				auto normalMatrix = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "normalMatrix"; });
 				if (normalMatrix != end)
 					normalMatrix_ = *normalMatrix;
 
-				auto modelViewMatrix = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "modelViewMatrix"; });
+				auto modelViewMatrix = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "modelViewMatrix"; });
 				if (modelViewMatrix != end)
 					modelViewMatrix_ = *modelViewMatrix;
 
-				auto projectionMatrix = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "projectionMatrix"; });
+				auto projectionMatrix = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "projectionMatrix"; });
 				if (projectionMatrix != end)
 					projectionMatrix_ = *projectionMatrix;
 
-				auto ambientLightColor = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "ambientLightColor"; });
+				auto ambientLightColor = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "ambientLightColor"; });
 				if (ambientLightColor != end)
 					ambientLightColor_ = *ambientLightColor;
 
-				auto directionalLights = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "DirectionalLights"; });
+				auto directionalLights = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "DirectionalLights"; });
 				if (directionalLights != end)
 					directionalLights_ = *directionalLights;
 
-				auto pointLights = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "pointLights"; });
+				auto pointLights = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "pointLights"; });
 				if (pointLights != end)
 					pointLights_ = *pointLights;
 
-				auto spotLights = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "spotLights"; });
+				auto spotLights = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "spotLights"; });
 				if (spotLights != end)
 					spotLights_ = *spotLights;
 
-				auto rectAreaLights = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "rectAreaLights"; });
+				auto rectAreaLights = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "rectAreaLights"; });
 				if (rectAreaLights != end)
 					rectAreaLights_ = *rectAreaLights;
 
-				auto hemisphereLights = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "hemisphereLights"; });
+				auto hemisphereLights = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "hemisphereLights"; });
 				if (hemisphereLights != end)
 					hemisphereLights_ = *hemisphereLights;
 				
-				auto flipEnvMap = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "flipEnvMap"; });
+				auto flipEnvMap = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "flipEnvMap"; });
 				if (flipEnvMap != end)
 					flipEnvMap_ = *flipEnvMap;
 
-				auto envmapOffset_ = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "offsetEnvMap"; });
+				auto envmapOffset_ = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "offsetEnvMap"; });
 				if (envmapOffset_ != end)
 					envMapOffset_ = *envmapOffset_;
 
-				auto envmap = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "envMap"; });
+				auto envmap = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "envMap"; });
 				if (envmap != end)
 					envMap_ = *envmap;
 
-				auto envmapIntensity = std::find_if(begin, end, [](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "envMapIntensity"; });
+				auto envmapIntensity = std::find_if(begin, end, [](const GraphicsUniformSetPtr& set) { return set->getName() == "envMapIntensity"; });
 				if (envmapIntensity != end)
 					envMapIntensity_ = *envmapIntensity;
 
@@ -2584,10 +2584,10 @@ namespace octoon
 					auto& it = scene.directionalLights[i];
 					if (it.shadow)
 					{
-						auto shadowMap = std::find_if(begin, end, [i](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "directionalShadowMap[" + std::to_string(i) + "]"; });
+						auto shadowMap = std::find_if(begin, end, [i](const GraphicsUniformSetPtr& set) { return set->getName() == "directionalShadowMap[" + std::to_string(i) + "]"; });
 						if (shadowMap != end)
 							this->directionalShadowMaps_.emplace_back(*shadowMap);
-						auto shadowMatrix = std::find_if(begin, end, [i](const hal::GraphicsUniformSetPtr& set) { return set->getName() == "directionalShadowMatrix[" + std::to_string(i) + "]"; });
+						auto shadowMatrix = std::find_if(begin, end, [i](const GraphicsUniformSetPtr& set) { return set->getName() == "directionalShadowMatrix[" + std::to_string(i) + "]"; });
 						if (shadowMatrix != end)
 							this->directionalShadowMatrixs_.emplace_back(*shadowMatrix);
 					}
@@ -2612,7 +2612,7 @@ namespace octoon
 
 			for (auto& prop : material_->getMaterialParams())
 			{
-				auto it = std::find_if(begin, end, [&](const hal::GraphicsUniformSetPtr& set) { return set->getName() == prop.key; });
+				auto it = std::find_if(begin, end, [&](const GraphicsUniformSetPtr& set) { return set->getName() == prop.key; });
 				if (it != end)
 				{
 					auto uniform = *it;

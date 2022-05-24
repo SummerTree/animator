@@ -98,7 +98,7 @@ namespace octoon
 		}
 
 		void
-		GL45DeviceContext::setViewport(std::uint32_t i, const float4& view) noexcept
+		GL45DeviceContext::setViewport(std::uint32_t i, const math::float4& view) noexcept
 		{
 			assert(_glcontext->getActive());
 
@@ -109,14 +109,14 @@ namespace octoon
 			}
 		}
 
-		const float4&
+		const math::float4&
 		GL45DeviceContext::getViewport(std::uint32_t i) const noexcept
 		{
 			return _viewports[i];
 		}
 
 		void
-		GL45DeviceContext::setScissor(std::uint32_t i, const uint4& scissor) noexcept
+		GL45DeviceContext::setScissor(std::uint32_t i, const math::uint4& scissor) noexcept
 		{
 			assert(_glcontext->getActive());
 
@@ -133,7 +133,7 @@ namespace octoon
 			}
 		}
 
-		const uint4&
+		const math::uint4&
 		GL45DeviceContext::getScissor(std::uint32_t i) const noexcept
 		{
 			return _scissors[i];
@@ -427,7 +427,7 @@ namespace octoon
 					std::uint32_t viewportCount = std::max<std::uint32_t>(1, static_cast<std::uint32_t>(colorAttachment.size()));
 					for (std::uint32_t i = 0; i < viewportCount; i++)
 					{
-						this->setViewport(i, float4(0.0f, 0.0f, (float)framebufferDesc.getWidth(), (float)framebufferDesc.getHeight()));
+						this->setViewport(i, math::float4(0.0f, 0.0f, (float)framebufferDesc.getWidth(), (float)framebufferDesc.getHeight()));
 
 						glScissorIndexed(i, _scissors[i].left, framebufferDesc.getHeight() - _scissors[i].height - _scissors[i].top, _scissors[i].width, _scissors[i].height);
 					}
@@ -443,7 +443,7 @@ namespace octoon
 		}
 
 		void
-		GL45DeviceContext::clearFramebuffer(std::uint32_t i, ClearFlags flags, const float4& color, float depth, std::int32_t stencil) noexcept
+		GL45DeviceContext::clearFramebuffer(std::uint32_t i, ClearFlags flags, const math::float4& color, float depth, std::int32_t stencil) noexcept
 		{
 			assert(_glcontext->getActive());
 
@@ -526,7 +526,7 @@ namespace octoon
 		}
 
 		void
-		GL45DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const float4& v1, const GraphicsFramebufferPtr& dest, const float4& v2) noexcept
+		GL45DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept
 		{
 			assert(src);
 			assert(src->isInstanceOf<GL45Framebuffer>());
@@ -893,9 +893,9 @@ namespace octoon
 
 			auto& deviceProperties = this->getDevice()->getSystemInfo();
 			_vertexBuffers.resize(deviceProperties.maxVertexInputBindings);
-			_viewports.resize(deviceProperties.maxViewports, float4::Zero);
-			_scissors.resize(deviceProperties.maxViewports, uint4::Zero);
-			_clearColor.resize(deviceProperties.maxFramebufferColorAttachments, float4(0.0f, 0.0f, 0.0f, 0.0f));
+			_viewports.resize(deviceProperties.maxViewports, math::float4::Zero);
+			_scissors.resize(deviceProperties.maxViewports, math::uint4::Zero);
+			_clearColor.resize(deviceProperties.maxFramebufferColorAttachments, math::float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 			return true;
 		}
