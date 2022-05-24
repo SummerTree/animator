@@ -64,7 +64,7 @@ namespace unreal
 	void 
 	ModelDock::addItem(std::string_view uuid) noexcept
 	{
-		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
+		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<ModelComponent>();
 		if (!hdrComponent)
 			return;
 
@@ -118,7 +118,7 @@ namespace unreal
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("PMX Files (*.pmx)"));
 		if (!filepaths.isEmpty())
 		{
-			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
+			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<ModelComponent>();
 			if (!hdrComponent)
 				return;
 
@@ -138,7 +138,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = hdrComponent->importHDRi(filepaths[i].toStdString());
+					auto package = hdrComponent->importModel(filepaths[i].toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -189,7 +189,7 @@ namespace unreal
 		{
 			listWidget_->clear();
 
-			auto hdriComponent = behaviour->getComponent<HDRiComponent>();
+			auto hdriComponent = behaviour->getComponent<ModelComponent>();
 			for (auto& uuid : hdriComponent->getIndexList())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}

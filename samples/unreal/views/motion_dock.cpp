@@ -64,7 +64,7 @@ namespace unreal
 	void 
 	MotionDock::addItem(std::string_view uuid) noexcept
 	{
-		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
+		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
 		if (!hdrComponent)
 			return;
 
@@ -115,10 +115,10 @@ namespace unreal
 	void
 	MotionDock::importClickEvent()
 	{
-		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("PMX Files (*.pmx)"));
+		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("VMD Files (*.vmd)"));
 		if (!filepaths.isEmpty())
 		{
-			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
+			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
 			if (!hdrComponent)
 				return;
 
@@ -138,7 +138,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = hdrComponent->importHDRi(filepaths[i].toStdString());
+					auto package = hdrComponent->importMotion(filepaths[i].toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -189,7 +189,7 @@ namespace unreal
 		{
 			listWidget_->clear();
 
-			auto hdriComponent = behaviour->getComponent<HDRiComponent>();
+			auto hdriComponent = behaviour->getComponent<MotionComponent>();
 			for (auto& uuid : hdriComponent->getIndexList())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}

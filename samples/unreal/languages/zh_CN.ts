@@ -451,8 +451,8 @@ $20 (Original cost $40)</source>
         <location filename="../views/main_dock.cpp" line="438"/>
         <location filename="../views/main_dock.cpp" line="476"/>
         <location filename="../views/main_dock.cpp" line="514"/>
-        <location filename="../views/main_dock.cpp" line="571"/>
-        <location filename="../views/main_dock.cpp" line="598"/>
+        <location filename="../views/main_dock.cpp" line="573"/>
+        <location filename="../views/main_dock.cpp" line="600"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -467,7 +467,7 @@ $20 (Original cost $40)</source>
         <translation>获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="572"/>
+        <location filename="../views/main_dock.cpp" line="574"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
@@ -855,8 +855,8 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="118"/>
-        <source>PMX Files (*.pmx)</source>
-        <translation type="unfinished"></translation>
+        <source>VMD Files (*.vmd)</source>
+        <translation type="unfinished">VMD 文件 (*.vmd)</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="127"/>

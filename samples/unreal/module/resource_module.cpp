@@ -25,9 +25,13 @@ namespace unreal
 
 		this->hdriPath = std::filesystem::path(this->rootPath).append("hdri").string();
 		this->materialPath = std::filesystem::path(this->rootPath).append("materials").string();
+		this->modelPath = std::filesystem::path(this->rootPath).append("model").string();
+		this->motionPath = std::filesystem::path(this->rootPath).append("motion").string();
 #else
 		this->hdriPath = "../../system/hdri";
 		this->materialPath = "../../system/materials";
+		this->modelPath = "../../system/model";
+		this->motionPath = "../../system/motion";
 #endif
 	}
 

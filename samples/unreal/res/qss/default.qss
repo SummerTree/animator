@@ -678,7 +678,7 @@ QWidget#EnvironmentDialog > QToolButton#Ok, QWidget#EnvironmentDialog > QToolBut
 	width:50;
 	height:30;
 }
-QWidget#ModelWidget > QToolButton#Import{
+QWidget#ModelWidget > QToolButton#Import, QWidget#MotionWidget > QToolButton#Import{
 	width:60;
 	height:30;
 }

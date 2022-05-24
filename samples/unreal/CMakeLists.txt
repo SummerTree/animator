@@ -104,8 +104,14 @@ SET(VIEWS_LIST
 SOURCE_GROUP("launcher\\views" FILES ${VIEWS_LIST})
 
 SET(CONTROLLERS_LIST
+	${SOURCE_PATH}/controllers/material_component.h
+	${SOURCE_PATH}/controllers/material_component.cpp
 	${SOURCE_PATH}/controllers/hdri_component.h
 	${SOURCE_PATH}/controllers/hdri_component.cpp
+	${SOURCE_PATH}/controllers/model_component.h
+	${SOURCE_PATH}/controllers/model_component.cpp
+	${SOURCE_PATH}/controllers/motion_component.h
+	${SOURCE_PATH}/controllers/motion_component.cpp
 	${SOURCE_PATH}/controllers/player_component.h
 	${SOURCE_PATH}/controllers/player_component.cpp
 	${SOURCE_PATH}/controllers/entities_component.h
@@ -124,8 +130,6 @@ SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/mark_component.cpp
 	${SOURCE_PATH}/controllers/client_component.h
 	${SOURCE_PATH}/controllers/client_component.cpp
-	${SOURCE_PATH}/controllers/material_component.h
-	${SOURCE_PATH}/controllers/material_component.cpp
 	${SOURCE_PATH}/controllers/selector_component.h
 	${SOURCE_PATH}/controllers/selector_component.cpp
 	${SOURCE_PATH}/controllers/grid_component.h
