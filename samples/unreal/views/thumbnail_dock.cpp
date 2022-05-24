@@ -73,12 +73,12 @@ namespace unreal
 		auto layout = new QVBoxLayout;
 		layout->addWidget(materialButton_, 0, Qt::AlignCenter);
 		layout->addWidget(modelButton_, 0, Qt::AlignCenter);
+		layout->addWidget(motionButton_, 0, Qt::AlignCenter);
 		layout->addWidget(lightButton_, 0, Qt::AlignCenter);
 		layout->addWidget(sunButton_, 0, Qt::AlignCenter);
 		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
 		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
 		layout->addWidget(recordButton_, 0, Qt::AlignCenter);
-		layout->addWidget(motionButton_, 0, Qt::AlignCenter);
 		layout->addWidget(settingsButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 		layout->setSpacing(4);

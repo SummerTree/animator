@@ -727,126 +727,14 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MotionDock</name>
     <message>
-        <source>Record</source>
-        <translation type="obsolete">录制</translation>
-    </message>
-    <message>
-        <source>Render Quality</source>
-        <translation type="obsolete">渲染质量</translation>
-    </message>
-    <message>
-        <source>Ultra Render</source>
-        <translation type="obsolete">高清渲染</translation>
-    </message>
-    <message>
-        <source>Fast Render</source>
-        <translation type="obsolete">极速渲染</translation>
-    </message>
-    <message>
-        <source>Frame Per Second</source>
-        <translation type="obsolete">帧率</translation>
-    </message>
-    <message>
-        <source>24</source>
-        <translation type="obsolete">24</translation>
-    </message>
-    <message>
-        <source>25</source>
-        <translation type="obsolete">25</translation>
-    </message>
-    <message>
-        <source>30</source>
-        <translation type="obsolete">30</translation>
-    </message>
-    <message>
-        <source>60</source>
-        <translation type="obsolete">60</translation>
-    </message>
-    <message>
-        <source>Output Type</source>
-        <translation type="obsolete">输出格式</translation>
-    </message>
-    <message>
-        <source>Play:</source>
-        <translation type="obsolete">播放：</translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="obsolete">开始</translation>
-    </message>
-    <message>
-        <source>- End</source>
-        <translation type="obsolete">- 结束</translation>
-    </message>
-    <message>
-        <source>Denoise:</source>
-        <translation type="obsolete">开启降噪：</translation>
-    </message>
-    <message>
-        <source>Recursion depth per pixel:</source>
-        <translation type="obsolete">每像素光线弹射次数：</translation>
-    </message>
-    <message>
-        <source>Sample number per pixel:</source>
-        <translation type="obsolete">每像素采样数:</translation>
-    </message>
-    <message>
-        <source>Constant Rate Factor (CRF):</source>
-        <translation type="obsolete">固定码率系数(CRF):</translation>
-    </message>
-    <message>
-        <source>Start Render</source>
-        <translation type="obsolete">开始渲染</translation>
-    </message>
-    <message>
-        <source>Watermark</source>
-        <translation type="obsolete">水印</translation>
-    </message>
-    <message>
-        <source>Render Settings</source>
-        <translation type="obsolete">渲染设置</translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation type="obsolete">警告</translation>
-    </message>
-    <message>
-        <source>Save Video</source>
-        <translation type="obsolete">保存视频</translation>
-    </message>
-    <message>
-        <source>MP4 Files (*.mp4)</source>
-        <translation type="obsolete">MP4 Files (*.mp4)</translation>
-    </message>
-    <message>
-        <source>Stop Render</source>
-        <translation type="obsolete">停止渲染</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="obsolete">错误</translation>
-    </message>
-    <message>
-        <source>Failed to create file</source>
-        <translation type="obsolete">创建文件失败</translation>
-    </message>
-    <message>
-        <source>Motion</source>
-        <translation type="obsolete">动作</translation>
-    </message>
-    <message>
-        <source>Model Library</source>
-        <translation type="obsolete">模型库</translation>
-    </message>
-    <message>
         <location filename="../views/motion_dock.cpp" line="21"/>
         <source>Motion Library</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">动作库</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="26"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">导入</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="118"/>
