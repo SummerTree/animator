@@ -206,7 +206,7 @@
     <message>
         <location filename="../views/environment_dock.cpp" line="56"/>
         <source>Import</source>
-        <translation>打开</translation>
+        <translation>导入</translation>
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="149"/>
@@ -644,7 +644,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/material_dock.cpp" line="64"/>
         <source>Import</source>
-        <translation>打开</translation>
+        <translation>导入</translation>
     </message>
     <message>
         <location filename="../views/material_dock.cpp" line="158"/>
