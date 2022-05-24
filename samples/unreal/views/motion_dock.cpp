@@ -54,7 +54,7 @@ namespace unreal
 
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
-		connect(listWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
+		connect(listWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 	}
 
 	MotionDock::~MotionDock() noexcept
@@ -113,36 +113,45 @@ namespace unreal
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("VMD Files (*.vmd)"));
 		if (!filepaths.isEmpty())
 		{
-			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
-			if (!hdrComponent)
+			auto motionComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
+			if (!motionComponent)
 				return;
 
 			try
 			{
-				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
-				dialog.setWindowTitle(tr("Loading..."));
-				dialog.setWindowModality(Qt::WindowModal);
-				dialog.show();
-
-				for (qsizetype i = 0; i < filepaths.size(); i++)
+				if (filepaths.size() > 1)
 				{
-					dialog.setValue(i);
-					dialog.setLabelText(QFileInfo(filepaths[i]).fileName());
+					QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
+					dialog.setWindowTitle(tr("Loading..."));
+					dialog.setWindowModality(Qt::WindowModal);
+					dialog.show();
 
-					QCoreApplication::processEvents();
-					if (dialog.wasCanceled())
-						break;
+					for (qsizetype i = 0; i < filepaths.size(); i++)
+					{
+						dialog.setValue(i);
+						dialog.setLabelText(QFileInfo(filepaths[i]).fileName());
 
-					auto package = hdrComponent->importMotion(filepaths[i].toStdString());
+						QCoreApplication::processEvents();
+						if (dialog.wasCanceled())
+							break;
+
+						auto package = motionComponent->importMotion(filepaths[i].toStdString());
+						if (!package.is_null())
+							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
+					}
+				}
+				else
+				{
+					auto package = motionComponent->importMotion(filepaths[0].toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				hdrComponent->save();
+				motionComponent->save();
 			}
 			catch (...)
 			{
-				hdrComponent->save();
+				motionComponent->save();
 			}
 		}
 	}
@@ -154,12 +163,19 @@ namespace unreal
 	}
 
 	void
-	MotionDock::itemDoubleClicked(QListWidgetItem* item)
+	MotionDock::itemSelected(QListWidgetItem* item)
 	{
-		this->close();
-
 		if (item)
-			emit itemSelected(item);
+		{
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+			if (!behaviour)
+				return;
+
+			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
+			if (selectedItem)
+			{
+			}
+		}
 	}
 
 	void
@@ -184,8 +200,8 @@ namespace unreal
 		{
 			listWidget_->clear();
 
-			auto hdriComponent = behaviour->getComponent<MotionComponent>();
-			for (auto& uuid : hdriComponent->getIndexList())
+			auto motionComponent = behaviour->getComponent<MotionComponent>();
+			for (auto& uuid : motionComponent->getIndexList())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}
 	}

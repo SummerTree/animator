@@ -54,7 +54,7 @@ namespace unreal
 
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
-		connect(listWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
+		connect(listWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 	}
 
 	ModelDock::~ModelDock() noexcept
@@ -159,12 +159,19 @@ namespace unreal
 	}
 
 	void
-	ModelDock::itemDoubleClicked(QListWidgetItem* item)
+	ModelDock::itemSelected(QListWidgetItem* item)
 	{
-		this->close();
-
 		if (item)
-			emit itemSelected(item);
+		{
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+			if (!behaviour)
+				return;
+
+			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
+			if (selectedItem)
+			{
+			}
+		}
 	}
 
 	void

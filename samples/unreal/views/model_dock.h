@@ -28,9 +28,6 @@ namespace unreal
 		void importClickEvent();
 
 		void itemClicked(QListWidgetItem* item);
-		void itemDoubleClicked(QListWidgetItem* item);
-
-	Q_SIGNALS:
 		void itemSelected(QListWidgetItem* item);
 
 	private:

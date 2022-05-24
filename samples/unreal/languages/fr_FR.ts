@@ -717,13 +717,13 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="122"/>
-        <location filename="../views/motion_dock.cpp" line="123"/>
+        <location filename="../views/motion_dock.cpp" line="124"/>
+        <location filename="../views/motion_dock.cpp" line="125"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="122"/>
+        <location filename="../views/motion_dock.cpp" line="124"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
