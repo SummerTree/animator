@@ -698,7 +698,7 @@ $20 (Original cost $40)</source>
     <name>unreal::MotionDock</name>
     <message>
         <location filename="../views/motion_dock.cpp" line="21"/>
-        <source>Model Library</source>
+        <source>Motion Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

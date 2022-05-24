@@ -1,4 +1,4 @@
-#include "motion_dock.h"
+#include "model_dock.h"
 #include "draggable_list_widget.h"
 
 #include <qpainter.h>
@@ -13,13 +13,13 @@
 
 namespace unreal
 {
-	MotionDock::MotionDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
+	ModelDock::ModelDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: behaviour_(behaviour)
 		, profile_(profile)
 		, clickedItem_(nullptr)
 	{
-		this->setWindowTitle(tr("Motion Library"));
-		this->setObjectName("MotionDock");
+		this->setWindowTitle(tr("Model Library"));
+		this->setObjectName("ModelDock");
 
 		importButton_ = new QToolButton;
 		importButton_->setObjectName("Import");
@@ -47,7 +47,7 @@ namespace unreal
 		mainLayout_->setContentsMargins(0, 10, 0, 10);
 
 		mainWidget_ = new QWidget;
-		mainWidget_->setObjectName("MotionWidget");
+		mainWidget_->setObjectName("ModelWidget");
 		mainWidget_->setLayout(mainLayout_);
 
 		this->setWidget(mainWidget_);
@@ -57,12 +57,12 @@ namespace unreal
 		connect(listWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 	}
 
-	MotionDock::~MotionDock() noexcept
+	ModelDock::~ModelDock() noexcept
 	{
 	}
 
 	void 
-	MotionDock::addItem(std::string_view uuid) noexcept
+	ModelDock::addItem(std::string_view uuid) noexcept
 	{
 		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
 		if (!hdrComponent)
@@ -113,7 +113,7 @@ namespace unreal
 	}
 
 	void
-	MotionDock::importClickEvent()
+	ModelDock::importClickEvent()
 	{
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("PMX Files (*.pmx)"));
 		if (!filepaths.isEmpty())
@@ -153,13 +153,13 @@ namespace unreal
 	}
 
 	void
-	MotionDock::itemClicked(QListWidgetItem* item)
+	ModelDock::itemClicked(QListWidgetItem* item)
 	{
 		clickedItem_ = item;
 	}
 
 	void
-	MotionDock::itemDoubleClicked(QListWidgetItem* item)
+	ModelDock::itemDoubleClicked(QListWidgetItem* item)
 	{
 		this->close();
 
@@ -168,7 +168,7 @@ namespace unreal
 	}
 
 	void
-	MotionDock::resizeEvent(QResizeEvent* e) noexcept
+	ModelDock::resizeEvent(QResizeEvent* e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins() + bottomLayout_->contentsMargins();
 		listWidget_->resize(
@@ -177,7 +177,7 @@ namespace unreal
 	}
 
 	void
-	MotionDock::showEvent(QShowEvent* event) noexcept
+	ModelDock::showEvent(QShowEvent* event) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins() + bottomLayout_->contentsMargins();
 		listWidget_->resize(

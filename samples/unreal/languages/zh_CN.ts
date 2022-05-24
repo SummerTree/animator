@@ -835,9 +835,13 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">动作</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="21"/>
         <source>Model Library</source>
-        <translation type="unfinished">模型库</translation>
+        <translation type="obsolete">模型库</translation>
+    </message>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="21"/>
+        <source>Motion Library</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="26"/>
