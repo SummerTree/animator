@@ -178,8 +178,8 @@ namespace unreal
 		{
 			auto markModel = markComponent->getModel();
 
-			auto width = std::min(markModel->width, model->width);
-			auto height = std::min(markModel->height, model->height);
+			auto width = std::min<std::uint32_t>(markModel->width, model->width);
+			auto height = std::min<std::uint32_t>(markModel->height, model->height);
 
 			for (std::uint32_t y = 0; y < height; y++)
 			{

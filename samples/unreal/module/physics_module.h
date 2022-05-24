@@ -23,14 +23,14 @@ namespace unreal
 		PhysicsModule& operator=(const PhysicsModule&) = delete;
 
 	public:
-		octoon::math::float3 gravity;
+		MutableLiveData<octoon::math::float3> gravity;
 
-		float fixedTimeStep;
-		float gravityScale;
+		MutableLiveData<float> fixedTimeStep;
+		MutableLiveData<float> gravityScale;
 
-		std::uint32_t playSolverIterationCounts;
-		std::uint32_t recordSolverIterationCounts;
-		std::uint32_t previewSolverIterationCounts;
+		MutableLiveData<std::uint32_t> playSolverIterationCounts;
+		MutableLiveData<std::uint32_t> recordSolverIterationCounts;
+		MutableLiveData<std::uint32_t> previewSolverIterationCounts;
 	};
 }
 

@@ -63,6 +63,10 @@ namespace unreal
 			this->repaint();
 		});
 
+		profile->playerModule->isPlaying += [this](bool value) {
+			this->repaint();
+		};
+
 		this->connect(&resetButton, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		this->connect(&playButton, SIGNAL(clicked()), this, SLOT(playEvent()));
 		this->connect(&leftButton, SIGNAL(clicked()), this, SLOT(leftEvent()));

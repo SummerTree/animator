@@ -39,15 +39,15 @@ namespace unreal
 	RecordModule::load(octoon::runtime::json& reader) noexcept
 	{
 		if (reader.find("width") != reader.end())
-			this->width = reader["width"];
+			this->width = reader["width"].get<nlohmann::json::number_unsigned_t>();
 		if (reader.find("height") != reader.end())
-			this->height = reader["height"];
+			this->height = reader["height"].get<nlohmann::json::number_unsigned_t>();
 	}
 
 	void 
 	RecordModule::save(octoon::runtime::json& reader) noexcept
 	{
-		reader["width"] = this->width;
-		reader["height"] = this->height;
+		reader["width"] = this->width.getValue();
+		reader["height"] = this->height.getValue();
 	}
 }

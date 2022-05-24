@@ -88,6 +88,10 @@ namespace unreal
 			this->repaint();
 		});
 
+		profile->offlineModule->enable += [this](bool value) {
+			this->repaint();
+		};
+
 		this->connect(importButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
 		this->connect(audioButton_, SIGNAL(clicked()), this, SLOT(audioEvent()));
 		this->connect(shotButton_, SIGNAL(clicked()), this, SLOT(shotEvent()));
@@ -280,12 +284,7 @@ namespace unreal
 					{
 						auto offline = behaviour->getComponent<OfflineComponent>();
 						if (offline)
-						{
-							if (enable)
-								offline->setActive(true);
-							else
-								offline->setActive(false);
-						}
+							offline->setActive(enable);
 
 						return true;
 					}

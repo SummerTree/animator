@@ -24,13 +24,13 @@ namespace unreal
 		RecordModule& operator=(const RecordModule&) = delete;
 
 	public:
-		bool hdr;
-		bool srgb;
-		bool active;
-		bool denoise;
+		MutableLiveData<bool> hdr;
+		MutableLiveData<bool> srgb;
+		MutableLiveData<bool> active;
+		MutableLiveData<bool> denoise;
 
-		std::uint32_t width;
-		std::uint32_t height;
+		MutableLiveData<std::uint32_t> width;
+		MutableLiveData<std::uint32_t> height;
 	};
 }
 

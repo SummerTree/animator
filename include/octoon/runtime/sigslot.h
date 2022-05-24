@@ -230,20 +230,17 @@ namespace octoon
 			signal_impl(const signal_impl& other)
 			{
 				std::lock_guard<std::mutex> guard(slots_mutex);
-				std::lock_guard<std::mutex> guard_other(other.slots_mutex);
 				slots = other.slots;
 			}
 			signal_impl(signal_impl&& other)
 			{
 				std::lock_guard<std::mutex> guard(slots_mutex);
-				std::lock_guard<std::mutex> guard_other(other.slots_mutex);
 				slots = other.slots;
 			}
 
 			signal_impl& operator=(const signal_impl& other)
 			{
 				std::lock_guard<std::mutex> guard(slots_mutex);
-				std::lock_guard<std::mutex> guard_other(other.slots_mutex);
 				slots = other.slots;
 				return *this;
 			}

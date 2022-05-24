@@ -19,9 +19,6 @@ namespace unreal
 	private:
 		GridModule(const GridModule&) = delete;
 		GridModule& operator=(const GridModule&) = delete;
-
-	public:
-		bool enable;
 	};
 }
 

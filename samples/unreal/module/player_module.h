@@ -24,22 +24,22 @@ namespace unreal
 		PlayerModule& operator=(const PlayerModule&) = delete;
 
 	public:
-		bool isPlaying;
+		MutableLiveData<bool> isPlaying;
 
-		std::uint32_t spp;
-		std::uint32_t sppCount;
+		MutableLiveData<std::uint32_t> spp;
+		MutableLiveData<std::uint32_t> sppCount;
 
-		std::uint32_t endFrame;
-		std::uint32_t startFrame;
+		MutableLiveData<std::uint32_t> endFrame;
+		MutableLiveData<std::uint32_t> startFrame;
 
-		float playTimeStep;
-		float previewTimeStep;
-		float recordFps;
+		MutableLiveData<float> playTimeStep;
+		MutableLiveData<float> previewTimeStep;
+		MutableLiveData<float> recordFps;
 
-		float curTime;
-		float takeupTime;
-		float estimatedTime;
-		float timeLength;
+		MutableLiveData<float> curTime;
+		MutableLiveData<float> takeupTime;
+		MutableLiveData<float> estimatedTime;
+		MutableLiveData<float> timeLength;
 
 		std::optional<octoon::RaycastHit> dofTarget;
 	};

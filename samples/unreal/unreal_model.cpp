@@ -3,7 +3,7 @@
 namespace unreal
 {
 	UnrealModule::UnrealModule() noexcept
-		: enable_(true)
+		: enable(true)
 	{
 	}
 
@@ -12,15 +12,15 @@ namespace unreal
 	}
 
 	void
-	UnrealModule::setEnable(bool enable) noexcept
+	UnrealModule::setEnable(bool value) noexcept
 	{
-		enable_ = enable;
+		enable = value;
 	}
 
 	bool
 	UnrealModule::getEnable() const noexcept
 	{
-		return enable_;
+		return enable;
 	}
 
 	void

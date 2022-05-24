@@ -21,7 +21,7 @@ namespace unreal
 		OfflineModule& operator=(const OfflineModule&) = delete;
 
 	public:
-		std::uint32_t bounces;
+		MutableLiveData<std::uint32_t> bounces;
 	};
 }
 

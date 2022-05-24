@@ -39,8 +39,6 @@ namespace unreal
 		EncodeModule& operator=(const EncodeModule&) = delete;
 
 	public:
-		bool enable;
-
 		EncodeMode encodeMode;
 		VideoQuality quality;
 

@@ -456,7 +456,7 @@ namespace unreal
 
 		if (profile_->entitiesModule->enviromentLight)
 		{
-			auto srgb = octoon::math::srgb2linear(profile_->environmentModule->color);
+			auto srgb = octoon::math::srgb2linear(profile_->environmentModule->color.getValue());
 
 			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
 			if (environmentLight)
@@ -503,14 +503,15 @@ namespace unreal
 	{
 		auto w = this->previewButton_->width();
 		auto h = this->previewButton_->height();
-		auto c = QColor::fromRgbF(profile_->environmentModule->color.x, profile_->environmentModule->color.y, profile_->environmentModule->color.z);
+		auto color = this->profile_->environmentModule->color.getValue();
+		auto c = QColor::fromRgbF(color.x, color.y, color.z);
 
 		if (this->previewImage_ && this->thumbnailToggle->isChecked())
 		{
 			auto srcWidth = this->previewImage_->width();
 			auto srcHeight = this->previewImage_->height();
 			auto pixels = std::make_unique<std::uint8_t[]>(srcWidth * srcHeight * 3);
-			auto offset = this->profile_->environmentModule->offset;
+			auto offset = this->profile_->environmentModule->offset.getValue();
 
 			for (std::size_t y = 0; y < srcHeight; y++)
 			{
@@ -524,11 +525,11 @@ namespace unreal
 					auto vi = int(v * srcHeight);
 
 					auto dst = (y * srcWidth + x) * 3;
-					auto color = this->previewImage_->pixelColor(ui, vi);
+					auto pixel = this->previewImage_->pixelColor(ui, vi);
 
-					pixels[dst] = std::clamp<float>(color.redF() * c.red(), 0, 255);
-					pixels[dst + 1] = std::clamp<float>(color.greenF() * c.green(), 0, 255);
-					pixels[dst + 2] = std::clamp<float>(color.blueF() * c.blue(), 0, 255);
+					pixels[dst] = std::clamp<float>(pixel.redF() * c.red(), 0, 255);
+					pixels[dst + 1] = std::clamp<float>(pixel.greenF() * c.green(), 0, 255);
+					pixels[dst + 2] = std::clamp<float>(pixel.blueF() * c.blue(), 0, 255);
 				}
 			}
 
@@ -696,7 +697,8 @@ namespace unreal
 	void
 	EnvironmentDock::colorClickEvent()
 	{
-		colorSelector_.setCurrentColor(QColor::fromRgbF(this->profile_->environmentModule->color.x, this->profile_->environmentModule->color.y, this->profile_->environmentModule->color.z));
+		auto color = this->profile_->environmentModule->color.getValue();
+		colorSelector_.setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
 		colorSelector_.show();
 	}
 
@@ -726,7 +728,7 @@ namespace unreal
 			if (meshRenderer)
 			{
 				auto basicMaterial = meshRenderer->getMaterial()->downcast<octoon::MeshBasicMaterial>();
-				basicMaterial->setColor(octoon::math::srgb2linear(profile_->environmentModule->color) * profile_->environmentModule->intensity);
+				basicMaterial->setColor(octoon::math::srgb2linear(profile_->environmentModule->color.getValue()) * profile_->environmentModule->intensity);
 			}
 		}
 
@@ -743,7 +745,7 @@ namespace unreal
 	void
 	EnvironmentDock::horizontalRotationEditEvent(double value)
 	{
-		this->profile_->environmentModule->offset = octoon::math::float2(value, this->profile_->environmentModule->offset.y);
+		this->profile_->environmentModule->offset = octoon::math::float2(value, this->profile_->environmentModule->offset.getValue().y);
 
 		if (profile_->entitiesModule->enviromentLight)
 		{
@@ -776,7 +778,7 @@ namespace unreal
 	void
 	EnvironmentDock::verticalRotationEditEvent(double value)
 	{
-		this->profile_->environmentModule->offset = octoon::math::float2(this->profile_->environmentModule->offset.x, value);
+		this->profile_->environmentModule->offset = octoon::math::float2(this->profile_->environmentModule->offset.getValue().x, value);
 
 		if (profile_->entitiesModule->enviromentLight)
 		{
@@ -814,10 +816,12 @@ namespace unreal
 	void
 	EnvironmentDock::showEvent(QShowEvent* event)
 	{
+		auto color = profile_->environmentModule->color.getValue();
+
 		this->intensitySpinBox->setValue(profile_->environmentModule->intensity);
-		this->horizontalRotationSpinBox->setValue(profile_->environmentModule->offset.x);
-		this->verticalRotationSpinBox->setValue(profile_->environmentModule->offset.y);
-		this->setColor(QColor::fromRgbF(profile_->environmentModule->color.x, profile_->environmentModule->color.y, profile_->environmentModule->color.z));
+		this->horizontalRotationSpinBox->setValue(profile_->environmentModule->offset.getValue().x);
+		this->verticalRotationSpinBox->setValue(profile_->environmentModule->offset.getValue().y);
+		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
 
 		if (this->profile_->entitiesModule->enviromentLight)
 		{

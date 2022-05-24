@@ -2,6 +2,7 @@
 #define UNREAL_MODEL_H_
 
 #include <octoon/runtime/json.h>
+#include "viewmodel/mutable_live_data.h"
 
 namespace unreal
 {
@@ -24,8 +25,8 @@ namespace unreal
 		UnrealModule(const UnrealModule&) = delete;
 		UnrealModule& operator=(const UnrealModule&) = delete;
 
-	private:
-		bool enable_;
+	public:
+		MutableLiveData<bool> enable;
 	};
 }
 

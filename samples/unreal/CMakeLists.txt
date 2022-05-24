@@ -103,6 +103,11 @@ SET(VIEWS_LIST
 )
 SOURCE_GROUP("launcher\\views" FILES ${VIEWS_LIST})
 
+SET(VIEWMODEL_LIST
+	${SOURCE_PATH}/viewmodel/mutable_live_data.h
+)
+SOURCE_GROUP("launcher\\viewmodel" FILES ${VIEWMODEL_LIST})
+
 SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/material_component.h
 	${SOURCE_PATH}/controllers/material_component.cpp
@@ -197,6 +202,7 @@ SET_PROPERTY(SOURCE qrc_res.cpp PROPERTY SKIP_AUTOMOC ON)
 ADD_EXECUTABLE(${LIB_OUTNAME} 
 	${MAIN_LIST} 
 	${VIEWS_LIST} 
+	${VIEWMODEL_LIST}
 	${MODULES_LIST} 
 	${CONTROLLERS_LIST}
 	${UTILS_LIST}

@@ -33,8 +33,6 @@ namespace unreal
 	void
 	EncodeModule::reset() noexcept
 	{
-		this->enable = true;
-
 		this->crf = 18;
 		this->encodeMode = EncodeMode::H265;
 		this->frame_type = 0;

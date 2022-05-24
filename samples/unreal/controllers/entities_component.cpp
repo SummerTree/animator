@@ -443,7 +443,7 @@ namespace unreal
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setColor(this->getContext()->profile->sunModule->color);
 		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion(octoon::math::radians(this->getContext()->profile->sunModule->rotation)));
 
-		auto envMaterial = octoon::MeshBasicMaterial::create(octoon::math::srgb2linear(this->getContext()->profile->environmentModule->color));
+		auto envMaterial = octoon::MeshBasicMaterial::create(octoon::math::srgb2linear<float>(this->getContext()->profile->environmentModule->color));
 		envMaterial->setCullMode(octoon::CullMode::Off);
 		envMaterial->setGamma(1.0f);
 		envMaterial->setDepthEnable(false);
@@ -451,7 +451,7 @@ namespace unreal
 
 		auto enviromentLight = octoon::GameObject::create("EnvironmentLight");
 		enviromentLight->addComponent<octoon::EnvironmentLightComponent>();
-		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setColor(octoon::math::srgb2linear(this->getContext()->profile->environmentModule->color));
+		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setColor(octoon::math::srgb2linear<float>(this->getContext()->profile->environmentModule->color));
 		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setIntensity(this->getContext()->profile->environmentModule->intensity);
 		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setOffset(this->getContext()->profile->environmentModule->offset);
 		enviromentLight->addComponent<octoon::MeshFilterComponent>(octoon::SphereMesh(10000, 32, 24, octoon::math::PI * 0.5));

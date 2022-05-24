@@ -27,8 +27,10 @@ namespace unreal
 		this->setWindowTitle(tr("Main Light"));
 		this->setObjectName("MainLightDock");
 
+		auto color = profile->sunModule->color.getValue();
+
 		colorDialog_ = new ColorDialog();
-		colorDialog_->setCurrentColor(QColor::fromRgbF(profile->sunModule->color.x, profile->sunModule->color.y, profile->sunModule->color.z));
+		colorDialog_->setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
 
 		resetButton_ = new QToolButton();
 		resetButton_->setText(tr("Reset"));
@@ -91,7 +93,7 @@ namespace unreal
 		editRotationX_->setMaximum(360.0f);
 		editRotationX_->setSingleStep(1.0f);
 		editRotationX_->setAlignment(Qt::AlignRight);
-		editRotationX_->setValue(profile->sunModule->rotation.x);
+		editRotationX_->setValue(profile->sunModule->rotation.getValue().x);
 		editRotationX_->setDecimals(1);
 		editRotationX_->setSuffix(u8"°");
 
@@ -100,7 +102,7 @@ namespace unreal
 		sliderRotationX_->setOrientation(Qt::Horizontal);
 		sliderRotationX_->setMinimum(0);
 		sliderRotationX_->setMaximum(360);
-		sliderRotationX_->setValue(profile->sunModule->rotation.x);
+		sliderRotationX_->setValue(profile->sunModule->rotation.getValue().x);
 		sliderRotationX_->setFixedWidth(250);
 
 		layoutRotationX_ = new QHBoxLayout();
@@ -116,7 +118,7 @@ namespace unreal
 		editRotationY_->setMaximum(360.0f);
 		editRotationY_->setSingleStep(1.0f);
 		editRotationY_->setAlignment(Qt::AlignRight);
-		editRotationY_->setValue(profile->sunModule->rotation.y);
+		editRotationY_->setValue(profile->sunModule->rotation.getValue().y);
 		editRotationY_->setDecimals(1);
 		editRotationY_->setSuffix(u8"°");
 
@@ -125,7 +127,7 @@ namespace unreal
 		sliderRotationY_->setOrientation(Qt::Horizontal);
 		sliderRotationY_->setMinimum(0);
 		sliderRotationY_->setMaximum(360);
-		sliderRotationY_->setValue(profile->sunModule->rotation.x);
+		sliderRotationY_->setValue(profile->sunModule->rotation.getValue().y);
 		sliderRotationY_->setFixedWidth(250);
 
 		layoutRotationY_ = new QHBoxLayout();
@@ -141,7 +143,7 @@ namespace unreal
 		editRotationZ_->setMaximum(360.0f);
 		editRotationZ_->setSingleStep(1.0f);
 		editRotationZ_->setAlignment(Qt::AlignRight);
-		editRotationZ_->setValue(profile->sunModule->rotation.x);
+		editRotationZ_->setValue(profile->sunModule->rotation.getValue().z);
 		editRotationZ_->setDecimals(1);
 		editRotationZ_->setSuffix(u8"°");
 
@@ -150,7 +152,7 @@ namespace unreal
 		sliderRotationZ_->setOrientation(Qt::Horizontal);
 		sliderRotationZ_->setMinimum(0);
 		sliderRotationZ_->setMaximum(360);
-		sliderRotationZ_->setValue(profile->sunModule->rotation.x);
+		sliderRotationZ_->setValue(profile->sunModule->rotation.getValue().z);
 		sliderRotationZ_->setFixedWidth(250);
 
 		layoutRotationZ_ = new QHBoxLayout();
@@ -212,12 +214,15 @@ namespace unreal
 	void
 	MainLightDock::repaint()
 	{
+		auto color = profile_->sunModule->color.getValue();
+		auto rotation = profile_->sunModule->rotation.getValue();
+
 		editSize_->setValue(profile_->sunModule->size);
 		editIntensity_->setValue(profile_->sunModule->intensity);
-		editRotationX_->setValue(profile_->sunModule->rotation.x + 180.0f);
-		editRotationY_->setValue(profile_->sunModule->rotation.y + 180.0f);
-		editRotationZ_->setValue(profile_->sunModule->rotation.z);
-		colorDialog_->setCurrentColor(QColor(profile_->sunModule->color.x * 255.0f, profile_->sunModule->color.y * 255.0f, profile_->sunModule->color.z * 255.0f));
+		editRotationX_->setValue(rotation.x + 180.0f);
+		editRotationY_->setValue(rotation.y + 180.0f);
+		editRotationZ_->setValue(rotation.z);
+		colorDialog_->setCurrentColor(QColor(color.x * 255.0f, color.y * 255.0f, color.z * 255.0f));
 	}
 
 	void
@@ -284,7 +289,7 @@ namespace unreal
 			if (sunLight)
 			{
 				sunLight->setIntensity(profile_->sunModule->intensity);
-				sunLight->setColor(octoon::math::srgb2linear(profile_->sunModule->color));
+				sunLight->setColor(octoon::math::srgb2linear<float>(profile_->sunModule->color));
 			}
 
 			auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
@@ -374,7 +379,7 @@ namespace unreal
 			}
 		}
 
-		profile_->sunModule->rotation.x = value - 180.0f;
+		profile_->sunModule->rotation = octoon::math::float3(value - 180.0f, profile_->sunModule->rotation.getValue().y, profile_->sunModule->rotation.getValue().z);
 
 		sliderRotationX_->setValue(value);
 	}
@@ -401,7 +406,7 @@ namespace unreal
 			}
 		}
 
-		profile_->sunModule->rotation.y = value - 180.0f;
+		profile_->sunModule->rotation = octoon::math::float3(profile_->sunModule->rotation.getValue().x, value - 180.0f, profile_->sunModule->rotation.getValue().z);
 
 		sliderRotationY_->setValue(value);
 	}
@@ -428,7 +433,7 @@ namespace unreal
 			}
 		}
 
-		profile_->sunModule->rotation.z = value;
+		profile_->sunModule->rotation = octoon::math::float3(profile_->sunModule->rotation.getValue().x, profile_->sunModule->rotation.getValue().y, value);
 
 		sliderRotationZ_->setValue(value);
 	}

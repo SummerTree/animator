@@ -22,12 +22,12 @@ namespace unreal
 	OfflineModule::load(octoon::runtime::json& reader) noexcept
 	{
 		if (reader.find("bounces") != reader.end())
-			this->bounces = reader["bounces"];
+			this->bounces = reader["bounces"].get<nlohmann::json::number_unsigned_t>();
 	}
 
 	void 
 	OfflineModule::save(octoon::runtime::json& writer) noexcept
 	{
-		writer["bounces"] = this->bounces;
+		writer["bounces"] = this->bounces.getValue();
 	}
 }

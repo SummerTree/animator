@@ -363,7 +363,7 @@ namespace unreal
 	PlayerComponent::evaluate(float delta) noexcept
 	{
 		auto& model = this->getModel();
-		model->curTime += delta;
+		model->curTime = model->curTime.getValue() + delta;
 
 		auto& context = this->getContext()->profile;
 
@@ -522,7 +522,7 @@ namespace unreal
 
 		if (profile->offlineModule->getEnable() && profile->recordModule->active)
 		{
-			model->sppCount++;
+			model->sppCount = model->sppCount.getValue() + 1;
 
 			if (model->sppCount >= model->spp)
 			{
@@ -535,7 +535,7 @@ namespace unreal
 				auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
 
 				model->sppCount = 0;
-				model->takeupTime += this->timer_.frame_time();
+				model->takeupTime = model->takeupTime.getValue() + this->timer_.frame_time();
 				model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / curFrame);
 			}
 		}
@@ -549,7 +549,7 @@ namespace unreal
 			auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));
 			auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
 
-			model->takeupTime += this->timer_.frame_time();
+			model->takeupTime = model->takeupTime.getValue() + this->timer_.frame_time();
 			model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / curFrame);
 		}
 	}

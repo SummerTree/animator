@@ -23,11 +23,9 @@ namespace unreal
 		EnvironmentModule& operator=(const EnvironmentModule&) = delete;
 
 	public:
-		bool enable;
-
-		float intensity;
-		octoon::math::float2 offset;
-		octoon::math::float3 color;
+		MutableLiveData<float> intensity;
+		MutableLiveData<octoon::math::float2> offset;
+		MutableLiveData<octoon::math::float3> color;
 	};
 }
 
