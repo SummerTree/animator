@@ -355,6 +355,7 @@ namespace unreal
 	void
 	UnrealBehaviour::close() noexcept
 	{
+		this->entitiesComponent_->clearAudio();
 		this->profile_->entitiesModule->objects.clear();
 	}
 
