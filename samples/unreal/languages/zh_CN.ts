@@ -10,36 +10,6 @@
     </message>
 </context>
 <context>
-    <name>MotionDock</name>
-    <message>
-        <source>Model Library</source>
-        <translation type="obsolete">模型库</translation>
-    </message>
-    <message>
-        <source>Import Resource</source>
-        <translation type="obsolete">加载资源</translation>
-    </message>
-    <message>
-        <source>Loading...</source>
-        <translation type="obsolete">加载中...</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">取消</translation>
-    </message>
-</context>
-<context>
-    <name>ViewDock</name>
-    <message>
-        <source>Camera</source>
-        <translation type="obsolete">相机</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="obsolete">错误</translation>
-    </message>
-</context>
-<context>
     <name>unreal::CameraDock</name>
     <message>
         <location filename="../views/camera_dock.cpp" line="91"/>
@@ -737,23 +707,23 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="118"/>
+        <location filename="../views/motion_dock.cpp" line="113"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="118"/>
+        <location filename="../views/motion_dock.cpp" line="113"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished">VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="127"/>
-        <location filename="../views/motion_dock.cpp" line="128"/>
+        <location filename="../views/motion_dock.cpp" line="122"/>
+        <location filename="../views/motion_dock.cpp" line="123"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="127"/>
+        <location filename="../views/motion_dock.cpp" line="122"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>

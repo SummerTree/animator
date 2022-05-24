@@ -64,16 +64,17 @@ namespace unreal
 	void 
 	MotionDock::addItem(std::string_view uuid) noexcept
 	{
-		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
-		if (!hdrComponent)
+		auto motionComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
+		if (!motionComponent)
 			return;
 
-		auto package = hdrComponent->getPackage(uuid);
+		auto package = motionComponent->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setObjectName("preview");
 			imageLabel->setFixedSize(QSize(100, 100));
+			imageLabel->setPixmap(QPixmap(":res/icons/dance2.png").scaled(100, 100));
 
 			QLabel* nameLabel = new QLabel();
 			nameLabel->setObjectName("name");
@@ -94,12 +95,6 @@ namespace unreal
 
 			listWidget_->addItem(item);
 			listWidget_->setItemWidget(item, widget);
-
-			if (package.find("preview") != package.end())
-			{
-				auto filepath = package["preview"].get<nlohmann::json::string_t>();
-				imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
-			}
 
 			if (package.find("name") != package.end())
 			{
