@@ -36,9 +36,6 @@ namespace unreal
 		void close() noexcept;
 		bool isOpen() const noexcept;
 
-		void openModel() noexcept;
-		void saveModel() noexcept;
-
 		void play() noexcept;
 		void pause() noexcept;
 

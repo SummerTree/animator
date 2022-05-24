@@ -33,9 +33,6 @@ namespace unreal
 		float getVolume() const noexcept;
 		void clearAudio() noexcept;
 
-		bool showFileOpenBrowse(std::string::pointer buffer, std::uint32_t max_length, std::string::const_pointer ext_name) noexcept;
-		bool showFileSaveBrowse(std::string::pointer buffer, std::uint32_t max_length, std::string::const_pointer ext_name) noexcept;
-
 		virtual const std::type_info& type_info() const noexcept
 		{
 			return typeid(EntitiesComponent);

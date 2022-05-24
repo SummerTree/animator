@@ -2,10 +2,6 @@
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
 #include <octoon/ass_loader.h>
-#pragma warning(push)
-#pragma warning(disable:4245)
-#include "../libs/nativefiledialog/nfd.h"
-#pragma warning(pop)
 
 #include <fstream>
 #include <unordered_map>
@@ -19,72 +15,6 @@ namespace unreal
 
 	EntitiesComponent::~EntitiesComponent() noexcept
 	{
-	}
-
-	bool 
-	EntitiesComponent::showFileOpenBrowse(std::string::pointer buffer, std::uint32_t max_length, std::string::const_pointer ext_name) noexcept
-	{
-		assert(buffer && max_length > 0 && ext_name);
-
-		nfdchar_t* outpath = nullptr;
-
-		try
-		{
-			nfdresult_t  result = NFD_OpenDialog(ext_name, nullptr, &outpath);
-			if (result != NFD_OKAY)
-				return false;
-
-			if (outpath)
-			{
-				std::strncpy(buffer, outpath, max_length);
-				free(outpath);
-
-				return true;
-			}
-
-			return false;
-		}
-		catch (...)
-		{
-			if (outpath) free(outpath);
-			return false;
-		}
-	}
-
-	bool 
-	EntitiesComponent::showFileSaveBrowse(std::string::pointer buffer, std::uint32_t max_length, std::string::const_pointer ext_name) noexcept
-	{
-		assert(buffer && max_length > 0 && ext_name);
-
-		nfdchar_t* outpath = nullptr;
-
-		try
-		{
-			nfdresult_t  result = NFD_SaveDialog(ext_name, nullptr, &outpath);
-			if (result != NFD_OKAY)
-				return false;
-
-			if (outpath)
-			{
-				std::strncpy(buffer, outpath, max_length);
-				if (std::strstr(outpath, ".") == 0)
-				{
-					std::strcat(buffer, ".");
-					std::strcat(buffer, ext_name);
-				}
-
-				free(outpath);
-				return true;
-			}
-
-			return false;
-		}
-		catch (...)
-		{
-			if (outpath) free(outpath);
-
-			return false;
-		}
 	}
 
 	bool

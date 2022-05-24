@@ -365,24 +365,6 @@ namespace unreal
 	}
 
 	void
-	UnrealBehaviour::openModel() noexcept
-	{
-		auto pathLimits = this->profile_->fileModule->PATHLIMIT;
-		std::vector<std::string::value_type> filepath(pathLimits);
-		if (entitiesComponent_->showFileOpenBrowse(filepath.data(), pathLimits, this->profile_->fileModule->modelExtensions[0]))
-			entitiesComponent_->importModel(filepath.data());
-	}
-
-	void
-	UnrealBehaviour::saveModel() noexcept
-	{
-		auto pathLimits = this->profile_->fileModule->PATHLIMIT;
-		std::vector<std::string::value_type> filepath(pathLimits);
-		if (!entitiesComponent_->showFileSaveBrowse(filepath.data(), pathLimits, this->profile_->fileModule->modelExtensions[0]))
-			entitiesComponent_->exportModel(filepath.data());
-	}
-
-	void
 	UnrealBehaviour::play() noexcept
 	{
 		playerComponent_->play();

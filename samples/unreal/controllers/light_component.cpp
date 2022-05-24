@@ -1,5 +1,4 @@
 #include "light_component.h"
-#include "../libs/nativefiledialog/nfd.h"
 #include "../unreal_profile.h"
 
 #include <octoon/point_light_component.h>

@@ -165,13 +165,6 @@ SET(QRCODEGEN_LIST
 )
 SOURCE_GROUP("launcher\\libs\\qrcodegen" FILES ${QRCODEGEN_LIST})
 
-SET(NATIVE_FILED_DIALOG_LIST 
-	libs/nativefiledialog/nfd.h
-	libs/nativefiledialog/nfd_common.c
-	libs/nativefiledialog/nfd_win.cpp
-)
-SOURCE_GROUP("launcher\\libs\\NativeFiledDialog" FILES ${NATIVE_FILED_DIALOG_LIST})
-
 SET(OIDN_LIST 
 	libs/oidn-1.4.3/include/OpenImageDenoise/oidn.h
 	libs/oidn-1.4.3/include/OpenImageDenoise/oidn.hpp
@@ -203,7 +196,6 @@ ADD_EXECUTABLE(${LIB_OUTNAME}
 	${UTILS_LIST}
 	${MINIH264E_LIST}
 	${BASE64_LIST}
-	${NATIVE_FILED_DIALOG_LIST}
 	${OIDN_LIST}
 	${BINDINGS_LIST}
 	${QRCODEGEN_LIST}
