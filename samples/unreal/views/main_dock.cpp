@@ -530,6 +530,8 @@ namespace unreal
 			return materialDock_.get();
 		if (cameraDock_->isVisible())
 			return cameraDock_.get();
+		if (modelDock_->isVisible())
+			return modelDock_.get();
 		if (motionDock_->isVisible())
 			return motionDock_.get();
 
