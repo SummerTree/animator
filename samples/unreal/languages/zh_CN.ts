@@ -226,7 +226,7 @@
     <message>
         <location filename="../views/environment_dock.cpp" line="246"/>
         <source>Info</source>
-        <translation type="unfinished">提升</translation>
+        <translation type="unfinished">提示</translation>
     </message>
 </context>
 <context>
