@@ -321,8 +321,7 @@ namespace octoon
 	}
 
 	MeshAnimationComponent::MeshAnimationComponent() noexcept
-		: needUpdate_(false)
-		, enableAnimation_(true)
+		: enableAnimation_(true)
 		, minTime_(0.0f)
 		, maxTime_(0.0f)
 	{
@@ -411,7 +410,7 @@ namespace octoon
 
 		this->onAnimationUpdate();
 
-		for (auto& child : children_)
+		for (auto& child : this->getGameObject()->getChildren())
 		{
 			auto component = child->getComponent<MeshAnimationComponent>();
 			if (component)
@@ -437,7 +436,7 @@ namespace octoon
 
 		this->onAnimationUpdate();
 
-		for (auto& child : children_)
+		for (auto& child : this->getGameObject()->getChildren())
 		{
 			auto component = child->getComponent<MeshAnimationComponent>();
 			if (component)
@@ -445,12 +444,6 @@ namespace octoon
 		}
 	}
 	
-	const MeshPtr&
-	MeshAnimationComponent::getMesh() const noexcept
-	{
-		return mesh_;
-	}
-
 	const AnimatorStateInfo<float>&
 	MeshAnimationComponent::getCurrentAnimatorStateInfo() const noexcept
 	{
@@ -466,12 +459,6 @@ namespace octoon
 		return instance;
 	}
 
-	void
-	MeshAnimationComponent::uploadMeshData() noexcept
-	{
-		this->onMeshReplace();
-	}
-
 	void 
 	MeshAnimationComponent::onActivate() noexcept
 	{
@@ -485,7 +472,7 @@ namespace octoon
 	void
 	MeshAnimationComponent::onDeactivate() noexcept
 	{
-		this->children_.clear();
+		this->getGameObject()->cleanupChildren();
 		this->removeComponentDispatch(GameDispatchType::FixedUpdate);
 	}
 
@@ -507,17 +494,6 @@ namespace octoon
 	}
 
 	void
-	MeshAnimationComponent::onLateUpdate() noexcept
-	{
-		if (needUpdate_)
-		{
-			this->uploadMeshData();
-			this->removeComponentDispatch(GameDispatchType::LateUpdate);
-			needUpdate_ = false;
-		}
-	}
-
-	void
 	MeshAnimationComponent::onAnimationUpdate() noexcept
 	{
 		auto& object_header = this->animationData_->object->getHeader();
@@ -534,21 +510,26 @@ namespace octoon
 				auto& schema = polyMesh->getSchema();
 				if (schema.isConstant())
 				{
-					if (!mesh_)
+					auto mf = this->getComponent<MeshFilterComponent>();
+					if (mf)
 					{
-						mesh_ = std::make_shared<Mesh>();
-						mesh_->setIndicesArray(math::uint1s());
+						auto mesh = mf->getMesh();
+						if (!mf->getMesh())
+						{
+							mesh = std::make_shared<Mesh>();
+							mesh->setIndicesArray(math::uint1s());
+							mf->setMesh(mesh);
+						}
 
 						IPolyMeshSchema::Sample sample;
-						read_position(schema, sample, this->mesh_->getVertexArray());
-						read_uvs(schema, sample, this->mesh_->getTexcoordArray());
-						read_indices(schema, sample, this->mesh_->getIndicesArray());
+						read_position(schema, sample, mesh->getVertexArray());
+						read_uvs(schema, sample, mesh->getTexcoordArray());
+						read_indices(schema, sample, mesh->getIndicesArray());
 
-						this->mesh_->computeBoundingBox();
-						this->mesh_->computeVertexNormals();
+						mesh->computeBoundingBox();
+						mesh->computeVertexNormals();
 
-						this->needUpdate_ = true;
-						this->addComponentDispatch(GameDispatchType::LateUpdate);
+						mf->uploadMeshData();
 					}
 
 					animationState_.finish = true;
@@ -560,22 +541,26 @@ namespace octoon
 					auto sampleSelector = Alembic::Abc::ISampleSelector(animationState_.time, ISampleSelector::kNearIndex);
 					schema.get(sample, sampleSelector);
 
-					if (!mesh_)
+					auto mf = this->getComponent<MeshFilterComponent>();
+					if (mf)
 					{
-						mesh_ = std::make_shared<Mesh>();
-						mesh_->setIndicesArray(math::uint1s());
+						auto mesh = mf->getMesh();
+						if (!mf->getMesh())
+						{
+							mesh = std::make_shared<Mesh>();
+							mesh->setIndicesArray(math::uint1s());
+							mf->setMesh(mesh);
+						}
 
-						read_uvs(schema, sample, this->mesh_->getTexcoordArray());
+						read_uvs(schema, sample, mesh->getTexcoordArray());
+						read_position(schema, sample, mesh->getVertexArray());
+						read_indices(schema, sample, mesh->getIndicesArray());
+
+						mesh->computeBoundingBox();
+						mesh->computeVertexNormals();
+
+						mf->uploadMeshData();
 					}
-
-					read_position(schema, sample, this->mesh_->getVertexArray());
-					read_indices(schema, sample, this->mesh_->getIndicesArray());
-
-					this->mesh_->computeBoundingBox();
-					this->mesh_->computeVertexNormals();
-
-					this->needUpdate_ = true;
-					this->addComponentDispatch(GameDispatchType::LateUpdate);
 
 					animationState_.finish = false;
 				}
@@ -646,6 +631,9 @@ namespace octoon
 				childData.object = std::make_shared<IPolyMesh>(child);
 
 				auto gameObject = GameObject::create(child.getName());
+
+				auto mf = gameObject->addComponent<MeshFilterComponent>();
+
 				auto meshRender = gameObject->addComponent<MeshRendererComponent>();
 				meshRender->setGlobalIllumination(true);
 				meshRender->setMaterial(std::make_shared<MeshStandardMaterial>(math::float3(0.9f, 0.9f, 0.9f)));
@@ -655,7 +643,7 @@ namespace octoon
 
 				animationState_.timeLength = std::max(animationState_.timeLength, mesh->animationState_.timeLength);
 
-				children_.push_back(std::move(gameObject));
+				this->getGameObject()->addChild(std::move(gameObject));
 			}
 			else if (IXform::matches(child_header))
 			{
@@ -668,14 +656,8 @@ namespace octoon
 
 				animationState_.timeLength = std::max(animationState_.timeLength, mesh->animationState_.timeLength);
 
-				children_.push_back(std::move(gameObject));
+				this->getGameObject()->addChild(std::move(gameObject));
 			}
 		}
-	}
-
-	void
-	MeshAnimationComponent::onMeshReplace() noexcept
-	{
-		this->trySendMessage("octoon:mesh:update", mesh_);
 	}
 }

@@ -31,36 +31,34 @@ namespace octoon
 		this->distance = distance_;
 	}
 
-	const std::vector<RaycastHit>&
-	Raycaster::intersectObject(const GameObject& object) noexcept
+	void
+	Raycaster::intersectSingleObject(const GameObject& entity) noexcept
 	{
-		this->hits.clear();
-
-		std::vector<MeshHit> result;
-
 		MeshPtr mesh = nullptr;
 
-		auto skinnedMesh = object.getComponent<SkinnedMeshRendererComponent>();
+		auto skinnedMesh = entity.getComponent<SkinnedMeshRendererComponent>();
 		if (skinnedMesh)
 			mesh = skinnedMesh->getSkinnedMesh();
 		else
 		{
-			auto meshFilter = object.getComponent<MeshFilterComponent>();
+			auto meshFilter = entity.getComponent<MeshFilterComponent>();
 			if (meshFilter)
 				mesh = meshFilter->getMesh();
 		}
 
 		if (mesh)
 		{
-			auto transform = object.getComponent<TransformComponent>();
+			auto transform = entity.getComponent<TransformComponent>();
 			auto localRay = ray;
 			localRay.transform(transform->getTransformInverse());
 
-			mesh->raycastAll(ray, result);
+			std::vector<MeshHit> result;
+			mesh->raycastAll(localRay, result);
 
-			for (auto& it : result) {
+			for (auto& it : result)
+			{
 				RaycastHit hit;
-				hit.object = object.downcast_pointer<GameObject>();
+				hit.object = entity.shared_from_this()->downcast_pointer<GameObject>();
 				hit.distance = it.distance;
 				hit.mesh = it.mesh;
 				hit.point = ((math::float3x3)transform->getTransform()) * it.point;
@@ -68,6 +66,16 @@ namespace octoon
 				this->hits.emplace_back(hit);
 			}
 		}
+
+		for (auto& child : entity.getChildren())
+			this->intersectSingleObject(*child);
+	}
+
+	const std::vector<RaycastHit>&
+	Raycaster::intersectObject(const GameObject& object) noexcept
+	{
+		this->hits.clear();
+		this->intersectSingleObject(object);
 
 		std::sort(this->hits.begin(), this->hits.end(), [](const RaycastHit& a, const RaycastHit& b) { return a.distance < b.distance; });
 
@@ -79,44 +87,10 @@ namespace octoon
 	{
 		this->hits.clear();
 
-		std::vector<MeshHit> result;
-
 		for (auto& object : entities)
 		{
-			if (!object)
-				continue;
-
-			MeshPtr mesh = nullptr;
-
-			auto skinnedMesh = object->getComponent<SkinnedMeshRendererComponent>();
-			if (skinnedMesh)
-				mesh = skinnedMesh->getSkinnedMesh();
-			else
-			{
-				auto meshFilter = object->getComponent<MeshFilterComponent>();
-				if (meshFilter)
-					mesh = meshFilter->getMesh();
-			}
-
-			if (mesh)
-			{
-				auto transform = object->getComponent<TransformComponent>();
-				auto localRay = ray;
-				localRay.transform(transform->getTransformInverse());
-
-				result.clear();
-				mesh->raycastAll(localRay, result);
-
-				for (auto& it : result) {
-					RaycastHit hit;
-					hit.object = object;
-					hit.distance = it.distance;
-					hit.mesh = it.mesh;
-					hit.point = ((math::float3x3)transform->getTransform()) * it.point;
-
-					this->hits.emplace_back(hit);
-				}
-			}
+			if (object)
+				this->intersectSingleObject(*object);
 		}
 
 		std::sort(this->hits.begin(), this->hits.end(), [](const RaycastHit& a, const RaycastHit& b) { return a.distance < b.distance; });
@@ -129,37 +103,10 @@ namespace octoon
 	{
 		this->hits.clear();
 
-		std::vector<MeshHit> hitObjects;
-
 		for (auto& object : entities)
 		{
-			if (!object)
-				continue;
-
-			auto meshFilter = object->getComponent<MeshFilterComponent>();
-			if (meshFilter)
-			{
-				auto mesh = meshFilter->getMesh();
-				if (mesh)
-				{
-					auto transform = object->getComponent<TransformComponent>();
-					auto localRay = ray;
-					localRay.transform(transform->getTransformInverse());
-
-					hitObjects.clear();
-					mesh->raycastAll(ray, hitObjects);
-
-					for (auto& it : hitObjects) {
-						RaycastHit hit;
-						hit.object = object->downcast_pointer<GameObject>();
-						hit.distance = it.distance;
-						hit.mesh = it.mesh;
-						hit.point = ((math::float3x3)transform->getTransform()) * it.point;
-
-						this->hits.emplace_back(hit);
-					}
-				}
-			}
+			if (object)
+				this->intersectSingleObject(*object);
 		}
 
 		std::sort(this->hits.begin(), this->hits.end(), [](const RaycastHit& a, const RaycastHit& b) { return a.distance < b.distance; });

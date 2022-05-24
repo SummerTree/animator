@@ -17,16 +17,13 @@ namespace unreal
 	{
 	}
 
-	bool
-	EntitiesComponent::importAbc(std::string_view path) noexcept
+	void
+	EntitiesComponent::importAbc(std::string_view path) noexcept(false)
 	{
 		auto model = octoon::GameObject::create();
 		model->addComponent<octoon::MeshAnimationComponent>(path);
 
 		this->getContext()->profile->entitiesModule->objects.push_back(model);
-
-		this->sendMessage("flower:project:open");
-		return true;
 	}
 
 	void
@@ -52,8 +49,6 @@ namespace unreal
 				context->profile->entitiesModule->objects.push_back(it);
 			}
 		}
-
-		this->sendMessage("flower:project:open");
 	}
 
 	void

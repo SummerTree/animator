@@ -40,6 +40,9 @@ namespace octoon
 		const std::vector<RaycastHit>& intersectObject(const GameObject& entity) noexcept;
 		const std::vector<RaycastHit>& intersectObjects(const GameObjects& entities) noexcept;
 		const std::vector<RaycastHit>& intersectObjects(const GameObjectRaws& entities) noexcept;
+
+	private:
+		void intersectSingleObject(const GameObject& entity) noexcept;
 	};
 }
 

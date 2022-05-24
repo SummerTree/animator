@@ -30,10 +30,6 @@ namespace octoon
 		void sample(float delta = 0.0f) noexcept;
 		void evaluate(float delta = 0.0f) noexcept;
 
-		void uploadMeshData() noexcept;
-
-		const MeshPtr& getMesh() const noexcept;
-
 		const AnimatorStateInfo<float>& getCurrentAnimatorStateInfo() const noexcept override;
 
 		GameComponentPtr clone() const noexcept override;
@@ -43,9 +39,7 @@ namespace octoon
 		void onDeactivate() noexcept override;
 
 		void onFixedUpdate() noexcept override;
-		void onLateUpdate() noexcept override;
 
-		void onMeshReplace() noexcept;
 		void onAnimationUpdate() noexcept;
 
 	private:
@@ -62,11 +56,7 @@ namespace octoon
 		float minTime_;
 		float maxTime_;
 
-		bool needUpdate_;
 		bool enableAnimation_;
-
-		MeshPtr mesh_;
-		GameObjects children_;
 
 		AnimatorStateInfo<float> animationState_;
 
