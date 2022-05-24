@@ -3,6 +3,7 @@
 #include <fstream>
 #include <filesystem>
 #include <quuid.h>
+#include <codecvt>
 
 namespace unreal
 {
@@ -17,7 +18,9 @@ namespace unreal
 	nlohmann::json
 	MotionComponent::importMotion(std::string_view filepath) noexcept(false)
 	{
-		if (std::filesystem::exists(filepath))
+		std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(std::string(filepath));
+
+		if (std::filesystem::exists(u16_conv))
 		{
 			auto id = QUuid::createUuid().toString();
 			auto uuid = id.toStdString().substr(1, id.length() - 2);
@@ -28,12 +31,12 @@ namespace unreal
 
 			std::filesystem::create_directory(this->getModel()->motionPath);
 			std::filesystem::create_directory(rootPath);
-			std::filesystem::copy(filepath, motionPath);
+			std::filesystem::copy(u16_conv, motionPath);
 
 			nlohmann::json item;
 			item["uuid"] = uuid;
-			item["name"] = std::filesystem::path(filepath).filename().string();
-			item["path"] = motionPath.string();
+			item["name"] = std::filesystem::path(u16_conv).filename().u8string();
+			item["path"] = motionPath.u8string();
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)

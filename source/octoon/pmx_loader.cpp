@@ -16,7 +16,8 @@
 
 namespace octoon
 {
-	bool PmxLoader::doCanRead(io::istream& stream) const noexcept
+	bool
+	PmxLoader::canRead(io::istream& stream) const noexcept
 	{
 		PmxHeader header;
 		if (stream.read((char*)&header, sizeof(header)))
@@ -32,17 +33,20 @@ namespace octoon
 		return false;
 	}
 
-	bool PmxLoader::doCanRead(std::string_view type) const noexcept
+	bool
+	PmxLoader::canRead(std::string_view type) const noexcept
 	{
 		return type.compare("pmx") == 0;
 	}
 
-	bool PmxLoader::doCanRead(const char* type) const noexcept
+	bool
+	PmxLoader::canRead(const char* type) const noexcept
 	{
 		return std::strncmp(type, "pmx", 3) == 0;
 	}
 
-	bool PmxLoader::doLoad(std::string_view filepath, PMX& pmx) noexcept
+	bool
+	PmxLoader::load(std::string_view filepath, PMX& pmx) noexcept
 	{
 		io::ifstream stream;
 		if (!stream.open(std::string(filepath))) return false;
@@ -579,10 +583,10 @@ namespace octoon
 		return true;
 	}
 
-	bool PmxLoader::doLoad(std::string_view filepath, Model& model) noexcept
+	bool PmxLoader::load(std::string_view filepath, Model& model) noexcept
 	{
 		PMX pmx;
-		if (!this->doLoad(filepath, pmx))
+		if (!this->load(filepath, pmx))
 			return false;
 
 		auto rootPath = runtime::string::directory(std::string(filepath));
@@ -867,7 +871,8 @@ namespace octoon
 		return true;
 	}
 
-	bool PmxLoader::doSave(io::ostream& stream, const PMX& pmx) noexcept
+	bool
+	PmxLoader::save(io::ostream& stream, const PMX& pmx) noexcept
 	{
 		if (!stream.write((char*)&pmx.header, sizeof(pmx.header))) return false;
 
@@ -1253,7 +1258,8 @@ namespace octoon
 		return true;
 	}
 
-	bool PmxLoader::doSave(io::ostream& stream, const Model& model) noexcept
+	bool
+	PmxLoader::save(io::ostream& stream, const Model& model) noexcept
 	{
 		return false;
 	}

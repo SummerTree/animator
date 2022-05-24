@@ -260,7 +260,6 @@ namespace unreal
 				}
 			}
 		}
-
 	}
 
 	EnvironmentDock::EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)

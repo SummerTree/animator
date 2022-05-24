@@ -1,9 +1,11 @@
 #include "model_component.h"
 #include "unreal_behaviour.h"
 #include <octoon/image/image.h>
+#include <octoon/pmx_loader.h>
 #include <fstream>
 #include <filesystem>
 #include <quuid.h>
+#include <codecvt>
 
 namespace unreal
 {
@@ -18,6 +20,54 @@ namespace unreal
 	nlohmann::json
 	ModelComponent::importModel(std::string_view filepath) noexcept(false)
 	{
+		octoon::PMX pmx;
+		octoon::PmxLoader loader;
+		if (loader.load(filepath, pmx))
+		{
+			auto id = QUuid::createUuid().toString();
+			auto uuid = id.toStdString().substr(1, id.length() - 2);
+
+			std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(std::string(filepath));
+
+			auto rootPath = std::filesystem::path(this->getModel()->modelPath).append(uuid);
+			auto inputPath = std::filesystem::path(u16_conv);
+			auto filename = inputPath.filename();
+			auto inputRoot = std::filesystem::path(inputPath.string().substr(0, inputPath.string().find_last_of("/")));
+			auto modelPath = std::filesystem::path(rootPath).append(uuid + ".pmx");
+			auto packagePath = std::filesystem::path(rootPath).append("package.json");
+
+			std::filesystem::create_directories(rootPath);
+			std::filesystem::copy(inputPath, modelPath);
+
+			for (auto& texture : pmx.textures)
+			{
+				auto inputTexturePath = std::filesystem::path(inputRoot).append(texture.name);
+				if (std::filesystem::exists(inputTexturePath))
+				{
+					auto texturePath = std::filesystem::path(rootPath).append(texture.name);
+					auto textureRootPath = texturePath.string();
+					std::filesystem::create_directories(textureRootPath.substr(0, textureRootPath.find_last_of("\\")));
+					std::filesystem::copy(std::filesystem::path(inputRoot).append(texture.name), texturePath);
+				}
+			}
+
+			nlohmann::json item;
+			item["uuid"] = uuid;
+			item["name"] = filename.u8string();
+			item["path"] = modelPath.u8string();
+
+			std::ofstream ifs(packagePath, std::ios_base::binary);
+			if (ifs)
+			{
+				auto dump = item.dump();
+				ifs.write(dump.c_str(), dump.size());
+			}
+
+			indexList_.push_back(uuid);
+
+			return item;
+		}
+
 		return nlohmann::json();
 	}
 

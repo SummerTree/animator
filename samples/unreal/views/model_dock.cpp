@@ -74,6 +74,7 @@ namespace unreal
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setObjectName("preview");
 			imageLabel->setFixedSize(QSize(100, 100));
+			imageLabel->setPixmap(QPixmap(":res/icons/model.png").scaled(100, 100));
 
 			QLabel* nameLabel = new QLabel();
 			nameLabel->setObjectName("name");
@@ -106,8 +107,9 @@ namespace unreal
 				QFontMetrics metrics(nameLabel->font());
 
 				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
-				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
 				imageLabel->setToolTip(name);
+				name.truncate(name.lastIndexOf('.'));
+				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
 			}
 		}
 	}

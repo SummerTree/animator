@@ -437,15 +437,15 @@ namespace octoon
 		PmxLoader() = default;
 		~PmxLoader() = default;
 
-		bool doCanRead(io::istream& stream) const noexcept;
-		bool doCanRead(std::string_view type) const noexcept;
-		bool doCanRead(const char* type) const noexcept;
+		bool canRead(io::istream& stream) const noexcept;
+		bool canRead(std::string_view type) const noexcept;
+		bool canRead(const char* type) const noexcept;
 
-		bool doLoad(std::string_view filepath, PMX& pmx) noexcept;
-		bool doLoad(std::string_view filepath, Model& model) noexcept;
+		bool load(std::string_view filepath, PMX& pmx) noexcept;
+		bool load(std::string_view filepath, Model& model) noexcept;
 
-		bool doSave(io::ostream& stream, const PMX& pmx) noexcept;
-		bool doSave(io::ostream& stream, const Model& model) noexcept;
+		bool save(io::ostream& stream, const PMX& pmx) noexcept;
+		bool save(io::ostream& stream, const Model& model) noexcept;
 	};
 }
 

@@ -104,73 +104,73 @@
 <context>
     <name>unreal::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="271"/>
+        <location filename="../views/environment_dock.cpp" line="270"/>
         <source>Environment Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="277"/>
+        <location filename="../views/environment_dock.cpp" line="276"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="281"/>
+        <location filename="../views/environment_dock.cpp" line="280"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="293"/>
+        <location filename="../views/environment_dock.cpp" line="292"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="296"/>
+        <location filename="../views/environment_dock.cpp" line="295"/>
         <source>Thumbnail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="299"/>
+        <location filename="../views/environment_dock.cpp" line="298"/>
         <source>Toggle Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="306"/>
+        <location filename="../views/environment_dock.cpp" line="305"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="324"/>
+        <location filename="../views/environment_dock.cpp" line="323"/>
         <source>Horizontal Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="342"/>
+        <location filename="../views/environment_dock.cpp" line="341"/>
         <source>Vertical Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="360"/>
+        <location filename="../views/environment_dock.cpp" line="359"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="410"/>
+        <location filename="../views/environment_dock.cpp" line="409"/>
         <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="599"/>
-        <location filename="../views/environment_dock.cpp" line="654"/>
+        <location filename="../views/environment_dock.cpp" line="598"/>
+        <location filename="../views/environment_dock.cpp" line="653"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="613"/>
+        <location filename="../views/environment_dock.cpp" line="612"/>
         <source>Import Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="613"/>
+        <location filename="../views/environment_dock.cpp" line="612"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -683,23 +683,23 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="118"/>
+        <location filename="../views/model_dock.cpp" line="120"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="118"/>
+        <location filename="../views/model_dock.cpp" line="120"/>
         <source>PMX Files (*.pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="127"/>
-        <location filename="../views/model_dock.cpp" line="128"/>
+        <location filename="../views/model_dock.cpp" line="129"/>
+        <location filename="../views/model_dock.cpp" line="130"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="127"/>
+        <location filename="../views/model_dock.cpp" line="129"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

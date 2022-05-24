@@ -353,7 +353,7 @@ namespace octoon
 		Model model;
 
 		PmxLoader load;
-		load.doLoad(filepath, model);
+		load.load(filepath, model);
 
 		if (!model.meshes.empty())
 		{

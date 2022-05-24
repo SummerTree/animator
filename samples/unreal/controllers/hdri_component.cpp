@@ -54,9 +54,9 @@ namespace unreal
 
 			nlohmann::json item;
 			item["uuid"] = uuid;
-			item["name"] = std::filesystem::path(filepath).filename().string();
-			item["preview"] = previewPath.string();
-			item["path"] = hdriPath.string();
+			item["name"] = std::filesystem::path(filepath).filename().u8string();
+			item["preview"] = previewPath.u8string();
+			item["path"] = hdriPath.u8string();
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)
@@ -89,7 +89,7 @@ namespace unreal
 			else
 			{
 				return nlohmann::json();
-			}			
+			}
 		}
 
 		return this->packageList_[std::string(uuid)];
