@@ -245,15 +245,16 @@ namespace unreal
 		{
 			for (auto component : it->getComponents())
 			{
-				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+				if (!component->isA<octoon::AnimationComponent>())
 					continue;
 
-				auto animator = component->downcast<octoon::AnimatorComponent>();
-				if (animator)
-				{
-					animator->setTime(model->curTime);
-					animator->sample();
+				auto animation = component->downcast<octoon::AnimationComponent>();
+				animation->setTime(model->curTime);
+				animation->sample();
 
+				if (animation->isInstanceOf<octoon::AnimatorComponent>())
+				{
+					auto animator = component->downcast<octoon::AnimatorComponent>();
 					for (auto& transform : animator->getAvatar())
 					{
 						auto solver = transform->getComponent<octoon::CCDSolverComponent>();
@@ -273,9 +274,9 @@ namespace unreal
 		auto& model = this->getModel();
 		model->curTime = std::max(0.0f, model->curTime + delta);
 
-		auto& context = this->getContext()->profile;
+		auto& context = this->getContext();
 
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto sound = context->profile->entitiesModule->sound;
 		if (sound)
 		{
 			auto source = sound->getComponent<octoon::AudioSourceComponent>();
@@ -283,19 +284,20 @@ namespace unreal
 				source->setTime(model->curTime);
 		}
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		for (auto& it : context->profile->entitiesModule->objects)
 		{
 			for (auto component : it->getComponents())
 			{
-				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+				if (!component->isA<octoon::AnimationComponent>())
 					continue;
 
-				auto animator = component->downcast<octoon::AnimatorComponent>();
-				if (animator)
-				{
-					animator->setTime(model->curTime);
-					animator->sample();
+				auto animation = component->downcast<octoon::AnimationComponent>();
+				animation->setTime(model->curTime);
+				animation->sample();
 
+				if (animation->isInstanceOf<octoon::AnimatorComponent>())
+				{
+					auto animator = component->downcast<octoon::AnimatorComponent>();
 					for (auto& transform : animator->getAvatar())
 					{
 						auto solver = transform->getComponent<octoon::CCDSolverComponent>();
@@ -305,7 +307,7 @@ namespace unreal
 				}
 			}
 
-			if (this->getContext()->profile->offlineModule->getEnable())
+			if (context->profile->offlineModule->getEnable())
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
@@ -313,7 +315,7 @@ namespace unreal
 			}
 		}
 
-		auto camera = this->getContext()->profile->entitiesModule->camera;
+		auto camera = context->profile->entitiesModule->camera;
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -324,13 +326,13 @@ namespace unreal
 			}
 		}
 
-		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
-		if (physicsFeature && context->physicsModule->getEnable())
+		auto physicsFeature = context->behaviour->getFeature<octoon::PhysicsFeature>();
+		if (physicsFeature && context->profile->physicsModule->getEnable())
 		{
 			physicsFeature->simulate(std::abs(delta));
 		}
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		for (auto& it : context->profile->entitiesModule->objects)
 		{
 			for (auto component : it->getComponents())
 			{
@@ -369,15 +371,16 @@ namespace unreal
 		{
 			for (auto component : it->getComponents())
 			{
-				if (!component->isInstanceOf<octoon::AnimatorComponent>())
+				if (!component->isA<octoon::AnimationComponent>())
 					continue;
 
-				auto animator = component->downcast<octoon::AnimatorComponent>();
-				if (animator)
-				{
-					animator->setTime(model->curTime);
-					animator->evaluate();
+				auto animation = component->downcast<octoon::AnimationComponent>();
+				animation->setTime(model->curTime);
+				animation->evaluate();
 
+				if (animation->isInstanceOf<octoon::AnimatorComponent>())
+				{
+					auto animator = component->downcast<octoon::AnimatorComponent>();
 					for (auto& transform : animator->getAvatar())
 					{
 						auto solver = transform->getComponent<octoon::CCDSolverComponent>();

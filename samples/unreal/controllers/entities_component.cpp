@@ -22,7 +22,6 @@ namespace unreal
 	{
 		auto model = octoon::GameObject::create();
 		model->addComponent<octoon::MeshAnimationComponent>(path);
-		model->addComponent<octoon::MeshRendererComponent>(std::make_shared<octoon::MeshStandardMaterial>());
 
 		this->getContext()->profile->entitiesModule->objects.push_back(model);
 

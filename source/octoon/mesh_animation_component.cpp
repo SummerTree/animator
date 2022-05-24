@@ -341,6 +341,40 @@ namespace octoon
 	{
 	}
 
+	void
+	MeshAnimationComponent::setName(std::string_view name) noexcept
+	{
+		this->name_ = name;
+	}
+
+	const std::string&
+	MeshAnimationComponent::getName() const noexcept
+	{
+		return this->name_;
+	}
+
+	bool
+	MeshAnimationComponent::load(std::string_view path) noexcept(false)
+	{
+		Alembic::AbcCoreFactory::IFactory factor;
+		auto archive = factor.getArchive(utf8_to_gb2312(path));
+		if (archive.valid())
+		{
+			auto object = archive.getTop();
+
+			AnimationData animationData;
+			animationData.object = std::make_shared<IObject>(object);
+
+			this->setName(object.getName());
+			this->createAnimationData(animationData);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	bool
 	MeshAnimationComponent::play(std::string_view status) noexcept
 	{
@@ -370,7 +404,9 @@ namespace octoon
 	{
 		animationState_.time = time;
 
-		for (auto& child : this->getGameObject()->getChildren())
+		this->onAnimationUpdate();
+
+		for (auto& child : children_)
 		{
 			auto component = child->getComponent<MeshAnimationComponent>();
 			if (component)
@@ -387,7 +423,6 @@ namespace octoon
 	void
 	MeshAnimationComponent::sample(float delta) noexcept
 	{
-		this->evaluate(delta);
 	}
 
 	void
@@ -397,11 +432,11 @@ namespace octoon
 
 		this->onAnimationUpdate();
 
-		for (auto& child : this->getGameObject()->getChildren())
+		for (auto& child : children_)
 		{
 			auto component = child->getComponent<MeshAnimationComponent>();
 			if (component)
-				component->sample(delta);
+				component->evaluate(delta);
 		}
 	}
 	
@@ -437,14 +472,15 @@ namespace octoon
 	{
 		if (!path_.empty())
 		{
-			this->setupAnimationData(path_);
-			this->sample();
+			this->load(path_);
+			this->sample(0.0f);
 		}
 	}
 
 	void
 	MeshAnimationComponent::onDeactivate() noexcept
 	{
+		this->children_.clear();
 		this->removeComponentDispatch(GameDispatchType::FixedUpdate);
 	}
 
@@ -547,28 +583,7 @@ namespace octoon
 	}
 
 	void 
-	MeshAnimationComponent::setupAnimationData(std::string_view path) noexcept(false)
-	{
-		Alembic::AbcCoreFactory::IFactory factor;
-		auto archive = factor.getArchive(utf8_to_gb2312(path));
-		if (archive.valid())
-		{
-			auto object = archive.getTop();
-
-			AnimationData animationData;
-			animationData.object = std::make_shared<IObject>(object);
-
-			this->getGameObject()->setName(object.getName());
-			this->setupAnimationData(animationData);
-		}
-		else
-		{
-			throw runtime::runtime_error::create("Alembic::AbcCoreFactory::IFactory failed.");
-		}
-	}
-
-	void 
-	MeshAnimationComponent::setupAnimationData(const AnimationData& animationData) noexcept(false)
+	MeshAnimationComponent::createAnimationData(const AnimationData& animationData) noexcept(false)
 	{
 		auto& object_header = animationData.object->getHeader();
 		if (IPolyMesh::matches(object_header))
@@ -611,34 +626,40 @@ namespace octoon
 		else
 		{
 			animationData_ = std::make_shared<AnimationData>();
-			animationData_->object = std::make_shared<Alembic::Abc::v12::IObject>(*animationData.object);
+			animationData_->object = animationData.object;
 		}
 
-		for (std::size_t i = 0; i < animationData_->object->getNumChildren(); ++i)
+		std::size_t numChildren = animationData_->object->getNumChildren();
+		for (std::size_t i = 0; i < numChildren; ++i)
 		{
 			auto child = animationData_->object->getChild(i);
 			auto& child_header = child.getHeader();
 
 			if (IPolyMesh::matches(child_header))
 			{
-				auto material = std::make_shared<MeshStandardMaterial>();
-				material->setColor(math::float3(0.9f, 0.9f, 0.9f));
+				AnimationData childData;
+				childData.object = std::make_shared<IPolyMesh>(child);
 
 				auto gameObject = GameObject::create(child.getName());
-				gameObject->addComponent<MeshRendererComponent>(material);
+				auto meshRender = gameObject->addComponent<MeshRendererComponent>();
+				meshRender->setGlobalIllumination(true);
+				meshRender->setMaterial(std::make_shared<MeshStandardMaterial>(math::float3(0.9f, 0.9f, 0.9f)));
 
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
-				mesh->setupAnimationData(*animationData_);
+				mesh->createAnimationData(childData);
 
-				this->getGameObject()->addChild(gameObject);
+				children_.push_back(std::move(gameObject));
 			}
 			else if (IXform::matches(child_header))
 			{
+				AnimationData childData;
+				childData.object = std::make_shared<IXform>(child);
+
 				auto gameObject = GameObject::create(child.getName());
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
-				mesh->setupAnimationData(*animationData_);
+				mesh->createAnimationData(childData);
 
-				this->getGameObject()->addChild(gameObject);
+				children_.push_back(std::move(gameObject));
 			}
 		}
 	}

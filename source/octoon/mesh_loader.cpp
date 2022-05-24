@@ -329,7 +329,8 @@ namespace octoon
 
 		if (bones.empty())
 		{
-			object->addComponent<MeshRendererComponent>(materials);
+			auto meshRender = object->addComponent<MeshRendererComponent>(materials);
+			meshRender->setGlobalIllumination(true);
 		}
 		else
 		{
