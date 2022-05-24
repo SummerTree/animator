@@ -6,7 +6,7 @@
     <message>
         <location filename="../res/qml/MainView.qml" line="8"/>
         <source>Flowers Render Toolbox (Alpha Version)</source>
-        <translation>花楹渲染器(内测版本)</translation>
+        <translation>小碎花渲染器(内测版本)</translation>
     </message>
 </context>
 <context>
@@ -392,7 +392,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/main_dock.cpp" line="22"/>
         <source>Render Toolbox (Alpha Version)</source>
-        <translation>花楹渲染器(内测版本)</translation>
+        <translation>小碎花渲染器(内测版本)</translation>
     </message>
     <message>
         <location filename="../views/main_dock.cpp" line="238"/>
@@ -707,23 +707,23 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="113"/>
+        <location filename="../views/motion_dock.cpp" line="114"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="113"/>
+        <location filename="../views/motion_dock.cpp" line="114"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished">VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="124"/>
         <location filename="../views/motion_dock.cpp" line="125"/>
+        <location filename="../views/motion_dock.cpp" line="126"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="124"/>
+        <location filename="../views/motion_dock.cpp" line="125"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
@@ -972,7 +972,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/splash_screen.cpp" line="24"/>
         <source>Render Toolbox 2022</source>
-        <translation type="unfinished">花楹渲染器 2022</translation>
+        <translation type="unfinished">小碎花渲染器 2022</translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="29"/>
