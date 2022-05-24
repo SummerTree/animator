@@ -28,6 +28,12 @@ namespace unreal
 		materialButton_->setToolTip(tr("Open Material Panel"));
 		materialButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
+		modelButton_ = new QToolButton;
+		modelButton_->setObjectName("model");
+		modelButton_->setText(tr("Model"));
+		modelButton_->setToolTip(tr("Open Model Panel"));
+		modelButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
 		lightButton_ = new QToolButton;
 		lightButton_->setObjectName("sun");
 		lightButton_->setText(tr("Light"));
@@ -66,6 +72,7 @@ namespace unreal
 
 		auto layout = new QVBoxLayout;
 		layout->addWidget(materialButton_, 0, Qt::AlignCenter);
+		layout->addWidget(modelButton_, 0, Qt::AlignCenter);
 		layout->addWidget(lightButton_, 0, Qt::AlignCenter);
 		layout->addWidget(sunButton_, 0, Qt::AlignCenter);
 		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
@@ -98,14 +105,15 @@ namespace unreal
 
 		lightButton_->hide();
 
+		this->connect(materialButton_, SIGNAL(clicked()), this, SLOT(materialEvent()));
+		this->connect(modelButton_, SIGNAL(clicked()), this, SLOT(modelEvent()));
+		this->connect(motionButton_, SIGNAL(clicked()), this, SLOT(motionEvent()));
 		this->connect(recordButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
 		this->connect(lightButton_, SIGNAL(clicked()), this, SLOT(lightEvent()));
 		this->connect(sunButton_, SIGNAL(clicked()), this, SLOT(sunEvent()));
 		this->connect(environmentButton_, SIGNAL(clicked()), this, SLOT(environmentEvent()));
-		this->connect(materialButton_, SIGNAL(clicked()), this, SLOT(materialEvent()));
 		this->connect(cameraButton_, SIGNAL(clicked()), this, SLOT(cameraEvent()));
 		this->connect(settingsButton_, SIGNAL(clicked()), this, SLOT(settingsEvent()));
-		this->connect(motionButton_, SIGNAL(clicked()), this, SLOT(motionEvent()));
 	}
 
 	ThumbnailDock::~ThumbnailDock() noexcept
@@ -146,6 +154,18 @@ namespace unreal
 	}
 
 	void
+	ThumbnailDock::modelEvent() noexcept
+	{
+		emit modelSignal();
+	}
+
+	void
+	ThumbnailDock::motionEvent() noexcept
+	{
+		emit motionSignal();
+	}
+
+	void
 	ThumbnailDock::environmentEvent() noexcept
 	{
 		emit environmentSignal();
@@ -165,10 +185,5 @@ namespace unreal
 			SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<UnrealBehaviour>());
 			window->show();
 		}
-	}
-	void
-	ThumbnailDock::motionEvent() noexcept
-	{
-		emit motionSignal();
 	}
 }

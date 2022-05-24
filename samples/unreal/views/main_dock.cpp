@@ -46,6 +46,7 @@ namespace unreal
 		environmentDock_ = std::make_unique<EnvironmentDock>(behaviour_, profile_);
 		cameraDock_ = std::make_unique<CameraDock>(behaviour_, profile_);
 		materialDock_ = std::make_unique<MaterialDock>(behaviour_, profile_);
+		modelDock_ = std::make_unique<ModelDock>(behaviour_, profile_);
 		motionDock_ = std::make_unique<MotionDock>(behaviour_, profile_);
 		statusBar_ = std::make_unique<StatusBar>(behaviour_, profile_);
 
@@ -57,10 +58,11 @@ namespace unreal
 		this->splitDockWidget(thumbnailDock_.get(), mainLightDock_.get(), Qt::Orientation::Horizontal);
 		this->splitDockWidget(mainLightDock_.get(), lightDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), materialDock_.get(), Qt::Orientation::Vertical);
+		this->splitDockWidget(mainLightDock_.get(), motionDock_.get(), Qt::Orientation::Vertical);
+		this->splitDockWidget(mainLightDock_.get(), modelDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), recordDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), environmentDock_.get(), Qt::Orientation::Vertical);
 		this->splitDockWidget(mainLightDock_.get(), cameraDock_.get(), Qt::Orientation::Vertical);
-		this->splitDockWidget(mainLightDock_.get(), motionDock_.get(), Qt::Orientation::Vertical);
 
 		this->setCentralWidget(viewDock_.get());
 		this->setStatusBar(statusBar_.get());
@@ -79,10 +81,9 @@ namespace unreal
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::recordSignal, this, &MainDock::onRecordSignal);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::materialSignal, this, &MainDock::onMaterialSignal);
+		this->connect(thumbnailDock_.get(), &ThumbnailDock::modelSignal, this, &MainDock::onModelSignal);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::cameraSignal, this, &MainDock::onCameraSignal);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::motionSignal, this, &MainDock::onMotionSignal);
-
-		this->restoreLayout();
 
 		timer.start();
 
@@ -101,9 +102,10 @@ namespace unreal
 		this->removeDockWidget(mainLightDock_.get());
 		this->removeDockWidget(environmentDock_.get());
 		this->removeDockWidget(materialDock_.get());
+		this->removeDockWidget(modelDock_.get());
 		this->removeDockWidget(recordDock_.get());
 		this->removeDockWidget(thumbnailDock_.get());
-		this->removeDockWidget(cameraDock_.get());		
+		this->removeDockWidget(cameraDock_.get());
 
 		this->setStatusBar(nullptr);
 		this->setCentralWidget(nullptr);
@@ -115,6 +117,7 @@ namespace unreal
 		mainLightDock_.reset();
 		environmentDock_.reset();
 		materialDock_.reset();
+		modelDock_.reset();
 		recordDock_.reset();
 		thumbnailDock_.reset();
 		cameraDock_.reset();
@@ -399,6 +402,44 @@ namespace unreal
 	}
 
 	void
+	MainDock::onModelSignal() noexcept
+	{
+		try
+		{
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+			if (behaviour)
+			{
+				if (!profile_->playerModule->isPlaying)
+				{
+					if (modelDock_->isHidden())
+					{
+						auto widget = this->visableDock();
+						if (widget)
+						{
+							this->tabifyDockWidget(widget, modelDock_.get());
+							widget->hide();
+						}
+
+						modelDock_->show();
+					}
+					else
+					{
+						modelDock_->close();
+					}
+				}
+			}
+			else
+			{
+				QMessageBox::warning(this, tr("Warning"), tr("Fail to get core component."));
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::critical(this, tr("Error"), e.what());
+		}
+	}
+
+	void
 	MainDock::onCameraSignal() noexcept
 	{
 		try
@@ -518,6 +559,8 @@ namespace unreal
 				behaviour_->addComponent<UnrealBehaviour>(profile_);
 
 				spdlog::debug("finish");
+
+				this->restoreLayout();
 
 				init_flag = true;
 			}

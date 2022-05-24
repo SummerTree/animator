@@ -1,53 +1,55 @@
 #ifndef UNREAL_MOTION_DOCK_H_
 #define UNREAL_MOTION_DOCK_H_
 
-#include "spoiler.h"
-#include "unreal_behaviour.h"
-#include <QComboBox>
-#include <octoon/game_object.h>
-#include <optional>
-#include <qboxlayout.h>
-#include <qbuttongroup.h>
-#include <qcheckbox.h>
-#include <qdialog.h>
 #include <qdockwidget.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
+#include <qcheckbox.h>
+#include <qcolordialog.h>
+#include <qlistwidget.h>
 #include <qspinbox.h>
-#include <qtimer.h>
-#include <qtoolbutton.h>
+#include <qlabel.h>
+
+#include "spoiler.h"
+#include "unreal_profile.h"
+#include "unreal_behaviour.h"
 
 namespace unreal
 {
 	class MotionDock final : public QDockWidget
 	{
 		Q_OBJECT
-	  public:
-		MotionDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept;
+	public:
+		MotionDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~MotionDock() noexcept;
 
-		void showEvent(QShowEvent* event) override;
-		void paintEvent(QPaintEvent* e) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
-		void closeEvent(QCloseEvent* event) override;
+		void showEvent(QShowEvent* event) noexcept override;
 
-	  private Q_SLOTS:
-		void recordEvent(bool);
+	public Q_SLOTS:
+		void importClickEvent();
 
+		void itemClicked(QListWidgetItem* item);
+		void itemDoubleClicked(QListWidgetItem* item);
 
-	  public:
+	Q_SIGNALS:
+		void itemSelected(QListWidgetItem* item);
+
+	private:
+		void addItem(std::string_view uuid) noexcept;
+
+	public:
+		QListWidget* listWidget_;
+		QWidget* mainWidget_;
 		QVBoxLayout* mainLayout_;
 
-		QWidget* mainWidget_;
+		QHBoxLayout* topLayout_;
+		QHBoxLayout* bottomLayout_;
 
-		Spoiler* markSpoiler_;
-		Spoiler* videoSpoiler_;
-		QScrollArea* contentWidgetArea_;
+		QToolButton* importButton_;
+
+		QListWidgetItem* clickedItem_;
 
 		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<UnrealProfile> profile_;
+		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 }
 

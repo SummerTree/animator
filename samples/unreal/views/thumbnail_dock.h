@@ -31,6 +31,7 @@ namespace unreal
 		void lightEvent() noexcept;
 		void sunEvent() noexcept;
 		void materialEvent() noexcept;
+		void modelEvent() noexcept;
 		void environmentEvent() noexcept;
 		void cameraEvent() noexcept;
 		void settingsEvent() noexcept;
@@ -40,6 +41,7 @@ namespace unreal
 		void sunSignal();
 		void lightSignal();
 		void recordSignal();
+		void modelSignal();
 		void materialSignal();
 		void environmentSignal();
 		void cameraSignal();
@@ -51,6 +53,7 @@ namespace unreal
 		QToolButton* sunButton_;
 		QToolButton* environmentButton_;
 		QToolButton* materialButton_;
+		QToolButton* modelButton_;
 		QToolButton* cameraButton_;
 		QToolButton* settingsButton_;
 		QToolButton* motionButton_;

@@ -389,7 +389,10 @@ QWidget#ThumbnailDock QToolButton#setting{
 QWidget#ThumbnailDock QToolButton#motion{
 	qproperty-icon: url(":res/icons/dance.png");
 }
-QWidget#MainLightDock, QWidget#EnvironmentDock, QWidget#MaterialDock, QWidget#RecordDock, QWidget#CameraDock, QWidget#LightDock
+QWidget#ThumbnailDock QToolButton#model{
+	qproperty-icon: url(":res/icons/model.png");
+}
+QWidget#MainLightDock, QWidget#EnvironmentDock, QWidget#MaterialDock, QWidget#RecordDock, QWidget#CameraDock, QWidget#LightDock, QWidget#ModelDock, QWidget#MotionDock
 {
 	color: rgb(200, 200, 200);
 	min-width:340;
@@ -673,5 +676,9 @@ QWidget#EnvironmentDialog > QToolButton#Import{
 }
 QWidget#EnvironmentDialog > QToolButton#Ok, QWidget#EnvironmentDialog > QToolButton#Close{
 	width:50;
+	height:30;
+}
+QWidget#ModelWidget > QToolButton#Import{
+	width:60;
 	height:30;
 }

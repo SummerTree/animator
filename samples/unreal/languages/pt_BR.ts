@@ -395,46 +395,49 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="235"/>
-        <location filename="../views/main_dock.cpp" line="275"/>
-        <location filename="../views/main_dock.cpp" line="314"/>
-        <location filename="../views/main_dock.cpp" line="354"/>
-        <location filename="../views/main_dock.cpp" line="392"/>
-        <location filename="../views/main_dock.cpp" line="430"/>
-        <location filename="../views/main_dock.cpp" line="468"/>
+        <location filename="../views/main_dock.cpp" line="238"/>
+        <location filename="../views/main_dock.cpp" line="278"/>
+        <location filename="../views/main_dock.cpp" line="317"/>
+        <location filename="../views/main_dock.cpp" line="357"/>
+        <location filename="../views/main_dock.cpp" line="395"/>
+        <location filename="../views/main_dock.cpp" line="433"/>
+        <location filename="../views/main_dock.cpp" line="471"/>
+        <location filename="../views/main_dock.cpp" line="509"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="235"/>
-        <location filename="../views/main_dock.cpp" line="275"/>
+        <location filename="../views/main_dock.cpp" line="238"/>
+        <location filename="../views/main_dock.cpp" line="278"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="241"/>
-        <location filename="../views/main_dock.cpp" line="280"/>
-        <location filename="../views/main_dock.cpp" line="320"/>
-        <location filename="../views/main_dock.cpp" line="359"/>
-        <location filename="../views/main_dock.cpp" line="397"/>
-        <location filename="../views/main_dock.cpp" line="435"/>
-        <location filename="../views/main_dock.cpp" line="473"/>
-        <location filename="../views/main_dock.cpp" line="528"/>
-        <location filename="../views/main_dock.cpp" line="555"/>
+        <location filename="../views/main_dock.cpp" line="244"/>
+        <location filename="../views/main_dock.cpp" line="283"/>
+        <location filename="../views/main_dock.cpp" line="323"/>
+        <location filename="../views/main_dock.cpp" line="362"/>
+        <location filename="../views/main_dock.cpp" line="400"/>
+        <location filename="../views/main_dock.cpp" line="438"/>
+        <location filename="../views/main_dock.cpp" line="476"/>
+        <location filename="../views/main_dock.cpp" line="514"/>
+        <location filename="../views/main_dock.cpp" line="571"/>
+        <location filename="../views/main_dock.cpp" line="598"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="314"/>
-        <location filename="../views/main_dock.cpp" line="354"/>
-        <location filename="../views/main_dock.cpp" line="392"/>
-        <location filename="../views/main_dock.cpp" line="430"/>
-        <location filename="../views/main_dock.cpp" line="468"/>
+        <location filename="../views/main_dock.cpp" line="317"/>
+        <location filename="../views/main_dock.cpp" line="357"/>
+        <location filename="../views/main_dock.cpp" line="395"/>
+        <location filename="../views/main_dock.cpp" line="433"/>
+        <location filename="../views/main_dock.cpp" line="471"/>
+        <location filename="../views/main_dock.cpp" line="509"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="529"/>
+        <location filename="../views/main_dock.cpp" line="572"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -658,10 +661,70 @@ $20 (Original cost $40)</source>
     </message>
 </context>
 <context>
+    <name>unreal::ModelDock</name>
+    <message>
+        <location filename="../views/model_dock.cpp" line="21"/>
+        <source>Model Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/model_dock.cpp" line="26"/>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/model_dock.cpp" line="118"/>
+        <source>Import Resource</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/model_dock.cpp" line="118"/>
+        <source>PMX Files (*.pmx)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/model_dock.cpp" line="127"/>
+        <location filename="../views/model_dock.cpp" line="128"/>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/model_dock.cpp" line="127"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>unreal::MotionDock</name>
     <message>
-        <location filename="../views/motion_dock.cpp" line="16"/>
-        <source>Motion</source>
+        <location filename="../views/motion_dock.cpp" line="21"/>
+        <source>Model Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="26"/>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="118"/>
+        <source>Import Resource</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="118"/>
+        <source>PMX Files (*.pmx)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="127"/>
+        <location filename="../views/motion_dock.cpp" line="128"/>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="127"/>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -969,57 +1032,67 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="33"/>
-        <source>Light</source>
+        <source>Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="34"/>
-        <source>Open Light Panel</source>
+        <source>Open Model Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="39"/>
-        <source>Main Light</source>
+        <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="40"/>
-        <source>Open Main Light Panel</source>
+        <source>Open Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="45"/>
-        <source>Environment Light</source>
+        <source>Main Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="46"/>
-        <source>Open Environment Light Panel</source>
+        <source>Open Main Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="51"/>
-        <source>Camera</source>
+        <source>Environment Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="52"/>
-        <source>Open Camera Panel</source>
+        <source>Open Environment Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="57"/>
+        <source>Camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/thumbnail_dock.cpp" line="58"/>
-        <source>Settings</source>
+        <source>Open Camera Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="63"/>
+        <location filename="../views/thumbnail_dock.cpp" line="64"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/thumbnail_dock.cpp" line="69"/>
         <source>Motion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/thumbnail_dock.cpp" line="64"/>
+        <location filename="../views/thumbnail_dock.cpp" line="70"/>
         <source>Open Motion Panel</source>
         <translation type="unfinished"></translation>
     </message>
