@@ -95,6 +95,30 @@ namespace unreal
 		return this->packageList_[std::string(uuid)];
 	}
 
+	bool
+	HDRiComponent::removePackage(std::string_view uuid) noexcept
+	{
+		try
+		{
+			for (auto it = indexList_.begin(); it != indexList_.end(); ++it)
+			{
+				if ((*it).get<nlohmann::json::string_t>() == uuid)
+				{
+					auto packagePath = std::filesystem::path(this->getModel()->hdriPath).append(uuid);
+					std::filesystem::remove_all(packagePath);
+
+					indexList_.erase(it);
+					return true;
+				}
+			}
+		}
+		catch (...)
+		{
+		}
+
+		return false;
+	}
+
 	const nlohmann::json&
 	HDRiComponent::getIndexList() const noexcept
 	{
@@ -133,7 +157,7 @@ namespace unreal
 		std::set<std::string> indexSet;
 
 		for (auto& it : this->indexList_)
-		{		 
+		{
 			if (!std::filesystem::exists(std::filesystem::path(this->getModel()->hdriPath).append(it.get<nlohmann::json::string_t>())))
 				needUpdateIndexFile = true;
 			else

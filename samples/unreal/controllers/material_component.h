@@ -22,6 +22,7 @@ namespace unreal
 
 		nlohmann::json importMdl(std::string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept(false);
+		bool removePackage(std::string_view uuid) noexcept;
 
 		const nlohmann::json& getIndexList() const noexcept;
 		const nlohmann::json& getSceneList() const noexcept;

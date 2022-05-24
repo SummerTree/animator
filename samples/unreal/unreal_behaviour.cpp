@@ -351,7 +351,7 @@ namespace unreal
 		else if (ext == ".pmx")
 			entitiesComponent_->importModel(path);
 		else if (ext == ".hdr")
-			entitiesComponent_->importHDRi(path);
+			hdriComponent_->importHDRi(path);
 		else if (ext == ".abc")
 			entitiesComponent_->importAbc(path);
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")

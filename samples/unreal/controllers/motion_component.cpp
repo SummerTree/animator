@@ -72,6 +72,21 @@ namespace unreal
 		return this->packageList_[std::string(uuid)];
 	}
 
+	bool
+	MotionComponent::removePackage(std::string_view uuid) noexcept
+	{
+		auto it = this->indexList_.find(std::string(uuid));
+		if (it != this->indexList_.end())
+		{
+			auto packagePath = std::filesystem::path(this->getModel()->hdriPath).append(uuid);
+			std::filesystem::remove_all(packagePath);
+
+			indexList_.erase(it);
+		}
+
+		return false;
+	}
+
 	const nlohmann::json&
 	MotionComponent::getIndexList() const noexcept
 	{

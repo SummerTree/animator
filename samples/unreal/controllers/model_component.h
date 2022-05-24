@@ -18,6 +18,7 @@ namespace unreal
 
 		nlohmann::json importModel(std::string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
+		bool removePackage(std::string_view uuid) noexcept;
 
 		const nlohmann::json& getIndexList() const noexcept;
 

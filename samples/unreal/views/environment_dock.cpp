@@ -236,6 +236,33 @@ namespace unreal
 		}
 	}
 
+	void
+	EnvironmentListDialog::keyPressEvent(QKeyEvent* event) noexcept
+	{
+		if (event->key() == Qt::Key_Delete)
+		{
+			if (clickedItem_)
+			{
+				if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this picture?")) == QMessageBox::Yes)
+				{
+					auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
+					if (hdrComponent)
+					{
+						auto uuid = clickedItem_->data(Qt::UserRole).toString();
+						if (hdrComponent->removePackage(uuid.toStdString()))
+						{
+							mainWidget_->takeItem(mainWidget_->row(clickedItem_));
+							delete clickedItem_;
+							clickedItem_ = mainWidget_->currentItem();
+							hdrComponent->save();
+						}
+					}
+				}
+			}
+		}
+
+	}
+
 	EnvironmentDock::EnvironmentDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: behaviour_(behaviour)
 		, profile_(profile)
@@ -245,19 +272,22 @@ namespace unreal
 		this->setObjectName("EnvironmentDock");
 
 		this->previewButton_ = new QToolButton();
-		this->previewButton_->setFixedSize(QSize(260, 130));
-		this->previewButton_->setIconSize(this->previewButton_->size());
+		this->previewButton_->setObjectName("Preview");
+		this->previewButton_->setIconSize(QSize(260, 130));
 		this->previewButton_->setToolTip(tr("Click the select a Preview button to locate each HDRi on your computer"));
 
 		this->previewName_ = new QLabel;
+		this->previewName_->setObjectName("PreviewName");
 		this->previewName_->setText(tr("Untitled"));
 		this->previewName_->setAlignment(Qt::AlignCenter);
 		this->previewName_->setMinimumWidth(260);
 
 		this->colorButton = new QToolButton;
+		this->colorButton->setObjectName("Color");
 		this->colorButton->setIconSize(QSize(50, 30));
 		
 		this->thumbnail = new QToolButton;
+		this->thumbnail->setObjectName("Thumbnail ");
 		this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 		this->thumbnail->setIconSize(QSize(48, 48));
 		this->thumbnail->setToolTip(tr("Open"));
@@ -395,6 +425,7 @@ namespace unreal
 		mainLayout->setContentsMargins(10, 10, 10, 10);
 
 		auto mainWidget = new QWidget();
+		mainWidget->setObjectName("EnvironmentWidget");
 		mainWidget->setLayout(mainLayout);
 
 		this->setWidget(mainWidget);
@@ -479,21 +510,21 @@ namespace unreal
 		{
 			auto srcWidth = this->previewImage_->width();
 			auto srcHeight = this->previewImage_->height();
-			auto pixels = std::make_unique<std::uint8_t[]>(w * h * 3);
+			auto pixels = std::make_unique<std::uint8_t[]>(srcWidth * srcHeight * 3);
 			auto offset = this->profile_->environmentModule->offset;
 
-			for (std::size_t y = 0; y < h; y++)
+			for (std::size_t y = 0; y < srcHeight; y++)
 			{
-				for (std::size_t x = 0; x < w; x++)
+				for (std::size_t x = 0; x < srcWidth; x++)
 				{
-					auto u = x / float(w) - offset.x;
-					auto v = y / float(h) - offset.y;
+					auto u = x / float(srcWidth) - offset.x;
+					auto v = y / float(srcHeight) - offset.y;
 					u -= std::floor(u);
 					v -= std::floor(v);
 					auto ui = int(u * srcWidth);
 					auto vi = int(v * srcHeight);
 
-					auto dst = (y * w + x) * 3;
+					auto dst = (y * srcWidth + x) * 3;
 					auto color = this->previewImage_->pixelColor(ui, vi);
 
 					pixels[dst] = std::clamp<float>(color.redF() * c.red(), 0, 255);
@@ -502,7 +533,7 @@ namespace unreal
 				}
 			}
 
-			previewButton_->setIcon(QPixmap::fromImage(QImage(pixels.get(), w, h, QImage::Format::Format_RGB888)));
+			previewButton_->setIcon(QPixmap::fromImage(QImage(pixels.get(), srcWidth, srcHeight, QImage::Format::Format_RGB888)));
 		}
 		else
 		{
