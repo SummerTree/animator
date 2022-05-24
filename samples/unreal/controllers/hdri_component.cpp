@@ -107,6 +107,10 @@ namespace unreal
 					auto packagePath = std::filesystem::path(this->getModel()->hdriPath).append(uuid);
 					std::filesystem::remove_all(packagePath);
 
+					auto package = this->packageList_.find(std::string(uuid));
+					if (package != this->packageList_.end())
+						this->packageList_.erase(package);
+
 					indexList_.erase(it);
 					return true;
 				}

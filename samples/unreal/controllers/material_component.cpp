@@ -224,13 +224,26 @@ namespace unreal
 	bool
 	MaterialComponent::removePackage(std::string_view uuid) noexcept
 	{
-		auto it = this->indexList_.find(std::string(uuid));
-		if (it != this->indexList_.end())
+		try
 		{
-			auto packagePath = std::filesystem::path(this->getModel()->hdriPath).append(uuid);
-			std::filesystem::remove_all(packagePath);
+			for (auto it = indexList_.begin(); it != indexList_.end(); ++it)
+			{
+				if ((*it).get<nlohmann::json::string_t>() == uuid)
+				{
+					auto packagePath = std::filesystem::path(this->getModel()->hdriPath).append(uuid);
+					std::filesystem::remove_all(packagePath);
 
-			indexList_.erase(it);
+					auto package = this->packageList_.find(std::string(uuid));
+					if (package != this->packageList_.end())
+						this->packageList_.erase(package);
+
+					indexList_.erase(it);
+					return true;
+				}
+			}
+		}
+		catch (...)
+		{
 		}
 
 		return false;
