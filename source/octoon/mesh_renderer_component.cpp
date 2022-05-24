@@ -178,15 +178,8 @@ namespace octoon
 	void
 	MeshRendererComponent::uploadMeshData(const MeshPtr& mesh) noexcept
 	{
-		if (mesh && geometry_)
-		{			
+		if (geometry_)
 			geometry_->setMesh(mesh);
-			geometry_->setMaterials(this->getMaterials());
-		}
-		else
-		{
-			geometry_.reset();
-		}
 	}
 
 	void

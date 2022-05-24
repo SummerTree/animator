@@ -97,7 +97,7 @@ namespace octoon
 			{
 				std::uint32_t index = indices_obj->get()[i];
 				const Alembic::AbcGeom::V2f v = uv[index];
-				uvs.push_back(math::float2(v.x, v.y));
+				uvs[i] = math::float2(v.x, v.y);
 			}
 		}
 		else
@@ -206,7 +206,7 @@ namespace octoon
 			{
 				std::uint32_t index = indices_obj->get()[i];
 				const Alembic::AbcGeom::N3f v = n[index];
-				normals.push_back(math::float3(v.x, v.y, v.z));
+				normals[i] = math::float3(v.x, v.y, v.z);
 			}
 		}
 		else
@@ -365,8 +365,13 @@ namespace octoon
 			AnimationData animationData;
 			animationData.object = std::make_shared<IObject>(object);
 
+			this->animationState_.time = 0.0f;
+			this->animationState_.timeLength = 0.0f;
+			this->animationState_.finish = false;
+
 			this->setName(object.getName());
 			this->createAnimationData(animationData);
+
 			return true;
 		}
 		else
@@ -524,9 +529,9 @@ namespace octoon
 		{
 			if (animationState_.time >= minTime_&& animationState_.time <= maxTime_)
 			{
-				auto mesh = std::dynamic_pointer_cast<IPolyMesh>(this->animationData_->object);
+				auto polyMesh = std::dynamic_pointer_cast<IPolyMesh>(this->animationData_->object);
 
-				auto& schema = mesh->getSchema();
+				auto& schema = polyMesh->getSchema();
 				if (schema.isConstant())
 				{
 					if (!mesh_)
@@ -648,6 +653,8 @@ namespace octoon
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
 				mesh->createAnimationData(childData);
 
+				animationState_.timeLength = std::max(animationState_.timeLength, mesh->animationState_.timeLength);
+
 				children_.push_back(std::move(gameObject));
 			}
 			else if (IXform::matches(child_header))
@@ -658,6 +665,8 @@ namespace octoon
 				auto gameObject = GameObject::create(child.getName());
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
 				mesh->createAnimationData(childData);
+
+				animationState_.timeLength = std::max(animationState_.timeLength, mesh->animationState_.timeLength);
 
 				children_.push_back(std::move(gameObject));
 			}
