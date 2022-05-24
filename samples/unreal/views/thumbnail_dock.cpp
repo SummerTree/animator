@@ -45,7 +45,7 @@ namespace unreal
 		sunButton_->setText(tr("Main Light"));
 		sunButton_->setToolTip(tr("Open Main Light Panel"));
 		sunButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
+		
 		environmentButton_ = new QToolButton;
 		environmentButton_->setObjectName("environment");
 		environmentButton_->setText(tr("Environment Light"));
