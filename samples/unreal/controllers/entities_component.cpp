@@ -24,6 +24,7 @@ namespace unreal
 		model->addComponent<octoon::MeshAnimationComponent>(path);
 
 		this->getContext()->profile->entitiesModule->objects.push_back(model);
+		this->sendMessage("flower:project:open");
 	}
 
 	void
@@ -49,6 +50,8 @@ namespace unreal
 				context->profile->entitiesModule->objects.push_back(it);
 			}
 		}
+
+		this->sendMessage("flower:project:open");
 	}
 
 	void
