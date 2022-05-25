@@ -27,11 +27,11 @@ std::shared_ptr<spdlog::logger> create_logger()
 		console_sink->set_level(spdlog::level::warn);
 		console_sink->set_pattern("[%H:%M:%S %z] [%l] [%n] [%^---%L---%$] [thread %t] %v");
 
-		auto file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>(QDir::homePath().toStdString() + "/.flower/logs/log.txt", 2, 30);
+		auto file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>(QDir::homePath().toStdString() + "/.animator/logs/log.txt", 2, 30);
 		file_sink->set_level(spdlog::level::trace);
 		file_sink->set_pattern("[%H:%M:%S %z] [%l] [%n] [%^---%L---%$] [thread %t] %v");
 
-		std::shared_ptr<spdlog::logger> logger(new spdlog::logger("flowers_logger", { console_sink, file_sink }));
+		std::shared_ptr<spdlog::logger> logger(new spdlog::logger("logger", { console_sink, file_sink }));
 		logger->set_level(spdlog::level::trace);
 
 		return logger;

@@ -24,7 +24,7 @@ namespace unreal
 		model->addComponent<octoon::MeshAnimationComponent>(path);
 
 		this->getContext()->profile->entitiesModule->objects.push_back(model);
-		this->sendMessage("flower:project:open");
+		this->sendMessage("editor:project:open");
 	}
 
 	void
@@ -51,7 +51,7 @@ namespace unreal
 			}
 		}
 
-		this->sendMessage("flower:project:open");
+		this->sendMessage("editor:project:open");
 	}
 
 	void
@@ -116,7 +116,7 @@ namespace unreal
 		context->profile->entitiesModule->camera = this->createCamera(pmm);
 		context->profile->entitiesModule->objects = objects;
 
-		this->sendMessage("flower:project:open");
+		this->sendMessage("editor:project:open");
 	}
 
 	bool

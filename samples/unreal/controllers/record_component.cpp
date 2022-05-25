@@ -24,7 +24,7 @@ namespace unreal
 	void
 	RecordComponent::onInit() noexcept
 	{
-		this->addMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
+		this->addMessageListener("editor:player:record", std::bind(&RecordComponent::onRecord, this));
 
 		this->getContext()->profile->playerModule->finish += [this](bool value)
 		{

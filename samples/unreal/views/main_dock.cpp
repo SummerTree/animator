@@ -11,19 +11,19 @@ namespace unreal
 {
 	MainDock::MainDock(SplashScreen* splash) noexcept
 		: init_flag(false)
-		, profile_(UnrealProfile::load(QDir::homePath().toStdString() + "/.flower/config.json"))
+		, profile_(UnrealProfile::load(QDir::homePath().toStdString() + "/.animator/config.json"))
 		, gameApp_(std::make_shared<octoon::GameApp>())
 		, behaviour_(octoon::GameObject::create())
 		, splash_(splash)
 		, timer(this)
-		, listener_(std::make_shared<SplashListener>(splash, QDir::homePath().toStdString() + "/.flower/log.txt"))
+		, listener_(std::make_shared<SplashListener>(splash, QDir::homePath().toStdString() + "/.animator/log.txt"))
 	{
 		this->setObjectName("MainDock");
-		this->setWindowTitle(tr("Render Toolbox (Alpha Version)"));
+		this->setWindowTitle(tr("AnimatorGo Lite"));
 		this->setDockNestingEnabled(false);
 		this->setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::West);
 
-		QImage image(":res/icons/rabbit.png");
+		QImage image(":res/icons/logo.png");
 		auto w = image.width();
 		auto h = image.height();
 		auto bits = image.bits();
@@ -72,6 +72,7 @@ namespace unreal
 		materialDock_->hide();
 		recordDock_->hide();
 		cameraDock_->hide();
+		modelDock_->hide();
 		motionDock_->hide();
 
 		this->connect(&timer, &QTimer::timeout, this, &MainDock::update);
@@ -93,7 +94,7 @@ namespace unreal
 	{
 		timer.stop();
 
-		UnrealProfile::save(QDir::homePath().toStdString() + "/.flower/config.json", *profile_);
+		UnrealProfile::save(QDir::homePath().toStdString() + "/.animator/config.json", *profile_);
 
 		this->saveLayout();
 		this->removeToolBar(toplevelDock_.get());
@@ -127,9 +128,9 @@ namespace unreal
 
 		spdlog::debug("Delete main dock");
 
-		QDir appFolder = QDir(QDir::homePath() + "/.flower");
+		QDir appFolder = QDir(QDir::homePath() + "/.animator");
 		if (!appFolder.exists())
-			QDir::root().mkpath(QDir::homePath() + "/.flower");
+			QDir::root().mkpath(QDir::homePath() + "/.animator");
 
 		spdlog::debug("save profile");
 
@@ -145,7 +146,7 @@ namespace unreal
 	void
 	MainDock::restoreLayout() noexcept
 	{
-		auto layout = QDir::homePath().toStdString() + "/.flower/layout.init";
+		auto layout = QDir::homePath().toStdString() + "/.animator/layout.init";
 		QSettings settings(QString::fromStdString(layout), QSettings::Format::IniFormat);
 		settings.beginGroup("MainDock");
 		restoreGeometry(settings.value("geometry").toByteArray());
@@ -156,7 +157,7 @@ namespace unreal
 	void
 	MainDock::saveLayout() noexcept
 	{
-		auto layout = QDir::homePath().toStdString() + "/.flower/layout.init";
+		auto layout = QDir::homePath().toStdString() + "/.animator/layout.init";
 		QSettings settings(QString::fromStdString(layout), QSettings::Format::IniFormat);
 		settings.beginGroup("MainDock");
 		settings.setValue("geometry", saveGeometry());
@@ -503,7 +504,7 @@ namespace unreal
 
 				listener_->splash_ = nullptr;
 
-				spdlog::debug("flower behaviour init");
+				spdlog::debug("behaviour init");
 
 				behaviour_->addComponent<UnrealBehaviour>(profile_);
 

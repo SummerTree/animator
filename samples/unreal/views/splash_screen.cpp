@@ -17,11 +17,11 @@ namespace unreal
 
 		widget = new QWidget(this);
 		widget->setObjectName("text");
-		widget->setFixedSize(290, 100);
+		widget->setFixedSize(300, 100);
 
 		englishName = new QLabel(widget);
 		englishName->setObjectName("title");
-		englishName->setText(tr("Render Toolbox 2022"));
+		englishName->setText(tr("AnimatorGo Lite 2022"));
 		englishName->setAlignment(Qt::AlignLeft);
 
 		copyrightInfo = new QLabel(widget);
@@ -37,7 +37,7 @@ namespace unreal
 		hlayout = new QHBoxLayout();
 		hlayout->addWidget(logo, 0, Qt::AlignRight);
 		hlayout->addWidget(widget, 0, Qt::AlignLeft);
-		hlayout->setContentsMargins(20, 0, 0, 10);
+		hlayout->setContentsMargins(10, 0, 0, 10);
 		hlayout->setSpacing(10);
 
 		versionInfo = new QLabel(this);

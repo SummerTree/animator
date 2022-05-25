@@ -422,53 +422,53 @@ $20 (Original cost $40)</source>
     <name>unreal::MainDock</name>
     <message>
         <location filename="../views/main_dock.cpp" line="22"/>
-        <source>Render Toolbox (Alpha Version)</source>
-        <translation>小碎花渲染器(内测版本)</translation>
+        <source>AnimatorGo Lite</source>
+        <translation>AnimatorGo Lite (Alpha Version)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="207"/>
-        <location filename="../views/main_dock.cpp" line="243"/>
-        <location filename="../views/main_dock.cpp" line="279"/>
-        <location filename="../views/main_dock.cpp" line="316"/>
-        <location filename="../views/main_dock.cpp" line="351"/>
-        <location filename="../views/main_dock.cpp" line="386"/>
-        <location filename="../views/main_dock.cpp" line="421"/>
-        <location filename="../views/main_dock.cpp" line="456"/>
+        <location filename="../views/main_dock.cpp" line="208"/>
+        <location filename="../views/main_dock.cpp" line="244"/>
+        <location filename="../views/main_dock.cpp" line="280"/>
+        <location filename="../views/main_dock.cpp" line="317"/>
+        <location filename="../views/main_dock.cpp" line="352"/>
+        <location filename="../views/main_dock.cpp" line="387"/>
+        <location filename="../views/main_dock.cpp" line="422"/>
+        <location filename="../views/main_dock.cpp" line="457"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="207"/>
-        <location filename="../views/main_dock.cpp" line="243"/>
+        <location filename="../views/main_dock.cpp" line="208"/>
+        <location filename="../views/main_dock.cpp" line="244"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="212"/>
-        <location filename="../views/main_dock.cpp" line="248"/>
-        <location filename="../views/main_dock.cpp" line="285"/>
-        <location filename="../views/main_dock.cpp" line="321"/>
-        <location filename="../views/main_dock.cpp" line="356"/>
-        <location filename="../views/main_dock.cpp" line="391"/>
-        <location filename="../views/main_dock.cpp" line="426"/>
-        <location filename="../views/main_dock.cpp" line="461"/>
-        <location filename="../views/main_dock.cpp" line="520"/>
-        <location filename="../views/main_dock.cpp" line="547"/>
+        <location filename="../views/main_dock.cpp" line="213"/>
+        <location filename="../views/main_dock.cpp" line="249"/>
+        <location filename="../views/main_dock.cpp" line="286"/>
+        <location filename="../views/main_dock.cpp" line="322"/>
+        <location filename="../views/main_dock.cpp" line="357"/>
+        <location filename="../views/main_dock.cpp" line="392"/>
+        <location filename="../views/main_dock.cpp" line="427"/>
+        <location filename="../views/main_dock.cpp" line="462"/>
+        <location filename="../views/main_dock.cpp" line="521"/>
+        <location filename="../views/main_dock.cpp" line="548"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="279"/>
-        <location filename="../views/main_dock.cpp" line="316"/>
-        <location filename="../views/main_dock.cpp" line="351"/>
-        <location filename="../views/main_dock.cpp" line="386"/>
-        <location filename="../views/main_dock.cpp" line="421"/>
-        <location filename="../views/main_dock.cpp" line="456"/>
+        <location filename="../views/main_dock.cpp" line="280"/>
+        <location filename="../views/main_dock.cpp" line="317"/>
+        <location filename="../views/main_dock.cpp" line="352"/>
+        <location filename="../views/main_dock.cpp" line="387"/>
+        <location filename="../views/main_dock.cpp" line="422"/>
+        <location filename="../views/main_dock.cpp" line="457"/>
         <source>Fail to get core component.</source>
         <translation>获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="521"/>
+        <location filename="../views/main_dock.cpp" line="522"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
@@ -1002,9 +1002,13 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SplashScreen</name>
     <message>
-        <location filename="../views/splash_screen.cpp" line="24"/>
         <source>Render Toolbox 2022</source>
-        <translation type="unfinished">小碎花渲染器 2022</translation>
+        <translation type="obsolete">小碎花渲染器 2022</translation>
+    </message>
+    <message>
+        <location filename="../views/splash_screen.cpp" line="24"/>
+        <source>AnimatorGo Lite 2022</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="29"/>

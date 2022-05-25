@@ -19,7 +19,7 @@ namespace unreal
 #ifdef _WINDOWS_
 		char path[MAX_PATH];
 		if (SHGetFolderPathA(NULL, CSIDL_PROFILE, NULL, 0, path) == S_OK)
-			this->rootPath = std::filesystem::path(path).append(".flower").string();
+			this->rootPath = std::filesystem::path(path).append(".animator").string();
 		else
 			this->rootPath = "../../system";
 

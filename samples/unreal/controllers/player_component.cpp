@@ -73,7 +73,7 @@ namespace unreal
 
 		this->timer_.reset();
 
-		this->sendMessage("flower:player:play");
+		this->sendMessage("editor:player:play");
 	}
 
 	void
@@ -121,7 +121,7 @@ namespace unreal
 			}
 		}
 
-		this->sendMessage("flower:player:pause");
+		this->sendMessage("editor:player:pause");
 	}
 
 	void
@@ -150,7 +150,7 @@ namespace unreal
 
 		this->timer_.reset();
 
-		this->sendMessage("flower:player:play");
+		this->sendMessage("editor:player:play");
 	}
 
 	void
@@ -360,7 +360,7 @@ namespace unreal
 		if (camera)
 			this->updateDofTarget();
 
-		this->sendMessage("flower:player:sample");
+		this->sendMessage("editor:player:sample");
 	}
 
 	void
@@ -499,7 +499,7 @@ namespace unreal
 			physicsFeature->setFixedTimeStep(this->getModel()->previewTimeStep);
 		}
 
-		this->addMessageListener("flower:project:open", [this](const std::any& data)
+		this->addMessageListener("editor:project:open", [this](const std::any& data)
 		{
 			auto& model = this->getModel();
 			model->timeLength = this->timeLength();
@@ -532,7 +532,7 @@ namespace unreal
 			{
 				needAnimationEvaluate_ = true;
 
-				this->sendMessage("flower:player:record");
+				this->sendMessage("editor:player:record");
 				this->timer_.update();
 
 				auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));
@@ -547,7 +547,7 @@ namespace unreal
 		{
 			needAnimationEvaluate_ = true;
 
-			this->sendMessage("flower:player:record");
+			this->sendMessage("editor:player:record");
 			this->timer_.update();
 
 			auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));

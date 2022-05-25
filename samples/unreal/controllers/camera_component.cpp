@@ -106,12 +106,12 @@ namespace unreal
 			this->update();
 		};
 
-		this->addMessageListener("flower:project:open", [this](const std::any& data)
+		this->addMessageListener("editor:project:open", [this](const std::any& data)
 		{
 			this->update();
 		});
 
-		this->addMessageListener("flower:player:sample", [this](const std::any& data)
+		this->addMessageListener("editor:player:sample", [this](const std::any& data)
 		{
 			this->update();
 		});
