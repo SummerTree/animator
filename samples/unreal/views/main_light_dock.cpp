@@ -31,10 +31,12 @@ namespace unreal
 
 		colorDialog_ = new ColorDialog();
 		colorDialog_->setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
+		colorDialog_->installEventFilter(this);
 
 		resetButton_ = new QToolButton();
 		resetButton_->setText(tr("Reset"));
 		resetButton_->setContentsMargins(0, 0, 10, 0);
+		resetButton_->installEventFilter(this);
 
 		labelIntensity_ = new QLabel();
 		labelIntensity_->setText(tr("Intensity"));
@@ -47,6 +49,7 @@ namespace unreal
 		editIntensity_->setValue(profile->mainLightModule->intensity);
 		editIntensity_->setDecimals(1);
 		editIntensity_->setSuffix(u8"cd");
+		editIntensity_->installEventFilter(this);
 
 		sliderIntensity_ = new QSlider();
 		sliderIntensity_->setObjectName("Intensity");
@@ -55,6 +58,7 @@ namespace unreal
 		sliderIntensity_->setMaximum(100);
 		sliderIntensity_->setValue(profile->mainLightModule->intensity * 10.0f);
 		sliderIntensity_->setFixedWidth(250);
+		sliderIntensity_->installEventFilter(this);
 
 		layoutIntensity_ = new QHBoxLayout();
 		layoutIntensity_->addWidget(labelIntensity_, 0, Qt::AlignLeft);
@@ -71,6 +75,7 @@ namespace unreal
 		editSize_->setAlignment(Qt::AlignRight);
 		editSize_->setValue(profile->mainLightModule->size);
 		editSize_->setDecimals(1);
+		editSize_->installEventFilter(this);
 
 		sliderSize_ = new QSlider();
 		sliderSize_->setObjectName("Size");
@@ -79,6 +84,7 @@ namespace unreal
 		sliderSize_->setMaximum(100);
 		sliderSize_->setValue(profile->mainLightModule->size * 100.0f);
 		sliderSize_->setFixedWidth(250);
+		sliderSize_->installEventFilter(this);
 
 		layoutSize_ = new QHBoxLayout();
 		layoutSize_->addWidget(labelSize_, 0, Qt::AlignLeft);
@@ -96,6 +102,7 @@ namespace unreal
 		editRotationX_->setValue(profile->mainLightModule->rotation.getValue().x);
 		editRotationX_->setDecimals(1);
 		editRotationX_->setSuffix(u8"°");
+		editRotationX_->installEventFilter(this);
 
 		sliderRotationX_ = new QSlider();
 		sliderRotationX_->setObjectName("RotationX");
@@ -104,6 +111,7 @@ namespace unreal
 		sliderRotationX_->setMaximum(360);
 		sliderRotationX_->setValue(profile->mainLightModule->rotation.getValue().x);
 		sliderRotationX_->setFixedWidth(250);
+		sliderRotationX_->installEventFilter(this);
 
 		layoutRotationX_ = new QHBoxLayout();
 		layoutRotationX_->addWidget(labelRotationX_, 0, Qt::AlignLeft);
@@ -121,6 +129,7 @@ namespace unreal
 		editRotationY_->setValue(profile->mainLightModule->rotation.getValue().y);
 		editRotationY_->setDecimals(1);
 		editRotationY_->setSuffix(u8"°");
+		editRotationY_->installEventFilter(this);
 
 		sliderRotationY_ = new QSlider();
 		sliderRotationY_->setObjectName("RotationY");
@@ -129,6 +138,7 @@ namespace unreal
 		sliderRotationY_->setMaximum(360);
 		sliderRotationY_->setValue(profile->mainLightModule->rotation.getValue().y);
 		sliderRotationY_->setFixedWidth(250);
+		sliderRotationY_->installEventFilter(this);
 
 		layoutRotationY_ = new QHBoxLayout();
 		layoutRotationY_->addWidget(labelRotationY_, 0, Qt::AlignLeft);
@@ -146,6 +156,7 @@ namespace unreal
 		editRotationZ_->setValue(profile->mainLightModule->rotation.getValue().z);
 		editRotationZ_->setDecimals(1);
 		editRotationZ_->setSuffix(u8"°");
+		editRotationZ_->installEventFilter(this);
 
 		sliderRotationZ_ = new QSlider();
 		sliderRotationZ_->setObjectName("RotationZ");
@@ -154,6 +165,7 @@ namespace unreal
 		sliderRotationZ_->setMaximum(360);
 		sliderRotationZ_->setValue(profile->mainLightModule->rotation.getValue().z);
 		sliderRotationZ_->setFixedWidth(250);
+		sliderRotationZ_->installEventFilter(this);
 
 		layoutRotationZ_ = new QHBoxLayout();
 		layoutRotationZ_->addWidget(labelRotationZ_, 0, Qt::AlignLeft);
@@ -236,10 +248,7 @@ namespace unreal
 	void
 	MainLightDock::resetEvent()
 	{
-		profile_->mainLightModule->size = 0.1f;
-		profile_->mainLightModule->intensity = 1.0f;
-		profile_->mainLightModule->color = octoon::math::float3::One;
-		profile_->mainLightModule->rotation = octoon::math::float3::Zero;
+		profile_->mainLightModule->reset();
 	}
 
 	void
@@ -328,5 +337,19 @@ namespace unreal
 			event->ignore();
 		else
 			event->accept();
+	}
+
+	bool
+	MainLightDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }

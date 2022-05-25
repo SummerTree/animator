@@ -268,11 +268,13 @@ namespace unreal
 	{
 		this->setWindowTitle(tr("Environment Light"));
 		this->setObjectName("EnvironmentDock");
+		this->installEventFilter(this);
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setObjectName("Preview");
 		this->previewButton_->setIconSize(QSize(260, 130));
 		this->previewButton_->setToolTip(tr("Click the select a Preview button to locate each HDRi on your computer"));
+		this->previewButton_->installEventFilter(this);
 
 		this->previewName_ = new QLabel;
 		this->previewName_->setObjectName("PreviewName");
@@ -283,19 +285,23 @@ namespace unreal
 		this->colorButton = new QToolButton;
 		this->colorButton->setObjectName("Color");
 		this->colorButton->setIconSize(QSize(50, 30));
+		this->colorButton->installEventFilter(this);
 		
 		this->thumbnail = new QToolButton;
 		this->thumbnail->setObjectName("Thumbnail ");
 		this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 		this->thumbnail->setIconSize(QSize(48, 48));
 		this->thumbnail->setToolTip(tr("Open"));
+		this->thumbnail->installEventFilter(this);
 
 		this->thumbnailToggle = new QCheckBox;
 		this->thumbnailToggle->setText(tr("Thumbnail"));
+		this->thumbnailToggle->installEventFilter(this);
 
 		this->backgroundToggle = new QCheckBox;
 		this->backgroundToggle->setText(tr("Toggle Background"));
 		this->backgroundToggle->setChecked(true);
+		this->backgroundToggle->installEventFilter(this);
 		
 		this->thumbnailPath = new QLabel;
 		this->thumbnailPath->setMinimumSize(QSize(160, 20));
@@ -309,6 +315,7 @@ namespace unreal
 		this->intensitySlider->setMaximum(100);
 		this->intensitySlider->setValue(0);
 		this->intensitySlider->setMinimumWidth(270);
+		this->intensitySlider->installEventFilter(this);
 
 		this->intensitySpinBox = new DoubleSpinBox;
 		this->intensitySpinBox->setFixedWidth(50);
@@ -317,6 +324,7 @@ namespace unreal
 		this->intensitySpinBox->setAlignment(Qt::AlignRight);
 		this->intensitySpinBox->setValue(0.0f);
 		this->intensitySpinBox->setDecimals(1);
+		this->intensitySpinBox->installEventFilter(this);
 
 		this->horizontalRotationLabel_ = new QLabel;
 		this->horizontalRotationLabel_->setText(tr("Horizontal Rotation"));
@@ -327,6 +335,7 @@ namespace unreal
 		this->horizontalRotationSlider->setMaximum(100);
 		this->horizontalRotationSlider->setValue(0);
 		this->horizontalRotationSlider->setMinimumWidth(270);
+		this->horizontalRotationSlider->installEventFilter(this);
 
 		this->horizontalRotationSpinBox = new DoubleSpinBox;
 		this->horizontalRotationSpinBox->setFixedWidth(50);
@@ -335,6 +344,7 @@ namespace unreal
 		this->horizontalRotationSpinBox->setSingleStep(0.03f);
 		this->horizontalRotationSpinBox->setAlignment(Qt::AlignRight);
 		this->horizontalRotationSpinBox->setValue(0.0f);
+		this->horizontalRotationSpinBox->installEventFilter(this);
 
 		this->verticalRotationLabel_ = new QLabel;
 		this->verticalRotationLabel_->setText(tr("Vertical Rotation"));
@@ -345,6 +355,7 @@ namespace unreal
 		this->verticalRotationSlider->setMaximum(100);
 		this->verticalRotationSlider->setValue(0);
 		this->verticalRotationSlider->setMinimumWidth(270);
+		this->verticalRotationSlider->installEventFilter(this);
 
 		this->verticalRotationSpinBox = new DoubleSpinBox;
 		this->verticalRotationSpinBox->setFixedWidth(50);
@@ -353,9 +364,11 @@ namespace unreal
 		this->verticalRotationSpinBox->setSingleStep(0.03f);
 		this->verticalRotationSpinBox->setAlignment(Qt::AlignRight);
 		this->verticalRotationSpinBox->setValue(0.0f);
+		this->verticalRotationSpinBox->installEventFilter(this);
 
 		this->resetButton_ = new QToolButton();
 		this->resetButton_->setText(tr("Reset"));
+		this->resetButton_->installEventFilter(this);
 	
 		auto thumbnailTitleLayout = new QHBoxLayout();
 		thumbnailTitleLayout->addWidget(thumbnailToggle, 0, Qt::AlignLeft);
@@ -733,13 +746,7 @@ namespace unreal
 	void
 	EnvironmentDock::resetEvent()
 	{
-		auto c = QColor::fromRgb(229, 229, 235);
-
-		this->profile_->environmentLightModule->intensity = 1.0f;
-		this->profile_->environmentLightModule->offset = octoon::math::float2::Zero;
-		this->profile_->environmentLightModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
-		this->profile_->environmentLightModule->texture = nullptr;
-		this->profile_->environmentLightModule->showBackground = true;
+		this->profile_->environmentLightModule->reset();
 	}
 
 	void
@@ -763,5 +770,19 @@ namespace unreal
 			event->ignore();
 		else
 			event->accept();
+	}
+
+	bool
+	EnvironmentDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }

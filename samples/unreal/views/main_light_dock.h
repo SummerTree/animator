@@ -17,10 +17,12 @@ namespace unreal
 		MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<unreal::UnrealProfile>& profile);
 		~MainLightDock();
 
-		virtual void showEvent(QShowEvent* event) override;
-		virtual void resizeEvent(QResizeEvent* event) override;
-		virtual void closeEvent(QCloseEvent* event) override;
-		virtual void paintEvent(QPaintEvent* e) noexcept override;
+		void showEvent(QShowEvent* event) override;
+		void resizeEvent(QResizeEvent* event) override;
+		void closeEvent(QCloseEvent* event) override;
+		void paintEvent(QPaintEvent* e) noexcept override;
+
+		bool eventFilter(QObject* watched, QEvent* event);
 
 	public Q_SLOTS:
 		void currentColorChanged(QColor);

@@ -109,68 +109,68 @@
         <translation>环境光</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="275"/>
+        <location filename="../views/environment_dock.cpp" line="276"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation>单击预览按钮以显示所有可替换的HDR图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="279"/>
+        <location filename="../views/environment_dock.cpp" line="281"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="291"/>
+        <location filename="../views/environment_dock.cpp" line="294"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="294"/>
+        <location filename="../views/environment_dock.cpp" line="298"/>
         <source>Thumbnail</source>
         <translation>环境贴图</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="297"/>
+        <location filename="../views/environment_dock.cpp" line="302"/>
         <source>Toggle Background</source>
         <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="304"/>
+        <location filename="../views/environment_dock.cpp" line="310"/>
         <source>Intensity</source>
         <translation>亮度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="322"/>
+        <location filename="../views/environment_dock.cpp" line="330"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="340"/>
+        <location filename="../views/environment_dock.cpp" line="350"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="358"/>
+        <location filename="../views/environment_dock.cpp" line="370"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="408"/>
+        <location filename="../views/environment_dock.cpp" line="421"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="598"/>
-        <location filename="../views/environment_dock.cpp" line="653"/>
+        <location filename="../views/environment_dock.cpp" line="611"/>
+        <location filename="../views/environment_dock.cpp" line="666"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="612"/>
+        <location filename="../views/environment_dock.cpp" line="625"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="612"/>
+        <location filename="../views/environment_dock.cpp" line="625"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
@@ -460,32 +460,32 @@ $20 (Original cost $40)</source>
         <translation>主光源</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="36"/>
+        <location filename="../views/main_light_dock.cpp" line="37"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="40"/>
+        <location filename="../views/main_light_dock.cpp" line="42"/>
         <source>Intensity</source>
         <translation>光照强度</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="65"/>
+        <location filename="../views/main_light_dock.cpp" line="69"/>
         <source>Size</source>
         <translation>光源大小</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="89"/>
+        <location filename="../views/main_light_dock.cpp" line="95"/>
         <source>Rotation X</source>
         <translation>旋转X轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="114"/>
+        <location filename="../views/main_light_dock.cpp" line="122"/>
         <source>Rotation Y</source>
         <translation>旋转Y轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="139"/>
+        <location filename="../views/main_light_dock.cpp" line="149"/>
         <source>Rotation Z</source>
         <translation>旋转Z轴</translation>
     </message>

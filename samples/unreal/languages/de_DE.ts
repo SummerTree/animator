@@ -109,68 +109,68 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="275"/>
+        <location filename="../views/environment_dock.cpp" line="276"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="279"/>
+        <location filename="../views/environment_dock.cpp" line="281"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="291"/>
+        <location filename="../views/environment_dock.cpp" line="294"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="294"/>
+        <location filename="../views/environment_dock.cpp" line="298"/>
         <source>Thumbnail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="297"/>
+        <location filename="../views/environment_dock.cpp" line="302"/>
         <source>Toggle Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="304"/>
+        <location filename="../views/environment_dock.cpp" line="310"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="322"/>
+        <location filename="../views/environment_dock.cpp" line="330"/>
         <source>Horizontal Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="340"/>
+        <location filename="../views/environment_dock.cpp" line="350"/>
         <source>Vertical Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="358"/>
+        <location filename="../views/environment_dock.cpp" line="370"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="408"/>
+        <location filename="../views/environment_dock.cpp" line="421"/>
         <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="598"/>
-        <location filename="../views/environment_dock.cpp" line="653"/>
+        <location filename="../views/environment_dock.cpp" line="611"/>
+        <location filename="../views/environment_dock.cpp" line="666"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="612"/>
+        <location filename="../views/environment_dock.cpp" line="625"/>
         <source>Import Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="612"/>
+        <location filename="../views/environment_dock.cpp" line="625"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -460,32 +460,32 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="36"/>
+        <location filename="../views/main_light_dock.cpp" line="37"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="40"/>
+        <location filename="../views/main_light_dock.cpp" line="42"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="65"/>
+        <location filename="../views/main_light_dock.cpp" line="69"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="89"/>
+        <location filename="../views/main_light_dock.cpp" line="95"/>
         <source>Rotation X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="114"/>
+        <location filename="../views/main_light_dock.cpp" line="122"/>
         <source>Rotation Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="139"/>
+        <location filename="../views/main_light_dock.cpp" line="149"/>
         <source>Rotation Z</source>
         <translation type="unfinished"></translation>
     </message>

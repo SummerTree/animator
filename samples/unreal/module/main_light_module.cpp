@@ -14,10 +14,11 @@ namespace unreal
 	void
 	MainLightModule::reset() noexcept
 	{
-		this->enable = false;
+		this->enable = true;
 		this->size = 0.1f;
 		this->intensity = 2.0f;
 		this->color = octoon::math::float3(0.90196078f, 0.90196078f, 0.925490196f);
+		this->rotation = octoon::math::float3::Zero;
 	}
 
 	void 

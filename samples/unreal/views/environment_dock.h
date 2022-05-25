@@ -63,6 +63,8 @@ namespace unreal
 		void showEvent(QShowEvent* event) override;
 		void closeEvent(QCloseEvent* event) override;
 
+		bool eventFilter(QObject* watched, QEvent* event);
+
 	public Q_SLOTS:
 		void previewClickEvent(bool checked);
 		void thumbnailClickEvent();
