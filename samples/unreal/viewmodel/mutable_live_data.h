@@ -23,6 +23,11 @@ namespace unreal
 			dispatchEvents_.connect(listener);
 		}
 
+		void disconnect() noexcept
+		{
+			dispatchEvents_ = octoon::runtime::signal<void(const T&)>();
+		}
+
 		void postValue()
 		{
 			dispatchEvents_.call_all_slots(value_);

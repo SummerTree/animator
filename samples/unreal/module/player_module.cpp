@@ -50,4 +50,23 @@ namespace unreal
 		writer["playTimeStep"] = this->playTimeStep.getValue();
 		writer["normalTimeStep"] = this->previewTimeStep.getValue();
 	}
+
+	void
+	PlayerModule::disconnect() noexcept
+	{
+		this->enable.disconnect();
+		this->finish.disconnect();
+		this->isPlaying.disconnect();
+		this->spp.disconnect();
+		this->sppCount.disconnect();
+		this->recordFps.disconnect();
+		this->playTimeStep.disconnect();
+		this->previewTimeStep.disconnect();
+		this->endFrame.disconnect();
+		this->startFrame.disconnect();
+		this->timeLength.disconnect();
+		this->curTime.disconnect();
+		this->takeupTime.disconnect();
+		this->estimatedTime.disconnect();
+	}
 }

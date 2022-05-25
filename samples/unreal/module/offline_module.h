@@ -16,6 +16,8 @@ namespace unreal
 		virtual void load(octoon::runtime::json& reader) noexcept override;
 		virtual void save(octoon::runtime::json& reader) noexcept override;
 
+		virtual void disconnect() noexcept;
+
 	private:
 		OfflineModule(const OfflineModule&) = delete;
 		OfflineModule& operator=(const OfflineModule&) = delete;

@@ -59,11 +59,11 @@ namespace unreal
 
 		this->addWidget(mainWidget);
 
-		behaviour->addMessageListener("flower:player:finish", [this](const std::any&) {
-			this->repaint();
-		});
-
 		profile->playerModule->isPlaying += [this](bool value) {
+			this->repaint();
+		};
+
+		profile->playerModule->finish += [this](bool value) {
 			this->repaint();
 		};
 

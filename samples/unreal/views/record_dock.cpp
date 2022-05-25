@@ -279,10 +279,24 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		behaviour->addMessageListener("flower:player:finish", [this](const std::any&)
+		profile_->playerModule->finish += [this](bool value)
 		{
-			recordButton_->setText(tr("Start Render"));
-		});
+			if (profile_->recordModule->active)
+			{
+				if (value)
+					recordButton_->setText(tr("Start Render"));
+				else
+					recordButton_->setText(tr("Stop Render"));
+			}
+		};
+
+		profile_->recordModule->active += [this](bool value)
+		{
+			if (value)
+				recordButton_->setText(tr("Stop Render"));
+			else
+				recordButton_->setText(tr("Start Render"));
+		};
 
 		connect(select1_, SIGNAL(toggled(bool)), this, SLOT(select1Event(bool)));
 		connect(select2_, SIGNAL(toggled(bool)), this, SLOT(select2Event(bool)));
@@ -422,19 +436,12 @@ namespace unreal
 
 				if (!fileName.isEmpty())
 				{
-					if (behaviour->startRecord(fileName.toUtf8().data()))
-					{
-						recordButton_->setText(tr("Stop Render"));
-					}
-					else
-					{
+					if (!behaviour->startRecord(fileName.toUtf8().data()))
 						QMessageBox::information(this, tr("Error"), tr("Failed to create file"));
-					}
 				}
 			}
 			else
 			{
-				recordButton_->setText(tr("Start Render"));
 				behaviour->stopRecord();
 			}
 		}

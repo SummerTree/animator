@@ -21,6 +21,8 @@ namespace unreal
 		virtual void load(octoon::runtime::json& reader) noexcept(false) = 0;
 		virtual void save(octoon::runtime::json& reader) noexcept(false) = 0;
 
+		virtual void disconnect() noexcept;
+
 	private:
 		UnrealModule(const UnrealModule&) = delete;
 		UnrealModule& operator=(const UnrealModule&) = delete;

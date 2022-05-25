@@ -44,4 +44,16 @@ namespace unreal
 		reader["recordSolverIterationCounts"] = this->recordSolverIterationCounts.getValue();
 		reader["previewSolverIterationCounts"] = this->previewSolverIterationCounts.getValue();
 	}
+
+	void
+	PhysicsModule::disconnect() noexcept
+	{
+		this->enable.disconnect();
+		this->gravity.disconnect();
+		this->gravityScale.disconnect();
+		this->fixedTimeStep.disconnect();
+		this->playSolverIterationCounts.disconnect();
+		this->previewSolverIterationCounts.disconnect();
+		this->recordSolverIterationCounts.disconnect();
+	}
 }

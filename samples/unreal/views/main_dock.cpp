@@ -93,6 +93,8 @@ namespace unreal
 	{
 		timer.stop();
 
+		UnrealProfile::save(QDir::homePath().toStdString() + "/.flower/config.json", *profile_);
+
 		this->saveLayout();
 		this->removeToolBar(toplevelDock_.get());
 		this->removeDockWidget(toolDock_.get());
@@ -129,12 +131,12 @@ namespace unreal
 		if (!appFolder.exists())
 			QDir::root().mkpath(QDir::homePath() + "/.flower");
 
-		UnrealProfile::save(QDir::homePath().toStdString() + "/.flower/config.json", *profile_);
-
 		spdlog::debug("save profile");
 
-		behaviour_.reset();
+		profile_->disconnect();
 		profile_.reset();
+
+		behaviour_.reset();
 		gameApp_.reset();
 
 		spdlog::debug("shutdown");

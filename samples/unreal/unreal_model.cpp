@@ -27,4 +27,10 @@ namespace unreal
 	UnrealModule::onValidate() noexcept
 	{
 	}
+
+	void
+	UnrealModule::disconnect() noexcept
+	{
+		enable.disconnect();
+	}
 }

@@ -65,6 +65,25 @@ namespace unreal
 	{
 	}
 
+	void
+	UnrealProfile::disconnect() noexcept
+	{
+		this->physicsModule->disconnect();
+		this->encodeModule->disconnect();
+		this->playerModule->disconnect();
+		this->fileModule->disconnect();
+		this->entitiesModule->disconnect();
+		this->offlineModule->disconnect();
+		this->recordModule->disconnect();
+		this->markModule->disconnect();
+		this->mainLightModule->disconnect();
+		this->environmentLightModule->disconnect();
+		this->clientModule->disconnect();
+		this->resourceModule->disconnect();
+		this->selectorModule->disconnect();
+		this->gridModule->disconnect();
+	}
+
 	std::unique_ptr<UnrealProfile>
 	UnrealProfile::load(std::string_view path) noexcept(false)
 	{

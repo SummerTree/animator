@@ -31,4 +31,16 @@ namespace unreal
 	EnvironmentModule::save(octoon::runtime::json& writer) noexcept
 	{
 	}
+
+	void
+	EnvironmentModule::disconnect() noexcept
+	{
+		this->enable.disconnect();
+		this->intensity.disconnect();
+		this->showBackground.disconnect();
+		this->useTexture.disconnect();
+		this->texture.disconnect();
+		this->offset.disconnect();
+		this->color.disconnect();
+	}
 }

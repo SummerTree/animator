@@ -28,6 +28,8 @@ namespace unreal
 		UnrealProfile(std::string_view path) noexcept(false);
 		virtual ~UnrealProfile() noexcept;
 
+		void disconnect() noexcept;
+
 		static std::unique_ptr<UnrealProfile> load(std::string_view path) noexcept(false);
 		static void save(std::string_view path, const UnrealProfile& profile) noexcept(false);
 

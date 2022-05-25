@@ -519,7 +519,7 @@ namespace unreal
 		auto color = this->profile_->environmentLightModule->color.getValue();
 		auto c = QColor::fromRgbF(color.x, color.y, color.z);
 
-		if (this->previewImage_ && this->thumbnailToggle->isChecked())
+		if (this->previewImage_ && this->profile_->environmentLightModule->useTexture && this->profile_->environmentLightModule->texture.getValue())
 		{
 			auto srcWidth = this->previewImage_->width();
 			auto srcHeight = this->previewImage_->height();

@@ -405,49 +405,49 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="205"/>
-        <location filename="../views/main_dock.cpp" line="241"/>
-        <location filename="../views/main_dock.cpp" line="277"/>
-        <location filename="../views/main_dock.cpp" line="314"/>
-        <location filename="../views/main_dock.cpp" line="349"/>
-        <location filename="../views/main_dock.cpp" line="384"/>
-        <location filename="../views/main_dock.cpp" line="419"/>
-        <location filename="../views/main_dock.cpp" line="454"/>
+        <location filename="../views/main_dock.cpp" line="207"/>
+        <location filename="../views/main_dock.cpp" line="243"/>
+        <location filename="../views/main_dock.cpp" line="279"/>
+        <location filename="../views/main_dock.cpp" line="316"/>
+        <location filename="../views/main_dock.cpp" line="351"/>
+        <location filename="../views/main_dock.cpp" line="386"/>
+        <location filename="../views/main_dock.cpp" line="421"/>
+        <location filename="../views/main_dock.cpp" line="456"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="205"/>
-        <location filename="../views/main_dock.cpp" line="241"/>
+        <location filename="../views/main_dock.cpp" line="207"/>
+        <location filename="../views/main_dock.cpp" line="243"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="210"/>
-        <location filename="../views/main_dock.cpp" line="246"/>
-        <location filename="../views/main_dock.cpp" line="283"/>
-        <location filename="../views/main_dock.cpp" line="319"/>
-        <location filename="../views/main_dock.cpp" line="354"/>
-        <location filename="../views/main_dock.cpp" line="389"/>
-        <location filename="../views/main_dock.cpp" line="424"/>
-        <location filename="../views/main_dock.cpp" line="459"/>
-        <location filename="../views/main_dock.cpp" line="518"/>
-        <location filename="../views/main_dock.cpp" line="545"/>
+        <location filename="../views/main_dock.cpp" line="212"/>
+        <location filename="../views/main_dock.cpp" line="248"/>
+        <location filename="../views/main_dock.cpp" line="285"/>
+        <location filename="../views/main_dock.cpp" line="321"/>
+        <location filename="../views/main_dock.cpp" line="356"/>
+        <location filename="../views/main_dock.cpp" line="391"/>
+        <location filename="../views/main_dock.cpp" line="426"/>
+        <location filename="../views/main_dock.cpp" line="461"/>
+        <location filename="../views/main_dock.cpp" line="520"/>
+        <location filename="../views/main_dock.cpp" line="547"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="277"/>
-        <location filename="../views/main_dock.cpp" line="314"/>
-        <location filename="../views/main_dock.cpp" line="349"/>
-        <location filename="../views/main_dock.cpp" line="384"/>
-        <location filename="../views/main_dock.cpp" line="419"/>
-        <location filename="../views/main_dock.cpp" line="454"/>
+        <location filename="../views/main_dock.cpp" line="279"/>
+        <location filename="../views/main_dock.cpp" line="316"/>
+        <location filename="../views/main_dock.cpp" line="351"/>
+        <location filename="../views/main_dock.cpp" line="386"/>
+        <location filename="../views/main_dock.cpp" line="421"/>
+        <location filename="../views/main_dock.cpp" line="456"/>
         <source>Fail to get core component.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="519"/>
+        <location filename="../views/main_dock.cpp" line="521"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -842,9 +842,9 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="207"/>
-        <location filename="../views/record_dock.cpp" line="284"/>
-        <location filename="../views/record_dock.cpp" line="437"/>
-        <location filename="../views/record_dock.cpp" line="462"/>
+        <location filename="../views/record_dock.cpp" line="287"/>
+        <location filename="../views/record_dock.cpp" line="296"/>
+        <location filename="../views/record_dock.cpp" line="469"/>
         <source>Start Render</source>
         <translation type="unfinished"></translation>
     </message>
@@ -859,48 +859,49 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="411"/>
+        <location filename="../views/record_dock.cpp" line="425"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="411"/>
+        <location filename="../views/record_dock.cpp" line="425"/>
         <source>Start frame must be less than end frame.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="417"/>
+        <location filename="../views/record_dock.cpp" line="431"/>
         <source>Save Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="417"/>
+        <location filename="../views/record_dock.cpp" line="431"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="419"/>
+        <location filename="../views/record_dock.cpp" line="433"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="419"/>
+        <location filename="../views/record_dock.cpp" line="433"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="427"/>
-        <location filename="../views/record_dock.cpp" line="460"/>
+        <location filename="../views/record_dock.cpp" line="289"/>
+        <location filename="../views/record_dock.cpp" line="298"/>
+        <location filename="../views/record_dock.cpp" line="467"/>
         <source>Stop Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="431"/>
+        <location filename="../views/record_dock.cpp" line="440"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="431"/>
+        <location filename="../views/record_dock.cpp" line="440"/>
         <source>Failed to create file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1003,17 +1004,17 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::StatusBar</name>
     <message>
-        <location filename="../views/status_bar.cpp" line="38"/>
+        <location filename="../views/status_bar.cpp" line="43"/>
         <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/status_bar.cpp" line="40"/>
+        <location filename="../views/status_bar.cpp" line="45"/>
         <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Minute %4 Second</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/status_bar.cpp" line="44"/>
+        <location filename="../views/status_bar.cpp" line="49"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1173,52 +1174,52 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="124"/>
-        <location filename="../views/tool_dock.cpp" line="198"/>
+        <location filename="../views/tool_dock.cpp" line="120"/>
+        <location filename="../views/tool_dock.cpp" line="194"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="124"/>
+        <location filename="../views/tool_dock.cpp" line="120"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="137"/>
+        <location filename="../views/tool_dock.cpp" line="133"/>
         <source>Opening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="137"/>
+        <location filename="../views/tool_dock.cpp" line="133"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="138"/>
+        <location filename="../views/tool_dock.cpp" line="134"/>
         <source>Open Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="172"/>
-        <location filename="../views/tool_dock.cpp" line="217"/>
-        <location filename="../views/tool_dock.cpp" line="271"/>
-        <location filename="../views/tool_dock.cpp" line="303"/>
-        <location filename="../views/tool_dock.cpp" line="328"/>
+        <location filename="../views/tool_dock.cpp" line="168"/>
+        <location filename="../views/tool_dock.cpp" line="213"/>
+        <location filename="../views/tool_dock.cpp" line="267"/>
+        <location filename="../views/tool_dock.cpp" line="299"/>
+        <location filename="../views/tool_dock.cpp" line="324"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="198"/>
+        <location filename="../views/tool_dock.cpp" line="194"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="258"/>
+        <location filename="../views/tool_dock.cpp" line="254"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="258"/>
+        <location filename="../views/tool_dock.cpp" line="254"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>

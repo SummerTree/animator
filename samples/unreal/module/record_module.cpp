@@ -50,4 +50,16 @@ namespace unreal
 		reader["width"] = this->width.getValue();
 		reader["height"] = this->height.getValue();
 	}
+
+	void
+	RecordModule::disconnect() noexcept
+	{
+		this->enable.disconnect();
+		this->width.disconnect();
+		this->height.disconnect();
+		this->hdr.disconnect();
+		this->srgb.disconnect();
+		this->active.disconnect();
+		this->denoise.disconnect();
+	}
 }

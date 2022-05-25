@@ -30,4 +30,11 @@ namespace unreal
 	{
 		writer["bounces"] = this->bounces.getValue();
 	}
+
+	void
+	OfflineModule::disconnect() noexcept
+	{
+		this->enable.disconnect();
+		this->bounces.disconnect();
+	}
 }

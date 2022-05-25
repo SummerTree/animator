@@ -192,9 +192,7 @@ namespace unreal
 	ModelDock::showEvent(QShowEvent* event) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins() + bottomLayout_->contentsMargins();
-		listWidget_->resize(
-			this->width(),
-			mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
+		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
 
 		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour)

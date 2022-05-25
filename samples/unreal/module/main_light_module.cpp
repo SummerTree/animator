@@ -27,6 +27,9 @@ namespace unreal
 		if (reader.find("enable") != reader.end())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
 
+		if (reader.find("size") != reader.end())
+			this->size = reader["size"].get<nlohmann::json::number_float_t>();
+
 		if (reader.find("intensity") != reader.end())
 			this->intensity = reader["intensity"].get<nlohmann::json::number_float_t>();
 
@@ -42,11 +45,22 @@ namespace unreal
 	{
 		writer["enable"] = this->enable.getValue();
 		writer["intensity"] = this->intensity.getValue();
+		writer["size"] = this->size.getValue();
 		writer["color"].push_back(this->color.getValue().x);
 		writer["color"].push_back(this->color.getValue().y);
 		writer["color"].push_back(this->color.getValue().z);
 		writer["rotation"].push_back(this->rotation.getValue().x);
 		writer["rotation"].push_back(this->rotation.getValue().y);
 		writer["rotation"].push_back(this->rotation.getValue().z);
+	}
+
+	void
+	MainLightModule::disconnect() noexcept
+	{
+		this->enable.disconnect();
+		this->size.disconnect();
+		this->intensity.disconnect();
+		this->color.disconnect();
+		this->rotation.disconnect();
 	}
 }

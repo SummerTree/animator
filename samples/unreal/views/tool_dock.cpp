@@ -89,10 +89,6 @@ namespace unreal
 
 		this->setWidget(mainWidget);
 
-		behaviour->addMessageListener("flower:player:finish", [this](const std::any&) {
-			this->repaint();
-		});
-
 		profile->offlineModule->enable += [this](bool value) {
 			this->repaint();
 		};

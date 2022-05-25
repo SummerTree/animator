@@ -21,6 +21,7 @@ namespace unreal
 	{
 		auto& model = this->getModel();
 		model->isPlaying = true;
+		model->finish = false;
 
 		auto& context = this->getContext()->profile;
 
@@ -81,6 +82,7 @@ namespace unreal
 		auto& model = this->getModel();
 		model->isPlaying = false;
 		model->takeupTime = 0;
+		model->finish = false;
 
 		auto& context = this->getContext()->profile;
 
@@ -130,6 +132,7 @@ namespace unreal
 		auto& model = this->getModel();
 		model->isPlaying = true;
 		model->takeupTime = 0;
+		model->finish = false;
 
 		auto& context = this->getContext()->profile;
 
@@ -157,6 +160,7 @@ namespace unreal
 		model->curTime = model->startFrame / 30.0f;
 		model->isPlaying = false;
 		model->takeupTime = 0;
+		model->finish = true;
 
 		auto& context = this->getContext()->profile;
 
@@ -264,8 +268,6 @@ namespace unreal
 				}
 			}
 		}
-
-		this->sendMessage("flower:player:reset");
 	}
 
 	void
@@ -578,7 +580,6 @@ namespace unreal
 		else
 		{
 			this->reset();
-			this->sendMessage("flower:player:finish");
 		}
 	}
 }

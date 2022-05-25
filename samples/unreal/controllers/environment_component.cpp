@@ -80,7 +80,6 @@ namespace unreal
 
 		this->getModel()->offset += [this](const octoon::math::float2& offset)
 		{
-			auto& model = this->getModel();
 			auto& profile = this->getContext()->profile;
 
 			auto environmentLight = profile->entitiesModule->environmentLight;

@@ -27,6 +27,8 @@ namespace unreal
 		}
 
 	private:
+		virtual void onInit() noexcept override;
+
 		virtual void onEnable() noexcept override;
 		virtual void onDisable() noexcept override;
 
