@@ -44,7 +44,7 @@
     <message>
         <location filename="../views/camera_dock.cpp" line="141"/>
         <source>Focal Length (35mmfilm):</source>
-        <translation type="unfinished">等效焦距(35mmfilm)</translation>
+        <translation type="unfinished">等效焦距(35mmfilm)：</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="145"/>
