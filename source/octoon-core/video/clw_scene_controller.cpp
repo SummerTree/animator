@@ -337,7 +337,7 @@ namespace octoon
 			auto film = camera->downcast<FilmCamera>();
 			auto filmSize_ = film->getFilmSize();
 
-			data[0].aperture = film->getAperture();
+			data[0].aperture = film->getAperture() > 0.0f ? 1.0f / film->getAperture() : 0.0f;
 			data[0].focal_length = film->getFocalLength();
 			data[0].focus_distance = film->getFocalDistance();
 			data[0].dim = RadeonRays::float2(filmSize_ * viewport.width / viewport.height, filmSize_);

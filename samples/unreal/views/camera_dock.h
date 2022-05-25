@@ -13,6 +13,7 @@
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qtimer.h>
+#include <qcheckbox.h>
 #include "unreal_behaviour.h"
 #include "spoiler.h"
 #include <octoon/game_object.h>
@@ -46,17 +47,17 @@ namespace unreal
 		void showEvent(QShowEvent* event) override;
 		void closeEvent(QCloseEvent* event) override;
 
+		bool eventFilter(QObject* watched, QEvent* event);
+
 	private Q_SLOTS:
 		void onFovChanged(double);
 		void onFocalLengthChanged(double);
 		void onApertureChanged(double);
 		void onFocusDistanceChanged(double);
+		void dofEvent(int state);
 		void onUpdateTarget();
 		void onLoadAnimation();
 		void onUnloadAnimation();
-
-	private:
-		void updateDefaultSetting();
 
 	public:
 		QLabel* dofInfoLabel_;
@@ -65,7 +66,9 @@ namespace unreal
 		QLabel* focalLengthLabel_;
 		QLabel* focusDistanceName_;
 		QLabel* focusDistanceLabel_;
+		QLabel* dofLabel_;
 
+		QCheckBox* dofButton_;
 		QToolButton* focusTargetButton_;
 		QDoubleSpinBox* fovSpinbox_;
 		QDoubleSpinBox* apertureSpinbox_;

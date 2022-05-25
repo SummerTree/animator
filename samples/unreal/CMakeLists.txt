@@ -26,6 +26,8 @@ SOURCE_GROUP("launcher" FILES ${MAIN_LIST})
 SET(MODULES_LIST
 	${SOURCE_PATH}/module/file_module.h
 	${SOURCE_PATH}/module/file_module.cpp
+	${SOURCE_PATH}/module/camera_module.h
+	${SOURCE_PATH}/module/camera_module.cpp
 	${SOURCE_PATH}/module/main_light_module.h
 	${SOURCE_PATH}/module/main_light_module.cpp
 	${SOURCE_PATH}/module/environment_module.h
@@ -115,6 +117,8 @@ SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/hdri_component.cpp
 	${SOURCE_PATH}/controllers/model_component.h
 	${SOURCE_PATH}/controllers/model_component.cpp
+	${SOURCE_PATH}/controllers/camera_component.h
+	${SOURCE_PATH}/controllers/camera_component.cpp
 	${SOURCE_PATH}/controllers/motion_component.h
 	${SOURCE_PATH}/controllers/motion_component.cpp
 	${SOURCE_PATH}/controllers/player_component.h

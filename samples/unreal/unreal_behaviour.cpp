@@ -98,6 +98,7 @@ namespace unreal
 		entitiesComponent_ = std::make_unique<EntitiesComponent>();
 		mainLightComponent_ = std::make_unique<MainLightComponent>();
 		environmentComponent_ = std::make_unique<EnvironmentComponent>();
+		cameraComponent_ = std::make_unique<CameraComponent>();
 		offlineComponent_ = std::make_unique<OfflineComponent>();
 		playerComponent_ = std::make_unique<PlayerComponent>();
 		h264Component_ = std::make_unique<H264Component>();
@@ -117,6 +118,7 @@ namespace unreal
 		entitiesComponent_->init(context_, profile_->entitiesModule);
 		mainLightComponent_->init(context_, profile_->mainLightModule);
 		environmentComponent_->init(context_, profile_->environmentLightModule);
+		cameraComponent_->init(context_, profile_->cameraModule);
 		offlineComponent_->init(context_, profile_->offlineModule);
 		playerComponent_->init(context_, profile_->playerModule);
 		h264Component_->init(context_, profile_->encodeModule);
@@ -135,6 +137,7 @@ namespace unreal
 		this->addComponent(entitiesComponent_.get());
 		this->addComponent(mainLightComponent_.get());
 		this->addComponent(environmentComponent_.get());
+		this->addComponent(cameraComponent_.get());
 		this->addComponent(offlineComponent_.get());
 		this->addComponent(playerComponent_.get());
 		this->addComponent(markComponent_.get());
@@ -181,6 +184,7 @@ namespace unreal
 		entitiesComponent_.reset();
 		mainLightComponent_.reset();
 		environmentComponent_.reset();
+		cameraComponent_.reset();
 		offlineComponent_.reset();
 		playerComponent_.reset();
 		h264Component_.reset();

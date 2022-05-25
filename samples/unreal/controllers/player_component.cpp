@@ -359,6 +359,8 @@ namespace unreal
 
 		if (camera)
 			this->updateDofTarget();
+
+		this->sendMessage("flower:player:sample");
 	}
 
 	void

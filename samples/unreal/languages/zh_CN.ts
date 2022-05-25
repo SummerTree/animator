@@ -22,63 +22,68 @@
         <translation>视野角：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="112"/>
+        <location filename="../views/camera_dock.cpp" line="113"/>
+        <source>Depth Of Filed:</source>
+        <translation>开启景深</translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="126"/>
         <source>Aperture:</source>
         <translation>光圈大小：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="126"/>
+        <location filename="../views/camera_dock.cpp" line="141"/>
         <source>Focal Length:</source>
         <translation>等效焦距</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="130"/>
+        <location filename="../views/camera_dock.cpp" line="145"/>
         <source>Focus Distance:</source>
         <translation>焦点距离：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="152"/>
-        <location filename="../views/camera_dock.cpp" line="249"/>
-        <location filename="../views/camera_dock.cpp" line="298"/>
-        <location filename="../views/camera_dock.cpp" line="406"/>
+        <location filename="../views/camera_dock.cpp" line="169"/>
+        <location filename="../views/camera_dock.cpp" line="299"/>
+        <location filename="../views/camera_dock.cpp" line="342"/>
+        <location filename="../views/camera_dock.cpp" line="439"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="162"/>
-        <location filename="../views/camera_dock.cpp" line="318"/>
+        <location filename="../views/camera_dock.cpp" line="180"/>
+        <location filename="../views/camera_dock.cpp" line="358"/>
         <source>Load Animation</source>
         <translation>加载动画</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="167"/>
+        <location filename="../views/camera_dock.cpp" line="186"/>
         <source>Uninstall</source>
         <translation>卸载</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="241"/>
-        <location filename="../views/camera_dock.cpp" line="402"/>
+        <location filename="../views/camera_dock.cpp" line="291"/>
+        <location filename="../views/camera_dock.cpp" line="435"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="243"/>
-        <location filename="../views/camera_dock.cpp" line="401"/>
+        <location filename="../views/camera_dock.cpp" line="293"/>
+        <location filename="../views/camera_dock.cpp" line="434"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="318"/>
+        <location filename="../views/camera_dock.cpp" line="358"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="344"/>
+        <location filename="../views/camera_dock.cpp" line="384"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="345"/>
+        <location filename="../views/camera_dock.cpp" line="385"/>
         <source>Failed to open the file</source>
         <translation>打开文件失败</translation>
     </message>
@@ -222,7 +227,7 @@
     <message>
         <location filename="../views/environment_dock.cpp" line="245"/>
         <source>Are you sure you want to delete this picture?</source>
-        <translation type="unfinished">确定要删除此图像吗?</translation>
+        <translation>确定要删除此图像吗?</translation>
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="245"/>

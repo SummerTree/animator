@@ -20,6 +20,7 @@ namespace unreal
 		, resourceModule(std::make_shared<ResourceModule>())
 		, selectorModule(std::make_shared<SelectorModule>())
 		, gridModule(std::make_shared<GridModule>())
+		, cameraModule(std::make_shared<CameraModule>())
 	{
 	}
 
@@ -44,6 +45,8 @@ namespace unreal
 				this->offlineModule->load(json["offline"]);
 			if (json.find("canvas") != json.end())
 				this->recordModule->load(json["canvas"]);
+			if (json.find("camera") != json.end())
+				this->cameraModule->load(json["camera"]);
 			if (json.find("mark") != json.end())
 				this->markModule->load(json["mark"]);
 			if (json.find("mainLight") != json.end())
@@ -78,6 +81,7 @@ namespace unreal
 		this->markModule->disconnect();
 		this->mainLightModule->disconnect();
 		this->environmentLightModule->disconnect();
+		this->cameraModule->disconnect();
 		this->clientModule->disconnect();
 		this->resourceModule->disconnect();
 		this->selectorModule->disconnect();
@@ -103,6 +107,7 @@ namespace unreal
 			profile.fileModule->save(json["file"]);
 			profile.entitiesModule->save(json["entities"]);
 			profile.offlineModule->save(json["offline"]);
+			profile.cameraModule->save(json["camera"]);
 			profile.recordModule->save(json["canvas"]);
 			profile.markModule->save(json["mark"]);
 			profile.mainLightModule->save(json["mainLight"]);

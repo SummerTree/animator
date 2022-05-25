@@ -15,6 +15,7 @@
 #include "controllers/light_component.h"
 #include "controllers/environment_component.h"
 #include "controllers/main_light_component.h"
+#include "controllers/camera_component.h"
 #include "controllers/mark_component.h"
 #include "controllers/material_component.h"
 #include "controllers/model_component.h"
@@ -96,6 +97,7 @@ namespace unreal
 		std::unique_ptr<OfflineComponent> offlineComponent_;
 		std::unique_ptr<MainLightComponent> mainLightComponent_;
 		std::unique_ptr<EnvironmentComponent> environmentComponent_;
+		std::unique_ptr<CameraComponent> cameraComponent_;
 		std::unique_ptr<PlayerComponent> playerComponent_;
 		std::unique_ptr<H264Component> h264Component_;
 		std::unique_ptr<H265Component> h265Component_;

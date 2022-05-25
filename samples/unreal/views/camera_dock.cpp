@@ -103,10 +103,24 @@ namespace unreal
 		fovSpinbox_->setFixedWidth(100);
 		fovSpinbox_->setSuffix(u8"°");
 		fovSpinbox_->setDecimals(1);
+		fovSpinbox_->installEventFilter(this);
 
 		dofInfoLabel_ = new QLabel();
 		dofInfoLabel_->setText(u8"* 以下参数开启渲染时生效");
 		dofInfoLabel_->setStyleSheet("color: rgb(100,100,100);");
+
+		dofLabel_ = new QLabel();
+		dofLabel_->setText(tr("Depth Of Filed:"));
+
+		dofButton_ = new QCheckBox();
+		dofButton_->setCheckState(Qt::CheckState::Unchecked);
+		dofButton_->installEventFilter(this);
+
+		auto dofLayout_ = new QHBoxLayout();
+		dofLayout_->addWidget(dofLabel_, 0, Qt::AlignLeft);
+		dofLayout_->addWidget(dofButton_, 0, Qt::AlignLeft);
+		dofLayout_->setSpacing(0);
+		dofLayout_->setContentsMargins(0, 0, 0, 0);
 
 		apertureLabel_ = new QLabel();
 		apertureLabel_->setText(tr("Aperture:"));
@@ -121,6 +135,7 @@ namespace unreal
 		apertureSpinbox_->setFixedWidth(100);
 		apertureSpinbox_->setPrefix(u8"f/");
 		apertureSpinbox_->setDecimals(1);
+		apertureSpinbox_->installEventFilter(this);
 
 		focalLengthLabel_ = new QLabel();
 		focalLengthLabel_->setText(tr("Focal Length:"));
@@ -138,6 +153,7 @@ namespace unreal
 		focalLengthSpinbox_->setAlignment(Qt::AlignRight);
 		focalLengthSpinbox_->setSuffix(u8"mm");
 		focalLengthSpinbox_->setFixedWidth(100);
+		focalLengthSpinbox_->installEventFilter(this);
 
 		focusDistanceSpinbox_ = new DoubleSpinBox();
 		focusDistanceSpinbox_->setMinimum(0);
@@ -147,6 +163,7 @@ namespace unreal
 		focusDistanceSpinbox_->setAlignment(Qt::AlignRight);
 		focusDistanceSpinbox_->setSuffix(u8"m");
 		focusDistanceSpinbox_->setFixedWidth(100);
+		focusDistanceSpinbox_->installEventFilter(this);
 
 		focusDistanceName_ = new QLabel();
 		focusDistanceName_->setText(tr("Target: Empty"));
@@ -156,16 +173,19 @@ namespace unreal
 		focusTargetButton_->setIcon(QIcon(":res/icons/target.png"));
 		focusTargetButton_->setIconSize(QSize(48, 48));
 		focusTargetButton_->setToolTip(u8"拖拽此图标到目标模型可开启自动追焦");
+		focusTargetButton_->installEventFilter(this);
 
 		loadButton_ = new QToolButton();
 		loadButton_->setObjectName("Load");
 		loadButton_->setText(tr("Load Animation"));
 		loadButton_->setContentsMargins(0, 0, 0, 0);
+		loadButton_->installEventFilter(this);
 
 		unloadButton_ = new QToolButton();
 		unloadButton_->setObjectName("Unload");
 		unloadButton_->setText(tr("Uninstall"));
 		unloadButton_->setContentsMargins(0, 0, 0, 0);
+		unloadButton_->installEventFilter(this);
 
 		auto fovLayout = new QHBoxLayout;
 		fovLayout->addWidget(fovLabel_);
@@ -198,6 +218,7 @@ namespace unreal
 		mainLayout_ = new QVBoxLayout;
 		mainLayout_->addLayout(fovLayout);
 		mainLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
+		mainLayout_->addLayout(dofLayout_);
 		mainLayout_->addLayout(apertureLayout);
 		mainLayout_->addLayout(focusLengthLayout);
 		mainLayout_->addLayout(focusDistanceLayout);
@@ -210,10 +231,39 @@ namespace unreal
 		mainWidget_->setLayout(mainLayout_);
 
 		this->setWidget(mainWidget_);
+
+		profile_->cameraModule->fov += [this](float fov)
+		{
+			this->fovSpinbox_->blockSignals(true);
+			this->fovSpinbox_->setValue(fov);
+			this->fovSpinbox_->blockSignals(false);
+		};
+
+		profile_->cameraModule->useDepthOfFiled += [this](bool value)
+		{
+			this->dofButton_->blockSignals(true);
+			this->dofButton_->setChecked(value);
+			this->dofButton_->blockSignals(false);
+		};
+
+		profile_->cameraModule->aperture += [this](float fov)
+		{
+			this->apertureSpinbox_->blockSignals(true);
+			this->apertureSpinbox_->setValue(fov);
+			this->apertureSpinbox_->blockSignals(false);
+		};
+
+		profile_->cameraModule->focalLength += [this](float fov)
+		{
+			this->focalLengthSpinbox_->blockSignals(true);
+			this->focalLengthSpinbox_->setValue(fov);
+			this->focalLengthSpinbox_->blockSignals(false);
+		};
 		
 		connect(focusTargetButton_, SIGNAL(mouseMoveSignal()), this, SLOT(onUpdateTarget()));
 		connect(fovSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFovChanged(double)));
 		connect(apertureSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onApertureChanged(double)));
+		connect(dofButton_, SIGNAL(stateChanged(int)), this, SLOT(dofEvent(int)));
 		connect(focalLengthSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFocalLengthChanged(double)));
 		connect(focusDistanceSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFocusDistanceChanged(double)));
 		connect(loadButton_, SIGNAL(clicked()), this, SLOT(onLoadAnimation()));
@@ -256,34 +306,28 @@ namespace unreal
 	void
 	CameraDock::onFovChanged(double value)
 	{
-		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
-		{
-			profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setFov(value);
-			focalLengthSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalLength());
-		}
-		else
-			this->updateDefaultSetting();
+		profile_->cameraModule->fov = value;
 	}
 
 	void
 	CameraDock::onFocalLengthChanged(double value)
 	{
-		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
-		{
-			profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setFocalLength(value);
-			fovSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFov());
-		}
-		else
-			this->updateDefaultSetting();
+		profile_->cameraModule->focalLength = value;
 	}
 
 	void
 	CameraDock::onApertureChanged(double value)
 	{
-		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
-			profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setAperture(value == 64.f ? 0.0f : 1.0f / value);
+		profile_->cameraModule->aperture = value;
+	}
+
+	void
+	CameraDock::dofEvent(int checked)
+	{
+		if (checked == Qt::CheckState::Checked)
+			profile_->cameraModule->useDepthOfFiled = true;
 		else
-			this->updateDefaultSetting();
+			profile_->cameraModule->useDepthOfFiled = false;
 	}
 
 	void
@@ -301,13 +345,9 @@ namespace unreal
 			}
 			else
 			{
-				profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->setFocusDistance(value);
+				profile_->cameraModule->focusDistance = value;
 			}
 		}
-		else
-		{
-			this->updateDefaultSetting();
-		}		
 	}
 
 	void
@@ -372,47 +412,33 @@ namespace unreal
 	}
 
 	void
-	CameraDock::updateDefaultSetting()
-	{
-		if (profile_->entitiesModule->camera)
-		{
-			auto camera = profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>();
-
-			float fov = camera->getFov();
-			float aperture = camera->getAperture();
-
-			fovSpinbox_->setValue(fov);
-			focalLengthSpinbox_->setValue(camera->getFocalLength());
-			apertureSpinbox_->setValue(aperture == 0.0f ? 64.0f : 1.0f / aperture);
-
-			auto mainCamera = profile_->entitiesModule->camera;
-			if (mainCamera->getComponent<octoon::AnimatorComponent>())
-				unloadButton_->setEnabled(true);
-			else
-				unloadButton_->setEnabled(false);
-
-			if (profile_->playerModule->dofTarget)
-			{
-				auto object = profile_->playerModule->dofTarget->object.lock();
-				auto renderer = object->getComponent<octoon::MeshRendererComponent>();
-				auto material = renderer->getMaterial(profile_->playerModule->dofTarget->mesh);
-
-				focusDistanceSpinbox_->setValue(0);
-				focusDistanceSpinbox_->setSpecialValueText(tr("Auto-measuring"));
-				focusDistanceName_->setText(tr("Target: %1").arg(material->getName().c_str()));
-			}
-			else
-			{
-				focusDistanceName_->setText(tr("Target: Empty"));
-				focusDistanceSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
-			}
-		}
-	}
-
-	void
 	CameraDock::showEvent(QShowEvent* event)
 	{
-		this->updateDefaultSetting();
+		fovSpinbox_->setValue(profile_->cameraModule->fov);
+		focalLengthSpinbox_->setValue(profile_->cameraModule->focalLength);
+		apertureSpinbox_->setValue(profile_->cameraModule->aperture);
+
+		auto mainCamera = profile_->entitiesModule->camera;
+		if (mainCamera->getComponent<octoon::AnimatorComponent>())
+			unloadButton_->setEnabled(true);
+		else
+			unloadButton_->setEnabled(false);
+
+		if (profile_->playerModule->dofTarget)
+		{
+			auto object = profile_->playerModule->dofTarget->object.lock();
+			auto renderer = object->getComponent<octoon::MeshRendererComponent>();
+			auto material = renderer->getMaterial(profile_->playerModule->dofTarget->mesh);
+
+			focusDistanceSpinbox_->setValue(0);
+			focusDistanceSpinbox_->setSpecialValueText(tr("Auto-measuring"));
+			focusDistanceName_->setText(tr("Target: %1").arg(material->getName().c_str()));
+		}
+		else
+		{
+			focusDistanceName_->setText(tr("Target: Empty"));
+			focusDistanceSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
+		}
 	}
 
 	void
@@ -422,5 +448,19 @@ namespace unreal
 			event->ignore();
 		else
 			event->accept();
+	}
+
+	bool
+	CameraDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }
