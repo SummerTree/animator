@@ -25,6 +25,7 @@ namespace unreal
 		~ThumbnailDock() noexcept;
 
 		void closeEvent(QCloseEvent* event);
+		bool eventFilter(QObject* watched, QEvent* event);
 
 	private Q_SLOTS:
 		void recordEvent() noexcept;

@@ -21,54 +21,63 @@ namespace unreal
 		recordButton_->setText(tr("Record"));
 		recordButton_->setToolTip(tr("Open Record Panel"));
 		recordButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		recordButton_->installEventFilter(this);
 
 		materialButton_ = new QToolButton;
 		materialButton_->setObjectName("material");
 		materialButton_->setText(tr("Material"));
 		materialButton_->setToolTip(tr("Open Material Panel"));
 		materialButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		materialButton_->installEventFilter(this);
 
 		modelButton_ = new QToolButton;
 		modelButton_->setObjectName("model");
 		modelButton_->setText(tr("Model"));
 		modelButton_->setToolTip(tr("Open Model Panel"));
 		modelButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		modelButton_->installEventFilter(this);
 
 		lightButton_ = new QToolButton;
 		lightButton_->setObjectName("sun");
 		lightButton_->setText(tr("Light"));
 		lightButton_->setToolTip(tr("Open Light Panel"));
 		lightButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		lightButton_->installEventFilter(this);
 
 		sunButton_ = new QToolButton;
 		sunButton_->setObjectName("sun");
 		sunButton_->setText(tr("Main Light"));
 		sunButton_->setToolTip(tr("Open Main Light Panel"));
 		sunButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		sunButton_->installEventFilter(this);
 		
 		environmentButton_ = new QToolButton;
 		environmentButton_->setObjectName("environment");
 		environmentButton_->setText(tr("Environment Light"));
 		environmentButton_->setToolTip(tr("Open Environment Light Panel"));
 		environmentButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		environmentButton_->installEventFilter(this);
 
 		cameraButton_ = new QToolButton;
 		cameraButton_->setObjectName("camera");
 		cameraButton_->setText(tr("Camera"));
 		cameraButton_->setToolTip(tr("Open Camera Panel"));
 		cameraButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		cameraButton_->installEventFilter(this);
 
 		settingsButton_ = new QToolButton;
 		settingsButton_->setObjectName("setting");
 		settingsButton_->setText(tr("Settings"));
 		settingsButton_->setToolTip(tr("Settings"));
 		settingsButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		settingsButton_->installEventFilter(this);
 
 		motionButton_ = new QToolButton;
 		motionButton_->setObjectName("motion");
 		motionButton_->setText(tr("Motion"));
 		motionButton_->setToolTip(tr("Open Motion Panel"));
 		motionButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		motionButton_->installEventFilter(this);
 
 		auto layout = new QVBoxLayout;
 		layout->addWidget(materialButton_, 0, Qt::AlignCenter);
@@ -118,15 +127,6 @@ namespace unreal
 
 	ThumbnailDock::~ThumbnailDock() noexcept
 	{
-	}
-
-	void
-	ThumbnailDock::closeEvent(QCloseEvent* event)
-	{
-		if (profile_->playerModule->isPlaying)
-			event->ignore();
-		else
-			event->accept();
 	}
 
 	void
@@ -180,10 +180,30 @@ namespace unreal
 	void
 	ThumbnailDock::settingsEvent() noexcept
 	{
-		if (!profile_->playerModule->isPlaying)
+		SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<UnrealBehaviour>());
+		window->show();
+	}
+
+	void
+	ThumbnailDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
+	}
+
+	bool
+	ThumbnailDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
 		{
-			SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<UnrealBehaviour>());
-			window->show();
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
 		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }

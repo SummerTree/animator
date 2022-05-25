@@ -23,6 +23,8 @@ namespace unreal
 		ToolDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<UnrealProfile> profile) noexcept;
 		~ToolDock() noexcept;
 
+		bool eventFilter(QObject* watched, QEvent* event);
+
 	private Q_SLOTS:
 		void importEvent() noexcept;
 		void shotEvent() noexcept;

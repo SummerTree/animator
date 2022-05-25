@@ -26,8 +26,6 @@ namespace unreal
 		EncodeModule() noexcept;
 		virtual ~EncodeModule() noexcept;
 
-		void setVideoQuality(VideoQuality quality);
-
 	public:
 		virtual void reset() noexcept override;
 

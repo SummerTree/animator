@@ -30,30 +30,35 @@ namespace unreal
 		importButton_->setText(tr("Import"));
 		importButton_->setToolTip(tr("Import Resource File(.pmm, .mdl)"));
 		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		importButton_->installEventFilter(this);
 
 		audioButton_ = new QToolButton;
 		audioButton_->setObjectName("audio");
 		audioButton_->setText(tr("Music"));
 		audioButton_->setToolTip(tr("Set Background Audio File"));
 		audioButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		audioButton_->installEventFilter(this);
 
 		shotButton_ = new QToolButton;
 		shotButton_->setObjectName("shot");
 		shotButton_->setText(tr("Screenshot"));
 		shotButton_->setToolTip(tr("Denoising Screenshot"));
 		shotButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		shotButton_->installEventFilter(this);
 
 		gpuButton_ = new QToolButton;
 		gpuButton_->setObjectName("gpu");
 		gpuButton_->setText(tr("Render"));
 		gpuButton_->setToolTip(tr("Enable High Quality Rendering"));
 		gpuButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		gpuButton_->installEventFilter(this);
 
 		cleanupButton_ = new QToolButton;
 		cleanupButton_->setObjectName("cleanup");
 		cleanupButton_->setText(tr("Cleanup"));
 		cleanupButton_->setToolTip(tr("Cleanup Scene"));
 		cleanupButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		cleanupButton_->installEventFilter(this);
 
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
@@ -178,6 +183,7 @@ namespace unreal
 	ToolDock::audioEvent() noexcept
 	{
 		spdlog::debug("Entered audioEvent");
+
 		auto audioSignal = [this](bool enable) -> bool
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
@@ -243,10 +249,11 @@ namespace unreal
 	void
 	ToolDock::shotEvent() noexcept
 	{
-		spdlog::debug("Entered shotEvent");
 		try
 		{
-			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
+			spdlog::debug("Entered shotEvent");
+
+			if (behaviour_)
 			{
 				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image"), "", tr("PNG Files (*.png)"));
 				if (!fileName.isEmpty())
@@ -255,6 +262,8 @@ namespace unreal
 					behaviour->renderPicture(fileName.toUtf8().data());
 				}
 			}
+
+			spdlog::debug("Exited shotEvent");
 		}
 		catch (const std::exception& e)
 		{
@@ -266,76 +275,52 @@ namespace unreal
 
 			msg.exec();
 		}
-		spdlog::debug("Exited shotEvent");
 	}
 
 	void
 	ToolDock::gpuEvent() noexcept
 	{
-		spdlog::debug("Entered gpuEvent");
-		auto gpuSignal = [this](bool enable) -> bool
+		try
 		{
-			try
+			spdlog::debug("Entered gpuEvent");
+
+			if (!gpuEnable_)
 			{
-				if (behaviour_ && !profile_->recordModule->active)
-				{
-					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-					if (behaviour)
-					{
-						auto offline = behaviour->getComponent<OfflineComponent>();
-						if (offline)
-							offline->setActive(enable);
-
-						return true;
-					}
-				}
-
-				return false;
-			}
-			catch (const std::exception& e)
-			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Error"));
-				msg.setText(e.what());
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
-
-				return false;
-			}
-		};
-
-		if (!gpuEnable_)
-		{
-			if (gpuSignal(true))
-			{
+				profile_->offlineModule->setEnable(true);
 				gpuButton_->setIcon(gpuOnIcon_);
 				gpuEnable_ = true;
 			}
-		}
-		else
-		{
-			if (gpuSignal(false))
+			else
 			{
+				profile_->offlineModule->setEnable(false);
 				gpuButton_->setIcon(gpuIcon_);
 				gpuEnable_ = false;
 			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox msg(this);
+			msg.setWindowTitle(tr("Error"));
+			msg.setText(e.what());
+			msg.setIcon(QMessageBox::Information);
+			msg.setStandardButtons(QMessageBox::Ok);
+
+			msg.exec();
 		}
 	}
 
 	void
 	ToolDock::cleanupEvent() noexcept
 	{
-		spdlog::debug("Entered cleanupEvent");
 		try
 		{
-			if (behaviour_ && !profile_->playerModule->isPlaying)
-			{
-				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-				if (behaviour->isOpen())
-					behaviour->close();
-			}
+			spdlog::debug("Entered cleanupEvent");
+
+			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
+			if (behaviour)
+				behaviour->close();
+
+			spdlog::debug("Exited cleanupEvent");
 		}
 		catch (const std::exception& e)
 		{
@@ -347,7 +332,6 @@ namespace unreal
 
 			msg.exec();
 		}
-		spdlog::debug("Exited cleanupEvent");
 	}
 
 	void
@@ -386,5 +370,19 @@ namespace unreal
 				audioEnable_ = false;
 			}
 		}
+	}
+
+	bool
+	ToolDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }

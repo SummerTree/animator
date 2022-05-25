@@ -40,12 +40,7 @@ namespace unreal
 		void saveLayout() noexcept;
 
 	private Q_SLOTS:
-		void dragEnterEvent(QDragEnterEvent* event) noexcept override;
-		void dragMoveEvent(QDragMoveEvent* event) noexcept override;
-		void dropEvent(QDropEvent* event) noexcept override;
 		void showEvent(QShowEvent* event) noexcept override;
-
-		bool eventFilter(QObject* watched, QEvent* event);
 
 	private:
 		void onSunSignal() noexcept;

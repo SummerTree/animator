@@ -21,7 +21,6 @@ namespace unreal
 		this->setObjectName("MainDock");
 		this->setWindowTitle(tr("Render Toolbox (Alpha Version)"));
 		this->setDockNestingEnabled(false);
-		this->installEventFilter(this);
 		this->setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::West);
 
 		QImage image(":res/icons/rabbit.png");
@@ -164,21 +163,6 @@ namespace unreal
 	}
 
 	void
-	MainDock::dragEnterEvent(QDragEnterEvent* e) noexcept
-	{
-	}
-
-	void
-	MainDock::dragMoveEvent(QDragMoveEvent *e) noexcept
-	{
-	}
-
-	void
-	MainDock::dropEvent(QDropEvent* e) noexcept
-	{
-	}
-
-	void
 	MainDock::showEvent(QShowEvent* e) noexcept
 	{
 		this->open();
@@ -192,51 +176,33 @@ namespace unreal
 		this->move((rect.width() - this->width()) / 2, (rect.height() - this->height()) / 2);
 	}
 
-	bool
-	MainDock::eventFilter(QObject* watched, QEvent* event)
-	{
-		if (watched == this)
-		{
-			if (QEvent::WindowActivate == event->type())
-			{
-				this->activateWindow();
-				return true;
-			}
-		}
-
-		return QWidget::eventFilter(watched, event);
-	}
-
 	void
 	MainDock::onRecordSignal() noexcept
 	{
 		try
 		{
-			if (!profile_->playerModule->isPlaying && !profile_->recordModule->active)
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+			if (behaviour)
 			{
-				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-				if (behaviour)
+				if (recordDock_->isHidden())
 				{
-					if (recordDock_->isHidden())
+					auto widget = this->visableDock();
+					if (widget)
 					{
-						auto widget = this->visableDock();
-						if (widget)
-						{
-							this->tabifyDockWidget(widget, recordDock_.get());
-							widget->hide();
-						}
+						this->tabifyDockWidget(widget, recordDock_.get());
+						widget->hide();
+					}
 
-						recordDock_->show();
-					}
-					else
-					{
-						recordDock_->close();
-					}
+					recordDock_->show();
 				}
 				else
 				{
-					QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
+					recordDock_->close();
 				}
+			}
+			else
+			{
+				QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
 			}
 		}
 		catch (const std::exception& e)
@@ -254,23 +220,20 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->mainLight && !profile_->playerModule->isPlaying)
+				if (lightDock_->isHidden())
 				{
-					if (lightDock_->isHidden())
+					auto widget = this->visableDock();
+					if (widget)
 					{
-						auto widget = this->visableDock();
-						if (widget)
-						{
-							this->tabifyDockWidget(widget, lightDock_.get());
-							widget->hide();
-						}
+						this->tabifyDockWidget(widget, lightDock_.get());
+						widget->hide();
+					}
 
-						lightDock_->show();
-					}
-					else
-					{
-						lightDock_->close();
-					}
+					lightDock_->show();
+				}
+				else
+				{
+					lightDock_->close();
 				}
 			}
 			else
@@ -293,23 +256,20 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->mainLight && !profile_->playerModule->isPlaying)
+				if (mainLightDock_->isHidden())
 				{
-					if (mainLightDock_->isHidden())
+					auto widget = this->visableDock();
+					if (widget)
 					{
-						auto widget = this->visableDock();
-						if (widget)
-						{
-							this->tabifyDockWidget(widget, mainLightDock_.get());
-							widget->hide();
-						}
+						this->tabifyDockWidget(widget, mainLightDock_.get());
+						widget->hide();
+					}
 
-						mainLightDock_->show();
-					}
-					else
-					{
-						mainLightDock_->close();
-					}
+					mainLightDock_->show();
+				}
+				else
+				{
+					mainLightDock_->close();
 				}
 			}
 			else
@@ -333,23 +293,20 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->environmentLight && !profile_->playerModule->isPlaying)
+				if (environmentDock_->isHidden())
 				{
-					if (environmentDock_->isHidden())
+					auto widget = this->visableDock();
+					if (widget)
 					{
-						auto widget = this->visableDock();
-						if (widget)
-						{
-							this->tabifyDockWidget(widget, environmentDock_.get());
-							widget->hide();
-						}
+						this->tabifyDockWidget(widget, environmentDock_.get());
+						widget->hide();
+					}
 
-						environmentDock_->show();
-					}
-					else
-					{
-						environmentDock_->close();
-					}
+					environmentDock_->show();
+				}
+				else
+				{
+					environmentDock_->close();
 				}
 			}
 			else
@@ -371,23 +328,20 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (!profile_->playerModule->isPlaying)
+				if (materialDock_->isHidden())
 				{
-					if (materialDock_->isHidden())
+					auto widget = this->visableDock();
+					if (widget)
 					{
-						auto widget = this->visableDock();
-						if (widget)
-						{
-							this->tabifyDockWidget(widget, materialDock_.get());
-							widget->hide();
-						}
+						this->tabifyDockWidget(widget, materialDock_.get());
+						widget->hide();
+					}
 
-						materialDock_->show();
-					}
-					else
-					{
-						materialDock_->close();
-					}
+					materialDock_->show();
+				}
+				else
+				{
+					materialDock_->close();
 				}
 			}
 			else
@@ -409,23 +363,20 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (!profile_->playerModule->isPlaying)
+				if (modelDock_->isHidden())
 				{
-					if (modelDock_->isHidden())
+					auto widget = this->visableDock();
+					if (widget)
 					{
-						auto widget = this->visableDock();
-						if (widget)
-						{
-							this->tabifyDockWidget(widget, modelDock_.get());
-							widget->hide();
-						}
+						this->tabifyDockWidget(widget, modelDock_.get());
+						widget->hide();
+					}
 
-						modelDock_->show();
-					}
-					else
-					{
-						modelDock_->close();
-					}
+					modelDock_->show();
+				}
+				else
+				{
+					modelDock_->close();
 				}
 			}
 			else
@@ -447,23 +398,20 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (!profile_->playerModule->isPlaying)
+				if (cameraDock_->isHidden())
 				{
-					if (cameraDock_->isHidden())
+					auto widget = this->visableDock();
+					if (widget)
 					{
-						auto widget = this->visableDock();
-						if (widget)
-						{
-							this->tabifyDockWidget(widget, cameraDock_.get());
-							widget->hide();
-						}
+						this->tabifyDockWidget(widget, cameraDock_.get());
+						widget->hide();
+					}
 
-						cameraDock_->show();
-					}
-					else
-					{
-						cameraDock_->close();
-					}
+					cameraDock_->show();
+				}
+				else
+				{
+					cameraDock_->close();
 				}
 			}
 			else
@@ -485,23 +433,20 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (!profile_->playerModule->isPlaying)
+				if (motionDock_->isHidden())
 				{
-					if (motionDock_->isHidden())
+					auto widget = this->visableDock();
+					if (widget)
 					{
-						auto widget = this->visableDock();
-						if (widget)
-						{
-							this->tabifyDockWidget(widget, motionDock_.get());
-							widget->hide();
-						}
+						this->tabifyDockWidget(widget, motionDock_.get());
+						widget->hide();
+					}
 
-						motionDock_->show();
-					}
-					else
-					{
-						motionDock_->close();
-					}
+					motionDock_->show();
+				}
+				else
+				{
+					motionDock_->close();
 				}
 			}
 			else

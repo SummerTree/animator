@@ -30,8 +30,9 @@ namespace unreal
 
 		void showEvent(QShowEvent* event) override;
 		void paintEvent(QPaintEvent* e) noexcept override;
-		void resizeEvent(QResizeEvent* e) noexcept override;
 		void closeEvent(QCloseEvent* event) override;
+
+		bool eventFilter(QObject* watched, QEvent* event);
 
 	  private Q_SLOTS:
 		void recordEvent(bool);
@@ -48,9 +49,6 @@ namespace unreal
 		void onSppChanged(int);
 		void onBouncesChanged(int);
 		void onCrfChanged(double);
-
-	  private:
-		void updateDefaultSettings();
 
 	  public:
 		QLabel* quality_;

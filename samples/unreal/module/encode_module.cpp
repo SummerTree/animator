@@ -12,25 +12,6 @@ namespace unreal
 	}
 
 	void
-	EncodeModule::setVideoQuality(VideoQuality quality_)
-	{
-		switch (quality_)
-		{
-		case unreal::Low:
-			this->quality = quality_;
-			break;
-		case unreal::Medium:
-			this->quality = quality_;
-			break;
-		case unreal::High:
-			this->quality = quality_;
-			break;
-		default:
-			break;
-		}
-	}
-
-	void
 	EncodeModule::reset() noexcept
 	{
 		this->crf = 18;

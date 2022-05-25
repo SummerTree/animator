@@ -55,6 +55,7 @@ namespace unreal
 		markButton_->setObjectName("mark");
 		markButton_->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 		markButton_->setIconSize(QSize(139, 143));
+		markButton_->installEventFilter(this);
 
 		quality_ = new QLabel();
 		quality_->setText(tr("Render Quality"));
@@ -64,11 +65,13 @@ namespace unreal
 		select1_->setText(tr("Ultra Render"));
 		select1_->setCheckable(true);
 		select1_->click();
+		select1_->installEventFilter(this);
 
 		select2_ = new QToolButton();
 		select2_->setObjectName("select2");
 		select2_->setText(tr("Fast Render"));
 		select2_->setCheckable(true);
+		select2_->installEventFilter(this);
 
 		group_ = new QButtonGroup();
 		group_->addButton(select1_, 0);
@@ -82,21 +85,25 @@ namespace unreal
 		speed1_->setText(tr("24"));
 		speed1_->setCheckable(true);
 		speed1_->click();
+		speed1_->installEventFilter(this);
 
 		speed2_ = new QToolButton();
 		speed2_->setObjectName("speed2");
 		speed2_->setText(tr("25"));
 		speed2_->setCheckable(true);
+		speed2_->installEventFilter(this);
 
 		speed3_ = new QToolButton();
 		speed3_->setObjectName("speed3");
 		speed3_->setText(tr("30"));
 		speed3_->setCheckable(true);
+		speed3_->installEventFilter(this);
 
 		speed4_ = new QToolButton();
 		speed4_->setObjectName("speed4");
 		speed4_->setText(tr("60"));
 		speed4_->setCheckable(true);
+		speed4_->installEventFilter(this);
 
 		speedGroup_ = new QButtonGroup();
 		speedGroup_->addButton(speed1_, 0);
@@ -113,6 +120,7 @@ namespace unreal
 		outputTypeCombo_->addItem(tr("H264"));
 		outputTypeCombo_->addItem(tr("Frame Sequence"));
 		outputTypeCombo_->setStyleSheet("color:white");
+		outputTypeCombo_->installEventFilter(this);
 
 		frame_ = new QLabel();
 		frame_->setText(tr("Play:"));
@@ -128,18 +136,21 @@ namespace unreal
 		start_->setAlignment(Qt::AlignRight);
 		start_->setMinimum(0);
 		start_->setMaximum(99999);
+		start_->installEventFilter(this);
 
 		end_ = new SpinBox();
 		end_->setObjectName("end");
 		end_->setAlignment(Qt::AlignRight);
 		end_->setMinimum(0);
 		end_->setMaximum(99999);
+		end_->installEventFilter(this);
 
 		denoiseLabel_ = new QLabel();
 		denoiseLabel_->setText(tr("Denoise:"));
 
 		denoiseButton_ = new QCheckBox();
 		denoiseButton_->setCheckState(Qt::CheckState::Checked);
+		denoiseButton_->installEventFilter(this);
 
 		auto denoiseLayout_ = new QHBoxLayout();
 		denoiseLayout_->addWidget(denoiseLabel_, 0, Qt::AlignLeft);
@@ -157,6 +168,7 @@ namespace unreal
 		bouncesSpinbox_->setValue(0);
 		bouncesSpinbox_->setAlignment(Qt::AlignRight);
 		bouncesSpinbox_->setFixedWidth(100);
+		bouncesSpinbox_->installEventFilter(this);
 
 		sppLabel = new QLabel();
 		sppLabel->setText(tr("Sample number per pixel:"));
@@ -168,6 +180,7 @@ namespace unreal
 		sppSpinbox_->setValue(0);
 		sppSpinbox_->setAlignment(Qt::AlignRight);
 		sppSpinbox_->setFixedWidth(100);
+		sppSpinbox_->installEventFilter(this);
 
 		crfSpinbox = new DoubleSpinBox();
 		crfSpinbox->setMinimum(0);
@@ -175,6 +188,7 @@ namespace unreal
 		crfSpinbox->setValue(0);
 		crfSpinbox->setAlignment(Qt::AlignRight);
 		crfSpinbox->setFixedWidth(100);
+		crfSpinbox->installEventFilter(this);
 
 		crfLabel = new QLabel();
 		crfLabel->setText(tr("Constant Rate Factor (CRF):"));
@@ -265,9 +279,10 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		behaviour->addMessageListener("flower:player:finish", [this](const std::any&) {
-									this->updateDefaultSettings();
-									recordButton_->setText(tr("Start Render")); });
+		behaviour->addMessageListener("flower:player:finish", [this](const std::any&)
+		{
+			recordButton_->setText(tr("Start Render"));
+		});
 
 		connect(select1_, SIGNAL(toggled(bool)), this, SLOT(select1Event(bool)));
 		connect(select2_, SIGNAL(toggled(bool)), this, SLOT(select2Event(bool)));
@@ -292,28 +307,95 @@ namespace unreal
 	void
 	RecordDock::onSppChanged(int value)
 	{
-		if (!profile_->playerModule->isPlaying)
-			profile_->playerModule->spp = value;
-		else
-			sppSpinbox_->setValue(profile_->playerModule->spp);
+		profile_->playerModule->spp = value;
 	}
 
 	void
 	RecordDock::onBouncesChanged(int value)
 	{
-		if (!profile_->playerModule->isPlaying)
-			profile_->offlineModule->bounces = value;
-		else
-			bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
+		profile_->offlineModule->bounces = value;
 	}
 
 	void
 	RecordDock::onCrfChanged(double value)
 	{
-		if (!profile_->playerModule->isPlaying)
-			profile_->encodeModule->crf = value;
+		profile_->encodeModule->crf = value;
+	}
+
+	void
+	RecordDock::select1Event(bool checked)
+	{
+		if (checked)
+			profile_->encodeModule->quality = VideoQuality::High;
+	}
+
+	void
+	RecordDock::select2Event(bool checked)
+	{
+		if (checked)
+			profile_->encodeModule->quality = VideoQuality::Medium;
+	}
+
+	void
+	RecordDock::denoiseEvent(int checked)
+	{
+		if (checked == Qt::CheckState::Checked)
+			profile_->recordModule->denoise = true;
 		else
-			crfSpinbox->setValue(profile_->encodeModule->crf);
+			profile_->recordModule->denoise = false;
+	}
+
+	void
+	RecordDock::speed1Event(bool checked)
+	{
+		if (checked)
+			profile_->playerModule->recordFps = 24;
+	}
+
+	void
+	RecordDock::speed2Event(bool checked)
+	{
+		if (checked)
+			profile_->playerModule->recordFps = 25;
+	}
+
+	void
+	RecordDock::speed3Event(bool checked)
+	{
+		if (checked)
+			profile_->playerModule->recordFps = 30;
+	}
+
+	void
+	RecordDock::speed4Event(bool checked)
+	{
+		if (checked)
+			profile_->playerModule->recordFps = 60;
+	}
+
+	void
+	RecordDock::startEvent(int value)
+	{
+		profile_->playerModule->startFrame = value;
+	}
+
+	void
+	RecordDock::endEvent(int value)
+	{
+		profile_->playerModule->endFrame = value;
+	}
+
+	void
+	RecordDock::outputTypeEvent(int index)
+	{
+		if (index == 0)
+			profile_->encodeModule->encodeMode = EncodeMode::H265;
+		else if (index == 1)
+			profile_->encodeModule->encodeMode = EncodeMode::H264;
+		else if (index == 2)
+			profile_->encodeModule->encodeMode = EncodeMode::Frame;
+		else
+			throw std::runtime_error("Unsupported EncodeMode");
 	}
 
 	void
@@ -329,14 +411,15 @@ namespace unreal
 					QMessageBox::warning(this, tr("Warning"), tr("Start frame must be less than end frame."));
 					return;
 				}
-				auto encodeMode = profile_->encodeModule->encodeMode;
+
 				QString fileName;
-				if (encodeMode == EncodeMode::H264 || encodeMode == EncodeMode::H265)
+				if (profile_->encodeModule->encodeMode == EncodeMode::H264 || profile_->encodeModule->encodeMode == EncodeMode::H265)
 					fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), "", tr("MP4 Files (*.mp4)"));
-				else if (encodeMode == EncodeMode::Frame)
+				else if (profile_->encodeModule->encodeMode == EncodeMode::Frame)
 					fileName = QFileDialog::getSaveFileName(this, tr("Save Image Sequence"), "", tr("PNG Files (*.png)"));
 				else
 					throw std::runtime_error("Unknown encode mode");
+
 				if (!fileName.isEmpty())
 				{
 					if (behaviour->startRecord(fileName.toUtf8().data()))
@@ -358,111 +441,17 @@ namespace unreal
 	}
 
 	void
-	RecordDock::select1Event(bool checked)
+	RecordDock::paintEvent(QPaintEvent* e) noexcept
 	{
-		if (!profile_->playerModule->isPlaying)
-		{
-			if (checked)
-				profile_->encodeModule->setVideoQuality(VideoQuality::High);
-		}
-		else
-			this->updateDefaultSettings();
+		int left, top, bottom, right;
+		mainLayout_->getContentsMargins(&left, &top, &right, &bottom);
+		contentWidgetArea_->resize(contentWidgetArea_->size().width(), mainWidget_->size().height() - recordButton_->height() - (top + bottom) * 2);
+
+		QDockWidget::paintEvent(e);
 	}
 
 	void
-	RecordDock::select2Event(bool checked)
-	{
-		if (!profile_->playerModule->isPlaying)
-		{
-			if (checked)
-				profile_->encodeModule->setVideoQuality(VideoQuality::Medium);
-		}
-		else
-			this->updateDefaultSettings();
-	}
-
-	void
-	RecordDock::denoiseEvent(int checked)
-	{
-		if (!profile_->playerModule->isPlaying)
-		{
-			if (checked == Qt::CheckState::Checked)
-				profile_->recordModule->denoise = true;
-			else
-				profile_->recordModule->denoise = false;
-		}
-		else
-			this->updateDefaultSettings();
-	}
-
-	void
-	RecordDock::speed1Event(bool checked)
-	{
-		if (!profile_->playerModule->isPlaying)
-		{
-			if (checked)
-				profile_->playerModule->recordFps = 24;
-		}
-		else
-			this->updateDefaultSettings();
-	}
-
-	void
-	RecordDock::speed2Event(bool checked)
-	{
-		if (!profile_->playerModule->isPlaying)
-		{
-			if (checked)
-				profile_->playerModule->recordFps = 25;
-		}
-		else
-			this->updateDefaultSettings();
-	}
-
-	void
-	RecordDock::speed3Event(bool checked)
-	{
-		if (!profile_->playerModule->isPlaying)
-		{
-			if (checked)
-				profile_->playerModule->recordFps = 30;
-		}
-		else
-			this->updateDefaultSettings();
-	}
-
-	void
-	RecordDock::speed4Event(bool checked)
-	{
-		if (!profile_->playerModule->isPlaying)
-		{
-			if (checked)
-				profile_->playerModule->recordFps = 60;
-		}
-		else
-			this->updateDefaultSettings();
-	}
-
-	void
-	RecordDock::startEvent(int value)
-	{
-		if (!profile_->playerModule->isPlaying)
-			profile_->playerModule->startFrame = value;
-		else
-			this->updateDefaultSettings();
-	}
-
-	void
-	RecordDock::endEvent(int value)
-	{
-		if (!profile_->playerModule->isPlaying)
-			profile_->playerModule->endFrame = value;
-		else
-			this->updateDefaultSettings();
-	}
-
-	void
-	RecordDock::updateDefaultSettings()
+	RecordDock::showEvent(QShowEvent* event)
 	{
 		start_->setValue(0);
 		end_->setValue(profile_->playerModule->endFrame);
@@ -494,12 +483,6 @@ namespace unreal
 	}
 
 	void
-	RecordDock::showEvent(QShowEvent* event)
-	{
-		this->updateDefaultSettings();
-	}
-
-	void
 	RecordDock::closeEvent(QCloseEvent* event)
 	{
 		if (profile_->playerModule->isPlaying)
@@ -508,31 +491,17 @@ namespace unreal
 			event->accept();
 	}
 
-	void
-	RecordDock::resizeEvent(QResizeEvent* e) noexcept
+	bool
+	RecordDock::eventFilter(QObject* watched, QEvent* event)
 	{
-	}
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
 
-	void
-	RecordDock::outputTypeEvent(int index)
-	{
-		if (index == 0)
-			profile_->encodeModule->encodeMode = EncodeMode::H265;
-		else if (index == 1)
-			profile_->encodeModule->encodeMode = EncodeMode::H264;
-		else if (index == 2)
-			profile_->encodeModule->encodeMode = EncodeMode::Frame;
-		else
-			throw std::runtime_error("Unsupported EncodeMode");
-	}
-
-	void
-	RecordDock::paintEvent(QPaintEvent* e) noexcept
-	{
-		int left, top, bottom, right;
-		mainLayout_->getContentsMargins(&left, &top, &right, &bottom);
-		contentWidgetArea_->resize(contentWidgetArea_->size().width(), mainWidget_->size().height() - recordButton_->height() - (top + bottom) * 2);
-
-		QDockWidget::paintEvent(e);
+		return QWidget::eventFilter(watched, event);
 	}
 }
