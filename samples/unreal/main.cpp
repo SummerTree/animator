@@ -89,6 +89,7 @@ int main(int argc, char *argv[])
 
 		unreal::MainDock w(splash.get());
 		w.show();
+		w.activateWindow();
 
 		splash.reset();
 
