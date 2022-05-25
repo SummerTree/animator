@@ -6,7 +6,7 @@
     <message>
         <location filename="../res/qml/MainView.qml" line="8"/>
         <source>Flowers Render Toolbox (Alpha Version)</source>
-        <translation>小碎花渲染器(内测版本)</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -426,49 +426,33 @@ $20 (Original cost $40)</source>
         <translation>AnimatorGo Lite (Alpha Version)</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="208"/>
-        <location filename="../views/main_dock.cpp" line="244"/>
-        <location filename="../views/main_dock.cpp" line="280"/>
-        <location filename="../views/main_dock.cpp" line="317"/>
-        <location filename="../views/main_dock.cpp" line="352"/>
-        <location filename="../views/main_dock.cpp" line="387"/>
-        <location filename="../views/main_dock.cpp" line="422"/>
-        <location filename="../views/main_dock.cpp" line="457"/>
         <source>Warning</source>
-        <translation>警告</translation>
+        <translation type="vanished">警告</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="208"/>
-        <location filename="../views/main_dock.cpp" line="244"/>
         <source>Please load a project with pmm extension.</source>
-        <translation>请加载后缀为.pmm的文件.</translation>
+        <translation type="vanished">请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="213"/>
-        <location filename="../views/main_dock.cpp" line="249"/>
-        <location filename="../views/main_dock.cpp" line="286"/>
-        <location filename="../views/main_dock.cpp" line="322"/>
-        <location filename="../views/main_dock.cpp" line="357"/>
-        <location filename="../views/main_dock.cpp" line="392"/>
-        <location filename="../views/main_dock.cpp" line="427"/>
-        <location filename="../views/main_dock.cpp" line="462"/>
-        <location filename="../views/main_dock.cpp" line="521"/>
-        <location filename="../views/main_dock.cpp" line="548"/>
+        <location filename="../views/main_dock.cpp" line="205"/>
+        <location filename="../views/main_dock.cpp" line="233"/>
+        <location filename="../views/main_dock.cpp" line="261"/>
+        <location filename="../views/main_dock.cpp" line="289"/>
+        <location filename="../views/main_dock.cpp" line="316"/>
+        <location filename="../views/main_dock.cpp" line="343"/>
+        <location filename="../views/main_dock.cpp" line="370"/>
+        <location filename="../views/main_dock.cpp" line="397"/>
+        <location filename="../views/main_dock.cpp" line="456"/>
+        <location filename="../views/main_dock.cpp" line="483"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="280"/>
-        <location filename="../views/main_dock.cpp" line="317"/>
-        <location filename="../views/main_dock.cpp" line="352"/>
-        <location filename="../views/main_dock.cpp" line="387"/>
-        <location filename="../views/main_dock.cpp" line="422"/>
-        <location filename="../views/main_dock.cpp" line="457"/>
         <source>Fail to get core component.</source>
-        <translation>获取核心模块失败。</translation>
+        <translation type="vanished">获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="522"/>
+        <location filename="../views/main_dock.cpp" line="457"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
@@ -1013,7 +997,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/splash_screen.cpp" line="29"/>
         <source>2022 RenderToolbox-Softwares (R). All Rights Reserved.</source>
-        <translation type="unfinished">2022 小碎花软件 ©. 保留所有权利.</translation>
+        <translation type="unfinished">2022 AnimatorGo ©. 保留所有权利.</translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="45"/>
