@@ -101,6 +101,11 @@ namespace unreal
 			this->update();
 		};
 
+		this->getContext()->profile->playerModule->finish += [this](bool value)
+		{
+			this->update();
+		};
+
 		this->addMessageListener("flower:project:open", [this](const std::any& data)
 		{
 			this->update();
