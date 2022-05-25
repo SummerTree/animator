@@ -1,6 +1,8 @@
 #include "wgl_swapchain.h"
 #include "ogl_device.h"
 
+#include <stdexcept>
+
 namespace octoon
 {
 	namespace hal
@@ -35,7 +37,7 @@ namespace octoon
 		}
 
 		bool
-		WGLSwapchain::setup(const GraphicsSwapchainDesc& swapchainDesc) noexcept
+		WGLSwapchain::setup(const GraphicsSwapchainDesc& swapchainDesc) noexcept(false)
 		{
 			if (!initSurface(swapchainDesc))
 				return false;
@@ -230,7 +232,7 @@ namespace octoon
 		}
 
 		bool
-		WGLSwapchain::initPixelFormat(const GraphicsSwapchainDesc& swapchainDesc) noexcept
+		WGLSwapchain::initPixelFormat(const GraphicsSwapchainDesc& swapchainDesc) noexcept(false)
 		{
 			PIXELFORMATDESCRIPTOR pfd;
 			std::memset(&pfd, 0, sizeof(pfd));
@@ -258,169 +260,139 @@ namespace octoon
 				return false;
 			}
 
-			auto colorFormat = swapchainDesc.getColorFormat();
-			if (colorFormat == GraphicsFormat::B8G8R8A8UNorm)
-			{
-				pfd.cColorBits = 32;
-				pfd.cBlueBits = 8;
-				pfd.cBlueShift = 0;
-				pfd.cGreenBits = 8;
-				pfd.cGreenShift = 8;
-				pfd.cRedBits = 8;
-				pfd.cRedShift = 16;
-				pfd.cAlphaBits = 8;
-				pfd.cAlphaShift = 24;
-			}
-			else
-			{
-				this->getDevice()->downcast<OGLDevice>()->message("Can't support color format");
-				return false;
-			}
+			std::size_t index = 0;
 
-			auto depthStencilFormat = swapchainDesc.getDepthStencilFormat();
-			if (depthStencilFormat == GraphicsFormat::D16UNorm)
-			{
-				pfd.cDepthBits = 16;
-				pfd.cStencilBits = 0;
-			}
-			else if (depthStencilFormat == GraphicsFormat::X8_D24UNormPack32)
-			{
-				pfd.cDepthBits = 24;
-				pfd.cStencilBits = 0;
-			}
-			else if (depthStencilFormat == GraphicsFormat::D32_SFLOAT)
-			{
-				pfd.cDepthBits = 32;
-				pfd.cStencilBits = 0;
-			}
-			else if (depthStencilFormat == GraphicsFormat::D16UNorm_S8UInt)
-			{
-				pfd.cDepthBits = 16;
-				pfd.cStencilBits = 8;
-			}
-			else if (depthStencilFormat == GraphicsFormat::D24UNorm_S8UInt)
-			{
-				pfd.cDepthBits = 24;
-				pfd.cStencilBits = 8;
-			}
-			else if (depthStencilFormat == GraphicsFormat::D32_SFLOAT_S8UInt)
-			{
-				pfd.cDepthBits = 32;
-				pfd.cStencilBits = 8;
-			}
-			else
-			{
-				this->getDevice()->downcast<OGLDevice>()->message("Can't support depth stencil format");
-				return false;
-			}
+			int attribs[64];
+			attribs[index++] = WGL_DRAW_TO_WINDOW_ARB;
+			attribs[index++] = GL_TRUE;
 
-			int pixelFormat = ::ChoosePixelFormat(_hdc, &pfd);
-			if (!pixelFormat)
+			attribs[index++] = WGL_SUPPORT_OPENGL_ARB;
+			attribs[index++] = GL_TRUE;
+
+			attribs[index++] = WGL_ACCELERATION_ARB;
+			attribs[index++] = WGL_FULL_ACCELERATION_ARB;
+
+			attribs[index++] = WGL_DOUBLE_BUFFER_ARB;
+			attribs[index++] = GL_TRUE;
+
+			attribs[index++] = WGL_SWAP_METHOD_ARB;
+			attribs[index++] = WGL_SWAP_EXCHANGE_ARB;
+
+			attribs[index++] = WGL_SAMPLES_ARB;
+			attribs[index++] = swapchainDesc.getMultiSample();
+
+			switch (swapchainDesc.getColorFormat())
 			{
-				this->getDevice()->downcast<OGLDevice>()->message("ChoosePixelFormat() fail");
-				return false;
-			}
-
-			PIXELFORMATDESCRIPTOR pfd2;
-			if (!::DescribePixelFormat(_hdc, pixelFormat, sizeof(pfd2), &pfd2))
+			case GraphicsFormat::B8G8R8A8UNorm:
 			{
-				this->getDevice()->downcast<OGLDevice>()->message("DescribePixelFormat() fail");
-				return false;
-			}
-
-			if (pfd2.cRedBits != pfd.cRedBits ||
-				pfd2.cRedShift != pfd.cRedShift ||
-				pfd2.cGreenBits != pfd.cGreenBits ||
-				pfd2.cGreenShift != pfd.cGreenShift ||
-				pfd2.cBlueBits != pfd.cBlueBits ||
-				pfd2.cBlueShift != pfd.cBlueShift)
-			{
-				this->getDevice()->downcast<OGLDevice>()->message("Can't support color format");
-				return false;
-			}
-
-			if (pfd2.cDepthBits < pfd.cDepthBits || pfd2.cStencilBits < pfd.cStencilBits)
-			{
-				this->getDevice()->downcast<OGLDevice>()->message("Can't support depth stencil format");
-				return false;
-			}
-
-			if (swapchainDesc.getMultiSample() > 0)
-			{
-				std::size_t index = 0;
-				int attribs[64];
-				attribs[index++] = WGL_DRAW_TO_WINDOW_ARB;
-				attribs[index++] = GL_TRUE;
-
-				attribs[index++] = WGL_SUPPORT_OPENGL_ARB;
-				attribs[index++] = GL_TRUE;
-
-				attribs[index++] = WGL_ACCELERATION_ARB;
-				attribs[index++] = WGL_FULL_ACCELERATION_ARB;
-
-				attribs[index++] = WGL_DOUBLE_BUFFER_ARB;
-				attribs[index++] = GL_TRUE;
-
-				attribs[index++] = WGL_SWAP_METHOD_ARB;
-				attribs[index++] = WGL_SWAP_EXCHANGE_ARB;
-
+				attribs[index++] = WGL_PIXEL_TYPE_ARB;
+				attribs[index++] = WGL_TYPE_RGBA_ARB;
 				attribs[index++] = WGL_COLOR_BITS_ARB;
 				attribs[index++] = 32;
-
-				if (depthStencilFormat == GraphicsFormat::D16UNorm)
-				{
-					attribs[index++] = WGL_DEPTH_BITS_ARB;
-					attribs[index++] = 16;
-					attribs[index++] = WGL_STENCIL_BITS_ARB;
-					attribs[index++] = 0;
-				}
-				else if (depthStencilFormat == GraphicsFormat::X8_D24UNormPack32)
-				{
-					attribs[index++] = WGL_DEPTH_BITS_ARB;
-					attribs[index++] = 24;
-					attribs[index++] = WGL_STENCIL_BITS_ARB;
-					attribs[index++] = 0;
-				}
-				else if (depthStencilFormat == GraphicsFormat::D32_SFLOAT)
-				{
-					attribs[index++] = WGL_DEPTH_BITS_ARB;
-					attribs[index++] = 32;
-					attribs[index++] = WGL_STENCIL_BITS_ARB;
-					attribs[index++] = 0;
-				}
-				else if (depthStencilFormat == GraphicsFormat::D16UNorm_S8UInt)
-				{
-					attribs[index++] = WGL_DEPTH_BITS_ARB;
-					attribs[index++] = 16;
-					attribs[index++] = WGL_STENCIL_BITS_ARB;
-					attribs[index++] = 8;
-				}
-				else if (depthStencilFormat == GraphicsFormat::D24UNorm_S8UInt)
-				{
-					attribs[index++] = WGL_DEPTH_BITS_ARB;
-					attribs[index++] = 24;
-					attribs[index++] = WGL_STENCIL_BITS_ARB;
-					attribs[index++] = 8;
-				}
-				else if (depthStencilFormat == GraphicsFormat::D32_SFLOAT_S8UInt)
-				{
-					attribs[index++] = WGL_DEPTH_BITS_ARB;
-					attribs[index++] = 32;
-					attribs[index++] = WGL_STENCIL_BITS_ARB;
-					attribs[index++] = 8;
-				}
-
-				attribs[index++] = WGL_SAMPLES_ARB;
-				attribs[index++] = swapchainDesc.getMultiSample();
-
-				attribs[index++] = GL_NONE;
-				attribs[index++] = GL_NONE;
-
-				int numFormat;
-				wglChoosePixelFormatARB(_hdc, attribs, NULL, 1, &pixelFormat, (UINT*)&numFormat);
+				attribs[index++] = WGL_RED_BITS_ARB;
+				attribs[index++] = 8;
+				attribs[index++] = WGL_GREEN_BITS_ARB;
+				attribs[index++] = 8;
+				attribs[index++] = WGL_BLUE_BITS_ARB;
+				attribs[index++] = 8;
+				attribs[index++] = WGL_ALPHA_BITS_ARB;
+				attribs[index++] = 8;
+			}
+			break;
+			case GraphicsFormat::R16G16B16A16SFloat:
+			{
+				attribs[index++] = WGL_PIXEL_TYPE_ARB;
+				attribs[index++] = WGL_TYPE_RGBA_FLOAT_ARB;
+				attribs[index++] = WGL_RED_BITS_ARB;
+				attribs[index++] = 16;
+				attribs[index++] = WGL_GREEN_BITS_ARB;
+				attribs[index++] = 16;
+				attribs[index++] = WGL_BLUE_BITS_ARB;
+				attribs[index++] = 16;
+				attribs[index++] = WGL_ALPHA_BITS_ARB;
+				attribs[index++] = 16;
+			}
+			break;
+			case GraphicsFormat::R32G32B32A32SFloat:
+			{
+				attribs[index++] = WGL_PIXEL_TYPE_ARB;
+				attribs[index++] = WGL_TYPE_RGBA_FLOAT_ARB;
+				attribs[index++] = WGL_RED_BITS_ARB;
+				attribs[index++] = 32;
+				attribs[index++] = WGL_GREEN_BITS_ARB;
+				attribs[index++] = 32;
+				attribs[index++] = WGL_BLUE_BITS_ARB;
+				attribs[index++] = 32;
+				attribs[index++] = WGL_ALPHA_BITS_ARB;
+				attribs[index++] = 32;
+			}
+			break;
+			default:
+				throw std::runtime_error("Can't support color format");
 			}
 
-			if (!::SetPixelFormat(_hdc, pixelFormat, &pfd2))
+			switch (swapchainDesc.getDepthStencilFormat())
+			{
+			case GraphicsFormat::D16UNorm:
+			{
+				attribs[index++] = WGL_DEPTH_BITS_ARB;
+				attribs[index++] = 16;
+				attribs[index++] = WGL_STENCIL_BITS_ARB;
+				attribs[index++] = 0;
+			}
+			break;
+			case GraphicsFormat::X8_D24UNormPack32:
+			{
+				attribs[index++] = WGL_DEPTH_BITS_ARB;
+				attribs[index++] = 24;
+				attribs[index++] = WGL_STENCIL_BITS_ARB;
+				attribs[index++] = 0;
+			}
+			break;
+			case GraphicsFormat::D32_SFLOAT:
+			{
+				attribs[index++] = WGL_DEPTH_BITS_ARB;
+				attribs[index++] = 32;
+				attribs[index++] = WGL_STENCIL_BITS_ARB;
+				attribs[index++] = 0;
+			}
+			break;
+			case GraphicsFormat::D16UNorm_S8UInt:
+			{
+				attribs[index++] = WGL_DEPTH_BITS_ARB;
+				attribs[index++] = 16;
+				attribs[index++] = WGL_STENCIL_BITS_ARB;
+				attribs[index++] = 8;
+			}
+			break;
+			case GraphicsFormat::D24UNorm_S8UInt:
+			{
+				attribs[index++] = WGL_DEPTH_BITS_ARB;
+				attribs[index++] = 24;
+				attribs[index++] = WGL_STENCIL_BITS_ARB;
+				attribs[index++] = 8;
+			}
+			break;
+			case GraphicsFormat::D32_SFLOAT_S8UInt:
+			{
+				attribs[index++] = WGL_DEPTH_BITS_ARB;
+				attribs[index++] = 32;
+				attribs[index++] = WGL_STENCIL_BITS_ARB;
+				attribs[index++] = 8;
+			}
+			break;
+			default:
+				throw std::runtime_error("Can't support depth stencil format");
+			}
+
+			attribs[index++] = GL_NONE;
+			attribs[index++] = GL_NONE;
+
+			int numFormat;
+			int pixelFormat = 0;
+			wglChoosePixelFormatARB(_hdc, attribs, NULL, 1, &pixelFormat, (UINT*)&numFormat);
+
+			if (!::SetPixelFormat(_hdc, pixelFormat, 0))
 			{
 				this->getDevice()->downcast<OGLDevice>()->message("SetPixelFormat() fail");
 				return false;

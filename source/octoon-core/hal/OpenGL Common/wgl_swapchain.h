@@ -15,7 +15,7 @@ namespace octoon
 			WGLSwapchain(GLuint major, GLuint minor) noexcept;
 			virtual ~WGLSwapchain() noexcept;
 
-			bool setup(const GraphicsSwapchainDesc& swapchainDesc) noexcept;
+			bool setup(const GraphicsSwapchainDesc& swapchainDesc) noexcept(false);
 			void close() noexcept;
 
 			void setActive(bool active) noexcept;
@@ -36,7 +36,7 @@ namespace octoon
 
 		private:
 			bool initSurface(const GraphicsSwapchainDesc& swapchainDesc);
-			bool initPixelFormat(const GraphicsSwapchainDesc& swapchainDesc) noexcept;
+			bool initPixelFormat(const GraphicsSwapchainDesc& swapchainDesc) noexcept(false);
 			bool initSwapchain(const GraphicsSwapchainDesc& swapchainDesc) noexcept;
 
 		private:
