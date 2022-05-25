@@ -77,8 +77,8 @@ namespace unreal
 		QToolButton* markButton_;
 		QCheckBox* denoiseButton_;
 
-		QSpinBox* start_;
-		QSpinBox* end_;
+		QSpinBox* startFrame_;
+		QSpinBox* endFrame_;
 		QSpinBox* sppSpinbox_;
 		QSpinBox* bouncesSpinbox_;
 

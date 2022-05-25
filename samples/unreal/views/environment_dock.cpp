@@ -443,6 +443,22 @@ namespace unreal
 
 		this->profile_->environmentLightModule->offset += [this](const octoon::math::float2& value)
 		{
+			horizontalRotationSlider->blockSignals(true);
+			horizontalRotationSlider->setValue(value.x * 100.0f);
+			horizontalRotationSlider->blockSignals(false);
+
+			horizontalRotationSpinBox->blockSignals(true);
+			horizontalRotationSpinBox->setValue(value.x);
+			horizontalRotationSpinBox->blockSignals(false);
+
+			verticalRotationSlider->blockSignals(true);
+			verticalRotationSlider->setValue(value.y * 100.0f);
+			verticalRotationSlider->blockSignals(false);
+
+			verticalRotationSpinBox->blockSignals(true);
+			verticalRotationSpinBox->setValue(value.y);
+			verticalRotationSpinBox->blockSignals(false);
+
 			this->updatePreviewImage();
 		};
 
@@ -452,13 +468,36 @@ namespace unreal
 			this->updatePreviewImage();
 		};
 
+		this->profile_->environmentLightModule->intensity += [this](float value)
+		{
+			intensitySlider->blockSignals(true);
+			intensitySlider->setValue(value * 10.0f);
+			intensitySlider->blockSignals(false);
+
+			intensitySpinBox->blockSignals(true);
+			intensitySpinBox->setValue(value);
+			intensitySpinBox->blockSignals(false);
+		};
+
 		this->profile_->environmentLightModule->useTexture += [this](bool value)
 		{
+			this->thumbnailToggle->blockSignals(true);
+			this->thumbnailToggle->setChecked(value);
+			this->thumbnailToggle->blockSignals(false);
+
 			this->updatePreviewImage();
 		};
 
 		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
 		{
+			if (!texture)
+			{
+				this->previewName_->setText(tr("Untitled"));
+				this->thumbnailPath->clear();
+				this->thumbnailPath->setToolTip(QString());
+				this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
+			}
+
 			this->updatePreviewImage();
 		};
 
@@ -707,40 +746,37 @@ namespace unreal
 	void
 	EnvironmentDock::intensitySliderEvent(int value)
 	{
-		this->intensitySpinBox->setValue(value / 10.0f);
+		this->profile_->environmentLightModule->intensity = value / 10.0f;
 	}
 
 	void
 	EnvironmentDock::intensityEditEvent(double value)
 	{
 		this->profile_->environmentLightModule->intensity = value;
-		this->intensitySlider->setValue(value * 10.0f);
 	}
 
 	void
 	EnvironmentDock::horizontalRotationSliderEvent(int value)
 	{
-		this->horizontalRotationSpinBox->setValue(value / 100.0f);
+		this->profile_->environmentLightModule->offset = octoon::math::float2(value / 100.0f, this->profile_->environmentLightModule->offset.getValue().y);
 	}
 	
 	void
 	EnvironmentDock::horizontalRotationEditEvent(double value)
 	{
 		this->profile_->environmentLightModule->offset = octoon::math::float2(value, this->profile_->environmentLightModule->offset.getValue().y);
-		this->horizontalRotationSlider->setValue(value * 100.0f);
 	}
 
 	void
 	EnvironmentDock::verticalRotationSliderEvent(int value)
 	{
-		this->verticalRotationSpinBox->setValue(value / 100.0f);
+		this->profile_->environmentLightModule->offset = octoon::math::float2(this->profile_->environmentLightModule->offset.getValue().x, value / 100.0f);
 	}
 	
 	void
 	EnvironmentDock::verticalRotationEditEvent(double value)
 	{
 		this->profile_->environmentLightModule->offset = octoon::math::float2(this->profile_->environmentLightModule->offset.getValue().x, value);
-		this->verticalRotationSlider->setValue(value * 100.0f);
 	}
 
 	void
@@ -755,10 +791,17 @@ namespace unreal
 		auto color = profile_->environmentLightModule->color.getValue();
 
 		this->intensitySpinBox->setValue(profile_->environmentLightModule->intensity);
+		this->intensitySlider->setValue(profile_->environmentLightModule->intensity * 10.0f);
+
 		this->horizontalRotationSpinBox->setValue(profile_->environmentLightModule->offset.getValue().x);
+		this->horizontalRotationSlider->setValue(profile_->environmentLightModule->offset.getValue().x * 100.0f);
+
 		this->verticalRotationSpinBox->setValue(profile_->environmentLightModule->offset.getValue().y);
+		this->verticalRotationSlider->setValue(profile_->environmentLightModule->offset.getValue().y * 100.0f);
+
 		this->backgroundToggle->setChecked(profile_->environmentLightModule->showBackground);
 		this->thumbnailToggle->setChecked(profile_->environmentLightModule->useTexture);
+
 		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
 		this->updatePreviewImage();
 	}

@@ -24,6 +24,8 @@ namespace unreal
 	void
 	RecordComponent::onInit() noexcept
 	{
+		this->addMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
+
 		this->getContext()->profile->playerModule->finish += [this](bool value)
 		{
 			this->stopRecord();
@@ -33,14 +35,11 @@ namespace unreal
 	void
 	RecordComponent::onEnable() noexcept
 	{
-		this->addMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
 	}
 
 	void
 	RecordComponent::onDisable() noexcept
 	{
-		this->removeMessageListener("flower:player:record", std::bind(&RecordComponent::onRecord, this));
-
 		this->stopRecord();
 	}
 

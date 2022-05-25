@@ -32,18 +32,18 @@ namespace unreal
 		virtual void load(octoon::runtime::json& reader) noexcept override;
 		virtual void save(octoon::runtime::json& reader) noexcept override;
 
+		virtual void disconnect() noexcept override;
+
 	private:
 		EncodeModule(const EncodeModule&) = delete;
 		EncodeModule& operator=(const EncodeModule&) = delete;
 
 	public:
-		EncodeMode encodeMode;
-		VideoQuality quality;
-
-		double crf;
-
-		std::uint32_t frame_type;
-		std::uint32_t encode_speed;
+		MutableLiveData<float> crf;
+		MutableLiveData<EncodeMode> encodeMode;
+		MutableLiveData<VideoQuality> quality;
+		MutableLiveData<std::uint32_t> frame_type;
+		MutableLiveData<std::uint32_t> encode_speed;
 	};
 }
 

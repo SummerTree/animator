@@ -18,7 +18,7 @@ namespace unreal
 		virtual void load(octoon::runtime::json& reader) noexcept override;
 		virtual void save(octoon::runtime::json& reader) noexcept override;
 
-		virtual void disconnect() noexcept;
+		virtual void disconnect() noexcept override;
 
 	private:
 		PhysicsModule(const PhysicsModule&) = delete;

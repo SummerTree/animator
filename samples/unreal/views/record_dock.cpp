@@ -131,19 +131,19 @@ namespace unreal
 		endLabel_ = new QLabel();
 		endLabel_->setText(tr("- End"));
 
-		start_ = new SpinBox();
-		start_->setObjectName("start");
-		start_->setAlignment(Qt::AlignRight);
-		start_->setMinimum(0);
-		start_->setMaximum(99999);
-		start_->installEventFilter(this);
+		startFrame_ = new SpinBox();
+		startFrame_->setObjectName("start");
+		startFrame_->setAlignment(Qt::AlignRight);
+		startFrame_->setMinimum(0);
+		startFrame_->setMaximum(99999);
+		startFrame_->installEventFilter(this);
 
-		end_ = new SpinBox();
-		end_->setObjectName("end");
-		end_->setAlignment(Qt::AlignRight);
-		end_->setMinimum(0);
-		end_->setMaximum(99999);
-		end_->installEventFilter(this);
+		endFrame_ = new SpinBox();
+		endFrame_->setObjectName("end");
+		endFrame_->setAlignment(Qt::AlignRight);
+		endFrame_->setMinimum(0);
+		endFrame_->setMaximum(99999);
+		endFrame_->installEventFilter(this);
 
 		denoiseLabel_ = new QLabel();
 		denoiseLabel_->setText(tr("Denoise:"));
@@ -197,9 +197,9 @@ namespace unreal
 		frameLayout_ = new QHBoxLayout();
 		frameLayout_->addSpacing(20);
 		frameLayout_->addWidget(startLabel_, 0, Qt::AlignLeft);
-		frameLayout_->addWidget(start_, 0, Qt::AlignLeft);
+		frameLayout_->addWidget(startFrame_, 0, Qt::AlignLeft);
 		frameLayout_->addWidget(endLabel_, 0, Qt::AlignLeft);
-		frameLayout_->addWidget(end_, 0, Qt::AlignLeft);
+		frameLayout_->addWidget(endFrame_, 0, Qt::AlignLeft);
 		frameLayout_->addStretch();
 
 		recordButton_ = new QToolButton();
@@ -279,6 +279,20 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
+		profile_->playerModule->startFrame += [this](std::uint32_t value)
+		{
+			startFrame_->blockSignals(true);
+			startFrame_->setValue(value);
+			startFrame_->blockSignals(false);
+		};
+
+		profile_->playerModule->endFrame += [this](std::uint32_t value)
+		{
+			endFrame_->blockSignals(true);
+			endFrame_->setValue(value);
+			endFrame_->blockSignals(false);
+		};
+
 		profile_->playerModule->finish += [this](bool value)
 		{
 			if (profile_->recordModule->active)
@@ -305,8 +319,8 @@ namespace unreal
 		connect(speed3_, SIGNAL(toggled(bool)), this, SLOT(speed3Event(bool)));
 		connect(speed4_, SIGNAL(toggled(bool)), this, SLOT(speed4Event(bool)));
 		connect(denoiseButton_, SIGNAL(stateChanged(int)), this, SLOT(denoiseEvent(int)));
-		connect(start_, SIGNAL(valueChanged(int)), this, SLOT(startEvent(int)));
-		connect(end_, SIGNAL(valueChanged(int)), this, SLOT(endEvent(int)));
+		connect(startFrame_, SIGNAL(valueChanged(int)), this, SLOT(startEvent(int)));
+		connect(endFrame_, SIGNAL(valueChanged(int)), this, SLOT(endEvent(int)));
 		connect(sppSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onSppChanged(int)));
 		connect(bouncesSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onBouncesChanged(int)));
 		connect(crfSpinbox, SIGNAL(valueChanged(double)), this, SLOT(onCrfChanged(double)));
@@ -460,8 +474,8 @@ namespace unreal
 	void
 	RecordDock::showEvent(QShowEvent* event)
 	{
-		start_->setValue(0);
-		end_->setValue(profile_->playerModule->endFrame);
+		startFrame_->setValue(0);
+		endFrame_->setValue(profile_->playerModule->endFrame);
 
 		if (profile_->recordModule->active)
 			recordButton_->setText(tr("Stop Render"));
