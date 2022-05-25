@@ -22,11 +22,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="104"/>
-        <source>��</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../views/camera_dock.cpp" line="113"/>
         <source>Depth Of Filed:</source>
         <translation type="unfinished"></translation>

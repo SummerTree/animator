@@ -101,7 +101,7 @@ namespace unreal
 		fovSpinbox_->setSingleStep(1.0f);
 		fovSpinbox_->setAlignment(Qt::AlignRight);
 		fovSpinbox_->setFixedWidth(100);
-		fovSpinbox_->setSuffix(tr("бу"));
+		fovSpinbox_->setSuffix("бу");
 		fovSpinbox_->setDecimals(1);
 		fovSpinbox_->installEventFilter(this);
 
