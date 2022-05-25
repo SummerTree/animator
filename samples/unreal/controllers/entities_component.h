@@ -45,6 +45,8 @@ namespace unreal
 		void setupCameraAnimation(const std::vector<octoon::PmmKeyframeCamera>& camera, octoon::Animation<float>& animtion) noexcept;
 
 	private:
+		void onInit() noexcept override;
+
 		void onEnable() noexcept override;
 		void onDisable() noexcept override;
 	};

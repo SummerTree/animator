@@ -24,6 +24,7 @@ namespace unreal
 		PlayerModule& operator=(const PlayerModule&) = delete;
 
 	public:
+		MutableLiveData<bool> finish;
 		MutableLiveData<bool> isPlaying;
 
 		MutableLiveData<std::uint32_t> spp;

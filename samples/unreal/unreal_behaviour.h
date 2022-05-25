@@ -13,6 +13,7 @@
 #include "controllers/h265_component.h"
 #include "controllers/hdri_component.h"
 #include "controllers/light_component.h"
+#include "controllers/environment_component.h"
 #include "controllers/mark_component.h"
 #include "controllers/material_component.h"
 #include "controllers/model_component.h"
@@ -92,6 +93,7 @@ namespace unreal
 		std::unique_ptr<RecordComponent> recordComponent_;
 		std::unique_ptr<EntitiesComponent> entitiesComponent_;
 		std::unique_ptr<OfflineComponent> offlineComponent_;
+		std::unique_ptr<EnvironmentComponent> environmentComponent_;
 		std::unique_ptr<PlayerComponent> playerComponent_;
 		std::unique_ptr<H264Component> h264Component_;
 		std::unique_ptr<H265Component> h265Component_;

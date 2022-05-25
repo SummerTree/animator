@@ -191,7 +191,7 @@ namespace unreal
 	void 
 	EntitiesComponent::importHDRi(const std::shared_ptr<octoon::GraphicsTexture>& texture) noexcept
 	{
-		auto& environmentLight = this->getContext()->profile->entitiesModule->enviromentLight;
+		auto& environmentLight = this->getContext()->profile->entitiesModule->environmentLight;
 		if (environmentLight)
 		{
 			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -214,7 +214,7 @@ namespace unreal
 	void
 	EntitiesComponent::clearHDRi() noexcept
 	{
-		auto& environmentLight = this->getContext()->profile->entitiesModule->enviromentLight;
+		auto& environmentLight = this->getContext()->profile->entitiesModule->environmentLight;
 		if (environmentLight)
 		{
 			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -434,6 +434,11 @@ namespace unreal
 	}
 
 	void
+	EntitiesComponent::onInit() noexcept
+	{
+	}
+
+	void
 	EntitiesComponent::onEnable() noexcept
 	{
 		auto mainLight = octoon::GameObject::create("DirectionalLight");
@@ -469,7 +474,7 @@ namespace unreal
 
 		this->getContext()->profile->entitiesModule->camera = mainCamera;
 		this->getContext()->profile->entitiesModule->sunLight = mainLight;
-		this->getContext()->profile->entitiesModule->enviromentLight = enviromentLight;
+		this->getContext()->profile->entitiesModule->environmentLight = enviromentLight;
 		
 		auto planeGeometry = octoon::CubeMesh::create(1, 1, 1);
 

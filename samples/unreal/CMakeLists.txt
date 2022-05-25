@@ -121,6 +121,8 @@ SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/player_component.cpp
 	${SOURCE_PATH}/controllers/entities_component.h
 	${SOURCE_PATH}/controllers/entities_component.cpp
+	${SOURCE_PATH}/controllers/environment_component.h
+	${SOURCE_PATH}/controllers/environment_component.cpp
 	${SOURCE_PATH}/controllers/offline_component.h
 	${SOURCE_PATH}/controllers/offline_component.cpp
 	${SOURCE_PATH}/controllers/record_component.h

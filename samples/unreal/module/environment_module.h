@@ -4,6 +4,7 @@
 #include <unreal_model.h>
 #include <octoon/math/vector2.h>
 #include <octoon/math/vector3.h>
+#include <octoon/hal/graphics_texture.h>
 
 namespace unreal
 {
@@ -23,9 +24,12 @@ namespace unreal
 		EnvironmentModule& operator=(const EnvironmentModule&) = delete;
 
 	public:
+		MutableLiveData<bool> useTexture;
+		MutableLiveData<bool> showBackground;
 		MutableLiveData<float> intensity;
 		MutableLiveData<octoon::math::float2> offset;
 		MutableLiveData<octoon::math::float3> color;
+		MutableLiveData<std::shared_ptr<octoon::GraphicsTexture>> texture;
 	};
 }
 

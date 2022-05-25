@@ -333,7 +333,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->enviromentLight && !profile_->playerModule->isPlaying)
+				if (profile_->entitiesModule->environmentLight && !profile_->playerModule->isPlaying)
 				{
 					if (environmentDock_->isHidden())
 					{

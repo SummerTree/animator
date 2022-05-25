@@ -14,6 +14,7 @@ namespace unreal
 	void
 	PlayerModule::reset() noexcept
 	{
+		this->finish = true;
 		this->isPlaying = false;
 		this->spp = 150;
 		this->sppCount = 0;

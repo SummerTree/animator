@@ -2,7 +2,6 @@
 #include <octoon/environment_light_component.h>
 #include <octoon/mesh_renderer_component.h>
 #include <octoon/image/image.h>
-#include <octoon/PMREM_loader.h>
 
 #include <qpainter.h>
 #include <qmessagebox.h>
@@ -429,6 +428,10 @@ namespace unreal
 
 		this->setWidget(mainWidget);
 
+		this->profile_->environmentModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
+		{
+		};
+
 		connect(previewButton_, SIGNAL(clicked(bool)), this, SLOT(previewClickEvent(bool)));
 		connect(thumbnail, SIGNAL(clicked()), this, SLOT(thumbnailClickEvent()));
 		connect(thumbnailToggle, SIGNAL(stateChanged(int)), this, SLOT(thumbnailToggleEvent(int)));
@@ -453,22 +456,6 @@ namespace unreal
 	EnvironmentDock::setColor(const QColor& c, int w, int h)
 	{
 		this->profile_->environmentModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
-
-		if (profile_->entitiesModule->enviromentLight)
-		{
-			auto srgb = octoon::math::srgb2linear(profile_->environmentModule->color.getValue());
-
-			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-			if (environmentLight)
-				environmentLight->setColor(srgb);
-
-			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
-			if (meshRenderer)
-			{
-				auto basicMaterial = meshRenderer->getMaterial()->downcast<octoon::MeshBasicMaterial>();
-				basicMaterial->setColor(srgb * profile_->environmentModule->intensity);
-			}
-		}
 
 		QPixmap pixmap(w, h);
 		QPainter painter(&pixmap);
@@ -584,8 +571,7 @@ namespace unreal
 					if (!previewImage->load(QString::fromStdString(previewPath)))
 						throw std::runtime_error("Cannot generate image for preview");
 
-					this->texture_ = octoon::TextureLoader::load(image, hdrPath, true);
-					this->irradianceTexture_ = octoon::PMREMLoader::load(this->texture_);
+					this->profile_->environmentModule->texture = octoon::TextureLoader::load(image, hdrPath, true);
 
 					this->setColor(QColor::fromRgbF(1, 1, 1));
 					this->setPreviewImage(QString::fromStdString(name), previewImage);
@@ -636,8 +622,7 @@ namespace unreal
 
 						QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
 
-						this->texture_ = texel;
-						this->irradianceTexture_ = octoon::PMREMLoader::load(this->texture_);
+						this->profile_->environmentModule->texture = texel;
 
 						this->setColor(QColor::fromRgbF(1, 1, 1));
 						this->setPreviewImage(QFileInfo(filepath).fileName(), std::make_shared<QImage>(qimage.scaled(previewButton_->size())));
@@ -663,19 +648,10 @@ namespace unreal
 	void
 	EnvironmentDock::thumbnailToggleEvent(int state)
 	{
-		auto environmentLight = this->profile_->entitiesModule->enviromentLight;
-		if (environmentLight)
-		{
-			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
-			if (envLight)
-			{
-				envLight->setBackgroundMap(state == Qt::Checked ? this->texture_ : nullptr);
-				envLight->setEnvironmentMap(state == Qt::Checked ? this->irradianceTexture_ : nullptr);
-			}
-
-			auto material = environmentLight->getComponent<octoon::MeshRendererComponent>()->getMaterial()->downcast<octoon::MeshBasicMaterial>();
-			material->setColorMap(state == Qt::Checked && backgroundToggle->isChecked() ? this->texture_ : nullptr);
-		}
+		if (state == Qt::Checked)
+			this->profile_->environmentModule->useTexture = true;
+		else
+			this->profile_->environmentModule->useTexture = false;
 
 		this->updatePreviewImage();
 	}
@@ -683,15 +659,10 @@ namespace unreal
 	void
 	EnvironmentDock::backgroundMapCheckEvent(int state)
 	{
-		auto environmentLight = this->profile_->entitiesModule->enviromentLight;
-		if (environmentLight)
-		{
-			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
-			if (envLight)
-				envLight->setShowBackground(state == Qt::Checked);
-
-			environmentLight->getComponent<octoon::MeshRendererComponent>()->setActive(state == Qt::Checked);
-		}
+		if (state == Qt::Checked)
+			this->profile_->environmentModule->showBackground = true;
+		else
+			this->profile_->environmentModule->showBackground = false;
 	}
 
 	void
@@ -718,20 +689,6 @@ namespace unreal
 	void
 	EnvironmentDock::intensityEditEvent(double value)
 	{
-		if (profile_->entitiesModule->enviromentLight)
-		{
-			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-			if (environmentLight)
-				environmentLight->setIntensity(value);
-
-			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
-			if (meshRenderer)
-			{
-				auto basicMaterial = meshRenderer->getMaterial()->downcast<octoon::MeshBasicMaterial>();
-				basicMaterial->setColor(octoon::math::srgb2linear(profile_->environmentModule->color.getValue()) * profile_->environmentModule->intensity);
-			}
-		}
-
 		this->profile_->environmentModule->intensity = value;
 		this->intensitySlider->setValue(value * 10.0f);
 	}
@@ -746,25 +703,6 @@ namespace unreal
 	EnvironmentDock::horizontalRotationEditEvent(double value)
 	{
 		this->profile_->environmentModule->offset = octoon::math::float2(value, this->profile_->environmentModule->offset.getValue().y);
-
-		if (profile_->entitiesModule->enviromentLight)
-		{
-			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
-			if (meshRenderer)
-			{
-				auto material = meshRenderer->getMaterial();
-				if (material->isInstanceOf<octoon::MeshBasicMaterial>())
-				{
-					auto basicMaterial = material->downcast<octoon::MeshBasicMaterial>();
-					basicMaterial->setOffset(this->profile_->environmentModule->offset);
-				}
-			}
-
-			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-			if (environmentLight)
-				environmentLight->setOffset(this->profile_->environmentModule->offset);
-		}
-
 		this->horizontalRotationSlider->setValue(value * 100.0f);
 		this->updatePreviewImage();
 	}
@@ -779,25 +717,6 @@ namespace unreal
 	EnvironmentDock::verticalRotationEditEvent(double value)
 	{
 		this->profile_->environmentModule->offset = octoon::math::float2(this->profile_->environmentModule->offset.getValue().x, value);
-
-		if (profile_->entitiesModule->enviromentLight)
-		{
-			auto meshRenderer = profile_->entitiesModule->enviromentLight->getComponent<octoon::MeshRendererComponent>();
-			if (meshRenderer)
-			{
-				auto material = meshRenderer->getMaterial();
-				if (material->isInstanceOf<octoon::MeshBasicMaterial>())
-				{
-					auto basicMaterial = material->downcast<octoon::MeshBasicMaterial>();
-					basicMaterial->setOffset(this->profile_->environmentModule->offset);
-				}
-			}
-
-			auto environmentLight = profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-			if (environmentLight)
-				environmentLight->setOffset(this->profile_->environmentModule->offset);
-		}
-
 		this->verticalRotationSlider->setValue(value * 100.0f);
 		this->updatePreviewImage();
 	}
@@ -821,20 +740,9 @@ namespace unreal
 		this->intensitySpinBox->setValue(profile_->environmentModule->intensity);
 		this->horizontalRotationSpinBox->setValue(profile_->environmentModule->offset.getValue().x);
 		this->verticalRotationSpinBox->setValue(profile_->environmentModule->offset.getValue().y);
+		this->backgroundToggle->setChecked(profile_->environmentModule->showBackground);
+		this->thumbnailToggle->setChecked(profile_->environmentModule->useTexture);
 		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
-
-		if (this->profile_->entitiesModule->enviromentLight)
-		{
-			auto envLight = this->profile_->entitiesModule->enviromentLight->getComponent<octoon::EnvironmentLightComponent>();
-			if (envLight)
-			{
-				this->texture_ = envLight->getBackgroundMap();
-				this->irradianceTexture_ = envLight->getEnvironmentMap();
-
-				thumbnailToggle->setChecked(envLight->getBackgroundMap() ? true : false);
-				backgroundToggle->setChecked(envLight->getShowBackground());
-			}
-		}
 
 		this->updatePreviewImage();
 	}
