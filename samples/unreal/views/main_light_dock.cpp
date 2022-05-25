@@ -41,54 +41,54 @@ namespace unreal
 		labelIntensity_ = new QLabel();
 		labelIntensity_->setText(tr("Intensity"));
 
-		editIntensity_ = new DoubleSpinBox();
-		editIntensity_->setFixedWidth(50);
-		editIntensity_->setMaximum(10.0f);
-		editIntensity_->setSingleStep(0.1f);
-		editIntensity_->setAlignment(Qt::AlignRight);
-		editIntensity_->setValue(profile->mainLightModule->intensity);
-		editIntensity_->setDecimals(1);
-		editIntensity_->setSuffix(u8"cd");
-		editIntensity_->installEventFilter(this);
+		intensitySpinBox_ = new DoubleSpinBox();
+		intensitySpinBox_->setFixedWidth(50);
+		intensitySpinBox_->setMaximum(10.0f);
+		intensitySpinBox_->setSingleStep(0.1f);
+		intensitySpinBox_->setAlignment(Qt::AlignRight);
+		intensitySpinBox_->setValue(profile->mainLightModule->intensity);
+		intensitySpinBox_->setDecimals(1);
+		intensitySpinBox_->setSuffix(u8"cd");
+		intensitySpinBox_->installEventFilter(this);
 
-		sliderIntensity_ = new QSlider();
-		sliderIntensity_->setObjectName("Intensity");
-		sliderIntensity_->setOrientation(Qt::Horizontal);
-		sliderIntensity_->setMinimum(0);
-		sliderIntensity_->setMaximum(100);
-		sliderIntensity_->setValue(profile->mainLightModule->intensity * 10.0f);
-		sliderIntensity_->setFixedWidth(250);
-		sliderIntensity_->installEventFilter(this);
+		intensitySlider_ = new QSlider();
+		intensitySlider_->setObjectName("Intensity");
+		intensitySlider_->setOrientation(Qt::Horizontal);
+		intensitySlider_->setMinimum(0);
+		intensitySlider_->setMaximum(100);
+		intensitySlider_->setValue(profile->mainLightModule->intensity * 10.0f);
+		intensitySlider_->setFixedWidth(250);
+		intensitySlider_->installEventFilter(this);
 
 		layoutIntensity_ = new QHBoxLayout();
 		layoutIntensity_->addWidget(labelIntensity_, 0, Qt::AlignLeft);
-		layoutIntensity_->addWidget(editIntensity_, 0, Qt::AlignRight);
+		layoutIntensity_->addWidget(intensitySpinBox_, 0, Qt::AlignRight);
 		layoutIntensity_->setContentsMargins(40, 5, 35, 0);
 
 		labelSize_ = new QLabel();
 		labelSize_->setText(tr("Size"));
 
-		editSize_ = new DoubleSpinBox();
-		editSize_->setFixedWidth(50);
-		editSize_->setMaximum(1.0f);
-		editSize_->setSingleStep(0.05f);
-		editSize_->setAlignment(Qt::AlignRight);
-		editSize_->setValue(profile->mainLightModule->size);
-		editSize_->setDecimals(1);
-		editSize_->installEventFilter(this);
+		sizeSpinBox_ = new DoubleSpinBox();
+		sizeSpinBox_->setFixedWidth(50);
+		sizeSpinBox_->setMaximum(1.0f);
+		sizeSpinBox_->setSingleStep(0.05f);
+		sizeSpinBox_->setAlignment(Qt::AlignRight);
+		sizeSpinBox_->setValue(profile->mainLightModule->size);
+		sizeSpinBox_->setDecimals(1);
+		sizeSpinBox_->installEventFilter(this);
 
-		sliderSize_ = new QSlider();
-		sliderSize_->setObjectName("Size");
-		sliderSize_->setOrientation(Qt::Horizontal);
-		sliderSize_->setMinimum(0);
-		sliderSize_->setMaximum(100);
-		sliderSize_->setValue(profile->mainLightModule->size * 100.0f);
-		sliderSize_->setFixedWidth(250);
-		sliderSize_->installEventFilter(this);
+		sizeSlider_ = new QSlider();
+		sizeSlider_->setObjectName("Size");
+		sizeSlider_->setOrientation(Qt::Horizontal);
+		sizeSlider_->setMinimum(0);
+		sizeSlider_->setMaximum(100);
+		sizeSlider_->setValue(profile->mainLightModule->size * 100.0f);
+		sizeSlider_->setFixedWidth(250);
+		sizeSlider_->installEventFilter(this);
 
 		layoutSize_ = new QHBoxLayout();
 		layoutSize_->addWidget(labelSize_, 0, Qt::AlignLeft);
-		layoutSize_->addWidget(editSize_, 0, Qt::AlignRight);
+		layoutSize_->addWidget(sizeSpinBox_, 0, Qt::AlignRight);
 		layoutSize_->setContentsMargins(40, 5, 35, 0);
 
 		labelRotationX_ = new QLabel();
@@ -175,9 +175,9 @@ namespace unreal
 		scrollLayout_ = new QVBoxLayout();
 		scrollLayout_->addWidget(colorDialog_, 0, Qt::AlignHCenter | Qt::AlignTop);
 		scrollLayout_->addLayout(layoutIntensity_, 0);
-		scrollLayout_->addWidget(sliderIntensity_, 0, Qt::AlignHCenter);
+		scrollLayout_->addWidget(intensitySlider_, 0, Qt::AlignHCenter);
 		scrollLayout_->addLayout(layoutSize_, 0);
-		scrollLayout_->addWidget(sliderSize_, 0, Qt::AlignHCenter);
+		scrollLayout_->addWidget(sizeSlider_, 0, Qt::AlignHCenter);
 		scrollLayout_->addLayout(layoutRotationX_, 0);
 		scrollLayout_->addWidget(sliderRotationX_, 0, Qt::AlignHCenter);
 		scrollLayout_->addLayout(layoutRotationY_, 0);
@@ -205,11 +205,67 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
+		this->profile_->mainLightModule->intensity += [this](float value)
+		{
+			intensitySlider_->blockSignals(true);
+			intensitySlider_->setValue(value * 10.0f);
+			intensitySlider_->blockSignals(false);
+
+			intensitySpinBox_->blockSignals(true);
+			intensitySpinBox_->setValue(value);
+			intensitySpinBox_->blockSignals(false);
+		};
+
+		this->profile_->mainLightModule->size += [this](float value)
+		{
+			sizeSlider_->blockSignals(true);
+			sizeSlider_->setValue(value * 100.0f);
+			sizeSlider_->blockSignals(false);
+
+			sizeSpinBox_->blockSignals(true);
+			sizeSpinBox_->setValue(value);
+			sizeSpinBox_->blockSignals(false);
+		};
+
+		this->profile_->mainLightModule->color += [this](const octoon::math::float3& color)
+		{
+			colorDialog_->blockSignals(true);
+			colorDialog_->setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
+			colorDialog_->blockSignals(false);
+		};
+
+		this->profile_->mainLightModule->rotation += [this](const octoon::math::float3& rotation)
+		{
+			editRotationX_->blockSignals(true);
+			editRotationX_->setValue(rotation.x + 180.0f);
+			editRotationX_->blockSignals(false);
+
+			sliderRotationX_->blockSignals(true);
+			sliderRotationX_->setValue(rotation.x + 180.0f);
+			sliderRotationX_->blockSignals(false);
+
+			editRotationY_->blockSignals(true);
+			editRotationY_->setValue(rotation.y + 180.0f);
+			editRotationY_->blockSignals(false);
+
+			editRotationZ_->blockSignals(true);
+			editRotationZ_->setValue(rotation.z);
+			editRotationZ_->blockSignals(false);
+
+			sliderRotationY_->blockSignals(true);
+			sliderRotationY_->setValue(rotation.y + 180.0f);
+			sliderRotationY_->blockSignals(false);
+
+			sliderRotationZ_->blockSignals(true);
+			sliderRotationZ_->setValue(rotation.z);
+			sliderRotationZ_->blockSignals(false);
+		};
+
 		connect(resetButton_, SIGNAL(clicked()), this, SLOT(resetEvent()));
-		connect(editIntensity_, SIGNAL(valueChanged(double)), this, SLOT(intensityEditEvent(double)));
-		connect(sliderIntensity_, SIGNAL(valueChanged(int)), this, SLOT(intensitySliderEvent(int)));
-		connect(editSize_, SIGNAL(valueChanged(double)), this, SLOT(sizeEditEvent(double)));
-		connect(sliderSize_, SIGNAL(valueChanged(int)), this, SLOT(sizeSliderEvent(int)));
+		connect(intensitySpinBox_, SIGNAL(valueChanged(double)), this, SLOT(intensityEditEvent(double)));
+		connect(intensitySlider_, SIGNAL(valueChanged(int)), this, SLOT(intensitySliderEvent(int)));
+		connect(sizeSpinBox_, SIGNAL(valueChanged(double)), this, SLOT(sizeEditEvent(double)));
+		connect(sizeSlider_, SIGNAL(valueChanged(int)), this, SLOT(sizeSliderEvent(int)));
 		connect(editRotationX_, SIGNAL(valueChanged(double)), this, SLOT(editRotationXEvent(double)));
 		connect(sliderRotationX_, SIGNAL(valueChanged(int)), this, SLOT(sliderRotationXEvent(int)));
 		connect(editRotationY_, SIGNAL(valueChanged(double)), this, SLOT(editRotationYEvent(double)));
@@ -220,11 +276,6 @@ namespace unreal
 	}
 
 	MainLightDock::~MainLightDock()
-	{
-	}
-
-	void
-	MainLightDock::resizeEvent(QResizeEvent* event)
 	{
 	}
 
@@ -254,66 +305,61 @@ namespace unreal
 	void
 	MainLightDock::intensitySliderEvent(int value)
 	{
-		editIntensity_->setValue(value / 10.0f);
+		profile_->mainLightModule->intensity = value / 10.0f;
 	}
 
 	void
 	MainLightDock::intensityEditEvent(double value)
 	{
 		profile_->mainLightModule->intensity = value;
-		sliderIntensity_->setValue(value * 10.0f);
 	}
 
 	void
 	MainLightDock::sizeSliderEvent(int value)
 	{
-		editSize_->setValue(value / 100.0f);
+		profile_->mainLightModule->size = value / 100.0f;
 	}
 
 	void
 	MainLightDock::sizeEditEvent(double value)
 	{
 		profile_->mainLightModule->size = value;
-		sliderSize_->setValue(value * 100.0f);
 	}
 
 	void
 	MainLightDock::sliderRotationXEvent(int value)
 	{
-		editRotationX_->setValue(value);
+		profile_->mainLightModule->rotation = octoon::math::float3(value - 180.0f, profile_->mainLightModule->rotation.getValue().y, profile_->mainLightModule->rotation.getValue().z);
+	}
+
+	void
+	MainLightDock::sliderRotationYEvent(int value)
+	{
+		profile_->mainLightModule->rotation = octoon::math::float3(profile_->mainLightModule->rotation.getValue().x, value - 180.0f, profile_->mainLightModule->rotation.getValue().z);
+	}
+
+	void
+	MainLightDock::sliderRotationZEvent(int value)
+	{
+		profile_->mainLightModule->rotation = octoon::math::float3(profile_->mainLightModule->rotation.getValue().x, profile_->mainLightModule->rotation.getValue().y, value);
 	}
 
 	void
 	MainLightDock::editRotationXEvent(double value)
 	{
 		profile_->mainLightModule->rotation = octoon::math::float3(value - 180.0f, profile_->mainLightModule->rotation.getValue().y, profile_->mainLightModule->rotation.getValue().z);
-		sliderRotationX_->setValue(value);
-	}
-
-	void
-	MainLightDock::sliderRotationYEvent(int value)
-	{
-		editRotationY_->setValue(value);
 	}
 
 	void
 	MainLightDock::editRotationYEvent(double value)
 	{
 		profile_->mainLightModule->rotation = octoon::math::float3(profile_->mainLightModule->rotation.getValue().x, value - 180.0f, profile_->mainLightModule->rotation.getValue().z);
-		sliderRotationY_->setValue(value);
-	}
-
-	void
-	MainLightDock::sliderRotationZEvent(int value)
-	{
-		editRotationZ_->setValue(value);
 	}
 
 	void
 	MainLightDock::editRotationZEvent(double value)
 	{
 		profile_->mainLightModule->rotation = octoon::math::float3(profile_->mainLightModule->rotation.getValue().x, profile_->mainLightModule->rotation.getValue().y, value);
-		sliderRotationZ_->setValue(value);
 	}
 
 	void
@@ -322,11 +368,20 @@ namespace unreal
 		auto color = profile_->mainLightModule->color.getValue();
 		auto rotation = profile_->mainLightModule->rotation.getValue();
 
-		editSize_->setValue(profile_->mainLightModule->size);
-		editIntensity_->setValue(profile_->mainLightModule->intensity);
+		sizeSpinBox_->setValue(profile_->mainLightModule->size);
+		sizeSlider_->setValue(profile_->mainLightModule->size * 100.0f);
+
+		intensitySpinBox_->setValue(profile_->mainLightModule->intensity);
+		intensitySlider_->setValue(profile_->mainLightModule->intensity * 10.0f);
+
 		editRotationX_->setValue(rotation.x + 180.0f);
 		editRotationY_->setValue(rotation.y + 180.0f);
 		editRotationZ_->setValue(rotation.z);
+
+		sliderRotationX_->setValue(rotation.x + 180.0f);
+		sliderRotationY_->setValue(rotation.y + 180.0f);
+		sliderRotationZ_->setValue(rotation.z);
+
 		colorDialog_->setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
 	}
 

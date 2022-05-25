@@ -18,7 +18,6 @@ namespace unreal
 		~MainLightDock();
 
 		void showEvent(QShowEvent* event) override;
-		void resizeEvent(QResizeEvent* event) override;
 		void closeEvent(QCloseEvent* event) override;
 		void paintEvent(QPaintEvent* e) noexcept override;
 
@@ -43,8 +42,8 @@ namespace unreal
 		QScrollArea* scrollArea_;
 		QVBoxLayout* scrollLayout_;
 		ColorDialog* colorDialog_;
-		QDoubleSpinBox* editSize_;
-		QDoubleSpinBox* editIntensity_;
+		QDoubleSpinBox* sizeSpinBox_;
+		QDoubleSpinBox* intensitySpinBox_;
 		QDoubleSpinBox* editRotationX_;
 		QDoubleSpinBox* editRotationY_;
 		QDoubleSpinBox* editRotationZ_;
@@ -53,8 +52,8 @@ namespace unreal
 		QLabel* labelRotationX_;
 		QLabel* labelRotationY_;
 		QLabel* labelRotationZ_;
-		QSlider* sliderSize_;
-		QSlider* sliderIntensity_;
+		QSlider* sizeSlider_;
+		QSlider* intensitySlider_;
 		QSlider* sliderRotationX_;
 		QSlider* sliderRotationY_;
 		QSlider* sliderRotationZ_;
