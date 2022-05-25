@@ -116,7 +116,14 @@ namespace unreal
 				model->focusDistance = cameraComponent->getFocalDistance();
 
 				if (cameraComponent->getAperture() > 0.0f)
+				{
+					model->useDepthOfFiled = true;
 					model->aperture = cameraComponent->getAperture();
+				}
+				else
+				{
+					model->useDepthOfFiled = false;
+				}
 			}
 		}
 	}
