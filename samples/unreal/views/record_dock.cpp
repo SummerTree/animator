@@ -302,15 +302,9 @@ namespace unreal
 	RecordDock::onBouncesChanged(int value)
 	{
 		if (!profile_->playerModule->isPlaying)
-		{
-			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-			if (behaviour)
-				behaviour->getComponent<OfflineComponent>()->setMaxBounces(value);
-		}
+			profile_->offlineModule->bounces = value;
 		else
-		{
 			bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
-		}
 	}
 
 	void

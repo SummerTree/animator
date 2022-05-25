@@ -20,6 +20,8 @@ namespace unreal
 
 		virtual std::shared_ptr<UnrealModule> model() const noexcept = 0;
 
+		virtual void onInit() noexcept(false);
+
 		virtual void onEnable() noexcept(false);
 		virtual void onDisable() noexcept(false);
 
@@ -119,6 +121,7 @@ namespace unreal
 		{
 			this->setModel(model);
 			this->setContext(context);
+			this->onInit();
 		}
 
 		template<typename T>

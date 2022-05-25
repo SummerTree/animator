@@ -3,6 +3,11 @@
 namespace unreal
 {
 	void 
+	IUnrealComponent::onInit() noexcept(false)
+	{
+	}
+
+	void 
 	IUnrealComponent::onEnable() noexcept(false)
 	{
 	}

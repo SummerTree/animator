@@ -12,15 +12,14 @@ namespace unreal
 		OfflineComponent() noexcept;
 		virtual ~OfflineComponent() noexcept;
 
-		void setMaxBounces(std::uint32_t num_bounces) noexcept;
-		std::uint32_t getMaxBounces() const noexcept;
-
 		virtual const std::type_info& type_info() const noexcept
 		{
 			return typeid(OfflineComponent);
 		}
 
 	private:
+		void onInit() noexcept override;
+
 		void onEnable() noexcept override;
 		void onDisable() noexcept override;
 

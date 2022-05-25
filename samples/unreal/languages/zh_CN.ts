@@ -843,8 +843,8 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="193"/>
         <location filename="../views/record_dock.cpp" line="270"/>
-        <location filename="../views/record_dock.cpp" line="360"/>
-        <location filename="../views/record_dock.cpp" line="479"/>
+        <location filename="../views/record_dock.cpp" line="354"/>
+        <location filename="../views/record_dock.cpp" line="473"/>
         <source>Start Render</source>
         <translation type="unfinished">开始渲染</translation>
     </message>
@@ -859,48 +859,48 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">渲染设置</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="335"/>
+        <location filename="../views/record_dock.cpp" line="329"/>
         <source>Warning</source>
         <translation type="unfinished">警告</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="335"/>
+        <location filename="../views/record_dock.cpp" line="329"/>
         <source>Start frame must be less than end frame.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="341"/>
+        <location filename="../views/record_dock.cpp" line="335"/>
         <source>Save Video</source>
         <translation type="unfinished">保存视频</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="341"/>
+        <location filename="../views/record_dock.cpp" line="335"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished">MP4 Files (*.mp4)</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="343"/>
+        <location filename="../views/record_dock.cpp" line="337"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="343"/>
+        <location filename="../views/record_dock.cpp" line="337"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="350"/>
-        <location filename="../views/record_dock.cpp" line="477"/>
+        <location filename="../views/record_dock.cpp" line="344"/>
+        <location filename="../views/record_dock.cpp" line="471"/>
         <source>Stop Render</source>
         <translation type="unfinished">停止渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="354"/>
+        <location filename="../views/record_dock.cpp" line="348"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="354"/>
+        <location filename="../views/record_dock.cpp" line="348"/>
         <source>Failed to create file</source>
         <translation type="unfinished">创建文件失败</translation>
     </message>
