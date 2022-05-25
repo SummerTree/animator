@@ -22,6 +22,11 @@
         <translation>视野角：</translation>
     </message>
     <message>
+        <location filename="../views/camera_dock.cpp" line="104"/>
+        <source>��</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/camera_dock.cpp" line="113"/>
         <source>Depth Of Filed:</source>
         <translation>开启景深</translation>
@@ -32,14 +37,29 @@
         <translation>光圈大小：</translation>
     </message>
     <message>
+        <location filename="../views/camera_dock.cpp" line="136"/>
+        <source>f/</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/camera_dock.cpp" line="141"/>
-        <source>Focal Length:</source>
-        <translation>等效焦距</translation>
+        <source>Focal Length (35mmfilm):</source>
+        <translation type="unfinished">等效焦距(35mmfilm)</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="145"/>
         <source>Focus Distance:</source>
         <translation>焦点距离：</translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="154"/>
+        <source>mm</source>
+        <translation>毫米</translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="164"/>
+        <source>m</source>
+        <translation>米</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="169"/>

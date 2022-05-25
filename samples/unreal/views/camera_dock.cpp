@@ -101,7 +101,7 @@ namespace unreal
 		fovSpinbox_->setSingleStep(1.0f);
 		fovSpinbox_->setAlignment(Qt::AlignRight);
 		fovSpinbox_->setFixedWidth(100);
-		fovSpinbox_->setSuffix(u8"бу");
+		fovSpinbox_->setSuffix(tr("бу"));
 		fovSpinbox_->setDecimals(1);
 		fovSpinbox_->installEventFilter(this);
 
@@ -133,12 +133,12 @@ namespace unreal
 		apertureSpinbox_->setSingleStep(0.1f);
 		apertureSpinbox_->setAlignment(Qt::AlignRight);
 		apertureSpinbox_->setFixedWidth(100);
-		apertureSpinbox_->setPrefix(u8"f/");
+		apertureSpinbox_->setPrefix(tr("f/"));
 		apertureSpinbox_->setDecimals(1);
 		apertureSpinbox_->installEventFilter(this);
 
 		focalLengthLabel_ = new QLabel();
-		focalLengthLabel_->setText(tr("Focal Length:"));
+		focalLengthLabel_->setText(tr("Focal Length (35mmfilm):"));
 		focalLengthLabel_->setStyleSheet("color: rgb(200,200,200);");
 
 		focusDistanceLabel_ = new QLabel();
@@ -151,7 +151,7 @@ namespace unreal
 		focalLengthSpinbox_->setValue(31.18f);
 		focalLengthSpinbox_->setSingleStep(0.1f);
 		focalLengthSpinbox_->setAlignment(Qt::AlignRight);
-		focalLengthSpinbox_->setSuffix(u8"mm");
+		focalLengthSpinbox_->setSuffix(tr("mm"));
 		focalLengthSpinbox_->setFixedWidth(100);
 		focalLengthSpinbox_->installEventFilter(this);
 
@@ -161,7 +161,7 @@ namespace unreal
 		focusDistanceSpinbox_->setValue(0);
 		focusDistanceSpinbox_->setSingleStep(0.1f);
 		focusDistanceSpinbox_->setAlignment(Qt::AlignRight);
-		focusDistanceSpinbox_->setSuffix(u8"m");
+		focusDistanceSpinbox_->setSuffix(tr("m"));
 		focusDistanceSpinbox_->setFixedWidth(100);
 		focusDistanceSpinbox_->installEventFilter(this);
 

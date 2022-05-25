@@ -22,6 +22,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/camera_dock.cpp" line="104"/>
+        <source>��</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/camera_dock.cpp" line="113"/>
         <source>Depth Of Filed:</source>
         <translation type="unfinished"></translation>
@@ -32,13 +37,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/camera_dock.cpp" line="136"/>
+        <source>f/</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/camera_dock.cpp" line="141"/>
-        <source>Focal Length:</source>
+        <source>Focal Length (35mmfilm):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="145"/>
         <source>Focus Distance:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="154"/>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/camera_dock.cpp" line="164"/>
+        <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
