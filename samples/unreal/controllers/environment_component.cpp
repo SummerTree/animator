@@ -133,7 +133,7 @@ namespace unreal
 			auto& profile = this->getContext()->profile;
 
 			this->texture_ = texture;
-			this->irradianceTexture_ = octoon::PMREMLoader::load(this->texture_);
+			this->irradianceTexture_ = texture ? octoon::PMREMLoader::load(this->texture_) : nullptr;
 
 			auto environmentLight = profile->entitiesModule->environmentLight;
 			if (environmentLight)

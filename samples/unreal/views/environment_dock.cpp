@@ -435,6 +435,7 @@ namespace unreal
 
 		this->profile_->environmentModule->color += [this](const octoon::math::float3& value)
 		{
+			this->setColor(QColor::fromRgbF(value.x, value.y, value.z));
 			this->updatePreviewImage();
 		};
 
@@ -476,7 +477,6 @@ namespace unreal
 		painter.setPen(Qt::NoPen);
 		painter.fillRect(QRect(0, 0, w, h), c);
 		this->colorButton->setIcon(QIcon(pixmap));
-		this->profile_->environmentModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
 	}
 
 	void
@@ -496,8 +496,6 @@ namespace unreal
 		this->thumbnailPath->setToolTip(name);
 		this->thumbnailPath->setText(thumbnailMetrics.elidedText(this->thumbnailPath->toolTip(), Qt::ElideRight, this->thumbnailPath->width()));
 		this->thumbnail->setIcon(QIcon(QPixmap::fromImage(image.scaled(QSize(48, 30)))));
-		this->thumbnailToggle->setChecked(false);
-		this->thumbnailToggle->setChecked(true);
 	}
 
 	void
@@ -586,11 +584,11 @@ namespace unreal
 					if (!previewImage->load(QString::fromStdString(previewPath)))
 						throw std::runtime_error("Cannot generate image for preview");
 
-					this->profile_->environmentModule->texture = octoon::TextureLoader::load(image, hdrPath, true);
-
-					this->setColor(QColor::fromRgbF(1, 1, 1));
 					this->setPreviewImage(QString::fromStdString(name), previewImage);
 					this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
+
+					this->profile_->environmentModule->color = octoon::math::float3(1, 1, 1);
+					this->profile_->environmentModule->texture = octoon::TextureLoader::load(image, hdrPath, true);
 				}
 			}
 		}
@@ -636,12 +634,13 @@ namespace unreal
 						texel->unmap();
 
 						QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+						auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
 
+						this->setPreviewImage(QFileInfo(filepath).fileName(), previewImage);
+						this->setThumbnailImage(filepath, *previewImage);
+
+						this->profile_->environmentModule->color = octoon::math::float3(1, 1, 1);
 						this->profile_->environmentModule->texture = texel;
-
-						this->setColor(QColor::fromRgbF(1, 1, 1));
-						this->setPreviewImage(QFileInfo(filepath).fileName(), std::make_shared<QImage>(qimage.scaled(previewButton_->size())));
-						this->setThumbnailImage(filepath, qimage);
 					}
 				}
 			}
@@ -687,9 +686,9 @@ namespace unreal
 	}
 
 	void 
-	EnvironmentDock::colorChangeEvent(const QColor& color)
+	EnvironmentDock::colorChangeEvent(const QColor& c)
 	{
-		this->setColor(color);
+		this->profile_->environmentModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
 	}
 
 	void
@@ -734,11 +733,13 @@ namespace unreal
 	void
 	EnvironmentDock::resetEvent()
 	{
-		this->intensitySpinBox->setValue(1.0f);
-		this->thumbnailToggle->setChecked(false);
-		this->horizontalRotationSpinBox->setValue(0.0f);
-		this->verticalRotationSpinBox->setValue(0.0f);
-		this->setColor(QColor::fromRgb(229, 229, 235));
+		auto c = QColor::fromRgb(229, 229, 235);
+
+		this->profile_->environmentModule->intensity = 1.0f;
+		this->profile_->environmentModule->offset = octoon::math::float2::Zero;
+		this->profile_->environmentModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
+		this->profile_->environmentModule->texture = nullptr;
+		this->profile_->environmentModule->showBackground = true;
 	}
 
 	void
