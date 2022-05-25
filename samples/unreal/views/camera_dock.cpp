@@ -333,7 +333,7 @@ namespace unreal
 	void
 	CameraDock::onFocusDistanceChanged(double value)
 	{
-		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
+		if (profile_->entitiesModule->camera)
 		{
 			if (!focusDistanceSpinbox_->specialValueText().isEmpty())
 			{
@@ -353,7 +353,7 @@ namespace unreal
 	void
 	CameraDock::onLoadAnimation()
 	{
-		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
+		if (profile_->entitiesModule->camera)
 		{
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
 			if (!filepath.isEmpty())
@@ -395,17 +395,14 @@ namespace unreal
 	void
 	CameraDock::onUnloadAnimation()
 	{
-		if (!profile_->playerModule->isPlaying && profile_->entitiesModule->camera)
+		if (profile_->entitiesModule->camera)
 		{
 			auto mainCamera = profile_->entitiesModule->camera;
 			mainCamera->removeComponent<octoon::AnimatorComponent>();
 
-			auto transform = mainCamera->getComponent<octoon::TransformComponent>();
-			transform->setTranslate(octoon::math::float3(0, 10, -10));
-			transform->setQuaternion(octoon::math::Quaternion::Zero);
-
-			auto filmCamera = mainCamera->getComponent<octoon::FilmCameraComponent>();
-			filmCamera->setFov(60.0f);
+			profile_->cameraModule->fov = 60.0f;
+			profile_->cameraModule->translate = octoon::math::float3(0, 10, -10);
+			profile_->cameraModule->rotation = octoon::math::float3::Zero;
 
 			unloadButton_->setEnabled(false);
 		}
@@ -417,6 +414,7 @@ namespace unreal
 		fovSpinbox_->setValue(profile_->cameraModule->fov);
 		focalLengthSpinbox_->setValue(profile_->cameraModule->focalLength);
 		apertureSpinbox_->setValue(profile_->cameraModule->aperture);
+		dofButton_->setChecked(profile_->cameraModule->useDepthOfFiled);
 
 		auto mainCamera = profile_->entitiesModule->camera;
 		if (mainCamera->getComponent<octoon::AnimatorComponent>())

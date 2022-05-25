@@ -76,6 +76,26 @@ namespace unreal
 			}
 		};
 
+		this->getModel()->translate += [this](const octoon::math::float3& translate)
+		{
+			auto camera = this->getContext()->profile->entitiesModule->camera;
+			if (camera)
+			{
+				auto transform = camera->getComponent<octoon::TransformComponent>();
+				transform->setTranslate(translate);
+			}
+		};
+
+		this->getModel()->rotation += [this](const octoon::math::float3& rotation)
+		{
+			auto camera = this->getContext()->profile->entitiesModule->camera;
+			if (camera)
+			{
+				auto transform = camera->getComponent<octoon::TransformComponent>();
+				transform->setEulerAngles(octoon::math::radians(rotation));
+			}
+		};
+
 		this->getContext()->profile->playerModule->isPlaying += [this](bool value)
 		{
 			this->update();
