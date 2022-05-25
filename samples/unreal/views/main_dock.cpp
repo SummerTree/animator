@@ -254,7 +254,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
+				if (profile_->entitiesModule->mainLight && !profile_->playerModule->isPlaying)
 				{
 					if (lightDock_->isHidden())
 					{
@@ -293,7 +293,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (profile_->entitiesModule->sunLight && !profile_->playerModule->isPlaying)
+				if (profile_->entitiesModule->mainLight && !profile_->playerModule->isPlaying)
 				{
 					if (mainLightDock_->isHidden())
 					{

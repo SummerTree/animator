@@ -17,8 +17,6 @@ namespace unreal
 		MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<unreal::UnrealProfile>& profile);
 		~MainLightDock();
 
-		void repaint();
-
 		virtual void showEvent(QShowEvent* event) override;
 		virtual void resizeEvent(QResizeEvent* event) override;
 		virtual void closeEvent(QCloseEvent* event) override;

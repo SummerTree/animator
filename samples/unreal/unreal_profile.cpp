@@ -14,8 +14,8 @@ namespace unreal
 		, offlineModule(std::make_shared<OfflineModule>())
 		, recordModule(std::make_shared<RecordModule>())
 		, markModule(std::make_shared<MarkModule>())
-		, sunModule(std::make_shared<SunModule>())
-		, environmentModule(std::make_shared<EnvironmentModule>())
+		, mainLightModule(std::make_shared<MainLightModule>())
+		, environmentLightModule(std::make_shared<EnvironmentModule>())
 		, clientModule(std::make_shared<ClientModule>())
 		, resourceModule(std::make_shared<ResourceModule>())
 		, selectorModule(std::make_shared<SelectorModule>())
@@ -30,20 +30,34 @@ namespace unreal
 		if (stream)
 		{
 			auto json = octoon::runtime::json::parse(stream);
-			this->physicsModule->load(json["physics"]);
-			this->encodeModule->load(json["encode"]);
-			this->playerModule->load(json["time"]);
-			this->fileModule->load(json["file"]);
-			this->entitiesModule->load(json["entities"]);
-			this->offlineModule->load(json["offline"]);
-			this->recordModule->load(json["canvas"]);
-			this->markModule->load(json["mark"]);
-			this->sunModule->load(json["sun"]);
-			this->environmentModule->load(json["environment"]);
-			this->clientModule->load(json["client"]);
-			this->resourceModule->load(json["resource"]);
-			this->selectorModule->load(json["drag"]);
-			this->gridModule->load(json["grid"]);
+			if (json.find("physics") != json.end())
+				this->physicsModule->load(json["physics"]);
+			if (json.find("encode") != json.end())
+				this->encodeModule->load(json["encode"]);
+			if (json.find("time") != json.end())
+				this->playerModule->load(json["time"]);
+			if (json.find("file") != json.end())
+				this->fileModule->load(json["file"]);
+			if (json.find("entities") != json.end())
+				this->entitiesModule->load(json["entities"]);
+			if (json.find("offline") != json.end())
+				this->offlineModule->load(json["offline"]);
+			if (json.find("canvas") != json.end())
+				this->recordModule->load(json["canvas"]);
+			if (json.find("mark") != json.end())
+				this->markModule->load(json["mark"]);
+			if (json.find("mainLight") != json.end())
+				this->mainLightModule->load(json["mainLight"]);
+			if (json.find("environmentLight") != json.end())
+				this->environmentLightModule->load(json["environmentLight"]);
+			if (json.find("client") != json.end())
+				this->clientModule->load(json["client"]);
+			if (json.find("resource") != json.end())
+				this->resourceModule->load(json["resource"]);
+			if (json.find("drag") != json.end())
+				this->selectorModule->load(json["drag"]);
+			if (json.find("grid") != json.end())
+				this->gridModule->load(json["grid"]);
 		}
 	}
 
@@ -72,8 +86,8 @@ namespace unreal
 			profile.offlineModule->save(json["offline"]);
 			profile.recordModule->save(json["canvas"]);
 			profile.markModule->save(json["mark"]);
-			profile.sunModule->save(json["sun"]);
-			profile.environmentModule->save(json["environment"]);
+			profile.mainLightModule->save(json["mainLight"]);
+			profile.environmentLightModule->save(json["environmentLight"]);
 			profile.clientModule->save(json["client"]);
 			profile.resourceModule->save(json["resource"]);
 			profile.selectorModule->save(json["drag"]);

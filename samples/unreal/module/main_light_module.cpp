@@ -1,18 +1,18 @@
-#include "sun_module.h"
+#include "main_light_module.h"
 
 namespace unreal
 {
-	SunModule::SunModule() noexcept
+	MainLightModule::MainLightModule() noexcept
 	{
 		this->reset();
 	}
 
-	SunModule::~SunModule() noexcept
+	MainLightModule::~MainLightModule() noexcept
 	{
 	}
 
 	void
-	SunModule::reset() noexcept
+	MainLightModule::reset() noexcept
 	{
 		this->enable = false;
 		this->size = 0.1f;
@@ -21,7 +21,7 @@ namespace unreal
 	}
 
 	void 
-	SunModule::load(octoon::runtime::json& reader) noexcept
+	MainLightModule::load(octoon::runtime::json& reader) noexcept
 	{
 		if (reader.find("enable") != reader.end())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
@@ -37,7 +37,7 @@ namespace unreal
 	}
 
 	void 
-	SunModule::save(octoon::runtime::json& writer) noexcept
+	MainLightModule::save(octoon::runtime::json& writer) noexcept
 	{
 		writer["enable"] = this->enable.getValue();
 		writer["intensity"] = this->intensity.getValue();

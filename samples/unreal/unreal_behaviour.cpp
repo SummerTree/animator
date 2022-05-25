@@ -96,6 +96,7 @@ namespace unreal
 
 		recordComponent_ = std::make_unique<RecordComponent>();
 		entitiesComponent_ = std::make_unique<EntitiesComponent>();
+		mainLightComponent_ = std::make_unique<MainLightComponent>();
 		environmentComponent_ = std::make_unique<EnvironmentComponent>();
 		offlineComponent_ = std::make_unique<OfflineComponent>();
 		playerComponent_ = std::make_unique<PlayerComponent>();
@@ -114,7 +115,8 @@ namespace unreal
 
 		recordComponent_->init(context_, profile_->recordModule);
 		entitiesComponent_->init(context_, profile_->entitiesModule);
-		environmentComponent_->init(context_, profile_->environmentModule);
+		mainLightComponent_->init(context_, profile_->mainLightModule);
+		environmentComponent_->init(context_, profile_->environmentLightModule);
 		offlineComponent_->init(context_, profile_->offlineModule);
 		playerComponent_->init(context_, profile_->playerModule);
 		h264Component_->init(context_, profile_->encodeModule);
@@ -131,6 +133,7 @@ namespace unreal
 		lightComponent_->init(context_, profile_->entitiesModule);
 
 		this->addComponent(entitiesComponent_.get());
+		this->addComponent(mainLightComponent_.get());
 		this->addComponent(environmentComponent_.get());
 		this->addComponent(offlineComponent_.get());
 		this->addComponent(playerComponent_.get());
@@ -176,6 +179,7 @@ namespace unreal
 
 		recordComponent_.reset();
 		entitiesComponent_.reset();
+		mainLightComponent_.reset();
 		environmentComponent_.reset();
 		offlineComponent_.reset();
 		playerComponent_.reset();

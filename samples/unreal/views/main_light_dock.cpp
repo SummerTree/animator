@@ -27,7 +27,7 @@ namespace unreal
 		this->setWindowTitle(tr("Main Light"));
 		this->setObjectName("MainLightDock");
 
-		auto color = profile->sunModule->color.getValue();
+		auto color = profile->mainLightModule->color.getValue();
 
 		colorDialog_ = new ColorDialog();
 		colorDialog_->setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
@@ -44,7 +44,7 @@ namespace unreal
 		editIntensity_->setMaximum(10.0f);
 		editIntensity_->setSingleStep(0.1f);
 		editIntensity_->setAlignment(Qt::AlignRight);
-		editIntensity_->setValue(profile->sunModule->intensity);
+		editIntensity_->setValue(profile->mainLightModule->intensity);
 		editIntensity_->setDecimals(1);
 		editIntensity_->setSuffix(u8"cd");
 
@@ -53,7 +53,7 @@ namespace unreal
 		sliderIntensity_->setOrientation(Qt::Horizontal);
 		sliderIntensity_->setMinimum(0);
 		sliderIntensity_->setMaximum(100);
-		sliderIntensity_->setValue(profile->sunModule->intensity * 10.0f);
+		sliderIntensity_->setValue(profile->mainLightModule->intensity * 10.0f);
 		sliderIntensity_->setFixedWidth(250);
 
 		layoutIntensity_ = new QHBoxLayout();
@@ -69,7 +69,7 @@ namespace unreal
 		editSize_->setMaximum(1.0f);
 		editSize_->setSingleStep(0.05f);
 		editSize_->setAlignment(Qt::AlignRight);
-		editSize_->setValue(profile->sunModule->size);
+		editSize_->setValue(profile->mainLightModule->size);
 		editSize_->setDecimals(1);
 
 		sliderSize_ = new QSlider();
@@ -77,7 +77,7 @@ namespace unreal
 		sliderSize_->setOrientation(Qt::Horizontal);
 		sliderSize_->setMinimum(0);
 		sliderSize_->setMaximum(100);
-		sliderSize_->setValue(profile->sunModule->size * 100.0f);
+		sliderSize_->setValue(profile->mainLightModule->size * 100.0f);
 		sliderSize_->setFixedWidth(250);
 
 		layoutSize_ = new QHBoxLayout();
@@ -93,7 +93,7 @@ namespace unreal
 		editRotationX_->setMaximum(360.0f);
 		editRotationX_->setSingleStep(1.0f);
 		editRotationX_->setAlignment(Qt::AlignRight);
-		editRotationX_->setValue(profile->sunModule->rotation.getValue().x);
+		editRotationX_->setValue(profile->mainLightModule->rotation.getValue().x);
 		editRotationX_->setDecimals(1);
 		editRotationX_->setSuffix(u8"°");
 
@@ -102,7 +102,7 @@ namespace unreal
 		sliderRotationX_->setOrientation(Qt::Horizontal);
 		sliderRotationX_->setMinimum(0);
 		sliderRotationX_->setMaximum(360);
-		sliderRotationX_->setValue(profile->sunModule->rotation.getValue().x);
+		sliderRotationX_->setValue(profile->mainLightModule->rotation.getValue().x);
 		sliderRotationX_->setFixedWidth(250);
 
 		layoutRotationX_ = new QHBoxLayout();
@@ -118,7 +118,7 @@ namespace unreal
 		editRotationY_->setMaximum(360.0f);
 		editRotationY_->setSingleStep(1.0f);
 		editRotationY_->setAlignment(Qt::AlignRight);
-		editRotationY_->setValue(profile->sunModule->rotation.getValue().y);
+		editRotationY_->setValue(profile->mainLightModule->rotation.getValue().y);
 		editRotationY_->setDecimals(1);
 		editRotationY_->setSuffix(u8"°");
 
@@ -127,7 +127,7 @@ namespace unreal
 		sliderRotationY_->setOrientation(Qt::Horizontal);
 		sliderRotationY_->setMinimum(0);
 		sliderRotationY_->setMaximum(360);
-		sliderRotationY_->setValue(profile->sunModule->rotation.getValue().y);
+		sliderRotationY_->setValue(profile->mainLightModule->rotation.getValue().y);
 		sliderRotationY_->setFixedWidth(250);
 
 		layoutRotationY_ = new QHBoxLayout();
@@ -143,7 +143,7 @@ namespace unreal
 		editRotationZ_->setMaximum(360.0f);
 		editRotationZ_->setSingleStep(1.0f);
 		editRotationZ_->setAlignment(Qt::AlignRight);
-		editRotationZ_->setValue(profile->sunModule->rotation.getValue().z);
+		editRotationZ_->setValue(profile->mainLightModule->rotation.getValue().z);
 		editRotationZ_->setDecimals(1);
 		editRotationZ_->setSuffix(u8"°");
 
@@ -152,7 +152,7 @@ namespace unreal
 		sliderRotationZ_->setOrientation(Qt::Horizontal);
 		sliderRotationZ_->setMinimum(0);
 		sliderRotationZ_->setMaximum(360);
-		sliderRotationZ_->setValue(profile->sunModule->rotation.getValue().z);
+		sliderRotationZ_->setValue(profile->mainLightModule->rotation.getValue().z);
 		sliderRotationZ_->setFixedWidth(250);
 
 		layoutRotationZ_ = new QHBoxLayout();
@@ -212,26 +212,6 @@ namespace unreal
 	}
 
 	void
-	MainLightDock::repaint()
-	{
-		auto color = profile_->sunModule->color.getValue();
-		auto rotation = profile_->sunModule->rotation.getValue();
-
-		editSize_->setValue(profile_->sunModule->size);
-		editIntensity_->setValue(profile_->sunModule->intensity);
-		editRotationX_->setValue(rotation.x + 180.0f);
-		editRotationY_->setValue(rotation.y + 180.0f);
-		editRotationZ_->setValue(rotation.z);
-		colorDialog_->setCurrentColor(QColor(color.x * 255.0f, color.y * 255.0f, color.z * 255.0f));
-	}
-
-	void
-	MainLightDock::showEvent(QShowEvent* event)
-	{
-		this->repaint();
-	}
-
-	void
 	MainLightDock::resizeEvent(QResizeEvent* event)
 	{
 	}
@@ -246,114 +226,45 @@ namespace unreal
 		QDockWidget::paintEvent(e);
 	}
 
-	void
-	MainLightDock::closeEvent(QCloseEvent* event)
-	{
-		if (profile_->playerModule->isPlaying)
-			event->ignore();
-		else
-			event->accept();
-
-		auto x = editRotationX_->value() - 180.0f;
-		auto y = editRotationY_->value() - 180.0f;
-		auto z = editRotationZ_->value();
-		auto color = colorDialog_->getCurrentColor();
-
-		profile_->sunModule->intensity = editIntensity_->value();
-		profile_->sunModule->size = editSize_->value();
-		profile_->sunModule->color = octoon::math::float3(color.redF(), color.greenF(), color.blueF());
-		profile_->sunModule->rotation = octoon::math::float3(x, y, z);
-	}
-
 	void 
 	MainLightDock::currentColorChanged(QColor color)
 	{
-		if (color.isValid() && profile_->entitiesModule->sunLight)
-		{
-			auto sunLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
-			if (sunLight)
-				sunLight->setColor(octoon::math::srgb2linear(octoon::math::float3(color.redF(), color.greenF(), color.blueF())));
-		}
-
-		profile_->sunModule->color = octoon::math::float3(color.redF(), color.greenF(), color.blueF());
+		if (color.isValid())
+			profile_->mainLightModule->color = octoon::math::float3(color.redF(), color.greenF(), color.blueF());
 	}
 
 	void
 	MainLightDock::resetEvent()
 	{
-		this->repaint();
-
-		if (profile_->entitiesModule->sunLight)
-		{
-			auto sunLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
-			if (sunLight)
-			{
-				sunLight->setIntensity(profile_->sunModule->intensity);
-				sunLight->setColor(octoon::math::srgb2linear<float>(profile_->sunModule->color));
-			}
-
-			auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
-			if (transform)
-			{
-				transform->setQuaternion(octoon::math::Quaternion(octoon::math::radians(profile_->sunModule->rotation)));
-				transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
-			}
-		}
+		profile_->mainLightModule->size = 0.1f;
+		profile_->mainLightModule->intensity = 1.0f;
+		profile_->mainLightModule->color = octoon::math::float3::One;
+		profile_->mainLightModule->rotation = octoon::math::float3::Zero;
 	}
 
 	void
 	MainLightDock::intensitySliderEvent(int value)
 	{
-		if (profile_->entitiesModule->sunLight)
-		{
-			auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
-			if (envLight)
-				envLight->setIntensity(value / 10.0f);
-		}
-
-		profile_->sunModule->intensity = value / 10.0f;
-
 		editIntensity_->setValue(value / 10.0f);
 	}
 
 	void
 	MainLightDock::intensityEditEvent(double value)
 	{
-		if (profile_->entitiesModule->sunLight)
-		{
-			auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
-			if (envLight)
-				envLight->setIntensity(value);
-		}
-
+		profile_->mainLightModule->intensity = value;
 		sliderIntensity_->setValue(value * 10.0f);
 	}
 
 	void
 	MainLightDock::sizeSliderEvent(int value)
 	{
-		if (profile_->entitiesModule->sunLight)
-		{
-			auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
-			if (envLight)
-				envLight->setSize(value / 100.0f);
-		}
-
-		profile_->sunModule->size = value / 100.0f;
-
 		editSize_->setValue(value / 100.0f);
 	}
 
 	void
 	MainLightDock::sizeEditEvent(double value)
 	{
-		if (profile_->entitiesModule->sunLight)
-		{
-			auto envLight = profile_->entitiesModule->sunLight->getComponent<octoon::DirectionalLightComponent>();
-			if (envLight)
-				envLight->setSize(value);
-		}
-
+		profile_->mainLightModule->size = value;
 		sliderSize_->setValue(value * 100.0f);
 	}
 
@@ -366,21 +277,7 @@ namespace unreal
 	void
 	MainLightDock::editRotationXEvent(double value)
 	{
-		if (profile_->entitiesModule->sunLight)
-		{
-			auto y = octoon::math::radians(editRotationY_->value() - 180.0f);
-			auto z = octoon::math::radians(editRotationZ_->value());
-
-			auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
-			if (transform)
-			{
-				transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(octoon::math::radians(value - 180.0f), y, z)));
-				transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
-			}
-		}
-
-		profile_->sunModule->rotation = octoon::math::float3(value - 180.0f, profile_->sunModule->rotation.getValue().y, profile_->sunModule->rotation.getValue().z);
-
+		profile_->mainLightModule->rotation = octoon::math::float3(value - 180.0f, profile_->mainLightModule->rotation.getValue().y, profile_->mainLightModule->rotation.getValue().z);
 		sliderRotationX_->setValue(value);
 	}
 
@@ -393,21 +290,7 @@ namespace unreal
 	void
 	MainLightDock::editRotationYEvent(double value)
 	{
-		if (profile_->entitiesModule->sunLight)
-		{
-			auto x = octoon::math::radians(editRotationX_->value() - 180.0f);
-			auto z = octoon::math::radians(editRotationZ_->value());
-
-			auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
-			if (transform)
-			{
-				transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(x, octoon::math::radians(value - 180.0f), z)));
-				transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
-			}
-		}
-
-		profile_->sunModule->rotation = octoon::math::float3(profile_->sunModule->rotation.getValue().x, value - 180.0f, profile_->sunModule->rotation.getValue().z);
-
+		profile_->mainLightModule->rotation = octoon::math::float3(profile_->mainLightModule->rotation.getValue().x, value - 180.0f, profile_->mainLightModule->rotation.getValue().z);
 		sliderRotationY_->setValue(value);
 	}
 
@@ -420,21 +303,30 @@ namespace unreal
 	void
 	MainLightDock::editRotationZEvent(double value)
 	{
-		if (profile_->entitiesModule->sunLight)
-		{
-			auto x = octoon::math::radians(editRotationX_->value() - 180.0f);
-			auto y = octoon::math::radians(editRotationY_->value() - 180.0f);
-
-			auto transform = profile_->entitiesModule->sunLight->getComponent<octoon::TransformComponent>();
-			if (transform)
-			{
-				transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(x, y, octoon::math::radians(value))));
-				transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 60);
-			}
-		}
-
-		profile_->sunModule->rotation = octoon::math::float3(profile_->sunModule->rotation.getValue().x, profile_->sunModule->rotation.getValue().y, value);
-
+		profile_->mainLightModule->rotation = octoon::math::float3(profile_->mainLightModule->rotation.getValue().x, profile_->mainLightModule->rotation.getValue().y, value);
 		sliderRotationZ_->setValue(value);
+	}
+
+	void
+	MainLightDock::showEvent(QShowEvent* event)
+	{
+		auto color = profile_->mainLightModule->color.getValue();
+		auto rotation = profile_->mainLightModule->rotation.getValue();
+
+		editSize_->setValue(profile_->mainLightModule->size);
+		editIntensity_->setValue(profile_->mainLightModule->intensity);
+		editRotationX_->setValue(rotation.x + 180.0f);
+		editRotationY_->setValue(rotation.y + 180.0f);
+		editRotationZ_->setValue(rotation.z);
+		colorDialog_->setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
+	}
+
+	void
+	MainLightDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
 	}
 }

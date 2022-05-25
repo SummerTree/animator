@@ -12,7 +12,7 @@
 #include "module/offline_module.h"
 #include "module/record_module.h"
 #include "module/mark_module.h"
-#include "module/sun_module.h"
+#include "module/main_light_module.h"
 #include "module/environment_module.h"
 #include "module/client_module.h"
 #include "module/resource_module.h"
@@ -45,8 +45,8 @@ namespace unreal
 		std::shared_ptr<OfflineModule> offlineModule;
 		std::shared_ptr<MarkModule> markModule;
 		std::shared_ptr<ClientModule> clientModule;
-		std::shared_ptr<SunModule> sunModule;
-		std::shared_ptr<EnvironmentModule> environmentModule;
+		std::shared_ptr<MainLightModule> mainLightModule;
+		std::shared_ptr<EnvironmentModule> environmentLightModule;
 		std::shared_ptr<ResourceModule> resourceModule;
 		std::shared_ptr<SelectorModule> selectorModule;
 		std::shared_ptr<GridModule> gridModule;

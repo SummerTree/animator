@@ -72,9 +72,9 @@ namespace unreal
 
 		auto rotation = octoon::math::Quaternion(octoon::math::float3(-0.1, octoon::math::PI + 0.5f, 0.0f));
 
-		auto& mainLight = this->getContext()->profile->entitiesModule->sunLight;
-		mainLight->getComponent<octoon::DirectionalLightComponent>()->setIntensity(this->getContext()->profile->sunModule->intensity);
-		mainLight->getComponent<octoon::DirectionalLightComponent>()->setColor(this->getContext()->profile->sunModule->color);
+		auto& mainLight = this->getContext()->profile->entitiesModule->mainLight;
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setIntensity(this->getContext()->profile->mainLightModule->intensity);
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setColor(this->getContext()->profile->mainLightModule->color);
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setShadowMapSize(octoon::math::uint2(2048, 2048));
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setShadowEnable(true);
 		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(rotation);
@@ -112,7 +112,7 @@ namespace unreal
 		else
 			this->clearAudio();
 
-		context->profile->sunModule->rotation = octoon::math::degrees(octoon::math::eulerAngles(rotation));
+		context->profile->mainLightModule->rotation = octoon::math::degrees(octoon::math::eulerAngles(rotation));
 		context->profile->entitiesModule->camera = this->createCamera(pmm);
 		context->profile->entitiesModule->objects = objects;
 
@@ -443,12 +443,12 @@ namespace unreal
 	{
 		auto mainLight = octoon::GameObject::create("DirectionalLight");
 		mainLight->addComponent<octoon::DirectionalLightComponent>();
-		mainLight->getComponent<octoon::DirectionalLightComponent>()->setSize(this->getContext()->profile->sunModule->size);
-		mainLight->getComponent<octoon::DirectionalLightComponent>()->setIntensity(this->getContext()->profile->sunModule->intensity);
-		mainLight->getComponent<octoon::DirectionalLightComponent>()->setColor(this->getContext()->profile->sunModule->color);
-		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion(octoon::math::radians(this->getContext()->profile->sunModule->rotation)));
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setSize(this->getContext()->profile->mainLightModule->size);
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setIntensity(this->getContext()->profile->mainLightModule->intensity);
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setColor(this->getContext()->profile->mainLightModule->color);
+		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion(octoon::math::radians(this->getContext()->profile->mainLightModule->rotation)));
 
-		auto envMaterial = octoon::MeshBasicMaterial::create(octoon::math::srgb2linear<float>(this->getContext()->profile->environmentModule->color));
+		auto envMaterial = octoon::MeshBasicMaterial::create(octoon::math::srgb2linear<float>(this->getContext()->profile->environmentLightModule->color));
 		envMaterial->setCullMode(octoon::CullMode::Off);
 		envMaterial->setGamma(1.0f);
 		envMaterial->setDepthEnable(false);
@@ -456,9 +456,9 @@ namespace unreal
 
 		auto enviromentLight = octoon::GameObject::create("EnvironmentLight");
 		enviromentLight->addComponent<octoon::EnvironmentLightComponent>();
-		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setColor(octoon::math::srgb2linear<float>(this->getContext()->profile->environmentModule->color));
-		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setIntensity(this->getContext()->profile->environmentModule->intensity);
-		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setOffset(this->getContext()->profile->environmentModule->offset);
+		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setColor(octoon::math::srgb2linear<float>(this->getContext()->profile->environmentLightModule->color));
+		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setIntensity(this->getContext()->profile->environmentLightModule->intensity);
+		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setOffset(this->getContext()->profile->environmentLightModule->offset);
 		enviromentLight->addComponent<octoon::MeshFilterComponent>(octoon::SphereMesh(10000, 32, 24, octoon::math::PI * 0.5));
 		enviromentLight->addComponent<octoon::MeshRendererComponent>(envMaterial)->setRenderOrder(-2);
 
@@ -473,7 +473,7 @@ namespace unreal
 		camera->setupFramebuffers(this->getContext()->profile->recordModule->width, this->getContext()->profile->recordModule->height, 0, octoon::GraphicsFormat::R32G32B32SFloat);
 
 		this->getContext()->profile->entitiesModule->camera = mainCamera;
-		this->getContext()->profile->entitiesModule->sunLight = mainLight;
+		this->getContext()->profile->entitiesModule->mainLight = mainLight;
 		this->getContext()->profile->entitiesModule->environmentLight = enviromentLight;
 		
 		auto planeGeometry = octoon::CubeMesh::create(1, 1, 1);

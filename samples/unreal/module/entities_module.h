@@ -25,7 +25,7 @@ namespace unreal
 		octoon::GameObjects objects;
 		octoon::GameObjectPtr camera;
 		octoon::GameObjectPtr sound;
-		octoon::GameObjectPtr sunLight;
+		octoon::GameObjectPtr mainLight;
 		octoon::GameObjectPtr environmentLight;
 	};
 }

@@ -26,8 +26,8 @@ SOURCE_GROUP("launcher" FILES ${MAIN_LIST})
 SET(MODULES_LIST
 	${SOURCE_PATH}/module/file_module.h
 	${SOURCE_PATH}/module/file_module.cpp
-	${SOURCE_PATH}/module/sun_module.h
-	${SOURCE_PATH}/module/sun_module.cpp
+	${SOURCE_PATH}/module/main_light_module.h
+	${SOURCE_PATH}/module/main_light_module.cpp
 	${SOURCE_PATH}/module/environment_module.h
 	${SOURCE_PATH}/module/environment_module.cpp
 	${SOURCE_PATH}/module/record_module.h
@@ -123,6 +123,8 @@ SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/entities_component.cpp
 	${SOURCE_PATH}/controllers/environment_component.h
 	${SOURCE_PATH}/controllers/environment_component.cpp
+	${SOURCE_PATH}/controllers/main_light_component.h
+	${SOURCE_PATH}/controllers/main_light_component.cpp
 	${SOURCE_PATH}/controllers/offline_component.h
 	${SOURCE_PATH}/controllers/offline_component.cpp
 	${SOURCE_PATH}/controllers/record_component.h

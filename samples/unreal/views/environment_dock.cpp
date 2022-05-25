@@ -428,23 +428,23 @@ namespace unreal
 
 		this->setWidget(mainWidget);
 
-		this->profile_->environmentModule->offset += [this](const octoon::math::float2& value)
+		this->profile_->environmentLightModule->offset += [this](const octoon::math::float2& value)
 		{
 			this->updatePreviewImage();
 		};
 
-		this->profile_->environmentModule->color += [this](const octoon::math::float3& value)
+		this->profile_->environmentLightModule->color += [this](const octoon::math::float3& value)
 		{
 			this->setColor(QColor::fromRgbF(value.x, value.y, value.z));
 			this->updatePreviewImage();
 		};
 
-		this->profile_->environmentModule->useTexture += [this](bool value)
+		this->profile_->environmentLightModule->useTexture += [this](bool value)
 		{
 			this->updatePreviewImage();
 		};
 
-		this->profile_->environmentModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
+		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
 		{
 			this->updatePreviewImage();
 		};
@@ -503,7 +503,7 @@ namespace unreal
 	{
 		auto w = this->previewButton_->width();
 		auto h = this->previewButton_->height();
-		auto color = this->profile_->environmentModule->color.getValue();
+		auto color = this->profile_->environmentLightModule->color.getValue();
 		auto c = QColor::fromRgbF(color.x, color.y, color.z);
 
 		if (this->previewImage_ && this->thumbnailToggle->isChecked())
@@ -511,7 +511,7 @@ namespace unreal
 			auto srcWidth = this->previewImage_->width();
 			auto srcHeight = this->previewImage_->height();
 			auto pixels = std::make_unique<std::uint8_t[]>(srcWidth * srcHeight * 3);
-			auto offset = this->profile_->environmentModule->offset.getValue();
+			auto offset = this->profile_->environmentLightModule->offset.getValue();
 
 			for (std::size_t y = 0; y < srcHeight; y++)
 			{
@@ -587,8 +587,8 @@ namespace unreal
 					this->setPreviewImage(QString::fromStdString(name), previewImage);
 					this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
 
-					this->profile_->environmentModule->color = octoon::math::float3(1, 1, 1);
-					this->profile_->environmentModule->texture = octoon::TextureLoader::load(image, hdrPath, true);
+					this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
+					this->profile_->environmentLightModule->texture = octoon::TextureLoader::load(image, hdrPath, true);
 				}
 			}
 		}
@@ -639,8 +639,8 @@ namespace unreal
 						this->setPreviewImage(QFileInfo(filepath).fileName(), previewImage);
 						this->setThumbnailImage(filepath, *previewImage);
 
-						this->profile_->environmentModule->color = octoon::math::float3(1, 1, 1);
-						this->profile_->environmentModule->texture = texel;
+						this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
+						this->profile_->environmentLightModule->texture = texel;
 					}
 				}
 			}
@@ -663,24 +663,24 @@ namespace unreal
 	EnvironmentDock::thumbnailToggleEvent(int state)
 	{
 		if (state == Qt::Checked)
-			this->profile_->environmentModule->useTexture = true;
+			this->profile_->environmentLightModule->useTexture = true;
 		else
-			this->profile_->environmentModule->useTexture = false;
+			this->profile_->environmentLightModule->useTexture = false;
 	}
 
 	void
 	EnvironmentDock::backgroundMapCheckEvent(int state)
 	{
 		if (state == Qt::Checked)
-			this->profile_->environmentModule->showBackground = true;
+			this->profile_->environmentLightModule->showBackground = true;
 		else
-			this->profile_->environmentModule->showBackground = false;
+			this->profile_->environmentLightModule->showBackground = false;
 	}
 
 	void
 	EnvironmentDock::colorClickEvent()
 	{
-		auto color = this->profile_->environmentModule->color.getValue();
+		auto color = this->profile_->environmentLightModule->color.getValue();
 		colorSelector_.setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
 		colorSelector_.show();
 	}
@@ -688,7 +688,7 @@ namespace unreal
 	void 
 	EnvironmentDock::colorChangeEvent(const QColor& c)
 	{
-		this->profile_->environmentModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
+		this->profile_->environmentLightModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
 	}
 
 	void
@@ -700,7 +700,7 @@ namespace unreal
 	void
 	EnvironmentDock::intensityEditEvent(double value)
 	{
-		this->profile_->environmentModule->intensity = value;
+		this->profile_->environmentLightModule->intensity = value;
 		this->intensitySlider->setValue(value * 10.0f);
 	}
 
@@ -713,7 +713,7 @@ namespace unreal
 	void
 	EnvironmentDock::horizontalRotationEditEvent(double value)
 	{
-		this->profile_->environmentModule->offset = octoon::math::float2(value, this->profile_->environmentModule->offset.getValue().y);
+		this->profile_->environmentLightModule->offset = octoon::math::float2(value, this->profile_->environmentLightModule->offset.getValue().y);
 		this->horizontalRotationSlider->setValue(value * 100.0f);
 	}
 
@@ -726,7 +726,7 @@ namespace unreal
 	void
 	EnvironmentDock::verticalRotationEditEvent(double value)
 	{
-		this->profile_->environmentModule->offset = octoon::math::float2(this->profile_->environmentModule->offset.getValue().x, value);
+		this->profile_->environmentLightModule->offset = octoon::math::float2(this->profile_->environmentLightModule->offset.getValue().x, value);
 		this->verticalRotationSlider->setValue(value * 100.0f);
 	}
 
@@ -735,23 +735,23 @@ namespace unreal
 	{
 		auto c = QColor::fromRgb(229, 229, 235);
 
-		this->profile_->environmentModule->intensity = 1.0f;
-		this->profile_->environmentModule->offset = octoon::math::float2::Zero;
-		this->profile_->environmentModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
-		this->profile_->environmentModule->texture = nullptr;
-		this->profile_->environmentModule->showBackground = true;
+		this->profile_->environmentLightModule->intensity = 1.0f;
+		this->profile_->environmentLightModule->offset = octoon::math::float2::Zero;
+		this->profile_->environmentLightModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
+		this->profile_->environmentLightModule->texture = nullptr;
+		this->profile_->environmentLightModule->showBackground = true;
 	}
 
 	void
 	EnvironmentDock::showEvent(QShowEvent* event)
 	{
-		auto color = profile_->environmentModule->color.getValue();
+		auto color = profile_->environmentLightModule->color.getValue();
 
-		this->intensitySpinBox->setValue(profile_->environmentModule->intensity);
-		this->horizontalRotationSpinBox->setValue(profile_->environmentModule->offset.getValue().x);
-		this->verticalRotationSpinBox->setValue(profile_->environmentModule->offset.getValue().y);
-		this->backgroundToggle->setChecked(profile_->environmentModule->showBackground);
-		this->thumbnailToggle->setChecked(profile_->environmentModule->useTexture);
+		this->intensitySpinBox->setValue(profile_->environmentLightModule->intensity);
+		this->horizontalRotationSpinBox->setValue(profile_->environmentLightModule->offset.getValue().x);
+		this->verticalRotationSpinBox->setValue(profile_->environmentLightModule->offset.getValue().y);
+		this->backgroundToggle->setChecked(profile_->environmentLightModule->showBackground);
+		this->thumbnailToggle->setChecked(profile_->environmentLightModule->useTexture);
 		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
 		this->updatePreviewImage();
 	}

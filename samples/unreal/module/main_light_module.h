@@ -1,16 +1,16 @@
-#ifndef UNREAL_SUN_MODULE_H_
-#define UNREAL_SUN_MODULE_H_
+#ifndef UNREAL_MAIN_LIGHT_MODULE_H_
+#define UNREAL_MAIN_LIGHT_MODULE_H_
 
 #include <unreal_model.h>
 #include <octoon/math/vector3.h>
 
 namespace unreal
 {
-	class SunModule final : public UnrealModule
+	class MainLightModule final : public UnrealModule
 	{
 	public:
-		SunModule() noexcept;
-		virtual ~SunModule() noexcept;
+		MainLightModule() noexcept;
+		virtual ~MainLightModule() noexcept;
 
 		virtual void reset() noexcept override;
 
@@ -18,8 +18,8 @@ namespace unreal
 		virtual void save(octoon::runtime::json& reader) noexcept override;
 
 	private:
-		SunModule(const SunModule&) = delete;
-		SunModule& operator=(const SunModule&) = delete;
+		MainLightModule(const MainLightModule&) = delete;
+		MainLightModule& operator=(const MainLightModule&) = delete;
 
 	public:
 		MutableLiveData<float> intensity;
