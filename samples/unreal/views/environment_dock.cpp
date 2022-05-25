@@ -428,8 +428,24 @@ namespace unreal
 
 		this->setWidget(mainWidget);
 
+		this->profile_->environmentModule->offset += [this](const octoon::math::float2& value)
+		{
+			this->updatePreviewImage();
+		};
+
+		this->profile_->environmentModule->color += [this](const octoon::math::float3& value)
+		{
+			this->updatePreviewImage();
+		};
+
+		this->profile_->environmentModule->useTexture += [this](bool value)
+		{
+			this->updatePreviewImage();
+		};
+
 		this->profile_->environmentModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
 		{
+			this->updatePreviewImage();
 		};
 
 		connect(previewButton_, SIGNAL(clicked(bool)), this, SLOT(previewClickEvent(bool)));
@@ -455,13 +471,12 @@ namespace unreal
 	void
 	EnvironmentDock::setColor(const QColor& c, int w, int h)
 	{
-		this->profile_->environmentModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
-
 		QPixmap pixmap(w, h);
 		QPainter painter(&pixmap);
 		painter.setPen(Qt::NoPen);
 		painter.fillRect(QRect(0, 0, w, h), c);
 		this->colorButton->setIcon(QIcon(pixmap));
+		this->profile_->environmentModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
 	}
 
 	void
@@ -652,8 +667,6 @@ namespace unreal
 			this->profile_->environmentModule->useTexture = true;
 		else
 			this->profile_->environmentModule->useTexture = false;
-
-		this->updatePreviewImage();
 	}
 
 	void
@@ -677,7 +690,6 @@ namespace unreal
 	EnvironmentDock::colorChangeEvent(const QColor& color)
 	{
 		this->setColor(color);
-		this->updatePreviewImage();
 	}
 
 	void
@@ -704,7 +716,6 @@ namespace unreal
 	{
 		this->profile_->environmentModule->offset = octoon::math::float2(value, this->profile_->environmentModule->offset.getValue().y);
 		this->horizontalRotationSlider->setValue(value * 100.0f);
-		this->updatePreviewImage();
 	}
 
 	void
@@ -718,7 +729,6 @@ namespace unreal
 	{
 		this->profile_->environmentModule->offset = octoon::math::float2(this->profile_->environmentModule->offset.getValue().x, value);
 		this->verticalRotationSlider->setValue(value * 100.0f);
-		this->updatePreviewImage();
 	}
 
 	void
@@ -729,7 +739,6 @@ namespace unreal
 		this->horizontalRotationSpinBox->setValue(0.0f);
 		this->verticalRotationSpinBox->setValue(0.0f);
 		this->setColor(QColor::fromRgb(229, 229, 235));
-		this->updatePreviewImage();
 	}
 
 	void
@@ -743,7 +752,6 @@ namespace unreal
 		this->backgroundToggle->setChecked(profile_->environmentModule->showBackground);
 		this->thumbnailToggle->setChecked(profile_->environmentModule->useTexture);
 		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
-
 		this->updatePreviewImage();
 	}
 

@@ -159,18 +159,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="585"/>
-        <location filename="../views/environment_dock.cpp" line="639"/>
+        <location filename="../views/environment_dock.cpp" line="600"/>
+        <location filename="../views/environment_dock.cpp" line="654"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="599"/>
+        <location filename="../views/environment_dock.cpp" line="614"/>
         <source>Import Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="599"/>
+        <location filename="../views/environment_dock.cpp" line="614"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
