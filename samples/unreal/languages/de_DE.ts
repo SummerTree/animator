@@ -843,9 +843,9 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="207"/>
-        <location filename="../views/record_dock.cpp" line="301"/>
-        <location filename="../views/record_dock.cpp" line="312"/>
-        <location filename="../views/record_dock.cpp" line="483"/>
+        <location filename="../views/record_dock.cpp" line="341"/>
+        <location filename="../views/record_dock.cpp" line="352"/>
+        <location filename="../views/record_dock.cpp" line="523"/>
         <source>Start Render</source>
         <translation type="unfinished"></translation>
     </message>
@@ -860,49 +860,49 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="439"/>
+        <location filename="../views/record_dock.cpp" line="479"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="439"/>
+        <location filename="../views/record_dock.cpp" line="479"/>
         <source>Start frame must be less than end frame.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="445"/>
+        <location filename="../views/record_dock.cpp" line="485"/>
         <source>Save Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="445"/>
+        <location filename="../views/record_dock.cpp" line="485"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="447"/>
+        <location filename="../views/record_dock.cpp" line="487"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="447"/>
+        <location filename="../views/record_dock.cpp" line="487"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="303"/>
-        <location filename="../views/record_dock.cpp" line="310"/>
-        <location filename="../views/record_dock.cpp" line="481"/>
+        <location filename="../views/record_dock.cpp" line="343"/>
+        <location filename="../views/record_dock.cpp" line="350"/>
+        <location filename="../views/record_dock.cpp" line="521"/>
         <source>Stop Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="454"/>
+        <location filename="../views/record_dock.cpp" line="494"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="454"/>
+        <location filename="../views/record_dock.cpp" line="494"/>
         <source>Failed to create file</source>
         <translation type="unfinished"></translation>
     </message>

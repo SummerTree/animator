@@ -279,6 +279,34 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
+		profile_->offlineModule->bounces += [this](std::uint32_t value)
+		{
+			bouncesSpinbox_->blockSignals(true);
+			bouncesSpinbox_->setValue(value);
+			bouncesSpinbox_->blockSignals(false);
+		};
+
+		profile_->playerModule->spp += [this](std::uint32_t value)
+		{
+			sppSpinbox_->blockSignals(true);
+			sppSpinbox_->setValue(value);
+			sppSpinbox_->blockSignals(false);
+		};
+
+		profile_->encodeModule->crf += [this](float value)
+		{
+			crfSpinbox->blockSignals(true);
+			crfSpinbox->setValue(value);
+			crfSpinbox->blockSignals(false);
+		};
+
+		profile_->recordModule->denoise += [this](bool value)
+		{
+			denoiseButton_->blockSignals(true);
+			denoiseButton_->setChecked(value);
+			denoiseButton_->blockSignals(false);
+		};
+
 		profile_->playerModule->startFrame += [this](std::uint32_t value)
 		{
 			startFrame_->blockSignals(true);
@@ -291,6 +319,18 @@ namespace unreal
 			endFrame_->blockSignals(true);
 			endFrame_->setValue(value);
 			endFrame_->blockSignals(false);
+		};
+
+		profile_->playerModule->recordFps += [this](float value)
+		{
+			if (value == 24)
+				speed1_->click();
+			else if (value == 25)
+				speed2_->click();
+			else if (value == 30)
+				speed3_->click();
+			else if (value == 60)
+				speed4_->click();
 		};
 
 		profile_->playerModule->finish += [this](bool value)
