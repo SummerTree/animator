@@ -1025,17 +1025,25 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::StatusBar</name>
     <message>
-        <location filename="../views/status_bar.cpp" line="43"/>
         <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
-        <translation type="unfinished">动画帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 小时 %4 分钟</translation>
+        <translation type="obsolete">动画帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 小时 %4 分钟</translation>
+    </message>
+    <message>
+        <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Minute %4 Second</source>
+        <translation type="obsolete">动画帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 分钟 %4 秒</translation>
+    </message>
+    <message>
+        <location filename="../views/status_bar.cpp" line="43"/>
+        <source>Total Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
+        <translation type="unfinished">渲染帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 小时 %4 分钟</translation>
     </message>
     <message>
         <location filename="../views/status_bar.cpp" line="45"/>
-        <source>Animation Frame: %1 | Current Frame: %2 | Estimated Time: %3 Minute %4 Second</source>
-        <translation type="unfinished">动画帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 分钟 %4 秒</translation>
+        <source>Total Frame: %1 | Current Frame: %2 | Estimated Time: %3 Minute %4 Second</source>
+        <translation type="unfinished">渲染帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 分钟 %4 秒</translation>
     </message>
     <message>
-        <location filename="../views/status_bar.cpp" line="49"/>
+        <location filename="../views/status_bar.cpp" line="52"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
         <translation type="unfinished">动画帧数: %1 | 当前帧数: %2</translation>
     </message>
