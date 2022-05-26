@@ -1,4 +1,4 @@
-ï»? #include "color_dialog.h"
+#include "color_dialog.h"
 #include <qevent.h>
 #include <qpainter.h>
 

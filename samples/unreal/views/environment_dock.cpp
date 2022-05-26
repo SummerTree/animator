@@ -1,4 +1,4 @@
-ï»? #include "environment_dock.h"
+#include "environment_dock.h"
 #include <octoon/environment_light_component.h>
 #include <octoon/image/image.h>
 #include <octoon/mesh_renderer_component.h>
