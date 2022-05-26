@@ -25,8 +25,8 @@ namespace unreal
 		octoon::GameObjects objects;
 		MutableLiveData<octoon::GameObjectPtr> camera;
 		MutableLiveData<octoon::GameObjectPtr> sound;
-		octoon::GameObjectPtr mainLight;
-		octoon::GameObjectPtr environmentLight;
+		MutableLiveData<octoon::GameObjectPtr> mainLight;
+		MutableLiveData<octoon::GameObjectPtr> environmentLight;
 	};
 }
 
