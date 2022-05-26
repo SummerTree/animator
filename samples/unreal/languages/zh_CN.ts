@@ -58,15 +58,15 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="169"/>
-        <location filename="../views/camera_dock.cpp" line="299"/>
-        <location filename="../views/camera_dock.cpp" line="342"/>
-        <location filename="../views/camera_dock.cpp" line="435"/>
+        <location filename="../views/camera_dock.cpp" line="310"/>
+        <location filename="../views/camera_dock.cpp" line="354"/>
+        <location filename="../views/camera_dock.cpp" line="448"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="180"/>
-        <location filename="../views/camera_dock.cpp" line="358"/>
+        <location filename="../views/camera_dock.cpp" line="371"/>
         <source>Load Animation</source>
         <translation>加载动画</translation>
     </message>
@@ -76,29 +76,29 @@
         <translation>卸载</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="291"/>
-        <location filename="../views/camera_dock.cpp" line="431"/>
+        <location filename="../views/camera_dock.cpp" line="302"/>
+        <location filename="../views/camera_dock.cpp" line="444"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="293"/>
-        <location filename="../views/camera_dock.cpp" line="430"/>
+        <location filename="../views/camera_dock.cpp" line="304"/>
+        <location filename="../views/camera_dock.cpp" line="443"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="358"/>
+        <location filename="../views/camera_dock.cpp" line="371"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="384"/>
+        <location filename="../views/camera_dock.cpp" line="397"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="385"/>
+        <location filename="../views/camera_dock.cpp" line="398"/>
         <source>Failed to open the file</source>
         <translation>打开文件失败</translation>
     </message>

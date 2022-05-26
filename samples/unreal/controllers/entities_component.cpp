@@ -61,7 +61,7 @@ namespace unreal
 		if (!context->profile->entitiesModule->objects.empty())
 		{
 			context->profile->entitiesModule->objects.clear();
-			context->profile->entitiesModule->camera.reset();
+			context->profile->entitiesModule->camera.getValue().reset();
 		}
 
 		octoon::GameObjects objects;
@@ -78,7 +78,7 @@ namespace unreal
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setShadowMapSize(octoon::math::uint2(2048, 2048));
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setShadowEnable(true);
 		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(rotation);
-		mainLight->getComponent<octoon::TransformComponent>()->setTranslate(-octoon::math::rotate(rotation, octoon::math::float3::UnitZ) * 60);
+		mainLight->getComponent<octoon::TransformComponent>()->setTranslate(-octoon::math::rotate(rotation, octoon::math::float3::UnitZ) * 50);
 
 		for (auto& it : pmm.model)
 		{

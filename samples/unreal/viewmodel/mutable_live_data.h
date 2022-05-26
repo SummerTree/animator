@@ -31,7 +31,7 @@ namespace unreal
 		}
 
 		void
-		postValue()
+		submit()
 		{
 			dispatchEvents_.call_all_slots(value_);
 		}
@@ -42,8 +42,14 @@ namespace unreal
 			if (value_ != value)
 			{
 				value_ = value;
-				this->postValue();
+				this->submit();
 			}
+		}
+
+		T&
+		getValue() noexcept
+		{
+			return value_;
 		}
 
 		const T&

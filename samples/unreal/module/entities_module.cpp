@@ -14,7 +14,7 @@ namespace unreal
 	void
 	EntitiesModule::reset() noexcept
 	{
-		this->camera.reset();
+		this->camera.getValue().reset();
 		this->objects.clear();
 		this->objects.shrink_to_fit();
 	}

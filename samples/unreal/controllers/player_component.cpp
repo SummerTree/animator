@@ -168,7 +168,7 @@ namespace unreal
 		if (timeFeature)
 			timeFeature->setTimeStep(1.0f / model->previewFps);
 
-		auto camera = this->getContext()->profile->entitiesModule->camera;
+		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -317,7 +317,7 @@ namespace unreal
 			}
 		}
 
-		auto camera = context->profile->entitiesModule->camera;
+		auto camera = context->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -402,7 +402,7 @@ namespace unreal
 			}
 		}
 
-		auto camera = this->getContext()->profile->entitiesModule->camera;
+		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -426,7 +426,7 @@ namespace unreal
 	{
 		float timeLength = 0;
 
-		auto camera = this->getContext()->profile->entitiesModule->camera;
+		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -454,7 +454,7 @@ namespace unreal
 	void
 	PlayerComponent::updateDofTarget() noexcept
 	{
-		auto camera = this->getContext()->profile->entitiesModule->camera;
+		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto cameraPos = camera->getComponent<octoon::TransformComponent>()->getTranslate();
