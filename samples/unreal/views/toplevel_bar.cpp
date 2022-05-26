@@ -154,16 +154,6 @@ namespace unreal
 							return true;
 						}
 					}
-					else
-					{
-						QMessageBox msg(this);
-						msg.setWindowTitle(tr("Warning"));
-						msg.setText(tr("Please load a project with pmm extension."));
-						msg.setIcon(QMessageBox::Information);
-						msg.setStandardButtons(QMessageBox::Ok);
-
-						msg.exec();
-					}
 				}
 
 				return false;
@@ -295,7 +285,6 @@ namespace unreal
 	void
 	ToplevelBar::sliderEvent(int value)
 	{
-	
 		if (behaviour_ && !profile_->playerModule->isPlaying)
 		{
 			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();

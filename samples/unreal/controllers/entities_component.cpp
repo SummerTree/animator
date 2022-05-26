@@ -196,7 +196,7 @@ namespace unreal
 		{
 			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
 			if (envLight)
-				envLight->setEnvironmentMap(octoon::PMREMLoader::load(texture));
+				envLight->setRadianceMap(octoon::PMREMLoader::load(texture));
 
 			auto material = environmentLight->getComponent<octoon::MeshRendererComponent>()->getMaterial()->downcast<octoon::MeshBasicMaterial>();
 			material->setColorMap(texture);
@@ -219,7 +219,7 @@ namespace unreal
 		{
 			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
 			if (envLight)
-				envLight->setEnvironmentMap(nullptr);
+				envLight->setRadianceMap(nullptr);
 
 			auto material = environmentLight->getComponent<octoon::MeshRendererComponent>()->getMaterial()->downcast<octoon::MeshBasicMaterial>();
 			material->setColorMap(nullptr);

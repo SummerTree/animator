@@ -47,7 +47,7 @@ namespace octoon
 	}
 
 	void
-	EnvironmentLightComponent::setEnvironmentMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
+	EnvironmentLightComponent::setRadianceMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
 	{
 		assert(!texture || texture->getTextureDesc().getTexDim() == TextureDimension::Cube || texture->getTextureDesc().getTexDim() == TextureDimension::Texture2D);
 		if (environmentLight_)
@@ -56,7 +56,7 @@ namespace octoon
 	}
 
 	const std::shared_ptr<GraphicsTexture>&
-	EnvironmentLightComponent::getEnvironmentMap() const noexcept
+	EnvironmentLightComponent::getRadianceMap() const noexcept
 	{
 		return environmentMap_;
 	}

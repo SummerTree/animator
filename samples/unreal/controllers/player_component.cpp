@@ -27,7 +27,7 @@ namespace unreal
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
-			timeFeature->setTimeStep(1.0f / model->recordFps);
+			timeFeature->setTimeStep(model->playTimeStep);
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
