@@ -465,6 +465,7 @@ namespace unreal
 		auto mainCamera = octoon::GameObject::create("MainCamera");
 		mainCamera->addComponent<octoon::FirstPersonCameraComponent>();
 		mainCamera->getComponent<octoon::TransformComponent>()->setTranslate(this->getContext()->profile->cameraModule->translate);
+		mainCamera->getComponent<octoon::TransformComponent>()->setEulerAngles(this->getContext()->profile->cameraModule->rotation);
 
 		auto camera = mainCamera->addComponent<octoon::FilmCameraComponent>();
 		camera->setFov(this->getContext()->profile->cameraModule->fov);

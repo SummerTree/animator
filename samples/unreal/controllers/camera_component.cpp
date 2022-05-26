@@ -92,7 +92,7 @@ namespace unreal
 			if (camera)
 			{
 				auto transform = camera->getComponent<octoon::TransformComponent>();
-				transform->setEulerAngles(octoon::math::radians(rotation));
+				transform->setEulerAngles(rotation);
 			}
 		};
 
@@ -133,10 +133,18 @@ namespace unreal
 		auto camera = this->getContext()->profile->entitiesModule->camera;
 		if (camera)
 		{
+			auto& model = this->getModel();
+
+			auto transformComponent = camera->getComponent<octoon::TransformComponent>();
+			if (transformComponent)
+			{
+				model->translate = camera->getComponent<octoon::TransformComponent>()->getTranslate();
+				model->rotation = camera->getComponent<octoon::TransformComponent>()->getEulerAngles();
+			}
+
 			auto cameraComponent = camera->getComponent<octoon::FilmCameraComponent>();
 			if (cameraComponent)
 			{
-				auto& model = this->getModel();
 				model->fov = cameraComponent->getFov();
 				model->focusDistance = cameraComponent->getFocalDistance();
 

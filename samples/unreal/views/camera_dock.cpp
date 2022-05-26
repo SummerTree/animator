@@ -400,9 +400,7 @@ namespace unreal
 			auto mainCamera = profile_->entitiesModule->camera;
 			mainCamera->removeComponent<octoon::AnimatorComponent>();
 
-			profile_->cameraModule->fov = 60.0f;
-			profile_->cameraModule->translate = octoon::math::float3(0, 10, -10);
-			profile_->cameraModule->rotation = octoon::math::float3::Zero;
+			profile_->cameraModule->reset();
 
 			unloadButton_->setEnabled(false);
 		}
