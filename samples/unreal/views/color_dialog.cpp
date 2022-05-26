@@ -1,26 +1,28 @@
-ï»¿#include "color_dialog.h"
-#include <qpainter.h>
+ï»? #include "color_dialog.h"
 #include <qevent.h>
+#include <qpainter.h>
 
-namespace unreal
+	namespace unreal
 {
 	class SpinBox final : public QSpinBox
 	{
 	public:
-		void focusInEvent(QFocusEvent* event) override
+		void
+		focusInEvent(QFocusEvent* event) override
 		{
 			this->grabKeyboard();
 			QSpinBox::focusInEvent(event);
 		}
 
-		void focusOutEvent(QFocusEvent* event) override
+		void
+		focusOutEvent(QFocusEvent* event) override
 		{
 			this->releaseKeyboard();
 			QSpinBox::focusOutEvent(event);
 		}
 	};
 
-	ColorPlane::ColorPlane(QWidget* parent) 
+	ColorPlane::ColorPlane(QWidget * parent)
 		: QLabel(parent)
 		, mousePress_(false)
 		, hueSelected_(false)
@@ -28,13 +30,13 @@ namespace unreal
 		, width_(0)
 		, height_(0)
 		, boxMargin_(52)
-		, currentColor_(255,255,255)
+		, currentColor_(255, 255, 255)
 	{
 		this->setObjectName("ColorPlane");
 	}
 
 	void
-	ColorPlane::mouseReleaseEvent(QMouseEvent* ev)
+	ColorPlane::mouseReleaseEvent(QMouseEvent * ev)
 	{
 		hueSelected_ = false;
 		boxSelected_ = false;
@@ -42,15 +44,14 @@ namespace unreal
 	}
 
 	void
-	ColorPlane::mousePressEvent(QMouseEvent* ev)
+	ColorPlane::mousePressEvent(QMouseEvent * ev)
 	{
 		mousePress_ = true;
 
 		auto mouseX_ = ev->pos().x();
 		auto mouseY_ = ev->pos().y();
 
-		if (mouseX_ > boxMargin_ && mouseY_ > boxMargin_ &&
-			mouseX_ < width_ - boxMargin_ && mouseY_ < width_ - boxMargin_)
+		if (mouseX_ > boxMargin_ && mouseY_ > boxMargin_ && mouseX_ < width_ - boxMargin_ && mouseY_ < width_ - boxMargin_)
 		{
 			boxSelected_ = true;
 		}
@@ -68,12 +69,12 @@ namespace unreal
 	}
 
 	void
-	ColorPlane::mouseDoubleClickEvent(QMouseEvent* ev)
+	ColorPlane::mouseDoubleClickEvent(QMouseEvent * ev)
 	{
 	}
 
 	void
-	ColorPlane::mouseMoveEvent(QMouseEvent* ev)
+	ColorPlane::mouseMoveEvent(QMouseEvent * ev)
 	{
 		if (mousePress_)
 		{
@@ -147,7 +148,7 @@ namespace unreal
 					else if (length >= 0.99f)
 					{
 						auto smooth = octoon::math::smoothlerp(1.0f, 0.0f, (length - 0.99f) * 50.0f);
-						
+
 						auto rgb = QColor::fromHsvF(h, 1.0f, 1.0f);
 						rgb.setRed(octoon::math::lerp<float>(40, rgb.red(), smooth));
 						rgb.setGreen(octoon::math::lerp<float>(40, rgb.green(), smooth));
@@ -199,8 +200,8 @@ namespace unreal
 		}
 	}
 
-	void 
-	ColorPlane::paintEvent(QPaintEvent* event)
+	void
+	ColorPlane::paintEvent(QPaintEvent * event)
 	{
 		auto painter = QPainter(this);
 		auto width = painter.window().width();
@@ -409,7 +410,7 @@ namespace unreal
 			label_->setCurrentColor(rgb);
 		}
 	}
-	
+
 	void
 	ColorDialog::sliderSEvent(int value)
 	{
@@ -420,7 +421,7 @@ namespace unreal
 			label_->setCurrentColor(rgb);
 		}
 	}
-	
+
 	void
 	ColorDialog::sliderVEvent(int value)
 	{

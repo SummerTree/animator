@@ -5,7 +5,7 @@
 
 namespace unreal
 {
-	template<typename T>
+	template <typename T>
 	class MutableLiveData
 	{
 	public:
@@ -18,31 +18,36 @@ namespace unreal
 		{
 		}
 
-		void connect(std::function<void(const T&)> listener) noexcept
+		void
+		connect(std::function<void(const T&)> listener) noexcept
 		{
 			dispatchEvents_.connect(listener);
 		}
 
-		void disconnect() noexcept
+		void
+		disconnect() noexcept
 		{
 			dispatchEvents_ = octoon::runtime::signal<void(const T&)>();
 		}
 
-		void postValue()
+		void
+		postValue()
 		{
 			dispatchEvents_.call_all_slots(value_);
 		}
 
-		void setValue(T value)
+		void
+		setValue(T value)
 		{
 			if (value_ != value)
 			{
 				value_ = value;
 				this->postValue();
-			}			
+			}
 		}
 
-		const T& getValue() const noexcept
+		const T&
+		getValue() const noexcept
 		{
 			return value_;
 		}
@@ -52,12 +57,14 @@ namespace unreal
 			return value_;
 		}
 
-		void operator = (const T& value) noexcept
+		void
+		operator=(const T& value) noexcept
 		{
 			this->setValue(value);
 		}
 
-		void operator += (std::function<void(const T&)> listener) noexcept
+		void
+		operator+=(std::function<void(const T&)> listener) noexcept
 		{
 			dispatchEvents_.connect(listener);
 		}

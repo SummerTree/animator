@@ -1,37 +1,39 @@
-ï»¿#include "environment_dock.h"
+ï»? #include "environment_dock.h"
 #include <octoon/environment_light_component.h>
-#include <octoon/mesh_renderer_component.h>
 #include <octoon/image/image.h>
+#include <octoon/mesh_renderer_component.h>
 
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qfiledialog.h>
-#include <qfileinfo.h>
-#include <qevent.h>
 #include <qapplication.h>
 #include <qdrag.h>
+#include <qevent.h>
+#include <qfiledialog.h>
+#include <qfileinfo.h>
+#include <qmessagebox.h>
 #include <qmimedata.h>
+#include <qpainter.h>
 #include <qprogressdialog.h>
 
-namespace unreal
+	namespace unreal
 {
 	class DoubleSpinBox final : public QDoubleSpinBox
 	{
 	public:
-		void focusInEvent(QFocusEvent* event) override
+		void
+		focusInEvent(QFocusEvent* event) override
 		{
 			this->grabKeyboard();
 			QDoubleSpinBox::focusInEvent(event);
 		}
 
-		void focusOutEvent(QFocusEvent* event) override
+		void
+		focusOutEvent(QFocusEvent* event) override
 		{
 			this->releaseKeyboard();
 			QDoubleSpinBox::focusOutEvent(event);
 		}
 	};
 
-	EnvironmentListDialog::EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
+	EnvironmentListDialog::EnvironmentListDialog(QWidget * parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: QDialog(parent)
 		, behaviour_(behaviour)
 		, profile_(profile)
@@ -93,7 +95,7 @@ namespace unreal
 	{
 	}
 
-	void 
+	void
 	EnvironmentListDialog::addItem(std::string_view uuid) noexcept
 	{
 		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
@@ -183,13 +185,13 @@ namespace unreal
 	}
 
 	void
-	EnvironmentListDialog::itemClicked(QListWidgetItem* item)
+	EnvironmentListDialog::itemClicked(QListWidgetItem * item)
 	{
 		clickedItem_ = item;
 	}
 
 	void
-	EnvironmentListDialog::itemDoubleClicked(QListWidgetItem* item)
+	EnvironmentListDialog::itemDoubleClicked(QListWidgetItem * item)
 	{
 		this->close();
 
@@ -213,7 +215,7 @@ namespace unreal
 	}
 
 	void
-	EnvironmentListDialog::resizeEvent(QResizeEvent* e) noexcept
+	EnvironmentListDialog::resizeEvent(QResizeEvent * e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins();
 		mainWidget_->resize(
@@ -222,7 +224,7 @@ namespace unreal
 	}
 
 	void
-	EnvironmentListDialog::showEvent(QShowEvent* event) noexcept
+	EnvironmentListDialog::showEvent(QShowEvent * event) noexcept
 	{
 		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour)
@@ -236,7 +238,7 @@ namespace unreal
 	}
 
 	void
-	EnvironmentListDialog::keyPressEvent(QKeyEvent* event) noexcept
+	EnvironmentListDialog::keyPressEvent(QKeyEvent * event) noexcept
 	{
 		if (event->key() == Qt::Key_Delete)
 		{
@@ -286,7 +288,7 @@ namespace unreal
 		this->colorButton->setObjectName("Color");
 		this->colorButton->setIconSize(QSize(50, 30));
 		this->colorButton->installEventFilter(this);
-		
+
 		this->thumbnail = new QToolButton;
 		this->thumbnail->setObjectName("Thumbnail ");
 		this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
@@ -302,7 +304,7 @@ namespace unreal
 		this->backgroundToggle->setText(tr("Toggle Background"));
 		this->backgroundToggle->setChecked(true);
 		this->backgroundToggle->installEventFilter(this);
-		
+
 		this->thumbnailPath = new QLabel;
 		this->thumbnailPath->setMinimumSize(QSize(160, 20));
 
@@ -369,7 +371,7 @@ namespace unreal
 		this->resetButton_ = new QToolButton();
 		this->resetButton_->setText(tr("Reset"));
 		this->resetButton_->installEventFilter(this);
-	
+
 		auto thumbnailTitleLayout = new QHBoxLayout();
 		thumbnailTitleLayout->addWidget(thumbnailToggle, 0, Qt::AlignLeft);
 		thumbnailTitleLayout->addSpacing(4);
@@ -441,8 +443,7 @@ namespace unreal
 
 		this->setWidget(mainWidget);
 
-		this->profile_->environmentLightModule->offset += [this](const octoon::math::float2& value)
-		{
+		this->profile_->environmentLightModule->offset += [this](const octoon::math::float2& value) {
 			horizontalRotationSlider->blockSignals(true);
 			horizontalRotationSlider->setValue(value.x * 100.0f);
 			horizontalRotationSlider->blockSignals(false);
@@ -462,14 +463,12 @@ namespace unreal
 			this->updatePreviewImage();
 		};
 
-		this->profile_->environmentLightModule->color += [this](const octoon::math::float3& value)
-		{
+		this->profile_->environmentLightModule->color += [this](const octoon::math::float3& value) {
 			this->setColor(QColor::fromRgbF(value.x, value.y, value.z));
 			this->updatePreviewImage();
 		};
 
-		this->profile_->environmentLightModule->intensity += [this](float value)
-		{
+		this->profile_->environmentLightModule->intensity += [this](float value) {
 			intensitySlider->blockSignals(true);
 			intensitySlider->setValue(value * 10.0f);
 			intensitySlider->blockSignals(false);
@@ -479,8 +478,7 @@ namespace unreal
 			intensitySpinBox->blockSignals(false);
 		};
 
-		this->profile_->environmentLightModule->useTexture += [this](bool value)
-		{
+		this->profile_->environmentLightModule->useTexture += [this](bool value) {
 			this->thumbnailToggle->blockSignals(true);
 			this->thumbnailToggle->setChecked(value);
 			this->thumbnailToggle->blockSignals(false);
@@ -488,8 +486,7 @@ namespace unreal
 			this->updatePreviewImage();
 		};
 
-		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
-		{
+		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture) {
 			if (!texture)
 			{
 				this->previewName_->setText(tr("Untitled"));
@@ -613,7 +610,7 @@ namespace unreal
 	}
 
 	void
-	EnvironmentDock::itemSelected(QListWidgetItem* item)
+	EnvironmentDock::itemSelected(QListWidgetItem * item)
 	{
 		try
 		{
@@ -697,7 +694,7 @@ namespace unreal
 				}
 			}
 		}
-		catch (const std::exception & e)
+		catch (const std::exception& e)
 		{
 			QCoreApplication::processEvents();
 
@@ -737,7 +734,7 @@ namespace unreal
 		colorSelector_.show();
 	}
 
-	void 
+	void
 	EnvironmentDock::colorChangeEvent(const QColor& c)
 	{
 		this->profile_->environmentLightModule->color = octoon::math::float3(c.redF(), c.greenF(), c.blueF());
@@ -760,7 +757,7 @@ namespace unreal
 	{
 		this->profile_->environmentLightModule->offset = octoon::math::float2(value / 100.0f, this->profile_->environmentLightModule->offset.getValue().y);
 	}
-	
+
 	void
 	EnvironmentDock::horizontalRotationEditEvent(double value)
 	{
@@ -772,7 +769,7 @@ namespace unreal
 	{
 		this->profile_->environmentLightModule->offset = octoon::math::float2(this->profile_->environmentLightModule->offset.getValue().x, value / 100.0f);
 	}
-	
+
 	void
 	EnvironmentDock::verticalRotationEditEvent(double value)
 	{
@@ -786,7 +783,7 @@ namespace unreal
 	}
 
 	void
-	EnvironmentDock::showEvent(QShowEvent* event)
+	EnvironmentDock::showEvent(QShowEvent * event)
 	{
 		auto color = profile_->environmentLightModule->color.getValue();
 
@@ -807,7 +804,7 @@ namespace unreal
 	}
 
 	void
-	EnvironmentDock::closeEvent(QCloseEvent* event)
+	EnvironmentDock::closeEvent(QCloseEvent * event)
 	{
 		if (profile_->playerModule->isPlaying)
 			event->ignore();
@@ -816,7 +813,7 @@ namespace unreal
 	}
 
 	bool
-	EnvironmentDock::eventFilter(QObject* watched, QEvent* event)
+	EnvironmentDock::eventFilter(QObject * watched, QEvent * event)
 	{
 		if (event->type() != QEvent::Paint)
 		{

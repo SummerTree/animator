@@ -1,19 +1,19 @@
 #ifndef COLOR_DIALOG_H_
 #define COLOR_DIALOG_H_
 
-#include <qlayout.h>
-#include <qstyle>
-#include <qwidget>
-#include <qpushbutton.h>
 #include <QtGui/qevent.h>
-#include <qdockwidget.h>
-#include <qlabel.h>
-#include <qslider.h>
-#include <qspinbox.h>
-#include <qtoolbutton.h>
-#include <qlineedit.h>
 #include <octoon/math/vector2.h>
 #include <octoon/math/vector3.h>
+#include <qdockwidget.h>
+#include <qlabel.h>
+#include <qlayout.h>
+#include <qlineedit.h>
+#include <qpushbutton.h>
+#include <qslider.h>
+#include <qspinbox.h>
+#include <qstyle>
+#include <qtoolbutton.h>
+#include <qwidget>
 
 namespace unreal
 {
