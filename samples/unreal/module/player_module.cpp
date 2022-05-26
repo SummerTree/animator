@@ -19,8 +19,8 @@ namespace unreal
 		this->spp = 150;
 		this->sppCount = 0;
 		this->recordFps = 30.0f;
-		this->playTimeStep = 1.0f / 60.f;
-		this->previewTimeStep = 1.0f / 60.f;
+		this->playTimeStep = 1.0f / 30.f;
+		this->previewTimeStep = 1.0f / 30.f;
 		this->endFrame = 0;
 		this->startFrame = 0;
 		this->timeLength = 0;
