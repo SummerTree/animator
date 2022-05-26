@@ -1275,8 +1275,8 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="35"/>
-        <location filename="../views/toplevel_bar.cpp" line="290"/>
-        <location filename="../views/toplevel_bar.cpp" line="346"/>
+        <location filename="../views/toplevel_bar.cpp" line="280"/>
+        <location filename="../views/toplevel_bar.cpp" line="335"/>
         <source>Volume</source>
         <translation>音量打开</translation>
     </message>
@@ -1287,27 +1287,25 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="105"/>
-        <location filename="../views/toplevel_bar.cpp" line="172"/>
-        <location filename="../views/toplevel_bar.cpp" line="221"/>
-        <location filename="../views/toplevel_bar.cpp" line="259"/>
-        <location filename="../views/toplevel_bar.cpp" line="325"/>
+        <location filename="../views/toplevel_bar.cpp" line="211"/>
+        <location filename="../views/toplevel_bar.cpp" line="249"/>
+        <location filename="../views/toplevel_bar.cpp" line="314"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="106"/>
-        <location filename="../views/toplevel_bar.cpp" line="173"/>
-        <location filename="../views/toplevel_bar.cpp" line="222"/>
-        <location filename="../views/toplevel_bar.cpp" line="260"/>
-        <location filename="../views/toplevel_bar.cpp" line="325"/>
+        <location filename="../views/toplevel_bar.cpp" line="212"/>
+        <location filename="../views/toplevel_bar.cpp" line="250"/>
+        <location filename="../views/toplevel_bar.cpp" line="314"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="120"/>
-        <location filename="../views/toplevel_bar.cpp" line="186"/>
-        <location filename="../views/toplevel_bar.cpp" line="233"/>
-        <location filename="../views/toplevel_bar.cpp" line="271"/>
+        <location filename="../views/toplevel_bar.cpp" line="176"/>
+        <location filename="../views/toplevel_bar.cpp" line="223"/>
+        <location filename="../views/toplevel_bar.cpp" line="261"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -1318,13 +1316,13 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="144"/>
-        <location filename="../views/toplevel_bar.cpp" line="199"/>
+        <location filename="../views/toplevel_bar.cpp" line="189"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="301"/>
-        <location filename="../views/toplevel_bar.cpp" line="340"/>
+        <location filename="../views/toplevel_bar.cpp" line="291"/>
+        <location filename="../views/toplevel_bar.cpp" line="329"/>
         <source>VolumeOff</source>
         <translation>音量关闭</translation>
     </message>
