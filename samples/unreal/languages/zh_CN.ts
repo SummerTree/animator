@@ -60,7 +60,7 @@
         <location filename="../views/camera_dock.cpp" line="169"/>
         <location filename="../views/camera_dock.cpp" line="299"/>
         <location filename="../views/camera_dock.cpp" line="342"/>
-        <location filename="../views/camera_dock.cpp" line="437"/>
+        <location filename="../views/camera_dock.cpp" line="435"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
@@ -77,13 +77,13 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="291"/>
-        <location filename="../views/camera_dock.cpp" line="433"/>
+        <location filename="../views/camera_dock.cpp" line="431"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="293"/>
-        <location filename="../views/camera_dock.cpp" line="432"/>
+        <location filename="../views/camera_dock.cpp" line="430"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>

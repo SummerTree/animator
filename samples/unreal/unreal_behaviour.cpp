@@ -39,8 +39,14 @@ namespace unreal
 	void
 	UnrealBehaviour::close() noexcept
 	{
+		auto mainCamera = profile_->entitiesModule->camera;
+		mainCamera->removeComponent<octoon::AnimatorComponent>();
+
 		this->entitiesComponent_->clearAudio();
+
+		this->profile_->cameraModule->reset();
 		this->profile_->entitiesModule->objects.clear();
+		this->profile_->environmentLightModule->reset();
 	}
 
 	bool
