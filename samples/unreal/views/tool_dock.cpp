@@ -1,11 +1,11 @@
 #include "tool_dock.h"
-#include <qscrollarea.h>
-#include <qmessagebox.h>
+#include "spdlog/spdlog.h"
+#include <QtConcurrent/qtconcurrentrun.h>
 #include <qfiledialog.h>
+#include <qmessagebox.h>
 #include <qmimedata.h>
 #include <qprogressdialog.h>
-#include <QtConcurrent/qtconcurrentrun.h>
-#include "spdlog/spdlog.h"
+#include <qscrollarea.h>
 
 namespace unreal
 {
@@ -141,7 +141,7 @@ namespace unreal
 							if (dialog.wasCanceled())
 								break;
 						}
-							
+
 						// wait finish
 						fu.waitForFinished();
 
@@ -164,24 +164,17 @@ namespace unreal
 			QCoreApplication::processEvents();
 
 			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::critical(this, tr("Error"), tr("Failed to open project: ") + QString::fromStdString(e.what()));
 		}
 		spdlog::debug("Exited importEvent");
 	}
 
-	void 
+	void
 	ToolDock::audioEvent() noexcept
 	{
 		spdlog::debug("Entered audioEvent");
 
-		auto audioSignal = [this](bool enable) -> bool
-		{
+		auto audioSignal = [this](bool enable) -> bool {
 			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
 				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
@@ -209,13 +202,7 @@ namespace unreal
 						QCoreApplication::processEvents();
 
 						spdlog::error("Function audioEvent raised exception: " + std::string(e.what()));
-						QMessageBox msg(this);
-						msg.setWindowTitle(tr("Error"));
-						msg.setText(e.what());
-						msg.setIcon(QMessageBox::Information);
-						msg.setStandardButtons(QMessageBox::Ok);
-
-						msg.exec();
+						QMessageBox::critical(this, tr("Error"), e.what());
 					}
 				}
 			}
@@ -263,13 +250,7 @@ namespace unreal
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 
@@ -295,13 +276,7 @@ namespace unreal
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 
@@ -320,13 +295,7 @@ namespace unreal
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 

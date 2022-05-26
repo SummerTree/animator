@@ -1,21 +1,23 @@
 #include "setting_window.h"
-#include <qlabel.h>
-#include <qscrollbar.h>
-#include <qmessagebox.h>
 #include "../controllers/client_component.h"
+#include <qlabel.h>
+#include <qmessagebox.h>
+#include <qscrollbar.h>
 
 namespace unreal
 {
 	class SpinBox final : public QSpinBox
 	{
 	public:
-		void focusInEvent(QFocusEvent* event) override
+		void
+		focusInEvent(QFocusEvent* event) override
 		{
 			this->grabKeyboard();
 			QSpinBox::focusInEvent(event);
 		}
 
-		void focusOutEvent(QFocusEvent* event) override
+		void
+		focusOutEvent(QFocusEvent* event) override
 		{
 			this->releaseKeyboard();
 			QSpinBox::focusOutEvent(event);
@@ -25,13 +27,15 @@ namespace unreal
 	class DoubleSpinBox final : public QDoubleSpinBox
 	{
 	public:
-		void focusInEvent(QFocusEvent* event) override
+		void
+		focusInEvent(QFocusEvent* event) override
 		{
 			this->grabKeyboard();
 			QDoubleSpinBox::focusInEvent(event);
 		}
 
-		void focusOutEvent(QFocusEvent* event) override
+		void
+		focusOutEvent(QFocusEvent* event) override
 		{
 			this->releaseKeyboard();
 			QDoubleSpinBox::focusOutEvent(event);
@@ -154,7 +158,7 @@ namespace unreal
 	{
 		this->setObjectName("settingContext");
 
-		QStringList strList{ tr("Main Panel") };
+		QStringList strList{ tr("General"), tr("Interface"), tr("Graphics") };
 
 		listWidget_ = std::make_unique<QListWidget>(this);
 		listWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -170,7 +174,7 @@ namespace unreal
 
 			listWidget_->addItem(listWidgetItems_[i].get());
 		}
-		
+
 		listWidgetItems_[0]->setSelected(true);
 
 		scrollWidget_ = std::make_unique<QWidget>(this);
@@ -214,6 +218,8 @@ namespace unreal
 			mainPlane2_->resolutionCombo->setCurrentIndex(6);
 		else if (profile->recordModule->width == 1080 && profile->recordModule->height == 1920)
 			mainPlane2_->resolutionCombo->setCurrentIndex(7);
+		else
+			throw std::runtime_error("SettingContextPlane::SettingContextPlane: resolution not found");
 
 		connect(scrollArea_->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
 		connect(listWidget_.get(), SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
@@ -289,50 +295,42 @@ namespace unreal
 		auto& profile = behaviour_->getProfile();
 		switch (mainPlane2_->resolutionCombo->currentIndex())
 		{
-		case 0:
-		{
+		case 0: {
 			profile->recordModule->width = 720;
 			profile->recordModule->height = 480;
 		}
 		break;
-		case 1:
-		{
+		case 1: {
 			profile->recordModule->width = 800;
 			profile->recordModule->height = 480;
 		}
 		break;
-		case 2:
-		{
+		case 2: {
 			profile->recordModule->width = 1024;
 			profile->recordModule->height = 576;
 		}
 		break;
-		case 3:
-		{
+		case 3: {
 			profile->recordModule->width = 1280;
 			profile->recordModule->height = 720;
 		}
 		break;
-		case 4:
-		{
+		case 4: {
 			profile->recordModule->width = 1920;
 			profile->recordModule->height = 1080;
 		}
 		break;
-		case 5:
-		{
+		case 5: {
 			profile->recordModule->width = 540;
 			profile->recordModule->height = 960;
 		}
 		break;
-		case 6:
-		{
+		case 6: {
 			profile->recordModule->width = 720;
 			profile->recordModule->height = 1280;
 		}
 		break;
-		case 7:
-		{
+		case 7: {
 			profile->recordModule->width = 1080;
 			profile->recordModule->height = 1920;
 		}
@@ -343,9 +341,9 @@ namespace unreal
 	void
 	SettingContextPlane::onCheckVersion()
 	{
-		//auto client = dynamic_cast<ClientComponent*>(behaviour_->getComponent<ClientComponent>());
-		//auto version = client->version();
-		//if (version == behaviour_->getProfile()->clientModule->version)
+		// auto client = dynamic_cast<ClientComponent*>(behaviour_->getComponent<ClientComponent>());
+		// auto version = client->version();
+		// if (version == behaviour_->getProfile()->clientModule->version)
 		{
 			QMessageBox msg(this);
 			msg.setWindowTitle(tr("Information"));
