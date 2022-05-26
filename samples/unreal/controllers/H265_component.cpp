@@ -127,18 +127,19 @@ namespace unreal
 
 			AVPacket* packet = av_packet_alloc();
 
+			auto outFilename = filepath_;
+			auto inFilename = filepath_ + ".h265";
+
 			try
 			{
 				auto& playerModule = this->getContext()->profile->playerModule;
 
-				auto inFilename = filepath_ + ".h265";
 				if (avformat_open_input(&videoFormat, inFilename.c_str(), 0, 0) < 0)
 					throw std::runtime_error("Could not open input file.");
 
 				if (avformat_find_stream_info(videoFormat, 0) < 0)
 					throw std::runtime_error("Failed to retrieve input stream information");
 
-				auto outFilename = filepath_;
 				if (avformat_alloc_output_context2(&outputFormat, NULL, NULL, outFilename.c_str()) < 0)
 				{
 					printf("Could not deduce output format from file extension: using MPEG.\n");
@@ -238,14 +239,12 @@ namespace unreal
 
 				if (outputFormat)
 				{
-					if (!(outputFormat->oformat->flags & AVFMT_NOFILE))
-					{
-						av_write_trailer(outputFormat);
-						avio_close(outputFormat->pb);
-					}
-
+					avio_close(outputFormat->pb);
 					avformat_free_context(outputFormat);
 				}
+
+				if (std::filesystem::exists(outFilename))
+					std::filesystem::remove(outFilename);
 			}
 		}
 	}
