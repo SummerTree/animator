@@ -713,26 +713,26 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="124"/>
+        <location filename="../views/motion_dock.cpp" line="123"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="124"/>
+        <location filename="../views/motion_dock.cpp" line="123"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/motion_dock.cpp" line="134"/>
         <location filename="../views/motion_dock.cpp" line="135"/>
-        <location filename="../views/motion_dock.cpp" line="136"/>
+        <location filename="../views/motion_dock.cpp" line="188"/>
         <location filename="../views/motion_dock.cpp" line="189"/>
-        <location filename="../views/motion_dock.cpp" line="190"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="135"/>
-        <location filename="../views/motion_dock.cpp" line="189"/>
+        <location filename="../views/motion_dock.cpp" line="134"/>
+        <location filename="../views/motion_dock.cpp" line="188"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

@@ -31,8 +31,21 @@ namespace octoon
 			it->setDirty(dirty);
 		for (auto& it : lights_)
 			it->setDirty(dirty);
+
 		for (auto& it : renderables_)
+		{
 			it->setDirty(dirty);
+
+			auto mesh = it->getMesh();
+			if (mesh)
+				mesh->setDirty(true);
+
+			for (auto& material : it->getMaterials())
+			{
+				if (material)
+					material->setDirty(true);
+			}
+		}
 	}
 
 	bool
@@ -54,6 +67,22 @@ namespace octoon
 		{
 			if (it->isDirty())
 				return true;
+
+			auto mesh = it->getMesh();
+			if (mesh)
+			{
+				if (mesh->isDirty())
+					return true;
+			}
+
+			for (auto& material : it->getMaterials())
+			{
+				if (material)
+				{
+					if (material->isDirty())
+						return true;
+				}
+			}
 		}
 
 		return false;

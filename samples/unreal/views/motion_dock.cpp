@@ -111,7 +111,6 @@ namespace unreal
 
 				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
 				imageLabel->setToolTip(name);
-				name.truncate(name.lastIndexOf('.'));
 				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
 				nameLabel->setToolTip(name);
 			}
