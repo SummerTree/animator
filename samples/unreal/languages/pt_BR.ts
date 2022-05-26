@@ -1123,102 +1123,102 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ToolDock</name>
     <message>
-        <location filename="../views/tool_dock.cpp" line="30"/>
+        <location filename="../views/tool_dock.cpp" line="29"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="31"/>
+        <location filename="../views/tool_dock.cpp" line="30"/>
         <source>Import Resource File(.pmm, .mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="37"/>
+        <location filename="../views/tool_dock.cpp" line="36"/>
         <source>Music</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="38"/>
+        <location filename="../views/tool_dock.cpp" line="37"/>
         <source>Set Background Audio File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="44"/>
+        <location filename="../views/tool_dock.cpp" line="43"/>
         <source>Screenshot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="45"/>
+        <location filename="../views/tool_dock.cpp" line="44"/>
         <source>Denoising Screenshot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="51"/>
+        <location filename="../views/tool_dock.cpp" line="50"/>
         <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="52"/>
+        <location filename="../views/tool_dock.cpp" line="51"/>
         <source>Enable High Quality Rendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="58"/>
+        <location filename="../views/tool_dock.cpp" line="57"/>
         <source>Cleanup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="59"/>
+        <location filename="../views/tool_dock.cpp" line="58"/>
         <source>Cleanup Scene</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="124"/>
-        <location filename="../views/tool_dock.cpp" line="198"/>
+        <location filename="../views/tool_dock.cpp" line="123"/>
+        <location filename="../views/tool_dock.cpp" line="197"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="124"/>
+        <location filename="../views/tool_dock.cpp" line="123"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="137"/>
+        <location filename="../views/tool_dock.cpp" line="136"/>
         <source>Opening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="137"/>
+        <location filename="../views/tool_dock.cpp" line="136"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="138"/>
+        <location filename="../views/tool_dock.cpp" line="137"/>
         <source>Open Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="172"/>
-        <location filename="../views/tool_dock.cpp" line="217"/>
-        <location filename="../views/tool_dock.cpp" line="271"/>
-        <location filename="../views/tool_dock.cpp" line="303"/>
-        <location filename="../views/tool_dock.cpp" line="328"/>
+        <location filename="../views/tool_dock.cpp" line="171"/>
+        <location filename="../views/tool_dock.cpp" line="216"/>
+        <location filename="../views/tool_dock.cpp" line="270"/>
+        <location filename="../views/tool_dock.cpp" line="302"/>
+        <location filename="../views/tool_dock.cpp" line="327"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="198"/>
+        <location filename="../views/tool_dock.cpp" line="197"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="258"/>
+        <location filename="../views/tool_dock.cpp" line="257"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="258"/>
+        <location filename="../views/tool_dock.cpp" line="257"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
