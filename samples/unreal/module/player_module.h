@@ -1,5 +1,5 @@
-#ifndef UNREAL_TIME_MODULE_H_
-#define UNREAL_TIME_MODULE_H_
+#ifndef UNREAL_PLAYER_MODULE_H_
+#define UNREAL_PLAYER_MODULE_H_
 
 #include <unreal_model.h>
 #include <octoon/raycaster.h>
