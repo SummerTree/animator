@@ -117,46 +117,29 @@ namespace octoon
 	void
 	Geometry::setMaterials(std::vector<std::shared_ptr<Material>>&& materials) noexcept
 	{
-		auto size = std::min(materials.size(), materials_.size());
-		for (std::size_t i = 0; i < size; i++)
-		{
-			if (this->materials_[i] != materials[i])
-			{
-				if (materials[i])
-					materials[i]->setDirty(true);
-			}
-		}
-
-		for (std::size_t i = size; i < materials.size(); i++)
+		for (std::size_t i = 0; i < materials.size(); i++)
 		{
 			if (materials[i])
 				materials[i]->setDirty(true);
 		}
-		this->setDirty(true);
+
 		materials_ = std::move(materials);
+
+		this->setDirty(true);
 	}
 
 	void
 	Geometry::setMaterials(const std::vector<std::shared_ptr<Material>>& materials) noexcept
 	{
-		auto size = std::min(materials.size(), materials_.size());
-		for (std::size_t i = 0; i < size; i++)
-		{
-			if (this->materials_[i] != materials[i])
-			{
-				if (materials[i])
-					materials[i]->setDirty(true);
-			}				
-		}
-
-		for (std::size_t i = size; i < materials.size(); i++)
+		for (std::size_t i = 0; i < materials.size(); i++)
 		{
 			if (materials[i])
 				materials[i]->setDirty(true);
 		}
 
-		this->setDirty(true);
 		materials_ = materials;
+
+		this->setDirty(true);
 	}
 
 	const std::vector<std::shared_ptr<Material>>&
