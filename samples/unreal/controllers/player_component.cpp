@@ -27,7 +27,7 @@ namespace unreal
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
-			timeFeature->setTimeStep(model->playTimeStep);
+			timeFeature->setTimeStep(1.0f / model->playFps);
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
@@ -88,7 +88,7 @@ namespace unreal
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
-			timeFeature->setTimeStep(model->previewTimeStep);
+			timeFeature->setTimeStep(1.0f / model->previewFps);
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
@@ -166,7 +166,7 @@ namespace unreal
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
-			timeFeature->setTimeStep(model->previewTimeStep);
+			timeFeature->setTimeStep(1.0f / model->previewFps);
 
 		auto camera = this->getContext()->profile->entitiesModule->camera;
 		if (camera)
@@ -484,11 +484,12 @@ namespace unreal
 	void
 	PlayerComponent::onEnable() noexcept
 	{
+		auto& model = this->getModel();
 		auto& context = this->getContext()->profile;
 
 		auto timeFeature = this->getContext()->behaviour->getFeature<octoon::TimerFeature>();
 		if (timeFeature)
-			timeFeature->setTimeStep(this->getModel()->previewTimeStep);
+			timeFeature->setTimeStep(1.0f / model->previewFps);
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
@@ -496,7 +497,7 @@ namespace unreal
 			physicsFeature->setEnableSimulate(true);
 			physicsFeature->setGravity(context->physicsModule->gravity * context->physicsModule->gravityScale);
 			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
-			physicsFeature->setFixedTimeStep(this->getModel()->previewTimeStep);
+			physicsFeature->setFixedTimeStep(1.0f / model->previewFps);
 		}
 
 		this->addMessageListener("editor:project:open", [this](const std::any& data)
@@ -504,7 +505,7 @@ namespace unreal
 			auto& model = this->getModel();
 			model->timeLength = this->timeLength();
 			model->startFrame = 0;
-			model->endFrame = this->getModel()->timeLength * 30;
+			model->endFrame = model->timeLength * 30;
 
 			this->reset();
 		});

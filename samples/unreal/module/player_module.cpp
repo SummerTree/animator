@@ -18,9 +18,9 @@ namespace unreal
 		this->isPlaying = false;
 		this->spp = 150;
 		this->sppCount = 0;
+		this->playFps = 30.0f;
 		this->recordFps = 30.0f;
-		this->playTimeStep = 1.0f / 30.f;
-		this->previewTimeStep = 1.0f / 30.f;
+		this->previewFps = 30.f;
 		this->endFrame = 0;
 		this->startFrame = 0;
 		this->timeLength = 0;
@@ -34,21 +34,21 @@ namespace unreal
 	{
 		if (reader.find("spp") != reader.end())
 			this->spp = reader["spp"].get<nlohmann::json::number_unsigned_t>();
+		if (reader.find("playFps") != reader.end())
+			this->playFps = reader["playFps"].get<nlohmann::json::number_float_t>();
 		if (reader.find("recordFps") != reader.end())
 			this->recordFps = reader["recordFps"].get<nlohmann::json::number_float_t>();
-		if (reader.find("playTimeStep") != reader.end())
-			this->playTimeStep = reader["playTimeStep"].get<nlohmann::json::number_float_t>();
-		if (reader.find("normalTimeStep") != reader.end())
-			this->previewTimeStep = reader["normalTimeStep"].get<nlohmann::json::number_float_t>();
+		if (reader.find("previewFps") != reader.end())
+			this->previewFps = reader["previewFps"].get<nlohmann::json::number_float_t>();
 	}
 
 	void 
 	PlayerModule::save(octoon::runtime::json& writer) noexcept
 	{
 		writer["spp"] = this->spp.getValue();
+		writer["playFps"] = this->playFps.getValue();
 		writer["recordFps"] = this->recordFps.getValue();
-		writer["playTimeStep"] = this->playTimeStep.getValue();
-		writer["normalTimeStep"] = this->previewTimeStep.getValue();
+		writer["previewFps"] = this->previewFps.getValue();
 	}
 
 	void
@@ -60,8 +60,7 @@ namespace unreal
 		this->spp.disconnect();
 		this->sppCount.disconnect();
 		this->recordFps.disconnect();
-		this->playTimeStep.disconnect();
-		this->previewTimeStep.disconnect();
+		this->previewFps.disconnect();
 		this->endFrame.disconnect();
 		this->startFrame.disconnect();
 		this->timeLength.disconnect();
