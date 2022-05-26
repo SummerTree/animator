@@ -35,8 +35,8 @@ namespace unreal
 		MutableLiveData<std::uint32_t> endFrame;
 		MutableLiveData<std::uint32_t> startFrame;
 
-		MutableLiveData<float> playTimeStep;
-		MutableLiveData<float> previewTimeStep;
+		MutableLiveData<float> playFps;
+		MutableLiveData<float> previewFps;
 		MutableLiveData<float> recordFps;
 
 		MutableLiveData<float> curTime;
