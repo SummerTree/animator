@@ -23,10 +23,10 @@ namespace unreal
 
 	public:
 		octoon::GameObjects objects;
-		octoon::GameObjectPtr camera;
-		octoon::GameObjectPtr sound;
-		octoon::GameObjectPtr mainLight;
-		octoon::GameObjectPtr environmentLight;
+		MutableLiveData<octoon::GameObjectPtr> camera;
+		MutableLiveData<octoon::GameObjectPtr> sound;
+		MutableLiveData<octoon::GameObjectPtr> mainLight;
+		MutableLiveData<octoon::GameObjectPtr> environmentLight;
 	};
 }
 

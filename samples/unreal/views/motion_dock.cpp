@@ -242,6 +242,8 @@ namespace unreal
 							}
 						}
 
+						behaviour->getComponent<PlayerComponent>()->updateTimeLength();
+
 						dialog.setValue(2);
 					}
 				}

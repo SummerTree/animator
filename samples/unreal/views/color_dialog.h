@@ -1,5 +1,5 @@
-#ifndef COLOR_DIALOG_H_
-#define COLOR_DIALOG_H_
+#ifndef UNREAL_COLOR_DIALOG_H_
+#define UNREAL_COLOR_DIALOG_H_
 
 #include <QtGui/qevent.h>
 #include <octoon/math/vector2.h>

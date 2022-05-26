@@ -34,10 +34,6 @@ namespace unreal
 	bool
 	H265Component::create(std::string_view filepath) noexcept(false)
 	{
-		auto camera = this->getContext()->profile->entitiesModule->camera;
-		if (!camera)
-			return false;
-		
 		auto& context = this->getContext();
 		this->width_ = context->profile->recordModule->width;
 		this->height_ = context->profile->recordModule->height;

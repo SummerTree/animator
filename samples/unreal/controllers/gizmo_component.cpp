@@ -220,10 +220,12 @@ namespace unreal
 	std::optional<octoon::RaycastHit>
 	GizmoComponent::intersectObjects(float x, float y, octoon::GameObjects& pickerGizmos) noexcept
 	{
-		auto preofile = this->getContext()->profile;
-		if (preofile->entitiesModule->camera)
+		auto profile = this->getContext()->profile;
+
+		auto& camera = profile->entitiesModule->camera.getValue();
+		if (camera)
 		{
-			auto cameraComponent = preofile->entitiesModule->camera->getComponent<octoon::CameraComponent>();
+			auto cameraComponent = camera->getComponent<octoon::CameraComponent>();
 			if (cameraComponent)
 			{
 				octoon::Raycaster raycaster(cameraComponent->screenToRay(octoon::math::float2(x, y)));
@@ -243,10 +245,12 @@ namespace unreal
 	std::optional<octoon::RaycastHit>
 	GizmoComponent::intersectObjects(float x, float y, octoon::GameObjectPtr& pickerGizmos) noexcept
 	{
-		auto preofile = this->getContext()->profile;
-		if (preofile->entitiesModule->camera)
+		auto profile = this->getContext()->profile;
+
+		auto& camera = profile->entitiesModule->camera.getValue();
+		if (camera)
 		{
-			auto cameraComponent = preofile->entitiesModule->camera->getComponent<octoon::CameraComponent>();
+			auto cameraComponent = camera->getComponent<octoon::CameraComponent>();
 			if (cameraComponent)
 			{
 				octoon::Raycaster raycaster(cameraComponent->screenToRay(octoon::math::float2(x, y)));
@@ -272,24 +276,26 @@ namespace unreal
 		{
 			this->axis_ = intersect.value().object.lock()->getParent()->getName();
 
-			auto camera = this->getContext()->profile->entitiesModule->camera;
-
-			auto eye = camera->getComponent<octoon::TransformComponent>()->getTranslate();
-			eye -= pickerObject->getComponent<octoon::TransformComponent>()->getTranslate();
-
-			this->gizmo_[this->gizmoMode_]->highlight(this->axis_);
-			this->gizmo_[this->gizmoMode_]->setActivePlane(this->axis_, eye);
-
-			auto planeIntersect = this->intersectObjects(event.button.x, event.button.y, gizmo_[gizmoMode_]->activePlane);
-			if (planeIntersect)
+			auto& camera = this->getContext()->profile->entitiesModule->camera.getValue();
+			if (camera)
 			{
-				this->oldScale_ = pickerObject->getComponent<octoon::TransformComponent>()->getScale();
-				this->oldRotation_ = pickerObject->getComponent<octoon::TransformComponent>()->getQuaternion();
-				this->oldPosition_ = pickerObject->getComponent<octoon::TransformComponent>()->getTranslate();
+				auto eye = camera->getComponent<octoon::TransformComponent>()->getTranslate();
+				eye -= pickerObject->getComponent<octoon::TransformComponent>()->getTranslate();
 
-				this->offset_ = planeIntersect.value().point;
+				this->gizmo_[this->gizmoMode_]->highlight(this->axis_);
+				this->gizmo_[this->gizmoMode_]->setActivePlane(this->axis_, eye);
 
-				this->captureEvent();
+				auto planeIntersect = this->intersectObjects(event.button.x, event.button.y, gizmo_[gizmoMode_]->activePlane);
+				if (planeIntersect)
+				{
+					this->oldScale_ = pickerObject->getComponent<octoon::TransformComponent>()->getScale();
+					this->oldRotation_ = pickerObject->getComponent<octoon::TransformComponent>()->getQuaternion();
+					this->oldPosition_ = pickerObject->getComponent<octoon::TransformComponent>()->getTranslate();
+
+					this->offset_ = planeIntersect.value().point;
+
+					this->captureEvent();
+				}
 			}
 		}
 	}

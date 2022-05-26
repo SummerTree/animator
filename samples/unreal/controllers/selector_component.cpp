@@ -17,9 +17,11 @@ namespace unreal
 	SelectorComponent::intersectObjects(float x, float y) noexcept
 	{
 		auto preofile = this->getContext()->profile;
-		if (preofile->entitiesModule->camera)
+
+		auto& camera = preofile->entitiesModule->camera.getValue();
+		if (camera)
 		{
-			auto cameraComponent = preofile->entitiesModule->camera->getComponent<octoon::CameraComponent>();
+			auto cameraComponent = camera->getComponent<octoon::CameraComponent>();
 			if (cameraComponent)
 			{
 				octoon::Raycaster raycaster(cameraComponent->screenToRay(octoon::math::float2(x, y)));

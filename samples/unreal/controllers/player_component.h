@@ -21,7 +21,7 @@ namespace unreal
 		void sample(float delta = 0.0f) noexcept;
 		void evaluate(float delta) noexcept;
 
-		float timeLength() const noexcept;
+		void updateTimeLength() noexcept;
 
 		virtual const std::type_info& type_info() const noexcept
 		{

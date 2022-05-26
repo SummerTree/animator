@@ -25,6 +25,8 @@ namespace unreal
 		if (ext == ".pmm")
 		{
 			entitiesComponent_->importPMM(path);
+			playerComponent_->updateTimeLength();
+			playerComponent_->reset();
 			return true;
 		}
 		else if (ext == ".scene")
@@ -39,7 +41,7 @@ namespace unreal
 	void
 	UnrealBehaviour::close() noexcept
 	{
-		auto mainCamera = profile_->entitiesModule->camera;
+		auto mainCamera = profile_->entitiesModule->camera.getValue();
 		mainCamera->removeComponent<octoon::AnimatorComponent>();
 
 		this->entitiesComponent_->clearAudio();
@@ -145,9 +147,10 @@ namespace unreal
 	std::optional<octoon::RaycastHit>
 	UnrealBehaviour::raycastHit(const octoon::math::float2& pos) noexcept
 	{
-		if (this->profile_->entitiesModule->camera)
+		auto camera = this->profile_->entitiesModule->camera.getValue();
+		if (camera)
 		{
-			auto cameraComponent = this->profile_->entitiesModule->camera->getComponent<octoon::CameraComponent>();
+			auto cameraComponent = camera->getComponent<octoon::CameraComponent>();
 			if (cameraComponent)
 			{
 				octoon::Raycaster raycaster(cameraComponent->screenToRay(pos));

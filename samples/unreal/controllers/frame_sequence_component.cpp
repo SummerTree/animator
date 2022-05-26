@@ -25,10 +25,6 @@ namespace unreal
 	bool
 	FrameSequenceComponent::create(std::string_view filepath) noexcept(false)
 	{
-		auto camera = this->getContext()->profile->entitiesModule->camera;
-		if (camera == nullptr)
-			return false;
-
 		auto& context = this->getContext();
 		width_ = context->profile->recordModule->width;
 		height_ = context->profile->recordModule->height;

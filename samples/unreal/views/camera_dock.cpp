@@ -232,6 +232,17 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
+		profile_->entitiesModule->camera += [this](const octoon::GameObjectPtr& camera)
+		{
+			if (camera)
+			{
+				if (camera->getComponent<octoon::AnimatorComponent>())
+					unloadButton_->setEnabled(true);
+				else
+					unloadButton_->setEnabled(false);
+			}
+		};
+
 		profile_->cameraModule->fov += [this](float fov)
 		{
 			this->fovSpinbox_->blockSignals(true);
@@ -333,7 +344,8 @@ namespace unreal
 	void
 	CameraDock::onFocusDistanceChanged(double value)
 	{
-		if (profile_->entitiesModule->camera)
+		auto& camera = profile_->entitiesModule->camera.getValue();
+		if (camera)
 		{
 			if (!focusDistanceSpinbox_->specialValueText().isEmpty())
 			{
@@ -341,7 +353,7 @@ namespace unreal
 
 				focusDistanceName_->setText(tr("Target: Empty"));
 				focusDistanceSpinbox_->setSpecialValueText(QString());
-				focusDistanceSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
+				focusDistanceSpinbox_->setValue(camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
 			}
 			else
 			{
@@ -353,7 +365,8 @@ namespace unreal
 	void
 	CameraDock::onLoadAnimation()
 	{
-		if (profile_->entitiesModule->camera)
+		auto camera = profile_->entitiesModule->camera.getValue();
+		if (camera)
 		{
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
 			if (!filepath.isEmpty())
@@ -366,9 +379,9 @@ namespace unreal
 					auto animation = loader.loadCameraMotion(stream);
 					if (!animation.clips.empty())
 					{
-						auto animator = profile_->entitiesModule->camera->getComponent<octoon::AnimatorComponent>();
+						auto animator = camera->getComponent<octoon::AnimatorComponent>();
 						if (!animator)
-							animator = profile_->entitiesModule->camera->addComponent<octoon::AnimatorComponent>();
+							animator = camera->addComponent<octoon::AnimatorComponent>();
 
 						animator->setAnimation(std::move(animation));
 						animator->sample(profile_->playerModule->curTime);
@@ -395,9 +408,9 @@ namespace unreal
 	void
 	CameraDock::onUnloadAnimation()
 	{
-		if (profile_->entitiesModule->camera)
+		if (profile_->entitiesModule->camera.getValue())
 		{
-			auto mainCamera = profile_->entitiesModule->camera;
+			auto mainCamera = profile_->entitiesModule->camera.getValue();
 			mainCamera->removeComponent<octoon::AnimatorComponent>();
 
 			profile_->cameraModule->reset();
@@ -414,7 +427,7 @@ namespace unreal
 		apertureSpinbox_->setValue(profile_->cameraModule->aperture);
 		dofButton_->setChecked(profile_->cameraModule->useDepthOfFiled);
 
-		auto mainCamera = profile_->entitiesModule->camera;
+		auto mainCamera = profile_->entitiesModule->camera.getValue();
 		if (mainCamera->getComponent<octoon::AnimatorComponent>())
 			unloadButton_->setEnabled(true);
 		else
@@ -433,7 +446,7 @@ namespace unreal
 		else
 		{
 			focusDistanceName_->setText(tr("Target: Empty"));
-			focusDistanceSpinbox_->setValue(profile_->entitiesModule->camera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
+			focusDistanceSpinbox_->setValue(mainCamera->getComponent<octoon::FilmCameraComponent>()->getFocalDistance());
 		}
 	}
 

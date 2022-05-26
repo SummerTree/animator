@@ -1,5 +1,5 @@
-#ifndef UNREAL_TITLE_WINDOW_H_
-#define UNREAL_TITLE_WINDOW_H_
+#ifndef UNREAL_TOPLEVEL_WINDOW_H_
+#define UNREAL_TOPLEVEL_WINDOW_H_
 
 #include <qapplication.h>
 #include <qlayout.h>

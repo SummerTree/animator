@@ -61,7 +61,7 @@ namespace unreal
 		if (!context->profile->entitiesModule->objects.empty())
 		{
 			context->profile->entitiesModule->objects.clear();
-			context->profile->entitiesModule->camera.reset();
+			context->profile->entitiesModule->camera.getValue().reset();
 		}
 
 		octoon::GameObjects objects;
@@ -72,13 +72,13 @@ namespace unreal
 
 		auto rotation = octoon::math::Quaternion(octoon::math::float3(-0.1, octoon::math::PI + 0.5f, 0.0f));
 
-		auto& mainLight = this->getContext()->profile->entitiesModule->mainLight;
+		auto& mainLight = this->getContext()->profile->entitiesModule->mainLight.getValue();
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setIntensity(this->getContext()->profile->mainLightModule->intensity);
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setColor(this->getContext()->profile->mainLightModule->color);
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setShadowMapSize(octoon::math::uint2(2048, 2048));
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setShadowEnable(true);
 		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(rotation);
-		mainLight->getComponent<octoon::TransformComponent>()->setTranslate(-octoon::math::rotate(rotation, octoon::math::float3::UnitZ) * 60);
+		mainLight->getComponent<octoon::TransformComponent>()->setTranslate(-octoon::math::rotate(rotation, octoon::math::float3::UnitZ) * 50);
 
 		for (auto& it : pmm.model)
 		{
@@ -161,7 +161,7 @@ namespace unreal
 	void
 	EntitiesComponent::setVolume(float volume) noexcept
 	{
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
@@ -172,7 +172,7 @@ namespace unreal
 	float
 	EntitiesComponent::getVolume() const noexcept
 	{
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
@@ -191,7 +191,7 @@ namespace unreal
 	void 
 	EntitiesComponent::importHDRi(const std::shared_ptr<octoon::GraphicsTexture>& texture) noexcept
 	{
-		auto& environmentLight = this->getContext()->profile->entitiesModule->environmentLight;
+		auto& environmentLight = this->getContext()->profile->entitiesModule->environmentLight.getValue();
 		if (environmentLight)
 		{
 			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -214,7 +214,7 @@ namespace unreal
 	void
 	EntitiesComponent::clearHDRi() noexcept
 	{
-		auto& environmentLight = this->getContext()->profile->entitiesModule->environmentLight;
+		auto& environmentLight = this->getContext()->profile->entitiesModule->environmentLight.getValue();
 		if (environmentLight)
 		{
 			auto envLight = environmentLight->getComponent<octoon::EnvironmentLightComponent>();

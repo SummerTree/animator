@@ -1,5 +1,5 @@
-#ifndef UNREAL_H265_MODULE_H_
-#define UNREAL_H265_MODULE_H_
+#ifndef UNREAL_ENCODE_MODULE_H_
+#define UNREAL_ENCODE_MODULE_H_
 
 #include <unreal_model.h>
 #include <cstdint>

@@ -37,7 +37,7 @@ namespace unreal
 			physicsFeature->setSolverIterationCounts(context->physicsModule->playSolverIterationCounts);
 		}
 
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto& sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto source = sound->getComponent<octoon::AudioSourceComponent>();
@@ -98,7 +98,7 @@ namespace unreal
 			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
 		}
 
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto& sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 			sound->getComponent<octoon::AudioSourceComponent>()->pause();
 
@@ -168,7 +168,7 @@ namespace unreal
 		if (timeFeature)
 			timeFeature->setTimeStep(1.0f / model->previewFps);
 
-		auto camera = this->getContext()->profile->entitiesModule->camera;
+		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -184,7 +184,7 @@ namespace unreal
 			}
 		}
 
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto& sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
@@ -278,7 +278,7 @@ namespace unreal
 
 		auto& context = this->getContext();
 
-		auto sound = context->profile->entitiesModule->sound;
+		auto& sound = context->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto source = sound->getComponent<octoon::AudioSourceComponent>();
@@ -317,7 +317,7 @@ namespace unreal
 			}
 		}
 
-		auto camera = context->profile->entitiesModule->camera;
+		auto camera = context->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -402,7 +402,7 @@ namespace unreal
 			}
 		}
 
-		auto camera = this->getContext()->profile->entitiesModule->camera;
+		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -421,12 +421,12 @@ namespace unreal
 			this->updateDofTarget();
 	}
 
-	float
-	PlayerComponent::timeLength() const noexcept
+	void
+	PlayerComponent::updateTimeLength() noexcept
 	{
 		float timeLength = 0;
 
-		auto camera = this->getContext()->profile->entitiesModule->camera;
+		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -448,13 +448,16 @@ namespace unreal
 			}
 		}
 
-		return timeLength;
+		auto& model = this->getModel();
+		model->timeLength = timeLength;
+		model->startFrame = 0;
+		model->endFrame = model->timeLength * 30;
 	}
 
 	void
 	PlayerComponent::updateDofTarget() noexcept
 	{
-		auto camera = this->getContext()->profile->entitiesModule->camera;
+		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
 		if (camera)
 		{
 			auto cameraPos = camera->getComponent<octoon::TransformComponent>()->getTranslate();
@@ -499,16 +502,6 @@ namespace unreal
 			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
 			physicsFeature->setFixedTimeStep(1.0f / model->previewFps);
 		}
-
-		this->addMessageListener("editor:project:open", [this](const std::any& data)
-		{
-			auto& model = this->getModel();
-			model->timeLength = this->timeLength();
-			model->startFrame = 0;
-			model->endFrame = model->timeLength * 30;
-
-			this->reset();
-		});
 	}
 
 	void

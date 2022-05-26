@@ -58,15 +58,15 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="169"/>
-        <location filename="../views/camera_dock.cpp" line="299"/>
-        <location filename="../views/camera_dock.cpp" line="342"/>
-        <location filename="../views/camera_dock.cpp" line="435"/>
+        <location filename="../views/camera_dock.cpp" line="310"/>
+        <location filename="../views/camera_dock.cpp" line="354"/>
+        <location filename="../views/camera_dock.cpp" line="448"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="180"/>
-        <location filename="../views/camera_dock.cpp" line="358"/>
+        <location filename="../views/camera_dock.cpp" line="371"/>
         <source>Load Animation</source>
         <translation>加载动画</translation>
     </message>
@@ -76,29 +76,29 @@
         <translation>卸载</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="291"/>
-        <location filename="../views/camera_dock.cpp" line="431"/>
+        <location filename="../views/camera_dock.cpp" line="302"/>
+        <location filename="../views/camera_dock.cpp" line="444"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="293"/>
-        <location filename="../views/camera_dock.cpp" line="430"/>
+        <location filename="../views/camera_dock.cpp" line="304"/>
+        <location filename="../views/camera_dock.cpp" line="443"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="358"/>
+        <location filename="../views/camera_dock.cpp" line="371"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="384"/>
+        <location filename="../views/camera_dock.cpp" line="397"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="385"/>
+        <location filename="../views/camera_dock.cpp" line="398"/>
         <source>Failed to open the file</source>
         <translation>打开文件失败</translation>
     </message>
@@ -1151,102 +1151,102 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ToolDock</name>
     <message>
-        <location filename="../views/tool_dock.cpp" line="30"/>
+        <location filename="../views/tool_dock.cpp" line="29"/>
         <source>Import</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="31"/>
+        <location filename="../views/tool_dock.cpp" line="30"/>
         <source>Import Resource File(.pmm, .mdl)</source>
         <translation>加载资源(.pmm, .mdl)</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="37"/>
+        <location filename="../views/tool_dock.cpp" line="36"/>
         <source>Music</source>
         <translation>音乐</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="38"/>
+        <location filename="../views/tool_dock.cpp" line="37"/>
         <source>Set Background Audio File</source>
         <translation>设置背景音乐</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="44"/>
+        <location filename="../views/tool_dock.cpp" line="43"/>
         <source>Screenshot</source>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="45"/>
+        <location filename="../views/tool_dock.cpp" line="44"/>
         <source>Denoising Screenshot</source>
         <translation>降噪截屏</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="51"/>
+        <location filename="../views/tool_dock.cpp" line="50"/>
         <source>Render</source>
         <translation>渲染</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="52"/>
+        <location filename="../views/tool_dock.cpp" line="51"/>
         <source>Enable High Quality Rendering</source>
         <translation>启用高质量渲染</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="58"/>
+        <location filename="../views/tool_dock.cpp" line="57"/>
         <source>Cleanup</source>
         <translation>清空</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="59"/>
+        <location filename="../views/tool_dock.cpp" line="58"/>
         <source>Cleanup Scene</source>
         <translation>清空场景</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="120"/>
-        <location filename="../views/tool_dock.cpp" line="194"/>
+        <location filename="../views/tool_dock.cpp" line="123"/>
+        <location filename="../views/tool_dock.cpp" line="197"/>
         <source>Open Project</source>
         <translation>打开项目</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="120"/>
+        <location filename="../views/tool_dock.cpp" line="123"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation>所有文件(*.pmm *.pmx *.abc *.mdl);; PMM 文件 (*.pmm);; PMX 文件 (*.pmx);; Abc 文件 (*.abc);;材质文件 (*.mdl)</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="133"/>
+        <location filename="../views/tool_dock.cpp" line="136"/>
         <source>Opening</source>
         <translation>打开中</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="133"/>
+        <location filename="../views/tool_dock.cpp" line="136"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="134"/>
+        <location filename="../views/tool_dock.cpp" line="137"/>
         <source>Open Progress</source>
         <translation>打开进度</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="168"/>
-        <location filename="../views/tool_dock.cpp" line="213"/>
-        <location filename="../views/tool_dock.cpp" line="267"/>
-        <location filename="../views/tool_dock.cpp" line="299"/>
-        <location filename="../views/tool_dock.cpp" line="324"/>
+        <location filename="../views/tool_dock.cpp" line="171"/>
+        <location filename="../views/tool_dock.cpp" line="216"/>
+        <location filename="../views/tool_dock.cpp" line="270"/>
+        <location filename="../views/tool_dock.cpp" line="302"/>
+        <location filename="../views/tool_dock.cpp" line="327"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="194"/>
+        <location filename="../views/tool_dock.cpp" line="197"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="254"/>
+        <location filename="../views/tool_dock.cpp" line="257"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="254"/>
+        <location filename="../views/tool_dock.cpp" line="257"/>
         <source>PNG Files (*.png)</source>
         <translation></translation>
     </message>
