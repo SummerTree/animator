@@ -29,7 +29,7 @@ namespace unreal
 
 	private:
 		std::shared_ptr<octoon::GraphicsTexture> texture_;
-		std::shared_ptr<octoon::GraphicsTexture> irradianceTexture_;
+		std::shared_ptr<octoon::GraphicsTexture> radianceTexture_;
 	};
 }
 

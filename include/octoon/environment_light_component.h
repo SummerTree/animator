@@ -25,8 +25,8 @@ namespace octoon
 		void setBackgroundMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
 		const std::shared_ptr<GraphicsTexture>& getBackgroundMap() const noexcept;
 
-		void setEnvironmentMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
-		const std::shared_ptr<GraphicsTexture>& getEnvironmentMap() const noexcept;
+		void setRadianceMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
+		const std::shared_ptr<GraphicsTexture>& getRadianceMap() const noexcept;
 
 		GameComponentPtr clone() const noexcept override;
 

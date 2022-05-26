@@ -47,8 +47,7 @@ namespace unreal
 
 				auto meshRenderer = environmentLight->getComponent<octoon::MeshRendererComponent>();
 				if (meshRenderer)
-				{
-					
+				{					
 					auto basicMaterial = meshRenderer->getMaterial()->downcast<octoon::MeshBasicMaterial>();
 					basicMaterial->setColor(octoon::math::srgb2linear<float>(model->color.getValue()) * model->intensity);
 				}
@@ -114,7 +113,7 @@ namespace unreal
 				if (environmentComponent)
 				{
 					environmentComponent->setBackgroundMap(model->useTexture ? texture_ : nullptr);
-					environmentComponent->setEnvironmentMap(model->useTexture ? this->irradianceTexture_ : nullptr);
+					environmentComponent->setRadianceMap(model->useTexture ? this->radianceTexture_ : nullptr);
 				}
 
 				auto meshRenderer = environmentLight->getComponent<octoon::MeshRendererComponent>();
@@ -132,7 +131,7 @@ namespace unreal
 			auto& profile = this->getContext()->profile;
 
 			this->texture_ = texture;
-			this->irradianceTexture_ = texture ? octoon::PMREMLoader::load(this->texture_) : nullptr;
+			this->radianceTexture_ = texture ? octoon::PMREMLoader::load(this->texture_) : nullptr;
 
 			auto environmentLight = profile->entitiesModule->environmentLight;
 			if (environmentLight)
@@ -141,7 +140,7 @@ namespace unreal
 				if (environmentComponent)
 				{
 					environmentComponent->setBackgroundMap(model->useTexture ? texture : nullptr);
-					environmentComponent->setEnvironmentMap(model->useTexture ? this->irradianceTexture_ : nullptr);
+					environmentComponent->setRadianceMap(model->useTexture ? this->radianceTexture_ : nullptr);
 				}
 
 				auto meshRenderer = environmentLight->getComponent<octoon::MeshRendererComponent>();
