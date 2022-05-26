@@ -729,26 +729,26 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="123"/>
+        <location filename="../views/motion_dock.cpp" line="124"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="123"/>
+        <location filename="../views/motion_dock.cpp" line="124"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished">VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="134"/>
         <location filename="../views/motion_dock.cpp" line="135"/>
-        <location filename="../views/motion_dock.cpp" line="188"/>
+        <location filename="../views/motion_dock.cpp" line="136"/>
         <location filename="../views/motion_dock.cpp" line="189"/>
+        <location filename="../views/motion_dock.cpp" line="190"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="134"/>
-        <location filename="../views/motion_dock.cpp" line="188"/>
+        <location filename="../views/motion_dock.cpp" line="135"/>
+        <location filename="../views/motion_dock.cpp" line="189"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
