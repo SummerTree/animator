@@ -25,6 +25,8 @@ namespace unreal
 		if (ext == ".pmm")
 		{
 			entitiesComponent_->importPMM(path);
+			playerComponent_->updateTimeLength();
+			playerComponent_->reset();
 			return true;
 		}
 		else if (ext == ".scene")

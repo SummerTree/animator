@@ -421,8 +421,8 @@ namespace unreal
 			this->updateDofTarget();
 	}
 
-	float
-	PlayerComponent::timeLength() const noexcept
+	void
+	PlayerComponent::updateTimeLength() noexcept
 	{
 		float timeLength = 0;
 
@@ -448,7 +448,10 @@ namespace unreal
 			}
 		}
 
-		return timeLength;
+		auto& model = this->getModel();
+		model->timeLength = timeLength;
+		model->startFrame = 0;
+		model->endFrame = model->timeLength * 30;
 	}
 
 	void
@@ -499,16 +502,6 @@ namespace unreal
 			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
 			physicsFeature->setFixedTimeStep(1.0f / model->previewFps);
 		}
-
-		this->addMessageListener("editor:project:open", [this](const std::any& data)
-		{
-			auto& model = this->getModel();
-			model->timeLength = this->timeLength();
-			model->startFrame = 0;
-			model->endFrame = model->timeLength * 30;
-
-			this->reset();
-		});
 	}
 
 	void
