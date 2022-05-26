@@ -5,7 +5,7 @@ namespace unreal
 {
 	OctoonImplementSubClass(UnrealBehaviour, octoon::GameComponent, "FlowerBehaviour")
 
-		UnrealBehaviour::UnrealBehaviour() noexcept
+	UnrealBehaviour::UnrealBehaviour() noexcept
 	{
 	}
 
@@ -46,7 +46,9 @@ namespace unreal
 
 		this->profile_->cameraModule->reset();
 		this->profile_->entitiesModule->objects.clear();
+		this->profile_->mainLightModule->reset();
 		this->profile_->environmentLightModule->reset();
+		this->profile_->selectorModule->reset();
 	}
 
 	bool

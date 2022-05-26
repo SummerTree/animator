@@ -14,6 +14,8 @@ namespace unreal
 	void
 	SelectorModule::reset() noexcept
 	{
+		this->selectedItem_ = std::nullopt;
+		this->selectedItemHover_ = std::nullopt;
 	}
 
 	void 
