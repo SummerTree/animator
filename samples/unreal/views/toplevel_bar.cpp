@@ -101,13 +101,7 @@ namespace unreal
 					}
 					else
 					{
-						QMessageBox msg(this);
-						msg.setWindowTitle(tr("Warning"));
-						msg.setText(tr("Please load a project with pmm extension."));
-						msg.setIcon(QMessageBox::Information);
-						msg.setStandardButtons(QMessageBox::Ok);
-
-						msg.exec();
+						QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
 						return false;
 					}
 				}
@@ -116,13 +110,7 @@ namespace unreal
 			}
 			catch (const std::exception& e)
 			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Error"));
-				msg.setText(e.what());
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
+				QMessageBox::critical(this, tr("Error"), e.what());
 				return false;
 			}
 		};
