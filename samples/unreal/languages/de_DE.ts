@@ -1173,52 +1173,52 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="120"/>
-        <location filename="../views/tool_dock.cpp" line="194"/>
+        <location filename="../views/tool_dock.cpp" line="124"/>
+        <location filename="../views/tool_dock.cpp" line="198"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="120"/>
+        <location filename="../views/tool_dock.cpp" line="124"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="133"/>
+        <location filename="../views/tool_dock.cpp" line="137"/>
         <source>Opening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="133"/>
+        <location filename="../views/tool_dock.cpp" line="137"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="134"/>
+        <location filename="../views/tool_dock.cpp" line="138"/>
         <source>Open Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="168"/>
-        <location filename="../views/tool_dock.cpp" line="213"/>
-        <location filename="../views/tool_dock.cpp" line="267"/>
-        <location filename="../views/tool_dock.cpp" line="299"/>
-        <location filename="../views/tool_dock.cpp" line="324"/>
+        <location filename="../views/tool_dock.cpp" line="172"/>
+        <location filename="../views/tool_dock.cpp" line="217"/>
+        <location filename="../views/tool_dock.cpp" line="271"/>
+        <location filename="../views/tool_dock.cpp" line="303"/>
+        <location filename="../views/tool_dock.cpp" line="328"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="194"/>
+        <location filename="../views/tool_dock.cpp" line="198"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="254"/>
+        <location filename="../views/tool_dock.cpp" line="258"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="254"/>
+        <location filename="../views/tool_dock.cpp" line="258"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>

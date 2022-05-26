@@ -90,7 +90,11 @@ namespace unreal
 		this->setWidget(mainWidget);
 
 		profile->offlineModule->enable += [this](bool value) {
-			this->repaint();
+			this->update();
+		};
+
+		profile->entitiesModule->sound += [this](const octoon::GameObjectPtr& value) {
+			this->update();
 		};
 
 		this->connect(importButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
@@ -331,7 +335,7 @@ namespace unreal
 	}
 
 	void
-	ToolDock::paintEvent(QPaintEvent* e) noexcept
+	ToolDock::update() noexcept
 	{
 		if (this->profile_->offlineModule->getEnable())
 		{
@@ -350,7 +354,7 @@ namespace unreal
 			}
 		}
 
-		if (this->profile_->entitiesModule->sound)
+		if (this->profile_->entitiesModule->sound.getValue())
 		{
 			if (!audioEnable_)
 			{

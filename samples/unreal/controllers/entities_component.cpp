@@ -161,7 +161,7 @@ namespace unreal
 	void
 	EntitiesComponent::setVolume(float volume) noexcept
 	{
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
@@ -172,7 +172,7 @@ namespace unreal
 	float
 	EntitiesComponent::getVolume() const noexcept
 	{
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();

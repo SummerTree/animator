@@ -37,7 +37,7 @@ namespace unreal
 			physicsFeature->setSolverIterationCounts(context->physicsModule->playSolverIterationCounts);
 		}
 
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto& sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto source = sound->getComponent<octoon::AudioSourceComponent>();
@@ -98,7 +98,7 @@ namespace unreal
 			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
 		}
 
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto& sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 			sound->getComponent<octoon::AudioSourceComponent>()->pause();
 
@@ -184,7 +184,7 @@ namespace unreal
 			}
 		}
 
-		auto sound = this->getContext()->profile->entitiesModule->sound;
+		auto& sound = this->getContext()->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
@@ -278,7 +278,7 @@ namespace unreal
 
 		auto& context = this->getContext();
 
-		auto sound = context->profile->entitiesModule->sound;
+		auto& sound = context->profile->entitiesModule->sound.getValue();
 		if (sound)
 		{
 			auto source = sound->getComponent<octoon::AudioSourceComponent>();

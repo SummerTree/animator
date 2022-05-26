@@ -33,7 +33,7 @@ namespace unreal
 		void cleanupEvent() noexcept;
 
 	private:
-		void paintEvent(QPaintEvent* e) noexcept override;
+		void update() noexcept;
 
 	public:
 		bool gpuEnable_;
