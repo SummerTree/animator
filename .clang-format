@@ -1,7 +1,6 @@
 ---
 Language:        Cpp
 # BasedOnStyle:  GNU
-AccessModifierOffset: -2
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
@@ -118,5 +117,7 @@ TabWidth:        4
 UseTab:          ForContinuationAndIndentation
 UseCRLF:         true
 LambdaBodyIndentation: OuterScope
+IndentAccessModifiers: false
+AccessModifierOffset: -4
 ...
 

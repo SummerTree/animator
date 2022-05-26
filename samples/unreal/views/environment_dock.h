@@ -1,16 +1,16 @@
 #ifndef UNREAL_ENVIRONMENT_WINDOW_H_
 #define UNREAL_ENVIRONMENT_WINDOW_H_
 
-#include <qdockwidget.h>
 #include <qcheckbox.h>
 #include <qcolordialog.h>
+#include <qdockwidget.h>
+#include <qlabel.h>
 #include <qlistwidget.h>
 #include <qspinbox.h>
-#include <qlabel.h>
 
 #include "spoiler.h"
-#include "unreal_profile.h"
 #include "unreal_behaviour.h"
+#include "unreal_profile.h"
 
 namespace unreal
 {
@@ -53,7 +53,7 @@ namespace unreal
 		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 
-   	class EnvironmentDock final : public QDockWidget
+	class EnvironmentDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
@@ -86,7 +86,7 @@ namespace unreal
 		void setPreviewImage(QString name, std::shared_ptr<QImage> image);
 		void setThumbnailImage(QString name, const QImage& image);
 		void updatePreviewImage();
-		
+
 	private:
 		QLabel* previewName_;
 		QLabel* thumbnailPath;
