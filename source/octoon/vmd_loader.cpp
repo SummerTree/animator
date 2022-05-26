@@ -7,6 +7,7 @@
 #include <octoon/animation/path_interpolator.h>
 #include <iconv.h>
 #include <map>
+#include <set>
 
 namespace octoon
 {
@@ -60,9 +61,13 @@ namespace octoon
 	{
 		VMD_char name[15];
 		VMD_uint32_t frame;
-		VMD_Vector3 location;
+		VMD_Vector3 translate;
 		VMD_Quaternion rotate;
-		VMD_int8_t interpolation[64];
+		VMD_int8_t interpolation_x[4];
+		VMD_int8_t interpolation_y[4];
+		VMD_int8_t interpolation_z[4];
+		VMD_int8_t interpolation_rotation[4];
+		VMD_int8_t interpolation[48];
 	};
 
 	struct VMDMorph
@@ -269,9 +274,9 @@ namespace octoon
 				motions[it.name].setName(sjis2utf8(vmd.Header.name));
 
 			auto& clip = motions[it.name];
-			clip.getCurve("Position.X").insert(Keyframe<float, float>((float)it.frame, it.location.x));
-			clip.getCurve("Position.Y").insert(Keyframe<float, float>((float)it.frame, it.location.y));
-			clip.getCurve("Position.Z").insert(Keyframe<float, float>((float)it.frame, it.location.z));
+			clip.getCurve("Position.X").insert(Keyframe<float, float>((float)it.frame, it.translate.x));
+			clip.getCurve("Position.Y").insert(Keyframe<float, float>((float)it.frame, it.translate.y));
+			clip.getCurve("Position.Z").insert(Keyframe<float, float>((float)it.frame, it.translate.z));
 			clip.getCurve("Rotation.X").insert(Keyframe<float, float>((float)it.frame, it.rotate.x));
 			clip.getCurve("Rotation.Y").insert(Keyframe<float, float>((float)it.frame, it.rotate.y));
 			clip.getCurve("Rotation.Z").insert(Keyframe<float, float>((float)it.frame, it.rotate.z));
@@ -284,6 +289,72 @@ namespace octoon
 			animation.addClip(it.second);
 
 		return animation;
+	}
+
+	Animation<float>
+	VMDLoader::loadMotion(io::istream& stream) noexcept(false)
+	{
+		VMD vmd;
+		vmd.load(stream);
+
+		Animation animation;
+		animation.setName(sjis2utf8(vmd.Header.name));
+
+		std::unordered_map<std::string, std::vector<VMDMotion>> motionList;
+		for (auto& motion : vmd.MotionLists)
+			motionList[motion.name].push_back(motion);
+
+		octoon::AnimationClips<float> clips;
+		clips.resize(motionList.size());
+
+		std::size_t i = 0;
+
+		for (auto it = motionList.begin(); it != motionList.end(); ++it, ++i)
+		{
+			octoon::Keyframes<float> translateX;
+			octoon::Keyframes<float> translateY;
+			octoon::Keyframes<float> translateZ;
+			octoon::Keyframes<float> rotationX;
+			octoon::Keyframes<float> rotationY;
+			octoon::Keyframes<float> rotationZ;
+
+			auto& motionData = (*it).second;
+
+			translateX.reserve(motionData.size());
+			translateY.reserve(motionData.size());
+			translateZ.reserve(motionData.size());
+			rotationX.reserve(motionData.size());
+			rotationY.reserve(motionData.size());
+			rotationZ.reserve(motionData.size());
+
+			for (auto& data : motionData)
+			{
+				auto interpolationX = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_x[0] / 127.0f, data.interpolation_x[2] / 127.0f, data.interpolation_x[1] / 127.0f, data.interpolation_x[3] / 127.0f);
+				auto interpolationY = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_y[0] / 127.0f, data.interpolation_y[2] / 127.0f, data.interpolation_y[1] / 127.0f, data.interpolation_y[3] / 127.0f);
+				auto interpolationZ = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_z[0] / 127.0f, data.interpolation_z[2] / 127.0f, data.interpolation_z[1] / 127.0f, data.interpolation_z[3] / 127.0f);
+				auto interpolationRotation = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_rotation[0] / 127.0f, data.interpolation_rotation[2] / 127.0f, data.interpolation_rotation[1] / 127.0f, data.interpolation_rotation[3] / 127.0f);
+
+				auto euler = octoon::math::eulerAngles(octoon::math::Quaternion(data.rotate.x, data.rotate.y, data.rotate.z, data.rotate.w));
+
+				translateX.emplace_back((float)data.frame / 30.0f, data.translate.x, interpolationX);
+				translateY.emplace_back((float)data.frame / 30.0f, data.translate.y, interpolationY);
+				translateZ.emplace_back((float)data.frame / 30.0f, data.translate.z, interpolationZ);
+				rotationX.emplace_back((float)data.frame / 30.0f, euler.x, interpolationRotation);
+				rotationY.emplace_back((float)data.frame / 30.0f, euler.y, interpolationRotation);
+				rotationZ.emplace_back((float)data.frame / 30.0f, euler.z, interpolationRotation);
+			}
+
+			auto& clip = clips[i];
+			clip.setName(sjis2utf8((*it).first));
+			clip.setCurve("LocalPosition.x", octoon::AnimationCurve(std::move(translateX)));
+			clip.setCurve("LocalPosition.y", octoon::AnimationCurve(std::move(translateY)));
+			clip.setCurve("LocalPosition.z", octoon::AnimationCurve(std::move(translateZ)));
+			clip.setCurve("LocalEulerAnglesRaw.x", octoon::AnimationCurve(std::move(rotationX)));
+			clip.setCurve("LocalEulerAnglesRaw.y", octoon::AnimationCurve(std::move(rotationY)));
+			clip.setCurve("LocalEulerAnglesRaw.z", octoon::AnimationCurve(std::move(rotationZ)));
+		}
+
+		return Animation<float>(std::move(clips));
 	}
 
 	Animation<float>

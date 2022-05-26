@@ -18,6 +18,140 @@ namespace unreal
 	{
 	}
 
+	bool
+	UnrealBehaviour::open(std::string_view path) noexcept(false)
+	{
+		auto ext = path.substr(path.find_last_of("."));
+		if (ext == ".pmm")
+		{
+			entitiesComponent_->importPMM(path);
+			return true;
+		}
+		else if (ext == ".scene")
+		{
+			entitiesComponent_->importAss(path);
+			return true;
+		}
+
+		return false;
+	}
+
+	void
+	UnrealBehaviour::close() noexcept
+	{
+		this->entitiesComponent_->clearAudio();
+		this->profile_->entitiesModule->objects.clear();
+	}
+
+	bool
+	UnrealBehaviour::isOpen() const noexcept
+	{
+		return !profile_->entitiesModule->objects.empty();
+	}
+
+	void
+	UnrealBehaviour::load(std::string_view path) noexcept(false)
+	{
+		auto ext = path.substr(path.find_last_of("."));
+		if (ext == ".pmx")
+			entitiesComponent_->importModel(path);
+		else if (ext == ".hdr")
+			hdriComponent_->importHDRi(path);
+		else if (ext == ".abc")
+			entitiesComponent_->importAbc(path);
+		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
+			entitiesComponent_->importAudio(path);
+		else if (ext == ".mdl")
+			materialComponent_->importMdl(path);
+	}
+
+	void
+	UnrealBehaviour::play() noexcept
+	{
+		playerComponent_->play();
+	}
+
+	void
+	UnrealBehaviour::pause() noexcept
+	{
+		playerComponent_->pause();
+	}
+
+	bool
+	UnrealBehaviour::startRecord(std::string_view filepath) noexcept
+	{
+		try
+		{
+			this->offlineComponent_->setActive(profile_->encodeModule->quality == VideoQuality::High);
+			this->playerComponent_->render();
+
+			this->recordComponent_->startRecord(filepath);
+
+			return true;
+		}
+		catch (...)
+		{
+			this->stopRecord();
+			return false;
+		}
+	}
+
+	void
+	UnrealBehaviour::stopRecord() noexcept
+	{
+		this->playerComponent_->pause();
+		this->recordComponent_->stopRecord();
+	}
+
+	void
+	UnrealBehaviour::loadAudio(std::string_view filepath) noexcept
+	{
+		entitiesComponent_->importAudio(filepath);
+	}
+
+	void
+	UnrealBehaviour::setVolume(float volume) noexcept
+	{
+		entitiesComponent_->setVolume(volume);
+	}
+
+	float
+	UnrealBehaviour::getVolume() const noexcept
+	{
+		return entitiesComponent_->getVolume();
+	}
+
+	void
+	UnrealBehaviour::clearAudio() noexcept
+	{
+		entitiesComponent_->clearAudio();
+	}
+
+	void
+	UnrealBehaviour::renderPicture(std::string_view filepath) noexcept(false)
+	{
+		recordComponent_->setActive(true);
+		recordComponent_->captureImage(filepath);
+	}
+
+	std::optional<octoon::RaycastHit>
+	UnrealBehaviour::raycastHit(const octoon::math::float2& pos) noexcept
+	{
+		if (this->profile_->entitiesModule->camera)
+		{
+			auto cameraComponent = this->profile_->entitiesModule->camera->getComponent<octoon::CameraComponent>();
+			if (cameraComponent)
+			{
+				octoon::Raycaster raycaster(cameraComponent->screenToRay(pos));
+				auto& hits = raycaster.intersectObjects(this->profile_->entitiesModule->objects);
+				if (!hits.empty())
+					return hits.front();
+			}
+		}
+
+		return std::nullopt;
+	}
+
 	void
 	UnrealBehaviour::addComponent(IUnrealComponent* component) noexcept
 	{
@@ -73,6 +207,12 @@ namespace unreal
 	{
 		for (auto& it : components_)
 			it->onDisable();
+	}
+
+	const std::shared_ptr<UnrealProfile>&
+	UnrealBehaviour::getProfile() const noexcept
+	{
+		return profile_;
 	}
 
 	void
@@ -250,7 +390,10 @@ namespace unreal
 		{
 			auto files = std::any_cast<std::vector<const char*>>(data);
 			for (auto& path : files)
-				this->open(path);
+			{
+				if (!this->open(path))
+					this->load(path);
+			}
 		}
 	}
 
@@ -344,132 +487,6 @@ namespace unreal
 			if (it->getActive())
 				it->onResize(event);
 		}
-	}
-
-	const std::shared_ptr<UnrealProfile>&
-	UnrealBehaviour::getProfile() const noexcept
-	{
-		return profile_;
-	}
-
-	void
-	UnrealBehaviour::open(std::string_view path) noexcept(false)
-	{
-		auto ext = path.substr(path.find_last_of("."));
-		if (ext == ".pmm")
-			entitiesComponent_->importPMM(path);
-		else if (ext == ".scene")
-			entitiesComponent_->importAss(path);
-		else if (ext == ".pmx")
-			entitiesComponent_->importModel(path);
-		else if (ext == ".hdr")
-			hdriComponent_->importHDRi(path);
-		else if (ext == ".abc")
-			entitiesComponent_->importAbc(path);
-		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
-			entitiesComponent_->importAudio(path);
-		else if (ext == ".mdl")
-			materialComponent_->importMdl(path);
-	}
-
-	void
-	UnrealBehaviour::close() noexcept
-	{
-		this->entitiesComponent_->clearAudio();
-		this->profile_->entitiesModule->objects.clear();
-	}
-
-	bool
-	UnrealBehaviour::isOpen() const noexcept
-	{
-		return !profile_->entitiesModule->objects.empty();
-	}
-
-	void
-	UnrealBehaviour::play() noexcept
-	{
-		playerComponent_->play();
-	}
-
-	void
-	UnrealBehaviour::pause() noexcept
-	{
-		playerComponent_->pause();
-	}
-
-	bool
-	UnrealBehaviour::startRecord(std::string_view filepath) noexcept
-	{
-		try
-		{
-			this->offlineComponent_->setActive(profile_->encodeModule->quality == VideoQuality::High);
-			this->playerComponent_->render();
-
-			this->recordComponent_->startRecord(filepath);
-
-			return true;
-		}
-		catch (...)
-		{
-			this->stopRecord();
-			return false;
-		}
-	}
-
-	void
-	UnrealBehaviour::stopRecord() noexcept
-	{
-		this->playerComponent_->pause();
-		this->recordComponent_->stopRecord();
-	}
-
-	void
-	UnrealBehaviour::loadAudio(std::string_view filepath) noexcept
-	{
-		entitiesComponent_->importAudio(filepath);
-	}
-
-	void
-	UnrealBehaviour::setVolume(float volume) noexcept
-	{
-		entitiesComponent_->setVolume(volume);
-	}
-
-	float
-	UnrealBehaviour::getVolume() const noexcept
-	{
-		return entitiesComponent_->getVolume();
-	}
-
-	void
-	UnrealBehaviour::clearAudio() noexcept
-	{
-		entitiesComponent_->clearAudio();
-	}
-
-	void
-	UnrealBehaviour::renderPicture(std::string_view filepath) noexcept(false)
-	{
-		recordComponent_->setActive(true);
-		recordComponent_->captureImage(filepath);
-	}
-
-	std::optional<octoon::RaycastHit>
-	UnrealBehaviour::raycastHit(const octoon::math::float2& pos) noexcept
-	{
-		if (this->profile_->entitiesModule->camera)
-		{
-			auto cameraComponent = this->profile_->entitiesModule->camera->getComponent<octoon::CameraComponent>();
-			if (cameraComponent)
-			{
-				octoon::Raycaster raycaster(cameraComponent->screenToRay(pos));
-				auto& hits = raycaster.intersectObjects(this->profile_->entitiesModule->objects);
-				if (!hits.empty())
-					return hits.front();
-			}
-		}
-
-		return std::nullopt;
 	}
 
 	octoon::GameComponentPtr

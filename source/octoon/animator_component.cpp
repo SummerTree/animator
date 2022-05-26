@@ -4,6 +4,7 @@
 #include <octoon/timer_feature.h>
 #include <octoon/rigidbody_component.h>
 #include <iostream>
+#include <codecvt>
 
 namespace octoon
 {
@@ -157,12 +158,14 @@ namespace octoon
 	AnimatorComponent::setAnimation(Animation<float>&& animtion) noexcept
 	{
 		animation_ = std::move(animtion);
+		this->updateBindmap();
 	}
 
 	void
 	AnimatorComponent::setAnimation(const Animation<float>& clips) noexcept
 	{
 		animation_ = clips;
+		this->updateBindmap();
 	}
 
 	const Animation<float>&
@@ -175,14 +178,16 @@ namespace octoon
 	AnimatorComponent::setAvatar(GameObjects&& avatar) noexcept
 	{
 		avatar_ = std::move(avatar);
-		this->onAttachAvatar(avatar_);
+		this->updateBindpose(avatar_);
+		this->updateBindmap();
 	}
 
 	void
 	AnimatorComponent::setAvatar(const GameObjects& avatar) noexcept
 	{
 		avatar_ = avatar;
-		this->onAttachAvatar(avatar_);
+		this->updateBindpose(avatar_);
+		this->updateBindmap();
 	}
 
 	const GameObjects&
@@ -240,12 +245,39 @@ namespace octoon
 	}
 
 	void
-	AnimatorComponent::onAttachAvatar(const GameObjects& avatar) noexcept
+	AnimatorComponent::updateBindpose(const GameObjects& avatar) noexcept
 	{
 		bindpose_.resize(avatar.size());
 
 		for (std::size_t i = 0; i < avatar.size(); i++)
 			bindpose_[i] = avatar[i]->getComponent<TransformComponent>()->getLocalTranslate();
+	}
+
+	void
+	AnimatorComponent::updateBindmap() noexcept
+	{
+		bindmap_.clear();
+
+		if (!animation_.empty() && !avatar_.empty())
+		{
+			std::map<std::string, std::uint32_t> boneMap;
+
+			for (std::size_t i = 0; i < avatar_.size(); i++)
+				boneMap[avatar_[i]->getName()] = i;
+
+			bindmap_.resize(animation_.clips.size());
+
+			for (std::size_t i = 0; i < animation_.clips.size(); i++)
+			{
+				auto& clip = animation_.clips[i];
+
+				auto it = boneMap.find(clip.name);
+				if (it != boneMap.end())
+					bindmap_[i] = (*it).second;
+				else
+					bindmap_[i] = std::string::npos;
+			}
+		}
 	}
 
 	void
@@ -256,8 +288,10 @@ namespace octoon
 
 		for (std::size_t i = 0; i < animation_.clips.size(); i++)
 		{
-			auto transform = avatar_[i]->getComponent<TransformComponent>();
+			if (bindmap_[i] == std::string::npos)
+				continue;
 
+			auto transform = avatar_[bindmap_[i]]->getComponent<TransformComponent>();
 			auto scale = transform->getLocalScale();
 			auto quat = transform->getLocalQuaternion();
 			auto translate = transform->getLocalTranslate();
@@ -266,11 +300,11 @@ namespace octoon
 			for (auto& curve : animation_.clips[i].curves)
 			{
 				if (curve.first == "LocalPosition.x")
-					translate.x = curve.second.value + bindpose_[i].x;
+					translate.x = curve.second.value + bindpose_[bindmap_[i]].x;
 				else if (curve.first == "LocalPosition.y")
-					translate.y = curve.second.value + bindpose_[i].y;
+					translate.y = curve.second.value + bindpose_[bindmap_[i]].y;
 				else if (curve.first == "LocalPosition.z")
-					translate.z = curve.second.value + bindpose_[i].z;
+					translate.z = curve.second.value + bindpose_[bindmap_[i]].z;
 				else if (curve.first == "LocalScale.x")
 					scale.x = curve.second.value;
 				else if (curve.first == "LocalScale.y")

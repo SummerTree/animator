@@ -16,6 +16,8 @@ namespace octoon
 		static bool doCanRead(const char* type) noexcept;
 
 		static Animation<float> load(io::istream& stream) noexcept(false);
+
+		static Animation<float> loadMotion(io::istream& stream) noexcept(false);
 		static Animation<float> loadCameraMotion(io::istream& stream) noexcept(false);
 
 		static void save(io::ostream& stream, const Animation<float>& animation) noexcept(false);

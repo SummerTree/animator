@@ -7,7 +7,7 @@ namespace octoon
 {
 	struct RaycastHit
 	{
-		std::weak_ptr<const octoon::GameObject> object;
+		std::weak_ptr<octoon::GameObject> object;
 		std::size_t mesh;
 		float distance;
 		math::float3 point;
@@ -37,12 +37,12 @@ namespace octoon
 		void setFromRaycast(const math::Raycast& ray, float distance = std::numeric_limits<float>::max()) noexcept;
 		void setFromRaycast(const math::float3& origin, const math::float3& end, float distance = std::numeric_limits<float>::max()) noexcept;
 
-		const std::vector<RaycastHit>& intersectObject(const GameObject& entity) noexcept;
+		const std::vector<RaycastHit>& intersectObject(GameObject& entity) noexcept;
 		const std::vector<RaycastHit>& intersectObjects(const GameObjects& entities) noexcept;
 		const std::vector<RaycastHit>& intersectObjects(const GameObjectRaws& entities) noexcept;
 
 	private:
-		void intersectSingleObject(const GameObject& entity) noexcept;
+		void intersectSingleObject(GameObject& entity) noexcept;
 	};
 }
 

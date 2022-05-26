@@ -166,15 +166,33 @@ namespace unreal
 	void
 	ModelDock::itemSelected(QListWidgetItem* item)
 	{
-		if (item)
+		if (!item)
+			return;
+		
+		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+		if (behaviour)
 		{
-			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-			if (!behaviour)
-				return;
-
-			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
-			if (selectedItem)
+			auto modelComponent = behaviour->getComponent<ModelComponent>();
+			if (modelComponent)
 			{
+				auto uuid = item->data(Qt::UserRole).toString().toStdString();
+				auto package = modelComponent->getPackage(uuid);
+
+				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
+				dialog.setWindowTitle(tr("Loading..."));
+				dialog.setWindowModality(Qt::WindowModal);
+				dialog.setValue(0);
+				dialog.show();
+
+				if (package["name"].is_string())
+					dialog.setLabelText(QString::fromStdString(package["name"].get<nlohmann::json::string_t>()));
+
+				QCoreApplication::processEvents();
+
+				if (package["path"].is_string())
+					behaviour->load(package["path"].get<nlohmann::json::string_t>());
+
+				dialog.setValue(1);
 			}
 		}
 	}

@@ -51,10 +51,19 @@ namespace unreal
 				}
 			}
 
+			octoon::math::BoundingBox bound;
+			for (auto& v : pmx.vertices)
+				bound.encapsulate(octoon::math::float3(v.position.x, v.position.y, v.position.z));
+
+			auto minBounding = bound.box().min;
+			auto maxBounding = bound.box().max;
+
 			nlohmann::json item;
 			item["uuid"] = uuid;
 			item["name"] = filename.u8string();
 			item["path"] = modelPath.u8string();
+			item["bound"][0] = { minBounding.x, minBounding.y, minBounding.z };
+			item["bound"][1] = { maxBounding.x, maxBounding.y, maxBounding.z };
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)

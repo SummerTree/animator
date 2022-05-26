@@ -53,7 +53,8 @@ namespace octoon
 		void updateAnimation(float delta = 0.0f) noexcept;
 
 	private:
-		void onAttachAvatar(const GameObjects& avatar) noexcept;
+		void updateBindpose(const GameObjects& avatar) noexcept;
+		void updateBindmap() noexcept;
 
 	private:
 		bool enableAnimation_;
@@ -61,6 +62,7 @@ namespace octoon
 
 		Animation<float> animation_;
 		math::float3s bindpose_;
+		std::vector<std::size_t> bindmap_;
 
 		GameObjects avatar_;
 	};

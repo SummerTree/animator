@@ -66,18 +66,18 @@ namespace unreal
 		bottomLayout_->setSpacing(2);
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
 
-		mainWidget_ = new QListWidget;
-		mainWidget_->setResizeMode(QListView::Fixed);
-		mainWidget_->setViewMode(QListView::IconMode);
-		mainWidget_->setMovement(QListView::Static);
-		mainWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
-		mainWidget_->setStyleSheet("background:transparent;");
-		mainWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		mainWidget_->setSpacing(10);
+		listWidget_ = new QListWidget;
+		listWidget_->setResizeMode(QListView::Fixed);
+		listWidget_->setViewMode(QListView::IconMode);
+		listWidget_->setMovement(QListView::Static);
+		listWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
+		listWidget_->setStyleSheet("background:transparent;");
+		listWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		listWidget_->setSpacing(10);
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addLayout(topLayout_);
-		mainLayout_->addWidget(mainWidget_);
+		mainLayout_->addWidget(listWidget_);
 		mainLayout_->addStretch();
 		mainLayout_->addLayout(bottomLayout_);
 		mainLayout_->setContentsMargins(5, 10, 5, 10);
@@ -85,8 +85,8 @@ namespace unreal
 		connect(okButton_, SIGNAL(clicked()), this, SLOT(okClickEvent()));
 		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeClickEvent()));
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
-		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
-		connect(mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
+		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
+		connect(listWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 	}
 
 	EnvironmentListDialog::~EnvironmentListDialog() noexcept
@@ -122,8 +122,8 @@ namespace unreal
 			item->setData(Qt::UserRole, QString::fromStdString(std::string(uuid)));
 			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
 
-			mainWidget_->addItem(item);
-			mainWidget_->setItemWidget(item, widget);
+			listWidget_->addItem(item);
+			listWidget_->setItemWidget(item, widget);
 
 			if (package.find("preview") != package.end())
 			{
@@ -145,7 +145,7 @@ namespace unreal
 	void
 	EnvironmentListDialog::importClickEvent()
 	{
-		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
+		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("HDRi Files (*.hdr)"));
 		if (!filepaths.isEmpty())
 		{
 			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
@@ -216,7 +216,7 @@ namespace unreal
 	EnvironmentListDialog::resizeEvent(QResizeEvent* e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins();
-		mainWidget_->resize(
+		listWidget_->resize(
 			this->width(),
 			this->height() - (margins.top() + margins.bottom()) * 2 - okButton_->height() - importButton_->height());
 	}
@@ -227,7 +227,7 @@ namespace unreal
 		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour)
 		{
-			mainWidget_->clear();
+			listWidget_->clear();
 
 			auto hdriComponent = behaviour->getComponent<HDRiComponent>();
 			for (auto& uuid : hdriComponent->getIndexList())
@@ -250,9 +250,9 @@ namespace unreal
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
 						if (hdrComponent->removePackage(uuid.toStdString()))
 						{
-							mainWidget_->takeItem(mainWidget_->row(clickedItem_));
+							listWidget_->takeItem(listWidget_->row(clickedItem_));
 							delete clickedItem_;
-							clickedItem_ = mainWidget_->currentItem();
+							clickedItem_ = listWidget_->currentItem();
 							hdrComponent->save();
 						}
 					}
@@ -369,6 +369,8 @@ namespace unreal
 		this->resetButton_ = new QToolButton();
 		this->resetButton_->setText(tr("Reset"));
 		this->resetButton_->installEventFilter(this);
+
+		this->colorSelector_ = new QColorDialog;
 	
 		auto thumbnailTitleLayout = new QHBoxLayout();
 		thumbnailTitleLayout->addWidget(thumbnailToggle, 0, Qt::AlignLeft);
@@ -512,7 +514,7 @@ namespace unreal
 		connect(horizontalRotationSlider, SIGNAL(valueChanged(int)), this, SLOT(horizontalRotationSliderEvent(int)));
 		connect(verticalRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(verticalRotationEditEvent(double)));
 		connect(verticalRotationSlider, SIGNAL(valueChanged(int)), this, SLOT(verticalRotationSliderEvent(int)));
-		connect(&colorSelector_, SIGNAL(currentColorChanged(const QColor&)), this, SLOT(colorChangeEvent(const QColor&)));
+		connect(colorSelector_, SIGNAL(currentColorChanged(const QColor&)), this, SLOT(colorChangeEvent(const QColor&)));
 		connect(resetButton_, SIGNAL(clicked()), this, SLOT(resetEvent()));
 	}
 
@@ -733,8 +735,8 @@ namespace unreal
 	EnvironmentDock::colorClickEvent()
 	{
 		auto color = this->profile_->environmentLightModule->color.getValue();
-		colorSelector_.setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
-		colorSelector_.show();
+		colorSelector_->setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
+		colorSelector_->show();
 	}
 
 	void 

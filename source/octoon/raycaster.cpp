@@ -32,7 +32,7 @@ namespace octoon
 	}
 
 	void
-	Raycaster::intersectSingleObject(const GameObject& entity) noexcept
+	Raycaster::intersectSingleObject(GameObject& entity) noexcept
 	{
 		MeshPtr mesh = nullptr;
 
@@ -72,7 +72,7 @@ namespace octoon
 	}
 
 	const std::vector<RaycastHit>&
-	Raycaster::intersectObject(const GameObject& object) noexcept
+	Raycaster::intersectObject(GameObject& object) noexcept
 	{
 		this->hits.clear();
 		this->intersectSingleObject(object);

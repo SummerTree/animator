@@ -182,8 +182,69 @@ namespace unreal
 				return;
 
 			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
-			if (selectedItem)
+			if (!selectedItem.has_value())
+				return;
+			
+			QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 2, this);
+			dialog.setWindowTitle(tr("Loading..."));
+			dialog.setWindowModality(Qt::WindowModal);
+			dialog.setValue(0);
+			dialog.show();
+
+			QCoreApplication::processEvents();
+
+			auto motionComponent = behaviour->getComponent<MotionComponent>();
+			if (motionComponent)
 			{
+				auto uuid = item->data(Qt::UserRole).toString().toStdString();
+				auto package = motionComponent->getPackage(uuid);
+
+				if (package["path"].is_string())
+				{
+					auto filepath = package["path"].get<nlohmann::json::string_t>();
+
+					octoon::io::ifstream stream;
+
+					if (stream.open(filepath))
+					{
+						octoon::VMDLoader loader;
+						auto animation = loader.loadMotion(stream);
+
+						dialog.setValue(1);
+						QCoreApplication::processEvents();
+
+						if (!animation.clips.empty())
+						{
+							auto model = selectedItem->object.lock();
+							auto animator = model->getComponent<octoon::AnimatorComponent>();
+							auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
+
+							if (animator)
+								animator->setAnimation(std::move(animation));
+							else
+							{
+								if (smr)
+									animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getTransforms());
+								else
+									animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
+							}
+
+							animator->sample();
+
+							if (smr)
+							{
+								for (auto& transform : smr->getTransforms())
+								{
+									auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+									if (solver)
+										solver->solve();
+								}
+							}
+						}
+
+						dialog.setValue(2);
+					}
+				}
 			}
 		}
 	}

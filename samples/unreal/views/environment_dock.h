@@ -40,7 +40,7 @@ namespace unreal
 		void addItem(std::string_view uuid) noexcept;
 
 	public:
-		QListWidget* mainWidget_;
+		QListWidget* listWidget_;
 		QVBoxLayout* mainLayout_;
 
 		QToolButton* okButton_;
@@ -110,9 +110,9 @@ namespace unreal
 		QDoubleSpinBox* horizontalRotationSpinBox;
 		QDoubleSpinBox* verticalRotationSpinBox;
 
-		std::unique_ptr<EnvironmentListDialog> environmentListDialog_;
+		QColorDialog* colorSelector_;
 
-		QColorDialog colorSelector_;
+		std::unique_ptr<EnvironmentListDialog> environmentListDialog_;
 
 		Spoiler* spoiler;
 

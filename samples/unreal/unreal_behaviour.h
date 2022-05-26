@@ -37,9 +37,11 @@ namespace unreal
 
 		const std::shared_ptr<UnrealProfile>& getProfile() const noexcept;
 
-		void open(std::string_view filepath) noexcept(false);
+		bool open(std::string_view filepath) noexcept(false);
 		void close() noexcept;
 		bool isOpen() const noexcept;
+
+		void load(std::string_view filepath) noexcept(false);
 
 		void play() noexcept;
 		void pause() noexcept;
@@ -64,11 +66,7 @@ namespace unreal
 
 		IUnrealComponent* getComponent(const std::type_info& type) const noexcept;
 		template <typename T>
-		T*
-		getComponent() const noexcept
-		{
-			return dynamic_cast<T*>(this->getComponent(typeid(T)));
-		}
+		T* getComponent() const noexcept { return dynamic_cast<T*>(this->getComponent(typeid(T))); }
 
 		virtual octoon::GameComponentPtr clone() const noexcept override;
 

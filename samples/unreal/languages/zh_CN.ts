@@ -135,7 +135,7 @@
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="281"/>
-        <location filename="../views/environment_dock.cpp" line="495"/>
+        <location filename="../views/environment_dock.cpp" line="497"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
@@ -175,23 +175,23 @@
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="421"/>
+        <location filename="../views/environment_dock.cpp" line="423"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="650"/>
-        <location filename="../views/environment_dock.cpp" line="705"/>
+        <location filename="../views/environment_dock.cpp" line="652"/>
+        <location filename="../views/environment_dock.cpp" line="707"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="664"/>
+        <location filename="../views/environment_dock.cpp" line="666"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="664"/>
+        <location filename="../views/environment_dock.cpp" line="666"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
@@ -219,14 +219,18 @@
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="148"/>
         <source>Import Image</source>
-        <translation>加载图像</translation>
+        <translation type="vanished">加载图像</translation>
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="148"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
+    </message>
+    <message>
+        <location filename="../views/environment_dock.cpp" line="148"/>
+        <source>Import Resource</source>
+        <translation type="unfinished">加载资源</translation>
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="157"/>
@@ -700,11 +704,14 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/model_dock.cpp" line="132"/>
         <location filename="../views/model_dock.cpp" line="133"/>
+        <location filename="../views/model_dock.cpp" line="181"/>
+        <location filename="../views/model_dock.cpp" line="182"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
         <location filename="../views/model_dock.cpp" line="132"/>
+        <location filename="../views/model_dock.cpp" line="181"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -734,11 +741,14 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/motion_dock.cpp" line="134"/>
         <location filename="../views/motion_dock.cpp" line="135"/>
+        <location filename="../views/motion_dock.cpp" line="188"/>
+        <location filename="../views/motion_dock.cpp" line="189"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="134"/>
+        <location filename="../views/motion_dock.cpp" line="188"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
