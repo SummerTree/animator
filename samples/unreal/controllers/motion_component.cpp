@@ -33,9 +33,11 @@ namespace unreal
 			std::filesystem::create_directory(rootPath);
 			std::filesystem::copy(u16_conv, motionPath);
 
+			auto filename = std::filesystem::path(u16_conv).filename().u8string();
+
 			nlohmann::json item;
 			item["uuid"] = uuid;
-			item["name"] = std::filesystem::path(u16_conv).filename().u8string();
+			item["name"] = filename.substr(0, filename.find_last_of('.'));
 			item["path"] = motionPath.u8string();
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
