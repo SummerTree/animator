@@ -13,6 +13,26 @@ namespace unreal
 	}
 
 	bool
+	CameraComponent::loadAnimation(octoon::Animation<float>&& animation) noexcept(false)
+	{
+		if (!animation.clips.empty())
+		{
+			auto& profile = this->getContext()->profile;
+
+			auto animator = profile->entitiesModule->camera.getValue()->getComponent<octoon::AnimatorComponent>();
+			if (!animator)
+				animator = profile->entitiesModule->camera.getValue()->addComponent<octoon::AnimatorComponent>();
+
+			animator->setAnimation(std::move(animation));
+			animator->sample(profile->playerModule->curTime);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	bool
 	CameraComponent::loadAnimation(std::string_view filepath) noexcept(false)
 	{
 		octoon::io::ifstream stream;
@@ -20,20 +40,8 @@ namespace unreal
 		if (stream.open(std::string(filepath)))
 		{
 			octoon::VMDLoader loader;
-			auto animation = loader.loadCameraMotion(stream);
-			if (!animation.clips.empty())
-			{
-				auto& profile = this->getContext()->profile;
 
-				auto animator = profile->entitiesModule->camera.getValue()->getComponent<octoon::AnimatorComponent>();
-				if (!animator)
-					animator = profile->entitiesModule->camera.getValue()->addComponent<octoon::AnimatorComponent>();
-
-				animator->setAnimation(std::move(animation));
-				animator->sample(profile->playerModule->curTime);
-			}
-
-			return true;
+			return this->loadAnimation(loader.loadCameraMotion(stream));
 		}
 
 		return false;

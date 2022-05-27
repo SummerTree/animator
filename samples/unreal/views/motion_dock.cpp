@@ -218,10 +218,6 @@ namespace unreal
 			if (!behaviour)
 				return;
 
-			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
-			if (!selectedItem.has_value())
-				return;
-			
 			QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 2, this);
 			dialog.setWindowTitle(tr("Loading..."));
 			dialog.setWindowModality(Qt::WindowModal);
@@ -245,38 +241,52 @@ namespace unreal
 					if (stream.open(filepath))
 					{
 						octoon::VMDLoader loader;
-						auto animation = loader.loadMotion(stream);
 
-						dialog.setValue(1);
-						QCoreApplication::processEvents();
-
-						if (!animation.clips.empty())
+						auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
+						if (selectedItem.has_value())
 						{
-							auto model = selectedItem->object.lock();
-							auto animator = model->getComponent<octoon::AnimatorComponent>();
-							auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
+							auto animation = loader.loadMotion(stream);
 
-							if (animator)
-								animator->setAnimation(std::move(animation));
-							else
+							dialog.setValue(1);
+							QCoreApplication::processEvents();
+
+							if (!animation.clips.empty())
 							{
-								if (smr)
-									animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getTransforms());
+								auto model = selectedItem->object.lock();
+								auto animator = model->getComponent<octoon::AnimatorComponent>();
+								auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
+
+								if (animator)
+									animator->setAnimation(std::move(animation));
 								else
-									animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
-							}
-
-							animator->sample();
-
-							if (smr)
-							{
-								for (auto& transform : smr->getTransforms())
 								{
-									auto solver = transform->getComponent<octoon::CCDSolverComponent>();
-									if (solver)
-										solver->solve();
+									if (smr)
+										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getTransforms());
+									else
+										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
+								}
+
+								animator->sample();
+
+								if (smr)
+								{
+									for (auto& transform : smr->getTransforms())
+									{
+										auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+										if (solver)
+											solver->solve();
+									}
 								}
 							}
+						}
+						else
+						{
+							auto animation = loader.loadCameraMotion(stream);
+
+							dialog.setValue(1);
+							QCoreApplication::processEvents();
+
+							behaviour->getComponent<CameraComponent>()->loadAnimation(std::move(animation));
 						}
 
 						behaviour->getComponent<PlayerComponent>()->updateTimeLength();
