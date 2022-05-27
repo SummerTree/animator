@@ -13,6 +13,7 @@ namespace unreal
 		, profile_(profile)
 	{
 		this->setAttribute(Qt::WA_PaintOnScreen, true);
+		this->setAttribute(Qt::WA_AcceptDrops, true);
 		this->setObjectName("ViewDock");
 		this->setMouseTracking(true);
 		this->setUpdatesEnabled(false);
@@ -20,8 +21,6 @@ namespace unreal
 		this->setFocusPolicy(Qt::StrongFocus);
 		this->setContextMenuPolicy(Qt::PreventContextMenu);
 		this->setMinimumSize(profile->recordModule->width, profile->recordModule->height);
-
-		this->grabMouse();
 	}
 
 	ViewDock::~ViewDock() noexcept
