@@ -60,7 +60,7 @@
         <location filename="../views/camera_dock.cpp" line="169"/>
         <location filename="../views/camera_dock.cpp" line="310"/>
         <location filename="../views/camera_dock.cpp" line="354"/>
-        <location filename="../views/camera_dock.cpp" line="435"/>
+        <location filename="../views/camera_dock.cpp" line="432"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
@@ -77,13 +77,13 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="302"/>
-        <location filename="../views/camera_dock.cpp" line="431"/>
+        <location filename="../views/camera_dock.cpp" line="428"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="304"/>
-        <location filename="../views/camera_dock.cpp" line="430"/>
+        <location filename="../views/camera_dock.cpp" line="427"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>
@@ -729,26 +729,36 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="123"/>
+        <location filename="../views/motion_dock.cpp" line="125"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="125"/>
+        <source>Are you sure you want to delete this motion data?</source>
+        <translation type="unfinished">确定要删除此动作数据吗?</translation>
+    </message>
+    <message>
+        <location filename="../views/motion_dock.cpp" line="149"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="123"/>
+        <location filename="../views/motion_dock.cpp" line="149"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished">VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="134"/>
-        <location filename="../views/motion_dock.cpp" line="135"/>
-        <location filename="../views/motion_dock.cpp" line="188"/>
-        <location filename="../views/motion_dock.cpp" line="189"/>
+        <location filename="../views/motion_dock.cpp" line="160"/>
+        <location filename="../views/motion_dock.cpp" line="161"/>
+        <location filename="../views/motion_dock.cpp" line="214"/>
+        <location filename="../views/motion_dock.cpp" line="215"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="134"/>
-        <location filename="../views/motion_dock.cpp" line="188"/>
+        <location filename="../views/motion_dock.cpp" line="160"/>
+        <location filename="../views/motion_dock.cpp" line="214"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
@@ -937,17 +947,31 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingContextPlane</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="157"/>
         <source>Main Panel</source>
-        <translation type="unfinished">主面板</translation>
+        <translation type="obsolete">主面板</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="351"/>
+        <location filename="../views/setting_window.cpp" line="161"/>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="161"/>
+        <source>Interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="161"/>
+        <source>Graphics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="349"/>
         <source>Information</source>
         <translation type="unfinished">信息</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="352"/>
+        <location filename="../views/setting_window.cpp" line="350"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -955,27 +979,27 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlane</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="45"/>
+        <location filename="../views/setting_window.cpp" line="49"/>
         <source>Version</source>
         <translation type="unfinished">版本</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="49"/>
+        <location filename="../views/setting_window.cpp" line="53"/>
         <source>Check Updates</source>
         <translation type="unfinished">检查更新</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="54"/>
+        <location filename="../views/setting_window.cpp" line="58"/>
         <source>Current Version: </source>
         <translation>当前版本： </translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="83"/>
+        <location filename="../views/setting_window.cpp" line="87"/>
         <source>Reset to default settings</source>
         <translation type="unfinished">重置默认设置</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="87"/>
+        <location filename="../views/setting_window.cpp" line="91"/>
         <source>Reset</source>
         <translation type="unfinished">重置</translation>
     </message>
@@ -983,12 +1007,12 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlane2</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="118"/>
+        <location filename="../views/setting_window.cpp" line="122"/>
         <source>Render Settings</source>
         <translation type="unfinished">渲染设置</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="122"/>
+        <location filename="../views/setting_window.cpp" line="126"/>
         <source>Resolution</source>
         <translation type="unfinished">渲染分辨率</translation>
     </message>
@@ -1202,7 +1226,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="123"/>
-        <location filename="../views/tool_dock.cpp" line="197"/>
+        <location filename="../views/tool_dock.cpp" line="190"/>
         <source>Open Project</source>
         <translation>打开项目</translation>
     </message>
@@ -1227,26 +1251,31 @@ $20 (Original cost $40)</source>
         <translation>打开进度</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="171"/>
-        <location filename="../views/tool_dock.cpp" line="216"/>
-        <location filename="../views/tool_dock.cpp" line="270"/>
-        <location filename="../views/tool_dock.cpp" line="302"/>
-        <location filename="../views/tool_dock.cpp" line="327"/>
+        <location filename="../views/tool_dock.cpp" line="170"/>
+        <location filename="../views/tool_dock.cpp" line="208"/>
+        <location filename="../views/tool_dock.cpp" line="256"/>
+        <location filename="../views/tool_dock.cpp" line="282"/>
+        <location filename="../views/tool_dock.cpp" line="301"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="197"/>
+        <location filename="../views/tool_dock.cpp" line="170"/>
+        <source>Failed to open project: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="190"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="257"/>
+        <location filename="../views/tool_dock.cpp" line="244"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="257"/>
+        <location filename="../views/tool_dock.cpp" line="244"/>
         <source>PNG Files (*.png)</source>
         <translation></translation>
     </message>
@@ -1275,8 +1304,8 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="35"/>
-        <location filename="../views/toplevel_bar.cpp" line="280"/>
-        <location filename="../views/toplevel_bar.cpp" line="335"/>
+        <location filename="../views/toplevel_bar.cpp" line="268"/>
+        <location filename="../views/toplevel_bar.cpp" line="323"/>
         <source>Volume</source>
         <translation>音量打开</translation>
     </message>
@@ -1286,43 +1315,43 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="105"/>
-        <location filename="../views/toplevel_bar.cpp" line="211"/>
-        <location filename="../views/toplevel_bar.cpp" line="249"/>
-        <location filename="../views/toplevel_bar.cpp" line="314"/>
+        <location filename="../views/toplevel_bar.cpp" line="104"/>
+        <location filename="../views/toplevel_bar.cpp" line="199"/>
+        <location filename="../views/toplevel_bar.cpp" line="237"/>
+        <location filename="../views/toplevel_bar.cpp" line="302"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="106"/>
-        <location filename="../views/toplevel_bar.cpp" line="212"/>
-        <location filename="../views/toplevel_bar.cpp" line="250"/>
-        <location filename="../views/toplevel_bar.cpp" line="314"/>
+        <location filename="../views/toplevel_bar.cpp" line="104"/>
+        <location filename="../views/toplevel_bar.cpp" line="200"/>
+        <location filename="../views/toplevel_bar.cpp" line="238"/>
+        <location filename="../views/toplevel_bar.cpp" line="302"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="120"/>
-        <location filename="../views/toplevel_bar.cpp" line="176"/>
-        <location filename="../views/toplevel_bar.cpp" line="223"/>
-        <location filename="../views/toplevel_bar.cpp" line="261"/>
+        <location filename="../views/toplevel_bar.cpp" line="113"/>
+        <location filename="../views/toplevel_bar.cpp" line="164"/>
+        <location filename="../views/toplevel_bar.cpp" line="211"/>
+        <location filename="../views/toplevel_bar.cpp" line="249"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="135"/>
+        <location filename="../views/toplevel_bar.cpp" line="123"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="144"/>
-        <location filename="../views/toplevel_bar.cpp" line="189"/>
+        <location filename="../views/toplevel_bar.cpp" line="132"/>
+        <location filename="../views/toplevel_bar.cpp" line="177"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="291"/>
-        <location filename="../views/toplevel_bar.cpp" line="329"/>
+        <location filename="../views/toplevel_bar.cpp" line="279"/>
+        <location filename="../views/toplevel_bar.cpp" line="317"/>
         <source>VolumeOff</source>
         <translation>音量关闭</translation>
     </message>

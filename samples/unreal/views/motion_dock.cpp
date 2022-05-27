@@ -118,6 +118,32 @@ namespace unreal
 	}
 
 	void
+	MotionDock::keyPressEvent(QKeyEvent * event) noexcept
+	{
+		if (event->key() == Qt::Key_Delete)
+		{
+			if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this motion data?")) == QMessageBox::Yes)
+			{
+				if (clickedItem_)
+				{
+					auto motionComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
+					if (motionComponent)
+					{
+						auto uuid = clickedItem_->data(Qt::UserRole).toString();
+						if (motionComponent->removePackage(uuid.toStdString()))
+						{
+							listWidget_->takeItem(listWidget_->row(clickedItem_));
+							delete clickedItem_;
+							clickedItem_ = listWidget_->currentItem();
+							motionComponent->save();
+						}
+					}
+				}
+			}
+		}
+	}
+
+	void
 	MotionDock::importClickEvent()
 	{
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("VMD Files (*.vmd)"));
