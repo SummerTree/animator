@@ -3,7 +3,7 @@
 
 namespace unreal
 {
-	OctoonImplementSubClass(UnrealBehaviour, octoon::GameComponent, "FlowerBehaviour")
+	OctoonImplementSubClass(UnrealBehaviour, octoon::GameComponent, "UnrealBehaviour")
 
 	UnrealBehaviour::UnrealBehaviour() noexcept
 	{

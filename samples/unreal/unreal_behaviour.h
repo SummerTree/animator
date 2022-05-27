@@ -31,7 +31,8 @@ namespace unreal
 {
 	class UnrealBehaviour final : public octoon::GameComponent
 	{
-		OctoonDeclareSubClass(UnrealBehaviour, octoon::GameComponent) public : UnrealBehaviour() noexcept;
+		OctoonDeclareSubClass(UnrealBehaviour, octoon::GameComponent)
+	public : UnrealBehaviour() noexcept;
 		UnrealBehaviour(const std::shared_ptr<UnrealProfile>& profile) noexcept;
 		~UnrealBehaviour() noexcept;
 
