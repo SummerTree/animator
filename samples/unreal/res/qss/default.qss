@@ -345,6 +345,9 @@ QWidget#ToolDock QToolButton, QWidget#ThumbnailDock QToolButton{
 QWidget#ToolDock QToolButton#import{
 	qproperty-icon: url(":res/icons/append.png");
 }
+QWidget#ToolDock QToolButton#save{
+	qproperty-icon: url(":res/icons/save.png");
+}
 QWidget#ToolDock QToolButton#shot{
 	qproperty-icon: url(":res/icons/shot.png");
 }

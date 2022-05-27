@@ -38,6 +38,12 @@ namespace unreal
 		return false;
 	}
 
+	bool
+	UnrealBehaviour::save(std::string_view path) noexcept(false)
+	{
+		return false;
+	}
+
 	void
 	UnrealBehaviour::close() noexcept
 	{

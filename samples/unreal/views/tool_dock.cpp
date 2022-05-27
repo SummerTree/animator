@@ -31,6 +31,13 @@ namespace unreal
 		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		importButton_->installEventFilter(this);
 
+		saveButton_ = new QToolButton;
+		saveButton_->setObjectName("save");
+		saveButton_->setText(tr("Save"));
+		saveButton_->setToolTip(tr("Export Project"));
+		saveButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		saveButton_->installEventFilter(this);
+
 		audioButton_ = new QToolButton;
 		audioButton_->setObjectName("audio");
 		audioButton_->setText(tr("Music"));
@@ -63,6 +70,7 @@ namespace unreal
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
 		layout->addWidget(importButton_, 0, Qt::AlignCenter);
+		layout->addWidget(saveButton_, 0, Qt::AlignCenter);
 		layout->addWidget(gpuButton_, 0, Qt::AlignCenter);
 		layout->addWidget(shotButton_, 0, Qt::AlignCenter);
 		layout->addWidget(audioButton_, 0, Qt::AlignCenter);
@@ -97,6 +105,7 @@ namespace unreal
 		};
 
 		this->connect(importButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
+		this->connect(saveButton_, SIGNAL(clicked()), this, SLOT(saveEvent()));
 		this->connect(audioButton_, SIGNAL(clicked()), this, SLOT(audioEvent()));
 		this->connect(shotButton_, SIGNAL(clicked()), this, SLOT(shotEvent()));
 		this->connect(gpuButton_, SIGNAL(clicked()), this, SLOT(gpuEvent()));
@@ -170,6 +179,32 @@ namespace unreal
 			QMessageBox::critical(this, tr("Error"), tr("Failed to open project: ") + QString::fromStdString(e.what()));
 		}
 		spdlog::debug("Exited importEvent");
+	}
+
+	void
+	ToolDock::saveEvent() noexcept
+	{
+		try
+		{
+			spdlog::debug("Entered saveEvent");
+
+			if (behaviour_)
+			{
+				QString fileName = QFileDialog::getSaveFileName(this, tr("Export Project"), "", tr("APG Files (*.agp)"));
+				if (!fileName.isEmpty())
+				{
+					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
+					if (!behaviour->save(fileName.toUtf8().data()))
+						QMessageBox::warning(this, tr("Error"), tr("Faield to export project"));
+				}
+			}
+
+			spdlog::debug("Exited saveEvent");
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::critical(this, tr("Error"), e.what());
+		}
 	}
 
 	void

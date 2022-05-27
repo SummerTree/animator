@@ -62,7 +62,7 @@ namespace unreal
 	{
 		Q_OBJECT
 	public:
-		SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept;
+		SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept(false);
 		~SettingContextPlane() noexcept;
 
 	public Q_SLOTS:
