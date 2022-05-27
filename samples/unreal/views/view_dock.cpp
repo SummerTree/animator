@@ -21,9 +21,16 @@ namespace unreal
 		this->setFocusPolicy(Qt::StrongFocus);
 		this->setContextMenuPolicy(Qt::PreventContextMenu);
 		this->setMinimumSize(profile->recordModule->width, profile->recordModule->height);
+
+		this->installEventFilter(this);
 	}
 
 	ViewDock::~ViewDock() noexcept
+	{
+	}
+
+	void
+	ViewDock::showEvent(QShowEvent* event) noexcept
 	{
 	}
 
@@ -39,14 +46,14 @@ namespace unreal
 	void
 	ViewDock::mouseMoveEvent(QMouseEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
+		if (gameApp_->isOpen())
 			gameApp_->doWindowMouseMotion((octoon::WindHandle)this->winId(), e->pos().x(), e->pos().y());
 	}
 
 	void
 	ViewDock::mousePressEvent(QMouseEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
+		if (gameApp_->isOpen())
 		{
 			if (e->button() == Qt::LeftButton)
 				gameApp_->doWindowMouseButtonDown((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x(), e->y());
@@ -60,7 +67,7 @@ namespace unreal
 	void
 	ViewDock::mouseReleaseEvent(QMouseEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
+		if (gameApp_->isOpen())
 		{
 			if (e->button() == Qt::LeftButton)
 				gameApp_->doWindowMouseButtonUp((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x(), e->y());
@@ -74,7 +81,7 @@ namespace unreal
 	void
 	ViewDock::mouseDoubleClickEvent(QMouseEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
+		if (gameApp_->isOpen())
 		{
 			if (e->button() == Qt::LeftButton)
 				gameApp_->doWindowMouseButtonDoubleClick((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x(), e->y());
@@ -88,21 +95,21 @@ namespace unreal
 	void
 	ViewDock::wheelEvent(QWheelEvent* e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
+		if (gameApp_->isOpen())
 			gameApp_->doWindowScrool((octoon::WindHandle)this->winId(), e->angleDelta().x(), e->angleDelta().y());
 	}
 
 	void
 	ViewDock::keyPressEvent(QKeyEvent* event) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
+		if (gameApp_->isOpen())
 			gameApp_->doWindowKeyDown((octoon::WindHandle)this->winId(), KeyCodetoInputKey(event->key()), 0, 0);
 	}
 
 	void
 	ViewDock::keyReleaseEvent(QKeyEvent* event) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying && !event->isAutoRepeat())
+		if (gameApp_->isOpen() && !event->isAutoRepeat())
 			gameApp_->doWindowKeyUp((octoon::WindHandle)this->winId(), KeyCodetoInputKey(event->key()), 0, 0);
 	}
 
@@ -116,7 +123,7 @@ namespace unreal
 	void
 	ViewDock::dragMoveEvent(QDragMoveEvent *e) noexcept
 	{
-		if (gameApp_->isOpen() && !profile_->playerModule->isPlaying)
+		if (gameApp_->isOpen())
 			gameApp_->doWindowMouseMotion((octoon::WindHandle)this->winId(), e->pos().x(), e->pos().y());
 	}
 
@@ -294,5 +301,19 @@ namespace unreal
 		default:
 			return octoon::input::InputKey::Code::None;
 		}
+	}
+
+	bool
+	ViewDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }
