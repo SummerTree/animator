@@ -70,7 +70,7 @@ namespace unreal
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
 		layout->addWidget(importButton_, 0, Qt::AlignCenter);
-		layout->addWidget(saveButton_, 0, Qt::AlignCenter);
+		//layout->addWidget(saveButton_, 0, Qt::AlignCenter);
 		layout->addWidget(gpuButton_, 0, Qt::AlignCenter);
 		layout->addWidget(shotButton_, 0, Qt::AlignCenter);
 		layout->addWidget(audioButton_, 0, Qt::AlignCenter);
