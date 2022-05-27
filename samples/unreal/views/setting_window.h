@@ -21,11 +21,11 @@
 
 namespace unreal
 {
-	class SettingMainPlane final : public QWidget
+	class SettingMainPlaneGeneral final : public QWidget
 	{
 		Q_OBJECT
 	public:
-		SettingMainPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour);
+		SettingMainPlaneGeneral(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour);
 
 		std::unique_ptr<QLabel> infoLabel;
 		std::unique_ptr<QToolButton> infoButton;
@@ -37,11 +37,11 @@ namespace unreal
 		std::unique_ptr<QVBoxLayout> layout_;
 	};
 
-	class SettingMainPlane2 final : public QWidget
+	class SettingMainPlaneInterface final : public QWidget
 	{
 		Q_OBJECT
 	public:
-		SettingMainPlane2(QWidget* parent);
+		SettingMainPlaneInterface(QWidget* parent);
 
 		std::unique_ptr<QLabel> renderLabel;
 		std::unique_ptr<QLabel> resolutionLabel;
@@ -51,11 +51,11 @@ namespace unreal
 		std::unique_ptr<QVBoxLayout> layout_;
 	};
 
-	class SettingMainPlane3 final : public QWidget
+	class SettingMainPlaneGraphics final : public QWidget
 	{
 		Q_OBJECT
 	public:
-		SettingMainPlane3(QWidget* parent);
+		SettingMainPlaneGraphics(QWidget* parent);
 	};
 
 	class SettingContextPlane final : public QWidget
@@ -79,9 +79,9 @@ namespace unreal
 
 		std::unique_ptr<QListWidget> listWidget_;
 		std::unique_ptr<QListWidgetItem> listWidgetItems_[3];
-		std::unique_ptr<SettingMainPlane> mainPlane_;
-		std::unique_ptr<SettingMainPlane2> mainPlane2_;
-		std::unique_ptr<SettingMainPlane3> mainPlane3_;
+		std::unique_ptr<SettingMainPlaneGeneral> mainPlane_;
+		std::unique_ptr<SettingMainPlaneInterface> mainPlane2_;
+		std::unique_ptr<SettingMainPlaneGraphics> mainPlane3_;
 		std::unique_ptr<QVBoxLayout> gridLayout_;
 		std::unique_ptr<QScrollArea> scrollArea_;
 		std::unique_ptr<QWidget> scrollWidget_;

@@ -4,6 +4,8 @@
 #include <qmessagebox.h>
 #include <qscrollbar.h>
 
+#include "../widgets/ucombobox.h"
+
 namespace unreal
 {
 	class SpinBox final : public QSpinBox
@@ -42,7 +44,7 @@ namespace unreal
 		}
 	};
 
-	SettingMainPlane::SettingMainPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour)
+	SettingMainPlaneGeneral::SettingMainPlaneGeneral(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour)
 		: QWidget(parent)
 	{
 		infoLabel = std::make_unique<QLabel>(this);
@@ -65,15 +67,6 @@ namespace unreal
 		QCheckBox* checkBox = new QCheckBox(this);
 		checkBox->setText(u8"开机自动启动");
 		checkBox->setStyleSheet("color: rgb(200,200,200);");
-
-		QLabel* langLabel = new QLabel(this);
-		langLabel->setText(u8"语言");
-		langLabel->setStyleSheet("color: rgb(255,255,255);");
-
-		QComboBox* gamCombo = new QComboBox(this);
-		gamCombo->addItem(u8"中文");
-		gamCombo->setStyleSheet("color: rgb(200,200,200);");
-		gamCombo->setFont(QFont("Microsoft YaHei", 9, 50));
 
 		QLabel* powerLabel = new QLabel(this);
 		powerLabel->setText(u8"性能");
@@ -101,10 +94,6 @@ namespace unreal
 		layout_->addSpacing(10);
 		layout_->addWidget(checkBox);
 		layout_->addSpacing(10);
-		layout_->addWidget(langLabel);
-		layout_->addSpacing(10);
-		layout_->addWidget(gamCombo);
-		layout_->addSpacing(10);
 		layout_->addWidget(powerLabel);
 		layout_->addSpacing(10);
 		layout_->addWidget(lowpowerBox);*/
@@ -115,9 +104,17 @@ namespace unreal
 		layout_->setContentsMargins(0, 0, 0, 10);
 	}
 
-	SettingMainPlane2::SettingMainPlane2(QWidget* parent)
+	SettingMainPlaneInterface::SettingMainPlaneInterface(QWidget* parent)
 		: QWidget(parent)
 	{
+		QLabel* langLabel = new QLabel(this);
+		langLabel->setText(tr("Language"));
+
+		UComboBox* langCombo = new UComboBox(this);
+		langCombo->addItem(tr("English"));
+		langCombo->addItem(tr("Chinese"));
+		langCombo->addItem(tr("Japanese"));
+
 		renderLabel = std::make_unique<QLabel>();
 		renderLabel->setText(tr("Render Settings"));
 		renderLabel->setStyleSheet("color: rgb(255,255,255);");
@@ -144,10 +141,14 @@ namespace unreal
 		layout_->addWidget(resolutionLabel.get());
 		layout_->addSpacing(10);
 		layout_->addWidget(resolutionCombo.get());
+		layout_->addSpacing(10);
+		layout_->addWidget(langLabel);
+		layout_->addSpacing(10);
+		layout_->addWidget(langCombo);
 		layout_->addSpacing(200);
 	}
 
-	SettingMainPlane3::SettingMainPlane3(QWidget* parent)
+	SettingMainPlaneGraphics::SettingMainPlaneGraphics(QWidget* parent)
 		: QWidget(parent)
 	{
 	}
@@ -181,9 +182,9 @@ namespace unreal
 		scrollWidget_->setFixedWidth(490);
 		scrollWidget_->setStyleSheet("background-color: rgb(40,40,40);");
 
-		mainPlane_ = std::make_unique<SettingMainPlane>(scrollWidget_.get(), behaviour);
-		mainPlane2_ = std::make_unique<SettingMainPlane2>(scrollWidget_.get());
-		mainPlane3_ = std::make_unique<SettingMainPlane3>(scrollWidget_.get());
+		mainPlane_ = std::make_unique<SettingMainPlaneGeneral>(scrollWidget_.get(), behaviour);
+		mainPlane2_ = std::make_unique<SettingMainPlaneInterface>(scrollWidget_.get());
+		mainPlane3_ = std::make_unique<SettingMainPlaneGraphics>(scrollWidget_.get());
 
 		gridLayout_ = std::make_unique<QVBoxLayout>(scrollWidget_.get());
 		gridLayout_->addWidget(mainPlane_.get());
