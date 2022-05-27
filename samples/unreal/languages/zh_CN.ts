@@ -124,74 +124,74 @@
 <context>
     <name>unreal::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="271"/>
+        <location filename="../views/environment_dock.cpp" line="277"/>
         <source>Environment Light</source>
         <translation>环境光</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="278"/>
+        <location filename="../views/environment_dock.cpp" line="284"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation>单击预览按钮以显示所有可替换的HDR图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="283"/>
-        <location filename="../views/environment_dock.cpp" line="494"/>
+        <location filename="../views/environment_dock.cpp" line="289"/>
+        <location filename="../views/environment_dock.cpp" line="500"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="296"/>
+        <location filename="../views/environment_dock.cpp" line="302"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="300"/>
+        <location filename="../views/environment_dock.cpp" line="306"/>
         <source>Thumbnail</source>
         <translation>环境贴图</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="304"/>
+        <location filename="../views/environment_dock.cpp" line="310"/>
         <source>Toggle Background</source>
         <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="312"/>
+        <location filename="../views/environment_dock.cpp" line="318"/>
         <source>Intensity</source>
         <translation>亮度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="332"/>
+        <location filename="../views/environment_dock.cpp" line="338"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="352"/>
+        <location filename="../views/environment_dock.cpp" line="358"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="372"/>
+        <location filename="../views/environment_dock.cpp" line="378"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="425"/>
+        <location filename="../views/environment_dock.cpp" line="431"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="649"/>
-        <location filename="../views/environment_dock.cpp" line="704"/>
+        <location filename="../views/environment_dock.cpp" line="655"/>
+        <location filename="../views/environment_dock.cpp" line="710"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="663"/>
+        <location filename="../views/environment_dock.cpp" line="669"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="663"/>
+        <location filename="../views/environment_dock.cpp" line="669"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
@@ -223,33 +223,33 @@
         <translation type="vanished">加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="150"/>
+        <location filename="../views/environment_dock.cpp" line="161"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="150"/>
+        <location filename="../views/environment_dock.cpp" line="161"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="159"/>
-        <location filename="../views/environment_dock.cpp" line="160"/>
+        <location filename="../views/environment_dock.cpp" line="170"/>
+        <location filename="../views/environment_dock.cpp" line="171"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="159"/>
+        <location filename="../views/environment_dock.cpp" line="170"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="247"/>
+        <location filename="../views/environment_dock.cpp" line="253"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation>确定要删除此图像吗?</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="247"/>
+        <location filename="../views/environment_dock.cpp" line="253"/>
         <source>Info</source>
         <translation type="unfinished">提示</translation>
     </message>
@@ -739,36 +739,36 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="125"/>
+        <location filename="../views/motion_dock.cpp" line="136"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="125"/>
+        <location filename="../views/motion_dock.cpp" line="136"/>
         <source>Are you sure you want to delete this motion data?</source>
         <translation type="unfinished">确定要删除此动作数据吗?</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="149"/>
+        <location filename="../views/motion_dock.cpp" line="160"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="149"/>
+        <location filename="../views/motion_dock.cpp" line="160"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished">VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="160"/>
-        <location filename="../views/motion_dock.cpp" line="161"/>
-        <location filename="../views/motion_dock.cpp" line="214"/>
-        <location filename="../views/motion_dock.cpp" line="215"/>
+        <location filename="../views/motion_dock.cpp" line="171"/>
+        <location filename="../views/motion_dock.cpp" line="172"/>
+        <location filename="../views/motion_dock.cpp" line="225"/>
+        <location filename="../views/motion_dock.cpp" line="226"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="160"/>
-        <location filename="../views/motion_dock.cpp" line="214"/>
+        <location filename="../views/motion_dock.cpp" line="171"/>
+        <location filename="../views/motion_dock.cpp" line="225"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>

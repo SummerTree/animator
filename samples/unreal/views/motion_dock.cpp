@@ -52,6 +52,17 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
+		this->profile_->resourceModule->motionIndexList_ += [this](const nlohmann::json& json)
+		{
+			if (this->isVisible())
+			{
+				listWidget_->clear();
+
+				for (auto& uuid : this->profile_->resourceModule->motionIndexList_.getValue())
+					this->addItem(uuid.get<nlohmann::json::string_t>());
+			}
+		};
+
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(listWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
@@ -294,14 +305,9 @@ namespace unreal
 			this->width(),
 			mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
 
-		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-		if (behaviour)
-		{
-			listWidget_->clear();
+		listWidget_->clear();
 
-			auto motionComponent = behaviour->getComponent<MotionComponent>();
-			for (auto& uuid : motionComponent->getIndexList())
-				this->addItem(uuid.get<nlohmann::json::string_t>());
-		}
+		for (auto& uuid : profile_->resourceModule->motionIndexList_.getValue())
+			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 }

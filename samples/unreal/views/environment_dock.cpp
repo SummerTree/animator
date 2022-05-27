@@ -84,6 +84,17 @@
 		mainLayout_->addLayout(bottomLayout_);
 		mainLayout_->setContentsMargins(5, 10, 5, 10);
 
+		this->profile_->resourceModule->hdriIndexList_ += [this](const nlohmann::json& json)
+		{
+			if (this->isVisible())
+			{
+				listWidget_->clear();
+
+				for (auto& uuid : this->profile_->resourceModule->hdriIndexList_.getValue())
+					this->addItem(uuid.get<nlohmann::json::string_t>());
+			}
+		};
+
 		connect(okButton_, SIGNAL(clicked()), this, SLOT(okClickEvent()));
 		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeClickEvent()));
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
@@ -226,15 +237,10 @@
 	void
 	EnvironmentListDialog::showEvent(QShowEvent * event) noexcept
 	{
-		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-		if (behaviour)
-		{
-			listWidget_->clear();
+		listWidget_->clear();
 
-			auto hdriComponent = behaviour->getComponent<HDRiComponent>();
-			for (auto& uuid : hdriComponent->getIndexList())
-				this->addItem(uuid.get<nlohmann::json::string_t>());
-		}
+		for (auto& uuid : this->profile_->resourceModule->hdriIndexList_.getValue())
+			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 
 	void

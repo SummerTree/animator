@@ -47,7 +47,7 @@ namespace unreal
 				ifs.write(dump.c_str(), dump.size());
 			}
 
-			indexList_.push_back(uuid);
+			this->getModel()->motionIndexList_.getValue().push_back(uuid);
 
 			return item;
 		}
@@ -82,7 +82,9 @@ namespace unreal
 	{
 		try
 		{
-			for (auto it = indexList_.begin(); it != indexList_.end(); ++it)
+			auto& motionIndexList_ = this->getModel()->motionIndexList_.getValue();
+
+			for (auto it = motionIndexList_.begin(); it != motionIndexList_.end(); ++it)
 			{
 				if ((*it).get<nlohmann::json::string_t>() == uuid)
 				{
@@ -93,7 +95,7 @@ namespace unreal
 					if (package != this->packageList_.end())
 						this->packageList_.erase(package);
 
-					indexList_.erase(it);
+					motionIndexList_.erase(it);
 					return true;
 				}
 			}
@@ -103,12 +105,6 @@ namespace unreal
 		}
 
 		return false;
-	}
-
-	const nlohmann::json&
-	MotionComponent::getIndexList() const noexcept
-	{
-		return this->indexList_;
 	}
 
 	void
@@ -122,7 +118,8 @@ namespace unreal
 			std::ofstream ifs(this->getModel()->motionPath + "/index.json", std::ios_base::binary);
 			if (ifs)
 			{
-				auto data = indexList_.dump();
+				auto& motionIndexList_ = this->getModel()->motionIndexList_.getValue();
+				auto data = motionIndexList_.dump();
 				ifs.write(data.c_str(), data.size());
 			}
 		}
@@ -134,15 +131,17 @@ namespace unreal
 	void
 	MotionComponent::initPackageIndices() noexcept(false)
 	{
+		auto& motionIndexList_ = this->getModel()->motionIndexList_.getValue();
+
 		std::ifstream indexStream(this->getModel()->motionPath + "/index.json");
 		if (indexStream)
-			this->indexList_ = nlohmann::json::parse(indexStream);
+			motionIndexList_ = nlohmann::json::parse(indexStream);
 
 		bool needUpdateIndexFile = false;
 
 		std::set<std::string> indexSet;
 
-		for (auto& it : this->indexList_)
+		for (auto& it : motionIndexList_)
 		{		 
 			if (!std::filesystem::exists(std::filesystem::path(this->getModel()->motionPath).append(it.get<nlohmann::json::string_t>())))
 				needUpdateIndexFile = true;
@@ -175,7 +174,7 @@ namespace unreal
 			for (auto& it : indexSet)
 				json += it;
 
-			this->indexList_ = json;
+			motionIndexList_ = json;
 			this->save();
 		}
 	}

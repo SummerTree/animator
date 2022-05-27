@@ -67,7 +67,10 @@ namespace unreal
 		if (ext == ".pmx")
 			entitiesComponent_->importModel(path);
 		else if (ext == ".hdr")
+		{
 			hdriComponent_->importHDRi(path);
+			profile_->resourceModule->hdriIndexList_.submit();
+		}
 		else if (ext == ".abc")
 			entitiesComponent_->importAbc(path);
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
@@ -75,7 +78,10 @@ namespace unreal
 		else if (ext == ".mdl")
 			materialComponent_->importMdl(path);
 		else if (ext == ".vmd")
+		{
 			motionComponent_->importMotion(path);
+			profile_->resourceModule->motionIndexList_.submit();
+		}
 	}
 
 	void

@@ -20,8 +20,6 @@ namespace unreal
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		bool removePackage(std::string_view uuid) noexcept;
 
-		const nlohmann::json& getIndexList() const noexcept;
-
 		void save() noexcept(false);
 
 		virtual const std::type_info& type_info() const noexcept
@@ -37,8 +35,6 @@ namespace unreal
 		void onDisable() noexcept override;
 
 	private:
-		nlohmann::json indexList_;
-
 		std::map<std::string, nlohmann::json> packageList_;
 	};
 }

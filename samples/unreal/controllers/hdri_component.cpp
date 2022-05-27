@@ -65,7 +65,7 @@ namespace unreal
 				ifs.write(dump.c_str(), dump.size());
 			}
 
-			indexList_.push_back(uuid);
+			this->getModel()->hdriIndexList_.getValue().push_back(uuid);
 
 			return item;
 		}
@@ -100,6 +100,8 @@ namespace unreal
 	{
 		try
 		{
+			auto& indexList_ = this->getModel()->hdriIndexList_.getValue();
+
 			for (auto it = indexList_.begin(); it != indexList_.end(); ++it)
 			{
 				if ((*it).get<nlohmann::json::string_t>() == uuid)
@@ -123,12 +125,6 @@ namespace unreal
 		return false;
 	}
 
-	const nlohmann::json&
-	HDRiComponent::getIndexList() const noexcept
-	{
-		return this->indexList_;
-	}
-
 	void
 	HDRiComponent::save() noexcept(false)
 	{
@@ -140,6 +136,7 @@ namespace unreal
 			std::ofstream ifs(this->getModel()->hdriPath + "/index.json", std::ios_base::binary);
 			if (ifs)
 			{
+				auto& indexList_ = this->getModel()->hdriIndexList_.getValue();
 				auto data = indexList_.dump();
 				ifs.write(data.c_str(), data.size());
 			}
@@ -152,15 +149,17 @@ namespace unreal
 	void
 	HDRiComponent::initPackageIndices() noexcept(false)
 	{
+		auto& indexList_ = this->getModel()->hdriIndexList_.getValue();
+
 		std::ifstream indexStream(this->getModel()->hdriPath + "/index.json");
 		if (indexStream)
-			this->indexList_ = nlohmann::json::parse(indexStream);
+			indexList_ = nlohmann::json::parse(indexStream);
 
 		bool needUpdateIndexFile = false;
 
 		std::set<std::string> indexSet;
 
-		for (auto& it : this->indexList_)
+		for (auto& it : indexList_)
 		{
 			if (!std::filesystem::exists(std::filesystem::path(this->getModel()->hdriPath).append(it.get<nlohmann::json::string_t>())))
 				needUpdateIndexFile = true;
@@ -193,7 +192,7 @@ namespace unreal
 			for (auto& it : indexSet)
 				json += it;
 
-			this->indexList_ = json;
+			this->getModel()->hdriIndexList_.getValue() = json;
 			this->save();
 		}
 	}
