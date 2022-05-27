@@ -52,6 +52,17 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
+		this->profile_->resourceModule->modelIndexList_ += [this](const nlohmann::json& json)
+		{
+			if (this->isVisible())
+			{
+				listWidget_->clear();
+
+				for (auto& uuid : this->profile_->resourceModule->modelIndexList_.getValue())
+					this->addItem(uuid.get<nlohmann::json::string_t>());
+			}
+		};
+
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(listWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
@@ -237,15 +248,9 @@ namespace unreal
 	{
 		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins() + bottomLayout_->contentsMargins();
 		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
+		listWidget_->clear();
 
-		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-		if (behaviour)
-		{
-			listWidget_->clear();
-
-			auto hdriComponent = behaviour->getComponent<ModelComponent>();
-			for (auto& uuid : hdriComponent->getIndexList())
-				this->addItem(uuid.get<nlohmann::json::string_t>());
-		}
+		for (auto& uuid : this->profile_->resourceModule->modelIndexList_.getValue())
+			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 }

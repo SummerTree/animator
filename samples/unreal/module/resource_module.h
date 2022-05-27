@@ -28,6 +28,7 @@ namespace unreal
 		std::string materialPath;
 
 		MutableLiveData<nlohmann::json> hdriIndexList_;
+		MutableLiveData<nlohmann::json> modelIndexList_;
 		MutableLiveData<nlohmann::json> motionIndexList_;
 	};
 }

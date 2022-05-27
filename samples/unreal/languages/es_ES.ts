@@ -676,36 +676,36 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="125"/>
+        <location filename="../views/model_dock.cpp" line="136"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="125"/>
+        <location filename="../views/model_dock.cpp" line="136"/>
         <source>Are you sure you want to delete this model?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="149"/>
+        <location filename="../views/model_dock.cpp" line="160"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="149"/>
+        <location filename="../views/model_dock.cpp" line="160"/>
         <source>PMX Files (*.pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="158"/>
-        <location filename="../views/model_dock.cpp" line="159"/>
-        <location filename="../views/model_dock.cpp" line="207"/>
-        <location filename="../views/model_dock.cpp" line="208"/>
+        <location filename="../views/model_dock.cpp" line="169"/>
+        <location filename="../views/model_dock.cpp" line="170"/>
+        <location filename="../views/model_dock.cpp" line="218"/>
+        <location filename="../views/model_dock.cpp" line="219"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="158"/>
-        <location filename="../views/model_dock.cpp" line="207"/>
+        <location filename="../views/model_dock.cpp" line="169"/>
+        <location filename="../views/model_dock.cpp" line="218"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
