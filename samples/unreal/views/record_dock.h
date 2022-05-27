@@ -2,7 +2,7 @@
 #define UNREAL_RECORD_DOCK_H_
 
 #include "unreal_behaviour.h"
-#include "spoiler.h"
+#include "../widgets/spoiler.h"
 #include <QComboBox>
 #include <octoon/game_object.h>
 #include <optional>

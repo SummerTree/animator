@@ -13,8 +13,8 @@ namespace unreal
 		DraggableListWindow() noexcept(false);
 		~DraggableListWindow() noexcept;
 
-		void mouseMoveEvent(QMouseEvent *event) override;
-		void mousePressEvent(QMouseEvent *event) override;
+		void mouseMoveEvent(QMouseEvent* event) override;
+		void mousePressEvent(QMouseEvent* event) override;
 
 	Q_SIGNALS:
 		void itemSelected(QListWidgetItem*);

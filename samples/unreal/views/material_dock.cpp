@@ -1,5 +1,5 @@
 #include "material_dock.h"
-#include "draggable_list_widget.h"
+#include "../widgets/draggable_list_widget.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qevent.h>

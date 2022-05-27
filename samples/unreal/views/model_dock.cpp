@@ -1,5 +1,5 @@
 #include "model_dock.h"
-#include "draggable_list_widget.h"
+#include "../widgets/draggable_list_widget.h"
 
 #include <qpainter.h>
 #include <qmessagebox.h>
@@ -10,6 +10,7 @@
 #include <qdrag.h>
 #include <qmimedata.h>
 #include <qprogressdialog.h>
+#include <QToolButton>
 
 namespace unreal
 {

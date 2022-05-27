@@ -8,7 +8,7 @@
 #include <qlistwidget.h>
 #include <qspinbox.h>
 
-#include "spoiler.h"
+#include "../widgets/spoiler.h"
 #include "unreal_behaviour.h"
 #include "unreal_profile.h"
 

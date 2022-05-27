@@ -12,112 +12,94 @@
 <context>
     <name>unreal::CameraDock</name>
     <message>
-        <location filename="../views/camera_dock.cpp" line="91"/>
+        <location filename="../views/camera_dock.cpp" line="95"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="94"/>
+        <location filename="../views/camera_dock.cpp" line="98"/>
         <source>fov:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="113"/>
+        <location filename="../views/camera_dock.cpp" line="117"/>
         <source>Depth Of Filed:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="126"/>
+        <location filename="../views/camera_dock.cpp" line="130"/>
         <source>Aperture:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="136"/>
+        <location filename="../views/camera_dock.cpp" line="140"/>
         <source>f/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="141"/>
+        <location filename="../views/camera_dock.cpp" line="145"/>
         <source>Focal Length (35mmfilm):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="145"/>
+        <location filename="../views/camera_dock.cpp" line="149"/>
         <source>Focus Distance:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="154"/>
+        <location filename="../views/camera_dock.cpp" line="158"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="164"/>
+        <location filename="../views/camera_dock.cpp" line="168"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="169"/>
-        <location filename="../views/camera_dock.cpp" line="310"/>
-        <location filename="../views/camera_dock.cpp" line="354"/>
-        <location filename="../views/camera_dock.cpp" line="432"/>
+        <location filename="../views/camera_dock.cpp" line="173"/>
+        <location filename="../views/camera_dock.cpp" line="309"/>
+        <location filename="../views/camera_dock.cpp" line="353"/>
+        <location filename="../views/camera_dock.cpp" line="425"/>
         <source>Target: Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="180"/>
-        <location filename="../views/camera_dock.cpp" line="368"/>
+        <location filename="../views/camera_dock.cpp" line="184"/>
+        <location filename="../views/camera_dock.cpp" line="367"/>
         <source>Load Animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="186"/>
+        <location filename="../views/camera_dock.cpp" line="190"/>
         <source>Uninstall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="302"/>
-        <location filename="../views/camera_dock.cpp" line="428"/>
+        <location filename="../views/camera_dock.cpp" line="301"/>
+        <location filename="../views/camera_dock.cpp" line="421"/>
         <source>Target: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="304"/>
-        <location filename="../views/camera_dock.cpp" line="427"/>
+        <location filename="../views/camera_dock.cpp" line="303"/>
+        <location filename="../views/camera_dock.cpp" line="420"/>
         <source>Auto-measuring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="368"/>
+        <location filename="../views/camera_dock.cpp" line="367"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="385"/>
+        <location filename="../views/camera_dock.cpp" line="383"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="386"/>
-        <source>Failed to open the file</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>unreal::ColorDialog</name>
-    <message>
-        <location filename="../views/color_dialog.cpp" line="283"/>
-        <source>Hue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/color_dialog.cpp" line="285"/>
-        <source>Saturation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/color_dialog.cpp" line="287"/>
-        <source>Value</source>
+        <location filename="../views/camera_dock.cpp" line="383"/>
+        <source>Failed to open the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -666,46 +648,46 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ModelDock</name>
     <message>
-        <location filename="../views/model_dock.cpp" line="21"/>
+        <location filename="../views/model_dock.cpp" line="22"/>
         <source>Model Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="26"/>
+        <location filename="../views/model_dock.cpp" line="27"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="125"/>
+        <location filename="../views/model_dock.cpp" line="126"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="125"/>
+        <location filename="../views/model_dock.cpp" line="126"/>
         <source>Are you sure you want to delete this model?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="149"/>
+        <location filename="../views/model_dock.cpp" line="150"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="149"/>
+        <location filename="../views/model_dock.cpp" line="150"/>
         <source>PMX Files (*.pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="158"/>
         <location filename="../views/model_dock.cpp" line="159"/>
-        <location filename="../views/model_dock.cpp" line="207"/>
+        <location filename="../views/model_dock.cpp" line="160"/>
         <location filename="../views/model_dock.cpp" line="208"/>
+        <location filename="../views/model_dock.cpp" line="209"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="158"/>
-        <location filename="../views/model_dock.cpp" line="207"/>
+        <location filename="../views/model_dock.cpp" line="159"/>
+        <location filename="../views/model_dock.cpp" line="208"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

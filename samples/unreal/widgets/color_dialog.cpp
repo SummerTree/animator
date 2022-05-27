@@ -2,7 +2,7 @@
 #include <qevent.h>
 #include <qpainter.h>
 
-	namespace unreal
+namespace unreal
 {
 	class SpinBox final : public QSpinBox
 	{
@@ -22,7 +22,7 @@
 		}
 	};
 
-	ColorPlane::ColorPlane(QWidget * parent)
+	ColorPlane::ColorPlane(QWidget* parent)
 		: QLabel(parent)
 		, mousePress_(false)
 		, hueSelected_(false)
@@ -36,7 +36,7 @@
 	}
 
 	void
-	ColorPlane::mouseReleaseEvent(QMouseEvent * ev)
+	ColorPlane::mouseReleaseEvent(QMouseEvent* ev)
 	{
 		hueSelected_ = false;
 		boxSelected_ = false;
@@ -44,7 +44,7 @@
 	}
 
 	void
-	ColorPlane::mousePressEvent(QMouseEvent * ev)
+	ColorPlane::mousePressEvent(QMouseEvent* ev)
 	{
 		mousePress_ = true;
 
@@ -69,12 +69,12 @@
 	}
 
 	void
-	ColorPlane::mouseDoubleClickEvent(QMouseEvent * ev)
+	ColorPlane::mouseDoubleClickEvent(QMouseEvent* ev)
 	{
 	}
 
 	void
-	ColorPlane::mouseMoveEvent(QMouseEvent * ev)
+	ColorPlane::mouseMoveEvent(QMouseEvent* ev)
 	{
 		if (mousePress_)
 		{
@@ -201,7 +201,7 @@
 	}
 
 	void
-	ColorPlane::paintEvent(QPaintEvent * event)
+	ColorPlane::paintEvent(QPaintEvent* event)
 	{
 		auto painter = QPainter(this);
 		auto width = painter.window().width();

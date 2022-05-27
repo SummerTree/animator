@@ -17,8 +17,8 @@
 #include <optional>
 
 #include "unreal_behaviour.h"
-#include "color_dialog.h"
-#include "spoiler.h"
+#include "../widgets/color_dialog.h"
+#include "../widgets/spoiler.h"
 #include <octoon/game_object.h>
 
 namespace unreal

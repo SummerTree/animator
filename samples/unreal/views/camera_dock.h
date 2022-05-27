@@ -15,7 +15,7 @@
 #include <qtimer.h>
 #include <qcheckbox.h>
 #include "unreal_behaviour.h"
-#include "spoiler.h"
+#include "../widgets/spoiler.h"
 #include <octoon/game_object.h>
 
 namespace unreal

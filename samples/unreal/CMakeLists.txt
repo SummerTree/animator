@@ -57,6 +57,17 @@ SET(MODULES_LIST
 )
 SOURCE_GROUP("launcher\\module" FILES ${MODULES_LIST})
 
+
+SET(WIDGETS_LIST
+	${SOURCE_PATH}/widgets/draggable_list_widget.h
+	${SOURCE_PATH}/widgets/draggable_list_widget.cpp
+	${SOURCE_PATH}/widgets/color_dialog.h
+	${SOURCE_PATH}/widgets/color_dialog.cpp
+	${SOURCE_PATH}/widgets/spoiler.h
+	${SOURCE_PATH}/widgets/spoiler.cpp
+)
+SOURCE_GROUP("launcher\\views" FILES ${WIDGETS_LIST})
+
 SET(VIEWS_LIST
 	${SOURCE_PATH}/views/splash_screen.h
 	${SOURCE_PATH}/views/splash_screen.cpp
@@ -86,8 +97,6 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/material_dock.cpp
 	${SOURCE_PATH}/views/light_dock.h
 	${SOURCE_PATH}/views/light_dock.cpp
-	${SOURCE_PATH}/views/color_dialog.h
-	${SOURCE_PATH}/views/color_dialog.cpp
 	${SOURCE_PATH}/views/thumbnail_dock.h
 	${SOURCE_PATH}/views/thumbnail_dock.cpp
 	${SOURCE_PATH}/views/setting_window.h
@@ -98,10 +107,6 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/login_window.cpp
 	${SOURCE_PATH}/views/info_window.h
 	${SOURCE_PATH}/views/info_window.cpp
-	${SOURCE_PATH}/views/spoiler.h
-	${SOURCE_PATH}/views/spoiler.cpp
-	${SOURCE_PATH}/views/draggable_list_widget.h
-	${SOURCE_PATH}/views/draggable_list_widget.cpp
 )
 SOURCE_GROUP("launcher\\views" FILES ${VIEWS_LIST})
 
@@ -208,7 +213,8 @@ Qt6_ADD_RESOURCES(RESOURCES res.qrc)
 SET_PROPERTY(SOURCE qrc_res.cpp PROPERTY SKIP_AUTOMOC ON)
 
 ADD_EXECUTABLE(${LIB_OUTNAME} 
-	${MAIN_LIST} 
+	${MAIN_LIST}
+	${WIDGETS_LIST}
 	${VIEWS_LIST} 
 	${VIEWMODEL_LIST}
 	${MODULES_LIST} 

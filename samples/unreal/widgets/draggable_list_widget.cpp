@@ -1,9 +1,9 @@
 #include "draggable_list_widget.h"
 #include <qapplication.h>
 #include <qdrag.h>
-#include <qmimedata.h>
 #include <qlabel.h>
 #include <qlayout.h>
+#include <qmimedata.h>
 
 namespace unreal
 {
@@ -21,7 +21,7 @@ namespace unreal
 	}
 
 	void
-	DraggableListWindow::mouseMoveEvent(QMouseEvent *event)
+	DraggableListWindow::mouseMoveEvent(QMouseEvent* event)
 	{
 		if (event->buttons() & Qt::LeftButton)
 		{
@@ -55,7 +55,7 @@ namespace unreal
 	}
 
 	void
-	DraggableListWindow::mousePressEvent(QMouseEvent *event)
+	DraggableListWindow::mousePressEvent(QMouseEvent* event)
 	{
 		if (event->button() == Qt::LeftButton)
 			startPos = event->pos();

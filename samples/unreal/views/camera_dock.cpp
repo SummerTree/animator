@@ -1,25 +1,27 @@
 #include "camera_dock.h"
+#include <octoon/io/fstream.h>
+#include <octoon/vmd_loader.h>
+#include <qapplication.h>
+#include <qdrag.h>
+#include <qevent.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-#include <qevent.h>
-#include <qdrag.h>
 #include <qmimedata.h>
-#include <qapplication.h>
-#include <octoon/vmd_loader.h>
-#include <octoon/io/fstream.h>
 
 namespace unreal
 {
 	class SpinBox final : public QSpinBox
 	{
 	public:
-		void focusInEvent(QFocusEvent* event) override
+		void
+		focusInEvent(QFocusEvent* event) override
 		{
 			this->grabKeyboard();
 			QSpinBox::focusInEvent(event);
 		}
 
-		void focusOutEvent(QFocusEvent* event) override
+		void
+		focusOutEvent(QFocusEvent* event) override
 		{
 			this->releaseKeyboard();
 			QSpinBox::focusOutEvent(event);
@@ -29,13 +31,15 @@ namespace unreal
 	class DoubleSpinBox final : public QDoubleSpinBox
 	{
 	public:
-		void focusInEvent(QFocusEvent* event) override
+		void
+		focusInEvent(QFocusEvent* event) override
 		{
 			this->grabKeyboard();
 			QDoubleSpinBox::focusInEvent(event);
 		}
 
-		void focusOutEvent(QFocusEvent* event) override
+		void
+		focusOutEvent(QFocusEvent* event) override
 		{
 			this->releaseKeyboard();
 			QDoubleSpinBox::focusOutEvent(event);
@@ -51,7 +55,7 @@ namespace unreal
 	}
 
 	void
-	FocalTargetWindow::mouseMoveEvent(QMouseEvent *event)
+	FocalTargetWindow::mouseMoveEvent(QMouseEvent* event)
 	{
 		if (event->buttons() & Qt::LeftButton)
 		{
@@ -75,7 +79,7 @@ namespace unreal
 	}
 
 	void
-	FocalTargetWindow::mousePressEvent(QMouseEvent *event)
+	FocalTargetWindow::mousePressEvent(QMouseEvent* event)
 	{
 		if (event->button() == Qt::LeftButton)
 			startPos = event->pos();
@@ -232,8 +236,7 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		profile_->entitiesModule->camera += [this](const octoon::GameObjectPtr& camera)
-		{
+		profile_->entitiesModule->camera += [this](const octoon::GameObjectPtr& camera) {
 			if (camera)
 			{
 				if (camera->getComponent<octoon::AnimatorComponent>())
@@ -243,34 +246,30 @@ namespace unreal
 			}
 		};
 
-		profile_->cameraModule->fov += [this](float fov)
-		{
+		profile_->cameraModule->fov += [this](float fov) {
 			this->fovSpinbox_->blockSignals(true);
 			this->fovSpinbox_->setValue(fov);
 			this->fovSpinbox_->blockSignals(false);
 		};
 
-		profile_->cameraModule->useDepthOfFiled += [this](bool value)
-		{
+		profile_->cameraModule->useDepthOfFiled += [this](bool value) {
 			this->dofButton_->blockSignals(true);
 			this->dofButton_->setChecked(value);
 			this->dofButton_->blockSignals(false);
 		};
 
-		profile_->cameraModule->aperture += [this](float fov)
-		{
+		profile_->cameraModule->aperture += [this](float fov) {
 			this->apertureSpinbox_->blockSignals(true);
 			this->apertureSpinbox_->setValue(fov);
 			this->apertureSpinbox_->blockSignals(false);
 		};
 
-		profile_->cameraModule->focalLength += [this](float fov)
-		{
+		profile_->cameraModule->focalLength += [this](float fov) {
 			this->focalLengthSpinbox_->blockSignals(true);
 			this->focalLengthSpinbox_->setValue(fov);
 			this->focalLengthSpinbox_->blockSignals(false);
 		};
-		
+
 		connect(focusTargetButton_, SIGNAL(mouseMoveSignal()), this, SLOT(onUpdateTarget()));
 		connect(fovSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFovChanged(double)));
 		connect(apertureSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onApertureChanged(double)));
@@ -381,13 +380,7 @@ namespace unreal
 				{
 					QCoreApplication::processEvents();
 
-					QMessageBox msg(this);
-					msg.setWindowTitle(tr("Error"));
-					msg.setText(tr("Failed to open the file"));
-					msg.setIcon(QMessageBox::Information);
-					msg.setStandardButtons(QMessageBox::Ok);
-
-					msg.exec();
+					QMessageBox::critical(this, tr("Error"), tr("Failed to open the file."));
 				}
 			}
 		}
@@ -414,7 +407,7 @@ namespace unreal
 		fovSpinbox_->setValue(profile_->cameraModule->fov);
 		focalLengthSpinbox_->setValue(profile_->cameraModule->focalLength);
 		apertureSpinbox_->setValue(profile_->cameraModule->aperture);
-		dofButton_->setChecked(profile_->cameraModule->useDepthOfFiled);		
+		dofButton_->setChecked(profile_->cameraModule->useDepthOfFiled);
 		unloadButton_->setEnabled(mainCamera->getComponent<octoon::AnimatorComponent>() ? true : false);
 
 		if (profile_->playerModule->dofTarget)

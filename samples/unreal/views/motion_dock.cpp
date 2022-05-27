@@ -1,5 +1,5 @@
 #include "motion_dock.h"
-#include "draggable_list_widget.h"
+#include "../widgets/draggable_list_widget.h"
 
 #include <qpainter.h>
 #include <qmessagebox.h>

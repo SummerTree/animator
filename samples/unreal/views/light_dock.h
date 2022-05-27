@@ -7,7 +7,7 @@
 #include <qlistwidget.h>
 
 #include "unreal_profile.h"
-#include "color_dialog.h"
+#include "../widgets/color_dialog.h"
 
 namespace unreal
 {
