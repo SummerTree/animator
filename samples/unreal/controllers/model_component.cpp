@@ -10,6 +10,8 @@
 namespace unreal
 {
 	ModelComponent::ModelComponent() noexcept
+		: previewWidth_(128)
+		, previewHeight_(128)
 	{
 	}
 
@@ -72,7 +74,7 @@ namespace unreal
 				ifs.write(dump.c_str(), dump.size());
 			}
 
-			indexList_.push_back(uuid);
+			this->getModel()->modelIndexList_.getValue().push_back(uuid);
 
 			return item;
 		}
@@ -107,7 +109,9 @@ namespace unreal
 	{
 		try
 		{
-			for (auto it = indexList_.begin(); it != indexList_.end(); ++it)
+			auto& indexList = this->getModel()->modelIndexList_.getValue();
+
+			for (auto it = indexList.begin(); it != indexList.end(); ++it)
 			{
 				if ((*it).get<nlohmann::json::string_t>() == uuid)
 				{
@@ -118,7 +122,7 @@ namespace unreal
 					if (package != this->packageList_.end())
 						this->packageList_.erase(package);
 
-					indexList_.erase(it);
+					indexList.erase(it);
 					return true;
 				}
 			}
@@ -128,12 +132,6 @@ namespace unreal
 		}
 
 		return false;
-	}
-
-	const nlohmann::json&
-	ModelComponent::getIndexList() const noexcept
-	{
-		return this->indexList_;
 	}
 
 	void
@@ -147,7 +145,7 @@ namespace unreal
 			std::ofstream ifs(this->getModel()->modelPath + "/index.json", std::ios_base::binary);
 			if (ifs)
 			{
-				auto data = indexList_.dump();
+				auto data = this->getModel()->modelIndexList_.getValue().dump();
 				ifs.write(data.c_str(), data.size());
 			}
 		}
@@ -157,17 +155,142 @@ namespace unreal
 	}
 
 	void
+	ModelComponent::createModelPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h)
+	{
+		assert(material);
+
+		if (scene_)
+		{
+			auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
+			if (renderer)
+			{
+				geometry_->setMaterial(material);
+				renderer->render(scene_);
+				material->setDirty(true);
+			}
+
+			auto framebufferDesc = framebuffer_->getFramebufferDesc();
+			auto width = framebufferDesc.getWidth();
+			auto height = framebufferDesc.getHeight();
+
+			auto colorTexture = framebufferDesc.getColorAttachment(0).getBindingTexture();
+
+			std::uint8_t* data;
+			if (colorTexture->map(0, 0, framebufferDesc.getWidth(), framebufferDesc.getHeight(), 0, (void**)&data))
+			{
+				QImage image(width, height, QImage::Format_RGB888);
+
+				constexpr auto size = 16;
+
+				for (std::uint32_t y = 0; y < height; y++)
+				{
+					for (std::uint32_t x = 0; x < width; x++)
+					{
+						auto n = (y * height + x) * 4;
+
+						std::uint8_t u = x / size % 2;
+						std::uint8_t v = y / size % 2;
+						std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
+
+						auto r = octoon::math::lerp(bg, data[n], data[n + 3] / 255.f);
+						auto g = octoon::math::lerp(bg, data[n + 1], data[n + 3] / 255.f);
+						auto b = octoon::math::lerp(bg, data[n + 2], data[n + 3] / 255.f);
+
+						image.setPixelColor((int)x, (int)y, QColor::fromRgb(r, g, b));
+					}
+				}
+
+				colorTexture->unmap();
+
+				pixmap.convertFromImage(image);
+				pixmap = pixmap.scaled(w, h, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+			}
+		}
+	}
+
+	void
+	ModelComponent::initRenderScene() noexcept(false)
+	{
+		auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
+		if (renderer)
+		{
+			std::uint32_t width = previewWidth_ * 2;
+			std::uint32_t height = previewHeight_ * 2;
+
+			octoon::GraphicsTextureDesc textureDesc;
+			textureDesc.setSize(width, height);
+			textureDesc.setTexDim(octoon::TextureDimension::Texture2D);
+			textureDesc.setTexFormat(octoon::GraphicsFormat::R8G8B8A8UNorm);
+			auto colorTexture = renderer->getGraphicsDevice()->createTexture(textureDesc);
+			if (!colorTexture)
+				throw std::runtime_error("createTexture() failed");
+
+			octoon::GraphicsTextureDesc depthTextureDesc;
+			depthTextureDesc.setSize(width, height);
+			depthTextureDesc.setTexDim(octoon::TextureDimension::Texture2D);
+			depthTextureDesc.setTexFormat(octoon::GraphicsFormat::D16UNorm);
+			auto depthTexture = renderer->getGraphicsDevice()->createTexture(depthTextureDesc);
+			if (!depthTexture)
+				throw std::runtime_error("createTexture() failed");
+
+			octoon::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+			framebufferLayoutDesc.addComponent(octoon::GraphicsAttachmentLayout(0, octoon::GraphicsImageLayout::ColorAttachmentOptimal, octoon::GraphicsFormat::R8G8B8A8UNorm));
+			framebufferLayoutDesc.addComponent(octoon::GraphicsAttachmentLayout(1, octoon::GraphicsImageLayout::DepthStencilAttachmentOptimal, octoon::GraphicsFormat::D16UNorm));
+
+			octoon::GraphicsFramebufferDesc framebufferDesc;
+			framebufferDesc.setWidth(width);
+			framebufferDesc.setHeight(height);
+			framebufferDesc.setFramebufferLayout(renderer->getGraphicsDevice()->createFramebufferLayout(framebufferLayoutDesc));
+			framebufferDesc.setDepthStencilAttachment(octoon::GraphicsAttachmentBinding(depthTexture, 0, 0));
+			framebufferDesc.addColorAttachment(octoon::GraphicsAttachmentBinding(colorTexture, 0, 0));
+
+			framebuffer_ = renderer->getGraphicsDevice()->createFramebuffer(framebufferDesc);
+			if (!framebuffer_)
+				throw std::runtime_error("createFramebuffer() failed");
+
+			camera_ = std::make_shared<octoon::PerspectiveCamera>(60, 1, 100);
+			camera_->setClearColor(octoon::math::float4::Zero);
+			camera_->setClearFlags(octoon::ClearFlagBits::AllBit);
+			camera_->setFramebuffer(framebuffer_);
+			camera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, 0, 1), octoon::math::float3::Zero, octoon::math::float3::UnitY));
+
+			geometry_ = std::make_shared<octoon::Geometry>();
+			geometry_->setMesh(octoon::SphereMesh::create(0.5));
+
+			octoon::math::Quaternion q1;
+			q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75);
+			octoon::math::Quaternion q2;
+			q2.makeRotation(octoon::math::float3::UnitY, octoon::math::PI / 4.6);
+
+			directionalLight_ = std::make_shared<octoon::DirectionalLight>();
+			directionalLight_->setColor(octoon::math::float3(1, 1, 1));
+			directionalLight_->setTransform(octoon::math::float4x4(q1 * q2));
+
+			environmentLight_ = std::make_shared<octoon::EnvironmentLight>();
+			environmentLight_->setEnvironmentMap(octoon::PMREMLoader::load("../../system/hdri/Ditch-River_1k.hdr"));
+
+			scene_ = std::make_unique<octoon::RenderScene>();
+			scene_->addRenderObject(camera_.get());
+			scene_->addRenderObject(directionalLight_.get());
+			scene_->addRenderObject(environmentLight_.get());
+			scene_->addRenderObject(geometry_.get());
+		}
+	}
+
+	void
 	ModelComponent::initPackageIndices() noexcept(false)
 	{
+		auto& indexList = this->getModel()->modelIndexList_.getValue();
+
 		std::ifstream indexStream(this->getModel()->modelPath + "/index.json");
 		if (indexStream)
-			this->indexList_ = nlohmann::json::parse(indexStream);
+			indexList = nlohmann::json::parse(indexStream);
 
 		bool needUpdateIndexFile = false;
 
 		std::set<std::string> indexSet;
 
-		for (auto& it : this->indexList_)
+		for (auto& it : indexList)
 		{		 
 			if (!std::filesystem::exists(std::filesystem::path(this->getModel()->modelPath).append(it.get<nlohmann::json::string_t>())))
 				needUpdateIndexFile = true;
@@ -200,7 +323,7 @@ namespace unreal
 			for (auto& it : indexSet)
 				json += it;
 
-			this->indexList_ = json;
+			indexList = json;
 			this->save();
 		}
 	}

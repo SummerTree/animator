@@ -3,7 +3,11 @@
 
 #include <unreal_component.h>
 #include <octoon/game_object.h>
-#include <octoon/hal/graphics_texture.h>
+#include <octoon/video/renderer.h>
+#include <octoon/camera/perspective_camera.h>
+#include <octoon/camera/ortho_camera.h>
+
+#include <qpixmap.h>
 
 #include "../unreal_component.h"
 #include "../module/resource_module.h"
@@ -20,7 +24,7 @@ namespace unreal
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		bool removePackage(std::string_view uuid) noexcept;
 
-		const nlohmann::json& getIndexList() const noexcept;
+		void createModelPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
 
 		void save() noexcept(false);
 
@@ -30,6 +34,7 @@ namespace unreal
 		}
 
 	private:
+		void initRenderScene() noexcept(false);
 		void initPackageIndices() noexcept(false);
 
 	private:
@@ -37,9 +42,17 @@ namespace unreal
 		void onDisable() noexcept override;
 
 	private:
-		nlohmann::json indexList_;
+		std::uint32_t previewWidth_;
+		std::uint32_t previewHeight_;
 
 		std::map<std::string, nlohmann::json> packageList_;
+
+		std::shared_ptr<octoon::PerspectiveCamera> camera_;
+		std::shared_ptr<octoon::Geometry> geometry_;
+		std::shared_ptr<octoon::DirectionalLight> directionalLight_;
+		std::shared_ptr<octoon::EnvironmentLight> environmentLight_;
+		std::shared_ptr<octoon::RenderScene> scene_;
+		std::shared_ptr<octoon::GraphicsFramebuffer> framebuffer_;
 	};
 }
 
