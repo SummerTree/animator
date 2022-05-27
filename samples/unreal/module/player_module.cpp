@@ -32,13 +32,13 @@ namespace unreal
 	void 
 	PlayerModule::load(octoon::runtime::json& reader) noexcept
 	{
-		if (reader.find("spp") != reader.end())
+		if (reader["spp"].is_number_float())
 			this->spp = reader["spp"].get<nlohmann::json::number_unsigned_t>();
-		if (reader.find("playFps") != reader.end())
+		if (reader["playFps"].is_number_float())
 			this->playFps = reader["playFps"].get<nlohmann::json::number_float_t>();
-		if (reader.find("recordFps") != reader.end())
+		if (reader["recordFps"].is_number_float())
 			this->recordFps = reader["recordFps"].get<nlohmann::json::number_float_t>();
-		if (reader.find("previewFps") != reader.end())
+		if (reader["previewFps"].is_number_float())
 			this->previewFps = reader["previewFps"].get<nlohmann::json::number_float_t>();
 	}
 
