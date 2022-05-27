@@ -2,9 +2,9 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "AnimatorGo"
-!define PRODUCT_VERSION "1.0.1"
-!define PRODUCT_PUBLISHER "Ray CG, Inc."
-!define PRODUCT_WEB_SITE "https://github.com/ray-cast/unreal"
+!define PRODUCT_VERSION "1.0.2alpha"
+!define PRODUCT_PUBLISHER "AnimatorGo, Inc."
+!define PRODUCT_WEB_SITE "https://github.com/ray-cast"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\launcher.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
@@ -47,8 +47,8 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "Setup.exe"
-InstallDir "$PROGRAMFILES\AnimatorGo"
+OutFile "${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
+InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
@@ -70,9 +70,9 @@ Section "MainSection" SEC01
   File "..\..\..\lib\binaries\win64_Release\imageformats\qsvg.dll"
   SetOutPath "$INSTDIR\binaries\win64_Release"
   File "..\..\..\lib\binaries\win64_Release\launcher.exe"
-  CreateDirectory "$SMPROGRAMS\AnimatorGo"
-  CreateShortCut "$SMPROGRAMS\AnimatorGo\AnimatorGo.lnk" "$INSTDIR\binaries\win64_Release\launcher.exe"
-  CreateShortCut "$DESKTOP\AnimatorGo.lnk" "$INSTDIR\binaries\win64_Release\launcher.exe"
+  CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
+  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\binaries\win64_Release\launcher.exe"
+  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\binaries\win64_Release\launcher.exe"
   File "..\..\..\lib\binaries\win64_Release\libmdl_sdk.dll"
   File "..\..\..\lib\binaries\win64_Release\mdl_distiller.dll"
   SetOutPath "$INSTDIR\binaries\win64_Release\networkinformation"
@@ -670,8 +670,8 @@ SectionEnd
 Section -AdditionalIcons
   SetOutPath $INSTDIR
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
-  CreateShortCut "$SMPROGRAMS\AnimatorGo\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
-  CreateShortCut "$SMPROGRAMS\AnimatorGo\Uninstall.lnk" "$INSTDIR\uninst.exe"
+  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
+  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
 Section -Post
@@ -1245,10 +1245,10 @@ Section Uninstall
   Delete "$INSTDIR\binaries\win64_Release\dds.dll"
   Delete "$INSTDIR\binaries\win64_Release\D3Dcompiler_47.dll"
 
-  Delete "$SMPROGRAMS\AnimatorGo\Uninstall.lnk"
-  Delete "$SMPROGRAMS\AnimatorGo\Website.lnk"
-  Delete "$DESKTOP\AnimatorGo.lnk"
-  Delete "$SMPROGRAMS\AnimatorGo\AnimatorGo.lnk"
+  Delete "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk"
+  Delete "$SMPROGRAMS\${PRODUCT_NAME}\Website.lnk"
+  Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
+  Delete "$SMPROGRAMS\${PRODUCT_NAME}\AnimatorGo.lnk"
 
   RMDir "$SMPROGRAMS\AnimatorGo"
   RMDir "$INSTDIR\system\web"
