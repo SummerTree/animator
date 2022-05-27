@@ -60,13 +60,13 @@
         <location filename="../views/camera_dock.cpp" line="169"/>
         <location filename="../views/camera_dock.cpp" line="310"/>
         <location filename="../views/camera_dock.cpp" line="354"/>
-        <location filename="../views/camera_dock.cpp" line="448"/>
+        <location filename="../views/camera_dock.cpp" line="435"/>
         <source>Target: Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="180"/>
-        <location filename="../views/camera_dock.cpp" line="371"/>
+        <location filename="../views/camera_dock.cpp" line="368"/>
         <source>Load Animation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -77,28 +77,28 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="302"/>
-        <location filename="../views/camera_dock.cpp" line="444"/>
+        <location filename="../views/camera_dock.cpp" line="431"/>
         <source>Target: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="304"/>
-        <location filename="../views/camera_dock.cpp" line="443"/>
+        <location filename="../views/camera_dock.cpp" line="430"/>
         <source>Auto-measuring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="371"/>
+        <location filename="../views/camera_dock.cpp" line="368"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="397"/>
+        <location filename="../views/camera_dock.cpp" line="385"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="398"/>
+        <location filename="../views/camera_dock.cpp" line="386"/>
         <source>Failed to open the file</source>
         <translation type="unfinished"></translation>
     </message>

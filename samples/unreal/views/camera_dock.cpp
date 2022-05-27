@@ -365,29 +365,17 @@ namespace unreal
 	void
 	CameraDock::onLoadAnimation()
 	{
-		auto camera = profile_->entitiesModule->camera.getValue();
-		if (camera)
+		QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
+		if (!filepath.isEmpty())
 		{
-			QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
-			if (!filepath.isEmpty())
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+			if (behaviour)
 			{
-				octoon::io::ifstream stream;
-
-				if (stream.open(filepath.toStdString()))
+				auto cameraComponent = behaviour->getComponent<CameraComponent>();
+				if (cameraComponent->loadAnimation(filepath.toStdString()))
 				{
-					octoon::VMDLoader loader;
-					auto animation = loader.loadCameraMotion(stream);
-					if (!animation.clips.empty())
-					{
-						auto animator = camera->getComponent<octoon::AnimatorComponent>();
-						if (!animator)
-							animator = camera->addComponent<octoon::AnimatorComponent>();
-
-						animator->setAnimation(std::move(animation));
-						animator->sample(profile_->playerModule->curTime);
-
-						unloadButton_->setEnabled(true);
-					}
+					behaviour->getComponent<PlayerComponent>()->updateTimeLength();
+					unloadButton_->setEnabled(true);
 				}
 				else
 				{
@@ -408,12 +396,11 @@ namespace unreal
 	void
 	CameraDock::onUnloadAnimation()
 	{
-		if (profile_->entitiesModule->camera.getValue())
+		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+		if (behaviour)
 		{
-			auto mainCamera = profile_->entitiesModule->camera.getValue();
-			mainCamera->removeComponent<octoon::AnimatorComponent>();
-
-			profile_->cameraModule->reset();
+			behaviour->getComponent<CameraComponent>()->removeAnimation();
+			behaviour->getComponent<PlayerComponent>()->updateTimeLength();
 
 			unloadButton_->setEnabled(false);
 		}
@@ -422,16 +409,13 @@ namespace unreal
 	void
 	CameraDock::showEvent(QShowEvent* event)
 	{
+		auto mainCamera = profile_->entitiesModule->camera.getValue();
+
 		fovSpinbox_->setValue(profile_->cameraModule->fov);
 		focalLengthSpinbox_->setValue(profile_->cameraModule->focalLength);
 		apertureSpinbox_->setValue(profile_->cameraModule->aperture);
-		dofButton_->setChecked(profile_->cameraModule->useDepthOfFiled);
-
-		auto mainCamera = profile_->entitiesModule->camera.getValue();
-		if (mainCamera->getComponent<octoon::AnimatorComponent>())
-			unloadButton_->setEnabled(true);
-		else
-			unloadButton_->setEnabled(false);
+		dofButton_->setChecked(profile_->cameraModule->useDepthOfFiled);		
+		unloadButton_->setEnabled(mainCamera->getComponent<octoon::AnimatorComponent>() ? true : false);
 
 		if (profile_->playerModule->dofTarget)
 		{

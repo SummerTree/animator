@@ -12,6 +12,43 @@ namespace unreal
 	{
 	}
 
+	bool
+	CameraComponent::loadAnimation(std::string_view filepath) noexcept(false)
+	{
+		octoon::io::ifstream stream;
+
+		if (stream.open(std::string(filepath)))
+		{
+			octoon::VMDLoader loader;
+			auto animation = loader.loadCameraMotion(stream);
+			if (!animation.clips.empty())
+			{
+				auto& profile = this->getContext()->profile;
+
+				auto animator = profile->entitiesModule->camera.getValue()->getComponent<octoon::AnimatorComponent>();
+				if (!animator)
+					animator = profile->entitiesModule->camera.getValue()->addComponent<octoon::AnimatorComponent>();
+
+				animator->setAnimation(std::move(animation));
+				animator->sample(profile->playerModule->curTime);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	void
+	CameraComponent::removeAnimation() noexcept(false)
+	{
+		auto& profile = this->getContext()->profile;
+		auto mainCamera = profile->entitiesModule->camera.getValue();
+		mainCamera->removeComponent<octoon::AnimatorComponent>();
+
+		profile->cameraModule->reset();
+	}
+
 	void
 	CameraComponent::onInit() noexcept
 	{

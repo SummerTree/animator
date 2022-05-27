@@ -12,6 +12,9 @@ namespace unreal
 		CameraComponent() noexcept;
 		virtual ~CameraComponent() noexcept;
 
+		bool loadAnimation(std::string_view filepath) noexcept(false);
+		void removeAnimation() noexcept(false);
+
 		virtual const std::type_info& type_info() const noexcept
 		{
 			return typeid(CameraComponent);

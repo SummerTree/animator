@@ -56,6 +56,9 @@ namespace unreal
 	bool
 	UnrealBehaviour::isOpen() const noexcept
 	{
+		if (profile_->playerModule->timeLength > 0)
+			return true;
+
 		return !profile_->entitiesModule->objects.empty();
 	}
 

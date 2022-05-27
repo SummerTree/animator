@@ -101,21 +101,41 @@ namespace octoon
 		void addClip(AnimationClip<_Elem, _Time>&& clip) noexcept
 		{
 			this->clips.push_back(std::move(clip));
+
+			for (auto& it : clips)
+				state.timeLength = std::max(it.timeLength, state.timeLength);
 		}
 
 		void addClip(const AnimationClip<_Elem, _Time>& clip) noexcept
 		{
 			this->clips.push_back(clip);
+
+			for (auto& it : clips)
+				state.timeLength = std::max(it.timeLength, state.timeLength);
 		}
 
 		void setClips(const std::vector<AnimationClip<_Elem, _Time>>& clip) noexcept
 		{
+			state.finish = false;
+			state.time = 0;
+			state.timeLength = 0;
+
 			this->clips = clip;
+
+			for (auto& it : clips)
+				state.timeLength = std::max(it.timeLength, state.timeLength);
 		}
 
 		void setClips(std::vector<AnimationClip<_Elem, _Time>>&& clip) noexcept
 		{
+			state.finish = false;
+			state.time = 0;
+			state.timeLength = 0;
+
 			this->clips = std::move(clip);
+
+			for (auto& it : clips)
+				state.timeLength = std::max(it.timeLength, state.timeLength);
 		}
 
 		float timeLength() const noexcept
