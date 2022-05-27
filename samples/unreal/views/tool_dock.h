@@ -27,6 +27,7 @@ namespace unreal
 
 	private Q_SLOTS:
 		void importEvent() noexcept;
+		void saveEvent() noexcept;
 		void shotEvent() noexcept;
 		void gpuEvent() noexcept;
 		void audioEvent() noexcept;

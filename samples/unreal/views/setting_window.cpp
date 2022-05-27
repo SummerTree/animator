@@ -153,7 +153,7 @@ namespace unreal
 	{
 	}
 
-	SettingContextPlane::SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept
+	SettingContextPlane::SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept(false)
 		: QWidget(parent)
 		, behaviour_(behaviour)
 	{
