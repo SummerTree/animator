@@ -658,36 +658,36 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="136"/>
+        <location filename="../views/model_dock.cpp" line="137"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="136"/>
+        <location filename="../views/model_dock.cpp" line="137"/>
         <source>Are you sure you want to delete this model?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="160"/>
+        <location filename="../views/model_dock.cpp" line="161"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="160"/>
+        <location filename="../views/model_dock.cpp" line="161"/>
         <source>PMX Files (*.pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="169"/>
         <location filename="../views/model_dock.cpp" line="170"/>
-        <location filename="../views/model_dock.cpp" line="218"/>
+        <location filename="../views/model_dock.cpp" line="171"/>
         <location filename="../views/model_dock.cpp" line="219"/>
+        <location filename="../views/model_dock.cpp" line="220"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="169"/>
-        <location filename="../views/model_dock.cpp" line="218"/>
+        <location filename="../views/model_dock.cpp" line="170"/>
+        <location filename="../views/model_dock.cpp" line="219"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

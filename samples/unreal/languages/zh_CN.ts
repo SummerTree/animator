@@ -24,7 +24,7 @@
     <message>
         <location filename="../views/camera_dock.cpp" line="117"/>
         <source>Depth Of Filed:</source>
-        <translation>开启景深</translation>
+        <translation>开启景深：</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="130"/>
@@ -39,7 +39,7 @@
     <message>
         <location filename="../views/camera_dock.cpp" line="145"/>
         <source>Focal Length (35mmfilm):</source>
-        <translation type="unfinished">等效焦距(35mmfilm)：</translation>
+        <translation>等效焦距(35mmfilm)：</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="149"/>
@@ -100,7 +100,7 @@
     <message>
         <location filename="../views/camera_dock.cpp" line="383"/>
         <source>Failed to open the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>打开文件失败。</translation>
     </message>
     <message>
         <source>Failed to open the file</source>
@@ -293,7 +293,7 @@
     <message>
         <location filename="../views/info_window.cpp" line="24"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../views/info_window.cpp" line="31"/>
@@ -519,7 +519,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/material_dock.cpp" line="273"/>
         <source> Texture</source>
-        <translation>纹理</translation>
+        <translation> 纹理</translation>
     </message>
     <message>
         <location filename="../views/material_dock.cpp" line="481"/>
@@ -693,36 +693,36 @@ $20 (Original cost $40)</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="126"/>
+        <location filename="../views/model_dock.cpp" line="137"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="126"/>
+        <location filename="../views/model_dock.cpp" line="137"/>
         <source>Are you sure you want to delete this model?</source>
-        <translation type="unfinished">确定要删除此模型吗?</translation>
+        <translation>确定要删除此模型吗?</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="150"/>
+        <location filename="../views/model_dock.cpp" line="161"/>
         <source>Import Resource</source>
-        <translation type="unfinished">加载资源</translation>
+        <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="150"/>
+        <location filename="../views/model_dock.cpp" line="161"/>
         <source>PMX Files (*.pmx)</source>
-        <translation type="unfinished"></translation>
+        <translation>PMX 文件 (*.pmx)</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="159"/>
-        <location filename="../views/model_dock.cpp" line="160"/>
-        <location filename="../views/model_dock.cpp" line="208"/>
-        <location filename="../views/model_dock.cpp" line="209"/>
+        <location filename="../views/model_dock.cpp" line="170"/>
+        <location filename="../views/model_dock.cpp" line="171"/>
+        <location filename="../views/model_dock.cpp" line="219"/>
+        <location filename="../views/model_dock.cpp" line="220"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="159"/>
-        <location filename="../views/model_dock.cpp" line="208"/>
+        <location filename="../views/model_dock.cpp" line="170"/>
+        <location filename="../views/model_dock.cpp" line="219"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -732,32 +732,32 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/motion_dock.cpp" line="21"/>
         <source>Motion Library</source>
-        <translation type="unfinished">动作库</translation>
+        <translation>动作库</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="26"/>
         <source>Import</source>
-        <translation type="unfinished">导入</translation>
+        <translation>导入</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="136"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>信息</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="136"/>
         <source>Are you sure you want to delete this motion data?</source>
-        <translation type="unfinished">确定要删除此动作数据吗?</translation>
+        <translation>确定要删除此动作数据吗?</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="160"/>
         <source>Import Resource</source>
-        <translation type="unfinished">加载资源</translation>
+        <translation>加载资源</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="160"/>
         <source>VMD Files (*.vmd)</source>
-        <translation type="unfinished">VMD 文件 (*.vmd)</translation>
+        <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="171"/>
@@ -765,13 +765,13 @@ $20 (Original cost $40)</source>
         <location filename="../views/motion_dock.cpp" line="221"/>
         <location filename="../views/motion_dock.cpp" line="222"/>
         <source>Loading...</source>
-        <translation type="unfinished">加载中...</translation>
+        <translation>加载中...</translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="171"/>
         <location filename="../views/motion_dock.cpp" line="221"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -779,62 +779,62 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="52"/>
         <source>Record</source>
-        <translation type="unfinished">录制</translation>
+        <translation>录制</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="61"/>
         <source>Render Quality</source>
-        <translation type="unfinished">渲染质量</translation>
+        <translation>渲染质量</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="65"/>
         <source>Ultra Render</source>
-        <translation type="unfinished">高清渲染</translation>
+        <translation>高清渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="72"/>
         <source>Fast Render</source>
-        <translation type="unfinished">极速渲染</translation>
+        <translation>极速渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="81"/>
         <source>Frame Per Second</source>
-        <translation type="unfinished">帧率</translation>
+        <translation>帧率</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="85"/>
         <source>24</source>
-        <translation type="unfinished">24</translation>
+        <translation>24</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="92"/>
         <source>25</source>
-        <translation type="unfinished">25</translation>
+        <translation>25</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="98"/>
         <source>30</source>
-        <translation type="unfinished">30</translation>
+        <translation>30</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="104"/>
         <source>60</source>
-        <translation type="unfinished">60</translation>
+        <translation>60</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="116"/>
         <source>Output Type</source>
-        <translation type="unfinished">输出格式</translation>
+        <translation>输出格式</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="119"/>
         <source>H265</source>
-        <translation type="unfinished"></translation>
+        <translation>H265</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="120"/>
         <source>H264</source>
-        <translation type="unfinished"></translation>
+        <translation>H264</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="121"/>
@@ -844,37 +844,37 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="126"/>
         <source>Play:</source>
-        <translation type="unfinished">播放：</translation>
+        <translation>播放：</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="129"/>
         <source>Start</source>
-        <translation type="unfinished">开始</translation>
+        <translation>开始</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="132"/>
         <source>- End</source>
-        <translation type="unfinished">- 结束</translation>
+        <translation>- 结束</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="149"/>
         <source>Denoise:</source>
-        <translation type="unfinished">开启降噪：</translation>
+        <translation>开启降噪：</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="162"/>
         <source>Recursion depth per pixel:</source>
-        <translation type="unfinished">每像素光线弹射次数：</translation>
+        <translation>每像素光线弹射次数：</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="174"/>
         <source>Sample number per pixel:</source>
-        <translation type="unfinished">每像素采样数:</translation>
+        <translation>每像素采样数:</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="194"/>
         <source>Constant Rate Factor (CRF):</source>
-        <translation type="unfinished">固定码率系数(CRF):</translation>
+        <translation>固定码率系数(CRF):</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="207"/>
@@ -882,22 +882,22 @@ $20 (Original cost $40)</source>
         <location filename="../views/record_dock.cpp" line="352"/>
         <location filename="../views/record_dock.cpp" line="523"/>
         <source>Start Render</source>
-        <translation type="unfinished">开始渲染</translation>
+        <translation>开始渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="251"/>
         <source>Watermark</source>
-        <translation type="unfinished">水印</translation>
+        <translation>水印</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="254"/>
         <source>Render Settings</source>
-        <translation type="unfinished">渲染设置</translation>
+        <translation>渲染设置</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="479"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="479"/>
@@ -907,12 +907,12 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="485"/>
         <source>Save Video</source>
-        <translation type="unfinished">保存视频</translation>
+        <translation>保存视频</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="485"/>
         <source>MP4 Files (*.mp4)</source>
-        <translation type="unfinished">MP4 Files (*.mp4)</translation>
+        <translation>MP4 Files (*.mp4)</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="487"/>
@@ -929,17 +929,17 @@ $20 (Original cost $40)</source>
         <location filename="../views/record_dock.cpp" line="350"/>
         <location filename="../views/record_dock.cpp" line="521"/>
         <source>Stop Render</source>
-        <translation type="unfinished">停止渲染</translation>
+        <translation>停止渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="494"/>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="494"/>
         <source>Failed to create file</source>
-        <translation type="unfinished">创建文件失败</translation>
+        <translation>创建文件失败</translation>
     </message>
 </context>
 <context>
@@ -1047,12 +1047,12 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/splash_screen.cpp" line="45"/>
         <source>Version: </source>
-        <translation type="unfinished">版本： </translation>
+        <translation>版本： </translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="50"/>
         <source>Loading...</source>
-        <translation type="unfinished">加载中...</translation>
+        <translation>加载中...</translation>
     </message>
 </context>
 <context>
@@ -1068,17 +1068,17 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/status_bar.cpp" line="43"/>
         <source>Total Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
-        <translation type="unfinished">渲染帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 小时 %4 分钟</translation>
+        <translation>渲染帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 小时 %4 分钟</translation>
     </message>
     <message>
         <location filename="../views/status_bar.cpp" line="45"/>
         <source>Total Frame: %1 | Current Frame: %2 | Estimated Time: %3 Minute %4 Second</source>
-        <translation type="unfinished">渲染帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 分钟 %4 秒</translation>
+        <translation>渲染帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 分钟 %4 秒</translation>
     </message>
     <message>
         <location filename="../views/status_bar.cpp" line="52"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
-        <translation type="unfinished">动画帧数: %1 | 当前帧数: %2</translation>
+        <translation>动画帧数: %1 | 当前帧数: %2</translation>
     </message>
 </context>
 <context>
@@ -1273,7 +1273,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/tool_dock.cpp" line="170"/>
         <source>Failed to open project: </source>
-        <translation type="unfinished"></translation>
+        <translation>打开工程失败： </translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="190"/>
@@ -1372,17 +1372,17 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/view_dock.cpp" line="10"/>
         <source>Camera</source>
-        <translation type="unfinished">相机</translation>
+        <translation>相机</translation>
     </message>
     <message>
         <location filename="../views/view_dock.cpp" line="164"/>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <location filename="../views/view_dock.cpp" line="165"/>
         <source>Unsupported light type.</source>
-        <translation type="unfinished"></translation>
+        <translation>不支持的光源类型。</translation>
     </message>
 </context>
 </TS>
