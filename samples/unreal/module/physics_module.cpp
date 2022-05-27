@@ -25,13 +25,13 @@ namespace unreal
 	void 
 	PhysicsModule::load(octoon::runtime::json& reader) noexcept
 	{
-		if (reader.find("gravityScale") != reader.end())
+		if (reader["gravityScale"].is_number_float())
 			this->gravityScale = reader["gravityScale"].get<nlohmann::json::number_float_t>();
-		if (reader.find("playSolverIterationCounts") != reader.end())
+		if (reader["playSolverIterationCounts"].is_number_unsigned())
 			this->playSolverIterationCounts = reader["playSolverIterationCounts"].get<nlohmann::json::number_unsigned_t>();
-		if (reader.find("recordSolverIterationCounts") != reader.end())
+		if (reader["recordSolverIterationCounts"].is_number_unsigned())
 			this->recordSolverIterationCounts = reader["recordSolverIterationCounts"].get<nlohmann::json::number_unsigned_t>();
-		if (reader.find("previewSolverIterationCounts") != reader.end())
+		if (reader["previewSolverIterationCounts"].is_number_unsigned())
 			this->previewSolverIterationCounts = reader["previewSolverIterationCounts"].get<nlohmann::json::number_unsigned_t>();
 	}
 

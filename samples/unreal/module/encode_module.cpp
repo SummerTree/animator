@@ -24,11 +24,11 @@ namespace unreal
 	void 
 	EncodeModule::load(octoon::runtime::json& reader) noexcept
 	{
-		if (reader.find("crf") != reader.end())
+		if (reader["crf"].is_number_float())
 			this->crf = reader["crf"].get<nlohmann::json::number_float_t>();
-		if (reader.find("frame_type") != reader.end())
+		if (reader["frame_type"].is_number_unsigned())
 			this->frame_type = reader["frame_type"].get<nlohmann::json::number_unsigned_t>();
-		if (reader.find("encode_speed") != reader.end())
+		if (reader["encode_speed"].is_number_unsigned())
 			this->encode_speed = reader["encode_speed"].get<nlohmann::json::number_unsigned_t>();
 	}
 
