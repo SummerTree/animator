@@ -20,6 +20,8 @@ namespace unreal
 		this->setFocusPolicy(Qt::StrongFocus);
 		this->setContextMenuPolicy(Qt::PreventContextMenu);
 		this->setMinimumSize(profile->recordModule->width, profile->recordModule->height);
+
+		this->grabMouse();
 	}
 
 	ViewDock::~ViewDock() noexcept
