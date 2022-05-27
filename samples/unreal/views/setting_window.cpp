@@ -4,8 +4,6 @@
 #include <qmessagebox.h>
 #include <qscrollbar.h>
 
-#include "../widgets/ucombobox.h"
-
 namespace unreal
 {
 	class SpinBox final : public QSpinBox
@@ -47,16 +45,16 @@ namespace unreal
 	SettingMainPlaneGeneral::SettingMainPlaneGeneral(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour)
 		: QWidget(parent)
 	{
-		infoLabel = std::make_unique<QLabel>(this);
+		infoLabel = new ULabel(this);
 		infoLabel->setText(tr("Version"));
 		infoLabel->setStyleSheet("color: rgb(255,255,255);");
 
-		infoButton = std::make_unique<QToolButton>(this);
+		infoButton = new QToolButton(this);
 		infoButton->setText(tr("Check Updates"));
 		infoButton->setStyleSheet("background: rgb(50,50,50); border:2px solid #646464;border-radius:4px;color: rgb(200,200,200);");
 		infoButton->setFixedSize(190, 35);
 
-		versionLabel = std::make_unique<QLabel>(this);
+		versionLabel = new ULabel(this);
 		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(behaviour->getProfile()->clientModule->version));
 		versionLabel->setStyleSheet("color: rgb(200,200,200);");
 
@@ -76,19 +74,19 @@ namespace unreal
 		lowpowerBox->setText(u8"低功耗模式");
 		lowpowerBox->setStyleSheet("color: rgb(200,200,200);");*/
 
-		resetLabel = std::make_unique<QLabel>(this);
+		resetLabel = new ULabel(this);
 		resetLabel->setText(tr("Reset to default settings"));
 		resetLabel->setStyleSheet("color: rgb(255,255,255);");
 
-		resetButton = std::make_unique<QToolButton>(this);
+		resetButton = new QToolButton(this);
 		resetButton->setText(tr("Reset"));
 		resetButton->setStyleSheet("background: rgb(50,50,50); border:2px solid #646464; border-radius:4px;color: rgb(200,200,200);");
 		resetButton->setFixedSize(190, 35);
 
 		layout_ = std::make_unique<QVBoxLayout>(this);
-		layout_->addWidget(infoLabel.get());
-		layout_->addWidget(infoButton.get());
-		layout_->addWidget(versionLabel.get());
+		layout_->addWidget(infoLabel);
+		layout_->addWidget(infoButton);
+		layout_->addWidget(versionLabel);
 		/*layout_->addSpacing(10);
 		layout_->addWidget(startupLabel);
 		layout_->addSpacing(10);
@@ -98,9 +96,9 @@ namespace unreal
 		layout_->addSpacing(10);
 		layout_->addWidget(lowpowerBox);*/
 		layout_->addSpacing(10);
-		layout_->addWidget(resetLabel.get());
+		layout_->addWidget(resetLabel);
 		layout_->addSpacing(10);
-		layout_->addWidget(resetButton.get());
+		layout_->addWidget(resetButton);
 		layout_->setContentsMargins(0, 0, 0, 10);
 	}
 
@@ -123,7 +121,7 @@ namespace unreal
 		resolutionLabel->setText(tr("Resolution"));
 		resolutionLabel->setStyleSheet("color: rgb(200,200,200);");
 
-		resolutionCombo = std::make_unique<QComboBox>();
+		resolutionCombo = std::make_unique<UComboBox>();
 		resolutionCombo->addItem("720*480");
 		resolutionCombo->addItem("800*480");
 		resolutionCombo->addItem("1024*576");
@@ -224,8 +222,8 @@ namespace unreal
 
 		connect(scrollArea_->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
 		connect(listWidget_.get(), SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
-		connect(mainPlane_->resetButton.get(), SIGNAL(clicked()), this, SLOT(onResetButton()));
-		connect(mainPlane_->infoButton.get(), SIGNAL(clicked()), this, SLOT(onCheckVersion()));
+		connect(mainPlane_->resetButton, SIGNAL(clicked()), this, SLOT(onResetButton()));
+		connect(mainPlane_->infoButton, SIGNAL(clicked()), this, SLOT(onCheckVersion()));
 		connect(mainPlane2_->resolutionCombo.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
 	}
 

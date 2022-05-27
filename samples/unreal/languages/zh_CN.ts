@@ -962,27 +962,27 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">主面板</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="162"/>
+        <location filename="../views/setting_window.cpp" line="160"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="162"/>
+        <location filename="../views/setting_window.cpp" line="160"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="162"/>
+        <location filename="../views/setting_window.cpp" line="160"/>
         <source>Graphics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="350"/>
+        <location filename="../views/setting_window.cpp" line="348"/>
         <source>Information</source>
         <translation type="unfinished">信息</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="351"/>
+        <location filename="../views/setting_window.cpp" line="349"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1024,27 +1024,27 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlaneGeneral</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="51"/>
+        <location filename="../views/setting_window.cpp" line="49"/>
         <source>Version</source>
         <translation type="unfinished">版本</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="55"/>
+        <location filename="../views/setting_window.cpp" line="53"/>
         <source>Check Updates</source>
         <translation type="unfinished">检查更新</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="60"/>
+        <location filename="../views/setting_window.cpp" line="58"/>
         <source>Current Version: </source>
         <translation type="unfinished">当前版本： </translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="80"/>
+        <location filename="../views/setting_window.cpp" line="78"/>
         <source>Reset to default settings</source>
         <translation type="unfinished">重置默认设置</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="84"/>
+        <location filename="../views/setting_window.cpp" line="82"/>
         <source>Reset</source>
         <translation type="unfinished">重置</translation>
     </message>
@@ -1052,32 +1052,32 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlaneInterface</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="111"/>
+        <location filename="../views/setting_window.cpp" line="109"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="114"/>
+        <location filename="../views/setting_window.cpp" line="112"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="115"/>
+        <location filename="../views/setting_window.cpp" line="113"/>
         <source>Chinese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="116"/>
+        <location filename="../views/setting_window.cpp" line="114"/>
         <source>Japanese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="119"/>
+        <location filename="../views/setting_window.cpp" line="117"/>
         <source>Render Settings</source>
         <translation type="unfinished">渲染设置</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="123"/>
+        <location filename="../views/setting_window.cpp" line="121"/>
         <source>Resolution</source>
         <translation type="unfinished">渲染分辨率</translation>
     </message>

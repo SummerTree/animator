@@ -5,7 +5,7 @@
 
 namespace unreal
 {
-	class UComboBox final : public QComboBox
+	class UComboBox : public QComboBox
 	{
 		Q_OBJECT
 	public:

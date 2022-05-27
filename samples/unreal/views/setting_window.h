@@ -11,10 +11,12 @@
 #include <QtGui/qevent.h>
 #include <qlistwidget.h>
 #include <qscrollarea.h>
-#include <qcombobox.h>
 #include <qdialog.h>
 #include <qpropertyanimation.h>
 #include <qspinbox.h>
+
+#include "../widgets/ulabel.h"
+#include "../widgets/ucombobox.h"
 
 #include "title_bar.h"
 #include "unreal_behaviour.h"
@@ -27,11 +29,11 @@ namespace unreal
 	public:
 		SettingMainPlaneGeneral(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour);
 
-		std::unique_ptr<QLabel> infoLabel;
-		std::unique_ptr<QToolButton> infoButton;
-		std::unique_ptr<QLabel> versionLabel;
-		std::unique_ptr<QLabel> resetLabel;
-		std::unique_ptr<QToolButton> resetButton;
+		ULabel* infoLabel;
+		QToolButton* infoButton;
+		ULabel* versionLabel;
+		ULabel* resetLabel;
+		QToolButton* resetButton;
 
 	private:
 		std::unique_ptr<QVBoxLayout> layout_;
@@ -45,7 +47,7 @@ namespace unreal
 
 		std::unique_ptr<QLabel> renderLabel;
 		std::unique_ptr<QLabel> resolutionLabel;
-		std::unique_ptr<QComboBox> resolutionCombo;
+		std::unique_ptr<UComboBox> resolutionCombo;
 
 	private:
 		std::unique_ptr<QVBoxLayout> layout_;

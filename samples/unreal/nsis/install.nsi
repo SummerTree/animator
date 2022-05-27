@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Flowers"
-!define PRODUCT_VERSION "1.0.1"
+!define PRODUCT_VERSION "1.0.3"
 !define PRODUCT_PUBLISHER "Ray CG, Inc."
 !define PRODUCT_WEB_SITE "https://github.com/ray-cast/flowers"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\launcher.exe"
@@ -688,12 +688,12 @@ SectionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) ??ɹ??ش??????????"
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) has been uninstalled successfully."
 FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "?ȷʵҪ?ȫ??? $(^Name) ????????????" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you want to remove $(^Name)?" IDYES +2
   Abort
 FunctionEnd
 

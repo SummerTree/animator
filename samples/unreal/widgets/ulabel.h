@@ -5,7 +5,7 @@
 
 namespace unreal
 {
-	class ULabel final : public QLabel
+	class ULabel : public QLabel
 	{
 		Q_OBJECT
 	public:
