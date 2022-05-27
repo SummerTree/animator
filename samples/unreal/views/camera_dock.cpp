@@ -2,11 +2,9 @@
 #include <octoon/io/fstream.h>
 #include <octoon/vmd_loader.h>
 #include <qapplication.h>
-#include <qdrag.h>
 #include <qevent.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-#include <qmimedata.h>
 
 namespace unreal
 {
@@ -45,47 +43,6 @@ namespace unreal
 			QDoubleSpinBox::focusOutEvent(event);
 		}
 	};
-
-	FocalTargetWindow::FocalTargetWindow() noexcept
-	{
-	}
-
-	FocalTargetWindow::~FocalTargetWindow() noexcept
-	{
-	}
-
-	void
-	FocalTargetWindow::mouseMoveEvent(QMouseEvent* event)
-	{
-		if (event->buttons() & Qt::LeftButton)
-		{
-			QPoint length = event->pos() - startPos;
-			if (length.manhattanLength() > QApplication::startDragDistance())
-			{
-				auto mimeData = new QMimeData;
-				mimeData->setData("object/dof", "Automatic");
-
-				auto drag = new QDrag(this);
-				drag->setMimeData(mimeData);
-				drag->setPixmap(QPixmap(":res/icons/target.png"));
-				drag->setHotSpot(QPoint(drag->pixmap().width() / 2, drag->pixmap().height() / 2));
-				drag->exec(Qt::MoveAction);
-
-				emit mouseMoveSignal();
-			}
-		}
-
-		QToolButton::mouseMoveEvent(event);
-	}
-
-	void
-	FocalTargetWindow::mousePressEvent(QMouseEvent* event)
-	{
-		if (event->button() == Qt::LeftButton)
-			startPos = event->pos();
-
-		QToolButton::mousePressEvent(event);
-	}
 
 	CameraDock::CameraDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept
 		: behaviour_(behaviour)
@@ -173,7 +130,7 @@ namespace unreal
 		focusDistanceName_->setText(tr("Target: Empty"));
 		focusDistanceName_->setStyleSheet("color: rgb(200,200,200);");
 
-		focusTargetButton_ = new FocalTargetWindow();
+		focusTargetButton_ = new DraggableButton();
 		focusTargetButton_->setIcon(QIcon(":res/icons/target.png"));
 		focusTargetButton_->setIconSize(QSize(48, 48));
 		focusTargetButton_->setToolTip(u8"拖拽此图标到目标模型可开启自动追焦");

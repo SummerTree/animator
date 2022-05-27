@@ -61,6 +61,8 @@ SOURCE_GROUP("launcher\\module" FILES ${MODULES_LIST})
 SET(WIDGETS_LIST
 	${SOURCE_PATH}/widgets/draggable_list_widget.h
 	${SOURCE_PATH}/widgets/draggable_list_widget.cpp
+	${SOURCE_PATH}/widgets/draggable_button.h
+	${SOURCE_PATH}/widgets/draggable_button.cpp
 	${SOURCE_PATH}/widgets/color_dialog.h
 	${SOURCE_PATH}/widgets/color_dialog.cpp
 	${SOURCE_PATH}/widgets/spoiler.h

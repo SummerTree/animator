@@ -7,7 +7,6 @@
 #include <qradiobutton.h>
 #include <qbuttongroup.h>
 #include <qpushbutton.h>
-#include <qtoolbutton.h>
 #include <qlabel.h>
 #include <optional>
 #include <qlineedit.h>
@@ -15,28 +14,15 @@
 #include <qtimer.h>
 #include <qcheckbox.h>
 #include "unreal_behaviour.h"
-#include "../widgets/spoiler.h"
+
 #include <octoon/game_object.h>
+
+#include "../widgets/spoiler.h"
+#include "../widgets/draggable_button.h"
 
 namespace unreal
 {
-	class FocalTargetWindow final : public QToolButton
-	{
-		Q_OBJECT
-	public:
-		FocalTargetWindow() noexcept;
-		~FocalTargetWindow() noexcept;
 
-		void mouseMoveEvent(QMouseEvent* event) override;
-		void mousePressEvent(QMouseEvent* event) override;
-
-	Q_SIGNALS:
-		void mouseMoveSignal();
-
-	private:
-		QPoint startPos;
-	};
-	
 	class CameraDock final : public QDockWidget
 	{
 		Q_OBJECT
