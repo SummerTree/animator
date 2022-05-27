@@ -692,26 +692,36 @@ $20 (Original cost $40)</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="123"/>
+        <location filename="../views/model_dock.cpp" line="125"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/model_dock.cpp" line="125"/>
+        <source>Are you sure you want to delete this model?</source>
+        <translation type="unfinished">确定要删除此模型吗?</translation>
+    </message>
+    <message>
+        <location filename="../views/model_dock.cpp" line="149"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="123"/>
+        <location filename="../views/model_dock.cpp" line="149"/>
         <source>PMX Files (*.pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="132"/>
-        <location filename="../views/model_dock.cpp" line="133"/>
-        <location filename="../views/model_dock.cpp" line="181"/>
-        <location filename="../views/model_dock.cpp" line="182"/>
+        <location filename="../views/model_dock.cpp" line="158"/>
+        <location filename="../views/model_dock.cpp" line="159"/>
+        <location filename="../views/model_dock.cpp" line="207"/>
+        <location filename="../views/model_dock.cpp" line="208"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="132"/>
-        <location filename="../views/model_dock.cpp" line="181"/>
+        <location filename="../views/model_dock.cpp" line="158"/>
+        <location filename="../views/model_dock.cpp" line="207"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>

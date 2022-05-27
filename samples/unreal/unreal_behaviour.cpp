@@ -74,6 +74,8 @@ namespace unreal
 			entitiesComponent_->importAudio(path);
 		else if (ext == ".mdl")
 			materialComponent_->importMdl(path);
+		else if (ext == ".vmd")
+			motionComponent_->importMotion(path);
 	}
 
 	void
