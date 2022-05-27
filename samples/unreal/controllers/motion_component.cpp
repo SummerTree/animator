@@ -86,7 +86,7 @@ namespace unreal
 			{
 				if ((*it).get<nlohmann::json::string_t>() == uuid)
 				{
-					auto packagePath = std::filesystem::path(this->getModel()->hdriPath).append(uuid);
+					auto packagePath = std::filesystem::path(this->getModel()->motionPath).append(uuid);
 					std::filesystem::remove_all(packagePath);
 
 					auto package = this->packageList_.find(std::string(uuid));
