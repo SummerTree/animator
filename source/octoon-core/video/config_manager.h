@@ -52,6 +52,8 @@ namespace octoon
 		void setMaxBounces(std::uint32_t num_bounces);
 		std::uint32_t getMaxBounces() const;
 
+		std::uint32_t getSampleCounter() const;
+
 		void setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept;
 		void getFramebufferSize(std::uint32_t& w, std::uint32_t& h) const noexcept;
 

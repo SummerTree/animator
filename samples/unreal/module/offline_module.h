@@ -24,6 +24,9 @@ namespace unreal
 
 	public:
 		MutableLiveData<std::uint32_t> bounces;
+
+		MutableLiveData<std::uint32_t> spp;
+		MutableLiveData<std::uint32_t> sppCount;
 	};
 }
 

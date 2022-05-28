@@ -288,6 +288,14 @@ namespace octoon
 		return 0;
 	}
 
+	std::uint32_t
+	ConfigManager::getSampleCounter() const
+	{
+		if (!configs_.empty())
+			return dynamic_cast<MonteCarloRenderer*>(configs_.front().pipeline.get())->getSampleCounter();
+		return 0;
+	}
+
 	void
 	ConfigManager::setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept
 	{

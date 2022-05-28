@@ -178,27 +178,17 @@ namespace octoon
 
 	struct Model final
 	{
-		using mesh_array_t = std::vector<std::shared_ptr<Mesh>>;
-		using bone_array_t = std::vector<std::shared_ptr<Bone>>;
-		using ik_array_t = std::vector<std::shared_ptr<IKAttr> >;
-		using rigidbody_array_t = std::vector<std::shared_ptr<Rigidbody>>;
-		using softbody_array_t = std::vector<std::shared_ptr<Softbody>>;
-		using joint_array_t = std::vector<std::shared_ptr<Joint>>;
-		using material_array_t = std::vector<MaterialPtr>;
-		using texture_array_t = std::vector<std::shared_ptr<Texture>>;
-		using morph_array_t = std::vector<std::shared_ptr<Morph>>;
-
 		std::string _name;
 
-		mesh_array_t meshes;
-		bone_array_t bones;
-		ik_array_t iks;
-		rigidbody_array_t rigidbodies;
-		softbody_array_t softbodies;
-		joint_array_t joints;
-		texture_array_t textures;
-		material_array_t materials;
-		morph_array_t morphs;
+		std::vector<std::shared_ptr<Mesh>> meshes;
+		std::vector<std::shared_ptr<Bone>> bones;
+		std::vector<std::shared_ptr<IKAttr>> iks;
+		std::vector<std::shared_ptr<Rigidbody>> rigidbodies;
+		std::vector<std::shared_ptr<Softbody>> softbodies;
+		std::vector<std::shared_ptr<Joint>> joints;
+		std::vector<std::shared_ptr<Texture>> textures;
+		std::vector<MaterialPtr> materials;
+		std::vector<std::shared_ptr<Morph>> morphs;
 	};
 }
 

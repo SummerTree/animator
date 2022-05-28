@@ -38,6 +38,8 @@ namespace octoon
 		void setMaxBounces(std::uint32_t num_bounces);
 		std::uint32_t getMaxBounces() const;
 
+		std::uint32_t getSampleCounter() const;
+
 		void setOverrideMaterial(const std::shared_ptr<Material>& material) noexcept;
 		const std::shared_ptr<Material>& getOverrideMaterial() const noexcept;
 

@@ -120,6 +120,14 @@ namespace octoon
 		return numBounces_;
 	}
 
+	std::uint32_t
+	Renderer::getSampleCounter() const
+	{
+		if (pathRenderer_)
+			return pathRenderer_->getSampleCounter();
+		return 0;
+	}
+
 	void
 	Renderer::setOverrideMaterial(const std::shared_ptr<Material>& material) noexcept
 	{

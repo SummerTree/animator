@@ -596,10 +596,7 @@ namespace octoon
 		for (auto& it : pmx.materials)
 		{
 			auto material = std::make_shared<MeshStandardMaterial>();
-			if (it.name.length > 0)
-				material->setName(cv.to_bytes(it.name.name));
-			else
-				material->setName("Untitled");
+			material->setName(it.name.length > 0 ? cv.to_bytes(it.name.name) : "Untitled");
 			material->setColor(math::srgb2linear(math::float3(it.Diffuse.x, it.Diffuse.y, it.Diffuse.z)));
 			material->setOpacity(it.Opacity);
 

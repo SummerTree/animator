@@ -31,8 +31,8 @@ namespace octoon
 	{
 	public:
 		GraphicsAttachmentBinding() noexcept;
-		GraphicsAttachmentBinding(std::shared_ptr<GraphicsTexture>&& texture, std::uint32_t mipLevel, std::uint32_t layer) noexcept;
-		GraphicsAttachmentBinding(const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t mipLevel, std::uint32_t layer) noexcept;
+		GraphicsAttachmentBinding(std::shared_ptr<GraphicsTexture>&& texture, std::uint32_t mipLevel = 0, std::uint32_t layer = 0) noexcept;
+		GraphicsAttachmentBinding(const std::shared_ptr<GraphicsTexture>& texture, std::uint32_t mipLevel = 0, std::uint32_t layer = 0) noexcept;
 		~GraphicsAttachmentBinding() noexcept;
 
 		void setBindingLevel(std::uint32_t mipLevel) noexcept;
@@ -41,8 +41,8 @@ namespace octoon
 		void setBindingLayer(std::uint32_t layer) noexcept;
 		std::uint32_t getBindingLayer() const noexcept;
 
-		void setBindingTexture(std::shared_ptr<GraphicsTexture> texture) noexcept;
-		std::shared_ptr<GraphicsTexture> getBindingTexture() const noexcept;
+		void setBindingTexture(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
+		const std::shared_ptr<GraphicsTexture>& getBindingTexture() const noexcept;
 
 	private:
 		std::uint32_t _mipLevel;

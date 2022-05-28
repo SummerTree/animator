@@ -520,19 +520,17 @@ namespace unreal
 
 		if (profile->offlineModule->getEnable() && profile->recordModule->active)
 		{
-			model->sppCount = model->sppCount.getValue() + 1;
-
-			if (model->sppCount >= model->spp)
+			if (profile->offlineModule->sppCount >= profile->offlineModule->spp)
 			{
 				needAnimationEvaluate_ = true;
 
 				this->sendMessage("editor:player:record");
 				this->timer_.update();
+				this->getContext()->profile->offlineModule->sppCount = 0;
 
 				auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));
 				auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
 
-				model->sppCount = 0;
 				model->takeupTime = model->takeupTime.getValue() + this->timer_.frame_time();
 				model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / curFrame);
 			}

@@ -29,9 +29,6 @@ namespace unreal
 		MutableLiveData<bool> finish;
 		MutableLiveData<bool> isPlaying;
 
-		MutableLiveData<std::uint32_t> spp;
-		MutableLiveData<std::uint32_t> sppCount;
-
 		MutableLiveData<std::uint32_t> endFrame;
 		MutableLiveData<std::uint32_t> startFrame;
 

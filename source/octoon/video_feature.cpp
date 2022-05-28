@@ -104,6 +104,12 @@ namespace octoon
 		return Renderer::instance()->getMaxBounces();
 	}
 
+	std::uint32_t
+	VideoFeature::getSampleCounter() const noexcept
+	{
+		return Renderer::instance()->getSampleCounter();
+	}
+
 	void
 	VideoFeature::setOverrideMaterial(const std::shared_ptr<Material>& material) noexcept
 	{

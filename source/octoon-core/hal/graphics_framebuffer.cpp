@@ -108,12 +108,12 @@ namespace octoon
 	}
 
 	void
-	GraphicsAttachmentBinding::setBindingTexture(std::shared_ptr<GraphicsTexture> texture) noexcept
+	GraphicsAttachmentBinding::setBindingTexture(const std::shared_ptr<GraphicsTexture>& texture) noexcept
 	{
 		_texture = texture;
 	}
 
-	std::shared_ptr<GraphicsTexture>
+	const std::shared_ptr<GraphicsTexture>&
 	GraphicsAttachmentBinding::getBindingTexture() const noexcept
 	{
 		return _texture;

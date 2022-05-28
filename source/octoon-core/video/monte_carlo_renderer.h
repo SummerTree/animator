@@ -18,6 +18,8 @@ namespace octoon
 		void setMaxBounces(std::uint32_t num_bounces);
 		std::uint32_t getMaxBounces() const;
 
+		std::uint32_t getSampleCounter() const noexcept;
+
 		void clear(const math::float4& val) override;
 
 		void render(const CompiledScene& scene) override;

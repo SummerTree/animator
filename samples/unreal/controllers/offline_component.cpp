@@ -17,6 +17,8 @@ namespace unreal
 	{
 		this->getModel()->enable += [this](bool enable)
 		{
+			this->getModel()->sppCount = 0;
+
 			for (auto& object : this->getContext()->profile->entitiesModule->objects)
 			{
 				auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
@@ -48,5 +50,17 @@ namespace unreal
 	void
 	OfflineComponent::onDisable() noexcept
 	{
+	}
+
+	void
+	OfflineComponent::onLateUpdate() noexcept
+	{
+		auto& model = this->getModel();
+		if (this->getModel()->enable)
+		{
+			auto videoFeature = this->getFeature<octoon::VideoFeature>();
+			if (videoFeature)
+				model->sppCount = videoFeature->getSampleCounter();
+		}
 	}
 }

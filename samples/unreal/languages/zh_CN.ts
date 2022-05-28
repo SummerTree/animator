@@ -1120,19 +1120,24 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">动画帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 分钟 %4 秒</translation>
     </message>
     <message>
-        <location filename="../views/status_bar.cpp" line="43"/>
+        <location filename="../views/status_bar.cpp" line="46"/>
         <source>Total Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
         <translation>渲染帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 小时 %4 分钟</translation>
     </message>
     <message>
-        <location filename="../views/status_bar.cpp" line="45"/>
+        <location filename="../views/status_bar.cpp" line="48"/>
         <source>Total Frame: %1 | Current Frame: %2 | Estimated Time: %3 Minute %4 Second</source>
         <translation>渲染帧数: %1 | 当前帧数: %2 | 预估剩余时间 : %3 分钟 %4 秒</translation>
     </message>
     <message>
-        <location filename="../views/status_bar.cpp" line="52"/>
+        <location filename="../views/status_bar.cpp" line="56"/>
+        <source>Animation Frame: %1 | Current Frame: %2 | Samples: %3</source>
+        <translation type="unfinished">动画帧数: %1 | 当前帧数: %2 | 采样数: %3</translation>
+    </message>
+    <message>
+        <location filename="../views/status_bar.cpp" line="58"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
-        <translation>动画帧数: %1 | 当前帧数: %2</translation>
+        <translation type="unfinished">动画帧数: %1 | 当前帧数: %2</translation>
     </message>
 </context>
 <context>

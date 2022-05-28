@@ -34,6 +34,7 @@ namespace octoon
 
 		void setMaxBounces(std::uint32_t num_bounces);
 		std::uint32_t getMaxBounces() const;
+		std::uint32_t getSampleCounter() const noexcept;
 
 		void readColorBuffer(math::float3 data[]);
 		void readAlbedoBuffer(math::float3 data[]);

@@ -286,7 +286,7 @@ namespace unreal
 			bouncesSpinbox_->blockSignals(false);
 		};
 
-		profile_->playerModule->spp += [this](std::uint32_t value)
+		profile_->offlineModule->spp += [this](std::uint32_t value)
 		{
 			sppSpinbox_->blockSignals(true);
 			sppSpinbox_->setValue(value);
@@ -375,7 +375,7 @@ namespace unreal
 	void
 	RecordDock::onSppChanged(int value)
 	{
-		profile_->playerModule->spp = value;
+		profile_->offlineModule->spp = value;
 	}
 
 	void
@@ -538,7 +538,7 @@ namespace unreal
 			speed4_->click();
 
 		denoiseButton_->setCheckState(profile_->recordModule->denoise ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
-		sppSpinbox_->setValue(profile_->playerModule->spp);
+		sppSpinbox_->setValue(profile_->offlineModule->spp);
 		crfSpinbox->setValue(profile_->encodeModule->crf);
 		bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
 	}

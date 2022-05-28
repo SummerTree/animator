@@ -1035,17 +1035,22 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::StatusBar</name>
     <message>
-        <location filename="../views/status_bar.cpp" line="43"/>
+        <location filename="../views/status_bar.cpp" line="46"/>
         <source>Total Frame: %1 | Current Frame: %2 | Estimated Time: %3 Hour %4 Minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/status_bar.cpp" line="45"/>
+        <location filename="../views/status_bar.cpp" line="48"/>
         <source>Total Frame: %1 | Current Frame: %2 | Estimated Time: %3 Minute %4 Second</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/status_bar.cpp" line="52"/>
+        <location filename="../views/status_bar.cpp" line="56"/>
+        <source>Animation Frame: %1 | Current Frame: %2 | Samples: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/status_bar.cpp" line="58"/>
         <source>Animation Frame: %1 | Current Frame: %2</source>
         <translation type="unfinished"></translation>
     </message>

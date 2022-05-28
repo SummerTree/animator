@@ -15,6 +15,9 @@ namespace unreal
 		profile->playerModule->timeLength += [this](float time) {
 			this->updateEvent();
 		};
+		profile->offlineModule->sppCount += [this](float time) {
+			this->updateEvent();
+		};
 	}
 
 	StatusBar::~StatusBar()
@@ -49,7 +52,10 @@ namespace unreal
 			auto time = std::max<int>(1, std::round(profile_->playerModule->curTime * 30.0f));
 			auto timeLength = std::max<int>(1, std::round(profile_->playerModule->timeLength * 30.0f));
 
-			this->showMessage(tr("Animation Frame: %1 | Current Frame: %2").arg(timeLength).arg(time));
+			if (profile_->offlineModule->enable)
+				this->showMessage(tr("Animation Frame: %1 | Current Frame: %2 | Samples: %3").arg(timeLength).arg(time).arg(profile_->offlineModule->sppCount));
+			else
+				this->showMessage(tr("Animation Frame: %1 | Current Frame: %2").arg(timeLength).arg(time));
 		}
 	}
 }
