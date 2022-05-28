@@ -19,6 +19,12 @@ nvcloth/1.1.6@xiahan/stable
 opencl-headers/2022.01.04
 opencl-icd-loader/2022.01.04
 mdl-sdk/2021.01.02@xiahan/stable
+pybind11/2.9.1
+cpython/3.8.12
+zlib/1.2.12
+openssl/1.1.1n
+libffi/3.4.2
+sqlite3/3.38.1
 
 [options]
 qt:shared=True
@@ -27,6 +33,11 @@ qt:qtshadertools=True
 qt:qtdeclarative=True
 qt:qtsvg=True
 spdlog:shared=True
+zlib:shared=False
+cpython:shared=True
+openssl:shared=True
+libffi:shared=True
+sqlite3:shared=True
 
 [imports]
 bin, *.dll -> ../lib/binaries/win86_Release @ excludes=Qt6*.dll

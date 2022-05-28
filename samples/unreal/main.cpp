@@ -1,25 +1,29 @@
 #include <memory>
 
-#include <qapplication.h>
-#include <qqmlcontext.h>
-#include <qquickview.h>
-#include <qqmlapplicationengine.h>
-#include <qtranslator.h>
+#include <QDir>
 #include <QFile>
 #include <QMessageBox>
-#include <QDir>
+#include <qapplication.h>
+#include <qqmlapplicationengine.h>
+#include <qqmlcontext.h>
+#include <qquickview.h>
+#include <qtranslator.h>
 
 #include "bindings/application.h"
 
 #include "views/main_dock.h"
 #include "views/splash_screen.h"
 
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/daily_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/spdlog.h"
 
-std::shared_ptr<spdlog::logger> create_logger()
+#include <pybind11/embed.h>
+namespace py = pybind11;
+
+std::shared_ptr<spdlog::logger>
+create_logger()
 {
 	try
 	{
@@ -43,17 +47,26 @@ std::shared_ptr<spdlog::logger> create_logger()
 	}
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char* argv[])
 {
 	auto logger = create_logger();
 	spdlog::set_default_logger(logger);
 	spdlog::info("Application started");
 
+	py::scoped_interpreter guard{};
+
+	py::exec(R"(
+        kwargs = dict(name="World", number=42)
+        message = "Hello, {name}! The answer is {number}".format(**kwargs)
+        print(message)
+    )");
+
 #ifdef _WINDOWS_
 	::SetConsoleOutputCP(CP_UTF8);
 #endif
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 	qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1.0");
 	qputenv("QT_ENABLE_HIGHDPI_SCALING", "0");
 	QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
@@ -96,7 +109,7 @@ int main(int argc, char *argv[])
 		splash.reset();
 
 		app.exec();
-}
+	}
 	else
 	{
 		qWarning("Can't open the style sheet file.");
