@@ -10,12 +10,6 @@ conan create conanfile.py mdl-sdk/2021.01.02@xiahan/stable -s build_type=Debug
 conan create conanfile.py mdl-sdk/2021.01.02@xiahan/stable -s build_type=Release
 cd ../../
 
-git clone https://github.com/octoon/conan-nvcloth.git
-cd conan-nvcloth/1.1.6
-conan create conanfile.py nvcloth/1.1.6@xiahan/stable -s build_type=Debug
-conan create conanfile.py nvcloth/1.1.6@xiahan/stable -s build_type=Release
-cd ../../
-
 conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Debug -s compiler.runtime=MDd --build missing
 conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Release -s compiler.runtime=MD --build missing
 
