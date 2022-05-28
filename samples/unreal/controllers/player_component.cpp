@@ -274,7 +274,7 @@ namespace unreal
 	PlayerComponent::sample(float delta) noexcept
 	{
 		auto& model = this->getModel();
-		model->curTime = std::max(0.0f, model->curTime + delta);
+		model->curTime = std::clamp<float>(model->curTime + delta, 0.0f, model->timeLength);
 
 		auto& context = this->getContext();
 

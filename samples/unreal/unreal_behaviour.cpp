@@ -244,9 +244,6 @@ namespace unreal
 	void
 	UnrealBehaviour::onActivate() noexcept(false)
 	{
-		if (!profile_)
-			profile_ = UnrealProfile::load("sys:config/config.conf");
-
 		if (!std::filesystem::exists(profile_->resourceModule->rootPath))
 			std::filesystem::create_directory(profile_->resourceModule->rootPath);
 
