@@ -24,10 +24,17 @@ namespace unreal
 		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 		this->setFeatures(DockWidgetFeature::DockWidgetMovable | DockWidgetFeature::DockWidgetFloatable);
 
+		openButton_ = new QToolButton;
+		openButton_->setObjectName("import");
+		openButton_->setText(tr("Open"));
+		openButton_->setToolTip(tr("Open Project(.pmm, .apg)"));
+		openButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		openButton_->installEventFilter(this);
+
 		importButton_ = new QToolButton;
 		importButton_->setObjectName("import");
 		importButton_->setText(tr("Import"));
-		importButton_->setToolTip(tr("Import Resource File(.pmm, .mdl)"));
+		importButton_->setToolTip(tr("Import Resource File(.pmm, .apg)"));
 		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		importButton_->installEventFilter(this);
 
@@ -69,6 +76,7 @@ namespace unreal
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
+		layout->addWidget(openButton_, 0, Qt::AlignCenter);
 		layout->addWidget(importButton_, 0, Qt::AlignCenter);
 		//layout->addWidget(saveButton_, 0, Qt::AlignCenter);
 		layout->addWidget(gpuButton_, 0, Qt::AlignCenter);
@@ -104,6 +112,7 @@ namespace unreal
 			this->update();
 		};
 
+		this->connect(openButton_, SIGNAL(clicked()), this, SLOT(openEvent()));
 		this->connect(importButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
 		this->connect(saveButton_, SIGNAL(clicked()), this, SLOT(saveEvent()));
 		this->connect(audioButton_, SIGNAL(clicked()), this, SLOT(audioEvent()));
@@ -119,9 +128,9 @@ namespace unreal
 	}
 
 	void
-	ToolDock::importEvent() noexcept
+	ToolDock::openEvent() noexcept
 	{
-		spdlog::debug("Entered importEvent");
+		spdlog::debug("Entered openEvent");
 		try
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying)
@@ -129,7 +138,7 @@ namespace unreal
 				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 				if (behaviour)
 				{
-					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)"));
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.pmm *.agp);; PMM Files (*.pmm);; APG Files (*.apg)"));
 					if (!fileName.isEmpty())
 					{
 #if 1
@@ -178,6 +187,36 @@ namespace unreal
 			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
 			QMessageBox::critical(this, tr("Error"), tr("Failed to open project: ") + QString::fromStdString(e.what()));
 		}
+		spdlog::debug("Exited openEvent");
+	}
+
+	void
+	ToolDock::importEvent() noexcept
+	{
+		spdlog::debug("Entered importEvent");
+		try
+		{
+			if (behaviour_ && !profile_->playerModule->isPlaying)
+			{
+				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
+				if (behaviour)
+				{
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmx *.abc *.mdl *.vmd);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)"));
+					if (!fileName.isEmpty())
+					{
+						behaviour->load(fileName.toUtf8().data());
+					}
+				}
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QCoreApplication::processEvents();
+
+			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
+			QMessageBox::critical(this, tr("Error"), tr("Failed to import resource: ") + QString::fromStdString(e.what()));
+		}
+
 		spdlog::debug("Exited importEvent");
 	}
 
