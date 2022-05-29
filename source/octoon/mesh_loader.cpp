@@ -317,14 +317,12 @@ namespace octoon
 			materials.push_back(it);
 	}
 
-	void createMeshes(const Model& model, GameObjectPtr& meshes, const GameObjects& bones, std::string_view path) noexcept(false)
+	void createMeshes(const Model& model, GameObjectPtr& object, const GameObjects& bones, std::string_view path) noexcept(false)
 	{
 		Materials materials;
 		createMaterials(model, materials);
 
-		auto mesh = model.meshes[0];
-		auto object = GameObject::create(mesh->getName());
-		object->addComponent<MeshFilterComponent>(mesh);
+		object->addComponent<MeshFilterComponent>(model.meshes[0]);
 
 		if (bones.empty())
 		{
@@ -342,8 +340,6 @@ namespace octoon
 
 			object->addComponent(smr);
 		}
-
-		meshes = object;
 	}
 
 	std::shared_ptr<Geometry>
@@ -369,7 +365,7 @@ namespace octoon
 
 		if (!model.meshes.empty())
 		{
-			GameObjectPtr actor;
+			GameObjectPtr actor = GameObject::create(filepath);
 
 			GameObjects bones;
 

@@ -271,6 +271,7 @@ namespace unreal
 										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
 								}
 
+								animator->setName(filepath);
 								animator->sample();
 
 								if (smr)
