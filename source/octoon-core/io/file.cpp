@@ -405,13 +405,13 @@ namespace octoon
 			return nullptr;
 		}
 
-		_Iobuf* fopen(const char* filepath, ios_base::openmode mode) noexcept
+		_Iobuf* fopen(const wchar_t* filepath, ios_base::openmode mode) noexcept
 		{
-		#if defined(__WINDOWS__)
+#if defined(__WINDOWS__)
 			int flags = O_BINARY;
-		#else
+#else
 			int flags = 0;
-		#endif
+#endif
 
 			if (mode & ios_base::in && mode & ios_base::out)
 				flags |= O_RDWR | O_CREAT;
@@ -425,49 +425,50 @@ namespace octoon
 
 			int access = io::PP_DEFAULT;
 
-		#if defined(__WINDOWS__)
+#if defined(__WINDOWS__)
 			access |= io::PP_IRUSR | io::PP_IWUSR;
-		#endif
+#endif
 
-			std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(filepath);
-			return fmalloc(io::open(u16_conv.c_str(), flags, access));
-		}
-
-		_Iobuf* fopen(const char* filename, ios_base::open_mode mode) noexcept
-		{
-			return fopen(filename, (ios_base::openmode)mode);
-		}
-
-		_Iobuf* fopen(const wchar_t* filename, ios_base::openmode mode) noexcept
-		{
-		#if defined(__WINDOWS__)
-			int flags = O_BINARY;
-		#else
-			int flags = 0;
-		#endif
-
-			if (mode & ios_base::in && mode & ios_base::out)
-				flags |= O_RDWR | O_CREAT;
-			else if (mode & ios_base::in)
-				flags |= O_RDONLY;
-			else if (mode & ios_base::out)
-				flags |= O_WRONLY | O_TRUNC;
-
-			if (mode & ios_base::app)     flags |= O_APPEND;
-			if (mode & ios_base::trunc)   flags |= O_TRUNC;
-
-			int access = io::PP_DEFAULT;
-
-		#if defined(__WINDOWS__)
-			access |= io::PP_IRUSR | io::PP_IWUSR;
-		#endif
-
-			return fmalloc(io::open(filename, flags, access));
+			return fmalloc(io::open(filepath, flags, access));
 		}
 
 		_Iobuf* fopen(const wchar_t* filename, ios_base::open_mode mode) noexcept
 		{
-			return fopen(filename, (ios_base::openmode)mode);
+#if defined(__WINDOWS__)
+			int flags = O_BINARY;
+#else
+			int flags = 0;
+#endif
+
+			if (mode & ios_base::in && mode & ios_base::out)
+				flags |= O_RDWR | O_CREAT;
+			else if (mode & ios_base::in)
+				flags |= O_RDONLY;
+			else if (mode & ios_base::out)
+				flags |= O_WRONLY | O_TRUNC;
+
+			if (mode & ios_base::app)     flags |= O_APPEND;
+			if (mode & ios_base::trunc)   flags |= O_TRUNC;
+
+			int access = io::PP_DEFAULT;
+
+#if defined(__WINDOWS__)
+			access |= io::PP_IRUSR | io::PP_IWUSR;
+#endif
+
+			return fmalloc(io::open(filename, flags, access));
+		}
+
+		_Iobuf* fopen(const char* filepath, ios_base::openmode mode) noexcept
+		{
+			std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(filepath);
+			return fopen(u16_conv.c_str(), mode);
+		}
+
+		_Iobuf* fopen(const char* filepath, ios_base::open_mode mode) noexcept
+		{
+			std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(filepath);
+			return fopen(u16_conv.c_str(), mode);
 		}
 
 		_Iobuf* fopen(const std::string& filename, ios_base::openmode mode) noexcept
