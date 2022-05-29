@@ -85,7 +85,7 @@ namespace unreal
 		{
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setObjectName("preview");
-			imageLabel->setFixedSize(QSize(100, 100));
+			imageLabel->setFixedSize(QSize(155, 155));
 
 			QLabel* nameLabel = new QLabel();
 			nameLabel->setObjectName("name");
