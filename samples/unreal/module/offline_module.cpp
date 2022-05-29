@@ -14,6 +14,7 @@ namespace unreal
 	void
 	OfflineModule::reset() noexcept
 	{
+		this->showSpp = false;
 		this->bounces = 5;
 		this->spp = 150;
 		this->sppCount = 0;

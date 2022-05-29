@@ -23,6 +23,7 @@ namespace unreal
 		OfflineModule& operator=(const OfflineModule&) = delete;
 
 	public:
+		MutableLiveData<bool> showSpp;
 		MutableLiveData<std::uint32_t> bounces;
 
 		MutableLiveData<std::uint32_t> spp;
