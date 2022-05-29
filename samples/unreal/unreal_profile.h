@@ -15,7 +15,6 @@
 #include "module/main_light_module.h"
 #include "module/environment_module.h"
 #include "module/camera_module.h"
-#include "module/client_module.h"
 #include "module/resource_module.h"
 #include "module/selector_module.h"
 #include "module/grid_module.h"
@@ -48,7 +47,6 @@ namespace unreal
 		std::shared_ptr<PlayerModule> playerModule;
 		std::shared_ptr<OfflineModule> offlineModule;
 		std::shared_ptr<MarkModule> markModule;
-		std::shared_ptr<ClientModule> clientModule;
 		std::shared_ptr<MainLightModule> mainLightModule;
 		std::shared_ptr<EnvironmentModule> environmentLightModule;
 		std::shared_ptr<CameraModule> cameraModule;

@@ -16,7 +16,6 @@ namespace unreal
 		, markModule(std::make_shared<MarkModule>())
 		, mainLightModule(std::make_shared<MainLightModule>())
 		, environmentLightModule(std::make_shared<EnvironmentModule>())
-		, clientModule(std::make_shared<ClientModule>())
 		, resourceModule(std::make_shared<ResourceModule>())
 		, selectorModule(std::make_shared<SelectorModule>())
 		, gridModule(std::make_shared<GridModule>())
@@ -48,7 +47,6 @@ namespace unreal
 		this->mainLightModule->disconnect();
 		this->environmentLightModule->disconnect();
 		this->cameraModule->disconnect();
-		this->clientModule->disconnect();
 		this->resourceModule->disconnect();
 		this->selectorModule->disconnect();
 		this->gridModule->disconnect();
@@ -83,8 +81,6 @@ namespace unreal
 				this->mainLightModule->load(json["mainLight"]);
 			if (json["environmentLight"].is_object())
 				this->environmentLightModule->load(json["environmentLight"]);
-			if (json["client"].is_object())
-				this->clientModule->load(json["client"]);
 			if (json["resource"].is_object())
 				this->resourceModule->load(json["resource"]);
 			if (json["drag"].is_object())
@@ -114,7 +110,6 @@ namespace unreal
 			this->markModule->save(json["mark"]);
 			this->mainLightModule->save(json["mainLight"]);
 			this->environmentLightModule->save(json["environmentLight"]);
-			this->clientModule->save(json["client"]);
 			this->resourceModule->save(json["resource"]);
 			this->selectorModule->save(json["drag"]);
 			this->gridModule->save(json["grid"]);
