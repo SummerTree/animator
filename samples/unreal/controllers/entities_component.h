@@ -28,11 +28,6 @@ namespace unreal
 
 		void clearHDRi() noexcept;
 
-		bool importAudio(std::string_view path) noexcept;
-		void setVolume(float volume) noexcept;
-		float getVolume() const noexcept;
-		void clearAudio() noexcept;
-
 		virtual const std::type_info& type_info() const noexcept
 		{
 			return typeid(EntitiesComponent);

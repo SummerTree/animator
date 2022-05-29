@@ -42,6 +42,8 @@ namespace unreal
 			this->width = reader["width"].get<nlohmann::json::number_unsigned_t>();
 		if (reader["height"].is_number_unsigned())
 			this->height = reader["height"].get<nlohmann::json::number_unsigned_t>();
+		if (reader["denoise"].is_boolean())
+			this->denoise = reader["denoise"].get<nlohmann::json::boolean_t>();
 	}
 
 	void 
@@ -49,6 +51,7 @@ namespace unreal
 	{
 		reader["width"] = this->width.getValue();
 		reader["height"] = this->height.getValue();
+		reader["denoise"] = this->denoise.getValue();
 	}
 
 	void

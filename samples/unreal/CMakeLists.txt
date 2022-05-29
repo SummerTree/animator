@@ -144,6 +144,8 @@ SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/offline_component.cpp
 	${SOURCE_PATH}/controllers/record_component.h
 	${SOURCE_PATH}/controllers/record_component.cpp
+	${SOURCE_PATH}/controllers/sound_component.h
+	${SOURCE_PATH}/controllers/sound_component.cpp
 	${SOURCE_PATH}/controllers/h264_component.h
 	${SOURCE_PATH}/controllers/h264_component.cpp
 	${SOURCE_PATH}/controllers/h265_component.h

@@ -67,6 +67,10 @@ namespace unreal
 			this->repaint();
 		};
 
+		profile->soundModule->volume += [this](float value) {
+			volumeSlider_.setValue(value * 100.0f);
+		};
+
 		this->connect(&resetButton, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		this->connect(&playButton, SIGNAL(clicked()), this, SLOT(playEvent()));
 		this->connect(&leftButton, SIGNAL(clicked()), this, SLOT(leftEvent()));
@@ -260,25 +264,17 @@ namespace unreal
 	{
 		if (!volumeEnable_)
 		{
-			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-			if (behaviour->isOpen())
-			{
-				behaviour->setVolume(1.0f);
-				volumeButton.setIcon(volumeOnIcon_);
-				volumeButton.setToolTip(tr("Volume"));
-				volumeEnable_ = true;
-			}
+			this->profile_->soundModule->volume = 1.0f;
+			volumeButton.setIcon(volumeOnIcon_);
+			volumeButton.setToolTip(tr("Volume"));
+			volumeEnable_ = true;
 		}
 		else
 		{
-			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-			if (behaviour->isOpen())
-			{
-				behaviour->setVolume(0.0f);
-				volumeButton.setIcon(volumeOffIcon_);
-				volumeButton.setToolTip(tr("VolumeOff"));
-				volumeEnable_ = false;
-			}
+			this->profile_->soundModule->volume = 0.0f;
+			volumeButton.setIcon(volumeOnIcon_);
+			volumeButton.setToolTip(tr("Volume"));
+			volumeEnable_ = true;
 		}
 	}
 	
@@ -310,7 +306,8 @@ namespace unreal
 		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 		if (behaviour->isOpen())
 		{
-			behaviour->setVolume(value/100.0f);
+			this->profile_->soundModule->volume = value / 100.0f;
+
 			if (value == 0 && volumeEnable_)
 			{
 				volumeButton.setIcon(volumeOffIcon_);

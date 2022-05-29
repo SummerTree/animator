@@ -19,6 +19,7 @@
 #include "controllers/mark_component.h"
 #include "controllers/material_component.h"
 #include "controllers/model_component.h"
+#include "controllers/sound_component.h"
 #include "controllers/motion_component.h"
 #include "controllers/offline_component.h"
 #include "controllers/player_component.h"
@@ -50,11 +51,6 @@ namespace unreal
 
 		bool startRecord(std::string_view path) noexcept;
 		void stopRecord() noexcept;
-
-		void loadAudio(std::string_view filepath) noexcept;
-		void clearAudio() noexcept;
-		void setVolume(float volume) noexcept;
-		float getVolume() const noexcept;
 
 		void renderPicture(std::string_view path) noexcept(false);
 
@@ -98,6 +94,7 @@ namespace unreal
 		std::unique_ptr<MainLightComponent> mainLightComponent_;
 		std::unique_ptr<EnvironmentComponent> environmentComponent_;
 		std::unique_ptr<CameraComponent> cameraComponent_;
+		std::unique_ptr<SoundComponent> soundComponent_;
 		std::unique_ptr<PlayerComponent> playerComponent_;
 		std::unique_ptr<H264Component> h264Component_;
 		std::unique_ptr<H265Component> h265Component_;

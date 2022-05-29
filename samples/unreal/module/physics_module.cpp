@@ -25,6 +25,8 @@ namespace unreal
 	void 
 	PhysicsModule::load(octoon::runtime::json& reader) noexcept
 	{
+		if (reader["gravity"].is_array())
+			this->gravity = octoon::math::float3(reader["gravity"][0], reader["gravity"][1], reader["gravity"][2]);
 		if (reader["gravityScale"].is_number_float())
 			this->gravityScale = reader["gravityScale"].get<nlohmann::json::number_float_t>();
 		if (reader["playSolverIterationCounts"].is_number_unsigned())
@@ -36,13 +38,13 @@ namespace unreal
 	}
 
 	void 
-	PhysicsModule::save(octoon::runtime::json& reader) noexcept
+	PhysicsModule::save(octoon::runtime::json& writer) noexcept
 	{
-		reader["gravity"] = { this->gravity.getValue()[0], this->gravity.getValue()[1], this->gravity.getValue()[2] };
-		reader["gravityScale"] = this->gravityScale.getValue();
-		reader["playSolverIterationCounts"] = this->playSolverIterationCounts.getValue();
-		reader["recordSolverIterationCounts"] = this->recordSolverIterationCounts.getValue();
-		reader["previewSolverIterationCounts"] = this->previewSolverIterationCounts.getValue();
+		writer["gravity"] = { this->gravity.getValue()[0], this->gravity.getValue()[1], this->gravity.getValue()[2] };
+		writer["gravityScale"] = this->gravityScale.getValue();
+		writer["playSolverIterationCounts"] = this->playSolverIterationCounts.getValue();
+		writer["recordSolverIterationCounts"] = this->recordSolverIterationCounts.getValue();
+		writer["previewSolverIterationCounts"] = this->previewSolverIterationCounts.getValue();
 	}
 
 	void

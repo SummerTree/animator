@@ -107,11 +107,7 @@ namespace unreal
 			}
 		}
 
-		if (pmm.is_wave_enabled)
-			this->importAudio(pmm.wave_path);
-		else
-			this->clearAudio();
-
+		context->profile->soundModule->filepath = pmm.wave_path;
 		context->profile->mainLightModule->rotation = octoon::math::degrees(octoon::math::eulerAngles(rotation));
 		context->profile->entitiesModule->camera = this->createCamera(pmm);
 		context->profile->entitiesModule->objects = objects;
@@ -140,52 +136,6 @@ namespace unreal
 	EntitiesComponent::exportModel(std::string_view path) noexcept
 	{
 		return false;
-	}
-
-	bool
-	EntitiesComponent::importAudio(std::string_view path) noexcept
-	{
-		if (!path.empty())
-		{
-			auto audio = octoon::GameObject::create();
-			audio->setName(path);
-			audio->addComponent<octoon::AudioSourceComponent>()->setAudioReader(octoon::AudioLoader::load(path));
-
-			this->getContext()->profile->entitiesModule->sound = audio;
-			return true;
-		}
-
-		return false;
-	}
-
-	void
-	EntitiesComponent::setVolume(float volume) noexcept
-	{
-		auto sound = this->getContext()->profile->entitiesModule->sound.getValue();
-		if (sound)
-		{
-			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
-			audioSource->setVolume(volume);
-		}
-	}
-
-	float
-	EntitiesComponent::getVolume() const noexcept
-	{
-		auto sound = this->getContext()->profile->entitiesModule->sound.getValue();
-		if (sound)
-		{
-			auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
-			return audioSource->getVolume();
-		}
-
-		return 0;
-	}
-
-	void
-	EntitiesComponent::clearAudio() noexcept
-	{
-		this->getContext()->profile->entitiesModule->sound = nullptr;
 	}
 
 	void 

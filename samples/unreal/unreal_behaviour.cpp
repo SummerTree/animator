@@ -48,8 +48,8 @@ namespace unreal
 	UnrealBehaviour::close() noexcept
 	{
 		this->cameraComponent_->removeAnimation();
-		this->entitiesComponent_->clearAudio();
 
+		this->profile_->soundModule->reset();
 		this->profile_->cameraModule->reset();
 		this->profile_->entitiesModule->objects.clear();
 		this->profile_->mainLightModule->reset();
@@ -80,7 +80,7 @@ namespace unreal
 		else if (ext == ".abc")
 			entitiesComponent_->importAbc(path);
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
-			entitiesComponent_->importAudio(path);
+			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")
 			materialComponent_->importMdl(path);
 		else if (ext == ".vmd")
@@ -126,30 +126,6 @@ namespace unreal
 	{
 		this->playerComponent_->pause();
 		this->recordComponent_->stopRecord();
-	}
-
-	void
-	UnrealBehaviour::loadAudio(std::string_view filepath) noexcept
-	{
-		entitiesComponent_->importAudio(filepath);
-	}
-
-	void
-	UnrealBehaviour::setVolume(float volume) noexcept
-	{
-		entitiesComponent_->setVolume(volume);
-	}
-
-	float
-	UnrealBehaviour::getVolume() const noexcept
-	{
-		return entitiesComponent_->getVolume();
-	}
-
-	void
-	UnrealBehaviour::clearAudio() noexcept
-	{
-		entitiesComponent_->clearAudio();
 	}
 
 	void
@@ -264,6 +240,7 @@ namespace unreal
 		cameraComponent_ = std::make_unique<CameraComponent>();
 		offlineComponent_ = std::make_unique<OfflineComponent>();
 		playerComponent_ = std::make_unique<PlayerComponent>();
+		soundComponent_ = std::make_unique<SoundComponent>();
 		h264Component_ = std::make_unique<H264Component>();
 		h265Component_ = std::make_unique<H265Component>();
 		frameSequenceComponent_ = std::make_unique<FrameSequenceComponent>();
@@ -282,6 +259,7 @@ namespace unreal
 		mainLightComponent_->init(context_, profile_->mainLightModule);
 		environmentComponent_->init(context_, profile_->environmentLightModule);
 		cameraComponent_->init(context_, profile_->cameraModule);
+		soundComponent_->init(context_, profile_->soundModule);
 		offlineComponent_->init(context_, profile_->offlineModule);
 		playerComponent_->init(context_, profile_->playerModule);
 		h264Component_->init(context_, profile_->encodeModule);
@@ -301,6 +279,7 @@ namespace unreal
 		this->addComponent(mainLightComponent_.get());
 		this->addComponent(environmentComponent_.get());
 		this->addComponent(cameraComponent_.get());
+		this->addComponent(soundComponent_.get());
 		this->addComponent(offlineComponent_.get());
 		this->addComponent(playerComponent_.get());
 		this->addComponent(markComponent_.get());
