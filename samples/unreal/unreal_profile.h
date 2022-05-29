@@ -30,15 +30,16 @@ namespace unreal
 		virtual ~UnrealProfile() noexcept;
 
 		void disconnect() noexcept;
-
-		static std::unique_ptr<UnrealProfile> load(std::string_view path) noexcept(false);
-		static void save(std::string_view path, const UnrealProfile& profile) noexcept(false);
+		
+		void load(std::string_view path) noexcept(false);
+		void save(std::string_view path) noexcept(false);
 
 	private:
 		UnrealProfile(const UnrealProfile&) = delete;
 		UnrealProfile& operator=(const UnrealProfile&) = delete;
 
 	public:
+		std::string path;
 		std::shared_ptr<RecordModule> recordModule;
 		std::shared_ptr<SoundModule> soundModule;
 		std::shared_ptr<EntitiesModule> entitiesModule;

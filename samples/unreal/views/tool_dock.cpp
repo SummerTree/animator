@@ -77,8 +77,8 @@ namespace unreal
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
 		layout->addWidget(openButton_, 0, Qt::AlignCenter);
+		layout->addWidget(saveButton_, 0, Qt::AlignCenter);
 		layout->addWidget(importButton_, 0, Qt::AlignCenter);
-		//layout->addWidget(saveButton_, 0, Qt::AlignCenter);
 		layout->addWidget(gpuButton_, 0, Qt::AlignCenter);
 		layout->addWidget(shotButton_, 0, Qt::AlignCenter);
 		layout->addWidget(audioButton_, 0, Qt::AlignCenter);
@@ -229,12 +229,11 @@ namespace unreal
 
 			if (behaviour_)
 			{
-				QString fileName = QFileDialog::getSaveFileName(this, tr("Export Project"), "", tr("APG Files (*.agp)"));
+				QString fileName = QFileDialog::getSaveFileName(this, tr("Export Project"), tr("New Project"), tr("APG Files (*.agp)"));
 				if (!fileName.isEmpty())
 				{
 					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-					if (!behaviour->save(fileName.toUtf8().data()))
-						QMessageBox::warning(this, tr("Error"), tr("Faield to export project"));
+					behaviour->save(fileName.toUtf8().data());
 				}
 			}
 
@@ -251,7 +250,8 @@ namespace unreal
 	{
 		spdlog::debug("Entered audioEvent");
 
-		auto audioSignal = [this](bool enable) -> bool {
+		auto audioSignal = [this](bool enable) -> bool
+		{
 			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
 				try

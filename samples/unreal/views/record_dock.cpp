@@ -482,7 +482,7 @@ namespace unreal
 
 				QString fileName;
 				if (profile_->encodeModule->encodeMode == EncodeMode::H264 || profile_->encodeModule->encodeMode == EncodeMode::H265)
-					fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), "", tr("MP4 Files (*.mp4)"));
+					fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), tr("New Video"), tr("MP4 Files (*.mp4)"));
 				else if (profile_->encodeModule->encodeMode == EncodeMode::Frame)
 					fileName = QFileDialog::getSaveFileName(this, tr("Save Image Sequence"), "", tr("PNG Files (*.png)"));
 				else

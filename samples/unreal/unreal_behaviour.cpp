@@ -29,6 +29,11 @@ namespace unreal
 			playerComponent_->reset();
 			return true;
 		}
+		else if (ext == ".agp")
+		{
+			profile_->load(path);
+			return true;
+		}
 		else if (ext == ".scene")
 		{
 			entitiesComponent_->importAss(path);
@@ -38,10 +43,10 @@ namespace unreal
 		return false;
 	}
 
-	bool
+	void
 	UnrealBehaviour::save(std::string_view path) noexcept(false)
 	{
-		return false;
+		profile_->save(path);
 	}
 
 	void
@@ -55,6 +60,10 @@ namespace unreal
 		this->profile_->mainLightModule->reset();
 		this->profile_->environmentLightModule->reset();
 		this->profile_->selectorModule->reset();
+		this->profile_->encodeModule->reset();
+		this->profile_->offlineModule->reset();
+		this->profile_->physicsModule->reset();
+		this->profile_->recordModule->reset();
 	}
 
 	bool

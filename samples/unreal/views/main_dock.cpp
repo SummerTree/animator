@@ -11,7 +11,7 @@ namespace unreal
 {
 	MainDock::MainDock(SplashScreen* splash) noexcept
 		: init_flag(false)
-		, profile_(UnrealProfile::load(QDir::homePath().toStdString() + "/.animator/config.json"))
+		, profile_(std::make_unique<UnrealProfile>())
 		, gameApp_(std::make_shared<octoon::GameApp>())
 		, behaviour_(octoon::GameObject::create())
 		, splash_(splash)
@@ -93,8 +93,6 @@ namespace unreal
 	MainDock::~MainDock() noexcept
 	{
 		timer.stop();
-
-		UnrealProfile::save(QDir::homePath().toStdString() + "/.animator/config.json", *profile_);
 
 		this->saveLayout();
 		this->removeToolBar(toplevelDock_.get());

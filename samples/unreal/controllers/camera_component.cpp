@@ -173,6 +173,23 @@ namespace unreal
 	}
 
 	void
+	CameraComponent::onFixedUpdate() noexcept
+	{
+		auto& model = this->getModel();
+
+		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
+		if (camera)
+		{
+			auto transformComponent = camera->getComponent<octoon::TransformComponent>();
+			if (transformComponent)
+			{
+				model->translate = camera->getComponent<octoon::TransformComponent>()->getTranslate();
+				model->rotation = camera->getComponent<octoon::TransformComponent>()->getEulerAngles();
+			}
+		}
+	}
+
+	void
 	CameraComponent::update() noexcept
 	{
 		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();

@@ -408,21 +408,21 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="205"/>
-        <location filename="../views/main_dock.cpp" line="233"/>
-        <location filename="../views/main_dock.cpp" line="261"/>
-        <location filename="../views/main_dock.cpp" line="289"/>
-        <location filename="../views/main_dock.cpp" line="316"/>
-        <location filename="../views/main_dock.cpp" line="343"/>
-        <location filename="../views/main_dock.cpp" line="370"/>
-        <location filename="../views/main_dock.cpp" line="397"/>
-        <location filename="../views/main_dock.cpp" line="456"/>
-        <location filename="../views/main_dock.cpp" line="483"/>
+        <location filename="../views/main_dock.cpp" line="203"/>
+        <location filename="../views/main_dock.cpp" line="231"/>
+        <location filename="../views/main_dock.cpp" line="259"/>
+        <location filename="../views/main_dock.cpp" line="287"/>
+        <location filename="../views/main_dock.cpp" line="314"/>
+        <location filename="../views/main_dock.cpp" line="341"/>
+        <location filename="../views/main_dock.cpp" line="368"/>
+        <location filename="../views/main_dock.cpp" line="395"/>
+        <location filename="../views/main_dock.cpp" line="454"/>
+        <location filename="../views/main_dock.cpp" line="481"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="457"/>
+        <location filename="../views/main_dock.cpp" line="455"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -880,6 +880,11 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/record_dock.cpp" line="485"/>
+        <source>New Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/record_dock.cpp" line="487"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
@@ -1259,8 +1264,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/tool_dock.cpp" line="188"/>
         <location filename="../views/tool_dock.cpp" line="217"/>
-        <location filename="../views/tool_dock.cpp" line="237"/>
-        <location filename="../views/tool_dock.cpp" line="245"/>
+        <location filename="../views/tool_dock.cpp" line="244"/>
         <location filename="../views/tool_dock.cpp" line="277"/>
         <location filename="../views/tool_dock.cpp" line="324"/>
         <location filename="../views/tool_dock.cpp" line="350"/>
@@ -1294,6 +1298,11 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/tool_dock.cpp" line="232"/>
+        <source>New Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/tool_dock.cpp" line="261"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
@@ -1306,11 +1315,6 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/tool_dock.cpp" line="312"/>
         <source>PNG Files (*.png)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="237"/>
-        <source>Faield to export project</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

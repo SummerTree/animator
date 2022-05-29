@@ -40,7 +40,7 @@ namespace unreal
 		const std::shared_ptr<UnrealProfile>& getProfile() const noexcept;
 
 		bool open(std::string_view filepath) noexcept(false);
-		bool save(std::string_view path) noexcept(false);
+		void save(std::string_view path) noexcept(false);
 		void close() noexcept;
 		bool isOpen() const noexcept;
 

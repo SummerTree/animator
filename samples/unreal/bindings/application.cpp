@@ -24,7 +24,7 @@ namespace unreal
 
 	Application::Application()
 		: behaviour_(octoon::GameObject::create())
-		, profile_(unreal::UnrealProfile::load("./config/config.conf"))
+		, profile_(std::make_unique<unreal::UnrealProfile>("./config/config.conf"))
 	{
 		timer_ = new Timer();
 		message_ = "Loading...";
