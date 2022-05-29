@@ -25,8 +25,8 @@ namespace unreal
 	void 
 	PhysicsModule::load(octoon::runtime::json& reader) noexcept
 	{
-		UnrealModule::load(reader);
-
+		if (reader["enable"].is_boolean())
+			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
 		if (reader["gravity"].is_array())
 			this->gravity = octoon::math::float3(reader["gravity"][0], reader["gravity"][1], reader["gravity"][2]);
 		if (reader["gravityScale"].is_number_float())
@@ -42,8 +42,7 @@ namespace unreal
 	void 
 	PhysicsModule::save(octoon::runtime::json& writer) noexcept
 	{
-		UnrealModule::save(writer);
-
+		writer["enable"] = this->enable.getValue();
 		writer["gravity"] = { this->gravity.getValue()[0], this->gravity.getValue()[1], this->gravity.getValue()[2] };
 		writer["gravityScale"] = this->gravityScale.getValue();
 		writer["playSolverIterationCounts"] = this->playSolverIterationCounts.getValue();

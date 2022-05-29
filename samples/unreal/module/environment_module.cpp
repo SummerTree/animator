@@ -26,8 +26,6 @@ namespace unreal
 	void 
 	EnvironmentModule::load(octoon::runtime::json& reader) noexcept
 	{
-		UnrealModule::load(reader);
-
 		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
 		if (reader["showBackground"].is_boolean())
@@ -45,8 +43,7 @@ namespace unreal
 	void 
 	EnvironmentModule::save(octoon::runtime::json& writer) noexcept
 	{
-		UnrealModule::save(writer);
-
+		writer["enable"] = this->enable.getValue();
 		writer["intensity"] = this->intensity.getValue();
 		writer["showBackground"] = this->showBackground.getValue();
 		writer["useTexture"] = this->useTexture.getValue();
