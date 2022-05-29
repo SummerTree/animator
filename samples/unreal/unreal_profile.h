@@ -26,13 +26,13 @@ namespace unreal
 	{
 	public:
 		UnrealProfile() noexcept;
-		UnrealProfile(std::string_view path) noexcept(false);
+		UnrealProfile(std::string_view path_) noexcept(false);
 		virtual ~UnrealProfile() noexcept;
 
 		void disconnect() noexcept;
 		
-		void load(std::string_view path) noexcept(false);
-		void save(std::string_view path) noexcept(false);
+		void load(std::string_view path_) noexcept(false);
+		void save(std::string_view path_) noexcept(false);
 
 	private:
 		UnrealProfile(const UnrealProfile&) = delete;
