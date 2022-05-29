@@ -2,6 +2,8 @@
 #define OCTOON_MESH_LOADER_H_
 
 #include <octoon/game_object.h>
+#include <octoon/model/model.h>
+#include <octoon/geometry/geometry.h>
 
 namespace octoon
 {
@@ -9,6 +11,7 @@ namespace octoon
 	{
 	public:
 		static GameObjectPtr load(std::string_view path, bool cache = true) noexcept(false);
+		static std::shared_ptr<Geometry> load(const Model& model) noexcept(false);
 	};
 }
 

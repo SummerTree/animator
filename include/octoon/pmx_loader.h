@@ -139,6 +139,7 @@ namespace octoon
 	{
 		PmxUInt32 length;
 		PmxChar name[MAX_PATH];
+		char fullpath[MAX_PATH];
 	};
 
 	struct PmxMaterial
@@ -442,9 +443,9 @@ namespace octoon
 		bool canRead(const char* type) const noexcept;
 
 		bool load(std::string_view filepath, PMX& pmx) noexcept;
-		bool load(std::string_view filepath, Model& model) noexcept;
-
 		bool save(io::ostream& stream, const PMX& pmx) noexcept;
+
+		bool load(std::string_view filepath, Model& model) noexcept;
 		bool save(io::ostream& stream, const Model& model) noexcept;
 	};
 }

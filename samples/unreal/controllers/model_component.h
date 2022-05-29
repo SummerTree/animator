@@ -24,7 +24,7 @@ namespace unreal
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		bool removePackage(std::string_view uuid) noexcept;
 
-		void createModelPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
+		void createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, QPixmap& pixmap, int w, int h);
 
 		void save() noexcept(false);
 

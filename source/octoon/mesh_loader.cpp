@@ -1,5 +1,4 @@
 #include <octoon/mesh_loader.h>
-#include <octoon/model/model.h>
 #include <octoon/runtime/string.h>
 
 #include <octoon/transform_component.h>
@@ -345,6 +344,19 @@ namespace octoon
 		}
 
 		meshes = object;
+	}
+
+	std::shared_ptr<Geometry>
+	MeshLoader::load(const Model& model) noexcept(false)
+	{
+		Materials materials;
+		createMaterials(model, materials);
+
+		auto geometry = std::make_shared<Geometry>();
+		geometry->setMesh(model.meshes[0]);
+		geometry->setMaterials(materials);
+
+		return geometry;
 	}
 
 	GameObjectPtr

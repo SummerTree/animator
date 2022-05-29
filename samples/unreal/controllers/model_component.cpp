@@ -2,6 +2,9 @@
 #include "unreal_behaviour.h"
 #include <octoon/image/image.h>
 #include <octoon/pmx_loader.h>
+#include <octoon/model_loader.h>
+#include <octoon/mesh_loader.h>
+#include <octoon/runtime/string.h>
 #include <fstream>
 #include <filesystem>
 #include <quuid.h>
@@ -29,54 +32,88 @@ namespace unreal
 			auto id = QUuid::createUuid().toString();
 			auto uuid = id.toStdString().substr(1, id.length() - 2);
 
-			std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(std::string(filepath));
+			std::wstring wfilepath = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(std::string(filepath));
 
 			auto rootPath = std::filesystem::path(this->getModel()->modelPath).append(uuid);
-			auto inputPath = std::filesystem::path(u16_conv);
-			auto filename = inputPath.filename();
-			auto inputRoot = std::filesystem::path(inputPath.string().substr(0, inputPath.string().find_last_of("/")));
+			auto filename = std::filesystem::path(wfilepath).filename();
 			auto modelPath = std::filesystem::path(rootPath).append(uuid + ".pmx");
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");
 
-			std::filesystem::create_directories(rootPath);
-			std::filesystem::copy(inputPath, modelPath);
-
-			for (auto& texture : pmx.textures)
+			try
 			{
-				auto inputTexturePath = std::filesystem::path(inputRoot).append(texture.name);
-				if (std::filesystem::exists(inputTexturePath))
+
+				std::filesystem::create_directories(rootPath);
+				std::filesystem::copy(wfilepath, modelPath);
+
+				for (auto& texture : pmx.textures)
 				{
+					std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+					auto path = cv.from_bytes(std::string(texture.fullpath));
 					auto texturePath = std::filesystem::path(rootPath).append(texture.name);
-					auto textureRootPath = texturePath.string();
-					std::filesystem::create_directories(textureRootPath.substr(0, textureRootPath.find_last_of("\\")));
-					std::filesystem::copy(std::filesystem::path(inputRoot).append(texture.name), texturePath);
+
+					if (std::filesystem::exists(path) && !std::filesystem::exists(texturePath))
+					{
+						auto textureRootPath = octoon::runtime::string::directory(texturePath.string());
+						std::filesystem::create_directories(textureRootPath);
+						std::filesystem::copy(path, texturePath);
+					}
 				}
+
+				octoon::math::BoundingBox bound;
+				for (auto& v : pmx.vertices)
+					bound.encapsulate(octoon::math::float3(v.position.x, v.position.y, v.position.z));
+
+				auto minBounding = bound.box().min;
+				auto maxBounding = bound.box().max;
+
+				auto writePreview = [this](const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, std::filesystem::path outputPath) -> nlohmann::json
+				{
+					QPixmap pixmap;
+					auto id = QUuid::createUuid().toString();
+					auto uuid = id.toStdString().substr(1, id.length() - 2);
+					auto previewPath = std::filesystem::path(outputPath).append(uuid + ".png");
+					this->createModelPreview(geometry, boundingBox, pixmap, previewWidth_, previewHeight_);
+					pixmap.save(QString::fromStdString(previewPath.string()), "png");
+					return previewPath.string();
+				};
+
+				auto geometry = octoon::MeshLoader::load(octoon::ModelLoader::load(pmx));
+
+				for (auto& v : pmx.bones)
+				{
+					if (std::wcscmp(v.name.name, L"î^") == 0)
+					{
+						auto position = v.position.y + 1;
+						camera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, position, 10), octoon::math::float3(0, position, 0), -octoon::math::float3::UnitY));
+					}
+				}
+
+				nlohmann::json item;
+				item["uuid"] = uuid;
+				item["name"] = filename.u8string();
+				item["path"] = modelPath.u8string();
+				item["preview"] = writePreview(geometry, bound, rootPath);
+				item["bound"][0] = { minBounding.x, minBounding.y, minBounding.z };
+				item["bound"][1] = { maxBounding.x, maxBounding.y, maxBounding.z };
+
+				std::ofstream ifs(packagePath, std::ios_base::binary);
+				if (ifs)
+				{
+					auto dump = item.dump();
+					ifs.write(dump.c_str(), dump.size());
+				}
+
+				this->getModel()->modelIndexList_.getValue().push_back(uuid);
+
+				return item;
 			}
-
-			octoon::math::BoundingBox bound;
-			for (auto& v : pmx.vertices)
-				bound.encapsulate(octoon::math::float3(v.position.x, v.position.y, v.position.z));
-
-			auto minBounding = bound.box().min;
-			auto maxBounding = bound.box().max;
-
-			nlohmann::json item;
-			item["uuid"] = uuid;
-			item["name"] = filename.u8string();
-			item["path"] = modelPath.u8string();
-			item["bound"][0] = { minBounding.x, minBounding.y, minBounding.z };
-			item["bound"][1] = { maxBounding.x, maxBounding.y, maxBounding.z };
-
-			std::ofstream ifs(packagePath, std::ios_base::binary);
-			if (ifs)
+			catch (std::exception& e)
 			{
-				auto dump = item.dump();
-				ifs.write(dump.c_str(), dump.size());
+				if (std::filesystem::exists(rootPath))
+					std::filesystem::remove_all(rootPath);
+
+				throw e;
 			}
-
-			this->getModel()->modelIndexList_.getValue().push_back(uuid);
-
-			return item;
 		}
 
 		return nlohmann::json();
@@ -155,18 +192,24 @@ namespace unreal
 	}
 
 	void
-	ModelComponent::createModelPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h)
+	ModelComponent::createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, QPixmap& pixmap, int w, int h)
 	{
-		assert(material);
+		assert(geometry);
 
 		if (scene_)
 		{
+			auto min = boundingBox.box().min;
+			auto max = boundingBox.box().max;
+
 			auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
 			if (renderer)
 			{
-				geometry_->setMaterial(material);
+				geometry_->setMesh(geometry->getMesh());
+				geometry_->setMaterials(geometry->getMaterials());
+
 				renderer->render(scene_);
-				material->setDirty(true);
+
+				geometry_->setDirty(true);
 			}
 
 			auto framebufferDesc = framebuffer_->getFramebufferDesc();
@@ -248,30 +291,29 @@ namespace unreal
 			if (!framebuffer_)
 				throw std::runtime_error("createFramebuffer() failed");
 
-			camera_ = std::make_shared<octoon::PerspectiveCamera>(60, 1, 100);
+			camera_ = std::make_shared<octoon::PerspectiveCamera>(20, 1, 100);
 			camera_->setClearColor(octoon::math::float4::Zero);
 			camera_->setClearFlags(octoon::ClearFlagBits::AllBit);
 			camera_->setFramebuffer(framebuffer_);
-			camera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, 0, 1), octoon::math::float3::Zero, octoon::math::float3::UnitY));
 
 			geometry_ = std::make_shared<octoon::Geometry>();
 			geometry_->setMesh(octoon::SphereMesh::create(0.5));
 
 			octoon::math::Quaternion q1;
-			q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75);
+			q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75f);
 			octoon::math::Quaternion q2;
-			q2.makeRotation(octoon::math::float3::UnitY, octoon::math::PI / 4.6);
+			q2.makeRotation(octoon::math::float3::UnitY, octoon::math::PI / 4.6f);
 
 			directionalLight_ = std::make_shared<octoon::DirectionalLight>();
 			directionalLight_->setColor(octoon::math::float3(1, 1, 1));
 			directionalLight_->setTransform(octoon::math::float4x4(q1 * q2));
 
 			environmentLight_ = std::make_shared<octoon::EnvironmentLight>();
-			environmentLight_->setEnvironmentMap(octoon::PMREMLoader::load("../../system/hdri/Ditch-River_1k.hdr"));
+			environmentLight_->setColor(octoon::math::float3::One * 0.9f);
 
 			scene_ = std::make_unique<octoon::RenderScene>();
 			scene_->addRenderObject(camera_.get());
-			scene_->addRenderObject(directionalLight_.get());
+			//scene_->addRenderObject(directionalLight_.get());
 			scene_->addRenderObject(environmentLight_.get());
 			scene_->addRenderObject(geometry_.get());
 		}
@@ -331,6 +373,8 @@ namespace unreal
 	void
 	ModelComponent::onEnable() noexcept
 	{
+		this->initRenderScene();
+
 		if (std::filesystem::exists(this->getModel()->modelPath))
 			this->initPackageIndices();
 		else

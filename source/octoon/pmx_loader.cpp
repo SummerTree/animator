@@ -179,12 +179,20 @@ namespace octoon
 
 		if (pmx.numTextures > 0)
 		{
+			auto rootPath = runtime::string::directory(std::string(filepath));
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
 			pmx.textures.resize(pmx.numTextures);
 
 			for (auto& texture : pmx.textures)
 			{
 				if (!stream.read((char*)&texture.length, sizeof(texture.length))) return false;
 				if (!stream.read((char*)&texture.name, texture.length)) return false;
+
+				std::string u8_conv = cv.to_bytes(texture.name);
+
+				std::strncpy((char*)texture.fullpath, rootPath.data(), rootPath.length());
+				std::strcat((char*)texture.fullpath, u8_conv.data());
 			}
 		}
 
@@ -589,8 +597,6 @@ namespace octoon
 		if (!this->load(filepath, pmx))
 			return false;
 
-		auto rootPath = runtime::string::directory(std::string(filepath));
-
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
 		for (auto& it : pmx.materials)
@@ -611,10 +617,7 @@ namespace octoon
 			try
 			{
 				if (it.TextureIndex < limits)
-				{
-					std::string u8_conv = cv.to_bytes(pmx.textures[it.TextureIndex].name);
-					material->setColorMap(TextureLoader::load(rootPath + "/" + u8_conv));
-				}
+					material->setColorMap(TextureLoader::load(pmx.textures[it.TextureIndex].fullpath));
 			}
 			catch (...)
 			{
