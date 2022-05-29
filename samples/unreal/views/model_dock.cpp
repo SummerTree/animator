@@ -184,7 +184,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = modelComponent->importModel(filepaths[i].toStdString());
+					auto package = modelComponent->importModel(filepaths[i].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}

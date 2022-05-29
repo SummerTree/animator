@@ -178,7 +178,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto list = materialComponent->importMdl(filepaths[i].toStdString());
+					auto list = materialComponent->importMdl(filepaths[i].toUtf8().toStdString());
 					for (auto& it : list)
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}
@@ -1073,7 +1073,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setAlbedoMap(path);
+			this->setAlbedoMap(path.toUtf8());
 	}
 
 	void
@@ -1081,7 +1081,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setOpacityMap(path);
+			this->setOpacityMap(path.toUtf8());
 	}
 
 	void
@@ -1089,7 +1089,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setNormalMap(path);
+			this->setNormalMap(path.toUtf8());
 	}
 
 	void
@@ -1097,7 +1097,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setSpecularMap(path);
+			this->setSpecularMap(path.toUtf8());
 	}
 
 	void
@@ -1105,7 +1105,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setRoughnessMap(path);
+			this->setRoughnessMap(path.toUtf8());
 	}
 
 	void
@@ -1113,7 +1113,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setMetalnessMap(path);
+			this->setMetalnessMap(path.toUtf8());
 	}
 
 	void
@@ -1121,7 +1121,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setAnisotropyMap(path);
+			this->setAnisotropyMap(path.toUtf8());
 	}
 
 	void
@@ -1129,7 +1129,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setSheenMap(path);
+			this->setSheenMap(path.toUtf8());
 	}
 
 	void
@@ -1137,7 +1137,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setClearCoatMap(path);
+			this->setClearCoatMap(path.toUtf8());
 	}
 
 	void
@@ -1145,7 +1145,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setClearCoatRoughnessMap(path);
+			this->setClearCoatRoughnessMap(path.toUtf8());
 	}
 
 	void
@@ -1153,7 +1153,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setSubsurfaceMap(path);
+			this->setSubsurfaceMap(path.toUtf8());
 	}
 
 	void
@@ -1161,7 +1161,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setSubsurfaceColorMap(path);
+			this->setSubsurfaceColorMap(path.toUtf8());
 	}
 
 	void
@@ -1169,7 +1169,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setEmissiveMap(path);
+			this->setEmissiveMap(path.toUtf8());
 	}
 
 	void

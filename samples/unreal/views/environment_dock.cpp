@@ -181,7 +181,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = hdrComponent->importHDRi(filepaths[i].toStdString());
+					auto package = hdrComponent->importHDRi(filepaths[i].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -699,7 +699,7 @@ namespace unreal
 			if (!filepath.isEmpty())
 			{
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texturePath = filepath.toStdString();
+				this->profile_->environmentLightModule->texturePath = filepath.toUtf8().toStdString();
 
 				auto texel = this->profile_->environmentLightModule->texture.getValue();
 				if (texel)
