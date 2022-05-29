@@ -30,6 +30,28 @@ namespace unreal
 			this->frame_type = reader["frame_type"].get<nlohmann::json::number_unsigned_t>();
 		if (reader["encode_speed"].is_number_unsigned())
 			this->encode_speed = reader["encode_speed"].get<nlohmann::json::number_unsigned_t>();
+		if (reader["encodeMode"].is_number_unsigned())
+		{
+			switch (reader["encodeMode"].get<nlohmann::json::number_unsigned_t>())
+			{
+			case EncodeMode::H264: this->encodeMode = EncodeMode::H264; break;
+			case EncodeMode::H265: this->encodeMode = EncodeMode::H265; break;
+			case EncodeMode::Frame: this->encodeMode = EncodeMode::Frame; break;
+			default:
+				break;
+			}
+		}
+		if (reader["quality"].is_number_unsigned())
+		{
+			switch (reader["quality"].get<nlohmann::json::number_unsigned_t>())
+			{
+			case VideoQuality::Low: this->quality = VideoQuality::Low; break;
+			case VideoQuality::Medium: this->quality = VideoQuality::Medium; break;
+			case VideoQuality::High: this->quality = VideoQuality::High; break;
+			default:
+				break;
+			}
+		}
 	}
 
 	void 

@@ -19,10 +19,12 @@ namespace unreal
 	void 
 	GridModule::load(octoon::runtime::json& reader) noexcept
 	{
+		UnrealModule::load(reader);
 	}
 
 	void 
 	GridModule::save(octoon::runtime::json& writer) noexcept
 	{
+		UnrealModule::save(writer);
 	}
 }
