@@ -87,55 +87,33 @@ namespace unreal
 	void
 	ToplevelBar::playEvent() noexcept
 	{
-		auto playSignal = [this](bool enable) noexcept
+		try
 		{
-			try
+			if (behaviour_ && !profile_->recordModule->active)
 			{
-				if (behaviour_ && !profile_->recordModule->active)
+				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+				if (behaviour)
 				{
-					auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-					if (behaviour->isOpen())
+					if (playEnable_)
 					{
-						if (enable)
-							behaviour->play();
-						else
-							behaviour->pause();
-
-						return true;
+						behaviour->pause();
+						playButton.setIcon(playIcon_);
+						playButton.setToolTip(tr("Play"));
+						playEnable_ = false;
 					}
 					else
 					{
-						QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
-						return false;
+						behaviour->play();
+						playButton.setIcon(playOnIcon_);
+						playButton.setToolTip(tr("Pause"));
+						playEnable_ = true;
 					}
 				}
-
-				return false;
-			}
-			catch (const std::exception& e)
-			{
-				QMessageBox::critical(this, tr("Error"), e.what());
-				return false;
-			}
-		};
-
-		if (!playEnable_)
-		{
-			if (playSignal(true))
-			{
-				playButton.setIcon(playOnIcon_);
-				playButton.setToolTip(tr("Pause"));
-				playEnable_ = true;
 			}
 		}
-		else
+		catch (const std::exception& e)
 		{
-			if (playSignal(false))
-			{
-				playButton.setIcon(playIcon_);
-				playButton.setToolTip(tr("Play"));
-				playEnable_ = false;
-			}
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 
