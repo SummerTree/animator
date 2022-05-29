@@ -32,6 +32,7 @@ namespace unreal
 		else if (ext == ".agp")
 		{
 			profile_->load(path);
+			this->playerComponent_->updateTimeLength();
 			return true;
 		}
 		else if (ext == ".scene")

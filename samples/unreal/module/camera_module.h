@@ -33,6 +33,7 @@ namespace unreal
 		MutableLiveData<float> focusDistance;
 		MutableLiveData<octoon::math::float3> translate;
 		MutableLiveData<octoon::math::float3> rotation;
+		MutableLiveData<std::string> animation;
 	};
 }
 

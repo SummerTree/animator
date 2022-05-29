@@ -18,9 +18,6 @@ namespace unreal
 	void
 	EnvironmentComponent::onInit() noexcept
 	{
-		if (!this->getModel()->texturePath.getValue().empty())
-			this->getModel()->texture = octoon::TextureLoader::load(this->getModel()->texturePath.getValue(), true);
-
 		this->getModel()->showBackground += [this](bool value)
 		{
 			auto& environmentLight = this->getContext()->profile->entitiesModule->environmentLight.getValue();

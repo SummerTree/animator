@@ -34,6 +34,8 @@ namespace unreal
 			this->aperture = reader["aperture"].get<nlohmann::json::number_float_t>();
 		if (reader["focusDistance"].is_number_float())
 			this->focusDistance = reader["focusDistance"].get<nlohmann::json::number_float_t>();
+		if (reader["animation"].is_string())
+			this->animation = reader["animation"].get<nlohmann::json::string_t>();
 		if (reader["translate"].is_array())
 		{
 			this->translate = octoon::math::float3(reader["translate"][0], reader["translate"][1], reader["translate"][2]);
@@ -53,6 +55,7 @@ namespace unreal
 		writer["fov"] = this->fov.getValue();
 		writer["aperture"] = this->aperture.getValue();
 		writer["focusDistance"] = this->focusDistance.getValue();
+		writer["animation"] = this->animation.getValue();
 		writer["translate"].push_back(this->translate.getValue().x);
 		writer["translate"].push_back(this->translate.getValue().y);
 		writer["translate"].push_back(this->translate.getValue().z);
@@ -71,6 +74,7 @@ namespace unreal
 		this->aperture.disconnect();
 		this->focusDistance.disconnect();
 		this->translate.disconnect();
-		this->rotation.disconnect();	
+		this->rotation.disconnect();
+		this->animation.disconnect();
 	}
 }

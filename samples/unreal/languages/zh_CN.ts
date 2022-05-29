@@ -60,13 +60,13 @@
         <location filename="../views/camera_dock.cpp" line="130"/>
         <location filename="../views/camera_dock.cpp" line="266"/>
         <location filename="../views/camera_dock.cpp" line="310"/>
-        <location filename="../views/camera_dock.cpp" line="382"/>
+        <location filename="../views/camera_dock.cpp" line="375"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="141"/>
-        <location filename="../views/camera_dock.cpp" line="324"/>
+        <location filename="../views/camera_dock.cpp" line="326"/>
         <source>Load Animation</source>
         <translation>加载动画</translation>
     </message>
@@ -77,30 +77,29 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="258"/>
-        <location filename="../views/camera_dock.cpp" line="378"/>
+        <location filename="../views/camera_dock.cpp" line="371"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="260"/>
-        <location filename="../views/camera_dock.cpp" line="377"/>
+        <location filename="../views/camera_dock.cpp" line="370"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="324"/>
+        <location filename="../views/camera_dock.cpp" line="326"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="340"/>
+        <location filename="../views/camera_dock.cpp" line="335"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="340"/>
         <source>Failed to open the file.</source>
-        <translation>打开文件失败。</translation>
+        <translation type="vanished">打开文件失败。</translation>
     </message>
     <message>
         <source>Failed to open the file</source>

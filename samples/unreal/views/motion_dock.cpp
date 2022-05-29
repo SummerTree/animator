@@ -287,12 +287,14 @@ namespace unreal
 						}
 						else
 						{
-							auto animation = loader.loadCameraMotion(stream);
+							octoon::VMD vmd;
+							vmd.load(stream);
+
+							if (vmd.NumCamera > 0)
+								profile_->cameraModule->animation = filepath;
 
 							dialog.setValue(1);
 							QCoreApplication::processEvents();
-
-							behaviour->getComponent<CameraComponent>()->loadAnimation(std::move(animation));
 						}
 
 						behaviour->getComponent<PlayerComponent>()->updateTimeLength();

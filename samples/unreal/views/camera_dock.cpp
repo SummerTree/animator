@@ -321,25 +321,18 @@ namespace unreal
 	void
 	CameraDock::onLoadAnimation()
 	{
-		QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
-		if (!filepath.isEmpty())
+		try
 		{
-			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-			if (behaviour)
+			QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
+			if (!filepath.isEmpty())
 			{
-				auto cameraComponent = behaviour->getComponent<CameraComponent>();
-				if (cameraComponent->loadAnimation(filepath.toStdString()))
-				{
-					behaviour->getComponent<PlayerComponent>()->updateTimeLength();
-					unloadButton_->setEnabled(true);
-				}
-				else
-				{
-					QCoreApplication::processEvents();
-
-					QMessageBox::critical(this, tr("Error"), tr("Failed to open the file."));
-				}
+				this->profile_->cameraModule->animation = filepath.toStdString();
+				unloadButton_->setEnabled(true);
 			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 

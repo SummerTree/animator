@@ -141,6 +141,14 @@ namespace unreal
 			}
 		};
 
+		this->getModel()->animation += [this](const std::string& value)
+		{
+			if (!value.empty())
+				this->loadAnimation(value);
+			else
+				this->removeAnimation();
+		};
+
 		this->getContext()->profile->playerModule->isPlaying += [this](bool value)
 		{
 			this->update();
