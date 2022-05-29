@@ -24,6 +24,7 @@ namespace unreal
 		importButton_ = new QToolButton;
 		importButton_->setObjectName("Import");
 		importButton_->setText(tr("Import"));
+		importButton_->installEventFilter(this);
 
 		topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
@@ -38,6 +39,7 @@ namespace unreal
 		listWidget_ = new DraggableListWindow;
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setSpacing(0);
+		listWidget_->installEventFilter(this);
 
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
@@ -49,6 +51,7 @@ namespace unreal
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("MotionWidget");
 		mainWidget_->setLayout(mainLayout_);
+		mainWidget_->installEventFilter(this);
 
 		this->setWidget(mainWidget_);
 
@@ -319,5 +322,19 @@ namespace unreal
 
 		for (auto& uuid : profile_->resourceModule->motionIndexList_.getValue())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
+	}
+
+	bool
+	MotionDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }

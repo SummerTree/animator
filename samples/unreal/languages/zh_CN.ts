@@ -740,36 +740,36 @@ $20 (Original cost $40)</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="136"/>
+        <location filename="../views/motion_dock.cpp" line="139"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="136"/>
+        <location filename="../views/motion_dock.cpp" line="139"/>
         <source>Are you sure you want to delete this motion data?</source>
         <translation>确定要删除此动作数据吗?</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="160"/>
+        <location filename="../views/motion_dock.cpp" line="163"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="160"/>
+        <location filename="../views/motion_dock.cpp" line="163"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="171"/>
-        <location filename="../views/motion_dock.cpp" line="172"/>
-        <location filename="../views/motion_dock.cpp" line="221"/>
-        <location filename="../views/motion_dock.cpp" line="222"/>
+        <location filename="../views/motion_dock.cpp" line="174"/>
+        <location filename="../views/motion_dock.cpp" line="175"/>
+        <location filename="../views/motion_dock.cpp" line="224"/>
+        <location filename="../views/motion_dock.cpp" line="225"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="171"/>
-        <location filename="../views/motion_dock.cpp" line="221"/>
+        <location filename="../views/motion_dock.cpp" line="174"/>
+        <location filename="../views/motion_dock.cpp" line="224"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>

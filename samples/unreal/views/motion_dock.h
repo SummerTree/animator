@@ -24,6 +24,7 @@ namespace unreal
 		void resizeEvent(QResizeEvent* e) noexcept override;
 		void showEvent(QShowEvent* event) noexcept override;
 		void keyPressEvent(QKeyEvent* event) noexcept;
+		bool eventFilter(QObject* watched, QEvent* event);
 
 	public Q_SLOTS:
 		void importClickEvent();
