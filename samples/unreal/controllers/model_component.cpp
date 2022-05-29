@@ -41,7 +41,6 @@ namespace unreal
 
 			try
 			{
-
 				std::filesystem::create_directories(rootPath);
 				std::filesystem::copy(wfilepath, modelPath);
 

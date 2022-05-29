@@ -142,11 +142,11 @@ namespace unreal
 					if (!fileName.isEmpty())
 					{
 #if 1
-						behaviour->open(fileName.toUtf8().data());
+						behaviour->open(fileName.toUtf8().toStdString());
 #else
 						// load task
 						auto fn = [&]() {
-							behaviour->open(fileName.toUtf8().data());
+							behaviour->open(fileName.toUtf8().toStdString());
 						};
 						QFuture<void> fu = QtConcurrent::run(fn);
 
@@ -204,7 +204,7 @@ namespace unreal
 					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmx *.abc *.mdl *.vmd);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)"));
 					if (!fileName.isEmpty())
 					{
-						behaviour->load(fileName.toUtf8().data());
+						behaviour->load(fileName.toUtf8().toStdString());
 					}
 				}
 			}
@@ -233,7 +233,7 @@ namespace unreal
 				if (!fileName.isEmpty())
 				{
 					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-					behaviour->save(fileName.toUtf8().data());
+					behaviour->save(fileName.toUtf8().toStdString());
 				}
 			}
 
@@ -259,7 +259,7 @@ namespace unreal
 					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
 					if (!fileName.isEmpty())
 					{
-						profile_->soundModule->filepath = fileName.toUtf8().data();
+						profile_->soundModule->filepath = fileName.toUtf8().toStdString();
 						audioButton_->setIcon(audioOnIcon_);
 						audioEnable_ = true;
 					}
@@ -296,7 +296,7 @@ namespace unreal
 				if (!fileName.isEmpty())
 				{
 					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-					behaviour->renderPicture(fileName.toUtf8().data());
+					behaviour->renderPicture(fileName.toUtf8().toStdString());
 				}
 			}
 

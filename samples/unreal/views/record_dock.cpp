@@ -490,7 +490,7 @@ namespace unreal
 
 				if (!fileName.isEmpty())
 				{
-					if (!behaviour->startRecord(fileName.toUtf8().data()))
+					if (!behaviour->startRecord(fileName.toUtf8().toStdString()))
 						QMessageBox::information(this, tr("Error"), tr("Failed to create file"));
 				}
 			}
