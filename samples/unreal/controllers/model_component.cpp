@@ -164,7 +164,7 @@ namespace unreal
 				}
 			}
 		}
-		catch (...)
+		catch (const std::exception& e)
 		{
 		}
 

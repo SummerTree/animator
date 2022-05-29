@@ -324,15 +324,18 @@ namespace octoon
 	bool
 	Image::load(istream& stream, const char* type) noexcept
 	{
-		io::mstream membuf(stream);
-
-		if (membuf.good())
+		if (stream.good())
 		{
-			ImageLoaderPtr impl = findHandler(membuf, type);
-			if (impl)
+			io::mstream membuf(stream);
+
+			if (membuf.good())
 			{
-				if (impl->doLoad(membuf, *this))
-					return true;
+				ImageLoaderPtr impl = findHandler(membuf, type);
+				if (impl)
+				{
+					if (impl->doLoad(membuf, *this))
+						return true;
+				}
 			}
 		}
 
