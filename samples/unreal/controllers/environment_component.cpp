@@ -18,6 +18,9 @@ namespace unreal
 	void
 	EnvironmentComponent::onInit() noexcept
 	{
+		if (!this->getModel()->texturePath.getValue().empty())
+			this->getModel()->texture = octoon::TextureLoader::load(this->getModel()->texturePath.getValue(), true);
+
 		this->getModel()->showBackground += [this](bool value)
 		{
 			auto& environmentLight = this->getContext()->profile->entitiesModule->environmentLight.getValue();
@@ -123,6 +126,12 @@ namespace unreal
 					material->setColorMap(model->useTexture ? texture_ : nullptr);
 				}
 			}
+		};
+
+		this->getModel()->texturePath += [this](const std::string& texturePath)
+		{
+			auto& model = this->getModel();
+			model->texture = octoon::TextureLoader::load(texturePath, true);
 		};
 
 		this->getModel()->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
