@@ -302,18 +302,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/info_window.cpp" line="39"/>
-        <location filename="../views/info_window.cpp" line="243"/>
-        <source>balance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/info_window.cpp" line="39"/>
-        <location filename="../views/info_window.cpp" line="243"/>
-        <source>$</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../views/info_window.cpp" line="43"/>
         <source>VIP Privilege</source>
         <translation type="unfinished"></translation>
@@ -968,27 +956,27 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">主面板</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="160"/>
+        <location filename="../views/setting_window.cpp" line="161"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="160"/>
+        <location filename="../views/setting_window.cpp" line="161"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="160"/>
+        <location filename="../views/setting_window.cpp" line="161"/>
         <source>Graphics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="348"/>
+        <location filename="../views/setting_window.cpp" line="349"/>
         <source>Information</source>
         <translation type="unfinished">信息</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="349"/>
+        <location filename="../views/setting_window.cpp" line="350"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1030,27 +1018,27 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlaneGeneral</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="49"/>
+        <location filename="../views/setting_window.cpp" line="50"/>
         <source>Version</source>
         <translation type="unfinished">版本</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="53"/>
+        <location filename="../views/setting_window.cpp" line="54"/>
         <source>Check Updates</source>
         <translation type="unfinished">检查更新</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="58"/>
+        <location filename="../views/setting_window.cpp" line="59"/>
         <source>Current Version: </source>
         <translation type="unfinished">当前版本： </translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="78"/>
+        <location filename="../views/setting_window.cpp" line="79"/>
         <source>Reset to default settings</source>
         <translation type="unfinished">重置默认设置</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="82"/>
+        <location filename="../views/setting_window.cpp" line="83"/>
         <source>Reset</source>
         <translation type="unfinished">重置</translation>
     </message>
@@ -1058,32 +1046,32 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlaneInterface</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="109"/>
+        <location filename="../views/setting_window.cpp" line="110"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="112"/>
+        <location filename="../views/setting_window.cpp" line="113"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="113"/>
+        <location filename="../views/setting_window.cpp" line="114"/>
         <source>Chinese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="114"/>
+        <location filename="../views/setting_window.cpp" line="115"/>
         <source>Japanese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="117"/>
+        <location filename="../views/setting_window.cpp" line="118"/>
         <source>Render Settings</source>
         <translation type="unfinished">渲染设置</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="121"/>
+        <location filename="../views/setting_window.cpp" line="122"/>
         <source>Resolution</source>
         <translation type="unfinished">渲染分辨率</translation>
     </message>

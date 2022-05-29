@@ -1,4 +1,5 @@
 #include "setting_window.h"
+#include "../unreal_version.h"
 #include "../controllers/client_component.h"
 #include <qlabel.h>
 #include <qmessagebox.h>
@@ -55,7 +56,7 @@ namespace unreal
 		infoButton->setFixedSize(190, 35);
 
 		versionLabel = new ULabel(this);
-		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(behaviour->getProfile()->clientModule->version));
+		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(UNREAL_VERSION));
 		versionLabel->setStyleSheet("color: rgb(200,200,200);");
 
 		/*QLabel* startupLabel = new QLabel(this);
