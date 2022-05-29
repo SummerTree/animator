@@ -131,7 +131,7 @@ namespace unreal
 		this->getModel()->texturePath += [this](const std::string& texturePath)
 		{
 			auto& model = this->getModel();
-			model->texture = octoon::TextureLoader::load(texturePath, true);
+			model->texture = texturePath.empty() ? nullptr : octoon::TextureLoader::load(texturePath, true);
 		};
 
 		this->getModel()->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)

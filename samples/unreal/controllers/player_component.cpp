@@ -177,11 +177,6 @@ namespace unreal
 				animation->setTime(model->curTime);
 				animation->sample();
 			}
-			else
-			{
-				camera->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3::Zero);
-				camera->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion::Zero);
-			}
 		}
 
 		auto& sound = this->getContext()->profile->entitiesModule->sound.getValue();
