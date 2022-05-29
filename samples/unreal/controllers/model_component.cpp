@@ -81,9 +81,9 @@ namespace unreal
 
 				for (auto& v : pmx.bones)
 				{
-					if (std::wcscmp(v.name.name, L"î^") == 0)
+					if (std::wcscmp(v.name.name, L"×óÄ¿") == 0 || std::wcscmp(v.name.name, L"ÓÒÄ¿") == 0)
 					{
-						auto position = v.position.y + 1;
+						auto position = v.position.y;
 						camera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, position, 10), octoon::math::float3(0, position, 0), -octoon::math::float3::UnitY));
 					}
 				}
@@ -291,7 +291,7 @@ namespace unreal
 			if (!framebuffer_)
 				throw std::runtime_error("createFramebuffer() failed");
 
-			camera_ = std::make_shared<octoon::PerspectiveCamera>(20, 1, 100);
+			camera_ = std::make_shared<octoon::PerspectiveCamera>(23.9f, 1, 100);
 			camera_->setClearColor(octoon::math::float4::Zero);
 			camera_->setClearFlags(octoon::ClearFlagBits::AllBit);
 			camera_->setFramebuffer(framebuffer_);

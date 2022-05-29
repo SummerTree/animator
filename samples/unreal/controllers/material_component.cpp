@@ -19,8 +19,8 @@
 namespace unreal
 {
 	MaterialComponent::MaterialComponent() noexcept
-		: previewWidth_(128)
-		, previewHeight_(128)
+		: previewWidth_(200)
+		, previewHeight_(200)
 	{
 	}
 
