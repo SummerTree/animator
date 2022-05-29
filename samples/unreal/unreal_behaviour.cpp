@@ -65,6 +65,7 @@ namespace unreal
 		this->profile_->offlineModule->reset();
 		this->profile_->physicsModule->reset();
 		this->profile_->recordModule->reset();
+		this->profile_->playerModule->reset();
 	}
 
 	bool

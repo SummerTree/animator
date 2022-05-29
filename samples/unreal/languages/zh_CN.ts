@@ -1326,10 +1326,10 @@ $20 (Original cost $40)</source>
         <location filename="../views/tool_dock.cpp" line="188"/>
         <location filename="../views/tool_dock.cpp" line="217"/>
         <location filename="../views/tool_dock.cpp" line="244"/>
-        <location filename="../views/tool_dock.cpp" line="277"/>
-        <location filename="../views/tool_dock.cpp" line="324"/>
-        <location filename="../views/tool_dock.cpp" line="350"/>
-        <location filename="../views/tool_dock.cpp" line="369"/>
+        <location filename="../views/tool_dock.cpp" line="279"/>
+        <location filename="../views/tool_dock.cpp" line="326"/>
+        <location filename="../views/tool_dock.cpp" line="352"/>
+        <location filename="../views/tool_dock.cpp" line="371"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -1369,7 +1369,7 @@ $20 (Original cost $40)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="312"/>
+        <location filename="../views/tool_dock.cpp" line="314"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1398,7 +1398,7 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="312"/>
+        <location filename="../views/tool_dock.cpp" line="314"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>

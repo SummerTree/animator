@@ -260,20 +260,22 @@ namespace unreal
 					{
 						QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
 						if (!fileName.isEmpty())
+						{
 							profile_->soundModule->filepath = fileName.toUtf8().data();
+							return true;
+						}
 					}
 					else
 					{
 						profile_->soundModule->filepath = std::string();
+						return true;
 					}
-
-					return true;
 				}
 				catch (const std::exception& e)
 				{
-					QCoreApplication::processEvents();
-
 					spdlog::error("Function audioEvent raised exception: " + std::string(e.what()));
+
+					QCoreApplication::processEvents();
 					QMessageBox::critical(this, tr("Error"), e.what());
 				}
 			}
