@@ -494,8 +494,41 @@ namespace unreal
 			this->updatePreviewImage();
 		};
 
-		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture) {
-			if (!texture)
+		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
+		{
+			if (texture && this->isVisible())
+			{
+				auto texel = texture;
+				auto texturePath = QString::fromStdString(this->profile_->environmentLightModule->texturePath);
+				if (texel && thumbnailPath->toolTip() != texturePath)
+				{
+					auto width = texel->getTextureDesc().getWidth();
+					auto height = texel->getTextureDesc().getHeight();
+					float* data_ = nullptr;
+
+					if (texel->map(0, 0, width, height, 0, (void**)&data_))
+					{
+						auto size = width * height * 3;
+						auto pixels = std::make_unique<std::uint8_t[]>(size);
+
+						for (std::size_t i = 0; i < size; i += 3)
+						{
+							pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
+							pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
+							pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
+						}
+
+						texel->unmap();
+
+						QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+						auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
+
+						this->setPreviewImage(QFileInfo(texturePath).fileName(), previewImage);
+						this->setThumbnailImage(texturePath, *previewImage);
+					}
+				}
+			}
+			else
 			{
 				this->previewName_->setText(tr("Untitled"));
 				this->thumbnailPath->clear();
@@ -808,32 +841,42 @@ namespace unreal
 
 		auto texel = this->profile_->environmentLightModule->texture.getValue();
 		auto texturePath = QString::fromStdString(this->profile_->environmentLightModule->texturePath);
-		if (texel && thumbnailPath->toolTip() != texturePath)
+		if (texel)
 		{
-			auto width = texel->getTextureDesc().getWidth();
-			auto height = texel->getTextureDesc().getHeight();
-			float* data_ = nullptr;
-
-			if (texel->map(0, 0, width, height, 0, (void**)&data_))
+			if (thumbnailPath->toolTip() != texturePath)
 			{
-				auto size = width * height * 3;
-				auto pixels = std::make_unique<std::uint8_t[]>(size);
+				auto width = texel->getTextureDesc().getWidth();
+				auto height = texel->getTextureDesc().getHeight();
+				float* data_ = nullptr;
 
-				for (std::size_t i = 0; i < size; i += 3)
+				if (texel->map(0, 0, width, height, 0, (void**)&data_))
 				{
-					pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
-					pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
-					pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
+					auto size = width * height * 3;
+					auto pixels = std::make_unique<std::uint8_t[]>(size);
+
+					for (std::size_t i = 0; i < size; i += 3)
+					{
+						pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
+						pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
+						pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
+					}
+
+					texel->unmap();
+
+					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+					auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
+
+					this->setPreviewImage(QFileInfo(texturePath).fileName(), previewImage);
+					this->setThumbnailImage(texturePath, *previewImage);
 				}
-
-				texel->unmap();
-
-				QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-				auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
-
-				this->setPreviewImage(QFileInfo(texturePath).fileName(), previewImage);
-				this->setThumbnailImage(texturePath, *previewImage);
 			}
+		}
+		else
+		{
+			this->previewName_->setText(tr("Untitled"));
+			this->thumbnailPath->clear();
+			this->thumbnailPath->setToolTip(QString());
+			this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 		}
 
 		this->updatePreviewImage();
