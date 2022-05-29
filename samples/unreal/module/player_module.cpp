@@ -30,6 +30,8 @@ namespace unreal
 	void 
 	PlayerModule::load(octoon::runtime::json& reader) noexcept
 	{
+		if (reader["finish"].is_boolean())
+			this->finish = reader["finish"].get<nlohmann::json::boolean_t>();
 		if (reader["playFps"].is_number_float())
 			this->playFps = reader["playFps"].get<nlohmann::json::number_float_t>();
 		if (reader["recordFps"].is_number_float())
@@ -41,6 +43,7 @@ namespace unreal
 	void 
 	PlayerModule::save(octoon::runtime::json& writer) noexcept
 	{
+		writer["finish"] = this->finish.getValue();
 		writer["playFps"] = this->playFps.getValue();
 		writer["recordFps"] = this->recordFps.getValue();
 		writer["previewFps"] = this->previewFps.getValue();
