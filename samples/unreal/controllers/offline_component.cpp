@@ -15,6 +15,12 @@ namespace unreal
 	void
 	OfflineComponent::onInit() noexcept
 	{
+		auto videoFeature = this->getFeature<octoon::VideoFeature>();
+		if (videoFeature)
+		{
+			videoFeature->setCachePath(this->getContext()->profile->resourceModule->cachePath);
+		}
+
 		this->getModel()->enable += [this](bool enable)
 		{
 			this->getModel()->sppCount = 0;

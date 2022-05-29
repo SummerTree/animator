@@ -65,8 +65,6 @@ namespace octoon
 
 	inline void SaveBinaries(std::string const& name, std::vector<std::uint8_t>& data)
 	{
-		std::filesystem::create_directories(name);
-
 		std::ofstream out(name, std::ios::out | std::ios::binary);
 		if (out)
 			out.write((char*)&data[0], data.size());

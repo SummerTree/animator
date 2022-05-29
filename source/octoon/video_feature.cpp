@@ -104,6 +104,18 @@ namespace octoon
 		return Renderer::instance()->getMaxBounces();
 	}
 
+	void
+	VideoFeature::setCachePath(std::string_view path)
+	{
+		Renderer::instance()->setCachePath(path);
+	}
+
+	const std::string&
+	VideoFeature::getCachePath() const
+	{
+		return Renderer::instance()->getCachePath();
+	}
+
 	std::uint32_t
 	VideoFeature::getSampleCounter() const noexcept
 	{

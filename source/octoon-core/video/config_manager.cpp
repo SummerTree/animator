@@ -35,13 +35,14 @@
 
 namespace octoon
 {
-	ConfigManager::ConfigManager(std::string_view deviceName) noexcept(false)
+	ConfigManager::ConfigManager(std::string_view deviceName, std::string_view path) noexcept(false)
 		: width_(0)
 		, height_(0)
 		, framebufferWidth_(0)
 		, framebufferHeight_(0)
 		, dirty_(true)
 		, currentRenderDeviceName(deviceName)
+		, cachePath_(path)
 	{
 		this->init();
 	}
@@ -237,12 +238,15 @@ namespace octoon
 		for (std::size_t i = 0; i < this->configs_.size(); ++i)
 		{
 			int count = static_cast<int>(configs_[i].context.GetDeviceCount());
+
 			for (int deviceIdx = 0; deviceIdx < count; ++deviceIdx)
+			{
 				spdlog::info("Config ID: {}. Config Name: {}",
 					reinterpret_cast<std::uint32_t>(configs_[i].context.GetDevice(deviceIdx).GetID()),
 					configs_[i].context.GetDevice(deviceIdx).GetName());
+			}
 
-			this->configs_[i].factory = std::make_unique<ClwRenderFactory>(this->configs_[i].context, "cache");
+			this->configs_[i].factory = std::make_unique<ClwRenderFactory>(this->configs_[i].context, cachePath_);
 			this->configs_[i].controller = this->configs_[i].factory->createSceneController();
 			this->configs_[i].pipeline = this->configs_[i].factory->createPipeline();
 		}
@@ -286,6 +290,18 @@ namespace octoon
 		if (!configs_.empty())
 			return dynamic_cast<MonteCarloRenderer*>(configs_.front().pipeline.get())->getMaxBounces();
 		return 0;
+	}
+
+	void
+	ConfigManager::setCachePath(std::string_view path)
+	{
+		cachePath_ = path;
+	}
+
+	const std::string&
+	ConfigManager::getCachePath() const
+	{
+		return cachePath_;
 	}
 
 	std::uint32_t
