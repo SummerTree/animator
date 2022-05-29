@@ -250,55 +250,36 @@ namespace unreal
 	{
 		spdlog::debug("Entered audioEvent");
 
-		auto audioSignal = [this](bool enable) -> bool
+		try
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
-				try
+				if (!audioEnable_)
 				{
-					if (enable)
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
+					if (!fileName.isEmpty())
 					{
-						QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
-						if (!fileName.isEmpty())
-						{
-							profile_->soundModule->filepath = fileName.toUtf8().data();
-							return true;
-						}
-					}
-					else
-					{
-						profile_->soundModule->filepath = std::string();
-						return true;
+						profile_->soundModule->filepath = fileName.toUtf8().data();
+						audioButton_->setIcon(audioOnIcon_);
+						audioEnable_ = true;
 					}
 				}
-				catch (const std::exception& e)
+				else
 				{
-					spdlog::error("Function audioEvent raised exception: " + std::string(e.what()));
-
-					QCoreApplication::processEvents();
-					QMessageBox::critical(this, tr("Error"), e.what());
+					profile_->soundModule->filepath = std::string();
+					audioButton_->setIcon(audioIcon_);
+					audioEnable_ = false;
 				}
 			}
-
-			return false;
-		};
-
-		if (!audioEnable_)
-		{
-			if (audioSignal(true))
-			{
-				audioButton_->setIcon(audioOnIcon_);
-				audioEnable_ = true;
-			}
 		}
-		else
+		catch (const std::exception& e)
 		{
-			if (audioSignal(false))
-			{
-				audioButton_->setIcon(audioIcon_);
-				audioEnable_ = false;
-			}
+			spdlog::error("Function audioEvent raised exception: " + std::string(e.what()));
+
+			QCoreApplication::processEvents();
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
+
 		spdlog::debug("Exited audioEvent");
 	}
 
