@@ -658,36 +658,36 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="137"/>
+        <location filename="../views/model_dock.cpp" line="140"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="137"/>
+        <location filename="../views/model_dock.cpp" line="140"/>
         <source>Are you sure you want to delete this model?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="161"/>
+        <location filename="../views/model_dock.cpp" line="164"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="161"/>
+        <location filename="../views/model_dock.cpp" line="164"/>
         <source>PMX Files (*.pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="170"/>
-        <location filename="../views/model_dock.cpp" line="171"/>
-        <location filename="../views/model_dock.cpp" line="219"/>
-        <location filename="../views/model_dock.cpp" line="220"/>
+        <location filename="../views/model_dock.cpp" line="173"/>
+        <location filename="../views/model_dock.cpp" line="174"/>
+        <location filename="../views/model_dock.cpp" line="222"/>
+        <location filename="../views/model_dock.cpp" line="223"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="170"/>
-        <location filename="../views/model_dock.cpp" line="219"/>
+        <location filename="../views/model_dock.cpp" line="173"/>
+        <location filename="../views/model_dock.cpp" line="222"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -705,36 +705,36 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="139"/>
+        <location filename="../views/motion_dock.cpp" line="141"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="139"/>
+        <location filename="../views/motion_dock.cpp" line="141"/>
         <source>Are you sure you want to delete this motion data?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="163"/>
+        <location filename="../views/motion_dock.cpp" line="165"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="163"/>
+        <location filename="../views/motion_dock.cpp" line="165"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="174"/>
-        <location filename="../views/motion_dock.cpp" line="175"/>
-        <location filename="../views/motion_dock.cpp" line="224"/>
-        <location filename="../views/motion_dock.cpp" line="225"/>
+        <location filename="../views/motion_dock.cpp" line="176"/>
+        <location filename="../views/motion_dock.cpp" line="177"/>
+        <location filename="../views/motion_dock.cpp" line="226"/>
+        <location filename="../views/motion_dock.cpp" line="227"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="174"/>
-        <location filename="../views/motion_dock.cpp" line="224"/>
+        <location filename="../views/motion_dock.cpp" line="176"/>
+        <location filename="../views/motion_dock.cpp" line="226"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

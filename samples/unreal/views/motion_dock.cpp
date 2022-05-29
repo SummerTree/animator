@@ -88,10 +88,12 @@ namespace unreal
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setObjectName("preview");
 			imageLabel->setFixedSize(QSize(100, 100));
+			imageLabel->installEventFilter(this);
 
 			QLabel* nameLabel = new QLabel();
 			nameLabel->setObjectName("name");
 			nameLabel->setFixedHeight(30);
+			nameLabel->installEventFilter(this);
 
 			QVBoxLayout* widgetLayout = new QVBoxLayout;
 			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);

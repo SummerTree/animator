@@ -25,6 +25,7 @@ namespace unreal
 		importButton_ = new QToolButton;
 		importButton_->setObjectName("Import");
 		importButton_->setText(tr("Import"));
+		importButton_->installEventFilter(this);
 
 		topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
@@ -85,11 +86,13 @@ namespace unreal
 		{
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setObjectName("preview");
-			imageLabel->setFixedSize(QSize(155, 155));
+			imageLabel->setFixedSize(QSize(150, 150));
+			imageLabel->installEventFilter(this);
 
 			QLabel* nameLabel = new QLabel();
 			nameLabel->setObjectName("name");
 			nameLabel->setFixedHeight(30);
+			nameLabel->installEventFilter(this);
 
 			QVBoxLayout* widgetLayout = new QVBoxLayout;
 			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
@@ -102,7 +105,7 @@ namespace unreal
 
 			QListWidgetItem* item = new QListWidgetItem;
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
+			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(15, 15));
 
 			listWidget_->addItem(item);
 			listWidget_->setItemWidget(item, widget);
@@ -253,5 +256,19 @@ namespace unreal
 
 		for (auto& uuid : this->profile_->resourceModule->modelIndexList_.getValue())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
+	}
+
+	bool
+	ModelDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }
