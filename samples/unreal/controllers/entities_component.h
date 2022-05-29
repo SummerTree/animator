@@ -3,7 +3,7 @@
 
 #include "../utils/pmm.h"
 #include "../unreal_component.h"
-#include "../module/file_module.h"
+#include "../module/sound_module.h"
 #include "../module/entities_module.h"
 
 #include <optional>

@@ -91,7 +91,6 @@ namespace unreal
 			imageLabel->installEventFilter(this);
 
 			QLabel* nameLabel = new QLabel();
-			nameLabel->setObjectName("name");
 			nameLabel->setFixedHeight(30);
 			nameLabel->installEventFilter(this);
 
@@ -126,6 +125,7 @@ namespace unreal
 				QFontMetrics metrics(nameLabel->font());
 
 				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+				item->setWhatsThis(name);
 				imageLabel->setToolTip(name);
 				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
 				nameLabel->setToolTip(name);

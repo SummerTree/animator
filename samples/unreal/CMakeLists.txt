@@ -24,8 +24,8 @@ SET(MAIN_LIST
 SOURCE_GROUP("launcher" FILES ${MAIN_LIST})
 
 SET(MODULES_LIST
-	${SOURCE_PATH}/module/file_module.h
-	${SOURCE_PATH}/module/file_module.cpp
+	${SOURCE_PATH}/module/sound_module.h
+	${SOURCE_PATH}/module/sound_module.cpp
 	${SOURCE_PATH}/module/camera_module.h
 	${SOURCE_PATH}/module/camera_module.cpp
 	${SOURCE_PATH}/module/main_light_module.h

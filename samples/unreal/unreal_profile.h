@@ -7,7 +7,7 @@
 #include "module/encode_module.h"
 #include "module/physics_module.h"
 #include "module/player_module.h"
-#include "module/file_module.h"
+#include "module/sound_module.h"
 #include "module/entities_module.h"
 #include "module/offline_module.h"
 #include "module/record_module.h"
@@ -40,7 +40,7 @@ namespace unreal
 
 	public:
 		std::shared_ptr<RecordModule> recordModule;
-		std::shared_ptr<FileModule> fileModule;
+		std::shared_ptr<SoundModule> soundModule;
 		std::shared_ptr<EntitiesModule> entitiesModule;
 		std::shared_ptr<EncodeModule> encodeModule;
 		std::shared_ptr<PhysicsModule> physicsModule;

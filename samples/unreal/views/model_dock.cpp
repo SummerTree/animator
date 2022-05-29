@@ -164,8 +164,8 @@ namespace unreal
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("PMX Files (*.pmx)"));
 		if (!filepaths.isEmpty())
 		{
-			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<ModelComponent>();
-			if (!hdrComponent)
+			auto modelComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<ModelComponent>();
+			if (!modelComponent)
 				return;
 
 			try
@@ -184,16 +184,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = hdrComponent->importModel(filepaths[i].toStdString());
+					auto package = modelComponent->importModel(filepaths[i].toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				hdrComponent->save();
+				modelComponent->save();
 			}
 			catch (...)
 			{
-				hdrComponent->save();
+				modelComponent->save();
 			}
 		}
 	}

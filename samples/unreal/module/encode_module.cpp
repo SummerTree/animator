@@ -38,6 +38,8 @@ namespace unreal
 		writer["crf"] = this->crf.getValue();
 		writer["frame_type"] = this->frame_type.getValue();
 		writer["encode_speed"] = this->encode_speed.getValue();
+		writer["quality"] = this->quality.getValue();
+		writer["encodeMode"] = this->encodeMode.getValue();
 	}
 
 	void

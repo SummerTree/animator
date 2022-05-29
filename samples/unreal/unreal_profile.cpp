@@ -9,7 +9,7 @@ namespace unreal
 		: physicsModule(std::make_shared<PhysicsModule>())
 		, encodeModule(std::make_shared<EncodeModule>())
 		, playerModule(std::make_shared<PlayerModule>())
-		, fileModule(std::make_shared<FileModule>())
+		, soundModule(std::make_shared<SoundModule>())
 		, entitiesModule(std::make_shared<EntitiesModule>())
 		, offlineModule(std::make_shared<OfflineModule>())
 		, recordModule(std::make_shared<RecordModule>())
@@ -38,7 +38,7 @@ namespace unreal
 			if (json.find("time") != json.end())
 				this->playerModule->load(json["time"]);
 			if (json.find("file") != json.end())
-				this->fileModule->load(json["file"]);
+				this->soundModule->load(json["file"]);
 			if (json.find("entities") != json.end())
 				this->entitiesModule->load(json["entities"]);
 			if (json.find("offline") != json.end())
@@ -74,7 +74,7 @@ namespace unreal
 		this->physicsModule->disconnect();
 		this->encodeModule->disconnect();
 		this->playerModule->disconnect();
-		this->fileModule->disconnect();
+		this->soundModule->disconnect();
 		this->entitiesModule->disconnect();
 		this->offlineModule->disconnect();
 		this->recordModule->disconnect();
@@ -104,7 +104,7 @@ namespace unreal
 			profile.physicsModule->save(json["physics"]);
 			profile.encodeModule->save(json["encode"]);
 			profile.playerModule->save(json["time"]);
-			profile.fileModule->save(json["file"]);
+			profile.soundModule->save(json["sound"]);
 			profile.entitiesModule->save(json["entities"]);
 			profile.offlineModule->save(json["offline"]);
 			profile.cameraModule->save(json["camera"]);
