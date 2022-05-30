@@ -14,18 +14,42 @@ namespace unreal
 	void
 	EntitiesModule::reset() noexcept
 	{
-		this->camera.getValue().reset();
+		this->entities.getValue().clear();
 		this->objects.clear();
-		this->objects.shrink_to_fit();
 	}
 
 	void 
 	EntitiesModule::load(octoon::runtime::json& reader) noexcept
 	{
+		if (reader["entities"].is_array())
+		{
+			for (auto& it : reader["entities"])
+			{
+				EntitesObject object;
+				object.name = it["name"].get<nlohmann::json::string_t>();
+				object.filepath = it["filepath"].get<nlohmann::json::string_t>();
+
+				this->entities.getValue().push_back(object);
+			}
+
+			this->entities.submit();
+		}
 	}
 
 	void 
-	EntitiesModule::save(octoon::runtime::json& reader) noexcept
+	EntitiesModule::save(octoon::runtime::json& writer) noexcept
 	{
+		nlohmann::json jsons;
+
+		for (auto& it : this->entities.getValue())
+		{
+			nlohmann::json json;
+			json["name"] = it.name;
+			json["filepath"] = it.filepath;
+
+			jsons.push_back(std::move(json));
+		}
+
+		writer["entities"] = jsons;
 	}
 }

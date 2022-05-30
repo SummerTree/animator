@@ -2,7 +2,7 @@
 #define UNREAL_SOUND_MODULE_H_
 
 #include <unreal_model.h>
-#include <vector>
+#include <octoon/game_object.h>
 
 namespace unreal
 {
@@ -24,6 +24,7 @@ namespace unreal
 	public:
 		MutableLiveData<float> volume;
 		MutableLiveData<std::string> filepath;
+		MutableLiveData<octoon::GameObjectPtr> sound;
 	};
 }
 

@@ -2,6 +2,7 @@
 #define UNREAL_CAMERA_MODULE_H_
 
 #include <unreal_model.h>
+#include <octoon/game_object.h>
 #include <octoon/math/vector2.h>
 #include <octoon/math/vector3.h>
 #include <octoon/hal/graphics_texture.h>
@@ -34,6 +35,7 @@ namespace unreal
 		MutableLiveData<octoon::math::float3> translate;
 		MutableLiveData<octoon::math::float3> rotation;
 		MutableLiveData<std::string> animation;
+		MutableLiveData<octoon::GameObjectPtr> camera;
 	};
 }
 

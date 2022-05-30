@@ -1,5 +1,6 @@
 #include "unreal_behaviour.h"
 #include <filesystem>
+#include "../utils/pmm_loader.h"
 
 namespace unreal
 {
@@ -21,12 +22,19 @@ namespace unreal
 	bool
 	UnrealBehaviour::open(std::string_view path) noexcept(false)
 	{
+		if (!profile_->entitiesModule->objects.empty())
+			profile_->entitiesModule->objects.clear();
+
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".pmm")
 		{
-			entitiesComponent_->importPMM(path);
+			PMMLoader::load(*profile_, path);
+
 			playerComponent_->updateTimeLength();
 			playerComponent_->reset();
+
+			this->sendMessage("editor:project:open");
+
 			return true;
 		}
 		else if (ext == ".agp")
@@ -57,7 +65,7 @@ namespace unreal
 
 		this->profile_->soundModule->reset();
 		this->profile_->cameraModule->reset();
-		this->profile_->entitiesModule->objects.clear();
+		this->profile_->entitiesModule->reset();
 		this->profile_->mainLightModule->reset();
 		this->profile_->environmentLightModule->reset();
 		this->profile_->selectorModule->reset();
@@ -149,7 +157,7 @@ namespace unreal
 	std::optional<octoon::RaycastHit>
 	UnrealBehaviour::raycastHit(const octoon::math::float2& pos) noexcept
 	{
-		auto camera = this->profile_->entitiesModule->camera.getValue();
+		auto camera = this->profile_->cameraModule->camera.getValue();
 		if (camera)
 		{
 			auto cameraComponent = camera->getComponent<octoon::CameraComponent>();

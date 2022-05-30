@@ -108,7 +108,7 @@ namespace unreal
 			this->update();
 		};
 
-		profile->entitiesModule->sound += [this](const octoon::GameObjectPtr& value) {
+		profile->soundModule->sound += [this](const octoon::GameObjectPtr& value) {
 			this->update();
 		};
 
@@ -373,7 +373,7 @@ namespace unreal
 			}
 		}
 
-		if (this->profile_->entitiesModule->sound.getValue())
+		if (this->profile_->soundModule->sound.getValue())
 		{
 			if (!audioEnable_)
 			{

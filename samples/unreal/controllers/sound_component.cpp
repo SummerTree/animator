@@ -17,14 +17,14 @@ namespace unreal
 	{
 		this->getModel()->enable += [this](bool enable)
 		{
-			auto sound = this->getContext()->profile->entitiesModule->sound.getValue();
+			auto sound = this->getContext()->profile->soundModule->sound.getValue();
 			if (sound)
 				sound->setActive(enable);
 		};
 
 		this->getModel()->volume += [this](float value)
 		{
-			auto sound = this->getContext()->profile->entitiesModule->sound.getValue();
+			auto sound = this->getContext()->profile->soundModule->sound.getValue();
 			if (sound)
 			{
 				auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
@@ -40,11 +40,11 @@ namespace unreal
 				audio->setName(path);
 				audio->addComponent<octoon::AudioSourceComponent>()->setAudioReader(octoon::AudioLoader::load(path));
 
-				this->getContext()->profile->entitiesModule->sound = audio;
+				this->getContext()->profile->soundModule->sound = audio;
 			}
 			else
 			{
-				this->getContext()->profile->entitiesModule->sound = nullptr;
+				this->getContext()->profile->soundModule->sound = nullptr;
 			}
 		};
 	}

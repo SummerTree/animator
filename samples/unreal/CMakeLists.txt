@@ -174,6 +174,8 @@ SOURCE_GROUP("launcher\\controllers" FILES ${CONTROLLERS_LIST})
 SET(UTILS_LIST
 	${SOURCE_PATH}/utils/pmm.h
 	${SOURCE_PATH}/utils/pmm.cpp
+	${SOURCE_PATH}/utils/pmm_loader.h
+	${SOURCE_PATH}/utils/pmm_loader.cpp
 )
 SOURCE_GROUP("launcher\\utils" FILES ${UTILS_LIST})
 

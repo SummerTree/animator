@@ -365,7 +365,7 @@ namespace octoon
 
 		if (!model.meshes.empty())
 		{
-			GameObjectPtr actor = GameObject::create(filepath);
+			GameObjectPtr actor = GameObject::create();
 
 			GameObjects bones;
 

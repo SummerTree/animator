@@ -18,7 +18,7 @@ namespace unreal
 	{
 		auto preofile = this->getContext()->profile;
 
-		auto& camera = preofile->entitiesModule->camera.getValue();
+		auto& camera = preofile->cameraModule->camera.getValue();
 		if (camera)
 		{
 			auto cameraComponent = camera->getComponent<octoon::CameraComponent>();

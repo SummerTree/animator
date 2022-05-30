@@ -19,7 +19,7 @@ namespace unreal
 		{
 			auto& profile = this->getContext()->profile;
 
-			auto& mainLight = profile->entitiesModule->mainLight.getValue();
+			auto& mainLight = profile->mainLightModule->mainLight.getValue();
 			if (mainLight)
 			{
 				auto lightComponment = mainLight->getComponent<octoon::DirectionalLightComponent>();
@@ -32,7 +32,7 @@ namespace unreal
 		{
 			auto& profile = this->getContext()->profile;
 
-			auto& mainLight = profile->entitiesModule->mainLight.getValue();
+			auto& mainLight = profile->mainLightModule->mainLight.getValue();
 			if (mainLight)
 			{
 				auto lightComponment = mainLight->getComponent<octoon::DirectionalLightComponent>();
@@ -45,7 +45,7 @@ namespace unreal
 		{
 			auto& profile = this->getContext()->profile;
 
-			auto& mainLight = profile->entitiesModule->mainLight.getValue();
+			auto& mainLight = profile->mainLightModule->mainLight.getValue();
 			if (mainLight)
 			{
 				auto lightComponment = mainLight->getComponent<octoon::DirectionalLightComponent>();
@@ -58,7 +58,7 @@ namespace unreal
 		{
 			auto& profile = this->getContext()->profile;
 
-			auto& mainLight = profile->entitiesModule->mainLight.getValue();
+			auto& mainLight = profile->mainLightModule->mainLight.getValue();
 			if (mainLight)
 			{
 				auto transform = mainLight->getComponent<octoon::TransformComponent>();

@@ -2,6 +2,7 @@
 #define UNREAL_MAIN_LIGHT_MODULE_H_
 
 #include <unreal_model.h>
+#include <octoon/game_object.h>
 #include <octoon/math/vector3.h>
 
 namespace unreal
@@ -28,6 +29,7 @@ namespace unreal
 		MutableLiveData<float> size;
 		MutableLiveData<octoon::math::float3> color;
 		MutableLiveData<octoon::math::float3> rotation;
+		MutableLiveData<octoon::GameObjectPtr> mainLight;
 	};
 }
 

@@ -222,7 +222,7 @@ namespace unreal
 	{
 		auto profile = this->getContext()->profile;
 
-		auto& camera = profile->entitiesModule->camera.getValue();
+		auto& camera = profile->cameraModule->camera.getValue();
 		if (camera)
 		{
 			auto cameraComponent = camera->getComponent<octoon::CameraComponent>();
@@ -247,7 +247,7 @@ namespace unreal
 	{
 		auto profile = this->getContext()->profile;
 
-		auto& camera = profile->entitiesModule->camera.getValue();
+		auto& camera = profile->cameraModule->camera.getValue();
 		if (camera)
 		{
 			auto cameraComponent = camera->getComponent<octoon::CameraComponent>();
@@ -276,7 +276,7 @@ namespace unreal
 		{
 			this->axis_ = intersect.value().object.lock()->getParent()->getName();
 
-			auto& camera = this->getContext()->profile->entitiesModule->camera.getValue();
+			auto& camera = this->getContext()->profile->cameraModule->camera.getValue();
 			if (camera)
 			{
 				auto eye = camera->getComponent<octoon::TransformComponent>()->getTranslate();

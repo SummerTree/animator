@@ -120,7 +120,7 @@ namespace unreal
 		}
 		else
 		{
-			auto camera = context->profile->entitiesModule->camera.getValue()->getComponent<octoon::CameraComponent>();
+			auto camera = context->profile->cameraModule->camera.getValue()->getComponent<octoon::CameraComponent>();
 			auto colorTexture = camera->getFramebuffer()->getFramebufferDesc().getColorAttachments().front().getBindingTexture();
 			if (colorTexture)
 			{

@@ -4,6 +4,7 @@
 #include <unreal_model.h>
 #include <octoon/math/vector2.h>
 #include <octoon/math/vector3.h>
+#include <octoon/game_object.h>
 #include <octoon/hal/graphics_texture.h>
 
 namespace unreal
@@ -33,6 +34,7 @@ namespace unreal
 		MutableLiveData<octoon::math::float3> color;
 		MutableLiveData<std::string> texturePath;
 		MutableLiveData<std::shared_ptr<octoon::GraphicsTexture>> texture;
+		MutableLiveData<octoon::GameObjectPtr> environmentLight;
 	};
 }
 

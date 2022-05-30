@@ -6,6 +6,13 @@
 
 namespace unreal
 {
+	class EntitesObject
+	{
+	public:
+		std::string name;
+		std::string filepath;
+	};
+
 	class EntitiesModule final : public UnrealModule
 	{
 	public:
@@ -23,10 +30,8 @@ namespace unreal
 
 	public:
 		octoon::GameObjects objects;
-		MutableLiveData<octoon::GameObjectPtr> camera;
-		MutableLiveData<octoon::GameObjectPtr> sound;
-		MutableLiveData<octoon::GameObjectPtr> mainLight;
-		MutableLiveData<octoon::GameObjectPtr> environmentLight;
+
+		MutableLiveData<std::vector<EntitesObject>> entities;
 	};
 }
 

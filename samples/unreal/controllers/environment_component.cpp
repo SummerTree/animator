@@ -20,7 +20,7 @@ namespace unreal
 	{
 		this->getModel()->showBackground += [this](bool value)
 		{
-			auto& environmentLight = this->getContext()->profile->entitiesModule->environmentLight.getValue();
+			auto& environmentLight = this->getContext()->profile->environmentLightModule->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto enviromentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -38,7 +38,7 @@ namespace unreal
 			auto& model = this->getModel();
 			auto& profile = this->getContext()->profile;
 
-			auto& environmentLight = profile->entitiesModule->environmentLight.getValue();
+			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto enviromentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -59,7 +59,7 @@ namespace unreal
 			auto& model = this->getModel();
 			auto& profile = this->getContext()->profile;
 
-			auto& environmentLight = profile->entitiesModule->environmentLight.getValue();
+			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto srgb = octoon::math::srgb2linear<float>(value);
@@ -81,7 +81,7 @@ namespace unreal
 		{
 			auto& profile = this->getContext()->profile;
 
-			auto& environmentLight = profile->entitiesModule->environmentLight.getValue();
+			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto environmentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -106,7 +106,7 @@ namespace unreal
 			auto& model = this->getModel();
 			auto& profile = this->getContext()->profile;
 
-			auto& environmentLight = profile->entitiesModule->environmentLight.getValue();
+			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto environmentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -139,7 +139,7 @@ namespace unreal
 			this->texture_ = texture;
 			this->radianceTexture_ = texture ? octoon::PMREMLoader::load(this->texture_) : nullptr;
 
-			auto& environmentLight = profile->entitiesModule->environmentLight.getValue();
+			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto environmentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();

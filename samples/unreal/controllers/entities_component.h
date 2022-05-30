@@ -19,25 +19,14 @@ namespace unreal
 
 		void importAbc(std::string_view path) noexcept(false);
 		void importAss(std::string_view path) noexcept(false);
-		void importPMM(std::string_view path) noexcept(false);
 		bool importModel(std::string_view path) noexcept;
-		void importHDRi(std::string_view path) noexcept;
-		void importHDRi(const std::shared_ptr<octoon::GraphicsTexture>& texture) noexcept;
 
 		bool exportModel(std::string_view path) noexcept;
-
-		void clearHDRi() noexcept;
 
 		virtual const std::type_info& type_info() const noexcept
 		{
 			return typeid(EntitiesComponent);
 		}
-
-	private:
-		octoon::GameObjectPtr createCamera(const octoon::PMMFile& pmm) noexcept;
-		void setupBoneAnimation(const octoon::PmmModel& model, octoon::AnimationClips<float>& clips) noexcept;
-		void setupMorphAnimation(const octoon::PmmModel& model, octoon::AnimationClip<float>& clips) noexcept;
-		void setupCameraAnimation(const std::vector<octoon::PmmKeyframeCamera>& camera, octoon::Animation<float>& animtion) noexcept;
 
 	private:
 		void onInit() noexcept override;

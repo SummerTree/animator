@@ -193,7 +193,7 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		profile_->entitiesModule->camera += [this](const octoon::GameObjectPtr& camera) {
+		profile_->cameraModule->camera += [this](const octoon::GameObjectPtr& camera) {
 			if (camera)
 			{
 				if (camera->getComponent<octoon::AnimatorComponent>())
@@ -300,7 +300,7 @@ namespace unreal
 	void
 	CameraDock::onFocusDistanceChanged(double value)
 	{
-		auto& camera = profile_->entitiesModule->camera.getValue();
+		auto& camera = profile_->cameraModule->camera.getValue();
 		if (camera)
 		{
 			if (!focusDistanceSpinbox_->specialValueText().isEmpty())
@@ -352,7 +352,7 @@ namespace unreal
 	void
 	CameraDock::showEvent(QShowEvent* event)
 	{
-		auto mainCamera = profile_->entitiesModule->camera.getValue();
+		auto mainCamera = profile_->cameraModule->camera.getValue();
 
 		fovSpinbox_->setValue(profile_->cameraModule->fov);
 		focalLengthSpinbox_->setValue(profile_->cameraModule->focalLength);
