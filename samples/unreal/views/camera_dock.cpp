@@ -110,7 +110,7 @@ namespace unreal
 		focalLengthSpinbox_->setMinimum(1.0f);
 		focalLengthSpinbox_->setMaximum(1200.0f);
 		focalLengthSpinbox_->setValue(31.18f);
-		focalLengthSpinbox_->setSingleStep(0.1f);
+		focalLengthSpinbox_->setSingleStep(1.0f);
 		focalLengthSpinbox_->setAlignment(Qt::AlignRight);
 		focalLengthSpinbox_->setSuffix(tr("mm"));
 		focalLengthSpinbox_->setFixedWidth(100);
