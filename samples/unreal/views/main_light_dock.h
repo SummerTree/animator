@@ -7,10 +7,11 @@
 
 #include "unreal_profile.h"
 #include "../widgets/color_dialog.h"
+#include "../widgets/udockwidget.h"
 
 namespace unreal
 {
-	class MainLightDock final : public QDockWidget
+	class MainLightDock final : public UDockWidget
 	{
 		Q_OBJECT
 	public:

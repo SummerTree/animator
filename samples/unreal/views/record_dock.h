@@ -23,11 +23,12 @@
 #include "../widgets/udoublespinbox.h"
 #include "../widgets/ulabel.h"
 #include "../widgets/ucombobox.h"
+#include "../widgets/udockwidget.h"
 
 
 namespace unreal
 {
-	class RecordDock final : public QDockWidget
+	class RecordDock final : public UDockWidget
 	{
 		Q_OBJECT
 	  public:

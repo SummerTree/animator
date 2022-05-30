@@ -621,11 +621,11 @@ unreal--UComboBox {
     border-radius:2px;
     padding:1px 18px 1px 3px;
     max-width:220px;
-	border:1px solid darkgray;
+	border:1px solid rgb(80,80,80);
 }
 
 unreal--UComboBox:editable {
-    background: darkgray;
+    background: rgb(80,80,80);
 }
 
 unreal--UComboBox:on {
@@ -651,7 +651,7 @@ unreal--UComboBox::down-arrow:on {
 
 unreal--UComboBox QAbstractItemView {
 	color: rgb(220,220,220);
-    border: 2px solid darkgray;
+    border: 2px solid rgb(80,80,80);
     selection-background-color: green;
 }
 
