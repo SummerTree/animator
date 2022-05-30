@@ -12,6 +12,8 @@
 #include <qprogressdialog.h>
 #include <QToolButton>
 
+#include "../widgets/upushbutton.h"
+
 namespace unreal
 {
 	ModelDock::ModelDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
@@ -22,9 +24,10 @@ namespace unreal
 		this->setWindowTitle(tr("Model Library"));
 		this->setObjectName("ModelDock");
 
-		importButton_ = new QToolButton;
+		importButton_ = new UPushButton;
 		importButton_->setObjectName("Import");
 		importButton_->setText(tr("Import"));
+		importButton_->setFixedSize(190, 35);
 		importButton_->installEventFilter(this);
 
 		topLayout_ = new QHBoxLayout();

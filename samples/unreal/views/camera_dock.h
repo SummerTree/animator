@@ -20,6 +20,10 @@
 #include "../widgets/udockwidget.h"
 #include "../widgets/spoiler.h"
 #include "../widgets/draggable_button.h"
+#include "../widgets/uspinbox.h"
+#include "../widgets/udoublespinbox.h"
+#include "../widgets/ulabel.h"
+
 
 namespace unreal
 {
@@ -49,20 +53,20 @@ namespace unreal
 		void onUnloadAnimation();
 
 	public:
-		QLabel* dofInfoLabel_;
-		QLabel* apertureLabel_;
-		QLabel* fovLabel_;
-		QLabel* focalLengthLabel_;
-		QLabel* focusDistanceName_;
-		QLabel* focusDistanceLabel_;
-		QLabel* dofLabel_;
+		ULabel* dofInfoLabel_;
+		ULabel* apertureLabel_;
+		ULabel* fovLabel_;
+		ULabel* focalLengthLabel_;
+		ULabel* focusDistanceName_;
+		ULabel* focusDistanceLabel_;
+		ULabel* dofLabel_;
 
 		QCheckBox* dofButton_;
 		QToolButton* focusTargetButton_;
-		QDoubleSpinBox* fovSpinbox_;
-		QDoubleSpinBox* apertureSpinbox_;
-		QDoubleSpinBox* focalLengthSpinbox_;
-		QDoubleSpinBox* focusDistanceSpinbox_;
+		UDoubleSpinBox* fovSpinbox_;
+		UDoubleSpinBox* apertureSpinbox_;
+		UDoubleSpinBox* focalLengthSpinbox_;
+		UDoubleSpinBox* focusDistanceSpinbox_;
 
 		QToolButton* loadButton_;
 		QToolButton* unloadButton_;

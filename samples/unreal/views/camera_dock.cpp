@@ -8,42 +8,6 @@
 
 namespace unreal
 {
-	class SpinBox final : public QSpinBox
-	{
-	public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QSpinBox::focusOutEvent(event);
-		}
-	};
-
-	class DoubleSpinBox final : public QDoubleSpinBox
-	{
-	public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QDoubleSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QDoubleSpinBox::focusOutEvent(event);
-		}
-	};
-
 	CameraDock::CameraDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept
 		: behaviour_(behaviour)
 		, profile_(profile)
@@ -51,11 +15,11 @@ namespace unreal
 		this->setObjectName("CameraDock");
 		this->setWindowTitle(tr("Camera"));
 
-		fovLabel_ = new QLabel();
+		fovLabel_ = new ULabel();
 		fovLabel_->setText(tr("fov:"));
 		fovLabel_->setStyleSheet("color: rgb(200,200,200);");
 
-		fovSpinbox_ = new DoubleSpinBox();
+		fovSpinbox_ = new UDoubleSpinBox();
 		fovSpinbox_->setMinimum(1.0f);
 		fovSpinbox_->setMaximum(120.0f);
 		fovSpinbox_->setValue(60.0f);
@@ -66,11 +30,11 @@ namespace unreal
 		fovSpinbox_->setDecimals(1);
 		fovSpinbox_->installEventFilter(this);
 
-		dofInfoLabel_ = new QLabel();
+		dofInfoLabel_ = new ULabel();
 		dofInfoLabel_->setText(tr("* The following parameters take effect on rendering"));
 		dofInfoLabel_->setStyleSheet("color: rgb(100,100,100);");
 
-		dofLabel_ = new QLabel();
+		dofLabel_ = new ULabel();
 		dofLabel_->setText(tr("Depth Of Filed:"));
 
 		dofButton_ = new QCheckBox();
@@ -83,11 +47,11 @@ namespace unreal
 		dofLayout_->setSpacing(0);
 		dofLayout_->setContentsMargins(0, 0, 0, 0);
 
-		apertureLabel_ = new QLabel();
+		apertureLabel_ = new ULabel();
 		apertureLabel_->setText(tr("Aperture:"));
 		apertureLabel_->setStyleSheet("color: rgb(200,200,200);");
 
-		apertureSpinbox_ = new DoubleSpinBox();
+		apertureSpinbox_ = new UDoubleSpinBox();
 		apertureSpinbox_->setMinimum(1.0f);
 		apertureSpinbox_->setMaximum(64.0f);
 		apertureSpinbox_->setValue(64.0f);
@@ -98,15 +62,15 @@ namespace unreal
 		apertureSpinbox_->setDecimals(1);
 		apertureSpinbox_->installEventFilter(this);
 
-		focalLengthLabel_ = new QLabel();
+		focalLengthLabel_ = new ULabel();
 		focalLengthLabel_->setText(tr("Focal Length (35mmfilm):"));
 		focalLengthLabel_->setStyleSheet("color: rgb(200,200,200);");
 
-		focusDistanceLabel_ = new QLabel();
+		focusDistanceLabel_ = new ULabel();
 		focusDistanceLabel_->setText(tr("Focus Distance:"));
 		focusDistanceLabel_->setStyleSheet("color: rgb(200,200,200);");
 
-		focalLengthSpinbox_ = new DoubleSpinBox();
+		focalLengthSpinbox_ = new UDoubleSpinBox();
 		focalLengthSpinbox_->setMinimum(1.0f);
 		focalLengthSpinbox_->setMaximum(1200.0f);
 		focalLengthSpinbox_->setValue(31.18f);
@@ -116,7 +80,7 @@ namespace unreal
 		focalLengthSpinbox_->setFixedWidth(100);
 		focalLengthSpinbox_->installEventFilter(this);
 
-		focusDistanceSpinbox_ = new DoubleSpinBox();
+		focusDistanceSpinbox_ = new UDoubleSpinBox();
 		focusDistanceSpinbox_->setMinimum(0);
 		focusDistanceSpinbox_->setMaximum(std::numeric_limits<float>::infinity());
 		focusDistanceSpinbox_->setValue(0);
@@ -126,7 +90,7 @@ namespace unreal
 		focusDistanceSpinbox_->setFixedWidth(100);
 		focusDistanceSpinbox_->installEventFilter(this);
 
-		focusDistanceName_ = new QLabel();
+		focusDistanceName_ = new ULabel();
 		focusDistanceName_->setText(tr("Target: Empty"));
 		focusDistanceName_->setStyleSheet("color: rgb(200,200,200);");
 

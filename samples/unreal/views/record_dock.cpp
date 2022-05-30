@@ -8,42 +8,6 @@
 
 namespace unreal
 {
-	class SpinBox final : public QSpinBox
-	{
-	  public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QSpinBox::focusOutEvent(event);
-		}
-	};
-
-	class DoubleSpinBox final : public QDoubleSpinBox
-	{
-	  public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QDoubleSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QDoubleSpinBox::focusOutEvent(event);
-		}
-	};
-
 	RecordDock::RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept
 		: behaviour_(behaviour)
 		, profile_(profile)
@@ -57,7 +21,7 @@ namespace unreal
 		markButton_->setIconSize(QSize(139, 143));
 		markButton_->installEventFilter(this);
 
-		quality_ = new QLabel();
+		quality_ = new ULabel();
 		quality_->setText(tr("Render Quality"));
 
 		select1_ = new QToolButton();
@@ -77,7 +41,7 @@ namespace unreal
 		group_->addButton(select1_, 0);
 		group_->addButton(select2_, 1);
 
-		videoRatio_ = new QLabel();
+		videoRatio_ = new ULabel();
 		videoRatio_->setText(tr("Frame Per Second"));
 
 		speed1_ = new QToolButton();
@@ -112,40 +76,40 @@ namespace unreal
 		speedGroup_->addButton(speed4_, 3);
 
 		// output video type
-		outputType_ = new QLabel();
+		outputType_ = new ULabel();
 		outputType_->setText(tr("Output Type"));
 
-		outputTypeCombo_ = new QComboBox();
+		outputTypeCombo_ = new UComboBox();
 		outputTypeCombo_->addItem(tr("H265"));
 		outputTypeCombo_->addItem(tr("H264"));
 		outputTypeCombo_->addItem(tr("Frame Sequence"));
 		outputTypeCombo_->setStyleSheet("color:white");
 		outputTypeCombo_->installEventFilter(this);
 
-		frame_ = new QLabel();
+		frame_ = new ULabel();
 		frame_->setText(tr("Play:"));
 
-		startLabel_ = new QLabel();
+		startLabel_ = new ULabel();
 		startLabel_->setText(tr("Start"));
 
-		endLabel_ = new QLabel();
+		endLabel_ = new ULabel();
 		endLabel_->setText(tr("- End"));
 
-		startFrame_ = new SpinBox();
+		startFrame_ = new USpinBox();
 		startFrame_->setObjectName("start");
 		startFrame_->setAlignment(Qt::AlignRight);
 		startFrame_->setMinimum(0);
 		startFrame_->setMaximum(99999);
 		startFrame_->installEventFilter(this);
 
-		endFrame_ = new SpinBox();
+		endFrame_ = new USpinBox();
 		endFrame_->setObjectName("end");
 		endFrame_->setAlignment(Qt::AlignRight);
 		endFrame_->setMinimum(0);
 		endFrame_->setMaximum(99999);
 		endFrame_->installEventFilter(this);
 
-		denoiseLabel_ = new QLabel();
+		denoiseLabel_ = new ULabel();
 		denoiseLabel_->setText(tr("Denoise:"));
 
 		denoiseButton_ = new QCheckBox();
@@ -158,11 +122,11 @@ namespace unreal
 		denoiseLayout_->setSpacing(0);
 		denoiseLayout_->setContentsMargins(0, 0, 0, 0);
 
-		bouncesLabel_ = new QLabel();
+		bouncesLabel_ = new ULabel();
 		bouncesLabel_->setText(tr("Recursion depth per pixel:"));
 		bouncesLabel_->setStyleSheet("color: rgb(200,200,200);");
 
-		bouncesSpinbox_ = new SpinBox();
+		bouncesSpinbox_ = new USpinBox();
 		bouncesSpinbox_->setMinimum(1);
 		bouncesSpinbox_->setMaximum(32);
 		bouncesSpinbox_->setValue(0);
@@ -170,11 +134,11 @@ namespace unreal
 		bouncesSpinbox_->setFixedWidth(100);
 		bouncesSpinbox_->installEventFilter(this);
 
-		sppLabel = new QLabel();
+		sppLabel = new ULabel();
 		sppLabel->setText(tr("Sample number per pixel:"));
 		sppLabel->setStyleSheet("color: rgb(200,200,200);");
 
-		sppSpinbox_ = new SpinBox();
+		sppSpinbox_ = new USpinBox();
 		sppSpinbox_->setMinimum(1);
 		sppSpinbox_->setMaximum(9999);
 		sppSpinbox_->setValue(0);
@@ -182,7 +146,7 @@ namespace unreal
 		sppSpinbox_->setFixedWidth(100);
 		sppSpinbox_->installEventFilter(this);
 
-		crfSpinbox = new DoubleSpinBox();
+		crfSpinbox = new UDoubleSpinBox();
 		crfSpinbox->setMinimum(0);
 		crfSpinbox->setMaximum(63.0);
 		crfSpinbox->setValue(0);
@@ -190,7 +154,7 @@ namespace unreal
 		crfSpinbox->setFixedWidth(100);
 		crfSpinbox->installEventFilter(this);
 
-		crfLabel = new QLabel();
+		crfLabel = new ULabel();
 		crfLabel->setText(tr("Constant Rate Factor (CRF):"));
 		crfLabel->setStyleSheet("color: rgb(200,200,200);");
 

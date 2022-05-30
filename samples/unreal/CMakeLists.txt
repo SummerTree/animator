@@ -75,6 +75,14 @@ SET(WIDGETS_LIST
 	${SOURCE_PATH}/widgets/udockwidget.cpp
 	${SOURCE_PATH}/widgets/utranslatable.h
 	${SOURCE_PATH}/widgets/utranslatable.cpp
+	${SOURCE_PATH}/widgets/upanel.h
+	${SOURCE_PATH}/widgets/upanel.cpp
+	${SOURCE_PATH}/widgets/uspinbox.h
+	${SOURCE_PATH}/widgets/uspinbox.cpp
+	${SOURCE_PATH}/widgets/udoublespinbox.h
+	${SOURCE_PATH}/widgets/udoublespinbox.cpp
+	${SOURCE_PATH}/widgets/upushbutton.h
+	${SOURCE_PATH}/widgets/upushbutton.cpp
 )
 SOURCE_GROUP("launcher\\widgets" FILES ${WIDGETS_LIST})
 

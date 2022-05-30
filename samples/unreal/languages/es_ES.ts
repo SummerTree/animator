@@ -12,109 +12,109 @@
 <context>
     <name>unreal::CameraDock</name>
     <message>
-        <location filename="../views/camera_dock.cpp" line="52"/>
-        <location filename="../views/camera_dock.cpp" line="406"/>
+        <location filename="../views/camera_dock.cpp" line="16"/>
+        <location filename="../views/camera_dock.cpp" line="370"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="55"/>
-        <location filename="../views/camera_dock.cpp" line="407"/>
+        <location filename="../views/camera_dock.cpp" line="19"/>
+        <location filename="../views/camera_dock.cpp" line="371"/>
         <source>fov:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="70"/>
-        <location filename="../views/camera_dock.cpp" line="408"/>
+        <location filename="../views/camera_dock.cpp" line="34"/>
+        <location filename="../views/camera_dock.cpp" line="372"/>
         <source>* The following parameters take effect on rendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="74"/>
-        <location filename="../views/camera_dock.cpp" line="409"/>
+        <location filename="../views/camera_dock.cpp" line="38"/>
+        <location filename="../views/camera_dock.cpp" line="373"/>
         <source>Depth Of Filed:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="87"/>
-        <location filename="../views/camera_dock.cpp" line="410"/>
+        <location filename="../views/camera_dock.cpp" line="51"/>
+        <location filename="../views/camera_dock.cpp" line="374"/>
         <source>Aperture:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="97"/>
+        <location filename="../views/camera_dock.cpp" line="61"/>
         <source>f/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="102"/>
-        <location filename="../views/camera_dock.cpp" line="411"/>
+        <location filename="../views/camera_dock.cpp" line="66"/>
+        <location filename="../views/camera_dock.cpp" line="375"/>
         <source>Focal Length (35mmfilm):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="106"/>
-        <location filename="../views/camera_dock.cpp" line="412"/>
+        <location filename="../views/camera_dock.cpp" line="70"/>
+        <location filename="../views/camera_dock.cpp" line="376"/>
         <source>Focus Distance:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="115"/>
+        <location filename="../views/camera_dock.cpp" line="79"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="125"/>
+        <location filename="../views/camera_dock.cpp" line="89"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="130"/>
-        <location filename="../views/camera_dock.cpp" line="266"/>
-        <location filename="../views/camera_dock.cpp" line="310"/>
-        <location filename="../views/camera_dock.cpp" line="375"/>
-        <location filename="../views/camera_dock.cpp" line="414"/>
+        <location filename="../views/camera_dock.cpp" line="94"/>
+        <location filename="../views/camera_dock.cpp" line="230"/>
+        <location filename="../views/camera_dock.cpp" line="274"/>
+        <location filename="../views/camera_dock.cpp" line="339"/>
+        <location filename="../views/camera_dock.cpp" line="378"/>
         <source>Target: Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="136"/>
-        <location filename="../views/camera_dock.cpp" line="413"/>
+        <location filename="../views/camera_dock.cpp" line="100"/>
+        <location filename="../views/camera_dock.cpp" line="377"/>
         <source>Drag and drop this icon onto the target model to enable autofocus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="141"/>
-        <location filename="../views/camera_dock.cpp" line="326"/>
-        <location filename="../views/camera_dock.cpp" line="415"/>
+        <location filename="../views/camera_dock.cpp" line="105"/>
+        <location filename="../views/camera_dock.cpp" line="290"/>
+        <location filename="../views/camera_dock.cpp" line="379"/>
         <source>Load Animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="147"/>
-        <location filename="../views/camera_dock.cpp" line="416"/>
+        <location filename="../views/camera_dock.cpp" line="111"/>
+        <location filename="../views/camera_dock.cpp" line="380"/>
         <source>Uninstall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="258"/>
-        <location filename="../views/camera_dock.cpp" line="371"/>
+        <location filename="../views/camera_dock.cpp" line="222"/>
+        <location filename="../views/camera_dock.cpp" line="335"/>
         <source>Target: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="260"/>
-        <location filename="../views/camera_dock.cpp" line="370"/>
+        <location filename="../views/camera_dock.cpp" line="224"/>
+        <location filename="../views/camera_dock.cpp" line="334"/>
         <source>Auto-measuring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="326"/>
+        <location filename="../views/camera_dock.cpp" line="290"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="335"/>
+        <location filename="../views/camera_dock.cpp" line="299"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -653,46 +653,46 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ModelDock</name>
     <message>
-        <location filename="../views/model_dock.cpp" line="22"/>
+        <location filename="../views/model_dock.cpp" line="24"/>
         <source>Model Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="27"/>
+        <location filename="../views/model_dock.cpp" line="29"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="140"/>
+        <location filename="../views/model_dock.cpp" line="143"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="140"/>
+        <location filename="../views/model_dock.cpp" line="143"/>
         <source>Are you sure you want to delete this model?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="164"/>
+        <location filename="../views/model_dock.cpp" line="167"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="164"/>
+        <location filename="../views/model_dock.cpp" line="167"/>
         <source>PMX Files (*.pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="173"/>
-        <location filename="../views/model_dock.cpp" line="174"/>
-        <location filename="../views/model_dock.cpp" line="222"/>
-        <location filename="../views/model_dock.cpp" line="223"/>
+        <location filename="../views/model_dock.cpp" line="176"/>
+        <location filename="../views/model_dock.cpp" line="177"/>
+        <location filename="../views/model_dock.cpp" line="225"/>
+        <location filename="../views/model_dock.cpp" line="226"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="173"/>
-        <location filename="../views/model_dock.cpp" line="222"/>
+        <location filename="../views/model_dock.cpp" line="176"/>
+        <location filename="../views/model_dock.cpp" line="225"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -747,172 +747,172 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::RecordDock</name>
     <message>
-        <location filename="../views/record_dock.cpp" line="52"/>
+        <location filename="../views/record_dock.cpp" line="16"/>
         <source>Record</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="61"/>
+        <location filename="../views/record_dock.cpp" line="25"/>
         <source>Render Quality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="65"/>
+        <location filename="../views/record_dock.cpp" line="29"/>
         <source>Ultra Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="72"/>
+        <location filename="../views/record_dock.cpp" line="36"/>
         <source>Fast Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="81"/>
+        <location filename="../views/record_dock.cpp" line="45"/>
         <source>Frame Per Second</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="85"/>
+        <location filename="../views/record_dock.cpp" line="49"/>
         <source>24</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="92"/>
+        <location filename="../views/record_dock.cpp" line="56"/>
         <source>25</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="98"/>
+        <location filename="../views/record_dock.cpp" line="62"/>
         <source>30</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="104"/>
+        <location filename="../views/record_dock.cpp" line="68"/>
         <source>60</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="116"/>
+        <location filename="../views/record_dock.cpp" line="80"/>
         <source>Output Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="119"/>
+        <location filename="../views/record_dock.cpp" line="83"/>
         <source>H265</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="120"/>
+        <location filename="../views/record_dock.cpp" line="84"/>
         <source>H264</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="121"/>
+        <location filename="../views/record_dock.cpp" line="85"/>
         <source>Frame Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="126"/>
+        <location filename="../views/record_dock.cpp" line="90"/>
         <source>Play:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="129"/>
+        <location filename="../views/record_dock.cpp" line="93"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="132"/>
+        <location filename="../views/record_dock.cpp" line="96"/>
         <source>- End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="149"/>
+        <location filename="../views/record_dock.cpp" line="113"/>
         <source>Denoise:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="162"/>
+        <location filename="../views/record_dock.cpp" line="126"/>
         <source>Recursion depth per pixel:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="174"/>
+        <location filename="../views/record_dock.cpp" line="138"/>
         <source>Sample number per pixel:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="194"/>
+        <location filename="../views/record_dock.cpp" line="158"/>
         <source>Constant Rate Factor (CRF):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="207"/>
-        <location filename="../views/record_dock.cpp" line="341"/>
-        <location filename="../views/record_dock.cpp" line="352"/>
-        <location filename="../views/record_dock.cpp" line="523"/>
+        <location filename="../views/record_dock.cpp" line="171"/>
+        <location filename="../views/record_dock.cpp" line="305"/>
+        <location filename="../views/record_dock.cpp" line="316"/>
+        <location filename="../views/record_dock.cpp" line="487"/>
         <source>Start Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="251"/>
+        <location filename="../views/record_dock.cpp" line="215"/>
         <source>Watermark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="254"/>
+        <location filename="../views/record_dock.cpp" line="218"/>
         <source>Render Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="479"/>
+        <location filename="../views/record_dock.cpp" line="443"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="479"/>
+        <location filename="../views/record_dock.cpp" line="443"/>
         <source>Start frame must be less than end frame.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="485"/>
+        <location filename="../views/record_dock.cpp" line="449"/>
         <source>Save Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="485"/>
+        <location filename="../views/record_dock.cpp" line="449"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="485"/>
+        <location filename="../views/record_dock.cpp" line="449"/>
         <source>New Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="487"/>
+        <location filename="../views/record_dock.cpp" line="451"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="487"/>
+        <location filename="../views/record_dock.cpp" line="451"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="343"/>
-        <location filename="../views/record_dock.cpp" line="350"/>
-        <location filename="../views/record_dock.cpp" line="521"/>
+        <location filename="../views/record_dock.cpp" line="307"/>
+        <location filename="../views/record_dock.cpp" line="314"/>
+        <location filename="../views/record_dock.cpp" line="485"/>
         <source>Stop Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="494"/>
+        <location filename="../views/record_dock.cpp" line="458"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="494"/>
+        <location filename="../views/record_dock.cpp" line="458"/>
         <source>Failed to create file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -933,30 +933,30 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingContextPlane</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="227"/>
-        <location filename="../views/setting_window.cpp" line="325"/>
+        <location filename="../views/setting_window.cpp" line="149"/>
+        <location filename="../views/setting_window.cpp" line="236"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="227"/>
-        <location filename="../views/setting_window.cpp" line="325"/>
+        <location filename="../views/setting_window.cpp" line="149"/>
+        <location filename="../views/setting_window.cpp" line="236"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="227"/>
-        <location filename="../views/setting_window.cpp" line="325"/>
+        <location filename="../views/setting_window.cpp" line="149"/>
+        <location filename="../views/setting_window.cpp" line="236"/>
         <source>Graphics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="438"/>
+        <location filename="../views/setting_window.cpp" line="349"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="438"/>
+        <location filename="../views/setting_window.cpp" line="349"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -964,32 +964,32 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlaneGeneral</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="52"/>
-        <location filename="../views/setting_window.cpp" line="116"/>
+        <location filename="../views/setting_window.cpp" line="24"/>
+        <location filename="../views/setting_window.cpp" line="35"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="56"/>
-        <location filename="../views/setting_window.cpp" line="117"/>
+        <location filename="../views/setting_window.cpp" line="25"/>
+        <location filename="../views/setting_window.cpp" line="38"/>
         <source>Check Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="61"/>
-        <location filename="../views/setting_window.cpp" line="118"/>
+        <location filename="../views/setting_window.cpp" line="26"/>
+        <location filename="../views/setting_window.cpp" line="42"/>
         <source>Current Version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="81"/>
-        <location filename="../views/setting_window.cpp" line="119"/>
+        <location filename="../views/setting_window.cpp" line="27"/>
+        <location filename="../views/setting_window.cpp" line="45"/>
         <source>Reset to default settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="85"/>
-        <location filename="../views/setting_window.cpp" line="120"/>
+        <location filename="../views/setting_window.cpp" line="28"/>
+        <location filename="../views/setting_window.cpp" line="48"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -997,38 +997,38 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlaneInterface</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="132"/>
-        <location filename="../views/setting_window.cpp" line="187"/>
+        <location filename="../views/setting_window.cpp" line="78"/>
+        <location filename="../views/setting_window.cpp" line="120"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="139"/>
-        <location filename="../views/setting_window.cpp" line="195"/>
+        <location filename="../views/setting_window.cpp" line="85"/>
+        <location filename="../views/setting_window.cpp" line="128"/>
         <source>Render Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="128"/>
-        <location filename="../views/setting_window.cpp" line="190"/>
+        <location filename="../views/setting_window.cpp" line="74"/>
+        <location filename="../views/setting_window.cpp" line="123"/>
         <source>English (United State)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="127"/>
-        <location filename="../views/setting_window.cpp" line="189"/>
+        <location filename="../views/setting_window.cpp" line="73"/>
+        <location filename="../views/setting_window.cpp" line="122"/>
         <source>Chinese (Simplified)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="129"/>
-        <location filename="../views/setting_window.cpp" line="191"/>
+        <location filename="../views/setting_window.cpp" line="75"/>
+        <location filename="../views/setting_window.cpp" line="124"/>
         <source>Japanese (Japan)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="143"/>
-        <location filename="../views/setting_window.cpp" line="196"/>
+        <location filename="../views/setting_window.cpp" line="89"/>
+        <location filename="../views/setting_window.cpp" line="129"/>
         <source>Resolution</source>
         <translation type="unfinished"></translation>
     </message>
