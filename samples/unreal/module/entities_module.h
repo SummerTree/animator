@@ -6,13 +6,6 @@
 
 namespace unreal
 {
-	class EntitesObject
-	{
-	public:
-		std::string name;
-		std::string filepath;
-	};
-
 	class EntitiesModule final : public UnrealModule
 	{
 	public:
@@ -29,9 +22,7 @@ namespace unreal
 		EntitiesModule& operator=(const EntitiesModule&) = delete;
 
 	public:
-		octoon::GameObjects objects;
-
-		MutableLiveData<std::vector<EntitesObject>> entities;
+		MutableLiveData<octoon::GameObjects> objects;
 	};
 }
 
