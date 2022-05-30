@@ -3,10 +3,6 @@
 #include "../unreal_behaviour.h"
 #include <octoon/ass_loader.h>
 
-#include <fstream>
-#include <unordered_map>
-#include <omp.h>
-
 namespace unreal
 {
 	EntitiesComponent::EntitiesComponent() noexcept
@@ -43,6 +39,7 @@ namespace unreal
 				auto renderer = it->getComponent<octoon::MeshRendererComponent>();
 				if (renderer)
 					renderer->setGlobalIllumination(true);
+
 				context->profile->entitiesModule->objects.push_back(it);
 			}
 		}
