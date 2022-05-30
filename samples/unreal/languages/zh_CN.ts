@@ -13,36 +13,48 @@
     <name>unreal::CameraDock</name>
     <message>
         <location filename="../views/camera_dock.cpp" line="52"/>
+        <location filename="../views/camera_dock.cpp" line="406"/>
         <source>Camera</source>
         <translation>相机</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="55"/>
+        <location filename="../views/camera_dock.cpp" line="407"/>
         <source>fov:</source>
         <translation>视野角：</translation>
     </message>
     <message>
+        <location filename="../views/camera_dock.cpp" line="70"/>
+        <location filename="../views/camera_dock.cpp" line="408"/>
+        <source>* The following parameters take effect on rendering</source>
+        <translation>* 以下参数仅渲染时生效</translation>
+    </message>
+    <message>
         <location filename="../views/camera_dock.cpp" line="74"/>
+        <location filename="../views/camera_dock.cpp" line="409"/>
         <source>Depth Of Filed:</source>
         <translation>开启景深：</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="87"/>
+        <location filename="../views/camera_dock.cpp" line="410"/>
         <source>Aperture:</source>
         <translation>光圈大小：</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="97"/>
         <source>f/</source>
-        <translation type="unfinished"></translation>
+        <translation>f/</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="102"/>
+        <location filename="../views/camera_dock.cpp" line="411"/>
         <source>Focal Length (35mmfilm):</source>
         <translation>等效焦距(35mmfilm)：</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="106"/>
+        <location filename="../views/camera_dock.cpp" line="412"/>
         <source>Focus Distance:</source>
         <translation>焦点距离：</translation>
     </message>
@@ -61,17 +73,26 @@
         <location filename="../views/camera_dock.cpp" line="266"/>
         <location filename="../views/camera_dock.cpp" line="310"/>
         <location filename="../views/camera_dock.cpp" line="375"/>
+        <location filename="../views/camera_dock.cpp" line="414"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
     <message>
+        <location filename="../views/camera_dock.cpp" line="136"/>
+        <location filename="../views/camera_dock.cpp" line="413"/>
+        <source>Drag and drop this icon onto the target model to enable autofocus</source>
+        <translation>拖拽图标至目标模型以启用自动对焦</translation>
+    </message>
+    <message>
         <location filename="../views/camera_dock.cpp" line="141"/>
         <location filename="../views/camera_dock.cpp" line="326"/>
+        <location filename="../views/camera_dock.cpp" line="415"/>
         <source>Load Animation</source>
         <translation>加载动画</translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="147"/>
+        <location filename="../views/camera_dock.cpp" line="416"/>
         <source>Uninstall</source>
         <translation>卸载</translation>
     </message>
@@ -427,16 +448,16 @@ $20 (Original cost $40)</source>
         <translation type="vanished">请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="203"/>
-        <location filename="../views/main_dock.cpp" line="231"/>
-        <location filename="../views/main_dock.cpp" line="259"/>
-        <location filename="../views/main_dock.cpp" line="287"/>
+        <location filename="../views/main_dock.cpp" line="230"/>
+        <location filename="../views/main_dock.cpp" line="258"/>
+        <location filename="../views/main_dock.cpp" line="286"/>
         <location filename="../views/main_dock.cpp" line="314"/>
         <location filename="../views/main_dock.cpp" line="341"/>
         <location filename="../views/main_dock.cpp" line="368"/>
         <location filename="../views/main_dock.cpp" line="395"/>
-        <location filename="../views/main_dock.cpp" line="454"/>
+        <location filename="../views/main_dock.cpp" line="422"/>
         <location filename="../views/main_dock.cpp" line="481"/>
+        <location filename="../views/main_dock.cpp" line="508"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -445,7 +466,7 @@ $20 (Original cost $40)</source>
         <translation type="vanished">获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="455"/>
+        <location filename="../views/main_dock.cpp" line="482"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
@@ -955,27 +976,27 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">主面板</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="161"/>
+        <location filename="../views/setting_window.cpp" line="196"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="161"/>
+        <location filename="../views/setting_window.cpp" line="196"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="161"/>
+        <location filename="../views/setting_window.cpp" line="196"/>
         <source>Graphics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="349"/>
+        <location filename="../views/setting_window.cpp" line="392"/>
         <source>Information</source>
         <translation type="unfinished">信息</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="350"/>
+        <location filename="../views/setting_window.cpp" line="392"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1017,27 +1038,32 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlaneGeneral</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="50"/>
+        <location filename="../views/setting_window.cpp" line="52"/>
+        <location filename="../views/setting_window.cpp" line="124"/>
         <source>Version</source>
         <translation type="unfinished">版本</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="54"/>
+        <location filename="../views/setting_window.cpp" line="56"/>
+        <location filename="../views/setting_window.cpp" line="125"/>
         <source>Check Updates</source>
         <translation type="unfinished">检查更新</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="59"/>
+        <location filename="../views/setting_window.cpp" line="61"/>
+        <location filename="../views/setting_window.cpp" line="126"/>
         <source>Current Version: </source>
         <translation type="unfinished">当前版本： </translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="79"/>
+        <location filename="../views/setting_window.cpp" line="81"/>
+        <location filename="../views/setting_window.cpp" line="127"/>
         <source>Reset to default settings</source>
         <translation type="unfinished">重置默认设置</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="83"/>
+        <location filename="../views/setting_window.cpp" line="85"/>
+        <location filename="../views/setting_window.cpp" line="128"/>
         <source>Reset</source>
         <translation type="unfinished">重置</translation>
     </message>
@@ -1045,32 +1071,32 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlaneInterface</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="110"/>
+        <location filename="../views/setting_window.cpp" line="136"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="113"/>
+        <location filename="../views/setting_window.cpp" line="133"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="114"/>
+        <location filename="../views/setting_window.cpp" line="133"/>
         <source>Chinese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="115"/>
+        <location filename="../views/setting_window.cpp" line="133"/>
         <source>Japanese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="118"/>
+        <location filename="../views/setting_window.cpp" line="143"/>
         <source>Render Settings</source>
         <translation type="unfinished">渲染设置</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="122"/>
+        <location filename="../views/setting_window.cpp" line="147"/>
         <source>Resolution</source>
         <translation type="unfinished">渲染分辨率</translation>
     </message>

@@ -11,9 +11,10 @@
 #include <QtGui/qevent.h>
 #include <qlistwidget.h>
 #include <qscrollarea.h>
-#include <qdialog.h>
+#include <QDialog>
 #include <qpropertyanimation.h>
 #include <qspinbox.h>
+#include <QTranslator>
 
 #include "../widgets/ulabel.h"
 #include "../widgets/ucombobox.h"
@@ -28,6 +29,9 @@ namespace unreal
 		Q_OBJECT
 	public:
 		SettingMainPlaneGeneral(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour);
+
+		bool eventFilter(QObject* watched, QEvent* event);
+		void retranslate();
 
 		ULabel* infoLabel;
 		QToolButton* infoButton;
@@ -45,10 +49,14 @@ namespace unreal
 	public:
 		SettingMainPlaneInterface(QWidget* parent);
 
+		void retranslate();
+
+		UComboBox* langCombo_;
 		std::unique_ptr<QLabel> renderLabel;
 		std::unique_ptr<QLabel> resolutionLabel;
 		std::unique_ptr<UComboBox> resolutionCombo;
 
+		std::vector<QString> languages;
 	private:
 		std::unique_ptr<QVBoxLayout> layout_;
 	};
@@ -58,6 +66,8 @@ namespace unreal
 		Q_OBJECT
 	public:
 		SettingMainPlaneGraphics(QWidget* parent);
+
+		void retranslate();
 	};
 
 	class SettingContextPlane final : public QWidget
@@ -66,6 +76,8 @@ namespace unreal
 	public:
 		SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept(false);
 		~SettingContextPlane() noexcept;
+		
+		void retranslate();
 
 	public Q_SLOTS:
 		void valueChanged(int value);
@@ -74,16 +86,19 @@ namespace unreal
 		void onResetButton();
 		void onResolutionCombo(int index);
 		void onCheckVersion();
-
+		void onLangCombo(int index);
+	
+	Q_SIGNALS:
+		void languageChangeSignal(QString filename);
 	private:
 		bool m_sign;
 		std::shared_ptr<unreal::UnrealBehaviour> behaviour_;
 
 		std::unique_ptr<QListWidget> listWidget_;
 		std::unique_ptr<QListWidgetItem> listWidgetItems_[3];
-		std::unique_ptr<SettingMainPlaneGeneral> mainPlane_;
-		std::unique_ptr<SettingMainPlaneInterface> mainPlane2_;
-		std::unique_ptr<SettingMainPlaneGraphics> mainPlane3_;
+		std::unique_ptr<SettingMainPlaneGeneral> mainPlaneGeneral_;
+		std::unique_ptr<SettingMainPlaneInterface> mainPlaneInterface_;
+		std::unique_ptr<SettingMainPlaneGraphics> mainPlaneGraphics_;
 		std::unique_ptr<QVBoxLayout> gridLayout_;
 		std::unique_ptr<QScrollArea> scrollArea_;
 		std::unique_ptr<QWidget> scrollWidget_;
@@ -99,6 +114,9 @@ namespace unreal
 
 	public Q_SLOTS:
 		void closeEvent();
+
+	Q_SIGNALS:
+		void languageChangeSignal(QString filename);		
 
 	private:
 		std::unique_ptr<QVBoxLayout> contextLayout_;

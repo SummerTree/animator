@@ -67,7 +67,7 @@ namespace unreal
 		fovSpinbox_->installEventFilter(this);
 
 		dofInfoLabel_ = new QLabel();
-		dofInfoLabel_->setText(u8"* 以下参数开启渲染时生效");
+		dofInfoLabel_->setText(tr("* The following parameters take effect on rendering"));
 		dofInfoLabel_->setStyleSheet("color: rgb(100,100,100);");
 
 		dofLabel_ = new QLabel();
@@ -133,7 +133,7 @@ namespace unreal
 		focusTargetButton_ = new DraggableButton();
 		focusTargetButton_->setIcon(QIcon(":res/icons/target.png"));
 		focusTargetButton_->setIconSize(QSize(48, 48));
-		focusTargetButton_->setToolTip(u8"拖拽此图标到目标模型可开启自动追焦");
+		focusTargetButton_->setToolTip(tr("Drag and drop this icon onto the target model to enable autofocus"));
 		focusTargetButton_->installEventFilter(this);
 
 		loadButton_ = new QToolButton();
@@ -398,5 +398,21 @@ namespace unreal
 		}
 
 		return QWidget::eventFilter(watched, event);
+	}
+
+	void
+	CameraDock::retranslate()
+	{
+		this->setWindowTitle(tr("Camera"));
+		fovLabel_->setText(tr("fov:"));
+		dofInfoLabel_->setText(tr("* The following parameters take effect on rendering"));
+		dofLabel_->setText(tr("Depth Of Filed:"));
+		apertureLabel_->setText(tr("Aperture:"));
+		focalLengthLabel_->setText(tr("Focal Length (35mmfilm):"));
+		focusDistanceLabel_->setText(tr("Focus Distance:"));
+		focusTargetButton_->setToolTip(tr("Drag and drop this icon onto the target model to enable autofocus"));
+		focusDistanceName_->setText(tr("Target: Empty"));
+		loadButton_->setText(tr("Load Animation"));
+		unloadButton_->setText(tr("Uninstall"));
 	}
 }

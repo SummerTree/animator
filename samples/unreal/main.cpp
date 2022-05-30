@@ -4,7 +4,7 @@
 #include <qqmlcontext.h>
 #include <qquickview.h>
 #include <qqmlapplicationengine.h>
-#include <qtranslator.h>
+#include <QTranslator>
 #include <QFile>
 #include <QMessageBox>
 #include <QDir>
@@ -71,25 +71,25 @@ int main(int argc, char *argv[])
 		::SetCurrentDirectoryA(filepath.toStdString().c_str());
 #endif
 		// Load translation files
+		std::shared_ptr<QTranslator> qtTranslator = std::make_shared<QTranslator>();
 		QString local = QLocale::languageToString(QLocale::system().language());
-
 		spdlog::info("Current machine locale: " + local.toStdString());
 
-		QTranslator qtTranslator;
 		if (local == "Chinese")
-			qtTranslator.load("zh_CN.qm", ":res/languages/");
+			qtTranslator->load("zh_CN.qm", ":res/languages/");
 		else if (local == "English")
-			qtTranslator.load("en_US.qm", ":res/languages/");
+			qtTranslator->load("en_US.qm", ":res/languages/");
 		else
-			qtTranslator.load("en_US.qm", ":res/languages/");
-
-		app.installTranslator(&qtTranslator);
-
+			qtTranslator->load("en_US.qm", ":res/languages/");
+		app.installTranslator(qtTranslator.get());
+		
+		// make splash screen
 		auto splash = std::make_unique<unreal::SplashScreen>();
 		splash->show();
 		app.processEvents();
 
 		unreal::MainDock w(splash.get());
+		w.setTranslator(qtTranslator);
 		w.show();
 		w.activateWindow();
 

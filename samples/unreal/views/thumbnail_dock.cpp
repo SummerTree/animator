@@ -180,8 +180,10 @@ namespace unreal
 	void
 	ThumbnailDock::settingsEvent() noexcept
 	{
-		SettingWindow* window = new SettingWindow(this->behaviour_->getComponent<UnrealBehaviour>());
-		window->show();
+		SettingWindow* settings_dialog_ = new SettingWindow(this->behaviour_->getComponent<UnrealBehaviour>());
+		connect(settings_dialog_, SIGNAL(languageChangeSignal(QString)), this, SIGNAL(languageChangeSignal(QString)));
+
+		settings_dialog_->show();
 	}
 
 	void

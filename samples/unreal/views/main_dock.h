@@ -5,6 +5,7 @@
 #include <qtimer.h>
 #include <qdrag.h>
 #include <qmainwindow.h>
+#include <QTranslator>
 
 #include <octoon/octoon.h>
 #include <octoon/game_listener.h>
@@ -39,8 +40,12 @@ namespace unreal
 		void restoreLayout() noexcept;
 		void saveLayout() noexcept;
 
+		void setTranslator(std::shared_ptr<QTranslator> translator);
+		std::shared_ptr<QTranslator> getTranslator();
+
 	private Q_SLOTS:
 		void showEvent(QShowEvent* event) noexcept override;
+		void onLanguageChanged(QString filename);
 
 	private:
 		void onSunSignal() noexcept;
@@ -82,6 +87,8 @@ namespace unreal
 		std::unique_ptr<ModelDock> modelDock_;
 		std::unique_ptr<CameraDock> cameraDock_;
 		std::unique_ptr<MotionDock> motionDock_;
+
+		std::shared_ptr<QTranslator> translator_;
 	};
 }
 

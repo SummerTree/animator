@@ -17,13 +17,14 @@
 
 #include <octoon/game_object.h>
 
+#include "../widgets/udockwidget.h"
 #include "../widgets/spoiler.h"
 #include "../widgets/draggable_button.h"
 
 namespace unreal
 {
 
-	class CameraDock final : public QDockWidget
+	class CameraDock final : public UDockWidget
 	{
 		Q_OBJECT
 	public:
@@ -34,6 +35,8 @@ namespace unreal
 		void closeEvent(QCloseEvent* event) override;
 
 		bool eventFilter(QObject* watched, QEvent* event);
+
+		void retranslate();
 
 	private Q_SLOTS:
 		void onFovChanged(double);

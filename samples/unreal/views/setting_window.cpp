@@ -5,6 +5,8 @@
 #include <qmessagebox.h>
 #include <qscrollbar.h>
 
+#include <spdlog/spdlog.h>
+
 namespace unreal
 {
 	class SpinBox final : public QSpinBox
@@ -101,18 +103,41 @@ namespace unreal
 		layout_->addSpacing(10);
 		layout_->addWidget(resetButton);
 		layout_->setContentsMargins(0, 0, 0, 10);
+
+		this->installEventFilter(this);
+	}
+
+	bool
+	SettingMainPlaneGeneral::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() == QEvent::LanguageChange)
+		{
+			retranslate();
+		}
+
+		return QWidget::eventFilter(watched, event);
+	}
+
+	void
+	SettingMainPlaneGeneral::retranslate()
+	{
+		infoLabel->setText(tr("Version"));
+		infoButton->setText(tr("Check Updates"));
+		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(UNREAL_VERSION));
+		resetLabel->setText(tr("Reset to default settings"));
+		resetButton->setText(tr("Reset"));
 	}
 
 	SettingMainPlaneInterface::SettingMainPlaneInterface(QWidget* parent)
 		: QWidget(parent)
+		, languages { tr("English"), tr("Chinese"), tr("Japanese") }
 	{
 		QLabel* langLabel = new QLabel(this);
 		langLabel->setText(tr("Language"));
 
-		UComboBox* langCombo = new UComboBox(this);
-		langCombo->addItem(tr("English"));
-		langCombo->addItem(tr("Chinese"));
-		langCombo->addItem(tr("Japanese"));
+		langCombo_ = new UComboBox(this);
+		for (auto item : languages)
+			langCombo_->addItem(item);
 
 		renderLabel = std::make_unique<QLabel>();
 		renderLabel->setText(tr("Render Settings"));
@@ -143,12 +168,22 @@ namespace unreal
 		layout_->addSpacing(10);
 		layout_->addWidget(langLabel);
 		layout_->addSpacing(10);
-		layout_->addWidget(langCombo);
+		layout_->addWidget(langCombo_);
 		layout_->addSpacing(200);
+	}
+
+	void
+	SettingMainPlaneInterface::retranslate()
+	{
 	}
 
 	SettingMainPlaneGraphics::SettingMainPlaneGraphics(QWidget* parent)
 		: QWidget(parent)
+	{
+	}
+
+	void
+	SettingMainPlaneGraphics::retranslate()
 	{
 	}
 
@@ -181,14 +216,14 @@ namespace unreal
 		scrollWidget_->setFixedWidth(490);
 		scrollWidget_->setStyleSheet("background-color: rgb(40,40,40);");
 
-		mainPlane_ = std::make_unique<SettingMainPlaneGeneral>(scrollWidget_.get(), behaviour);
-		mainPlane2_ = std::make_unique<SettingMainPlaneInterface>(scrollWidget_.get());
-		mainPlane3_ = std::make_unique<SettingMainPlaneGraphics>(scrollWidget_.get());
+		mainPlaneGeneral_ = std::make_unique<SettingMainPlaneGeneral>(scrollWidget_.get(), behaviour);
+		mainPlaneInterface_ = std::make_unique<SettingMainPlaneInterface>(scrollWidget_.get());
+		mainPlaneGraphics_ = std::make_unique<SettingMainPlaneGraphics>(scrollWidget_.get());
 
 		gridLayout_ = std::make_unique<QVBoxLayout>(scrollWidget_.get());
-		gridLayout_->addWidget(mainPlane_.get());
-		gridLayout_->addWidget(mainPlane2_.get());
-		gridLayout_->addWidget(mainPlane3_.get());
+		gridLayout_->addWidget(mainPlaneGeneral_.get());
+		gridLayout_->addWidget(mainPlaneInterface_.get());
+		gridLayout_->addWidget(mainPlaneGraphics_.get());
 
 		scrollArea_ = std::make_unique<QScrollArea>(this);
 		scrollArea_->setWidget(scrollWidget_.get());
@@ -203,40 +238,49 @@ namespace unreal
 
 		auto& profile = behaviour->getProfile();
 		if (profile->recordModule->width == 720 && profile->recordModule->height == 480)
-			mainPlane2_->resolutionCombo->setCurrentIndex(0);
+			mainPlaneInterface_->resolutionCombo->setCurrentIndex(0);
 		else if (profile->recordModule->width == 800 && profile->recordModule->height == 480)
-			mainPlane2_->resolutionCombo->setCurrentIndex(1);
+			mainPlaneInterface_->resolutionCombo->setCurrentIndex(1);
 		else if (profile->recordModule->width == 1024 && profile->recordModule->height == 576)
-			mainPlane2_->resolutionCombo->setCurrentIndex(2);
+			mainPlaneInterface_->resolutionCombo->setCurrentIndex(2);
 		else if (profile->recordModule->width == 1280 && profile->recordModule->height == 720)
-			mainPlane2_->resolutionCombo->setCurrentIndex(3);
+			mainPlaneInterface_->resolutionCombo->setCurrentIndex(3);
 		else if (profile->recordModule->width == 1920 && profile->recordModule->height == 1080)
-			mainPlane2_->resolutionCombo->setCurrentIndex(4);
+			mainPlaneInterface_->resolutionCombo->setCurrentIndex(4);
 		else if (profile->recordModule->width == 540 && profile->recordModule->height == 960)
-			mainPlane2_->resolutionCombo->setCurrentIndex(5);
+			mainPlaneInterface_->resolutionCombo->setCurrentIndex(5);
 		else if (profile->recordModule->width == 720 && profile->recordModule->height == 1280)
-			mainPlane2_->resolutionCombo->setCurrentIndex(6);
+			mainPlaneInterface_->resolutionCombo->setCurrentIndex(6);
 		else if (profile->recordModule->width == 1080 && profile->recordModule->height == 1920)
-			mainPlane2_->resolutionCombo->setCurrentIndex(7);
+			mainPlaneInterface_->resolutionCombo->setCurrentIndex(7);
 		else
 			throw std::runtime_error("SettingContextPlane::SettingContextPlane: resolution not found");
 
 		connect(scrollArea_->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
 		connect(listWidget_.get(), SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
-		connect(mainPlane_->resetButton, SIGNAL(clicked()), this, SLOT(onResetButton()));
-		connect(mainPlane_->infoButton, SIGNAL(clicked()), this, SLOT(onCheckVersion()));
-		connect(mainPlane2_->resolutionCombo.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
+		connect(mainPlaneGeneral_->resetButton, SIGNAL(clicked()), this, SLOT(onResetButton()));
+		connect(mainPlaneGeneral_->infoButton, SIGNAL(clicked()), this, SLOT(onCheckVersion()));
+		connect(mainPlaneInterface_->resolutionCombo.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
+		connect(mainPlaneInterface_->langCombo_, SIGNAL(currentIndexChanged(int)), this, SLOT(onLangCombo(int)));
 	}
 
 	SettingContextPlane::~SettingContextPlane()
 	{
-		mainPlane_.reset();
-		mainPlane2_.reset();
-		mainPlane3_.reset();
+		mainPlaneGeneral_.reset();
+		mainPlaneInterface_.reset();
+		mainPlaneGraphics_.reset();
 		gridLayout_.reset();
 		scrollWidget_.reset();
 		scrollArea_.reset();
 		layout_.reset();
+	}
+
+	void
+	SettingContextPlane::retranslate()
+	{
+		mainPlaneGeneral_->retranslate();
+		mainPlaneInterface_->retranslate();
+		mainPlaneGraphics_->retranslate();
 	}
 
 	void
@@ -286,14 +330,14 @@ namespace unreal
 	void
 	SettingContextPlane::onResetButton()
 	{
-		mainPlane2_->resolutionCombo->setCurrentIndex(3);
+		mainPlaneInterface_->resolutionCombo->setCurrentIndex(3);
 	}
 
 	void
 	SettingContextPlane::onResolutionCombo(int index)
 	{
 		auto& profile = behaviour_->getProfile();
-		switch (mainPlane2_->resolutionCombo->currentIndex())
+		switch (mainPlaneInterface_->resolutionCombo->currentIndex())
 		{
 		case 0: {
 			profile->recordModule->width = 720;
@@ -345,14 +389,23 @@ namespace unreal
 		// auto version = client->version();
 		// if (version == behaviour_->getProfile()->clientModule->version)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Information"));
-			msg.setText(tr("You are using the latest version of the renderer, no need to update!"));
-			msg.setIcon(QMessageBox::NoIcon);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::information(this, tr("Information"), tr("You are using the latest version of the renderer, no need to update!"));
 		}
+	}
+
+	void
+	SettingContextPlane::onLangCombo(int index)
+	{
+		QString filename;
+		if (index == 0)
+			filename = "en_US.qm";
+		else if (index == 1)
+			filename = "zh_CN.qm";
+		else if (index == 2)
+			filename = "ja_JP.qm";
+		else
+			throw std::runtime_error("SettingContextPlane::onLangCombo: language not found");
+		emit languageChangeSignal(filename);
 	}
 
 	SettingWindow::SettingWindow(const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept
@@ -379,6 +432,8 @@ namespace unreal
 		this->setFixedSize(650, 450);
 		this->connect(closeAnimation_.get(), SIGNAL(finished()), this, SLOT(close()));
 		this->connect(settingTitleWindow_.get(), &TitleBar::closeSignal, this, &SettingWindow::closeEvent);
+
+		this->connect(settingContextPlane_.get(), SIGNAL(languageChangeSignal(QString)), this, SIGNAL(languageChangeSignal(QString)));
 	}
 
 	SettingWindow::~SettingWindow() noexcept
