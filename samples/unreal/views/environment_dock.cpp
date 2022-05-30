@@ -325,7 +325,7 @@ namespace unreal
 		this->intensitySlider->setMinimumWidth(270);
 		this->intensitySlider->installEventFilter(this);
 
-		this->intensitySpinBox = new DoubleSpinBox;
+		this->intensitySpinBox = new UDoubleSpinBox;
 		this->intensitySpinBox->setFixedWidth(50);
 		this->intensitySpinBox->setMaximum(10.0f);
 		this->intensitySpinBox->setSingleStep(0.1f);
@@ -345,7 +345,7 @@ namespace unreal
 		this->horizontalRotationSlider->setMinimumWidth(270);
 		this->horizontalRotationSlider->installEventFilter(this);
 
-		this->horizontalRotationSpinBox = new DoubleSpinBox;
+		this->horizontalRotationSpinBox = new UDoubleSpinBox;
 		this->horizontalRotationSpinBox->setFixedWidth(50);
 		this->horizontalRotationSpinBox->setMinimum(-1.0f);
 		this->horizontalRotationSpinBox->setMaximum(1.0f);
@@ -365,7 +365,7 @@ namespace unreal
 		this->verticalRotationSlider->setMinimumWidth(270);
 		this->verticalRotationSlider->installEventFilter(this);
 
-		this->verticalRotationSpinBox = new DoubleSpinBox;
+		this->verticalRotationSpinBox = new UDoubleSpinBox;
 		this->verticalRotationSpinBox->setFixedWidth(50);
 		this->verticalRotationSpinBox->setMinimum(-1.0f);
 		this->verticalRotationSpinBox->setMaximum(1.0f);

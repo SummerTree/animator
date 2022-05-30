@@ -8,6 +8,8 @@
 #include "unreal_profile.h"
 #include "../widgets/color_dialog.h"
 #include "../widgets/udockwidget.h"
+#include "../widgets/ulabel.h"
+#include "../widgets/udoublespinbox.h"
 
 namespace unreal
 {
@@ -43,16 +45,16 @@ namespace unreal
 		QScrollArea* scrollArea_;
 		QVBoxLayout* scrollLayout_;
 		ColorDialog* colorDialog_;
-		QDoubleSpinBox* sizeSpinBox_;
-		QDoubleSpinBox* intensitySpinBox_;
-		QDoubleSpinBox* editRotationX_;
-		QDoubleSpinBox* editRotationY_;
-		QDoubleSpinBox* editRotationZ_;
-		QLabel* labelSize_;
-		QLabel* labelIntensity_;
-		QLabel* labelRotationX_;
-		QLabel* labelRotationY_;
-		QLabel* labelRotationZ_;
+		UDoubleSpinBox* sizeSpinBox_;
+		UDoubleSpinBox* intensitySpinBox_;
+		UDoubleSpinBox* editRotationX_;
+		UDoubleSpinBox* editRotationY_;
+		UDoubleSpinBox* editRotationZ_;
+		ULabel* labelSize_;
+		ULabel* labelIntensity_;
+		ULabel* labelRotationX_;
+		ULabel* labelRotationY_;
+		ULabel* labelRotationZ_;
 		QSlider* sizeSlider_;
 		QSlider* intensitySlider_;
 		QSlider* sliderRotationX_;

@@ -474,37 +474,37 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MainLightDock</name>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="27"/>
+        <location filename="../views/main_light_dock.cpp" line="12"/>
         <source>Main Light</source>
         <translation>主光源</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="37"/>
+        <location filename="../views/main_light_dock.cpp" line="22"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="42"/>
+        <location filename="../views/main_light_dock.cpp" line="27"/>
         <source>Intensity</source>
         <translation>光照强度</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="69"/>
+        <location filename="../views/main_light_dock.cpp" line="54"/>
         <source>Size</source>
         <translation>光源大小</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="95"/>
+        <location filename="../views/main_light_dock.cpp" line="80"/>
         <source>Rotation X</source>
         <translation>旋转X轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="122"/>
+        <location filename="../views/main_light_dock.cpp" line="107"/>
         <source>Rotation Y</source>
         <translation>旋转Y轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="149"/>
+        <location filename="../views/main_light_dock.cpp" line="134"/>
         <source>Rotation Z</source>
         <translation>旋转Z轴</translation>
     </message>

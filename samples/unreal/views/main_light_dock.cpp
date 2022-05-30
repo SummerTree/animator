@@ -3,24 +3,9 @@
 #include <octoon/transform_component.h>
 #include <octoon/directional_light_component.h>
 
+
 namespace unreal
 {
-	class DoubleSpinBox final : public QDoubleSpinBox
-	{
-	public:
-		void focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QDoubleSpinBox::focusInEvent(event);
-		}
-
-		void focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QDoubleSpinBox::focusOutEvent(event);
-		}
-	};
-
 	MainLightDock::MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<unreal::UnrealProfile>& profile)
 		: profile_(profile)
 	{
@@ -38,17 +23,17 @@ namespace unreal
 		resetButton_->setContentsMargins(0, 0, 10, 0);
 		resetButton_->installEventFilter(this);
 
-		labelIntensity_ = new QLabel();
+		labelIntensity_ = new ULabel();
 		labelIntensity_->setText(tr("Intensity"));
 
-		intensitySpinBox_ = new DoubleSpinBox();
+		intensitySpinBox_ = new UDoubleSpinBox();
 		intensitySpinBox_->setFixedWidth(50);
 		intensitySpinBox_->setMaximum(10.0f);
 		intensitySpinBox_->setSingleStep(0.1f);
 		intensitySpinBox_->setAlignment(Qt::AlignRight);
 		intensitySpinBox_->setValue(profile->mainLightModule->intensity);
 		intensitySpinBox_->setDecimals(1);
-		intensitySpinBox_->setSuffix(u8"cd");
+		intensitySpinBox_->setSuffix("cd");
 		intensitySpinBox_->installEventFilter(this);
 
 		intensitySlider_ = new QSlider();
@@ -65,10 +50,10 @@ namespace unreal
 		layoutIntensity_->addWidget(intensitySpinBox_, 0, Qt::AlignRight);
 		layoutIntensity_->setContentsMargins(40, 5, 35, 0);
 
-		labelSize_ = new QLabel();
+		labelSize_ = new ULabel();
 		labelSize_->setText(tr("Size"));
 
-		sizeSpinBox_ = new DoubleSpinBox();
+		sizeSpinBox_ = new UDoubleSpinBox();
 		sizeSpinBox_->setFixedWidth(50);
 		sizeSpinBox_->setMaximum(1.0f);
 		sizeSpinBox_->setSingleStep(0.05f);
@@ -91,17 +76,17 @@ namespace unreal
 		layoutSize_->addWidget(sizeSpinBox_, 0, Qt::AlignRight);
 		layoutSize_->setContentsMargins(40, 5, 35, 0);
 
-		labelRotationX_ = new QLabel();
+		labelRotationX_ = new ULabel();
 		labelRotationX_->setText(tr("Rotation X"));
 
-		editRotationX_ = new DoubleSpinBox();
+		editRotationX_ = new UDoubleSpinBox();
 		editRotationX_->setFixedWidth(50);
 		editRotationX_->setMaximum(360.0f);
 		editRotationX_->setSingleStep(1.0f);
 		editRotationX_->setAlignment(Qt::AlignRight);
 		editRotationX_->setValue(profile->mainLightModule->rotation.getValue().x);
 		editRotationX_->setDecimals(1);
-		editRotationX_->setSuffix(u8"°");
+		editRotationX_->setSuffix(u8"\u00B0");
 		editRotationX_->installEventFilter(this);
 
 		sliderRotationX_ = new QSlider();
@@ -118,17 +103,17 @@ namespace unreal
 		layoutRotationX_->addWidget(editRotationX_, 0, Qt::AlignRight);
 		layoutRotationX_->setContentsMargins(40, 5, 35, 0);
 
-		labelRotationY_ = new QLabel();
+		labelRotationY_ = new ULabel();
 		labelRotationY_->setText(tr("Rotation Y"));
 
-		editRotationY_ = new DoubleSpinBox();
+		editRotationY_ = new UDoubleSpinBox();
 		editRotationY_->setFixedWidth(50);
 		editRotationY_->setMaximum(360.0f);
 		editRotationY_->setSingleStep(1.0f);
 		editRotationY_->setAlignment(Qt::AlignRight);
 		editRotationY_->setValue(profile->mainLightModule->rotation.getValue().y);
 		editRotationY_->setDecimals(1);
-		editRotationY_->setSuffix(u8"°");
+		editRotationY_->setSuffix(u8"\u00B0");
 		editRotationY_->installEventFilter(this);
 
 		sliderRotationY_ = new QSlider();
@@ -145,17 +130,17 @@ namespace unreal
 		layoutRotationY_->addWidget(editRotationY_, 0, Qt::AlignRight);
 		layoutRotationY_->setContentsMargins(40, 5, 35, 0);
 
-		labelRotationZ_ = new QLabel();
+		labelRotationZ_ = new ULabel();
 		labelRotationZ_->setText(tr("Rotation Z"));
 
-		editRotationZ_ = new DoubleSpinBox();
+		editRotationZ_ = new UDoubleSpinBox();
 		editRotationZ_->setFixedWidth(50);
 		editRotationZ_->setMaximum(360.0f);
 		editRotationZ_->setSingleStep(1.0f);
 		editRotationZ_->setAlignment(Qt::AlignRight);
 		editRotationZ_->setValue(profile->mainLightModule->rotation.getValue().z);
 		editRotationZ_->setDecimals(1);
-		editRotationZ_->setSuffix(u8"°");
+		editRotationZ_->setSuffix(u8"\u00B0");
 		editRotationZ_->installEventFilter(this);
 
 		sliderRotationZ_ = new QSlider();
