@@ -24,7 +24,7 @@ namespace unreal
 	void 
 	OfflineModule::load(octoon::runtime::json& reader) noexcept
 	{
-		if (reader["spp"].is_number_float())
+		if (reader["spp"].is_number_unsigned())
 			this->spp = reader["spp"].get<nlohmann::json::number_unsigned_t>();
 		if (reader["bounces"].is_number_unsigned())
 			this->bounces = reader["bounces"].get<nlohmann::json::number_unsigned_t>();
