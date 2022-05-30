@@ -1,7 +1,6 @@
 #include "pmm_loader.h"
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
-#include <octoon/ass_loader.h>
 
 namespace unreal
 {
@@ -23,11 +22,6 @@ namespace unreal
 
 		for (auto& it : pmm.model)
 		{
-			EntitesObject entity;
-
-			entity.name = it.name;
-			entity.filepath = it.path;
-
 			auto object = octoon::MeshLoader::load(it.path);
 			if (object)
 			{
@@ -37,14 +31,12 @@ namespace unreal
 				octoon::AnimationClip<float> morphClip;
 				setupMorphAnimation(it, morphClip);
 
-				object->setName(it.path);
+				object->setName(it.name);
 				object->addComponent<octoon::AnimatorComponent>(octoon::Animation(std::move(boneClips)), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
 				object->addComponent<octoon::AnimatorComponent>(octoon::Animation(std::move(morphClip)));
 				object->getComponent<octoon::SkinnedMeshRendererComponent>()->setAutomaticUpdate(!profile.offlineModule->getEnable());
 
 				objects.emplace_back(std::move(object));
-
-				profile.entitiesModule->entities.getValue().push_back(entity);
 			}
 			else
 			{
@@ -52,6 +44,8 @@ namespace unreal
 			}
 		}
 
+		profile.physicsModule->gravity.setValue(octoon::math::float3(pmm.gravity_current_data.direction.x, pmm.gravity_current_data.direction.y * pmm.gravity_current_data.acceleration, pmm.gravity_current_data.direction.z));
+		profile.soundModule->enable = pmm.is_wave_enabled;
 		profile.soundModule->filepath = pmm.wave_path;
 		profile.mainLightModule->intensity = 1.0f;
 		profile.mainLightModule->color = octoon::math::float3(pmm.main_light.rgb.x, pmm.main_light.rgb.y, pmm.main_light.rgb.z);

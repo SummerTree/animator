@@ -48,7 +48,7 @@ namespace unreal
 			}
 		}
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		for (auto& it : this->getContext()->profile->entitiesModule->objects.getValue())
 		{
 			for (auto component : it->getComponents())
 			{
@@ -102,7 +102,7 @@ namespace unreal
 		if (sound)
 			sound->getComponent<octoon::AudioSourceComponent>()->pause();
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		for (auto& it : this->getContext()->profile->entitiesModule->objects.getValue())
 		{
 			for (auto component : it->getComponents())
 			{
@@ -190,7 +190,7 @@ namespace unreal
 			}
 		}
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		for (auto& it : this->getContext()->profile->entitiesModule->objects.getValue())
 		{
 			for (auto component : it->getComponents())
 			{
@@ -240,7 +240,7 @@ namespace unreal
 				physicsFeature->simulate(timeFeature->getTimeStep());
 		}
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		for (auto& it : this->getContext()->profile->entitiesModule->objects.getValue())
 		{
 			for (auto component : it->getComponents())
 			{
@@ -281,7 +281,7 @@ namespace unreal
 				source->setTime(model->curTime);
 		}
 
-		for (auto& it : context->profile->entitiesModule->objects)
+		for (auto& it : context->profile->entitiesModule->objects.getValue())
 		{
 			for (auto component : it->getComponents())
 			{
@@ -329,7 +329,7 @@ namespace unreal
 			physicsFeature->simulate(std::abs(delta));
 		}
 
-		for (auto& it : context->profile->entitiesModule->objects)
+		for (auto& it : context->profile->entitiesModule->objects.getValue())
 		{
 			for (auto component : it->getComponents())
 			{
@@ -366,7 +366,7 @@ namespace unreal
 
 		auto& context = this->getContext()->profile;
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		for (auto& it : this->getContext()->profile->entitiesModule->objects.getValue())
 		{
 			for (auto component : it->getComponents())
 			{
@@ -429,7 +429,7 @@ namespace unreal
 				timeLength = std::max(timeLength, animation->getCurrentAnimatorStateInfo().timeLength);
 		}
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects)
+		for (auto& it : this->getContext()->profile->entitiesModule->objects.getValue())
 		{
 			if (!it) continue;
 

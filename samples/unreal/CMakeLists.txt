@@ -184,6 +184,8 @@ SET(UTILS_LIST
 	${SOURCE_PATH}/utils/pmm.cpp
 	${SOURCE_PATH}/utils/pmm_loader.h
 	${SOURCE_PATH}/utils/pmm_loader.cpp
+	${SOURCE_PATH}/utils/ass_loader.h
+	${SOURCE_PATH}/utils/ass_loader.cpp
 )
 SOURCE_GROUP("launcher\\utils" FILES ${UTILS_LIST})
 

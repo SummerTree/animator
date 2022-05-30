@@ -1,6 +1,8 @@
 #include "unreal_behaviour.h"
-#include <filesystem>
 #include "../utils/pmm_loader.h"
+#include "../utils/ass_loader.h"
+
+#include <filesystem>
 
 namespace unreal
 {
@@ -22,9 +24,6 @@ namespace unreal
 	bool
 	UnrealBehaviour::open(std::string_view path) noexcept(false)
 	{
-		if (!profile_->entitiesModule->objects.empty())
-			profile_->entitiesModule->objects.clear();
-
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".pmm")
 		{
@@ -37,15 +36,24 @@ namespace unreal
 
 			return true;
 		}
+		else if (ext == ".scene")
+		{
+			AssLoader::load(*profile_, path);
+
+			playerComponent_->updateTimeLength();
+			playerComponent_->reset();
+
+			this->sendMessage("editor:project:open");
+
+			return true;
+		}
 		else if (ext == ".agp")
 		{
 			profile_->load(path);
+
 			this->playerComponent_->updateTimeLength();
-			return true;
-		}
-		else if (ext == ".scene")
-		{
-			entitiesComponent_->importAss(path);
+			this->sendMessage("editor:project:open");
+
 			return true;
 		}
 
@@ -82,7 +90,7 @@ namespace unreal
 		if (profile_->playerModule->timeLength > 0)
 			return true;
 
-		return !profile_->entitiesModule->objects.empty();
+		return !profile_->entitiesModule->objects.getValue().empty();
 	}
 
 	void

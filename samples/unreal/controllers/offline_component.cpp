@@ -25,7 +25,7 @@ namespace unreal
 		{
 			this->getModel()->sppCount = 0;
 
-			for (auto& object : this->getContext()->profile->entitiesModule->objects)
+			for (auto& object : this->getContext()->profile->entitiesModule->objects.getValue())
 			{
 				auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
