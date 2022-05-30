@@ -173,6 +173,19 @@ namespace unreal
 	void
 	CameraComponent::onEnable() noexcept
 	{
+		auto mainCamera = octoon::GameObject::create("MainCamera");
+		mainCamera->addComponent<octoon::FirstPersonCameraComponent>();
+		mainCamera->getComponent<octoon::TransformComponent>()->setTranslate(this->getModel()->translate);
+		mainCamera->getComponent<octoon::TransformComponent>()->setEulerAngles(this->getModel()->rotation);
+
+		auto camera = mainCamera->addComponent<octoon::FilmCameraComponent>();
+		camera->setFov(this->getModel()->fov);
+		camera->setAperture(this->getModel()->useDepthOfFiled ? this->getModel()->aperture.getValue() : 0.0f);
+		camera->setCameraType(octoon::CameraType::Main);
+		camera->setClearColor(octoon::math::float4(0.0f, 0.0f, 0.0f, 1.0f));
+		camera->setupFramebuffers(this->getContext()->profile->recordModule->width, this->getContext()->profile->recordModule->height, 0, octoon::GraphicsFormat::R32G32B32SFloat);
+
+		this->getModel()->camera = mainCamera;
 	}
 
 	void

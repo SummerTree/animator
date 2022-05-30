@@ -20,7 +20,7 @@ namespace unreal
 	{
 		this->getModel()->showBackground += [this](bool value)
 		{
-			auto& environmentLight = this->getContext()->profile->environmentLightModule->environmentLight.getValue();
+			auto& environmentLight = this->getModel()->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto enviromentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -36,9 +36,8 @@ namespace unreal
 		this->getModel()->intensity += [this](float value)
 		{
 			auto& model = this->getModel();
-			auto& profile = this->getContext()->profile;
 
-			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
+			auto& environmentLight = model->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto enviromentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -57,9 +56,8 @@ namespace unreal
 		this->getModel()->color += [this](const octoon::math::float3& value)
 		{
 			auto& model = this->getModel();
-			auto& profile = this->getContext()->profile;
 
-			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
+			auto& environmentLight = model->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto srgb = octoon::math::srgb2linear<float>(value);
@@ -79,9 +77,9 @@ namespace unreal
 
 		this->getModel()->offset += [this](const octoon::math::float2& offset)
 		{
-			auto& profile = this->getContext()->profile;
+			auto& model = this->getModel();
 
-			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
+			auto& environmentLight = model->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto environmentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -104,9 +102,8 @@ namespace unreal
 		this->getModel()->useTexture += [this](bool useTexture)
 		{
 			auto& model = this->getModel();
-			auto& profile = this->getContext()->profile;
 
-			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
+			auto& environmentLight = model->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto environmentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -134,12 +131,11 @@ namespace unreal
 		this->getModel()->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
 		{
 			auto& model = this->getModel();
-			auto& profile = this->getContext()->profile;
 
 			this->texture_ = texture;
 			this->radianceTexture_ = texture ? octoon::PMREMLoader::load(this->texture_) : nullptr;
 
-			auto& environmentLight = profile->environmentLightModule->environmentLight.getValue();
+			auto& environmentLight = model->environmentLight.getValue();
 			if (environmentLight)
 			{
 				auto environmentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
@@ -162,6 +158,21 @@ namespace unreal
 	void
 	EnvironmentComponent::onEnable() noexcept
 	{
+		auto environmentMaterial = octoon::MeshBasicMaterial::create(octoon::math::srgb2linear<float>(this->getModel()->color));
+		environmentMaterial->setCullMode(octoon::CullMode::Off);
+		environmentMaterial->setGamma(1.0f);
+		environmentMaterial->setDepthEnable(false);
+		environmentMaterial->setDepthWriteEnable(false);
+
+		auto enviromentLight = octoon::GameObject::create("EnvironmentLight");
+		enviromentLight->addComponent<octoon::EnvironmentLightComponent>();
+		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setColor(octoon::math::srgb2linear<float>(this->getModel()->color));
+		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setIntensity(this->getModel()->intensity);
+		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setOffset(this->getModel()->offset);
+		enviromentLight->addComponent<octoon::MeshFilterComponent>(octoon::SphereMesh(10000, 32, 24, octoon::math::PI * 0.5));
+		enviromentLight->addComponent<octoon::MeshRendererComponent>(environmentMaterial)->setRenderOrder(-2);
+
+		this->getModel()->environmentLight = enviromentLight;
 	}
 
 	void

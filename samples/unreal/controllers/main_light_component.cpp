@@ -74,6 +74,16 @@ namespace unreal
 	void
 	MainLightComponent::onEnable() noexcept
 	{
+		auto mainLight = octoon::GameObject::create("DirectionalLight");
+		mainLight->addComponent<octoon::DirectionalLightComponent>();
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setShadowEnable(true);
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setShadowMapSize(octoon::math::uint2(2048, 2048));
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setSize(this->getContext()->profile->mainLightModule->size);
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setIntensity(this->getContext()->profile->mainLightModule->intensity);
+		mainLight->getComponent<octoon::DirectionalLightComponent>()->setColor(this->getContext()->profile->mainLightModule->color);
+		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion(octoon::math::radians(this->getContext()->profile->mainLightModule->rotation)));
+
+		this->getContext()->profile->mainLightModule->mainLight = mainLight;
 	}
 
 	void
