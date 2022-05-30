@@ -21,7 +21,7 @@
 
 namespace unreal
 {
-	class UnrealProfile
+	class UnrealProfile final
 	{
 	public:
 		UnrealProfile() noexcept;

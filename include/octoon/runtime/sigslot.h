@@ -181,7 +181,6 @@ namespace octoon
 			template <typename ... Args>
 			void call_one_slots(Args&&... args)
 			{
-				std::lock_guard<std::mutex> guard_slots(impl.slots_mutex);
 				if (!impl.slots.empty())
 				{
 					auto f = impl.slots.front();
@@ -192,7 +191,6 @@ namespace octoon
 			template <typename ... Args>
 			void call_all_slots(Args&&... args)
 			{
-				std::lock_guard<std::mutex> guard_slots(impl.slots_mutex);
 				for (auto &each : impl.slots)
 					each(std::forward<Args>(args)...);
 			}
@@ -200,7 +198,6 @@ namespace octoon
 			template <typename ... Args>
 			void call_all_signals(Args&&... args)
 			{
-				std::lock_guard<std::mutex> guard_signals(impl.signals_mutex);
 				for (auto each : impl.signals)
 					(*each)(std::forward<Args>(args)...);
 			}
