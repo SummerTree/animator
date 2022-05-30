@@ -2,7 +2,7 @@ unreal--UComboBox {
 	color: rgb(220,220,220);
     border-radius:2px;
     padding:1px 18px 1px 3px;
-    max-width:120px;
+    max-width:220px;
 	border:1px solid darkgray;
 }
 

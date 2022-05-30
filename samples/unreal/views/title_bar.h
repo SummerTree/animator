@@ -30,6 +30,9 @@ namespace unreal
 		void mouseReleaseEvent(QMouseEvent* e) noexcept override;
 		void mouseMoveEvent(QMouseEvent* e) noexcept override;
 
+		bool eventFilter(QObject* watched, QEvent* event);
+		void retranslate();
+
 	private:
 		bool allowMove_;
 

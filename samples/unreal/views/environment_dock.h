@@ -8,7 +8,9 @@
 #include <qlistwidget.h>
 #include <qspinbox.h>
 
+#include "../widgets/udockwidget.h"
 #include "../widgets/spoiler.h"
+
 #include "unreal_behaviour.h"
 #include "unreal_profile.h"
 
@@ -53,7 +55,7 @@ namespace unreal
 		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 
-	class EnvironmentDock final : public QDockWidget
+	class EnvironmentDock final : public UDockWidget
 	{
 		Q_OBJECT
 	public:

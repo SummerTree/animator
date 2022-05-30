@@ -12,6 +12,8 @@ namespace unreal
 	public:
 		explicit UDockWidget(QWidget* parent = 0);
 		~UDockWidget();
+
+		bool eventFilter(QObject* watched, QEvent* event);
 	};
 }
 

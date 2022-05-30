@@ -10,4 +10,12 @@ namespace unreal
 	UDockWidget::~UDockWidget()
 	{
 	}
+
+	bool
+	UDockWidget::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() == QEvent::LanguageChange)
+			retranslate();
+		return QDockWidget::eventFilter(watched, event);
+	}
 }

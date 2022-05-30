@@ -49,14 +49,16 @@ namespace unreal
 	public:
 		SettingMainPlaneInterface(QWidget* parent);
 
+		bool eventFilter(QObject* watched, QEvent* event);
 		void retranslate();
 
+		QLabel* langLabel_;
 		UComboBox* langCombo_;
 		std::unique_ptr<QLabel> renderLabel;
 		std::unique_ptr<QLabel> resolutionLabel;
 		std::unique_ptr<UComboBox> resolutionCombo;
 
-		std::vector<QString> languages;
+		std::vector<QString> languages_;
 	private:
 		std::unique_ptr<QVBoxLayout> layout_;
 	};
@@ -67,6 +69,7 @@ namespace unreal
 	public:
 		SettingMainPlaneGraphics(QWidget* parent);
 
+		bool eventFilter(QObject* watched, QEvent* event);
 		void retranslate();
 	};
 
@@ -77,6 +80,7 @@ namespace unreal
 		SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept(false);
 		~SettingContextPlane() noexcept;
 		
+		bool eventFilter(QObject* watched, QEvent* event);
 		void retranslate();
 
 	public Q_SLOTS:

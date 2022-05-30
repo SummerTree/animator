@@ -30,6 +30,8 @@ namespace unreal
 
 		this->setObjectName("settingTitle");
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		
+		this->installEventFilter(this);
 	}
 
 	TitleBar::~TitleBar() noexcept
@@ -61,5 +63,21 @@ namespace unreal
 	{
 		if (allowMove_)
 			parentWidget()->move(e->globalPos() - clickPos_);
+	}
+	bool
+	TitleBar::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() == QEvent::LanguageChange)
+		{
+			retranslate();
+		}
+
+		return QWidget::eventFilter(watched, event);
+	}
+	void
+	TitleBar::retranslate()
+	{
+		titleLabel_->setText(tr("Settings"));
+		closeButton_->setToolTip(tr("Close"));
 	}
 }

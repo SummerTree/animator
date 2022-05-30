@@ -933,27 +933,30 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingContextPlane</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="196"/>
+        <location filename="../views/setting_window.cpp" line="227"/>
+        <location filename="../views/setting_window.cpp" line="325"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="196"/>
+        <location filename="../views/setting_window.cpp" line="227"/>
+        <location filename="../views/setting_window.cpp" line="325"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="196"/>
+        <location filename="../views/setting_window.cpp" line="227"/>
+        <location filename="../views/setting_window.cpp" line="325"/>
         <source>Graphics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="392"/>
+        <location filename="../views/setting_window.cpp" line="438"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="392"/>
+        <location filename="../views/setting_window.cpp" line="438"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -962,31 +965,31 @@ $20 (Original cost $40)</source>
     <name>unreal::SettingMainPlaneGeneral</name>
     <message>
         <location filename="../views/setting_window.cpp" line="52"/>
-        <location filename="../views/setting_window.cpp" line="124"/>
+        <location filename="../views/setting_window.cpp" line="116"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="56"/>
-        <location filename="../views/setting_window.cpp" line="125"/>
+        <location filename="../views/setting_window.cpp" line="117"/>
         <source>Check Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="61"/>
-        <location filename="../views/setting_window.cpp" line="126"/>
+        <location filename="../views/setting_window.cpp" line="118"/>
         <source>Current Version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="81"/>
-        <location filename="../views/setting_window.cpp" line="127"/>
+        <location filename="../views/setting_window.cpp" line="119"/>
         <source>Reset to default settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="85"/>
-        <location filename="../views/setting_window.cpp" line="128"/>
+        <location filename="../views/setting_window.cpp" line="120"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -994,32 +997,38 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingMainPlaneInterface</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="136"/>
+        <location filename="../views/setting_window.cpp" line="132"/>
+        <location filename="../views/setting_window.cpp" line="187"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="133"/>
-        <source>English</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/setting_window.cpp" line="133"/>
-        <source>Chinese</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/setting_window.cpp" line="133"/>
-        <source>Japanese</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/setting_window.cpp" line="143"/>
+        <location filename="../views/setting_window.cpp" line="139"/>
+        <location filename="../views/setting_window.cpp" line="195"/>
         <source>Render Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="147"/>
+        <location filename="../views/setting_window.cpp" line="128"/>
+        <location filename="../views/setting_window.cpp" line="190"/>
+        <source>English (United State)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="127"/>
+        <location filename="../views/setting_window.cpp" line="189"/>
+        <source>Chinese (Simplified)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="129"/>
+        <location filename="../views/setting_window.cpp" line="191"/>
+        <source>Japanese (Japan)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/setting_window.cpp" line="143"/>
+        <location filename="../views/setting_window.cpp" line="196"/>
         <source>Resolution</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1163,11 +1172,13 @@ $20 (Original cost $40)</source>
     <name>unreal::TitleBar</name>
     <message>
         <location filename="../views/title_bar.cpp" line="13"/>
+        <location filename="../views/title_bar.cpp" line="80"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/title_bar.cpp" line="17"/>
+        <location filename="../views/title_bar.cpp" line="81"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>

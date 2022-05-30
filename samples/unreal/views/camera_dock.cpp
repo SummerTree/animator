@@ -397,7 +397,7 @@ namespace unreal
 			}
 		}
 
-		return QWidget::eventFilter(watched, event);
+		return UDockWidget::eventFilter(watched, event);
 	}
 
 	void

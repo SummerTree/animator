@@ -90,14 +90,6 @@ namespace unreal
 		layout_->addWidget(infoLabel);
 		layout_->addWidget(infoButton);
 		layout_->addWidget(versionLabel);
-		/*layout_->addSpacing(10);
-		layout_->addWidget(startupLabel);
-		layout_->addSpacing(10);
-		layout_->addWidget(checkBox);
-		layout_->addSpacing(10);
-		layout_->addWidget(powerLabel);
-		layout_->addSpacing(10);
-		layout_->addWidget(lowpowerBox);*/
 		layout_->addSpacing(10);
 		layout_->addWidget(resetLabel);
 		layout_->addSpacing(10);
@@ -130,13 +122,17 @@ namespace unreal
 
 	SettingMainPlaneInterface::SettingMainPlaneInterface(QWidget* parent)
 		: QWidget(parent)
-		, languages { tr("English"), tr("Chinese"), tr("Japanese") }
 	{
-		QLabel* langLabel = new QLabel(this);
-		langLabel->setText(tr("Language"));
+		languages_ = std::vector<QString>{
+			tr("Chinese (Simplified)"),
+			tr("English (United State)"),
+			tr("Japanese (Japan)")
+		};
+		langLabel_ = new QLabel(this);
+		langLabel_->setText(tr("Language"));
 
 		langCombo_ = new UComboBox(this);
-		for (auto item : languages)
+		for (auto item : languages_)
 			langCombo_->addItem(item);
 
 		renderLabel = std::make_unique<QLabel>();
@@ -166,15 +162,38 @@ namespace unreal
 		layout_->addSpacing(10);
 		layout_->addWidget(resolutionCombo.get());
 		layout_->addSpacing(10);
-		layout_->addWidget(langLabel);
+		layout_->addWidget(langLabel_);
 		layout_->addSpacing(10);
 		layout_->addWidget(langCombo_);
 		layout_->addSpacing(200);
+
+		this->installEventFilter(this);
+	}
+
+	bool
+	SettingMainPlaneInterface::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() == QEvent::LanguageChange)
+		{
+			retranslate();
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 
 	void
 	SettingMainPlaneInterface::retranslate()
 	{
+		langLabel_->setText(tr("Language"));
+		languages_ = std::vector<QString>{
+			tr("Chinese (Simplified)"),
+			tr("English (United State)"),
+			tr("Japanese (Japan)")
+		};
+		for (int i = 0; i < languages_.size(); ++i)
+			langCombo_->setItemText(i, languages_[i]);
+		renderLabel->setText(tr("Render Settings"));
+		resolutionLabel->setText(tr("Resolution"));
 	}
 
 	SettingMainPlaneGraphics::SettingMainPlaneGraphics(QWidget* parent)
@@ -182,9 +201,21 @@ namespace unreal
 	{
 	}
 
+	bool
+	SettingMainPlaneGraphics::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() == QEvent::LanguageChange)
+		{
+			retranslate();
+		}
+
+		return QWidget::eventFilter(watched, event);
+	}
+
 	void
 	SettingMainPlaneGraphics::retranslate()
 	{
+		
 	}
 
 	SettingContextPlane::SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept(false)
@@ -262,6 +293,8 @@ namespace unreal
 		connect(mainPlaneGeneral_->infoButton, SIGNAL(clicked()), this, SLOT(onCheckVersion()));
 		connect(mainPlaneInterface_->resolutionCombo.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
 		connect(mainPlaneInterface_->langCombo_, SIGNAL(currentIndexChanged(int)), this, SLOT(onLangCombo(int)));
+
+		this->installEventFilter(this);
 	}
 
 	SettingContextPlane::~SettingContextPlane()
@@ -275,12 +308,25 @@ namespace unreal
 		layout_.reset();
 	}
 
+	bool
+	SettingContextPlane::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() == QEvent::LanguageChange)
+		{
+			retranslate();
+		}
+
+		return QWidget::eventFilter(watched, event);
+	}
+
 	void
 	SettingContextPlane::retranslate()
 	{
-		mainPlaneGeneral_->retranslate();
-		mainPlaneInterface_->retranslate();
-		mainPlaneGraphics_->retranslate();
+		QStringList strList{ tr("General"), tr("Interface"), tr("Graphics") };
+		for (int i = 0; i < strList.size(); i++)
+		{
+			listWidgetItems_[i]->setText(strList[i]);
+		}
 	}
 
 	void
@@ -396,11 +442,13 @@ namespace unreal
 	void
 	SettingContextPlane::onLangCombo(int index)
 	{
+		if (index == -1)
+			return;
 		QString filename;
 		if (index == 0)
-			filename = "en_US.qm";
-		else if (index == 1)
 			filename = "zh_CN.qm";
+		else if (index == 1)
+			filename = "en_US.qm";
 		else if (index == 2)
 			filename = "ja_JP.qm";
 		else

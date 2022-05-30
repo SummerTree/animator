@@ -6,7 +6,7 @@
 #include <QWidget>
 
 namespace unreal
-{
+{	
 	class UTranslatable
 	{
 	public:
@@ -14,7 +14,6 @@ namespace unreal
 		~UTranslatable();
 
         virtual void retranslate();
-        bool eventFilter(QObject* watched, QEvent* event);
 	};
 }
 
