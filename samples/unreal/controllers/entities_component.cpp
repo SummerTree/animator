@@ -25,7 +25,7 @@ namespace unreal
 	bool
 	EntitiesComponent::importModel(std::string_view path) noexcept
 	{
-		auto model = octoon::MeshLoader::load(path);
+		auto model = octoon::PMXLoader::load(path);
 		if (model)
 		{
 			auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();

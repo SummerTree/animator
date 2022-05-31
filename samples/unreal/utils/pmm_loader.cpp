@@ -22,7 +22,7 @@ namespace unreal
 
 		for (auto& it : pmm.model)
 		{
-			auto object = octoon::MeshLoader::load(it.path);
+			auto object = octoon::PMXLoader::load(it.path);
 			if (object)
 			{
 				octoon::AnimationClips<float> boneClips;

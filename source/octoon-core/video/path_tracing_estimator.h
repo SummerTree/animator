@@ -91,7 +91,7 @@ namespace octoon
         void gatherLightSamples(const ClwScene& scene, int pass, std::size_t size, CLWBuffer<math::float4> output, bool use_output_indices);
 
     private:
-        std::uint32_t numRays_;
+        std::size_t numRays_;
         std::uint32_t maxBounces_;
         std::uint32_t sampleCounter_;
 

@@ -2,8 +2,6 @@
 #include "unreal_behaviour.h"
 #include <octoon/image/image.h>
 #include <octoon/pmx_loader.h>
-#include <octoon/model_loader.h>
-#include <octoon/mesh_loader.h>
 #include <octoon/runtime/string.h>
 #include <fstream>
 #include <filesystem>
@@ -26,8 +24,8 @@ namespace unreal
 	ModelComponent::importModel(std::string_view filepath) noexcept(false)
 	{
 		octoon::PMX pmx;
-		octoon::PmxLoader loader;
-		if (loader.load(filepath, pmx))
+
+		if (octoon::PMX::load(filepath, pmx))
 		{
 			auto id = QUuid::createUuid().toString();
 			auto uuid = id.toStdString().substr(1, id.length() - 2);
@@ -76,7 +74,7 @@ namespace unreal
 					return previewPath.string();
 				};
 
-				auto geometry = octoon::MeshLoader::load(octoon::ModelLoader::load(pmx));
+				auto geometry = octoon::PMXLoader::loadGeometry(pmx);
 
 				for (auto& v : pmx.bones)
 				{
