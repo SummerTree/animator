@@ -38,12 +38,12 @@ namespace unreal
 	}
 
 	void 
-	ResourceModule::load(octoon::runtime::json& reader) noexcept
+	ResourceModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
 	}
 
 	void 
-	ResourceModule::save(octoon::runtime::json& writer) noexcept
+	ResourceModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 	}
 }

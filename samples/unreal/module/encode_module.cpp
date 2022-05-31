@@ -22,7 +22,7 @@ namespace unreal
 	}
 
 	void 
-	EncodeModule::load(octoon::runtime::json& reader) noexcept
+	EncodeModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
 		if (reader["crf"].is_number_float())
 			this->crf = reader["crf"].get<nlohmann::json::number_float_t>();
@@ -55,7 +55,7 @@ namespace unreal
 	}
 
 	void 
-	EncodeModule::save(octoon::runtime::json& writer) noexcept
+	EncodeModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 		writer["crf"] = this->crf.getValue();
 		writer["frame_type"] = this->frame_type.getValue();

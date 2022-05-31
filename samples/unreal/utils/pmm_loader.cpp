@@ -1,6 +1,7 @@
 #include "pmm_loader.h"
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
+#include <quuid.h>
 
 namespace unreal
 {
@@ -31,7 +32,10 @@ namespace unreal
 				octoon::AnimationClip<float> morphClip;
 				setupMorphAnimation(it, morphClip);
 
-				object->setName(it.name);
+				auto id = QUuid::createUuid().toString();
+				auto uuid = id.toStdString().substr(1, id.length() - 2);
+
+				object->setName(uuid);
 				object->addComponent<octoon::AnimatorComponent>(octoon::Animation(std::move(boneClips)), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
 				object->addComponent<octoon::AnimatorComponent>(octoon::Animation(std::move(morphClip)));
 				object->getComponent<octoon::SkinnedMeshRendererComponent>()->setAutomaticUpdate(!profile.offlineModule->getEnable());

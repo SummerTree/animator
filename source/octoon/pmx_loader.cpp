@@ -23,6 +23,7 @@
 #include <octoon/io/fstream.h>
 #include <octoon/texture_loader.h>
 
+#include <set>
 #include <codecvt>
 
 namespace octoon
@@ -588,28 +589,34 @@ namespace octoon
 		return geometry;
 	}
 
-	GameObjectPtr
+	std::shared_ptr<GameObject>
 	PMXLoader::load(std::string_view filepath) noexcept(false)
 	{
 		PMX pmx;
-		PMX::load(filepath, pmx);
-
-		if (pmx.numMaterials > 0)
+		if (PMX::load(filepath, pmx))
 		{
-			GameObjectPtr actor = GameObject::create();
+			if (pmx.numMaterials > 0)
+			{
+				GameObjects bones;
+				GameObjectPtr actor = GameObject::create();
 
-			GameObjects bones;
+				if (!pmx.description.japanModelName.empty())
+				{
+					std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+					actor->setName(cv.to_bytes(pmx.description.japanModelName.data()));
+				}
 
-			createBones(pmx, bones);
-			createColliders(pmx, bones);
-			createRigidbodies(pmx, bones);
-			createJoints(pmx, bones);
-			
-			createMeshes(pmx, actor, bones);
-			createMorph(pmx, actor);
-			createClothes(pmx, actor, bones);
+				createBones(pmx, bones);
+				createColliders(pmx, bones);
+				createRigidbodies(pmx, bones);
+				createJoints(pmx, bones);
 
-			return actor;
+				createMeshes(pmx, actor, bones);
+				createMorph(pmx, actor);
+				createClothes(pmx, actor, bones);
+
+				return actor;
+			}
 		}
 
 		return nullptr;
@@ -620,9 +627,14 @@ namespace octoon
 	{
 		if (pmx.numMaterials > 0)
 		{
+			GameObjects bones;
 			GameObjectPtr actor = GameObject::create();
 
-			GameObjects bones;
+			if (!pmx.description.japanModelName.empty())
+			{
+				std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+				actor->setName(cv.to_bytes(pmx.description.japanModelName.data()));
+			}
 
 			createBones(pmx, bones);
 			createColliders(pmx, bones);
@@ -637,5 +649,152 @@ namespace octoon
 		}
 
 		return nullptr;
+	}
+
+	bool
+	PMXLoader::save(const GameObject& gameObject, PMX& pmx) noexcept(false)
+	{
+		if (!gameObject.getName().empty())
+		{
+			pmx.header.magic[0] = 'P';
+			pmx.header.magic[1] = 'M';
+			pmx.header.magic[2] = 'X';
+			pmx.header.offset = 0x20;
+			pmx.header.version = 2.0f;
+			pmx.header.dataSize = 0x08;
+			pmx.header.encode = 0x0;
+			pmx.header.addUVCount = 0;
+			pmx.header.sizeOfIndices = 4;
+			pmx.header.sizeOfTexture = 1;
+			pmx.header.sizeOfMaterial = 1;
+			pmx.header.sizeOfBone = 2;
+			pmx.header.sizeOfMorph = 1;
+			pmx.header.sizeOfBody = 1;
+
+			pmx.numVertices = 0;
+			pmx.numIndices = 0;
+			pmx.numTextures = 0;
+			pmx.numMaterials = 0;
+			pmx.numBones = 0;
+			pmx.numMorphs = 0;
+			pmx.numDisplayFrames = 0;
+			pmx.numRigidbodys = 0;
+			pmx.numJoints = 0;
+			pmx.numSoftbodies = 0;
+
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+			auto utf16 = cv.from_bytes(gameObject.getName());
+			pmx.description.japanModelLength = utf16.length() * 2;
+			pmx.description.japanModelName.resize(utf16.length());
+
+			std::memcpy(pmx.description.japanModelName.data(), utf16.data(), pmx.description.japanModelLength);
+
+			auto mf = gameObject.getComponent<MeshFilterComponent>();
+			if (mf && mf->getMesh())
+			{
+				auto mesh = mf->getMesh();
+				auto& weight = mesh->getWeightArray();
+
+				pmx.numVertices = mesh->getNumVertices();
+				pmx.numIndices = mesh->getNumIndices();
+
+				pmx.vertices.resize(pmx.numVertices);
+				pmx.indices.resize(pmx.numIndices * sizeof(std::uint32_t));
+
+				for (std::size_t i = 0; i < pmx.numVertices; i++)
+				{
+					auto& pmxVertex = pmx.vertices[i];
+					pmxVertex.position = mesh->getVertexArray()[i];
+					pmxVertex.normal = mesh->getNormalArray()[i];
+					pmxVertex.coord = mesh->getTexcoordArray()[i];
+					pmxVertex.edge = 0;
+					pmxVertex.type = PmxVertexSkinningType::PMX_BDEF1;
+					pmxVertex.weight.bone1 = weight[i].bone1;
+					pmxVertex.weight.bone2 = weight[i].bone2;
+					pmxVertex.weight.bone3 = weight[i].bone3;
+					pmxVertex.weight.bone4 = weight[i].bone4;
+					pmxVertex.weight.weight1 = weight[i].weight1;
+					pmxVertex.weight.weight2 = weight[i].weight2;
+					pmxVertex.weight.weight3 = weight[i].weight3;
+					pmxVertex.weight.weight4 = weight[i].weight4;
+
+					if (pmxVertex.weight.weight1 != 0 && pmxVertex.weight.weight2 != 0 && pmxVertex.weight.weight3 != 0 && pmxVertex.weight.weight4 != 0)
+						pmxVertex.type = PmxVertexSkinningType::PMX_BDEF4;
+					else if (pmxVertex.weight.weight1 != 0 && pmxVertex.weight.weight2 != 0)
+						pmxVertex.type = PmxVertexSkinningType::PMX_BDEF2;
+					else if (pmxVertex.weight.weight1 != 0)
+						pmxVertex.type = PmxVertexSkinningType::PMX_BDEF1;
+				}
+
+				for (std::size_t i = 0, offset = 0; i < mesh->getNumSubsets(); i++)
+				{
+					auto& indices = mesh->getIndicesArray(i);
+					std::memcpy(pmx.indices.data() + offset, indices.data(), indices.size() * sizeof(std::uint32_t));
+					offset += indices.size() * sizeof(std::uint32_t);
+				}
+
+				std::map<std::string, std::size_t> textureMap;
+
+				auto smr = gameObject.getComponent<SkinnedMeshRendererComponent>();
+				if (smr)
+				{
+					pmx.numMaterials = smr->getMaterials().size();
+
+					for (std::size_t i = 0; i < pmx.numMaterials; i++)
+					{
+						auto standard = smr->getMaterial(i)->downcast_pointer<MeshStandardMaterial>();
+						auto color = math::linear2srgb(standard->getColor());
+						auto texture = standard->getColorMap();
+
+						if (texture)
+						{
+							auto name = texture->getTextureDesc().getName();
+							if (textureMap.find(name) == textureMap.end())
+								textureMap.insert(std::make_pair(name, textureMap.size()));
+						}
+
+						PmxMaterial pmxMaterial;
+						std::memset(&pmxMaterial, 0, sizeof(PmxMaterial));
+						pmxMaterial.name = PmxName(standard->getName());
+						pmxMaterial.nameEng = PmxName("");
+						pmxMaterial.Diffuse.x = color.x;
+						pmxMaterial.Diffuse.y = color.y;
+						pmxMaterial.Diffuse.z = color.z;
+						pmxMaterial.Opacity = standard->getOpacity();
+						pmxMaterial.TextureIndex = texture ? textureMap[texture->getTextureDesc().getName()] : 255;
+						pmxMaterial.ToonIndex = 255;
+						pmxMaterial.SphereTextureIndex = 255;
+						pmxMaterial.FaceCount = mesh->getIndicesArray(i).size();
+
+						pmx.materials.push_back(pmxMaterial);
+					}
+
+					pmx.numTextures = textureMap.size();
+					pmx.textures.resize(textureMap.size());
+
+					for (auto& it : textureMap)
+						pmx.textures[it.second] = PmxName(it.first.substr(it.first.find_last_of("\\") + 1));
+				}
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	PMXLoader::save(const GameObject& gameObject, std::string_view path) noexcept(false)
+	{
+		auto stream = octoon::io::ofstream(std::string(path), std::ios_base::in | std::ios_base::out);
+		if (stream)
+		{
+			auto pmx = std::make_unique<PMX>();
+			save(gameObject, *pmx);
+
+			PMX::save(stream, *pmx);
+
+			return true;
+		}
+
+		return false;
 	}
 }
