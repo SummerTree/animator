@@ -739,6 +739,7 @@ namespace octoon
 				if (smr)
 				{
 					pmx.numMaterials = smr->getMaterials().size();
+					pmx.materials.resize(pmx.numMaterials);
 
 					for (std::size_t i = 0; i < pmx.numMaterials; i++)
 					{
@@ -753,8 +754,7 @@ namespace octoon
 								textureMap.insert(std::make_pair(name, textureMap.size()));
 						}
 
-						PmxMaterial pmxMaterial;
-						std::memset(&pmxMaterial, 0, sizeof(PmxMaterial));
+						auto& pmxMaterial = pmx.materials[i];
 						pmxMaterial.name = PmxName(standard->getName());
 						pmxMaterial.nameEng = PmxName("");
 						pmxMaterial.Diffuse.x = color.x;
@@ -765,8 +765,6 @@ namespace octoon
 						pmxMaterial.ToonIndex = 255;
 						pmxMaterial.SphereTextureIndex = 255;
 						pmxMaterial.FaceCount = mesh->getIndicesArray(i).size();
-
-						pmx.materials.push_back(pmxMaterial);
 					}
 
 					pmx.numTextures = textureMap.size();
@@ -774,6 +772,28 @@ namespace octoon
 
 					for (auto& it : textureMap)
 						pmx.textures[it.second] = PmxName(it.first.substr(it.first.find_last_of("\\") + 1));
+
+					auto transforms = smr->getTransforms();
+					if (!transforms.empty())
+					{
+						pmx.numBones = smr->getTransforms().size();
+						pmx.bones.resize(pmx.numBones);
+
+						std::map<GameObject*, std::size_t> boneMap;
+
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+						{
+							auto transform = smr->getTransforms()[i];
+							auto translate = transform->getComponent<octoon::TransformComponent>()->getTranslate();
+
+							auto& pmxBone = pmx.bones[i];
+							pmxBone.name = transform->getName();
+							pmxBone.position = translate;
+							pmxBone.Parent = transform->getParent() ? boneMap[transform->getParent()] : -1;
+
+							boneMap[transform.get()] = i;
+						}
+					}
 				}
 			}
 
