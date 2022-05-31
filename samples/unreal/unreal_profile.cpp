@@ -59,6 +59,9 @@ namespace unreal
 		if (stream)
 		{
 			auto json = octoon::runtime::json::parse(stream);
+
+			this->path = path;
+
 			if (json["physics"].is_object())
 				this->physicsModule->load(json["physics"]);
 			if (json["encode"].is_object())
@@ -87,8 +90,6 @@ namespace unreal
 				this->selectorModule->load(json["drag"]);
 			if (json["grid"].is_object())
 				this->gridModule->load(json["grid"]);
-
-			this->path = path;
 		}
 	}
 
@@ -99,6 +100,8 @@ namespace unreal
 		if (stream)
 		{
 			octoon::runtime::json json;
+
+			this->path = path_;
 			this->physicsModule->save(json["physics"]);
 			this->encodeModule->save(json["encode"]);
 			this->playerModule->save(json["time"]);

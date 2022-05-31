@@ -6,7 +6,7 @@
 namespace octoon
 {
 	std::optional<PmmInt2>
-	PmmInt2::load(istream& reader)
+	PmmInt2::load(io::istream& reader)
 	{
 		PmmInt2 v;
 		if (!reader.read((char*)& v.x, sizeof(v.x))) return std::nullopt;
@@ -15,7 +15,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmInt2>>
-	PmmInt2::load_arrays(istream& reader)
+	PmmInt2::load_arrays(io::istream& reader)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -28,7 +28,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmInt2>>
-	PmmInt2::load_fixed_arrays(istream& reader, std::size_t len)
+	PmmInt2::load_fixed_arrays(io::istream& reader, std::size_t len)
 	{
 		auto array = std::vector<PmmInt2>(len);
 		for (auto& it : array)
@@ -106,7 +106,7 @@ namespace octoon
 	}
 
 	std::optional<std::string>
-	PmmName::load(istream& reader)
+	PmmName::load(io::istream& reader)
 	{
 		std::uint8_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -118,7 +118,7 @@ namespace octoon
 	}
 
 	std::optional<std::string>
-	PmmName::load_fixed_utf8(istream& reader, std::size_t len)
+	PmmName::load_fixed_utf8(io::istream& reader, std::size_t len)
 	{
 		auto bytes = std::string();
 		for (std::size_t i = 0; i < len; i++)
@@ -137,7 +137,7 @@ namespace octoon
 	}
 
 	std::optional<std::string>
-	PmmName::load_fixed_path(istream& reader, std::size_t len)
+	PmmName::load_fixed_path(io::istream& reader, std::size_t len)
 	{
 		auto bytes = std::string();
 		for (std::size_t i = 0; i < len; i++)
@@ -171,7 +171,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<std::string>>
-	PmmName::load_arrays(istream& reader)
+	PmmName::load_arrays(io::istream& reader)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -184,7 +184,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<std::uint8_t>>
-	PmmUint8::load_array_from_u8(istream& reader)
+	PmmUint8::load_array_from_u8(io::istream& reader)
 	{
 		std::uint8_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -201,7 +201,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<std::uint8_t>>
-	PmmUint8::load_fixed_arrays(istream& reader, std::size_t len)
+	PmmUint8::load_fixed_arrays(io::istream& reader, std::size_t len)
 	{
 		auto array = std::vector<std::uint8_t>(len);
 		for (std::size_t i = 0; i < len; i++)
@@ -215,7 +215,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<std::int32_t>>
-	PmmInt32::load_arrays(istream& reader)
+	PmmInt32::load_arrays(io::istream& reader)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -227,7 +227,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<float>>
-	PmmFloat::load_arrays(istream& reader)
+	PmmFloat::load_arrays(io::istream& reader)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -259,7 +259,7 @@ namespace octoon
 	}
 
 	std::optional<PmmHeader>
-	PmmHeader::load(istream& reader)
+	PmmHeader::load(io::istream& reader)
 	{
 		PmmHeader data;
 		data.magic = PmmName::load_fixed_utf8(reader, 24).value();
@@ -305,7 +305,7 @@ namespace octoon
 	}
 
 	std::optional<PmmKeyframe>
-	PmmKeyframe::load(istream& reader)
+	PmmKeyframe::load(io::istream& reader)
 	{
 		auto data = PmmKeyframe();
 		reader.read((char*)& data.frame, sizeof(data.frame));
@@ -318,7 +318,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyframe>>
-	PmmKeyframe::load_arrays(istream& reader)
+	PmmKeyframe::load_arrays(io::istream& reader)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -343,7 +343,7 @@ namespace octoon
 	}
 
 	std::optional<PmmKeyframeBone>
-	PmmKeyframeBone::load(istream& reader, bool is_init)
+	PmmKeyframeBone::load(io::istream& reader, bool is_init)
 	{
 		PmmKeyframeBone data;
 		if (!is_init) reader.read((char*)& data.data_index, sizeof(data.data_index));
@@ -362,7 +362,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyframeBone>>
-	PmmKeyframeBone::load_fixed_arrays(istream& reader, std::size_t len, bool is_init)
+	PmmKeyframeBone::load_fixed_arrays(io::istream& reader, std::size_t len, bool is_init)
 	{
 		auto array = std::vector<PmmKeyframeBone>(len);
 		for (std::size_t i = 0; i < len; i++)
@@ -372,7 +372,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyframeBone>>
-	PmmKeyframeBone::load_arrays(istream& reader, bool is_init)
+	PmmKeyframeBone::load_arrays(io::istream& reader, bool is_init)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -390,7 +390,7 @@ namespace octoon
 	}
 
 	std::optional<PmmKeyframeMorph>
-	PmmKeyframeMorph::load(istream& reader, bool is_init)
+	PmmKeyframeMorph::load(io::istream& reader, bool is_init)
 	{
 		PmmKeyframeMorph data;
 		if (!is_init) reader.read((char*)& data.data_index, sizeof(data.data_index));
@@ -404,7 +404,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyframeMorph>>
-	PmmKeyframeMorph::load_fixed_arrays(istream& reader, std::size_t len, bool is_init)
+	PmmKeyframeMorph::load_fixed_arrays(io::istream& reader, std::size_t len, bool is_init)
 	{
 		auto array = std::vector<PmmKeyframeMorph>(len);
 		for (std::size_t i = 0; i < len; i++)
@@ -414,7 +414,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyframeMorph>>
-	PmmKeyframeMorph::load_arrays(istream& reader, bool is_init)
+	PmmKeyframeMorph::load_arrays(io::istream& reader, bool is_init)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -432,7 +432,7 @@ namespace octoon
 	}
 
 	std::optional<PmmKeyframeOp>
-	PmmKeyframeOp::load(istream& reader, std::size_t ik_count, std::size_t op_count, bool is_init)
+	PmmKeyframeOp::load(io::istream& reader, std::size_t ik_count, std::size_t op_count, bool is_init)
 	{
 		PmmKeyframeOp data;
 		if (!is_init) reader.read((char*)& data.data_index, sizeof(data.data_index));
@@ -448,7 +448,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyframeOp>>
-	PmmKeyframeOp::load_arrays(istream& reader, std::size_t ik_count, std::size_t op_count, bool is_init)
+	PmmKeyframeOp::load_arrays(io::istream& reader, std::size_t ik_count, std::size_t op_count, bool is_init)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -483,7 +483,7 @@ namespace octoon
 	}
 
 	std::optional<PmmKeyframeCamera>
-	PmmKeyframeCamera::load(istream& reader, bool is_init)
+	PmmKeyframeCamera::load(io::istream& reader, bool is_init)
 	{
 		PmmKeyframeCamera data;
 		if (!is_init) reader.read((char*)& data.data_index, sizeof(data.data_index));
@@ -513,7 +513,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyframeCamera>>
-	PmmKeyframeCamera::load_arrays(istream& reader, bool is_init)
+	PmmKeyframeCamera::load_arrays(io::istream& reader, bool is_init)
 	{
 		auto model = std::vector<PmmKeyframeCamera>();
 		model.push_back(PmmKeyframeCamera::load(reader, true).value());
@@ -539,7 +539,7 @@ namespace octoon
 	}
 
 	std::optional<PmmKeyframeLight>
-	PmmKeyframeLight::load(istream& reader, bool is_init)
+	PmmKeyframeLight::load(io::istream& reader, bool is_init)
 	{
 		PmmKeyframeLight data;
 		if (!is_init) reader.read((char*)& data.data_index, sizeof(data.data_index));
@@ -554,7 +554,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyframeLight>>
-	PmmKeyframeLight::load_arrays(istream& reader, bool is_init)
+	PmmKeyframeLight::load_arrays(io::istream& reader, bool is_init)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -580,7 +580,7 @@ namespace octoon
 	}
 
 	std::optional<PmmKeyFrameGravity>
-	PmmKeyFrameGravity::load(istream& reader, bool is_init)
+	PmmKeyFrameGravity::load(io::istream& reader, bool is_init)
 	{
 		PmmKeyFrameGravity data;
 		if (!is_init) reader.read((char*)& data.data_index, sizeof(data.data_index));
@@ -597,7 +597,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyFrameGravity>>
-	PmmKeyFrameGravity::load_arrays(istream& reader, bool is_init)
+	PmmKeyFrameGravity::load_arrays(io::istream& reader, bool is_init)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -621,7 +621,7 @@ namespace octoon
 	}
 
 	std::optional<PmmKeyFrameSelfShadow>
-	PmmKeyFrameSelfShadow::load(istream& reader, bool is_init)
+	PmmKeyFrameSelfShadow::load(io::istream& reader, bool is_init)
 	{
 		PmmKeyFrameSelfShadow data;
 		if (!is_init) reader.read((char*)& data.data_index, sizeof(data.data_index));
@@ -636,7 +636,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmKeyFrameSelfShadow>>
-	PmmKeyFrameSelfShadow::load_arrays(istream& reader, bool is_init)
+	PmmKeyFrameSelfShadow::load_arrays(io::istream& reader, bool is_init)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -658,7 +658,7 @@ namespace octoon
 	}
 
 	std::optional<PmmBone>
-	PmmBone::load(istream& reader)
+	PmmBone::load(io::istream& reader)
 	{
 		PmmBone data;
 		reader.read((char*)& data.translation, sizeof(data.translation));
@@ -671,7 +671,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmBone>>
-	PmmBone::load_arrays(istream& reader)
+	PmmBone::load_arrays(io::istream& reader)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -695,7 +695,7 @@ namespace octoon
 	}
 
 	std::optional<PmmOp>
-	PmmOp::load(istream& reader)
+	PmmOp::load(io::istream& reader)
 	{
 		PmmOp data;
 		reader.read((char*)& data.keyframe_begin, sizeof(data.keyframe_begin));
@@ -706,7 +706,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmOp>>
-	PmmOp::load_arrays(istream& reader)
+	PmmOp::load_arrays(io::istream& reader)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -737,7 +737,7 @@ namespace octoon
 	}
 
 	std::optional<PmmModel>
-	PmmModel::load(istream& reader)
+	PmmModel::load(io::istream& reader)
 	{
 		PmmModel data;
 		reader.read((char*)& data.number, sizeof(data.number));
@@ -796,7 +796,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmModel>>
-	PmmModel::load_arrays(istream& reader, std::size_t len)
+	PmmModel::load_arrays(io::istream& reader, std::size_t len)
 	{
 		auto models = std::vector<PmmModel>(len);
 		for (auto& it : models)
@@ -814,7 +814,7 @@ namespace octoon
 	}
 
 	std::optional<PmmCamera>
-	PmmCamera::load(istream& reader)
+	PmmCamera::load(io::istream& reader)
 	{
 		PmmCamera data;
 		reader.read((char*)& data.eye, sizeof(data.eye));
@@ -826,7 +826,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmCamera>>
-	PmmCamera::load_arrays(istream& reader)
+	PmmCamera::load_arrays(io::istream& reader)
 	{
 		std::uint8_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -846,7 +846,7 @@ namespace octoon
 	}
 
 	std::optional<PmmLight>
-	PmmLight::load(istream& reader)
+	PmmLight::load(io::istream& reader)
 	{
 		auto data = PmmLight();
 		reader.read((char*)& data.rgb, sizeof(data.rgb));
@@ -857,7 +857,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmLight>>
-	PmmLight::load_arrays(istream& reader)
+	PmmLight::load_arrays(io::istream& reader)
 	{
 		std::uint8_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -881,7 +881,7 @@ namespace octoon
 	}
 
 	std::optional<PmmDataBody> 
-	PmmDataBody::load(istream& reader)
+	PmmDataBody::load(io::istream& reader)
 	{
 		auto data = PmmDataBody();
 		reader.read((char*)& data.transparency, sizeof(data.transparency));
@@ -896,7 +896,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmDataBody>>
-	PmmDataBody::load_arrays(istream& reader)
+	PmmDataBody::load_arrays(io::istream& reader)
 	{
 		std::uint8_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -916,7 +916,7 @@ namespace octoon
 	}
 
 	std::optional<PmmAccessoryData>
-	PmmAccessoryData::load(istream& reader)
+	PmmAccessoryData::load(io::istream& reader)
 	{
 		PmmAccessoryData data;
 		reader.read((char*)& data.index, sizeof(data.index));
@@ -932,7 +932,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmAccessoryData>>
-	PmmAccessoryData::load_arrays(istream& reader)
+	PmmAccessoryData::load_arrays(io::istream& reader)
 	{
 		std::uint8_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -953,7 +953,7 @@ namespace octoon
 	}
 
 	std::optional<PmmGravity> 
-	PmmGravity::load(istream& reader)
+	PmmGravity::load(io::istream& reader)
 	{
 		PmmGravity data;
 		reader.read((char*)& data.acceleration, sizeof(data.acceleration));
@@ -965,7 +965,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmGravity>> 
-	PmmGravity::load_arrays(istream& reader)
+	PmmGravity::load_arrays(io::istream& reader)
 	{
 		std::uint32_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -984,7 +984,7 @@ namespace octoon
 	}
 
 	std::optional<PmmCSelectorChoice>
-	PmmCSelectorChoice::load(istream& reader)
+	PmmCSelectorChoice::load(io::istream& reader)
 	{
 		PmmCSelectorChoice data;
 		reader.read((char*)& data.mode_index, sizeof(data.mode_index));
@@ -994,7 +994,7 @@ namespace octoon
 	}
 
 	std::optional<std::vector<PmmCSelectorChoice>>
-	PmmCSelectorChoice::load_arrays(istream& reader)
+	PmmCSelectorChoice::load_arrays(io::istream& reader)
 	{
 		std::uint8_t len = 0;
 		reader.read((char*)& len, sizeof(len));
@@ -1055,7 +1055,7 @@ namespace octoon
 	}
 
 	std::optional<PMMFile>
-	PMMFile::load(istream& reader)
+	PMMFile::load(io::istream& reader)
 	{
 		try
 		{
@@ -1140,45 +1140,4 @@ namespace octoon
 			return std::nullopt;
 		}
 	}
-
-	PMMLoader::PMMLoader()
-	{
-	}
-
-	bool 
-	PMMLoader::can_read(istream& reader)
-	{
-		return PmmHeader::load(reader).has_value();
-	}
-
-	bool
-	PMMLoader::do_load(istream& reader, PMMFile& pmm)
-	{
-		pmm.load(reader);
-		return true;
-		/*auto scene = Scene();
-
-		auto camera = PerspectiveCamera::builder()
-			.main(true)
-			.set_fov(30.0)
-			.set_translate(float!(0.0, 0.1, 10.0))
-			.build();
-
-		scene.add(camera);
-
-		for model in pmm.model
-		{
-			auto model = ModelLoader::open(model.path);
-			model.set_scale(float!(0.1,0.1,0.1));
-			model.set_translate(float!(0.0,-0.8,20.0));
-			scene.add(model);
-		}
-
-		return scene;*/
-	}
-
-	/*std::optional<std::vector<u8>> do_save(&self, _:&Scene)
-	{
-		Err(Error::LoaderError("Not Implmention yet".to_std::string()))
-	}*/
 }

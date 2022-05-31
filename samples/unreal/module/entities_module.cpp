@@ -24,6 +24,7 @@ namespace unreal
 		{
 			for (auto& it : reader["scene"])
 			{
+				auto name = it["name"];
 			}
 		}
 	}
