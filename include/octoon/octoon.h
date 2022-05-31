@@ -20,7 +20,6 @@
 
 #include <octoon/io/fstream.h>
 
-#include <octoon/model/model.h>
 #include <octoon/model/text_meshing.h>
 
 #include <octoon/mesh/mesh.h>

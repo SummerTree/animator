@@ -1,8 +1,6 @@
 #include <octoon/pmx.h>
-#include <octoon/model/modtypes.h>
 #include <octoon/mesh/mesh.h>
 #include <octoon/material/mesh_standard_material.h>
-#include <octoon/model/model.h>
 #include <octoon/texture_loader.h>
 #include <octoon/io/fstream.h>
 #include <octoon/math/mathfwd.h>

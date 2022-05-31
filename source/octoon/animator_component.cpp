@@ -260,7 +260,7 @@ namespace octoon
 
 		if (!animation_.empty() && !avatar_.empty())
 		{
-			std::map<std::string, std::uint32_t> boneMap;
+			std::map<std::string, std::size_t> boneMap;
 
 			for (std::size_t i = 0; i < avatar_.size(); i++)
 				boneMap[avatar_[i]->getName()] = i;
@@ -269,9 +269,7 @@ namespace octoon
 
 			for (std::size_t i = 0; i < animation_.clips.size(); i++)
 			{
-				auto& clip = animation_.clips[i];
-
-				auto it = boneMap.find(clip.name);
+				auto it = boneMap.find(animation_.clips[i].name);
 				if (it != boneMap.end())
 					bindmap_[i] = (*it).second;
 				else

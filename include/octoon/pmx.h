@@ -1,7 +1,7 @@
 #ifndef OCTOON_PMX_H_
 #define OCTOON_PMX_H_
 
-#include <octoon/model/model.h>
+#include <octoon/io/iostream.h>
 
 #ifndef MAX_PATH
 #	define MAX_PATH 256
@@ -207,6 +207,13 @@ namespace octoon
 		PMX_MorphTypeExtraUV3 = 6,
 		PMX_MorphTypeExtraUV4 = 7,
 		PMX_MorphTypeMaterial = 8
+	};
+
+	enum PmxShapeType : std::uint8_t
+	{
+		ShapeTypeSphere,
+		ShapeTypeSquare,
+		ShapeTypeCapsule
 	};
 
 	struct PmxMorphVertex

@@ -172,19 +172,19 @@ namespace octoon
 			math::Quaternion rotation;
 			localTransform.getTransform(translate, rotation, scale);
 
-			if (it.shape == ShapeType::ShapeTypeSphere)
+			if (it.shape == PmxShapeType::ShapeTypeSphere)
 			{
 				auto collider = bone->addComponent<SphereColliderComponent>(it.scale.x > 0.0f ? it.scale.x : math::EPSILON_E3);
 				collider->setCenter(translate);
 				collider->setQuaternion(rotation);
 			}
-			else if (it.shape == ShapeType::ShapeTypeSquare)
+			else if (it.shape == PmxShapeType::ShapeTypeSquare)
 			{
 				auto collider = bone->addComponent<BoxColliderComponent>(math::max(math::float3(0.001, 0.001, 0.001), math::float3(it.scale.x, it.scale.y, it.scale.z) * 2.0f));
 				collider->setCenter(translate);
 				collider->setQuaternion(rotation);
 			}
-			else if (it.shape == ShapeType::ShapeTypeCapsule)
+			else if (it.shape == PmxShapeType::ShapeTypeCapsule)
 			{
 				auto collider = bone->addComponent<CapsuleColliderComponent>(it.scale.x > 0.0f ? it.scale.x : math::EPSILON_E3, it.scale.y);
 				collider->setCenter(translate);

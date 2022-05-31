@@ -15,8 +15,6 @@ SET(CONTOUER_LIST
 	${HEADER_PATH}/path_group.h
 	${SOURCE_PATH}/path_group.cpp
 	${HEADER_PATH}/modtypes.h
-	${HEADER_PATH}/model.h
-	${SOURCE_PATH}/model.cpp
 )
 SOURCE_GROUP(contour  FILES ${CONTOUER_LIST})
 

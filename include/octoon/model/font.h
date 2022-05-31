@@ -1,7 +1,8 @@
 #ifndef OCTOON_FONT_H_
 #define OCTOON_FONT_H_
 
-#include <octoon/model/modtypes.h>
+#include <string>
+#include <octoon/runtime/platform.h>
 
 namespace octoon::font
 {

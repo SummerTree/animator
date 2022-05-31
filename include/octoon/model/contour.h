@@ -1,7 +1,7 @@
 #ifndef OCTOON_CONTOUR_H_
 #define OCTOON_CONTOUR_H_
 
-#include <octoon/model/modtypes.h>
+#include <octoon/model/path_types.h>
 
 namespace octoon
 {
