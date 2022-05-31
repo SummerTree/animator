@@ -7,10 +7,65 @@
 #include <octoon/animation/path_interpolator.h>
 #include <iconv.h>
 #include <map>
-#include <set>
 
 namespace octoon
 {
+	std::string sjis2utf8(const std::string& sjis)
+	{
+		std::size_t in_size = sjis.size();
+		std::size_t out_size = sjis.size() * 2;
+
+		auto inbuf = std::make_unique<char[]>(in_size);
+		auto outbuf = std::make_unique<char[]>(out_size);
+		char* in = inbuf.get();
+		char* out = outbuf.get();
+
+		std::memcpy(in, sjis.c_str(), in_size);
+
+		iconv_t ic = nullptr;
+
+		try
+		{
+			ic = iconv_open("utf-8", "SJIS");
+			iconv(ic, &in, &in_size, &out, &out_size);
+			iconv_close(ic);
+		}
+		catch (const std::exception&)
+		{
+			iconv_close(ic);
+		}
+
+		return std::string(outbuf.get());
+	}
+
+	std::string utf82sjis(const std::string& utf8)
+	{
+		std::size_t in_size = utf8.size();
+		std::size_t out_size = utf8.size() * 2;
+
+		auto inbuf = std::make_unique<char[]>(in_size);
+		auto outbuf = std::make_unique<char[]>(out_size);
+		char* in = inbuf.get();
+		char* out = outbuf.get();
+
+		std::memcpy(in, utf8.c_str(), in_size);
+
+		iconv_t ic = nullptr;
+
+		try
+		{
+			ic = iconv_open("SJIS", "utf-8");
+			iconv(ic, &in, &in_size, &out, &out_size);
+			iconv_close(ic);
+		}
+		catch (const std::exception&)
+		{
+			iconv_close(ic);
+		}
+
+		return std::string(outbuf.get());
+	}
+
 	void
 	VMD::load(io::istream& stream) noexcept(false)
 	{
@@ -84,32 +139,67 @@ namespace octoon
 		}
 	}
 
-	std::string sjis2utf8(const std::string& sjis)
+	void
+	VMD::save(io::ostream& stream) noexcept(false)
 	{
-		std::size_t in_size = sjis.size();
-		std::size_t out_size = sjis.size() * 2;
-
-		auto inbuf = std::make_unique<char[]>(in_size);
-		auto outbuf = std::make_unique<char[]>(out_size);
-		char* in = inbuf.get();
-		char* out = outbuf.get();
-
-		std::memcpy(in, sjis.c_str(), in_size);
-
-		iconv_t ic = nullptr;
-
-		try
-		{
-			ic = iconv_open("utf-8", "SJIS");
-			iconv(ic, &in, &in_size, &out, &out_size);
-			iconv_close(ic);
-		}
-		catch (const std::exception&)
-		{
-			iconv_close(ic);
+		if (!stream.write((char*)&this->Header, sizeof(this->Header))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "Header" from stream)");
 		}
 
-		return std::string(outbuf.get());
+		if (!stream.write((char*)&this->NumMotion, sizeof(this->NumMotion))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumMotion" from stream)");
+		}
+
+		if (this->NumMotion > 0 && this->MotionLists.size() > 0)
+		{
+			if (!stream.write((char*)this->MotionLists.data(), sizeof(VMDMotion) * this->NumMotion)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDMotion" from stream)");
+			}
+		}
+
+		if (!stream.write((char*)&this->NumMorph, sizeof(this->NumMorph))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumMorph" from stream)");
+		}
+
+		if (this->NumMorph > 0 && this->MorphLists.size() > 0)
+		{
+			if (!stream.write((char*)this->MorphLists.data(), sizeof(VMDMorph) * this->NumMorph)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDMorph" from stream)");
+			}
+		}
+
+		if (!stream.write((char*)&this->NumCamera, sizeof(this->NumCamera))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumCamera" from stream)");
+		}
+
+		if (this->NumCamera > 0 && this->CameraLists.size() > 0)
+		{
+			if (!stream.write((char*)this->CameraLists.data(), sizeof(VMDCamera) * this->NumCamera)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDCamera" from stream)");
+			}
+		}
+
+		if (!stream.write((char*)&this->NumLight, sizeof(this->NumLight))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumLight" from stream)");
+		}
+
+		if (this->NumLight > 0 && this->LightLists.size() > 0)
+		{
+			if (!stream.write((char*)this->LightLists.data(), sizeof(VMDLight) * this->NumLight)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDLight" from stream)");
+			}
+		}
+
+		if (!stream.write((char*)&this->NumSelfShadow, sizeof(this->NumSelfShadow))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumSelfShadow" from stream)");
+		}
+
+		if (this->NumSelfShadow > 0 && this->SelfShadowLists.size() > 0)
+		{
+			if (!stream.write((char*)this->SelfShadowLists.data(), sizeof(VMDSelfShadow) * this->NumSelfShadow)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDSelfShadow" from stream)");
+			}
+		}
 	}
 
 	VMDLoader::VMDLoader() noexcept

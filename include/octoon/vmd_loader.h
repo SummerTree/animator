@@ -122,6 +122,7 @@ namespace octoon
 		std::vector<VMDSelfShadow> SelfShadowLists;
 
 		void load(io::istream& stream) noexcept(false);
+		void save(io::ostream& stream) noexcept(false);
 	};
 
 	class OCTOON_EXPORT VMDLoader final
