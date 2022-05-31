@@ -60,36 +60,36 @@ namespace unreal
 		{
 			auto json = octoon::runtime::json::parse(stream);
 
-			this->path = path;
+			this->path = path_;
 
 			if (json["physics"].is_object())
-				this->physicsModule->load(json["physics"]);
+				this->physicsModule->load(json["physics"], path);
 			if (json["encode"].is_object())
-				this->encodeModule->load(json["encode"]);
+				this->encodeModule->load(json["encode"], path);
 			if (json["time"].is_object())
-				this->playerModule->load(json["time"]);
+				this->playerModule->load(json["time"], path);
 			if (json["sound"].is_object())
-				this->soundModule->load(json["sound"]);
+				this->soundModule->load(json["sound"], path);
 			if (json["entities"].is_object())
-				this->entitiesModule->load(json["entities"]);
+				this->entitiesModule->load(json["entities"], path);
 			if (json["offline"].is_object())
-				this->offlineModule->load(json["offline"]);
+				this->offlineModule->load(json["offline"], path);
 			if (json["canvas"].is_object())
-				this->recordModule->load(json["canvas"]);
+				this->recordModule->load(json["canvas"], path);
 			if (json["camera"].is_object())
-				this->cameraModule->load(json["camera"]);
+				this->cameraModule->load(json["camera"], path);
 			if (json["mark"].is_object())
-				this->markModule->load(json["mark"]);
+				this->markModule->load(json["mark"], path);
 			if (json["mainLight"].is_object())
-				this->mainLightModule->load(json["mainLight"]);
+				this->mainLightModule->load(json["mainLight"], path);
 			if (json["environmentLight"].is_object())
-				this->environmentLightModule->load(json["environmentLight"]);
+				this->environmentLightModule->load(json["environmentLight"], path);
 			if (json["resource"].is_object())
-				this->resourceModule->load(json["resource"]);
+				this->resourceModule->load(json["resource"], path);
 			if (json["drag"].is_object())
-				this->selectorModule->load(json["drag"]);
+				this->selectorModule->load(json["drag"], path);
 			if (json["grid"].is_object())
-				this->gridModule->load(json["grid"]);
+				this->gridModule->load(json["grid"], path);
 		}
 	}
 
@@ -102,20 +102,20 @@ namespace unreal
 			octoon::runtime::json json;
 
 			this->path = path_;
-			this->physicsModule->save(json["physics"]);
-			this->encodeModule->save(json["encode"]);
-			this->playerModule->save(json["time"]);
-			this->soundModule->save(json["sound"]);
-			this->entitiesModule->save(json["entities"]);
-			this->offlineModule->save(json["offline"]);
-			this->cameraModule->save(json["camera"]);
-			this->recordModule->save(json["canvas"]);
-			this->markModule->save(json["mark"]);
-			this->mainLightModule->save(json["mainLight"]);
-			this->environmentLightModule->save(json["environmentLight"]);
-			this->resourceModule->save(json["resource"]);
-			this->selectorModule->save(json["drag"]);
-			this->gridModule->save(json["grid"]);
+			this->physicsModule->save(json["physics"], path_);
+			this->encodeModule->save(json["encode"], path_);
+			this->playerModule->save(json["time"], path_);
+			this->soundModule->save(json["sound"], path_);
+			this->entitiesModule->save(json["entities"], path_);
+			this->offlineModule->save(json["offline"], path_);
+			this->cameraModule->save(json["camera"], path_);
+			this->recordModule->save(json["canvas"], path_);
+			this->markModule->save(json["mark"], path_);
+			this->mainLightModule->save(json["mainLight"], path_);
+			this->environmentLightModule->save(json["environmentLight"], path_);
+			this->resourceModule->save(json["resource"], path_);
+			this->selectorModule->save(json["drag"], path_);
+			this->gridModule->save(json["grid"], path_);
 
 			auto string = json.dump();
 			stream.write(string.c_str(), string.size());

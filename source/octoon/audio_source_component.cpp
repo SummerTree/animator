@@ -45,7 +45,7 @@ namespace octoon
 	float
 	AudioSourceComponent::getTime() const noexcept
 	{
-		return source_->getSampleOffset() / audioReader_->frequency();
+		return source_->getSampleOffset() / (float)audioReader_->frequency();
 	}
 
 	float

@@ -23,12 +23,12 @@ namespace unreal
 	}
 
 	void 
-	MarkModule::load(octoon::runtime::json& reader) noexcept
+	MarkModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
 	}
 
 	void 
-	MarkModule::save(octoon::runtime::json& writer) noexcept
+	MarkModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 	}
 }

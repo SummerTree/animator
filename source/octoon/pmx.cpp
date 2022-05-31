@@ -595,23 +595,23 @@ namespace octoon
 		if (!stream.write((char*)&pmx.header, sizeof(pmx.header))) return false;
 
 		if (!stream.write((char*)&pmx.description.japanModelLength, sizeof(pmx.description.japanModelLength))) return false;
-		if (pmx.description.japanModelLength)
+		if (pmx.description.japanModelLength > 0)
 			if (!stream.write((char*)&pmx.description.japanModelName[0], pmx.description.japanModelLength)) return false;
 
 		if (!stream.write((char*)&pmx.description.englishModelLength, sizeof(pmx.description.englishModelLength))) return false;
-		if (pmx.description.englishModelLength)
+		if (pmx.description.englishModelLength > 0)
 			if (!stream.write((char*)&pmx.description.englishModelName[0], pmx.description.englishModelLength)) return false;
 
 		if (!stream.write((char*)&pmx.description.japanCommentLength, sizeof(pmx.description.japanCommentLength))) return false;
-		if (pmx.description.japanCommentLength)
+		if (pmx.description.japanCommentLength > 0)
 			if (!stream.write((char*)&pmx.description.japanCommentName[0], pmx.description.japanCommentLength)) return false;
 
 		if (!stream.write((char*)&pmx.description.englishCommentLength, sizeof(pmx.description.englishCommentLength))) return false;
-		if (pmx.description.englishCommentLength)
+		if (pmx.description.englishCommentLength > 0)
 			if (!stream.write((char*)&pmx.description.englishCommentName[0], pmx.description.englishCommentLength)) return false;
 
 		if (!stream.write((char*)&pmx.numVertices, sizeof(pmx.numVertices))) return false;
-		if (pmx.numVertices)
+		if (pmx.numVertices > 0)
 		{
 			for (auto& vertex : pmx.vertices)
 			{
@@ -679,11 +679,11 @@ namespace octoon
 		}
 
 		if (!stream.write((char*)&pmx.numIndices, sizeof(pmx.numIndices))) return false;
-		if (pmx.numIndices)
+		if (pmx.numIndices > 0)
 			if (!stream.write((char*)pmx.indices.data(), pmx.indices.size())) return false;
 
 		if (!stream.write((char*)&pmx.numTextures, sizeof(pmx.numTextures))) return false;
-		if (pmx.numTextures)
+		if (pmx.numTextures > 0)
 		{
 			for (auto& texture : pmx.textures)
 			{
@@ -693,7 +693,7 @@ namespace octoon
 		}
 
 		if (!stream.write((char*)&pmx.numMaterials, sizeof(pmx.numMaterials))) return false;
-		if (pmx.numMaterials)
+		if (pmx.numMaterials > 0)
 		{
 			for (auto& material : pmx.materials)
 			{
@@ -740,7 +740,7 @@ namespace octoon
 		}
 
 		if (!stream.write((char*)&pmx.numBones, sizeof(pmx.numBones))) return false;
-		if (pmx.numBones)
+		if (pmx.numBones > 0)
 		{
 			for (auto& bone : pmx.bones)
 			{
@@ -807,15 +807,15 @@ namespace octoon
 		}
 
 		if (!stream.write((char*)&pmx.numMorphs, sizeof(pmx.numMorphs))) return false;
-		if (pmx.numMorphs)
+		if (pmx.numMorphs > 0)
 		{
 			for (auto& morph : pmx.morphs)
 			{
-				if (morph.name.length) 
-					if (!stream.write((char*)&morph.name.length, sizeof(morph.name.length))) return false;
-				if (!stream.write((char*)&morph.name.name, morph.name.length)) return false;
+				if (!stream.write((char*)&morph.name.length, sizeof(morph.name.length))) return false;
+				if (morph.name.length > 0)
+					if (!stream.write((char*)&morph.name.name, morph.name.length)) return false;
 				if (!stream.write((char*)&morph.nameEng.length, sizeof(morph.nameEng.length))) return false;
-				if (morph.nameEng.length)
+				if (morph.nameEng.length > 0)
 					if (!stream.write((char*)&morph.nameEng.name, morph.nameEng.length)) return false;
 				if (!stream.write((char*)&morph.control, sizeof(morph.control))) return false;
 				if (!stream.write((char*)&morph.morphType, sizeof(morph.morphType))) return false;
@@ -877,7 +877,7 @@ namespace octoon
 		}
 
 		if (!stream.write((char*)&pmx.numDisplayFrames, sizeof(pmx.numDisplayFrames))) return false;
-		if (pmx.numDisplayFrames)
+		if (pmx.numDisplayFrames > 0)
 		{
 			for (auto& displayFrame : pmx.displayFrames)
 			{
@@ -909,7 +909,7 @@ namespace octoon
 		}
 
 		if (!stream.write((char*)&pmx.numRigidbodys, sizeof(pmx.numRigidbodys))) return false;
-		if (pmx.numRigidbodys)
+		if (pmx.numRigidbodys > 0)
 		{
 			for (auto& rigidbody : pmx.rigidbodies)
 			{
@@ -940,7 +940,7 @@ namespace octoon
 		}
 
 		if (!stream.write((char*)&pmx.numJoints, sizeof(pmx.numJoints))) return false;
-		if (pmx.numJoints)
+		if (pmx.numJoints > 0)
 		{
 			for (auto& joint : pmx.joints)
 			{

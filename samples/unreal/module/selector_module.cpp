@@ -19,12 +19,12 @@ namespace unreal
 	}
 
 	void 
-	SelectorModule::load(octoon::runtime::json& reader) noexcept
+	SelectorModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
 	}
 
 	void 
-	SelectorModule::save(octoon::runtime::json& writer) noexcept
+	SelectorModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 	}
 }

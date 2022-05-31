@@ -1,7 +1,9 @@
 #ifndef OCTOON_PMX_H_
 #define OCTOON_PMX_H_
 
+#include <octoon/math/math.h>
 #include <octoon/io/iostream.h>
+#include <codecvt>
 
 #ifndef MAX_PATH
 #	define MAX_PATH 256
@@ -47,6 +49,12 @@ namespace octoon
 	{
 		float x;
 		float y;
+
+		void operator=(const math::float2& v)
+		{
+			x = v.x;
+			y = v.y;
+		}
 	};
 
 	struct PmxVector3
@@ -54,6 +62,13 @@ namespace octoon
 		float x;
 		float y;
 		float z;
+
+		void operator=(const math::float3& v)
+		{
+			x = v.x;
+			y = v.y;
+			z = v.z;
+		}
 	};
 
 	struct PmxVector4
@@ -62,6 +77,14 @@ namespace octoon
 		float y;
 		float z;
 		float w;
+
+		void operator=(const math::float4& v)
+		{
+			x = v.x;
+			y = v.y;
+			z = v.z;
+			w = v.w;
+		}
 	};
 
 	struct PmxQuaternion
@@ -70,6 +93,14 @@ namespace octoon
 		float y;
 		float z;
 		float w;
+
+		void operator=(const math::Quaternion& v)
+		{
+			x = v.x;
+			y = v.y;
+			z = v.z;
+			w = v.w;
+		}
 	};
 
 	struct PmxHeader
@@ -140,6 +171,24 @@ namespace octoon
 		PmxUInt32 length;
 		PmxChar name[MAX_PATH];
 		char fullpath[MAX_PATH];
+
+		PmxName()
+		{
+			this->length = 0;
+			std::memset(name, 0, MAX_PATH);
+			std::memset(fullpath, 0, MAX_PATH);
+		}
+
+		PmxName(const std::string& name)
+		{
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+			std::wstring utf16 = cv.from_bytes(name);
+
+			this->length = utf16.size() * 2;
+			std::memset(this->name, 0, MAX_PATH);
+			std::memcpy(this->name, utf16.data(), this->length);
+			std::memset(this->fullpath, 0, MAX_PATH);
+		}
 	};
 
 	struct PmxMaterial

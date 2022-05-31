@@ -23,7 +23,7 @@ namespace unreal
 	}
 
 	void 
-	PhysicsModule::load(octoon::runtime::json& reader) noexcept
+	PhysicsModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
 		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
@@ -40,7 +40,7 @@ namespace unreal
 	}
 
 	void 
-	PhysicsModule::save(octoon::runtime::json& writer) noexcept
+	PhysicsModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 		writer["enable"] = this->enable.getValue();
 		writer["gravity"] = { this->gravity.getValue()[0], this->gravity.getValue()[1], this->gravity.getValue()[2] };

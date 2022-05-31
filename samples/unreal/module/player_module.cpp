@@ -28,7 +28,7 @@ namespace unreal
 	}
 
 	void 
-	PlayerModule::load(octoon::runtime::json& reader) noexcept
+	PlayerModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
 		if (reader["finish"].is_boolean())
 			this->finish = reader["finish"].get<nlohmann::json::boolean_t>();
@@ -41,7 +41,7 @@ namespace unreal
 	}
 
 	void 
-	PlayerModule::save(octoon::runtime::json& writer) noexcept
+	PlayerModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 		writer["finish"] = this->finish.getValue();
 		writer["playFps"] = this->playFps.getValue();

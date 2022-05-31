@@ -22,7 +22,7 @@ namespace unreal
 	}
 
 	void 
-	OfflineModule::load(octoon::runtime::json& reader) noexcept
+	OfflineModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
 		if (reader["spp"].is_number_unsigned())
 			this->spp = reader["spp"].get<nlohmann::json::number_unsigned_t>();
@@ -31,7 +31,7 @@ namespace unreal
 	}
 
 	void 
-	OfflineModule::save(octoon::runtime::json& writer) noexcept
+	OfflineModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 		writer["spp"] = this->spp.getValue();
 		writer["bounces"] = this->bounces.getValue();
