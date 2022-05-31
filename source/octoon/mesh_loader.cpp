@@ -317,7 +317,7 @@ namespace octoon
 			materials.push_back(it);
 	}
 
-	void createMeshes(const Model& model, GameObjectPtr& object, const GameObjects& bones, std::string_view path) noexcept(false)
+	void createMeshes(const Model& model, GameObjectPtr& object, const GameObjects& bones) noexcept(false)
 	{
 		Materials materials;
 		createMaterials(model, materials);
@@ -375,7 +375,7 @@ namespace octoon
 			createRigidbodies(model, bones);
 			createJoints(model, bones);
 			
-			createMeshes(model, actor, bones, std::string(filepath));
+			createMeshes(model, actor, bones);
 			createMorph(model, actor);
 			createClothes(model, actor, bones);
 

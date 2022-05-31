@@ -50,7 +50,8 @@ namespace unreal
 		x265_param_default(param_);
 		x265_param_parse(param_, "--crf", std::to_string(this->getModel()->crf).c_str());
 		x265_param_parse(param_, "--preset", "8");
-		x265_param_parse(param_, "--qcomp", "0.5");
+		x265_param_parse(param_, "--qcomp", "0.7");
+		x265_param_parse(param_, "--aq-strength", "0.85");
 
 		param_->bRepeatHeaders = 1;
 		param_->internalCsp = X265_CSP_I420;

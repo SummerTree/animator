@@ -89,20 +89,24 @@ namespace octoon
 	{
 		assert(!filepath.empty());
 
-		auto it = textureCaches_.find(filepath);
+		std::string path = std::string(filepath);
+
+		auto it = textureCaches_.find(path);
 		if (it != textureCaches_.end())
 			return (*it).second;
 
-		std::string path = std::string(filepath);
-
 		Image image;
-		if (!image.load(path))
-			throw runtime::runtime_error::create("Failed to open file :" + path);
+		if (image.load(path))
+		{
+			auto texture = load(image, path, generateMipmap);
+			if (cache)
+				textureCaches_[path] = texture;
 
-		auto texture = load(image, filepath, generateMipmap);
-		if (cache)
-			textureCaches_[path] = texture;
-
-		return texture;
+			return texture;
+		}
+		else
+		{
+			throw std::runtime_error("Failed to open file :" + path);
+		}
 	}
 }
