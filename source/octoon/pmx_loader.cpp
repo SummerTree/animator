@@ -230,6 +230,8 @@ namespace octoon
 
 	void createJoints(const PMX& pmx, GameObjects& bones) noexcept(false)
 	{
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
 		for (auto& it : pmx.joints)
 		{
 			if (it.relatedRigidBodyIndexA >= pmx.rigidbodies.size()|| it.relatedRigidBodyIndexB >= pmx.rigidbodies.size())
@@ -247,6 +249,7 @@ namespace octoon
 			if (bodyA != bodyB && bodyA && bodyB)
 			{
 				auto joint = bodyA->addComponent<ConfigurableJointComponent>();
+				joint->setName(cv.to_bytes(it.name.name));
 				joint->setTargetPosition(math::float3(it.position.x, it.position.y, it.position.z));
 				joint->setTargetRotation(math::Quaternion(math::float3(it.rotation.x, it.rotation.y, it.rotation.z)));
 				joint->setTarget(bodyB->getComponent<RigidbodyComponent>());
@@ -834,6 +837,15 @@ namespace octoon
 							}
 						}
 
+						std::map<RigidbodyComponent*, std::size_t> rigidbodyMap;
+
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+						{
+							auto rigidbody = smr->getTransforms()[i]->getComponent<RigidbodyComponent>();
+							if (rigidbody)
+								rigidbodyMap[rigidbody.get()] = rigidbodyMap.size();
+						}
+
 						for (std::size_t i = 0; i < pmx.numBones; i++)
 						{
 							auto bone = smr->getTransforms()[i];
@@ -886,12 +898,55 @@ namespace octoon
 									pmxRigidbody.scale.y = 0.0f;
 									pmxRigidbody.scale.z = 0.0f;
 								}
-
+								
 								pmx.rigidbodies.push_back(pmxRigidbody);
 							}
-
-							pmx.numRigidbodys = pmx.rigidbodies.size();
 						}
+
+						pmx.numRigidbodys = pmx.rigidbodies.size();
+
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+						{
+							auto bone = smr->getTransforms()[i];
+
+							auto joint = bone->getComponent<ConfigurableJointComponent>();
+							if (joint)
+							{
+								float minX, maxX, minY, maxY, minZ, maxZ;
+								joint->getAngularLimit(minX, maxX, minY, maxY, minZ, maxZ);
+
+								PmxJoint pmxJoint;
+								std::memset(&pmxJoint, 0, sizeof(PmxJoint));
+								pmxJoint.name = joint->getName();
+								pmxJoint.type = 0;
+								pmxJoint.position = joint->getTargetPosition();
+								pmxJoint.rotation = math::eulerAngles(joint->getTargetRotation());
+								pmxJoint.relatedRigidBodyIndexA = rigidbodyMap[bone->getComponent<RigidbodyComponent>().get()];
+								pmxJoint.relatedRigidBodyIndexB = joint->getTarget() ? rigidbodyMap[joint->getTarget().get()] : -1;
+								pmxJoint.movementLowerLimit.x = joint->getLowXLimit();
+								pmxJoint.movementLowerLimit.y = joint->getLowYLimit();
+								pmxJoint.movementLowerLimit.z = joint->getLowZLimit();
+								pmxJoint.movementUpperLimit.x = joint->getHighXLimit();
+								pmxJoint.movementUpperLimit.y = joint->getHighYLimit();
+								pmxJoint.movementUpperLimit.z = joint->getHighZLimit();
+								pmxJoint.rotationLowerLimit.x = minX;
+								pmxJoint.rotationLowerLimit.y = minY;
+								pmxJoint.rotationLowerLimit.z = minZ;
+								pmxJoint.rotationUpperLimit.x = maxX;
+								pmxJoint.rotationUpperLimit.y = maxY;
+								pmxJoint.rotationUpperLimit.z = maxZ;
+								pmxJoint.springMovementConstant.x = joint->getDriveMotionX();
+								pmxJoint.springMovementConstant.y = joint->getDriveMotionY();
+								pmxJoint.springMovementConstant.z = joint->getDriveMotionZ();
+								pmxJoint.springRotationConstant.x = joint->getDriveAngularX();
+								pmxJoint.springRotationConstant.y = joint->getDriveAngularY();
+								pmxJoint.springRotationConstant.z = joint->getDriveAngularZ();
+
+								pmx.joints.push_back(pmxJoint);
+							}
+						}
+
+						pmx.numJoints = pmx.joints.size();						
 					}
 				}
 			}

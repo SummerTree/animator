@@ -945,10 +945,11 @@ namespace octoon
 			for (auto& joint : pmx.joints)
 			{
 				if (!stream.write((char*)&joint.name.length, sizeof(joint.name.length))) return false;
-				if (joint.name.length)
+				if (joint.name.length > 0)
 					if (!stream.write((char*)&joint.name.name, joint.name.length)) return false;
+
 				if (!stream.write((char*)&joint.nameEng.length, sizeof(joint.nameEng.length))) return false;
-				if (joint.nameEng.length)
+				if (joint.nameEng.length > 0)
 					if (!stream.write((char*)&joint.nameEng.name, joint.nameEng.length)) return false;
 
 				if (!stream.write((char*)&joint.type, sizeof(joint.type))) return false;
