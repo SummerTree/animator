@@ -17,6 +17,7 @@ namespace octoon
 
 		static bool save(const GameObject& gameObject, PMX& pmx) noexcept(false);
 		static bool save(const GameObject& gameObject, std::string_view path) noexcept(false);
+		static bool save(const GameObject& gameObject, std::wstring_view path) noexcept(false);
 	};
 }
 

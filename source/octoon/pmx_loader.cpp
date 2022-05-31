@@ -944,4 +944,21 @@ namespace octoon
 
 		return false;
 	}
+
+	bool
+	PMXLoader::save(const GameObject& gameObject, std::wstring_view path) noexcept(false)
+	{
+		auto stream = octoon::io::ofstream(std::wstring(path), std::ios_base::in | std::ios_base::out);
+		if (stream)
+		{
+			auto pmx = std::make_unique<PMX>();
+			save(gameObject, *pmx);
+
+			PMX::save(stream, *pmx);
+
+			return true;
+		}
+
+		return false;
+	}
 }
