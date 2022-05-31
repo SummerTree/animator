@@ -776,6 +776,34 @@ namespace octoon
 						pmx.textures[it.second] = PmxName(it.first.substr(it.first.find_last_of("\\") + 1));
 				}
 			}
+
+			GameComponents morphComponents;
+			gameObject.getComponents<SkinnedMorphComponent>(morphComponents);
+
+			if (!morphComponents.empty())
+			{
+				pmx.numMorphs = morphComponents.size();
+				pmx.morphs.resize(pmx.numMorphs);
+
+				for (std::size_t i = 0; i < pmx.numMorphs; i++)
+				{
+					auto& offsets = morphComponents[i]->downcast<SkinnedMorphComponent>()->getOffsets();
+					auto& indices = morphComponents[i]->downcast<SkinnedMorphComponent>()->getIndices();
+
+					auto& morph = pmx.morphs[i];
+					morph.name = morphComponents[i]->getName();
+					morph.morphType = PmxMorphType::PMX_MorphTypeVertex;
+					morph.control = morphComponents[i]->downcast<SkinnedMorphComponent>()->getControl();
+					morph.morphCount = indices.size();
+					morph.vertices.resize(indices.size());
+
+					for (std::size_t n = 0; n < indices.size(); n++)
+					{
+						morph.vertices[n].index = indices[n];
+						morph.vertices[n].offset = offsets[n];
+					}
+				}
+			}
 		}
 
 		return true;

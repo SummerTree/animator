@@ -811,11 +811,11 @@ namespace octoon
 		{
 			for (auto& morph : pmx.morphs)
 			{
-				if (morph.name.length) 
-					if (!stream.write((char*)&morph.name.length, sizeof(morph.name.length))) return false;
-				if (!stream.write((char*)&morph.name.name, morph.name.length)) return false;
+				if (!stream.write((char*)&morph.name.length, sizeof(morph.name.length))) return false;
+				if (morph.name.length > 0)
+					if (!stream.write((char*)&morph.name.name, morph.name.length)) return false;
 				if (!stream.write((char*)&morph.nameEng.length, sizeof(morph.nameEng.length))) return false;
-				if (morph.nameEng.length)
+				if (morph.nameEng.length > 0)
 					if (!stream.write((char*)&morph.nameEng.name, morph.nameEng.length)) return false;
 				if (!stream.write((char*)&morph.control, sizeof(morph.control))) return false;
 				if (!stream.write((char*)&morph.morphType, sizeof(morph.morphType))) return false;
