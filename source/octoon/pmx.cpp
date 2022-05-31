@@ -17,7 +17,7 @@
 namespace octoon
 {
 	bool
-	PMX::canRead(io::istream& stream) const noexcept
+	PMX::canRead(io::istream& stream) noexcept
 	{
 		PmxHeader header_;
 		if (stream.read((char*)&header_, sizeof(header_)))
@@ -34,13 +34,13 @@ namespace octoon
 	}
 
 	bool
-	PMX::canRead(std::string_view type) const noexcept
+	PMX::canRead(std::string_view type) noexcept
 	{
 		return type.compare("pmx") == 0;
 	}
 
 	bool
-	PMX::canRead(const char* type) const noexcept
+	PMX::canRead(const char* type) noexcept
 	{
 		return std::strncmp(type, "pmx", 3) == 0;
 	}

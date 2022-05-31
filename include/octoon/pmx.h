@@ -432,9 +432,9 @@ namespace octoon
 		std::vector<PmxJoint> joints;
 		std::vector<PmxSoftbody> softbodies;
 
-		bool canRead(io::istream& stream) const noexcept;
-		bool canRead(std::string_view type) const noexcept;
-		bool canRead(const char* type) const noexcept;
+		static bool canRead(io::istream& stream) noexcept;
+		static bool canRead(std::string_view type) noexcept;
+		static bool canRead(const char* type) noexcept;
 
 		static bool load(std::string_view filepath, PMX& pmx) noexcept;
 		static bool save(io::ostream& stream, const PMX& pmx) noexcept;
