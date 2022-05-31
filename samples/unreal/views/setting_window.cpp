@@ -4,110 +4,18 @@
 #include <qlabel.h>
 #include <qmessagebox.h>
 #include <qscrollbar.h>
-
+#include <QPushButton>
 #include <spdlog/spdlog.h>
+
+#include "../widgets/uspinbox.h"
+#include "../widgets/udoublespinbox.h"
 
 namespace unreal
 {
-	class SpinBox final : public QSpinBox
-	{
-	public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QSpinBox::focusOutEvent(event);
-		}
-	};
-
-	class DoubleSpinBox final : public QDoubleSpinBox
-	{
-	public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QDoubleSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QDoubleSpinBox::focusOutEvent(event);
-		}
-	};
-
 	SettingMainPlaneGeneral::SettingMainPlaneGeneral(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour)
-		: QWidget(parent)
+		: UPanel(parent)
 	{
-		infoLabel = new ULabel(this);
-		infoLabel->setText(tr("Version"));
-		infoLabel->setStyleSheet("color: rgb(255,255,255);");
-
-		infoButton = new QToolButton(this);
-		infoButton->setText(tr("Check Updates"));
-		infoButton->setStyleSheet("background: rgb(50,50,50); border:2px solid #646464;border-radius:4px;color: rgb(200,200,200);");
-		infoButton->setFixedSize(190, 35);
-
-		versionLabel = new ULabel(this);
-		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(UNREAL_VERSION));
-		versionLabel->setStyleSheet("color: rgb(200,200,200);");
-
-		/*QLabel* startupLabel = new QLabel(this);
-		startupLabel->setText(u8"启动项");
-		startupLabel->setStyleSheet("color: rgb(255,255,255);");
-
-		QCheckBox* checkBox = new QCheckBox(this);
-		checkBox->setText(u8"开机自动启动");
-		checkBox->setStyleSheet("color: rgb(200,200,200);");
-
-		QLabel* powerLabel = new QLabel(this);
-		powerLabel->setText(u8"性能");
-		powerLabel->setStyleSheet("color: rgb(255,255,255);");
-
-		QCheckBox* lowpowerBox = new QCheckBox(this);
-		lowpowerBox->setText(u8"低功耗模式");
-		lowpowerBox->setStyleSheet("color: rgb(200,200,200);");*/
-
-		resetLabel = new ULabel(this);
-		resetLabel->setText(tr("Reset to default settings"));
-		resetLabel->setStyleSheet("color: rgb(255,255,255);");
-
-		resetButton = new QToolButton(this);
-		resetButton->setText(tr("Reset"));
-		resetButton->setStyleSheet("background: rgb(50,50,50); border:2px solid #646464; border-radius:4px;color: rgb(200,200,200);");
-		resetButton->setFixedSize(190, 35);
-
-		layout_ = std::make_unique<QVBoxLayout>(this);
-		layout_->addWidget(infoLabel);
-		layout_->addWidget(infoButton);
-		layout_->addWidget(versionLabel);
-		layout_->addSpacing(10);
-		layout_->addWidget(resetLabel);
-		layout_->addSpacing(10);
-		layout_->addWidget(resetButton);
-		layout_->setContentsMargins(0, 0, 0, 10);
-
-		this->installEventFilter(this);
-	}
-
-	bool
-	SettingMainPlaneGeneral::eventFilter(QObject* watched, QEvent* event)
-	{
-		if (event->type() == QEvent::LanguageChange)
-		{
-			retranslate();
-		}
-
-		return QWidget::eventFilter(watched, event);
+		setupUI();
 	}
 
 	void
@@ -120,30 +28,68 @@ namespace unreal
 		resetButton->setText(tr("Reset"));
 	}
 
+	void
+	SettingMainPlaneGeneral::setupUI()
+	{
+		infoLabel = new ULabel(this);
+		infoLabel->setText(tr("Version"));
+
+		infoButton = new UPushButton(this);
+		infoButton->setText(tr("Check Updates"));
+		infoButton->setFixedSize(190, 35);
+
+		versionLabel = new ULabel(this);
+		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(UNREAL_VERSION));
+
+		resetLabel = new ULabel(this);
+		resetLabel->setText(tr("Reset to default settings"));
+	
+		resetButton = new UPushButton(this);
+		resetButton->setText(tr("Reset"));
+		resetButton->setFixedSize(190, 35);
+
+		layout_ = new QVBoxLayout(this);
+		layout_->addWidget(infoLabel);
+		layout_->addWidget(infoButton);
+		layout_->addWidget(versionLabel);
+		layout_->addSpacing(10);
+		layout_->addWidget(resetLabel);
+		layout_->addSpacing(10);
+		layout_->addWidget(resetButton);
+		layout_->setContentsMargins(0, 0, 0, 10);
+	}
+
 	SettingMainPlaneInterface::SettingMainPlaneInterface(QWidget* parent)
-		: QWidget(parent)
+		: UPanel(parent)
+	{
+		setupUI();
+		installEventFilter(this);
+	}
+	
+	void
+	SettingMainPlaneInterface::setupUI()
 	{
 		languages_ = std::vector<QString>{
 			tr("Chinese (Simplified)"),
 			tr("English (United State)"),
 			tr("Japanese (Japan)")
 		};
-		langLabel_ = new QLabel(this);
+		langLabel_ = new ULabel(this);
 		langLabel_->setText(tr("Language"));
 
 		langCombo_ = new UComboBox(this);
 		for (auto item : languages_)
 			langCombo_->addItem(item);
 
-		renderLabel = std::make_unique<QLabel>();
+		renderLabel = new ULabel(this);
 		renderLabel->setText(tr("Render Settings"));
 		renderLabel->setStyleSheet("color: rgb(255,255,255);");
 
-		resolutionLabel = std::make_unique<QLabel>();
+		resolutionLabel = new ULabel(this);
 		resolutionLabel->setText(tr("Resolution"));
 		resolutionLabel->setStyleSheet("color: rgb(200,200,200);");
 
-		resolutionCombo = std::make_unique<UComboBox>();
+		resolutionCombo = new UComboBox(this);
 		resolutionCombo->addItem("720*480");
 		resolutionCombo->addItem("800*480");
 		resolutionCombo->addItem("1024*576");
@@ -155,30 +101,17 @@ namespace unreal
 		resolutionCombo->setStyleSheet("color: rgb(200,200,200);");
 		resolutionCombo->setFont(QFont("Microsoft YaHei", 9, 50));
 
-		layout_ = std::make_unique<QVBoxLayout>(this);
-		layout_->addWidget(renderLabel.get());
+		layout_ = new QVBoxLayout(this);
+		layout_->addWidget(renderLabel);
 		layout_->addSpacing(10);
-		layout_->addWidget(resolutionLabel.get());
+		layout_->addWidget(resolutionLabel);
 		layout_->addSpacing(10);
-		layout_->addWidget(resolutionCombo.get());
+		layout_->addWidget(resolutionCombo);
 		layout_->addSpacing(10);
 		layout_->addWidget(langLabel_);
 		layout_->addSpacing(10);
 		layout_->addWidget(langCombo_);
 		layout_->addSpacing(200);
-
-		this->installEventFilter(this);
-	}
-
-	bool
-	SettingMainPlaneInterface::eventFilter(QObject* watched, QEvent* event)
-	{
-		if (event->type() == QEvent::LanguageChange)
-		{
-			retranslate();
-		}
-
-		return QWidget::eventFilter(watched, event);
 	}
 
 	void
@@ -197,19 +130,8 @@ namespace unreal
 	}
 
 	SettingMainPlaneGraphics::SettingMainPlaneGraphics(QWidget* parent)
-		: QWidget(parent)
+		: UPanel(parent)
 	{
-	}
-
-	bool
-	SettingMainPlaneGraphics::eventFilter(QObject* watched, QEvent* event)
-	{
-		if (event->type() == QEvent::LanguageChange)
-		{
-			retranslate();
-		}
-
-		return QWidget::eventFilter(watched, event);
 	}
 
 	void
@@ -219,7 +141,7 @@ namespace unreal
 	}
 
 	SettingContextPlane::SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept(false)
-		: QWidget(parent)
+		: UPanel(parent)
 		, behaviour_(behaviour)
 	{
 		this->setObjectName("settingContext");
@@ -291,7 +213,7 @@ namespace unreal
 		connect(listWidget_.get(), SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(mainPlaneGeneral_->resetButton, SIGNAL(clicked()), this, SLOT(onResetButton()));
 		connect(mainPlaneGeneral_->infoButton, SIGNAL(clicked()), this, SLOT(onCheckVersion()));
-		connect(mainPlaneInterface_->resolutionCombo.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
+		connect(mainPlaneInterface_->resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
 		connect(mainPlaneInterface_->langCombo_, SIGNAL(currentIndexChanged(int)), this, SLOT(onLangCombo(int)));
 
 		this->installEventFilter(this);
@@ -306,17 +228,6 @@ namespace unreal
 		scrollWidget_.reset();
 		scrollArea_.reset();
 		layout_.reset();
-	}
-
-	bool
-	SettingContextPlane::eventFilter(QObject* watched, QEvent* event)
-	{
-		if (event->type() == QEvent::LanguageChange)
-		{
-			retranslate();
-		}
-
-		return QWidget::eventFilter(watched, event);
 	}
 
 	void

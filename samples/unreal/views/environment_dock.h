@@ -10,6 +10,7 @@
 
 #include "../widgets/udockwidget.h"
 #include "../widgets/spoiler.h"
+#include "../widgets/udoublespinbox.h"
 
 #include "unreal_behaviour.h"
 #include "unreal_profile.h"
@@ -108,9 +109,9 @@ namespace unreal
 		QSlider* horizontalRotationSlider;
 		QSlider* verticalRotationSlider;
 
-		QDoubleSpinBox* intensitySpinBox;
-		QDoubleSpinBox* horizontalRotationSpinBox;
-		QDoubleSpinBox* verticalRotationSpinBox;
+		UDoubleSpinBox* intensitySpinBox;
+		UDoubleSpinBox* horizontalRotationSpinBox;
+		UDoubleSpinBox* verticalRotationSpinBox;
 
 		QColorDialog* colorSelector_;
 

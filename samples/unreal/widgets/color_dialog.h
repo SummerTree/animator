@@ -15,6 +15,8 @@
 #include <qtoolbutton.h>
 #include <qwidget>
 
+#include "uspinbox.h"
+
 namespace unreal
 {
 	class ColorPlane : public QLabel
@@ -84,9 +86,9 @@ namespace unreal
 		octoon::math::float3 rgb_;
 
 		std::unique_ptr<ColorPlane> label_;
-		std::unique_ptr<QSpinBox> editH_;
-		std::unique_ptr<QSpinBox> editS_;
-		std::unique_ptr<QSpinBox> editV_;
+		std::unique_ptr<USpinBox> editH_;
+		std::unique_ptr<USpinBox> editS_;
+		std::unique_ptr<USpinBox> editV_;
 		std::unique_ptr<QLabel> labelH_;
 		std::unique_ptr<QLabel> labelS_;
 		std::unique_ptr<QLabel> labelV_;

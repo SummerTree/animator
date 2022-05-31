@@ -18,69 +18,69 @@
 
 #include "../widgets/ulabel.h"
 #include "../widgets/ucombobox.h"
+#include "../widgets/upanel.h"
+#include "../widgets/upushbutton.h"
 
 #include "title_bar.h"
 #include "unreal_behaviour.h"
 
 namespace unreal
 {
-	class SettingMainPlaneGeneral final : public QWidget
+	class SettingMainPlaneGeneral final : public UPanel
 	{
 		Q_OBJECT
 	public:
 		SettingMainPlaneGeneral(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour);
 
-		bool eventFilter(QObject* watched, QEvent* event);
-		void retranslate();
+		void retranslate() override;
+		void setupUI();
 
 		ULabel* infoLabel;
-		QToolButton* infoButton;
+		UPushButton* infoButton;
 		ULabel* versionLabel;
 		ULabel* resetLabel;
-		QToolButton* resetButton;
+		UPushButton* resetButton;
 
 	private:
-		std::unique_ptr<QVBoxLayout> layout_;
+		QVBoxLayout* layout_;
 	};
 
-	class SettingMainPlaneInterface final : public QWidget
+	class SettingMainPlaneInterface final : public UPanel
 	{
 		Q_OBJECT
 	public:
 		SettingMainPlaneInterface(QWidget* parent);
 
-		bool eventFilter(QObject* watched, QEvent* event);
 		void retranslate();
+		void setupUI();
 
-		QLabel* langLabel_;
+		ULabel* langLabel_;
 		UComboBox* langCombo_;
-		std::unique_ptr<QLabel> renderLabel;
-		std::unique_ptr<QLabel> resolutionLabel;
-		std::unique_ptr<UComboBox> resolutionCombo;
+		ULabel* renderLabel;
+		ULabel* resolutionLabel;
+		UComboBox* resolutionCombo;
 
 		std::vector<QString> languages_;
 	private:
-		std::unique_ptr<QVBoxLayout> layout_;
+		QVBoxLayout* layout_;
 	};
 
-	class SettingMainPlaneGraphics final : public QWidget
+	class SettingMainPlaneGraphics final : public UPanel
 	{
 		Q_OBJECT
 	public:
 		SettingMainPlaneGraphics(QWidget* parent);
 
-		bool eventFilter(QObject* watched, QEvent* event);
 		void retranslate();
 	};
 
-	class SettingContextPlane final : public QWidget
+	class SettingContextPlane final : public UPanel
 	{
 		Q_OBJECT
 	public:
 		SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept(false);
 		~SettingContextPlane() noexcept;
-		
-		bool eventFilter(QObject* watched, QEvent* event);
+
 		void retranslate();
 
 	public Q_SLOTS:

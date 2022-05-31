@@ -12,6 +12,8 @@
 #include "unreal_profile.h"
 #include "unreal_behaviour.h"
 
+#include "../widgets/upushbutton.h"
+
 namespace unreal
 {
 	class ModelDock final : public QDockWidget
@@ -43,7 +45,7 @@ namespace unreal
 		QHBoxLayout* topLayout_;
 		QHBoxLayout* bottomLayout_;
 
-		QToolButton* importButton_;
+		UPushButton* importButton_;
 
 		QListWidgetItem* clickedItem_;
 
