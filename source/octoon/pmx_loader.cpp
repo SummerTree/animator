@@ -790,8 +790,10 @@ namespace octoon
 
 							auto& pmxBone = pmx.bones[i];
 							pmxBone.name = transform->getName();
+							pmxBone.Visable = true;
 							pmxBone.position = translate;
 							pmxBone.Parent = transform->getParent() ? boneMap[transform->getParent()] : -1;
+							pmxBone.ProvidedParentBoneIndex = -1;
 							pmxBone.Flag |= PMX_BONE_ROTATION | PMX_BONE_MOVE | PMX_BONE_OPERATOR | PMX_BONE_DISPLAY;
 
 							auto linkLimit = transform->getComponent<RotationLinkLimitComponent>();

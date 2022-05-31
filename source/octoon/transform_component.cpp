@@ -460,6 +460,7 @@ namespace octoon
 		component->setLocalScale(this->getLocalScale());
 		component->setLocalTranslate(this->getLocalTranslate());
 		component->setLocalQuaternion(this->getLocalQuaternion());
+		component->setAllowRelativeMotion(this->isAllowRelativeMotion());
 		return component;
 	}
 
