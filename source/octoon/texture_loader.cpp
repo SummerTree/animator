@@ -109,4 +109,70 @@ namespace octoon
 			throw std::runtime_error("Failed to open file :" + path);
 		}
 	}
+
+	bool
+	TextureLoader::save(std::string_view filepath, std::shared_ptr<GraphicsTexture> texture) noexcept(false)
+	{
+		auto& textureDesc = texture->getTextureDesc();
+		auto width = textureDesc.getWidth();
+		auto height = textureDesc.getHeight();
+		void* data;
+
+		if (texture->map(0, 0, width, height, 0, &data))
+		{
+			if (textureDesc.getTexFormat() == GraphicsFormat::R8G8B8A8UNorm)
+			{
+				octoon::Image image;
+				if (image.create(octoon::Format::R8G8B8A8SRGB, width, height))
+				{
+					std::uint8_t* img_ptr = const_cast<std::uint8_t*>(image.data());
+
+					for (std::int32_t y = 0; y < height; y++)
+					{
+						for (std::uint32_t x = 0; x < width; x++)
+						{
+							auto src = (y * width + x) * 4;
+							auto dst = ((height - y - 1) * width + x) * 4;
+
+							img_ptr[dst + 2] = static_cast<std::uint8_t*>(data)[src];
+							img_ptr[dst + 1] = static_cast<std::uint8_t*>(data)[src + 1];
+							img_ptr[dst + 0] = static_cast<std::uint8_t*>(data)[src + 2];
+							img_ptr[dst + 3] = static_cast<std::uint8_t*>(data)[src + 3];
+						}
+					}
+
+
+					image.save(std::string(filepath));
+				}
+			}
+			else if (textureDesc.getTexFormat() == GraphicsFormat::R8G8B8UNorm)
+			{
+				octoon::Image image;
+				if (image.create(octoon::Format::R8G8B8SRGB, width, height))
+				{
+					std::uint8_t* img_ptr = const_cast<std::uint8_t*>(image.data());
+
+					for (std::int32_t y = 0; y < height; y++)
+					{
+						for (std::uint32_t x = 0; x < width; x++)
+						{
+							auto src = (y * width + x) * 3;
+							auto dst = ((height - y - 1) * width + x) * 3;
+
+							img_ptr[dst + 2] = static_cast<std::uint8_t*>(data)[src];
+							img_ptr[dst + 1] = static_cast<std::uint8_t*>(data)[src + 1];
+							img_ptr[dst + 0] = static_cast<std::uint8_t*>(data)[src + 2];
+						}
+					}
+
+
+					image.save(std::string(filepath));
+				}
+			}
+
+			texture->unmap();
+		}
+
+		return true;
+	}
 }

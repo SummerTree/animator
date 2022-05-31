@@ -655,7 +655,7 @@ namespace octoon
 	}
 
 	bool
-	PMXLoader::save(const GameObject& gameObject, PMX& pmx) noexcept(false)
+	PMXLoader::save(const GameObject& gameObject, PMX& pmx, std::string_view path) noexcept(false)
 	{
 		if (!gameObject.getName().empty())
 		{
@@ -710,7 +710,7 @@ namespace octoon
 					pmxVertex.position = mesh->getVertexArray()[i];
 					pmxVertex.normal = mesh->getNormalArray()[i];
 					pmxVertex.coord = mesh->getTexcoordArray()[i];
-					pmxVertex.edge = 0;
+					pmxVertex.edge = 1.0f;
 					pmxVertex.type = PmxVertexSkinningType::PMX_BDEF1;
 					pmxVertex.weight.bone1 = weight[i].bone1;
 					pmxVertex.weight.bone2 = weight[i].bone2;
@@ -747,20 +747,23 @@ namespace octoon
 					for (std::size_t i = 0; i < pmx.numMaterials; i++)
 					{
 						auto standard = smr->getMaterial(i)->downcast_pointer<MeshStandardMaterial>();
-						auto color = math::linear2srgb(standard->getColor());
 						auto texture = standard->getColorMap();
 
 						if (texture)
 						{
 							auto name = texture->getTextureDesc().getName();
 							if (textureMap.find(name) == textureMap.end())
+							{
+								auto outputPath = std::string(path) + name.substr(name.find_last_of("\\") + 1);
+								TextureLoader::save(outputPath, texture);
 								textureMap.insert(std::make_pair(name, textureMap.size()));
+							}
 						}
 
 						auto& pmxMaterial = pmx.materials[i];
 						pmxMaterial.name = PmxName(standard->getName());
 						pmxMaterial.nameEng = PmxName("");
-						pmxMaterial.Diffuse = color;
+						pmxMaterial.Diffuse = math::linear2srgb(standard->getColor());
 						pmxMaterial.Ambient = math::float3(0.5f, 0.5f, 0.5f);
 						pmxMaterial.Opacity = standard->getOpacity();
 						pmxMaterial.TextureIndex = texture ? textureMap[texture->getTextureDesc().getName()] : 255;
@@ -789,12 +792,11 @@ namespace octoon
 						for (std::size_t i = 0; i < pmx.numBones; i++)
 						{
 							auto transform = smr->getTransforms()[i];
-							auto translate = transform->getComponent<octoon::TransformComponent>()->getTranslate();
 
 							auto& pmxBone = pmx.bones[i];
 							pmxBone.name = transform->getName();
 							pmxBone.Visable = true;
-							pmxBone.position = translate;
+							pmxBone.position = -mesh->getBindposes()[i].getTranslate();
 							pmxBone.Parent = transform->getParent() ? boneMap[transform->getParent()] : -1;
 							pmxBone.ProvidedParentBoneIndex = -1;
 							pmxBone.Flag |= PMX_BONE_ROTATION | PMX_BONE_MOVE | PMX_BONE_OPERATOR | PMX_BONE_DISPLAY;
@@ -855,6 +857,7 @@ namespace octoon
 								PmxRigidbody pmxRigidbody;
 								pmxRigidbody.bone = i;
 								pmxRigidbody.name = it->getName();
+								pmxRigidbody.nameEng = PmxName("");
 								pmxRigidbody.mass = it->getMass();
 								pmxRigidbody.group = it->getGroup();
 								pmxRigidbody.groupMask  = it->getGroupMask();
@@ -918,6 +921,7 @@ namespace octoon
 								PmxJoint pmxJoint;
 								std::memset(&pmxJoint, 0, sizeof(PmxJoint));
 								pmxJoint.name = joint->getName();
+								pmxJoint.nameEng = PmxName("");
 								pmxJoint.type = 0;
 								pmxJoint.position = joint->getTargetPosition();
 								pmxJoint.rotation = math::eulerAngles(joint->getTargetRotation());
@@ -990,7 +994,9 @@ namespace octoon
 		if (stream)
 		{
 			auto pmx = std::make_unique<PMX>();
-			save(gameObject, *pmx);
+			auto root = runtime::string::directory(std::string(path));
+
+			save(gameObject, *pmx, root);
 
 			PMX::save(stream, *pmx);
 
@@ -1006,8 +1012,12 @@ namespace octoon
 		auto stream = octoon::io::ofstream(std::wstring(path), std::ios_base::in | std::ios_base::out);
 		if (stream)
 		{
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
 			auto pmx = std::make_unique<PMX>();
-			save(gameObject, *pmx);
+			auto root = runtime::string::directory(std::wstring(path));
+
+			save(gameObject, *pmx, cv.to_bytes(root));
 
 			PMX::save(stream, *pmx);
 
