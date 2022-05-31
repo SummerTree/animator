@@ -492,7 +492,7 @@ namespace unreal
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
 		if (physicsFeature)
 		{
-			physicsFeature->setEnableSimulate(true);
+			physicsFeature->setEnableSimulate(context->physicsModule->enable);
 			physicsFeature->setGravity(context->physicsModule->gravity * context->physicsModule->gravityScale);
 			physicsFeature->setSolverIterationCounts(context->physicsModule->previewSolverIterationCounts);
 			physicsFeature->setFixedTimeStep(1.0f / model->previewFps);
