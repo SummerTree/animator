@@ -48,6 +48,8 @@ namespace octoon
         float getGravityScale() const noexcept;
         float getMass() const noexcept;
 		float getSleepThreshold() const noexcept;
+		float getLinearDamping() const noexcept;
+		float getAngularDamping() const noexcept;
 		bool getEnableCCD() const noexcept;
 		std::uint32_t getGroup() const noexcept;
 		std::uint16_t getGroupMask() const noexcept;

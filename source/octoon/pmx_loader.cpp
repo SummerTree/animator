@@ -733,11 +733,11 @@ namespace octoon
 					offset += indices.size() * sizeof(std::uint32_t);
 				}
 
-				std::map<std::string, std::size_t> textureMap;
-
 				auto smr = gameObject.getComponent<SkinnedMeshRendererComponent>();
 				if (smr)
 				{
+					std::map<std::string, std::size_t> textureMap;
+
 					pmx.numMaterials = smr->getMaterials().size();
 					pmx.materials.resize(pmx.numMaterials);
 
@@ -757,9 +757,8 @@ namespace octoon
 						auto& pmxMaterial = pmx.materials[i];
 						pmxMaterial.name = PmxName(standard->getName());
 						pmxMaterial.nameEng = PmxName("");
-						pmxMaterial.Diffuse.x = color.x;
-						pmxMaterial.Diffuse.y = color.y;
-						pmxMaterial.Diffuse.z = color.z;
+						pmxMaterial.Diffuse = color;
+						pmxMaterial.Ambient = math::float3(0.5f, 0.5f, 0.5f);
 						pmxMaterial.Opacity = standard->getOpacity();
 						pmxMaterial.TextureIndex = texture ? textureMap[texture->getTextureDesc().getName()] : 255;
 						pmxMaterial.ToonIndex = 255;
@@ -782,6 +781,9 @@ namespace octoon
 						std::map<GameObject*, std::size_t> boneMap;
 
 						for (std::size_t i = 0; i < pmx.numBones; i++)
+							boneMap[smr->getTransforms()[i].get()] = i;
+
+						for (std::size_t i = 0; i < pmx.numBones; i++)
 						{
 							auto transform = smr->getTransforms()[i];
 							auto translate = transform->getComponent<octoon::TransformComponent>()->getTranslate();
@@ -790,8 +792,103 @@ namespace octoon
 							pmxBone.name = transform->getName();
 							pmxBone.position = translate;
 							pmxBone.Parent = transform->getParent() ? boneMap[transform->getParent()] : -1;
+							pmxBone.Flag |= PMX_BONE_ROTATION | PMX_BONE_MOVE | PMX_BONE_OPERATOR | PMX_BONE_DISPLAY;
 
-							boneMap[transform.get()] = i;
+							auto linkLimit = transform->getComponent<RotationLinkLimitComponent>();
+							if (linkLimit)
+							{
+								if (linkLimit->getAdditiveUseLocal())
+									pmxBone.Flag |= PMX_BONE_ADD_LOCAL;
+								if (linkLimit->getAdditiveMoveRatio() != 0.0f)
+									pmxBone.Flag |= PMX_BONE_ADD_MOVE;
+								if (linkLimit->getAdditiveRotationRatio() != 0.0f)
+									pmxBone.Flag |= PMX_BONE_ADD_ROTATION;
+							}
+
+							auto slover = transform->getComponent<CCDSolverComponent>();
+							if (slover)
+							{
+								pmxBone.Flag |= PMX_BONE_IK;
+								pmxBone.IKLoopCount = slover->getIterations();
+								pmxBone.IKTargetBoneIndex = boneMap[slover->getTarget().get()];
+								pmxBone.IKLinkCount = slover->getBones().size();
+								pmxBone.IKList.resize(pmxBone.IKLinkCount);
+
+								for (std::size_t n = 0; n < pmxBone.IKLinkCount; n++)
+								{
+									auto bone = slover->getBone(n);
+									auto rotationLimit = bone->getComponent<RotationLimitComponent>();
+
+									auto& ik = pmxBone.IKList[n];
+									ik.BoneIndex = boneMap[bone.get()];
+									
+									if (rotationLimit)
+									{
+										ik.rotateLimited = rotationLimit->getMaximumAngle();
+										ik.minimumRadian = rotationLimit->getMinimumAxis();
+										ik.maximumRadian = rotationLimit->getMaximumAxis();
+									}
+								}
+							}
+						}
+
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+						{
+							auto bone = smr->getTransforms()[i];
+							auto it = bone->getComponent<RigidbodyComponent>();
+							if (it)
+							{
+								PmxRigidbody pmxRigidbody;
+								pmxRigidbody.bone = i;
+								pmxRigidbody.name = it->getName();
+								pmxRigidbody.mass = it->getMass();
+								pmxRigidbody.group = it->getGroup();
+								pmxRigidbody.groupMask  = it->getGroupMask();
+								pmxRigidbody.elasticity = it->getRestitution();
+								pmxRigidbody.friction = it->getStaticFriction();
+								pmxRigidbody.movementDecay = it->getLinearDamping();
+								pmxRigidbody.rotationDecay = it->getAngularDamping();
+								pmxRigidbody.physicsOperation = it->getIsKinematic() ? 0 : 1;
+
+								auto collider = bone->getComponent<ColliderComponent>();
+								if (collider)
+								{
+									auto baseTransform = bone->getComponent<TransformComponent>()->getTransform();
+									auto localTransform = math::transformMultiply(baseTransform, math::makeRotation(collider->getQuaternion(), collider->getCenter()));
+
+									math::float3 translate;
+									math::float3 scale;
+									math::Quaternion rotation;
+									localTransform.getTransform(translate, rotation, scale);
+
+									pmxRigidbody.position = translate;
+									pmxRigidbody.rotate = math::eulerAngles(rotation);
+								}
+
+								if (auto boxCollider = bone->getComponent<BoxColliderComponent>())
+								{
+									pmxRigidbody.shape = PmxShapeType::ShapeTypeSquare;
+									pmxRigidbody.scale = boxCollider->getSize();
+								}								
+								else if (auto capsuleCollider = bone->getComponent<CapsuleColliderComponent>())
+								{
+									pmxRigidbody.shape = PmxShapeType::ShapeTypeCapsule;
+									pmxRigidbody.scale.x = capsuleCollider->getRadius();
+									pmxRigidbody.scale.y = capsuleCollider->getHeight();
+									pmxRigidbody.scale.z = 0.0f;
+								}
+								else if (auto sphereCollider = bone->getComponent<SphereColliderComponent>())
+								{
+									pmxRigidbody.shape = PmxShapeType::ShapeTypeSphere;
+									pmxRigidbody.scale.x = sphereCollider->getRadius();
+									pmxRigidbody.scale.y = 0.0f;
+									pmxRigidbody.scale.z = 0.0f;
+								}
+
+								pmx.rigidbodies.push_back(pmxRigidbody);
+							}
+
+							pmx.numRigidbodys = pmx.rigidbodies.size();
 						}
 					}
 				}

@@ -261,6 +261,18 @@ namespace octoon
 		return sleepThreshold_;
 	}
 
+	float
+	RigidbodyComponent::getLinearDamping() const noexcept
+	{
+		return linearDamping_;
+	}
+
+	float
+	RigidbodyComponent::getAngularDamping() const noexcept
+	{
+		return angularDamping_;
+	}
+
 	bool
 	RigidbodyComponent::getEnableCCD() const noexcept
 	{

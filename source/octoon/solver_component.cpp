@@ -157,6 +157,12 @@ namespace octoon
 		bones_ = bones;
 	}
 
+	const GameObjectPtr&
+	CCDSolverComponent::getBone(std::size_t i) const noexcept
+	{
+		return bones_[i];
+	}
+
 	const GameObjects&
 	CCDSolverComponent::getBones() const noexcept
 	{
