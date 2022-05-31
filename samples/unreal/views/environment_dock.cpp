@@ -15,24 +15,6 @@
 
 namespace unreal
 {
-	class DoubleSpinBox final : public QDoubleSpinBox
-	{
-	public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QDoubleSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QDoubleSpinBox::focusOutEvent(event);
-		}
-	};
-
 	EnvironmentListDialog::EnvironmentListDialog(QWidget * parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: QDialog(parent)
 		, behaviour_(behaviour)

@@ -13,108 +13,97 @@
     <name>unreal::CameraDock</name>
     <message>
         <location filename="../views/camera_dock.cpp" line="16"/>
-        <location filename="../views/camera_dock.cpp" line="370"/>
         <source>Camera</source>
         <translation>相机</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="19"/>
-        <location filename="../views/camera_dock.cpp" line="371"/>
+        <location filename="../views/camera_dock.cpp" line="18"/>
         <source>fov:</source>
         <translation>视野角：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="34"/>
-        <location filename="../views/camera_dock.cpp" line="372"/>
+        <location filename="../views/camera_dock.cpp" line="23"/>
         <source>* The following parameters take effect on rendering</source>
         <translation>* 以下参数仅渲染时生效</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="38"/>
-        <location filename="../views/camera_dock.cpp" line="373"/>
+        <location filename="../views/camera_dock.cpp" line="27"/>
         <source>Depth Of Filed:</source>
         <translation>开启景深：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="51"/>
-        <location filename="../views/camera_dock.cpp" line="374"/>
+        <location filename="../views/camera_dock.cpp" line="39"/>
         <source>Aperture:</source>
         <translation>光圈大小：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="61"/>
+        <location filename="../views/camera_dock.cpp" line="40"/>
         <source>f/</source>
         <translation>f/</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="66"/>
-        <location filename="../views/camera_dock.cpp" line="375"/>
+        <location filename="../views/camera_dock.cpp" line="43"/>
         <source>Focal Length (35mmfilm):</source>
         <translation>等效焦距(35mmfilm)：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="70"/>
-        <location filename="../views/camera_dock.cpp" line="376"/>
+        <location filename="../views/camera_dock.cpp" line="46"/>
         <source>Focus Distance:</source>
         <translation>焦点距离：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="79"/>
+        <location filename="../views/camera_dock.cpp" line="44"/>
         <source>mm</source>
         <translation>毫米</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="89"/>
+        <location filename="../views/camera_dock.cpp" line="47"/>
         <source>m</source>
         <translation>米</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="94"/>
-        <location filename="../views/camera_dock.cpp" line="230"/>
-        <location filename="../views/camera_dock.cpp" line="274"/>
-        <location filename="../views/camera_dock.cpp" line="339"/>
-        <location filename="../views/camera_dock.cpp" line="378"/>
+        <location filename="../views/camera_dock.cpp" line="50"/>
+        <location filename="../views/camera_dock.cpp" line="170"/>
+        <location filename="../views/camera_dock.cpp" line="214"/>
+        <location filename="../views/camera_dock.cpp" line="279"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="100"/>
-        <location filename="../views/camera_dock.cpp" line="377"/>
+        <location filename="../views/camera_dock.cpp" line="56"/>
         <source>Drag and drop this icon onto the target model to enable autofocus</source>
         <translation>拖拽图标至目标模型以启用自动对焦</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="105"/>
-        <location filename="../views/camera_dock.cpp" line="290"/>
-        <location filename="../views/camera_dock.cpp" line="379"/>
+        <location filename="../views/camera_dock.cpp" line="61"/>
+        <location filename="../views/camera_dock.cpp" line="230"/>
         <source>Load Animation</source>
         <translation>加载动画</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="111"/>
-        <location filename="../views/camera_dock.cpp" line="380"/>
+        <location filename="../views/camera_dock.cpp" line="67"/>
         <source>Uninstall</source>
         <translation>卸载</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="222"/>
-        <location filename="../views/camera_dock.cpp" line="335"/>
+        <location filename="../views/camera_dock.cpp" line="162"/>
+        <location filename="../views/camera_dock.cpp" line="275"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="224"/>
-        <location filename="../views/camera_dock.cpp" line="334"/>
+        <location filename="../views/camera_dock.cpp" line="164"/>
+        <location filename="../views/camera_dock.cpp" line="274"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="290"/>
+        <location filename="../views/camera_dock.cpp" line="230"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="299"/>
+        <location filename="../views/camera_dock.cpp" line="239"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -145,75 +134,75 @@
 <context>
     <name>unreal::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="277"/>
+        <location filename="../views/environment_dock.cpp" line="259"/>
         <source>Environment Light</source>
         <translation>环境光</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="284"/>
+        <location filename="../views/environment_dock.cpp" line="266"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation>单击预览按钮以显示所有可替换的HDR图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="289"/>
-        <location filename="../views/environment_dock.cpp" line="533"/>
-        <location filename="../views/environment_dock.cpp" line="876"/>
+        <location filename="../views/environment_dock.cpp" line="271"/>
+        <location filename="../views/environment_dock.cpp" line="515"/>
+        <location filename="../views/environment_dock.cpp" line="858"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="302"/>
+        <location filename="../views/environment_dock.cpp" line="284"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="306"/>
+        <location filename="../views/environment_dock.cpp" line="288"/>
         <source>Thumbnail</source>
         <translation>环境贴图</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="310"/>
+        <location filename="../views/environment_dock.cpp" line="292"/>
         <source>Toggle Background</source>
         <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="318"/>
+        <location filename="../views/environment_dock.cpp" line="300"/>
         <source>Intensity</source>
         <translation>亮度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="338"/>
+        <location filename="../views/environment_dock.cpp" line="320"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="358"/>
+        <location filename="../views/environment_dock.cpp" line="340"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="378"/>
+        <location filename="../views/environment_dock.cpp" line="360"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="431"/>
+        <location filename="../views/environment_dock.cpp" line="413"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="684"/>
-        <location filename="../views/environment_dock.cpp" line="740"/>
+        <location filename="../views/environment_dock.cpp" line="666"/>
+        <location filename="../views/environment_dock.cpp" line="722"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="698"/>
+        <location filename="../views/environment_dock.cpp" line="680"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="698"/>
+        <location filename="../views/environment_dock.cpp" line="680"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
@@ -221,22 +210,22 @@
 <context>
     <name>unreal::EnvironmentListDialog</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="43"/>
+        <location filename="../views/environment_dock.cpp" line="25"/>
         <source>Environment Resource</source>
         <translation>环境资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="49"/>
+        <location filename="../views/environment_dock.cpp" line="31"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="53"/>
+        <location filename="../views/environment_dock.cpp" line="35"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="57"/>
+        <location filename="../views/environment_dock.cpp" line="39"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
@@ -245,33 +234,33 @@
         <translation type="vanished">加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="161"/>
+        <location filename="../views/environment_dock.cpp" line="143"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="161"/>
+        <location filename="../views/environment_dock.cpp" line="143"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="170"/>
-        <location filename="../views/environment_dock.cpp" line="171"/>
+        <location filename="../views/environment_dock.cpp" line="152"/>
+        <location filename="../views/environment_dock.cpp" line="153"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="170"/>
+        <location filename="../views/environment_dock.cpp" line="152"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="253"/>
+        <location filename="../views/environment_dock.cpp" line="235"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation>确定要删除此图像吗?</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="253"/>
+        <location filename="../views/environment_dock.cpp" line="235"/>
         <source>Info</source>
         <translation type="unfinished">提示</translation>
     </message>
@@ -871,87 +860,87 @@ $20 (Original cost $40)</source>
         <translation>开启降噪：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="126"/>
+        <location filename="../views/record_dock.cpp" line="125"/>
         <source>Recursion depth per pixel:</source>
         <translation>每像素光线弹射次数：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="138"/>
+        <location filename="../views/record_dock.cpp" line="126"/>
         <source>Sample number per pixel:</source>
         <translation>每像素采样数:</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="158"/>
+        <location filename="../views/record_dock.cpp" line="128"/>
         <source>Constant Rate Factor (CRF):</source>
         <translation>固定码率系数(CRF):</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="171"/>
-        <location filename="../views/record_dock.cpp" line="305"/>
-        <location filename="../views/record_dock.cpp" line="316"/>
-        <location filename="../views/record_dock.cpp" line="487"/>
+        <location filename="../views/record_dock.cpp" line="140"/>
+        <location filename="../views/record_dock.cpp" line="271"/>
+        <location filename="../views/record_dock.cpp" line="282"/>
+        <location filename="../views/record_dock.cpp" line="453"/>
         <source>Start Render</source>
         <translation>开始渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="215"/>
+        <location filename="../views/record_dock.cpp" line="181"/>
         <source>Watermark</source>
         <translation>水印</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="218"/>
+        <location filename="../views/record_dock.cpp" line="184"/>
         <source>Render Settings</source>
         <translation>渲染设置</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="443"/>
+        <location filename="../views/record_dock.cpp" line="409"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="443"/>
+        <location filename="../views/record_dock.cpp" line="409"/>
         <source>Start frame must be less than end frame.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="449"/>
+        <location filename="../views/record_dock.cpp" line="415"/>
         <source>Save Video</source>
         <translation>保存视频</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="449"/>
+        <location filename="../views/record_dock.cpp" line="415"/>
         <source>MP4 Files (*.mp4)</source>
         <translation>MP4 Files (*.mp4)</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="449"/>
+        <location filename="../views/record_dock.cpp" line="415"/>
         <source>New Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="451"/>
+        <location filename="../views/record_dock.cpp" line="417"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="451"/>
+        <location filename="../views/record_dock.cpp" line="417"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="307"/>
-        <location filename="../views/record_dock.cpp" line="314"/>
-        <location filename="../views/record_dock.cpp" line="485"/>
+        <location filename="../views/record_dock.cpp" line="273"/>
+        <location filename="../views/record_dock.cpp" line="280"/>
+        <location filename="../views/record_dock.cpp" line="451"/>
         <source>Stop Render</source>
         <translation>停止渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="458"/>
+        <location filename="../views/record_dock.cpp" line="424"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="458"/>
+        <location filename="../views/record_dock.cpp" line="424"/>
         <source>Failed to create file</source>
         <translation>创建文件失败</translation>
     </message>

@@ -15,7 +15,7 @@ namespace unreal
 		this->setObjectName("RecordDock");
 		this->setWindowTitle(tr("Record"));
 
-		markButton_ = new QToolButton();
+		markButton_ = new UPushButton();
 		markButton_->setObjectName("mark");
 		markButton_->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 		markButton_->setIconSize(QSize(139, 143));
@@ -24,14 +24,14 @@ namespace unreal
 		quality_ = new ULabel();
 		quality_->setText(tr("Render Quality"));
 
-		select1_ = new QToolButton();
+		select1_ = new UPushButton();
 		select1_->setObjectName("select1");
 		select1_->setText(tr("Ultra Render"));
 		select1_->setCheckable(true);
 		select1_->click();
 		select1_->installEventFilter(this);
 
-		select2_ = new QToolButton();
+		select2_ = new UPushButton();
 		select2_->setObjectName("select2");
 		select2_->setText(tr("Fast Render"));
 		select2_->setCheckable(true);
@@ -44,26 +44,26 @@ namespace unreal
 		videoRatio_ = new ULabel();
 		videoRatio_->setText(tr("Frame Per Second"));
 
-		speed1_ = new QToolButton();
+		speed1_ = new UPushButton();
 		speed1_->setObjectName("speed1");
 		speed1_->setText(tr("24"));
 		speed1_->setCheckable(true);
 		speed1_->click();
 		speed1_->installEventFilter(this);
 
-		speed2_ = new QToolButton();
+		speed2_ = new UPushButton();
 		speed2_->setObjectName("speed2");
 		speed2_->setText(tr("25"));
 		speed2_->setCheckable(true);
 		speed2_->installEventFilter(this);
 
-		speed3_ = new QToolButton();
+		speed3_ = new UPushButton();
 		speed3_->setObjectName("speed3");
 		speed3_->setText(tr("30"));
 		speed3_->setCheckable(true);
 		speed3_->installEventFilter(this);
 
-		speed4_ = new QToolButton();
+		speed4_ = new UPushButton();
 		speed4_->setObjectName("speed4");
 		speed4_->setText(tr("60"));
 		speed4_->setCheckable(true);
@@ -122,41 +122,10 @@ namespace unreal
 		denoiseLayout_->setSpacing(0);
 		denoiseLayout_->setContentsMargins(0, 0, 0, 0);
 
-		bouncesLabel_ = new ULabel();
-		bouncesLabel_->setText(tr("Recursion depth per pixel:"));
-		bouncesLabel_->setStyleSheet("color: rgb(200,200,200);");
+		bouncesSpinbox_ = USpinLine::create(this, tr("Recursion depth per pixel:"), 1, 32, 1, 0);
+		sppSpinbox_ = USpinLine::create(this, tr("Sample number per pixel:"), 1, 9999, 1, 0);
 
-		bouncesSpinbox_ = new USpinBox();
-		bouncesSpinbox_->setMinimum(1);
-		bouncesSpinbox_->setMaximum(32);
-		bouncesSpinbox_->setValue(0);
-		bouncesSpinbox_->setAlignment(Qt::AlignRight);
-		bouncesSpinbox_->setFixedWidth(100);
-		bouncesSpinbox_->installEventFilter(this);
-
-		sppLabel = new ULabel();
-		sppLabel->setText(tr("Sample number per pixel:"));
-		sppLabel->setStyleSheet("color: rgb(200,200,200);");
-
-		sppSpinbox_ = new USpinBox();
-		sppSpinbox_->setMinimum(1);
-		sppSpinbox_->setMaximum(9999);
-		sppSpinbox_->setValue(0);
-		sppSpinbox_->setAlignment(Qt::AlignRight);
-		sppSpinbox_->setFixedWidth(100);
-		sppSpinbox_->installEventFilter(this);
-
-		crfSpinbox = new UDoubleSpinBox();
-		crfSpinbox->setMinimum(0);
-		crfSpinbox->setMaximum(63.0);
-		crfSpinbox->setValue(0);
-		crfSpinbox->setAlignment(Qt::AlignRight);
-		crfSpinbox->setFixedWidth(100);
-		crfSpinbox->installEventFilter(this);
-
-		crfLabel = new ULabel();
-		crfLabel->setText(tr("Constant Rate Factor (CRF):"));
-		crfLabel->setStyleSheet("color: rgb(200,200,200);");
+		crfSpinbox = UDoubleSpinLine::create(this, tr("Constant Rate Factor (CRF):"), 0.0f, 63.0f, 0);
 
 		frameLayout_ = new QHBoxLayout();
 		frameLayout_->addSpacing(20);
@@ -166,7 +135,7 @@ namespace unreal
 		frameLayout_->addWidget(endFrame_, 0, Qt::AlignLeft);
 		frameLayout_->addStretch();
 
-		recordButton_ = new QToolButton();
+		recordButton_ = new UPushButton();
 		recordButton_->setObjectName("render");
 		recordButton_->setText(tr("Start Render"));
 		recordButton_->setContentsMargins(0, 0, 0, 0);
@@ -199,13 +168,10 @@ namespace unreal
 		videoLayout->addWidget(outputTypeCombo_);
 		videoLayout->addSpacing(10);
 		videoLayout->addLayout(denoiseLayout_);
-		videoLayout->addWidget(sppLabel);
 		videoLayout->addWidget(sppSpinbox_);
 		videoLayout->addSpacing(10);
-		videoLayout->addWidget(bouncesLabel_);
 		videoLayout->addWidget(bouncesSpinbox_);
 		videoLayout->addSpacing(10);
-		videoLayout->addWidget(crfLabel);
 		videoLayout->addWidget(crfSpinbox);
 		videoLayout->setContentsMargins(20, 10, 0, 0);
 
@@ -260,7 +226,7 @@ namespace unreal
 		profile_->encodeModule->crf += [this](float value)
 		{
 			crfSpinbox->blockSignals(true);
-			crfSpinbox->setValue(value);
+			crfSpinbox->doublespinbox_->setValue(value);
 			crfSpinbox->blockSignals(false);
 		};
 
@@ -503,7 +469,7 @@ namespace unreal
 
 		denoiseButton_->setCheckState(profile_->recordModule->denoise ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 		sppSpinbox_->setValue(profile_->offlineModule->spp);
-		crfSpinbox->setValue(profile_->encodeModule->crf);
+		crfSpinbox->doublespinbox_->setValue(profile_->encodeModule->crf);
 		bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
 	}
 
