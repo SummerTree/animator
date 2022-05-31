@@ -23,6 +23,7 @@
 #include "../widgets/uspinbox.h"
 #include "../widgets/udoublespinbox.h"
 #include "../widgets/ulabel.h"
+#include "../widgets/udoublespinline.h"
 
 
 namespace unreal
@@ -40,8 +41,6 @@ namespace unreal
 
 		bool eventFilter(QObject* watched, QEvent* event);
 
-		void retranslate();
-
 	private Q_SLOTS:
 		void onFovChanged(double);
 		void onFocalLengthChanged(double);
@@ -54,8 +53,6 @@ namespace unreal
 
 	public:
 		ULabel* dofInfoLabel_;
-		ULabel* apertureLabel_;
-		ULabel* fovLabel_;
 		ULabel* focalLengthLabel_;
 		ULabel* focusDistanceName_;
 		ULabel* focusDistanceLabel_;
@@ -63,10 +60,10 @@ namespace unreal
 
 		QCheckBox* dofButton_;
 		QToolButton* focusTargetButton_;
-		UDoubleSpinBox* fovSpinbox_;
-		UDoubleSpinBox* apertureSpinbox_;
-		UDoubleSpinBox* focalLengthSpinbox_;
-		UDoubleSpinBox* focusDistanceSpinbox_;
+		UDoubleSpinLine* fovSpinbox_;
+		UDoubleSpinLine* apertureSpinbox_;
+		UDoubleSpinLine* focalLengthSpinbox_;
+		UDoubleSpinLine* focusDistanceSpinbox_;
 
 		QToolButton* loadButton_;
 		QToolButton* unloadButton_;

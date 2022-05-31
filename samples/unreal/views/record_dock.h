@@ -24,6 +24,9 @@
 #include "../widgets/ulabel.h"
 #include "../widgets/ucombobox.h"
 #include "../widgets/udockwidget.h"
+#include "../widgets/upushbutton.h"
+#include "../widgets/uspinline.h"
+#include "../widgets/udoublespinline.h"
 
 
 namespace unreal
@@ -74,22 +77,22 @@ namespace unreal
 
 		UComboBox* outputTypeCombo_;
 
-		QToolButton* select1_;
-		QToolButton* select2_;
-		QToolButton* speed1_;
-		QToolButton* speed2_;
-		QToolButton* speed3_;
-		QToolButton* speed4_;
-		QToolButton* recordButton_;
-		QToolButton* markButton_;
+		UPushButton* select1_;
+		UPushButton* select2_;
+		UPushButton* speed1_;
+		UPushButton* speed2_;
+		UPushButton* speed3_;
+		UPushButton* speed4_;
+		UPushButton* recordButton_;
+		UPushButton* markButton_;
 		QCheckBox* denoiseButton_;
 
 		USpinBox* startFrame_;
 		USpinBox* endFrame_;
-		USpinBox* sppSpinbox_;
-		USpinBox* bouncesSpinbox_;
+		USpinLine* sppSpinbox_;
+		USpinLine* bouncesSpinbox_;
 
-		UDoubleSpinBox* crfSpinbox;
+		UDoubleSpinLine* crfSpinbox;
 
 		QHBoxLayout* videoRatioLayout_;
 		QHBoxLayout* frameLayout_;

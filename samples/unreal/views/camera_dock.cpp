@@ -15,20 +15,9 @@ namespace unreal
 		this->setObjectName("CameraDock");
 		this->setWindowTitle(tr("Camera"));
 
-		fovLabel_ = new ULabel();
-		fovLabel_->setText(tr("fov:"));
-		fovLabel_->setStyleSheet("color: rgb(200,200,200);");
-
-		fovSpinbox_ = new UDoubleSpinBox();
-		fovSpinbox_->setMinimum(1.0f);
-		fovSpinbox_->setMaximum(120.0f);
-		fovSpinbox_->setValue(60.0f);
-		fovSpinbox_->setSingleStep(1.0f);
-		fovSpinbox_->setAlignment(Qt::AlignRight);
-		fovSpinbox_->setFixedWidth(100);
-		fovSpinbox_->setSuffix(u8"бу");
-		fovSpinbox_->setDecimals(1);
-		fovSpinbox_->installEventFilter(this);
+		fovSpinbox_ = UDoubleSpinLine::create(this, tr("fov:"), 1.0f, 120.0f, 1.0f, 60.0f);
+		fovSpinbox_->doublespinbox_->setSuffix(u8"бу");
+		fovSpinbox_->doublespinbox_->setDecimals(1);
 
 		dofInfoLabel_ = new ULabel();
 		dofInfoLabel_->setText(tr("* The following parameters take effect on rendering"));
@@ -47,48 +36,15 @@ namespace unreal
 		dofLayout_->setSpacing(0);
 		dofLayout_->setContentsMargins(0, 0, 0, 0);
 
-		apertureLabel_ = new ULabel();
-		apertureLabel_->setText(tr("Aperture:"));
-		apertureLabel_->setStyleSheet("color: rgb(200,200,200);");
+		apertureSpinbox_ = UDoubleSpinLine::create(this, tr("Aperture:"), 1.0f, 64.0f, 0.1f, 64.0f);
+		apertureSpinbox_->doublespinbox_->setPrefix(tr("f/"));
+		apertureSpinbox_->doublespinbox_->setDecimals(1);
 
-		apertureSpinbox_ = new UDoubleSpinBox();
-		apertureSpinbox_->setMinimum(1.0f);
-		apertureSpinbox_->setMaximum(64.0f);
-		apertureSpinbox_->setValue(64.0f);
-		apertureSpinbox_->setSingleStep(0.1f);
-		apertureSpinbox_->setAlignment(Qt::AlignRight);
-		apertureSpinbox_->setFixedWidth(100);
-		apertureSpinbox_->setPrefix(tr("f/"));
-		apertureSpinbox_->setDecimals(1);
-		apertureSpinbox_->installEventFilter(this);
+		focalLengthSpinbox_ = UDoubleSpinLine::create(this, tr("Focal Length (35mmfilm):"), 1.0f, 1200.0f, 1.0f, 31.18f);
+		focalLengthSpinbox_->doublespinbox_->setSuffix(tr("mm"));
 
-		focalLengthLabel_ = new ULabel();
-		focalLengthLabel_->setText(tr("Focal Length (35mmfilm):"));
-		focalLengthLabel_->setStyleSheet("color: rgb(200,200,200);");
-
-		focusDistanceLabel_ = new ULabel();
-		focusDistanceLabel_->setText(tr("Focus Distance:"));
-		focusDistanceLabel_->setStyleSheet("color: rgb(200,200,200);");
-
-		focalLengthSpinbox_ = new UDoubleSpinBox();
-		focalLengthSpinbox_->setMinimum(1.0f);
-		focalLengthSpinbox_->setMaximum(1200.0f);
-		focalLengthSpinbox_->setValue(31.18f);
-		focalLengthSpinbox_->setSingleStep(1.0f);
-		focalLengthSpinbox_->setAlignment(Qt::AlignRight);
-		focalLengthSpinbox_->setSuffix(tr("mm"));
-		focalLengthSpinbox_->setFixedWidth(100);
-		focalLengthSpinbox_->installEventFilter(this);
-
-		focusDistanceSpinbox_ = new UDoubleSpinBox();
-		focusDistanceSpinbox_->setMinimum(0);
-		focusDistanceSpinbox_->setMaximum(std::numeric_limits<float>::infinity());
-		focusDistanceSpinbox_->setValue(0);
-		focusDistanceSpinbox_->setSingleStep(0.1f);
-		focusDistanceSpinbox_->setAlignment(Qt::AlignRight);
-		focusDistanceSpinbox_->setSuffix(tr("m"));
-		focusDistanceSpinbox_->setFixedWidth(100);
-		focusDistanceSpinbox_->installEventFilter(this);
+		focusDistanceSpinbox_ = UDoubleSpinLine::create(this, tr("Focus Distance:"), 0.0f, std::numeric_limits<float>::infinity(), 0.1f, 0.0f);
+		focusDistanceSpinbox_->doublespinbox_->setSuffix(tr("m"));
 
 		focusDistanceName_ = new ULabel();
 		focusDistanceName_->setText(tr("Target: Empty"));
@@ -112,22 +68,6 @@ namespace unreal
 		unloadButton_->setContentsMargins(0, 0, 0, 0);
 		unloadButton_->installEventFilter(this);
 
-		auto fovLayout = new QHBoxLayout;
-		fovLayout->addWidget(fovLabel_);
-		fovLayout->addWidget(fovSpinbox_);
-
-		auto apertureLayout = new QHBoxLayout;
-		apertureLayout->addWidget(apertureLabel_);
-		apertureLayout->addWidget(apertureSpinbox_);
-
-		auto focusLengthLayout = new QHBoxLayout;
-		focusLengthLayout->addWidget(focalLengthLabel_);
-		focusLengthLayout->addWidget(focalLengthSpinbox_);
-
-		auto focusDistanceLayout = new QHBoxLayout;
-		focusDistanceLayout->addWidget(focusDistanceLabel_);
-		focusDistanceLayout->addWidget(focusDistanceSpinbox_);
-
 		auto focusTargetLayout = new QHBoxLayout;
 		focusTargetLayout->addWidget(focusTargetButton_, 0, Qt::AlignLeft);
 		focusTargetLayout->addWidget(focusDistanceName_);
@@ -141,12 +81,12 @@ namespace unreal
 		animtionLayout->setContentsMargins(0, 0, 0, 0);
 
 		mainLayout_ = new QVBoxLayout;
-		mainLayout_->addLayout(fovLayout);
+		mainLayout_->addWidget(fovSpinbox_);
 		mainLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
 		mainLayout_->addLayout(dofLayout_);
-		mainLayout_->addLayout(apertureLayout);
-		mainLayout_->addLayout(focusLengthLayout);
-		mainLayout_->addLayout(focusDistanceLayout);
+		mainLayout_->addWidget(apertureSpinbox_);
+		mainLayout_->addWidget(focalLengthSpinbox_);
+		mainLayout_->addWidget(focusDistanceSpinbox_);
 		mainLayout_->addLayout(focusTargetLayout);
 		mainLayout_->addLayout(animtionLayout);
 		mainLayout_->addStretch();
@@ -362,21 +302,5 @@ namespace unreal
 		}
 
 		return UDockWidget::eventFilter(watched, event);
-	}
-
-	void
-	CameraDock::retranslate()
-	{
-		this->setWindowTitle(tr("Camera"));
-		fovLabel_->setText(tr("fov:"));
-		dofInfoLabel_->setText(tr("* The following parameters take effect on rendering"));
-		dofLabel_->setText(tr("Depth Of Filed:"));
-		apertureLabel_->setText(tr("Aperture:"));
-		focalLengthLabel_->setText(tr("Focal Length (35mmfilm):"));
-		focusDistanceLabel_->setText(tr("Focus Distance:"));
-		focusTargetButton_->setToolTip(tr("Drag and drop this icon onto the target model to enable autofocus"));
-		focusDistanceName_->setText(tr("Target: Empty"));
-		loadButton_->setText(tr("Load Animation"));
-		unloadButton_->setText(tr("Uninstall"));
 	}
 }
