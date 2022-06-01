@@ -49,9 +49,11 @@ namespace unreal
 
 		x265_param_default(param_);
 		x265_param_parse(param_, "--crf", std::to_string(this->getModel()->crf).c_str());
-		x265_param_parse(param_, "--preset", "8");
+		x265_param_parse(param_, "--preset", "verslow");
+		x265_param_parse(param_, "--qpmax", "59");
 		x265_param_parse(param_, "--qcomp", "0.7");
 		x265_param_parse(param_, "--aq-strength", "0.85");
+		x265_param_parse(param_, "--no-dct-decimate", "1");
 
 		param_->bRepeatHeaders = 1;
 		param_->internalCsp = X265_CSP_I420;
@@ -59,6 +61,8 @@ namespace unreal
 		param_->sourceHeight = this->height_;
 		param_->fpsNum = context->profile->playerModule->recordFps;
 		param_->fpsDenom = 1;
+		param_->maxNumReferences = 8;
+		param_->bframes = 12;
 
 		encoder_ = x265_encoder_open(param_);
 		if (!encoder_)
