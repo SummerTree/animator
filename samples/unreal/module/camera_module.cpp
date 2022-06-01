@@ -1,4 +1,6 @@
 #include "camera_module.h"
+#include <octoon/vmd_loader.h>
+#include <octoon/io/fstream.h>
 
 namespace unreal
 {
@@ -35,7 +37,7 @@ namespace unreal
 		if (reader["focusDistance"].is_number_float())
 			this->focusDistance = reader["focusDistance"].get<nlohmann::json::number_float_t>();
 		if (reader["animation"].is_string())
-			this->animation = reader["animation"].get<nlohmann::json::string_t>();
+			this->animation = octoon::VMDLoader::loadCameraMotion(reader["animation"].get<nlohmann::json::string_t>());
 		if (reader["translate"].is_array())
 		{
 			this->translate = octoon::math::float3(reader["translate"][0], reader["translate"][1], reader["translate"][2]);
@@ -54,14 +56,23 @@ namespace unreal
 		writer["useDepthOfFiled"] = this->useDepthOfFiled.getValue();
 		writer["fov"] = this->fov.getValue();
 		writer["aperture"] = this->aperture.getValue();
-		writer["focusDistance"] = this->focusDistance.getValue();
-		writer["animation"] = this->animation.getValue();
+		writer["focusDistance"] = this->focusDistance.getValue();		
 		writer["translate"].push_back(this->translate.getValue().x);
 		writer["translate"].push_back(this->translate.getValue().y);
 		writer["translate"].push_back(this->translate.getValue().z);
 		writer["rotation"].push_back(this->rotation.getValue().x);
 		writer["rotation"].push_back(this->rotation.getValue().y);
 		writer["rotation"].push_back(this->rotation.getValue().z);
+
+		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
+		{
+			auto root = std::string(path);
+			root = root.substr(0, root.find_last_of('/')) + "/Assets/" + this->animation.getValue()->name + ".vmd";
+
+			octoon::VMDLoader::saveCameraMotion(root, *this->animation.getValue());
+
+			writer["animation"] = root;
+		}
 	}
 
 	void

@@ -13,9 +13,9 @@ namespace unreal
 	}
 
 	bool
-	CameraComponent::loadAnimation(octoon::Animation<float>&& animation) noexcept(false)
+	CameraComponent::loadAnimation(const std::shared_ptr<octoon::Animation<float>>& animation) noexcept(false)
 	{
-		if (!animation.clips.empty())
+		if (animation)
 		{
 			auto& profile = this->getContext()->profile;
 
@@ -23,7 +23,7 @@ namespace unreal
 			if (!animator)
 				animator = this->getModel()->camera.getValue()->addComponent<octoon::AnimatorComponent>();
 
-			animator->setAnimation(std::move(animation));
+			animator->setAnimation(animation);
 			animator->sample(profile->playerModule->curTime);
 
 			return true;
@@ -141,9 +141,9 @@ namespace unreal
 			}
 		};
 
-		this->getModel()->animation += [this](const std::string& value)
+		this->getModel()->animation += [this](const std::shared_ptr<octoon::Animation<float>>& value)
 		{
-			if (!value.empty())
+			if (value)
 				this->loadAnimation(value);
 			else
 				this->removeAnimation();

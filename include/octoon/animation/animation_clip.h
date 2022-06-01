@@ -67,22 +67,22 @@ namespace octoon
 
 		AnimationCurve<_Time>& getCurve(const char* _name) noexcept
 		{
-			return this->curves[_name];
+			return this->curves.at(_name);
 		}
 
 		const AnimationCurve<_Time>& getCurve(const char* _name) const noexcept
 		{
-			return this->curves[_name];
+			return this->curves.at(_name);
 		}
 
 		AnimationCurve<_Time>& getCurve(const std::string& _name) noexcept
 		{
-			return this->curves[_name];
+			return this->curves.at(_name);
 		}
 
 		const AnimationCurve<_Time>& getCurve(const std::string& _name) const noexcept
 		{
-			return this->curves[_name];
+			return this->curves.at(_name);
 		}
 
 		bool empty() const noexcept

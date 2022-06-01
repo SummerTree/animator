@@ -21,6 +21,9 @@ namespace octoon
 	{
 		float x;
 		float y;
+
+		VMD_Vector2() = default;
+		VMD_Vector2(float xx, float yy) : x(xx), y(yy) {};
 	};
 
 	struct VMD_Vector3
@@ -28,6 +31,10 @@ namespace octoon
 		float x;
 		float y;
 		float z;
+
+		VMD_Vector3() = default;
+		VMD_Vector3(float xx, float yy, float zz) : x(xx), y(yy), z(zz) {};
+		VMD_Vector3(const math::float3& v) : x(v.x), y(v.y), z(v.z) {};
 	};
 
 	struct VMD_Vector4
@@ -36,6 +43,10 @@ namespace octoon
 		float y;
 		float z;
 		float w;
+
+		VMD_Vector4() = default;
+		VMD_Vector4(float xx, float yy, float zz, float ww) : x(xx), y(yy), z(zz), w(ww) {};
+		VMD_Vector4(const math::float4 & v) : x(v.x), y(v.y), z(v.z), w(v.w) {};
 	};
 
 	struct VMD_Quaternion
@@ -44,6 +55,10 @@ namespace octoon
 		float y;
 		float z;
 		float w;
+
+		VMD_Quaternion() = default;
+		VMD_Quaternion(float xx, float yy, float zz, float ww) : x(xx), y(yy), z(zz), w(ww) {};
+		VMD_Quaternion(const math::Quaternion & v) : x(v.x), y(v.y), z(v.z), w(v.w) {};
 	};
 
 	struct VMD_Header
@@ -75,7 +90,7 @@ namespace octoon
 	struct VMDCamera
 	{
 		VMD_uint32_t frame;
-		VMD_Float length;
+		VMD_Float distance;
 		VMD_Vector3 location;
 		VMD_Vector3 rotation;
 		VMD_int8_t interpolation_x[4];
@@ -136,10 +151,12 @@ namespace octoon
 
 		static Animation<float> load(io::istream& stream) noexcept(false);
 
-		static Animation<float> loadMotion(io::istream& stream) noexcept(false);
-		static Animation<float> loadCameraMotion(io::istream& stream) noexcept(false);
+		static std::shared_ptr<Animation<float>> loadMotion(io::istream& stream) noexcept(false);
+		static std::shared_ptr<Animation<float>> loadCameraMotion(io::istream& stream) noexcept(false);
+		static std::shared_ptr<Animation<float>> loadCameraMotion(std::string_view filepath) noexcept(false);
 
-		static void save(io::ostream& stream, const Animation<float>& animation) noexcept(false);
+		static void saveCameraMotion(io::ostream& stream, const Animation<float>& animation) noexcept(false);
+		static void saveCameraMotion(std::string_view filepath, const Animation<float>& animation) noexcept(false);
 
 	private:
 		VMDLoader(const VMDLoader&) = delete;

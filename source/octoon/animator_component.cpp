@@ -16,41 +16,41 @@ namespace octoon
 	{
 	}
 
-	AnimatorComponent::AnimatorComponent(Animation<float>&& animation, GameObjects&& avatar) noexcept
+	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation<float>>&& animation, GameObjects&& avatar) noexcept
 		: AnimatorComponent()
 	{
 		this->setAvatar(std::move(avatar));
 		this->setAnimation(std::move(animation));
 	}
 
-	AnimatorComponent::AnimatorComponent(Animation<float>&& animation, const GameObjects& avatar) noexcept
+	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation<float>>&& animation, const GameObjects& avatar) noexcept
 		: AnimatorComponent()
 	{
 		this->setAvatar(avatar);
 		this->setAnimation(std::move(animation));
 	}
 
-	AnimatorComponent::AnimatorComponent(const Animation<float>& animation, GameObjects&& avatar) noexcept
+	AnimatorComponent::AnimatorComponent(const std::shared_ptr<Animation<float>>& animation, GameObjects&& avatar) noexcept
 		: AnimatorComponent()
 	{
 		this->setAvatar(std::move(avatar));
 		this->setAnimation(animation);
 	}
 
-	AnimatorComponent::AnimatorComponent(const Animation<float>& animation, const GameObjects& avatar) noexcept
+	AnimatorComponent::AnimatorComponent(const std::shared_ptr<Animation<float>>& animation, const GameObjects& avatar) noexcept
 		: AnimatorComponent()
 	{
 		this->setAvatar(avatar);
 		this->setAnimation(animation);
 	}
 
-	AnimatorComponent::AnimatorComponent(Animation<float>&& animation) noexcept
+	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation<float>>&& animation) noexcept
 		: AnimatorComponent()
 	{
 		animation_ = std::move(animation);
 	}
 
-	AnimatorComponent::AnimatorComponent(const Animation<float>& animation) noexcept
+	AnimatorComponent::AnimatorComponent(const std::shared_ptr<Animation<float>>& animation) noexcept
 		: AnimatorComponent()
 	{
 		animation_ = animation;
@@ -99,20 +99,22 @@ namespace octoon
 	void
 	AnimatorComponent::setTime(float time) noexcept
 	{
-		animation_.setTime(time);
+		assert(animation_);
+		animation_->setTime(time);
 	}
 
 	float
 	AnimatorComponent::getTime() const noexcept
 	{
-		return animation_.getTime();
+		assert(animation_);
+		return animation_->getTime();
 	}
 
 	void
 	AnimatorComponent::sample(float delta) noexcept
 	{
-		if (delta != 0.0f)
-			animation_.evaluate(delta);
+		if (animation_ && delta != 0.0f)
+			animation_->evaluate(delta);
 
 		if (!avatar_.empty())
 		{
@@ -145,30 +147,33 @@ namespace octoon
 	void
 	AnimatorComponent::evaluate(float delta) noexcept
 	{
-		if (delta != 0.0f)
-			animation_.evaluate(delta);
+		if (animation_)
+		{
+			if (delta != 0.0f)
+				animation_->evaluate(delta);
 
-		if (!avatar_.empty())
-			this->updateAvatar();
-		else
-			this->updateAnimation();
+			if (!avatar_.empty())
+				this->updateAvatar();
+			else
+				this->updateAnimation();
+		}
 	}
 
 	void
-	AnimatorComponent::setAnimation(Animation<float>&& animtion) noexcept
+	AnimatorComponent::setAnimation(std::shared_ptr<Animation<float>>&& animtion) noexcept
 	{
 		animation_ = std::move(animtion);
 		this->updateBindmap();
 	}
 
 	void
-	AnimatorComponent::setAnimation(const Animation<float>& clips) noexcept
+	AnimatorComponent::setAnimation(const std::shared_ptr<Animation<float>>& animtion) noexcept
 	{
-		animation_ = clips;
+		animation_ = animtion;
 		this->updateBindmap();
 	}
 
-	const Animation<float>&
+	const std::shared_ptr<Animation<float>>&
 	AnimatorComponent::getAnimation() const noexcept
 	{
 		return animation_;
@@ -199,7 +204,8 @@ namespace octoon
 	const AnimatorStateInfo<float>&
 	AnimatorComponent::getCurrentAnimatorStateInfo() const noexcept
 	{
-		return animation_.state;
+		assert(animation_);
+		return animation_->state;
 	}
 
 	GameComponentPtr
@@ -227,14 +233,14 @@ namespace octoon
 	void
 	AnimatorComponent::onFixedUpdate() noexcept
 	{
-		if (enableAnimation_)
+		if (enableAnimation_ && animation_)
 		{
 			auto timeFeature = this->getFeature<TimerFeature>();
 			if (timeFeature)
 			{
 				auto delta = timeFeature->delta();
 				if (delta != 0.0f)
-					animation_.evaluate(delta);
+					animation_->evaluate(delta);
 
 				if (!avatar_.empty())
 					this->updateAvatar();
@@ -258,22 +264,25 @@ namespace octoon
 	{
 		bindmap_.clear();
 
-		if (!animation_.empty() && !avatar_.empty())
+		if (animation_)
 		{
-			std::map<std::string, std::size_t> boneMap;
-
-			for (std::size_t i = 0; i < avatar_.size(); i++)
-				boneMap[avatar_[i]->getName()] = i;
-
-			bindmap_.resize(animation_.clips.size());
-
-			for (std::size_t i = 0; i < animation_.clips.size(); i++)
+			if (!animation_->empty() && !avatar_.empty())
 			{
-				auto it = boneMap.find(animation_.clips[i].name);
-				if (it != boneMap.end())
-					bindmap_[i] = (*it).second;
-				else
-					bindmap_[i] = std::string::npos;
+				std::map<std::string, std::size_t> boneMap;
+
+				for (std::size_t i = 0; i < avatar_.size(); i++)
+					boneMap[avatar_[i]->getName()] = i;
+
+				bindmap_.resize(animation_->clips.size());
+
+				for (std::size_t i = 0; i < animation_->clips.size(); i++)
+				{
+					auto it = boneMap.find(animation_->clips[i].name);
+					if (it != boneMap.end())
+						bindmap_[i] = (*it).second;
+					else
+						bindmap_[i] = std::string::npos;
+				}
 			}
 		}
 	}
@@ -284,7 +293,7 @@ namespace octoon
 		if (this->getCurrentAnimatorStateInfo().finish)
 			return;
 
-		for (std::size_t i = 0; i < animation_.clips.size(); i++)
+		for (std::size_t i = 0; i < animation_->clips.size(); i++)
 		{
 			if (bindmap_[i] == std::string::npos)
 				continue;
@@ -296,7 +305,7 @@ namespace octoon
 			auto euler = transform->getLocalEulerAngles();
 			auto move = 0.0f;
 
-			for (auto& curve : animation_.clips[i].curves)
+			for (auto& curve : animation_->clips[i].curves)
 			{
 				if (curve.first == "LocalPosition")
 					translate = curve.second.value.getFloat3() + bindpose_[bindmap_[i]];
@@ -372,7 +381,7 @@ namespace octoon
 	void
 	AnimatorComponent::updateAnimation(float delta) noexcept
 	{
-		for (auto& clip : animation_.clips)
+		for (auto& clip : animation_->clips)
 		{
 			if (clip.finish)
 				continue;

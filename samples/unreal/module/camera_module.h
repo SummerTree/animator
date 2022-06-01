@@ -6,6 +6,7 @@
 #include <octoon/math/vector2.h>
 #include <octoon/math/vector3.h>
 #include <octoon/hal/graphics_texture.h>
+#include <octoon/animation/animation.h>
 
 namespace unreal
 {
@@ -34,8 +35,8 @@ namespace unreal
 		MutableLiveData<float> focusDistance;
 		MutableLiveData<octoon::math::float3> translate;
 		MutableLiveData<octoon::math::float3> rotation;
-		MutableLiveData<std::string> animation;
 		MutableLiveData<octoon::GameObjectPtr> camera;
+		MutableLiveData<std::shared_ptr<octoon::Animation<float>>> animation;
 	};
 }
 

@@ -36,8 +36,8 @@ namespace unreal
 				auto uuid = id.toStdString().substr(1, id.length() - 2);
 
 				object->setName(uuid);
-				object->addComponent<octoon::AnimatorComponent>(octoon::Animation(std::move(boneClips)), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
-				object->addComponent<octoon::AnimatorComponent>(octoon::Animation(std::move(morphClip)));
+				object->addComponent<octoon::AnimatorComponent>(std::make_shared<octoon::Animation<float>>(std::move(boneClips)), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+				object->addComponent<octoon::AnimatorComponent>(std::make_shared<octoon::Animation<float>>(std::move(morphClip)));
 				object->getComponent<octoon::SkinnedMeshRendererComponent>()->setAutomaticUpdate(!profile.offlineModule->getEnable());
 
 				objects.emplace_back(std::move(object));
@@ -61,8 +61,8 @@ namespace unreal
 	octoon::GameObjectPtr
 	PMMLoader::createCamera(UnrealProfile& profile, const octoon::PMMFile& pmm) noexcept
 	{
-		octoon::Animation<float> animtion;
-		setupCameraAnimation(pmm.camera_keyframes, animtion);
+		auto animtion = std::make_shared<octoon::Animation<float>>();
+		setupCameraAnimation(pmm.camera_keyframes, *animtion);
 
 		auto eye = octoon::math::float3(pmm.camera.eye.x, pmm.camera.eye.y, pmm.camera.eye.z);
 		auto target = octoon::math::float3(pmm.camera.target.x, pmm.camera.target.y, pmm.camera.target.z);

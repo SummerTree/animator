@@ -62,7 +62,7 @@ namespace octoon
 			return this->evalY(t);
 		}
 
-	private:
+	public:
 		T xa, xb, ya, yb;
 	};
 }

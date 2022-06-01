@@ -256,7 +256,7 @@ namespace unreal
 							dialog.setValue(1);
 							QCoreApplication::processEvents();
 
-							if (!animation.clips.empty())
+							if (animation && !animation->clips.empty())
 							{
 								auto model = selectedItem->object.lock();
 								auto animator = model->getComponent<octoon::AnimatorComponent>();
@@ -292,7 +292,7 @@ namespace unreal
 							vmd.load(stream);
 
 							if (vmd.NumCamera > 0)
-								profile_->cameraModule->animation = filepath;
+								profile_->cameraModule->animation = octoon::VMDLoader::loadCameraMotion(filepath);
 
 							dialog.setValue(1);
 							QCoreApplication::processEvents();
