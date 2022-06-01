@@ -293,22 +293,28 @@ namespace octoon
 			auto scale = transform->getLocalScale();
 			auto quat = transform->getLocalQuaternion();
 			auto translate = transform->getLocalTranslate();
-			auto euler = math::eulerAngles(quat);
+			auto euler = transform->getLocalEulerAngles();
 
 			for (auto& curve : animation_.clips[i].curves)
 			{
+				if (curve.first == "LocalPosition")
+					translate = curve.second.value.getFloat3() + bindpose_[bindmap_[i]];
 				if (curve.first == "LocalPosition.x")
 					translate.x = curve.second.value.getFloat() + bindpose_[bindmap_[i]].x;
 				else if (curve.first == "LocalPosition.y")
 					translate.y = curve.second.value.getFloat() + bindpose_[bindmap_[i]].y;
 				else if (curve.first == "LocalPosition.z")
 					translate.z = curve.second.value.getFloat() + bindpose_[bindmap_[i]].z;
+				else if (curve.first == "LocalScale")
+					scale = curve.second.value.getFloat3();
 				else if (curve.first == "LocalScale.x")
 					scale.x = curve.second.value.getFloat();
 				else if (curve.first == "LocalScale.y")
 					scale.y = curve.second.value.getFloat();
 				else if (curve.first == "LocalScale.z")
 					scale.z = curve.second.value.getFloat();
+				else if (curve.first == "LocalRotation")
+					quat = curve.second.value.getQuaternion();
 				else if (curve.first == "LocalRotation.x")
 					quat.x = curve.second.value.getFloat();
 				else if (curve.first == "LocalRotation.y")
@@ -317,19 +323,35 @@ namespace octoon
 					quat.z = curve.second.value.getFloat();
 				else if (curve.first == "LocalRotation.w")
 					quat.w = curve.second.value.getFloat();
+				else if (curve.first == "LocalEulerAnglesRaw")
+				{
+					euler = curve.second.value.getFloat3();
+					quat = math::Quaternion(euler);
+				}
 				else if (curve.first == "LocalEulerAnglesRaw.x")
+				{
 					euler.x = curve.second.value.getFloat();
+					quat = math::Quaternion(euler);
+				}
 				else if (curve.first == "LocalEulerAnglesRaw.y")
+				{
 					euler.y = curve.second.value.getFloat();
+					quat = math::Quaternion(euler);
+				}
 				else if (curve.first == "LocalEulerAnglesRaw.z")
+				{
 					euler.z = curve.second.value.getFloat();
+					quat = math::Quaternion(euler);
+				}
 				else
+				{
 					this->sendMessage(curve.first, curve.second.value);
+				}
 			}
 
 			transform->setLocalScale(scale);
 			transform->setLocalTranslate(translate);
-			transform->setLocalQuaternion(math::Quaternion(euler));
+			transform->setLocalQuaternion(quat);
 		}
 
 		this->sendMessage("octoon:animation:update");
@@ -352,18 +374,24 @@ namespace octoon
 
 			for (auto& curve : clip.curves)
 			{
-				if (curve.first == "LocalScale.x")
-					scale.x = curve.second.value.getFloat();
-				else if (curve.first == "LocalScale.y")
-					scale.y = curve.second.value.getFloat();
-				else if (curve.first == "LocalScale.z")
-					scale.z = curve.second.value.getFloat();
-				else if (curve.first == "LocalPosition.x")
+				if (curve.first == "LocalPosition")
+					translate = curve.second.value.getFloat3();
+				if (curve.first == "LocalPosition.x")
 					translate.x = curve.second.value.getFloat();
 				else if (curve.first == "LocalPosition.y")
 					translate.y = curve.second.value.getFloat();
 				else if (curve.first == "LocalPosition.z")
 					translate.z = curve.second.value.getFloat();
+				else if (curve.first == "LocalScale")
+					scale = curve.second.value.getFloat3();
+				else if (curve.first == "LocalScale.x")
+					scale.x = curve.second.value.getFloat();
+				else if (curve.first == "LocalScale.y")
+					scale.y = curve.second.value.getFloat();
+				else if (curve.first == "LocalScale.z")
+					scale.z = curve.second.value.getFloat();
+				else if (curve.first == "LocalRotation")
+					quat = curve.second.value.getQuaternion();
 				else if (curve.first == "LocalRotation.x")
 					quat.x = curve.second.value.getFloat();
 				else if (curve.first == "LocalRotation.y")
@@ -372,12 +400,26 @@ namespace octoon
 					quat.z = curve.second.value.getFloat();
 				else if (curve.first == "LocalRotation.w")
 					quat.w = curve.second.value.getFloat();
+				else if (curve.first == "LocalEulerAnglesRaw")
+				{
+					euler = curve.second.value.getFloat3();
+					quat = math::Quaternion(euler);
+				}
 				else if (curve.first == "LocalEulerAnglesRaw.x")
+				{
 					euler.x = curve.second.value.getFloat();
+					quat = math::Quaternion(euler);
+				}
 				else if (curve.first == "LocalEulerAnglesRaw.y")
+				{
 					euler.y = curve.second.value.getFloat();
+					quat = math::Quaternion(euler);
+				}
 				else if (curve.first == "LocalEulerAnglesRaw.z")
+				{
 					euler.z = curve.second.value.getFloat();
+					quat = math::Quaternion(euler);
+				}
 				else if (curve.first == "Transform:move")
 					move = curve.second.value.getFloat();
 				else
@@ -387,14 +429,14 @@ namespace octoon
 			if (move != 0.0f)
 			{
 				transform->setLocalScale(scale);
-				transform->setLocalTranslate(translate + math::rotate(math::Quaternion(euler), math::float3::Forward) * move);
-				transform->setLocalEulerAngles(euler);
+				transform->setLocalTranslate(translate + math::rotate(quat, math::float3::Forward) * move);
+				transform->setLocalQuaternion(quat);
 			}
 			else
 			{
 				transform->setLocalScale(scale);
 				transform->setLocalTranslate(translate);
-				transform->setLocalEulerAngles(euler);
+				transform->setLocalQuaternion(quat);
 			}
 		}
 

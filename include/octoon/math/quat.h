@@ -25,7 +25,7 @@ namespace octoon
 				static const Quaternion<T> Zero;
 
 				Quaternion() = default;
-				Quaternion(T x, T y, T z, T w) noexcept : x(x), y(y), z(z), w(w) {}
+				Quaternion(T xx, T yy, T zz, T ww) noexcept : x(xx), y(yy), z(zz), w(ww) {}
 				Quaternion(const Vector3<T>& axis, T angle) noexcept { this->makeRotation(axis, angle); }
 				Quaternion(const Vector3<T>& forward, const Vector3<T>& up, const Vector3<T>& right) noexcept { this->makeRotation(forward, up, right); }
 				Quaternion(const Vector3<T>& A, const Vector3<T>& B) noexcept { this->makeRotation(A, B); }

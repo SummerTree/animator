@@ -29,31 +29,31 @@ namespace octoon::math
 	Variant::Variant(const float1& rhs)
 		: type_(Type::Float)
 	{
-		value_.f[0] = rhs;
+		value_.f.x = rhs;
 	}
 
 	Variant::Variant(const float2& rhs)
 		: type_(Type::Float2)
 	{
-		value_.f[0] = rhs.x;
-		value_.f[1] = rhs.y;
+		value_.f.x = rhs.x;
+		value_.f.y = rhs.y;
 	}
 
 	Variant::Variant(const float3& rhs)
 		: type_(Type::Float3)
 	{
-		value_.f[0] = rhs.x;
-		value_.f[1] = rhs.y;
-		value_.f[2] = rhs.z;
+		value_.f.x = rhs.x;
+		value_.f.y = rhs.y;
+		value_.f.z = rhs.z;
 	}
 
 	Variant::Variant(const float4& rhs)
 		: type_(Type::Float4)
 	{
-		value_.f[0] = rhs.x;
-		value_.f[1] = rhs.y;
-		value_.f[2] = rhs.z;
-		value_.f[3] = rhs.w;
+		value_.f.x = rhs.x;
+		value_.f.y = rhs.y;
+		value_.f.z = rhs.z;
+		value_.f.w = rhs.w;
 	}
 
 	Variant::Variant(const Quaternion& rhs)
@@ -191,34 +191,34 @@ namespace octoon::math
 	Variant::setFloat(const float1& val)
 	{
 		assert(type_ == Type::Float);
-		value_.f[0] = val;
+		value_.f.x = val;
 	}
 
 	void
 	Variant::setFloat2(const float2& val)
 	{
 		assert(type_ == Type::Float2);
-		value_.f[0] = val.x;
-		value_.f[1] = val.y;
+		value_.f.x = val.x;
+		value_.f.y = val.y;
 	}
 
 	void
 	Variant::setFloat3(const float3& val)
 	{
 		assert(type_ == Type::Float3);
-		value_.f[0] = val.x;
-		value_.f[1] = val.y;
-		value_.f[2] = val.z;
+		value_.f.x = val.x;
+		value_.f.y = val.y;
+		value_.f.z = val.z;
 	}
 
 	void
 	Variant::setFloat4(const float4& val)
 	{
 		assert(type_ == Type::Float4);
-		value_.f[0] = val.x;
-		value_.f[1] = val.y;
-		value_.f[2] = val.z;
-		value_.f[3] = val.w;
+		value_.f.x = val.x;
+		value_.f.y = val.y;
+		value_.f.z = val.z;
+		value_.f.w = val.w;
 	}
 
 	void
@@ -300,13 +300,22 @@ namespace octoon::math
 			value_.i = rhs.value_.i;
 			break;
 		case Type::Float:
-			value_.f[0] = rhs.value_.f[0];
+			value_.f.x = rhs.value_.f.x;
+			break;
+		case Type::Float2:
+			value_.f.x = rhs.value_.f.x;
+			value_.f.y = rhs.value_.f.y;
+			break;
+		case Type::Float3:
+			value_.f.x = rhs.value_.f.x;
+			value_.f.y = rhs.value_.f.y;
+			value_.f.z = rhs.value_.f.z;
 			break;
 		case Type::Float4:
-			value_.f[0] = rhs.value_.f[0];
-			value_.f[1] = rhs.value_.f[1];
-			value_.f[2] = rhs.value_.f[2];
-			value_.f[3] = rhs.value_.f[3];
+			value_.f.x = rhs.value_.f.x;
+			value_.f.y = rhs.value_.f.y;
+			value_.f.z = rhs.value_.f.z;
+			value_.f.w = rhs.value_.f.w;
 			break;
 		case Type::Quaternion:
 			value_.quaternion = rhs.value_.quaternion;
@@ -362,13 +371,22 @@ namespace octoon::math
 			value_.i = rhs.value_.i;
 			break;
 		case Type::Float:
-			value_.f[0] = rhs.value_.f[0];
+			value_.f.x = rhs.value_.f.x;
+			break;
+		case Type::Float2:
+			value_.f.x = rhs.value_.f.x;
+			value_.f.y = rhs.value_.f.y;
+			break;
+		case Type::Float3:
+			value_.f.x = rhs.value_.f.x;
+			value_.f.y = rhs.value_.f.y;
+			value_.f.z = rhs.value_.f.z;
 			break;
 		case Type::Float4:
-			value_.f[0] = rhs.value_.f[0];
-			value_.f[1] = rhs.value_.f[1];
-			value_.f[2] = rhs.value_.f[2];
-			value_.f[3] = rhs.value_.f[3];
+			value_.f.x = rhs.value_.f.x;
+			value_.f.y = rhs.value_.f.y;
+			value_.f.z = rhs.value_.f.z;
+			value_.f.w = rhs.value_.f.w;
 			break;
 		case Type::Quaternion:
 			value_.quaternion = rhs.value_.quaternion;

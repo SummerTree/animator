@@ -145,7 +145,7 @@ namespace octoon::math
 
 		friend bool operator==(const Variant& lhs, float rhs)
 		{
-			return (lhs.type_ == Type::Float && lhs.value_.f[0] == rhs);
+			return (lhs.type_ == Type::Float && lhs.value_.f.x == rhs);
 		}
 
 		friend bool operator==(const Variant& lhs, bool rhs)
@@ -160,7 +160,7 @@ namespace octoon::math
 
 		friend bool operator==(const Variant& lhs, const float4& rhs)
 		{
-			return (lhs.type_ == Type::Float4 || math::equal(lhs.value_.f[0], rhs.x) || math::equal(lhs.value_.f[1], rhs.y) || math::equal(lhs.value_.f[2], rhs.z) || math::equal(lhs.value_.f[3], rhs.w));
+			return (lhs.type_ == Type::Float4 || math::equal(lhs.value_.f.x, rhs.x) || math::equal(lhs.value_.f.y, rhs.y) || math::equal(lhs.value_.f.z, rhs.z) || math::equal(lhs.value_.f.w, rhs.w));
 		}
 
 		friend bool operator==(const Variant& lhs, const math::Quaternion& rhs)
@@ -186,13 +186,13 @@ namespace octoon::math
 				case Type::Bool:
 					return (lhs.value_.b == rhs.value_.b);
 				case Type::Float:
-					return (lhs.value_.f[0] == rhs.value_.f[0]);
+					return (lhs.value_.f.x == rhs.value_.f.x);
 				case Type::Quaternion:
 					return (lhs.value_.quaternion == rhs.value_.quaternion);
 				case Type::String:
 					return ((*lhs.value_.string) == (*rhs.value_.string));
 				case Type::Float4:
-					return ((lhs.value_.f[0] == rhs.value_.f[0]) && (lhs.value_.f[1] == rhs.value_.f[1]) && (lhs.value_.f[2] == rhs.value_.f[2]) && (lhs.value_.f[3] == rhs.value_.f[3]));
+					return ((lhs.value_.f.x == rhs.value_.f.x) && (lhs.value_.f.y == rhs.value_.f.y) && (lhs.value_.f.z == rhs.value_.f.z) && (lhs.value_.f.w == rhs.value_.f.w));
 				case Type::Object:
 					return (lhs.value_.object == rhs.value_.object);
 				case Type::Float4x4:
@@ -212,7 +212,7 @@ namespace octoon::math
 
 		friend bool operator!=(const Variant& lhs, float rhs)
 		{
-			return (lhs.type_ != Type::Float || lhs.value_.f[0] != rhs);
+			return (lhs.type_ != Type::Float || lhs.value_.f.x != rhs);
 		}
 
 		friend bool operator!=(const Variant& lhs, bool rhs)
@@ -232,7 +232,7 @@ namespace octoon::math
 
 		friend bool operator!=(const Variant& lhs, const float4& rhs)
 		{
-			return (lhs.type_ != Type::Float4 || !math::equal(lhs.value_.f[0], rhs.x) || !math::equal(lhs.value_.f[1], rhs.y) || !math::equal(lhs.value_.f[2], rhs.z) || !math::equal(lhs.value_.f[3], rhs.w));
+			return (lhs.type_ != Type::Float4 || !math::equal(lhs.value_.f.x, rhs.x) || !math::equal(lhs.value_.f.y, rhs.y) || !math::equal(lhs.value_.f.z, rhs.z) || !math::equal(lhs.value_.f.w, rhs.w));
 		}
 
 		friend bool operator!=(const Variant& lhs, const math::Quaternion& rhs)
@@ -258,14 +258,11 @@ namespace octoon::math
 			case Type::Bool:
 				return (lhs.value_.b > rhs.value_.b);
 			case Type::Float:
-				return (lhs.value_.f[0] > rhs.value_.f[0]);
+				return (lhs.value_.f.x > rhs.value_.f.x);
 			case Type::String:
 				return ((*lhs.value_.string) > (*rhs.value_.string));
 			case Type::Float4:
-				return ((lhs.value_.f[0] > rhs.value_.f[0]) &&
-					(lhs.value_.f[1] > rhs.value_.f[1]) &&
-					(lhs.value_.f[2] > rhs.value_.f[2]) &&
-					(lhs.value_.f[3] > rhs.value_.f[3]));
+				return ((lhs.value_.f.x > rhs.value_.f.x) && (lhs.value_.f.y > rhs.value_.f.y) && (lhs.value_.f.z > rhs.value_.f.z) && (lhs.value_.f.w > rhs.value_.f.w));
 			case Type::Object:
 				return (lhs.value_.object > rhs.value_.object);
 			default:
@@ -288,14 +285,11 @@ namespace octoon::math
 			case Type::Bool:
 				return (lhs.value_.b < rhs.value_.b);
 			case Type::Float:
-				return (lhs.value_.f[0] < rhs.value_.f[0]);
+				return (lhs.value_.f.x < rhs.value_.f.x);
 			case Type::String:
 				return ((*lhs.value_.string) < (*rhs.value_.string));
 			case Type::Float4:
-				return ((lhs.value_.f[0] < rhs.value_.f[0]) &&
-					(lhs.value_.f[1] < rhs.value_.f[1]) &&
-					(lhs.value_.f[2] < rhs.value_.f[2]) &&
-					(lhs.value_.f[3] < rhs.value_.f[3]));
+				return ((lhs.value_.f.x < rhs.value_.f.x) && (lhs.value_.f.y < rhs.value_.f.y) && (lhs.value_.f.z < rhs.value_.f.z) && (lhs.value_.f.w < rhs.value_.f.w));
 			case Type::Object:
 				return (lhs.value_.object < rhs.value_.object);
 			default:
@@ -316,14 +310,11 @@ namespace octoon::math
 			case Type::Bool:
 				return (lhs.value_.b >= rhs.value_.b);
 			case Type::Float:
-				return (lhs.value_.f[0] >= rhs.value_.f[0]);
+				return (lhs.value_.f.x >= rhs.value_.f.x);
 			case Type::String:
 				return ((*lhs.value_.string) >= (*rhs.value_.string));
 			case Type::Float4:
-				return ((lhs.value_.f[0] >= rhs.value_.f[0]) &&
-					(lhs.value_.f[1] >= rhs.value_.f[1]) &&
-					(lhs.value_.f[2] >= rhs.value_.f[2]) &&
-					(lhs.value_.f[3] >= rhs.value_.f[3]));
+				return ((lhs.value_.f.x >= rhs.value_.f.x) && (lhs.value_.f.y >= rhs.value_.f.y) && (lhs.value_.f.z >= rhs.value_.f.z) && (lhs.value_.f.w >= rhs.value_.f.w));
 			case Type::Object:
 				return (lhs.value_.object >= rhs.value_.object);
 			default:
@@ -344,14 +335,11 @@ namespace octoon::math
 			case Type::Bool:
 				return (lhs.value_.b <= rhs.value_.b);
 			case Type::Float:
-				return (lhs.value_.f[0] <= rhs.value_.f[0]);
+				return (lhs.value_.f.x <= rhs.value_.f.x);
 			case Type::String:
 				return ((*lhs.value_.string) <= (*rhs.value_.string));
 			case Type::Float4:
-				return ((lhs.value_.f[0] <= rhs.value_.f[0]) &&
-					(lhs.value_.f[1] <= rhs.value_.f[1]) &&
-					(lhs.value_.f[2] <= rhs.value_.f[2]) &&
-					(lhs.value_.f[3] <= rhs.value_.f[3]));
+				return ((lhs.value_.f.x <= rhs.value_.f.x) && (lhs.value_.f.y <= rhs.value_.f.y) && (lhs.value_.f.z <= rhs.value_.f.z) && (lhs.value_.f.w <= rhs.value_.f.w));
 			case Type::Object:
 				return (lhs.value_.object <= rhs.value_.object);
 			default:

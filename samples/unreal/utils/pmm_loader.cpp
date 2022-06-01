@@ -93,7 +93,7 @@ namespace unreal
 		octoon::Keyframes<float> eyeX;
 		octoon::Keyframes<float> eyeY;
 		octoon::Keyframes<float> eyeZ;
-		octoon::Keyframes<float> rotationX;
+		octoon::Keyframes<float> rotation;
 		octoon::Keyframes<float> rotationY;
 		octoon::Keyframes<float> rotationZ;
 		octoon::Keyframes<float> fov;
@@ -102,9 +102,7 @@ namespace unreal
 		eyeX.reserve(keyframes.size());
 		eyeY.reserve(keyframes.size());
 		eyeZ.reserve(keyframes.size());
-		rotationX.reserve(keyframes.size());
-		rotationY.reserve(keyframes.size());
-		rotationZ.reserve(keyframes.size());
+		rotation.reserve(keyframes.size());
 		fov.reserve(keyframes.size());
 
 		for (auto& it : keyframes)
@@ -120,9 +118,7 @@ namespace unreal
 			eyeX.emplace_back((float)it.frame / 30.0f, it.eye.x, interpolationX);
 			eyeY.emplace_back((float)it.frame / 30.0f, it.eye.y, interpolationY);
 			eyeZ.emplace_back((float)it.frame / 30.0f, it.eye.z, interpolationZ);
-			rotationX.emplace_back((float)it.frame / 30.0f, it.rotation.x, interpolationRotation);
-			rotationY.emplace_back((float)it.frame / 30.0f, it.rotation.y, interpolationRotation);
-			rotationZ.emplace_back((float)it.frame / 30.0f, it.rotation.z, interpolationRotation);
+			rotation.emplace_back((float)it.frame / 30.0f, octoon::math::float3(it.rotation.x, it.rotation.y, it.rotation.z), interpolationRotation);
 			fov.emplace_back((float)it.frame / 30.0f, (float)it.fov, interpolationAngleView);
 		}
 
@@ -130,9 +126,7 @@ namespace unreal
 		clip.setCurve("LocalPosition.x", octoon::AnimationCurve(std::move(eyeX)));
 		clip.setCurve("LocalPosition.y", octoon::AnimationCurve(std::move(eyeY)));
 		clip.setCurve("LocalPosition.z", octoon::AnimationCurve(std::move(eyeZ)));
-		clip.setCurve("LocalEulerAnglesRaw.x", octoon::AnimationCurve(std::move(rotationX)));
-		clip.setCurve("LocalEulerAnglesRaw.y", octoon::AnimationCurve(std::move(rotationY)));
-		clip.setCurve("LocalEulerAnglesRaw.z", octoon::AnimationCurve(std::move(rotationZ)));
+		clip.setCurve("LocalEulerAnglesRaw", octoon::AnimationCurve(std::move(rotation)));
 		clip.setCurve("Transform:move", octoon::AnimationCurve(std::move(distance)));
 		clip.setCurve("Camera:fov", octoon::AnimationCurve(std::move(fov)));
 
@@ -162,16 +156,12 @@ namespace unreal
 			octoon::Keyframes<float> translateX;
 			octoon::Keyframes<float> translateY;
 			octoon::Keyframes<float> translateZ;
-			octoon::Keyframes<float> rotationX;
-			octoon::Keyframes<float> rotationY;
-			octoon::Keyframes<float> rotationZ;
+			octoon::Keyframes<float> rotation;
 
 			translateX.reserve(keyframeCount);
 			translateY.reserve(keyframeCount);
 			translateZ.reserve(keyframeCount);
-			rotationX.reserve(final_frame * 20u + 1u);
-			rotationY.reserve(final_frame * 20u + 1u);
-			rotationZ.reserve(final_frame * 20u + 1u);
+			rotation.reserve(keyframeCount);
 
 			auto& initKey = it.bone_init_frame[i];
 			auto interpolationX = std::make_shared<octoon::PathInterpolator<float>>(initKey.interpolation_x[0] / 127.0f, initKey.interpolation_x[2] / 127.0f, initKey.interpolation_x[1] / 127.0f, initKey.interpolation_x[3] / 127.0f);
@@ -179,43 +169,25 @@ namespace unreal
 			auto interpolationZ = std::make_shared<octoon::PathInterpolator<float>>(initKey.interpolation_z[0] / 127.0f, initKey.interpolation_z[2] / 127.0f, initKey.interpolation_z[1] / 127.0f, initKey.interpolation_z[3] / 127.0f);
 			auto interpolationRotation = std::make_shared<octoon::PathInterpolator<float>>(initKey.interpolation_rotation[0] / 127.0f, initKey.interpolation_rotation[2] / 127.0f, initKey.interpolation_rotation[1] / 127.0f, initKey.interpolation_rotation[3] / 127.0f);
 
-			auto euler = octoon::math::eulerAngles(octoon::math::Quaternion(initKey.quaternion.x, initKey.quaternion.y, initKey.quaternion.z, initKey.quaternion.w));
-
 			translateX.emplace_back((float)initKey.frame / 30.0f, initKey.translation.x, interpolationX);
 			translateY.emplace_back((float)initKey.frame / 30.0f, initKey.translation.y, interpolationY);
 			translateZ.emplace_back((float)initKey.frame / 30.0f, initKey.translation.z, interpolationZ);
-			rotationX.emplace_back((float)initKey.frame / 30.0f, euler.x, interpolationRotation);
-			rotationY.emplace_back((float)initKey.frame / 30.0f, euler.y, interpolationRotation);
-			rotationZ.emplace_back((float)initKey.frame / 30.0f, euler.z, interpolationRotation);
+			rotation.emplace_back((float)initKey.frame / 30.0f, octoon::math::Quaternion(initKey.quaternion.x, initKey.quaternion.y, initKey.quaternion.z, initKey.quaternion.w), interpolationRotation);
 
 			auto next = it.bone_init_frame[i].next_index;
 			while (next > 0)
 			{
 				auto& key = it.bone_key_frame[next - numBone];
-				auto& keyLast = key.pre_index < numBone ? it.bone_init_frame[key.pre_index] : it.bone_key_frame[key.pre_index - numBone];
 
 				interpolationX = std::make_shared<octoon::PathInterpolator<float>>(key.interpolation_x[0] / 127.0f, key.interpolation_x[2] / 127.0f, key.interpolation_x[1] / 127.0f, key.interpolation_x[3] / 127.0f);
 				interpolationY = std::make_shared<octoon::PathInterpolator<float>>(key.interpolation_y[0] / 127.0f, key.interpolation_y[2] / 127.0f, key.interpolation_y[1] / 127.0f, key.interpolation_y[3] / 127.0f);
 				interpolationZ = std::make_shared<octoon::PathInterpolator<float>>(key.interpolation_z[0] / 127.0f, key.interpolation_z[2] / 127.0f, key.interpolation_z[1] / 127.0f, key.interpolation_z[3] / 127.0f);
-				interpolationRotation = std::make_shared<octoon::PathInterpolator<float>>(keyLast.interpolation_rotation[0] / 127.0f, keyLast.interpolation_rotation[2] / 127.0f, keyLast.interpolation_rotation[1] / 127.0f, keyLast.interpolation_rotation[3] / 127.0f);
-
-				for (std::size_t j = 1; j <= (key.frame - keyLast.frame) * 20; j++)
-				{
-					auto qkeyLast = octoon::math::Quaternion(keyLast.quaternion.x, keyLast.quaternion.y, keyLast.quaternion.z, keyLast.quaternion.w);
-					auto qkey = octoon::math::Quaternion(key.quaternion.x, key.quaternion.y, key.quaternion.z, key.quaternion.w);
-
-					auto t = j / ((key.frame - keyLast.frame) * 20.0f);
-					auto eulerDelta = octoon::math::eulerAngles(octoon::math::slerp(qkeyLast, qkey, interpolationRotation->interpolator(t)));
-					auto frame = keyLast.frame + (key.frame - keyLast.frame) / ((key.frame - keyLast.frame) * 20.0f) * j;
-
-					rotationX.emplace_back((float)frame / 30.0f, eulerDelta.x);
-					rotationY.emplace_back((float)frame / 30.0f, eulerDelta.y);
-					rotationZ.emplace_back((float)frame / 30.0f, eulerDelta.z);
-				}
+				interpolationRotation = std::make_shared<octoon::PathInterpolator<float>>(key.interpolation_rotation[0] / 127.0f, key.interpolation_rotation[2] / 127.0f, key.interpolation_rotation[1] / 127.0f, key.interpolation_rotation[3] / 127.0f);
 
 				translateX.emplace_back((float)key.frame / 30.0f, key.translation.x, interpolationX);
 				translateY.emplace_back((float)key.frame / 30.0f, key.translation.y, interpolationY);
 				translateZ.emplace_back((float)key.frame / 30.0f, key.translation.z, interpolationZ);
+				rotation.emplace_back((float)key.frame / 30.0f, octoon::math::Quaternion(key.quaternion.x, key.quaternion.y, key.quaternion.z, key.quaternion.w), interpolationRotation);
 
 				next = key.next_index;
 			}
@@ -225,9 +197,7 @@ namespace unreal
 			clip.setCurve("LocalPosition.x", octoon::AnimationCurve(std::move(translateX)));
 			clip.setCurve("LocalPosition.y", octoon::AnimationCurve(std::move(translateY)));
 			clip.setCurve("LocalPosition.z", octoon::AnimationCurve(std::move(translateZ)));
-			clip.setCurve("LocalEulerAnglesRaw.x", octoon::AnimationCurve(std::move(rotationX)));
-			clip.setCurve("LocalEulerAnglesRaw.y", octoon::AnimationCurve(std::move(rotationY)));
-			clip.setCurve("LocalEulerAnglesRaw.z", octoon::AnimationCurve(std::move(rotationZ)));
+			clip.setCurve("LocalRotation", octoon::AnimationCurve(std::move(rotation)));
 		}
 	}
 
