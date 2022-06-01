@@ -86,16 +86,12 @@ namespace octoon
 
 				for (auto& child : it.IKList)
 				{
-					if (child.rotateLimited)
-					{
-						math::float3 minimumRadian = math::float3(child.minimumRadian.x, child.minimumRadian.y, child.minimumRadian.z);
-						math::float3 maximumRadian = math::float3(child.maximumRadian.x, child.maximumRadian.y, child.maximumRadian.z);
-						bones[child.BoneIndex]->addComponent<RotationLimitComponent>(-it.IKLimitedRadian, it.IKLimitedRadian, minimumRadian, maximumRadian);
-					}
-					else
-					{
-						bones[child.BoneIndex]->addComponent<RotationLimitComponent>(-it.IKLimitedRadian, it.IKLimitedRadian, math::float3::Zero, math::float3::Zero);
-					}
+					auto rotationLimit = bones[child.BoneIndex]->addComponent<RotationLimitComponent>();
+					rotationLimit->setMininumAngle(-it.IKLimitedRadian);
+					rotationLimit->setMaximumAngle(it.IKLimitedRadian);
+					rotationLimit->setMinimumAxis(math::float3(child.minimumRadian.x, child.minimumRadian.y, child.minimumRadian.z));
+					rotationLimit->setMaximumAxis(math::float3(child.maximumRadian.x, child.maximumRadian.y, child.maximumRadian.z));
+					rotationLimit->setAxisLimitEnable(child.rotateLimited);
 
 					solver->addBone(bones[child.BoneIndex]);
 				}
@@ -799,23 +795,30 @@ namespace octoon
 							pmxBone.position = -mesh->getBindposes()[i].getTranslate();
 							pmxBone.Parent = transform->getParent() ? boneMap[transform->getParent()] : -1;
 							pmxBone.ProvidedParentBoneIndex = -1;
-							pmxBone.Flag |= PMX_BONE_ROTATION | PMX_BONE_MOVE | PMX_BONE_OPERATOR | PMX_BONE_DISPLAY;
+							pmxBone.Flag |= PMX_BONE_ROTATION | PMX_BONE_OPERATOR | PMX_BONE_DISPLAY;
 
 							auto linkLimit = transform->getComponent<RotationLinkLimitComponent>();
 							if (linkLimit)
 							{
-								if (linkLimit->getAdditiveUseLocal())
+								pmxBone.ProvidedRatio = linkLimit->getAdditiveRotationRatio();
+
+								if (!linkLimit->getAdditiveUseLocal())
 									pmxBone.Flag |= PMX_BONE_ADD_LOCAL;
 								if (linkLimit->getAdditiveMoveRatio() != 0.0f)
 									pmxBone.Flag |= PMX_BONE_ADD_MOVE;
 								if (linkLimit->getAdditiveRotationRatio() != 0.0f)
 									pmxBone.Flag |= PMX_BONE_ADD_ROTATION;
 							}
+							else
+							{
+								pmxBone.Flag |= PMX_BONE_MOVE;
+							}
 
 							auto slover = transform->getComponent<CCDSolverComponent>();
 							if (slover)
 							{
 								pmxBone.Flag |= PMX_BONE_IK;
+								pmxBone.Level = 1;
 								pmxBone.IKLoopCount = slover->getIterations();
 								pmxBone.IKTargetBoneIndex = boneMap[slover->getTarget().get()];
 								pmxBone.IKLinkCount = slover->getBones().size();
@@ -831,11 +834,24 @@ namespace octoon
 									
 									if (rotationLimit)
 									{
-										ik.rotateLimited = rotationLimit->getMaximumAngle();
+										pmxBone.IKLimitedRadian = rotationLimit->getMaximumAngle();
+
+										ik.rotateLimited = true;
 										ik.minimumRadian = rotationLimit->getMinimumAxis();
 										ik.maximumRadian = rotationLimit->getMaximumAxis();
 									}
 								}
+							}
+						}
+
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+						{
+							auto transform = smr->getTransforms()[i];
+							auto links = transform->getComponent<RotationLinkComponent>();
+							if (links)
+							{
+								for (auto& bone : links->getBones())
+									pmx.bones[boneMap[bone.get()]].ProvidedParentBoneIndex = i;
 							}
 						}
 
