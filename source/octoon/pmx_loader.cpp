@@ -993,13 +993,14 @@ namespace octoon
 
 				for (std::size_t i = 0; i < pmx.numMorphs; i++)
 				{
-					auto& offsets = morphComponents[i]->downcast<SkinnedMorphComponent>()->getOffsets();
-					auto& indices = morphComponents[i]->downcast<SkinnedMorphComponent>()->getIndices();
+					auto morphComponent = morphComponents[i]->downcast<SkinnedMorphComponent>();
+					auto& offsets = morphComponent->getOffsets();
+					auto& indices = morphComponent->getIndices();
 
 					auto& morph = pmx.morphs[i];
-					morph.name = morphComponents[i]->getName();
+					morph.name = morphComponent->getName();
+					morph.control = morphComponent->getControl();
 					morph.morphType = PmxMorphType::PMX_MorphTypeVertex;
-					morph.control = morphComponents[i]->downcast<SkinnedMorphComponent>()->getControl();
 					morph.morphCount = indices.size();
 					morph.vertices.resize(indices.size());
 
