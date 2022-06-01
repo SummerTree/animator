@@ -63,7 +63,7 @@ namespace unreal
 
 						texture->unmap();
 
-						auto uuid = octoon::runtime::make_guid();
+						auto uuid = octoon::make_guid();
 						auto outputPath = rootPath.append(uuid + ".png").string();
 
 						qimage.save(QString::fromStdString(outputPath), "png");
@@ -78,7 +78,7 @@ namespace unreal
 			auto writePreview = [this](const std::shared_ptr<octoon::MeshStandardMaterial> material, std::filesystem::path outputPath) -> nlohmann::json
 			{
 				QPixmap pixmap;
-				auto uuid = octoon::runtime::make_guid();
+				auto uuid = octoon::make_guid();
 				auto previewPath = std::filesystem::path(outputPath).append(uuid + ".png");
 				this->createMaterialPreview(material, pixmap, previewWidth_, previewHeight_);
 				pixmap.save(QString::fromStdString(previewPath.string()), "png");
@@ -97,7 +97,7 @@ namespace unreal
 
 			for (auto& mat : loader.getMaterials())
 			{
-				auto uuid = octoon::runtime::make_guid();
+				auto uuid = octoon::make_guid();
 				auto outputPath = std::filesystem::path(this->getModel()->materialPath).append(uuid);
 
 				std::filesystem::create_directory(this->getModel()->materialPath);
@@ -449,7 +449,7 @@ namespace unreal
 		if (this->materialSets_.find((void*)mat.get()) == this->materialSets_.end())
 		{
 			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
-			auto uuid = octoon::runtime::make_guid();
+			auto uuid = octoon::make_guid();
 
 			auto& color = standard->getColor();
 			auto& colorMap = standard->getColorMap();

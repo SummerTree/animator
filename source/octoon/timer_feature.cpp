@@ -95,9 +95,9 @@ namespace octoon
 	}
 
 	void
-	TimerFeature::onActivate() except
+	TimerFeature::onActivate() noexcept
 	{
-		timer_ = std::make_unique<runtime::Timer>();
+		timer_ = std::make_unique<Timer>();
 	}
 
 	void

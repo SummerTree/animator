@@ -35,7 +35,7 @@ namespace unreal
 				pixels[i + 2] = std::clamp<float>(std::pow(data[i + 2], 1 / 2.2) * 255.0f, 0, 255);
 			}
 
-			auto uuid = octoon::runtime::make_guid();
+			auto uuid = octoon::make_guid();
 			auto rootPath = std::filesystem::path(this->getModel()->hdriPath).append(uuid);
 			auto hdriPath = std::filesystem::path(rootPath).append(uuid + ".hdr");
 			auto previewPath = std::filesystem::path(rootPath).append(uuid + ".png");

@@ -22,7 +22,7 @@ namespace unreal
 
 		if (std::filesystem::exists(u16_conv))
 		{
-			auto uuid = octoon::runtime::make_guid();
+			auto uuid = octoon::make_guid();
 			auto rootPath = std::filesystem::path(this->getModel()->motionPath).append(uuid);
 			auto motionPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");

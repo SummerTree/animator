@@ -29,7 +29,7 @@ namespace unreal
 		{
 			std::wstring wfilepath = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(std::string(filepath));
 
-			auto uuid = octoon::runtime::make_guid();
+			auto uuid = octoon::make_guid();
 			auto rootPath = std::filesystem::path(this->getModel()->modelPath).append(uuid);
 			auto filename = std::filesystem::path(wfilepath).filename();
 			auto modelPath = std::filesystem::path(rootPath).append(uuid + ".pmx");
@@ -64,7 +64,7 @@ namespace unreal
 				auto writePreview = [this](const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, std::filesystem::path outputPath) -> nlohmann::json
 				{
 					QPixmap pixmap;
-					auto previewPath = std::filesystem::path(outputPath).append(octoon::runtime::make_guid() + ".png");
+					auto previewPath = std::filesystem::path(outputPath).append(octoon::make_guid() + ".png");
 					this->createModelPreview(geometry, boundingBox, pixmap, previewWidth_, previewHeight_);
 					pixmap.save(QString::fromStdString(previewPath.string()), "png");
 					return previewPath.string();
