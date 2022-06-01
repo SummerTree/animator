@@ -127,7 +127,7 @@ namespace unreal
 		clip.setCurve("LocalPosition.y", octoon::AnimationCurve(std::move(eyeY)));
 		clip.setCurve("LocalPosition.z", octoon::AnimationCurve(std::move(eyeZ)));
 		clip.setCurve("LocalEulerAnglesRaw", octoon::AnimationCurve(std::move(rotation)));
-		clip.setCurve("Transform:move", octoon::AnimationCurve(std::move(distance)));
+		clip.setCurve("LocalForward", octoon::AnimationCurve(std::move(distance)));
 		clip.setCurve("Camera:fov", octoon::AnimationCurve(std::move(fov)));
 
 		animation.addClip(std::move(clip));

@@ -376,7 +376,7 @@ namespace octoon
 			clip.setCurve("LocalPosition.y", AnimationCurve(std::move(eyeY)));
 			clip.setCurve("LocalPosition.z", AnimationCurve(std::move(eyeZ)));
 			clip.setCurve("LocalEulerAnglesRaw", AnimationCurve(std::move(rotation)));
-			clip.setCurve("Transform:move", AnimationCurve(std::move(distance)));
+			clip.setCurve("LocalForward", AnimationCurve(std::move(distance)));
 			clip.setCurve("Camera:fov", AnimationCurve(std::move(fov)));
 
 			animation.addClip(std::move(clip));
