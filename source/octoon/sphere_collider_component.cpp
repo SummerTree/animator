@@ -12,8 +12,6 @@ namespace octoon
 		, rotation_(math::Quaternion::Zero)
 		, contactOffset_(1.0f)
 		, restOffset_(0.0f)
-		, needUpdatePose_(false)
-		, localPose_(math::float4x4::One)
 	{
     }
 
@@ -23,8 +21,6 @@ namespace octoon
 		, rotation_(math::Quaternion::Zero)
 		, contactOffset_(radius)
 		, restOffset_(0.0f)
-		, needUpdatePose_(false)
-		, localPose_(math::float4x4::One)
 	{
 	}
 
@@ -34,8 +30,6 @@ namespace octoon
 		, rotation_(math::Quaternion::Zero)
 		, contactOffset_(contactOffset)
 		, restOffset_(restOffset)
-		, needUpdatePose_(false)
-		, localPose_(math::float4x4::One)
 	{
 		assert(contactOffset >= restOffset);
 	}
@@ -61,7 +55,6 @@ namespace octoon
 				shape_->setCenter(center);
 
 			this->center_ = center;
-			this->needUpdatePose_ = true;
 		}
 	}
 
@@ -74,7 +67,6 @@ namespace octoon
 				shape_->setQuaternion(rotation);
 
 			this->rotation_ = rotation;
-			this->needUpdatePose_ = true;
 		}
 	}
 
@@ -130,15 +122,11 @@ namespace octoon
 		return this->shape_;
 	}
 
-	const math::float4x4&
+	math::float4x4
 	SphereColliderComponent::getLocalPose() const noexcept
 	{
-		if (needUpdatePose_)
-		{
-			localPose_.makeRotation(this->rotation_, this->center_);
-			needUpdatePose_ = false;
-		}
-
+		math::float4x4 localPose_;
+		localPose_.makeRotation(this->rotation_, this->center_);
 		return localPose_;
 	}
 

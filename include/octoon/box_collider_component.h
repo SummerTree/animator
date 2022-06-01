@@ -37,7 +37,7 @@ namespace octoon
 		void setQuaternion(const math::Quaternion& rotation) noexcept;
 		const math::Quaternion& getQuaternion() const noexcept;
 
-		const math::float4x4& getLocalPose() const noexcept override;
+		math::float4x4 getLocalPose() const noexcept override;
 
 		GameComponentPtr clone() const noexcept override;
 
@@ -57,9 +57,6 @@ namespace octoon
 		math::float3 center_;
 		math::Quaternion rotation_;
 		
-		mutable bool needUpdatePose_;
-		mutable math::float4x4 localPose_;
-
 		std::shared_ptr<PhysicsBoxShape> shape_;
 	};
 }
