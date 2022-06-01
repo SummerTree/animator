@@ -51,7 +51,9 @@ namespace unreal
 		{
 			profile_->load(path);
 
-			this->playerComponent_->updateTimeLength();
+			playerComponent_->updateTimeLength();
+			playerComponent_->reset();
+
 			this->sendMessage("editor:project:open");
 
 			return true;
