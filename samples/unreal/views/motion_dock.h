@@ -9,6 +9,8 @@
 #include <qlabel.h>
 
 #include "../widgets/spoiler.h"
+#include "../widgets/upushbutton.h"
+
 #include "unreal_profile.h"
 #include "unreal_behaviour.h"
 
@@ -43,7 +45,7 @@ namespace unreal
 		QHBoxLayout* topLayout_;
 		QHBoxLayout* bottomLayout_;
 
-		QToolButton* importButton_;
+		UPushButton* importButton_;
 
 		QListWidgetItem* clickedItem_;
 

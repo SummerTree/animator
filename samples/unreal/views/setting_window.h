@@ -98,15 +98,15 @@ namespace unreal
 		bool m_sign;
 		std::shared_ptr<unreal::UnrealBehaviour> behaviour_;
 
-		std::unique_ptr<QListWidget> listWidget_;
-		std::unique_ptr<QListWidgetItem> listWidgetItems_[3];
-		std::unique_ptr<SettingMainPlaneGeneral> mainPlaneGeneral_;
-		std::unique_ptr<SettingMainPlaneInterface> mainPlaneInterface_;
-		std::unique_ptr<SettingMainPlaneGraphics> mainPlaneGraphics_;
-		std::unique_ptr<QVBoxLayout> gridLayout_;
-		std::unique_ptr<QScrollArea> scrollArea_;
-		std::unique_ptr<QWidget> scrollWidget_;
-		std::unique_ptr<QHBoxLayout> layout_;
+		QListWidget* listWidget_;
+		QListWidgetItem* listWidgetItems_[3];
+		SettingMainPlaneGeneral* mainPlaneGeneral_;
+		SettingMainPlaneInterface* mainPlaneInterface_;
+		SettingMainPlaneGraphics* mainPlaneGraphics_;
+		QVBoxLayout* gridLayout_;
+		QScrollArea* scrollArea_;
+		QWidget* scrollWidget_;
+		QHBoxLayout* layout_;
 	};
 
 	class SettingWindow final : public QDialog
