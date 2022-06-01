@@ -126,21 +126,7 @@ namespace octoon
 			octoon::Image image;
 			if (image.create(octoon::Format::R8G8B8A8SRGB, width, height))
 			{
-				std::uint8_t* img_ptr = const_cast<std::uint8_t*>(image.data());
-
-				for (std::int32_t y = 0; y < height; y++)
-				{
-					for (std::uint32_t x = 0; x < width; x++)
-					{
-						auto src = (y * width + x) * 4;
-						auto dst = ((height - y - 1) * width + x) * 4;
-
-						img_ptr[dst + 2] = static_cast<std::uint8_t*>(data)[src];
-						img_ptr[dst + 1] = static_cast<std::uint8_t*>(data)[src + 1];
-						img_ptr[dst + 0] = static_cast<std::uint8_t*>(data)[src + 2];
-						img_ptr[dst + 3] = static_cast<std::uint8_t*>(data)[src + 3];
-					}
-				}
+				std::memcpy((void*)image.data(), data, image.size());
 
 				auto outputPath = std::string(filepath);
 				auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
@@ -152,20 +138,7 @@ namespace octoon
 			octoon::Image image;
 			if (image.create(octoon::Format::R8G8B8SRGB, width, height))
 			{
-				std::uint8_t* img_ptr = const_cast<std::uint8_t*>(image.data());
-
-				for (std::int32_t y = 0; y < height; y++)
-				{
-					for (std::uint32_t x = 0; x < width; x++)
-					{
-						auto src = (y * width + x) * 3;
-						auto dst = ((height - y - 1) * width + x) * 3;
-
-						img_ptr[dst + 2] = static_cast<std::uint8_t*>(data)[src];
-						img_ptr[dst + 1] = static_cast<std::uint8_t*>(data)[src + 1];
-						img_ptr[dst + 0] = static_cast<std::uint8_t*>(data)[src + 2];
-					}
-				}
+				std::memcpy((void*)image.data(), data, image.size());
 
 				auto outputPath = std::string(filepath);
 				auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
