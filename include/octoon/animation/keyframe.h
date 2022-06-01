@@ -1,6 +1,7 @@
 #ifndef OCTOON_KEYFRAME_H_
 #define OCTOON_KEYFRAME_H_
 
+#include <octoon/math/variant.h>
 #include <octoon/animation/interpolator.h>
 #include <memory>
 #include <vector>
