@@ -6,11 +6,11 @@
 #include <optional>
 
 #include <octoon/video/collector.h>
+#include <octoon/video/scene_controller.h>
 #include <octoon/material/mesh_standard_material.h>
 
 #include "clw_scene.h"
 #include "cl_program_manager.h"
-#include "scene_controller.h"
 
 namespace octoon
 {

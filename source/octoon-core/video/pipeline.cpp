@@ -1,4 +1,4 @@
-#include "pipeline.h"
+#include <octoon/video/pipeline.h>
 #include <stdexcept>
 
 namespace octoon
@@ -30,5 +30,4 @@ namespace octoon
             throw std::out_of_range("Output type is out of supported range");
         return outputs_[idx];
     }
-
 }

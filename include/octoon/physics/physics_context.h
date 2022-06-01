@@ -24,13 +24,13 @@ namespace octoon
 		PhysicsContext() noexcept = default;
 		virtual ~PhysicsContext() = default;
 
-		virtual std::shared_ptr<PhysicsScene> createScene(PhysicsSceneDesc desc) = 0;
-		virtual std::shared_ptr<PhysicsRigidbody> createRigidbody(PhysicsRigidbodyDesc desc) = 0;
-		virtual std::shared_ptr<PhysicsSphereShape> createSphereShape(PhysicsSphereShapeDesc desc) = 0;
-		virtual std::shared_ptr<PhysicsBoxShape> createBoxShape(PhysicsBoxShapeDesc desc) = 0;
-		virtual std::shared_ptr<PhysicsCapsuleShape> createCapsuleShape(PhysicsCapsuleShapeDesc desc) = 0;
-		virtual std::shared_ptr<PhysicsFixedJoint> createFixedJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs) = 0;
-		virtual std::shared_ptr<PhysicsConfigurableJoint> createConfigurableJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs) = 0;
+		virtual std::unique_ptr<PhysicsScene> createScene(const PhysicsSceneDesc& desc) = 0;
+		virtual std::unique_ptr<PhysicsRigidbody> createRigidbody(const PhysicsRigidbodyDesc& desc) = 0;
+		virtual std::unique_ptr<PhysicsSphereShape> createSphereShape(const PhysicsSphereShapeDesc& desc) = 0;
+		virtual std::unique_ptr<PhysicsBoxShape> createBoxShape(const PhysicsBoxShapeDesc& desc) = 0;
+		virtual std::unique_ptr<PhysicsCapsuleShape> createCapsuleShape(const PhysicsCapsuleShapeDesc& desc) = 0;
+		virtual std::unique_ptr<PhysicsFixedJoint> createFixedJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs) = 0;
+		virtual std::unique_ptr<PhysicsConfigurableJoint> createConfigurableJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs) = 0;
 
 	private:
 		PhysicsContext(const PhysicsContext&) noexcept = delete;

@@ -12,6 +12,9 @@ namespace octoon
 		RotationLimitComponent() noexcept;
 		RotationLimitComponent(float mininumAngle, float maximumAngle, const math::float3& minimumRadians, const math::float3& maximumRadians) noexcept;
 
+		void setAxisLimitEnable(bool enable) noexcept;
+		bool getAxisLimitEnable() const noexcept;
+
 		void setMininumAngle(float limit) noexcept;
 		void setMaximumAngle(float limit) noexcept;
 		void setMinimumAxis(const math::float3& limit) noexcept;
@@ -30,6 +33,8 @@ namespace octoon
 		RotationLimitComponent& operator=(const RotationLimitComponent&) = delete;
 
 	private:
+		bool enable_;
+
 		float mininumAngle_;
 		float maximumAngle_;
 

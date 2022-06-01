@@ -1,7 +1,7 @@
 #ifndef OCTOON_MONTE_CARLO_RENDERER_H_
 #define OCTOON_MONTE_CARLO_RENDERER_H_
 
-#include "pipeline.h"
+#include <octoon/video/pipeline.h>
 #include "path_tracing_estimator.h"
 
 #include "clw_class.h"

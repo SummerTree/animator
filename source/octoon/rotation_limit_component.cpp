@@ -9,6 +9,7 @@ namespace octoon
 		, maximumAngle_(math::PI)
 		, minimumAxis_(math::float3::Zero)
 		, maximumAxis_(math::float3::Zero)
+		, enable_(false)
 	{
 	}
 
@@ -17,7 +18,20 @@ namespace octoon
 		, maximumAngle_(maximumAngle)
 		, minimumAxis_(minimumAxis)
 		, maximumAxis_(maximumAxis)
+		, enable_(false)
 	{
+	}
+
+	void
+	RotationLimitComponent::setAxisLimitEnable(bool enable) noexcept
+	{
+		this->enable_ = enable;
+	}
+
+	bool
+	RotationLimitComponent::getAxisLimitEnable() const noexcept
+	{
+		return this->enable_;
 	}
 
 	void
@@ -73,6 +87,7 @@ namespace octoon
 	{
 		auto instance = std::make_shared<RotationLimitComponent>();
 		instance->setName(this->getName());
+		instance->setAxisLimitEnable(this->getAxisLimitEnable());
 		instance->setMinimumAxis(this->getMinimumAxis());
 		instance->setMaximumAxis(this->getMaximumAxis());
 		instance->setMininumAngle(this->getMininumAngle());

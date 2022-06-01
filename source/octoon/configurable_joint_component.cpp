@@ -67,6 +67,24 @@ namespace octoon
 		}
 	}
 
+	const math::float3&
+	ConfigurableJointComponent::getTargetPosition() const noexcept
+	{
+		return targetPosition_;
+	}
+
+	const math::float3&
+	ConfigurableJointComponent::setTargetVelocity() const noexcept
+	{
+		return targetVelocity_;
+	}
+
+	const math::Quaternion&
+	ConfigurableJointComponent::getTargetRotation() const noexcept
+	{
+		return targetRotation_;
+	}
+
 	std::shared_ptr<RigidbodyComponent>
 	ConfigurableJointComponent::getTarget() noexcept
 	{
@@ -297,7 +315,7 @@ namespace octoon
 	{
 		if (joint_)
 			joint_->setDriveAngularX(motion);
-		driveAngular_.z = motion;
+		driveAngular_.x = motion;
 	}
 
 	void
@@ -305,7 +323,7 @@ namespace octoon
 	{
 		if (joint_)
 			joint_->setDriveAngularY(motion);
-		driveAngular_.z = motion;
+		driveAngular_.y = motion;
 	}
 
 	void
@@ -314,6 +332,89 @@ namespace octoon
 		if (joint_)
 			joint_->setDriveAngularZ(motion);
 		driveAngular_.z = motion;
+	}
+
+	float
+	ConfigurableJointComponent::getLowXLimit() const noexcept
+	{
+		return lowX_;
+	}
+
+	float
+	ConfigurableJointComponent::getLowYLimit() const noexcept
+	{
+		return lowY_;
+	}
+
+	float
+	ConfigurableJointComponent::getLowZLimit() const noexcept
+	{
+		return lowZ_;
+	}
+
+	float
+	ConfigurableJointComponent::getHighXLimit() const noexcept
+	{
+		return highX_;
+	}
+
+	float
+	ConfigurableJointComponent::getHighYLimit() const noexcept
+	{
+		return highY_;
+	}
+
+	float
+	ConfigurableJointComponent::getHighZLimit() const noexcept
+	{
+		return highZ_;
+	}
+
+	float
+	ConfigurableJointComponent::getDriveMotionX() const noexcept
+	{
+		return driveMotion_.x;
+	}
+
+	float
+	ConfigurableJointComponent::getDriveMotionY() const noexcept
+	{
+		return driveMotion_.y;
+	}
+
+	float
+	ConfigurableJointComponent::getDriveMotionZ() const noexcept
+	{
+		return driveMotion_.z;
+	}
+
+	float
+	ConfigurableJointComponent::getDriveAngularX() const noexcept
+	{
+		return driveAngular_.x;
+	}
+
+	float
+	ConfigurableJointComponent::getDriveAngularY() const noexcept
+	{
+		return driveAngular_.y;
+	}
+
+	float
+	ConfigurableJointComponent::getDriveAngularZ() const noexcept
+	{
+		return driveAngular_.z;
+	}
+
+	void
+	ConfigurableJointComponent::getAngularLimit(float& minX, float& maxX, float& minY, float& maxY, float& minZ, float& maxZ) noexcept
+	{
+		minX = lowAngleXLimit_;
+		minY = lowAngleYLimit_;
+		minZ = lowAngleZLimit_;
+		maxX = highAngleXLimit_;
+		maxY = highAngleYLimit_;
+		maxZ = highAngleZLimit_;
 	}
 
 	void

@@ -163,12 +163,10 @@ namespace octoon
 			}
 			else
 			{
-				auto it = std::upper_bound(frames.begin(), frames.end(), this->time,
-					[](const _Time& time, const Keyframe<_Elem, _Time>& a)
+				auto it = std::upper_bound(frames.begin(), frames.end(), this->time, [](const _Time& time, const Keyframe<_Elem, _Time>& a)
 				{
 					return time <= a.time;
-				}
-				);
+				});
 
 				auto& a = *(it - 1);
 				auto& b = *(it);
@@ -180,7 +178,7 @@ namespace octoon
 					t = interpolator->interpolator(t);
 
 				this->finish = false;
-				this->value = a.value * (1.0f - t) + b.value * t;
+				this->value = math::lerp(a.value, b.value, t);
 			}
 
 			return this->value;

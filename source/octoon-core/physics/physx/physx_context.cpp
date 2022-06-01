@@ -70,48 +70,48 @@ namespace octoon
 			foundation->release();
 	}
 
-	std::shared_ptr<PhysicsScene>
-	PhysxContext::createScene(PhysicsSceneDesc desc)
+	std::unique_ptr<PhysicsScene>
+	PhysxContext::createScene(const PhysicsSceneDesc& desc)
 	{
-		return std::make_shared<PhysxScene>(this, desc);
+		return std::make_unique<PhysxScene>(this, desc);
 	}
 
-	std::shared_ptr<PhysicsRigidbody>
-	PhysxContext::createRigidbody(PhysicsRigidbodyDesc desc)
+	std::unique_ptr<PhysicsRigidbody>
+	PhysxContext::createRigidbody(const PhysicsRigidbodyDesc& desc)
 	{
-		return std::make_shared<PhysxRigidbody>(this, desc);
+		return std::make_unique<PhysxRigidbody>(this, desc);
 	}
 
-	std::shared_ptr<PhysicsBoxShape>
-	PhysxContext::createBoxShape(PhysicsBoxShapeDesc desc)
+	std::unique_ptr<PhysicsBoxShape>
+	PhysxContext::createBoxShape(const PhysicsBoxShapeDesc& desc)
 	{
-		return std::make_shared<PhysxBoxShape>(this, desc.width, desc.height, desc.depth);
+		return std::make_unique<PhysxBoxShape>(this, desc.width, desc.height, desc.depth);
 	}
 
-	std::shared_ptr<PhysicsSphereShape>
-	PhysxContext::createSphereShape(PhysicsSphereShapeDesc desc)
+	std::unique_ptr<PhysicsSphereShape>
+	PhysxContext::createSphereShape(const PhysicsSphereShapeDesc& desc)
 	{
-		return std::make_shared<PhysxSphereShape>(this, desc.radius);
+		return std::make_unique<PhysxSphereShape>(this, desc.radius);
 	}
 
-	std::shared_ptr<PhysicsCapsuleShape>
-	PhysxContext::createCapsuleShape(PhysicsCapsuleShapeDesc desc)
+	std::unique_ptr<PhysicsCapsuleShape>
+	PhysxContext::createCapsuleShape(const PhysicsCapsuleShapeDesc& desc)
 	{
-		return std::make_shared<PhysxCapsuleShape>(this, desc.radius, desc.height);
+		return std::make_unique<PhysxCapsuleShape>(this, desc.radius, desc.height);
 	}
 
-	std::shared_ptr<PhysicsFixedJoint>
+	std::unique_ptr<PhysicsFixedJoint>
 	PhysxContext::createFixedJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs)
 	{
-		auto ret = std::make_shared<PhysxFixedJoint>(this);
+		auto ret = std::make_unique<PhysxFixedJoint>(this);
 		ret->connect(lhs, rhs);
 		return ret;
 	}
 
-	std::shared_ptr<PhysicsConfigurableJoint>
+	std::unique_ptr<PhysicsConfigurableJoint>
 	PhysxContext::createConfigurableJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs)
 	{
-		auto ret = std::make_shared<PhysxConfigurableJoint>(this);
+		auto ret = std::make_unique<PhysxConfigurableJoint>(this);
 		ret->connect(lhs, rhs);
 		return ret;
 	}

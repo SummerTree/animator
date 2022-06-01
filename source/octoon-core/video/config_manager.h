@@ -1,5 +1,5 @@
-#ifndef OCTOON_RTX_MANAGER_H_
-#define OCTOON_RTX_MANAGER_H_
+#ifndef OCTOON_CONFIG_MANAGER_H_
+#define OCTOON_CONFIG_MANAGER_H_
 
 #include <vector>
 #include <memory>

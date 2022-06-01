@@ -385,4 +385,11 @@ namespace octoon
 		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		return this->save(stream, type);
 	}
+
+	bool
+	Image::save(const std::string& filepath, const std::string& type) noexcept
+	{
+		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
+		return this->save(stream, type.c_str());
+	}
 }

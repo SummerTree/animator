@@ -16,6 +16,16 @@ SOURCE_GROUP(renderer FILES ${VIDEO_GRAPHICS_LIST})
 SET(VIDEO_UTILS_LIST
 	${HEADER_PATH}/collector.h
 	${SOURCE_PATH}/collector.cpp
+	${HEADER_PATH}/output.h
+	${SOURCE_PATH}/output.cpp
+	${HEADER_PATH}/pipeline.h
+	${SOURCE_PATH}/pipeline.cpp
+	${HEADER_PATH}/scene_controller.h
+	${SOURCE_PATH}/scene_controller.cpp
+	${HEADER_PATH}/compiled_scene.h
+	${SOURCE_PATH}/compiled_scene.cpp
+	${SOURCE_PATH}/render_factory.h
+	${SOURCE_PATH}/render_factory.cpp
 )
 SOURCE_GROUP(renderer\\utils FILES ${VIDEO_UTILS_LIST})
 
@@ -46,18 +56,8 @@ SET(VIDEO_FORWARE_LIST
 SOURCE_GROUP(renderer\\forward FILES ${VIDEO_FORWARE_LIST})
 
 SET(VIDEO_OPENCL_LIST
-	${SOURCE_PATH}/output.h
-	${SOURCE_PATH}/output.cpp
 	${SOURCE_PATH}/estimator.h
 	${SOURCE_PATH}/estimator.cpp
-	${SOURCE_PATH}/pipeline.h
-	${SOURCE_PATH}/pipeline.cpp
-	${SOURCE_PATH}/scene_controller.h
-	${SOURCE_PATH}/scene_controller.cpp
-	${HEADER_PATH}/compiled_scene.h
-	${SOURCE_PATH}/compiled_scene.cpp
-	${SOURCE_PATH}/render_factory.h
-	${SOURCE_PATH}/render_factory.cpp
 	${SOURCE_PATH}/clw_output.h
 	${SOURCE_PATH}/clw_output.cpp
 	${SOURCE_PATH}/clw_texture_output.h

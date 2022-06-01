@@ -41,7 +41,7 @@ namespace unreal
 	private:
 		bool needAnimationEvaluate_;
 
-		octoon::runtime::Timer timer_;
+		octoon::Timer timer_;
 	};
 }
 

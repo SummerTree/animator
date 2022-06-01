@@ -37,72 +37,35 @@ namespace octoon
 		return array;
 	}
 
-	/*std::string
+	std::string
 	PmmName::sjis2utf8(const std::string& sjis)
 	{
 		std::size_t in_size = sjis.size();
 		std::size_t out_size = sjis.size() * 2;
 
-		auto inbuf = std::make_unique<char[]>(in_size + 1);
+		auto inbuf = std::make_unique<char[]>(in_size);
 		auto outbuf = std::make_unique<char[]>(out_size);
 		char* in = inbuf.get();
 		char* out = outbuf.get();
 
-		std::memset(in, 0, in_size + 1);
 		std::memcpy(in, sjis.c_str(), in_size);
 
 		iconv_t ic = nullptr;
 
 		try
 		{
-			ic = iconv_open("GBK", "SJIS");
+			ic = iconv_open("utf-8", "SJIS");
 			iconv(ic, &in, &in_size, &out, &out_size);
 			iconv_close(ic);
 
-			char* in = inbuf.get();
-			char* out = outbuf.get();
-
-			ic = iconv_open("UTF-8", "GBK");
-			iconv(ic, &out, &out_size, &in, &in_size);
-			iconv_close(ic);
+			return std::string(outbuf.get());
 		}
 		catch (const std::exception&)
 		{
 			iconv_close(ic);
 		}
 
-		return std::string(inbuf.get());
-	}*/
-	std::string
-	PmmName::sjis2utf8(const std::string& sjis)
-	{
-		std::string utf8_string;
-
-		LPCCH pSJIS = (LPCCH)sjis.c_str();
-		int utf16size = ::MultiByteToWideChar(932, MB_ERR_INVALID_CHARS, pSJIS, -1, 0, 0);
-		if (utf16size != 0)
-		{
-			auto pUTF16 = std::make_unique<WCHAR[]>(utf16size);
-			if (::MultiByteToWideChar(932, 0, (LPCCH)pSJIS, -1, pUTF16.get(), utf16size) != 0)
-			{
-				std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-				return cv.to_bytes(pUTF16.get());
-			}
-		}
-
-		pSJIS = (LPCCH)sjis.c_str();
-		utf16size = ::MultiByteToWideChar(CP_ACP, MB_ERR_INVALID_CHARS, pSJIS, -1, 0, 0);
-		if (utf16size != 0)
-		{
-			auto pUTF16 = std::make_unique<WCHAR[]>(utf16size);
-			if (::MultiByteToWideChar(CP_ACP, 0, (LPCCH)pSJIS, -1, pUTF16.get(), utf16size) != 0)
-			{
-				std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-				return cv.to_bytes(pUTF16.get());
-			}
-		}
-
-		return utf8_string;
+		return std::string();
 	}
 
 	std::optional<std::string>

@@ -25,7 +25,7 @@ namespace octoon
 		virtual void setRestOffset(float offset) noexcept = 0;
 		virtual float getRestOffset() const noexcept = 0;
 
-		virtual const math::float4x4& getLocalPose() const noexcept = 0;
+		virtual math::float4x4 getLocalPose() const noexcept = 0;
 	
 	private:
 		friend class RigidbodyComponent;

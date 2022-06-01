@@ -3,7 +3,7 @@
 
 #include <array>
 
-#include "output.h"
+#include <octoon/video/output.h>
 #include <octoon/video/compiled_scene.h>
 #include <octoon/video/scriptable_render_context.h>
 

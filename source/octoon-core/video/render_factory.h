@@ -1,20 +1,20 @@
 #ifndef OCTOON_RENDER_FACTORY_H_
 #define OCTOON_RENDER_FACTORY_H_
 
-#include <octoon/math/math.h>
 #include <memory>
 
-#include "output.h"
-#include "pipeline.h"
-#include "scene_controller.h"
+#include <octoon/math/math.h>
+#include <octoon/video/output.h>
+#include <octoon/video/scene_controller.h>
+#include <octoon/video/pipeline.h>
 
 namespace octoon
 {
 	class RenderFactory
 	{
 	public:
-		RenderFactory() noexcept;
-		virtual ~RenderFactory() noexcept;
+		RenderFactory() noexcept = default;
+		virtual ~RenderFactory() noexcept = default;
 
 		virtual std::unique_ptr<Output> createOutput(std::uint32_t w, std::uint32_t h) const = 0;
 		virtual std::unique_ptr<Output> createTextureOutput(std::uint32_t texture, std::uint32_t w, std::uint32_t h) const = 0;

@@ -23,7 +23,7 @@ namespace octoon
 	{
 	public:
 		PhysicsScene() noexcept;
-		~PhysicsScene() noexcept;
+		virtual ~PhysicsScene() noexcept;
 
 		virtual void setGroundEnable(bool value) noexcept = 0;
 		virtual bool getGroundEnable() const noexcept = 0;

@@ -29,13 +29,15 @@ namespace octoon
 			ic = iconv_open("utf-8", "SJIS");
 			iconv(ic, &in, &in_size, &out, &out_size);
 			iconv_close(ic);
+
+			return std::string(outbuf.get());
 		}
 		catch (const std::exception&)
 		{
 			iconv_close(ic);
 		}
 
-		return std::string(outbuf.get());
+		return std::string();
 	}
 
 	std::string utf82sjis(const std::string& utf8)
@@ -57,13 +59,15 @@ namespace octoon
 			ic = iconv_open("SJIS", "utf-8");
 			iconv(ic, &in, &in_size, &out, &out_size);
 			iconv_close(ic);
+
+			return std::string(outbuf.get());
 		}
 		catch (const std::exception&)
 		{
 			iconv_close(ic);
 		}
 
-		return std::string(outbuf.get());
+		return std::string();
 	}
 
 	void

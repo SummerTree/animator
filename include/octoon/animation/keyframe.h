@@ -1,6 +1,7 @@
 #ifndef OCTOON_KEYFRAME_H_
 #define OCTOON_KEYFRAME_H_
 
+#include <octoon/math/variant.h>
 #include <octoon/animation/interpolator.h>
 #include <memory>
 #include <vector>
@@ -21,14 +22,14 @@ namespace octoon
 		{
 		}
 
-		Keyframe(const _Time& time_, const _Elem& value_, std::shared_ptr<Interpolator<_Time>>&& interpolator_ = nullptr) noexcept
+		Keyframe(const _Time& time_, const _Elem& value_, std::shared_ptr<Interpolator<float>>&& interpolator_ = nullptr) noexcept
 			: time(time_)
 			, value(value_)
 			, interpolator(std::move(interpolator_))
 		{
 		}
 
-		Keyframe(_Time&& time_, _Elem&& value_, std::shared_ptr<Interpolator<_Time>>&& interpolator_ = nullptr) noexcept
+		Keyframe(_Time&& time_, _Elem&& value_, std::shared_ptr<Interpolator<float>>&& interpolator_ = nullptr) noexcept
 			: time(std::move(time_))
 			, value(std::move(value_))
 			, interpolator(std::move(interpolator_))
