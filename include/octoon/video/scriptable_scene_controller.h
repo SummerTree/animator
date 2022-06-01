@@ -6,6 +6,7 @@
 #include <octoon/video/collector.h>
 #include <octoon/video/render_scene.h>
 #include <octoon/video/rendering_data.h>
+#include <octoon/video/scene_controller.h>
 
 #include <unordered_map>
 
