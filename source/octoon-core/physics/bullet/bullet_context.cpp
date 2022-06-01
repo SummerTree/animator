@@ -17,48 +17,48 @@ namespace octoon
 	{
 	}
 
-	std::shared_ptr<PhysicsScene>
-	BulletContext::createScene(PhysicsSceneDesc desc)
+	std::unique_ptr<PhysicsScene>
+	BulletContext::createScene(const PhysicsSceneDesc& desc)
 	{
-		return std::make_shared<BulletScene>(desc);
+		return std::make_unique<BulletScene>(desc);
 	}
 
-	std::shared_ptr<PhysicsRigidbody>
-	BulletContext::createRigidbody(PhysicsRigidbodyDesc desc)
+	std::unique_ptr<PhysicsRigidbody>
+	BulletContext::createRigidbody(const PhysicsRigidbodyDesc& desc)
 	{
-		return std::make_shared<BulletRigidbody>(desc);
+		return std::make_unique<BulletRigidbody>(desc);
 	}
 
-	std::shared_ptr<PhysicsBoxShape>
-	BulletContext::createBoxShape(PhysicsBoxShapeDesc desc)
+	std::unique_ptr<PhysicsBoxShape>
+	BulletContext::createBoxShape(const PhysicsBoxShapeDesc& desc)
 	{
-		return std::make_shared<BulletBoxShape>(desc.width, desc.height, desc.depth);
+		return std::make_unique<BulletBoxShape>(desc.width, desc.height, desc.depth);
 	}
 
-	std::shared_ptr<PhysicsSphereShape>
-	BulletContext::createSphereShape(PhysicsSphereShapeDesc desc)
+	std::unique_ptr<PhysicsSphereShape>
+	BulletContext::createSphereShape(const PhysicsSphereShapeDesc& desc)
 	{
-		return std::make_shared<BulletSphereShape>(desc.radius);
+		return std::make_unique<BulletSphereShape>(desc.radius);
 	}
 
-	std::shared_ptr<PhysicsCapsuleShape>
-	BulletContext::createCapsuleShape(PhysicsCapsuleShapeDesc desc)
+	std::unique_ptr<PhysicsCapsuleShape>
+	BulletContext::createCapsuleShape(const PhysicsCapsuleShapeDesc& desc)
 	{
-		return std::make_shared<BulletCapsuleShape>(desc.radius, desc.height);
+		return std::make_unique<BulletCapsuleShape>(desc.radius, desc.height);
 	}
 
-	std::shared_ptr<PhysicsFixedJoint>
+	std::unique_ptr<PhysicsFixedJoint>
 	BulletContext::createFixedJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs)
 	{
-		auto ret = std::make_shared<BulletFixedJoint>();
+		auto ret = std::make_unique<BulletFixedJoint>();
 		ret->connect(lhs, rhs);
 		return ret;
 	}
 
-	std::shared_ptr<PhysicsConfigurableJoint>
+	std::unique_ptr<PhysicsConfigurableJoint>
 	BulletContext::createConfigurableJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs)
 	{
-		auto ret = std::make_shared<BulletConfigurableJoint>();
+		auto ret = std::make_unique<BulletConfigurableJoint>();
 		ret->connect(lhs, rhs);
 		return ret;
 	}

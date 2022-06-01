@@ -23,13 +23,13 @@ namespace octoon
 		BulletContext();
 		virtual ~BulletContext();
 
-		virtual std::shared_ptr<PhysicsScene> createScene(PhysicsSceneDesc desc) override;
-		virtual std::shared_ptr<PhysicsRigidbody> createRigidbody(PhysicsRigidbodyDesc desc) override;
-		virtual std::shared_ptr<PhysicsBoxShape> createBoxShape(PhysicsBoxShapeDesc desc) override;
-		virtual std::shared_ptr<PhysicsSphereShape> createSphereShape(PhysicsSphereShapeDesc desc) override;
-		virtual std::shared_ptr<PhysicsCapsuleShape> createCapsuleShape(PhysicsCapsuleShapeDesc desc) override;
-		virtual std::shared_ptr<PhysicsFixedJoint> createFixedJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs) override;
-		virtual std::shared_ptr<PhysicsConfigurableJoint> createConfigurableJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs) override;
+		virtual std::unique_ptr<PhysicsScene> createScene(const PhysicsSceneDesc& desc) override;
+		virtual std::unique_ptr<PhysicsRigidbody> createRigidbody(const PhysicsRigidbodyDesc& desc) override;
+		virtual std::unique_ptr<PhysicsSphereShape> createSphereShape(const PhysicsSphereShapeDesc& desc) override;
+		virtual std::unique_ptr<PhysicsBoxShape> createBoxShape(const PhysicsBoxShapeDesc& desc) override;
+		virtual std::unique_ptr<PhysicsCapsuleShape> createCapsuleShape(const PhysicsCapsuleShapeDesc& desc) override;
+		virtual std::unique_ptr<PhysicsFixedJoint> createFixedJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs) override;
+		virtual std::unique_ptr<PhysicsConfigurableJoint> createConfigurableJoint(std::shared_ptr<PhysicsRigidbody> lhs, std::shared_ptr<PhysicsRigidbody> rhs) override;
 
 	private:
 		BulletContext(const BulletContext&) noexcept = delete;

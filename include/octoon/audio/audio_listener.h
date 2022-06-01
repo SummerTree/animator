@@ -11,7 +11,7 @@ namespace octoon
     {
     public:
         AudioListener() noexcept;
-        ~AudioListener() noexcept;
+        virtual ~AudioListener() noexcept;
 
         virtual void setVolume(float volume) noexcept = 0;
         virtual float getVolume() const noexcept = 0;
