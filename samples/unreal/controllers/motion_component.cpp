@@ -1,8 +1,8 @@
 #include "motion_component.h"
 #include "unreal_behaviour.h"
+#include <octoon/runtime/uuid.h>
 #include <fstream>
 #include <filesystem>
-#include <quuid.h>
 #include <codecvt>
 
 namespace unreal
@@ -22,9 +22,7 @@ namespace unreal
 
 		if (std::filesystem::exists(u16_conv))
 		{
-			auto id = QUuid::createUuid().toString();
-			auto uuid = id.toStdString().substr(1, id.length() - 2);
-
+			auto uuid = octoon::runtime::make_guid();
 			auto rootPath = std::filesystem::path(this->getModel()->motionPath).append(uuid);
 			auto motionPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");

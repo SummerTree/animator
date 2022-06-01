@@ -5,13 +5,13 @@
 #include <octoon/texture_loader.h>
 #include <octoon/video_feature.h>
 #include <octoon/environment_light_component.h>
+#include <octoon/runtime/uuid.h>
 
 #include <filesystem>
 #include <fstream>
 
 #include <qimage.h>
 #include <qstring.h>
-#include <quuid.h>
 
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
@@ -63,8 +63,7 @@ namespace unreal
 
 						texture->unmap();
 
-						auto id = QUuid::createUuid().toString();
-						auto uuid = id.toStdString().substr(1, id.length() - 2);
+						auto uuid = octoon::runtime::make_guid();
 						auto outputPath = rootPath.append(uuid + ".png").string();
 
 						qimage.save(QString::fromStdString(outputPath), "png");
@@ -79,8 +78,7 @@ namespace unreal
 			auto writePreview = [this](const std::shared_ptr<octoon::MeshStandardMaterial> material, std::filesystem::path outputPath) -> nlohmann::json
 			{
 				QPixmap pixmap;
-				auto id = QUuid::createUuid().toString();
-				auto uuid = id.toStdString().substr(1, id.length() - 2);
+				auto uuid = octoon::runtime::make_guid();
 				auto previewPath = std::filesystem::path(outputPath).append(uuid + ".png");
 				this->createMaterialPreview(material, pixmap, previewWidth_, previewHeight_);
 				pixmap.save(QString::fromStdString(previewPath.string()), "png");
@@ -99,8 +97,7 @@ namespace unreal
 
 			for (auto& mat : loader.getMaterials())
 			{
-				auto id = QUuid::createUuid().toString();
-				auto uuid = id.toStdString().substr(1, id.length() - 2);
+				auto uuid = octoon::runtime::make_guid();
 				auto outputPath = std::filesystem::path(this->getModel()->materialPath).append(uuid);
 
 				std::filesystem::create_directory(this->getModel()->materialPath);
@@ -452,9 +449,7 @@ namespace unreal
 		if (this->materialSets_.find((void*)mat.get()) == this->materialSets_.end())
 		{
 			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
-
-			auto id = QUuid::createUuid().toString();
-			auto uuid = id.toStdString().substr(1, id.length() - 2);
+			auto uuid = octoon::runtime::make_guid();
 
 			auto& color = standard->getColor();
 			auto& colorMap = standard->getColorMap();
