@@ -839,118 +839,129 @@ namespace octoon
 							}
 						}
 
+						std::vector<std::size_t> rigidbodyToBone;
+						std::vector<RigidbodyComponent*> rigidbodies;
+
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+						{
+							auto bone = smr->getTransforms()[i];
+							auto rigibdody = bone->getComponent<RigidbodyComponent>();
+							if (rigibdody)
+							{
+								rigidbodies.push_back(rigibdody.get());
+								rigidbodyToBone.push_back(i);
+							}
+						}
+
+						pmx.numRigidbodys = rigidbodies.size();
+						pmx.rigidbodies.resize(pmx.numRigidbodys);
+
+						for (std::size_t i = 0; i < pmx.numRigidbodys; i++)
+						{
+							auto it = rigidbodies[i]->downcast<RigidbodyComponent>();
+
+							auto& pmxRigidbody = pmx.rigidbodies[i];
+							pmxRigidbody.bone = rigidbodyToBone[i];
+							pmxRigidbody.name = it->getName();
+							pmxRigidbody.nameEng = PmxName("");
+							pmxRigidbody.mass = it->getMass();
+							pmxRigidbody.group = it->getGroup();
+							pmxRigidbody.groupMask  = it->getGroupMask();
+							pmxRigidbody.elasticity = it->getRestitution();
+							pmxRigidbody.friction = it->getStaticFriction();
+							pmxRigidbody.movementDecay = it->getLinearDamping();
+							pmxRigidbody.rotationDecay = it->getAngularDamping();
+							pmxRigidbody.physicsOperation = it->getIsKinematic() ? 0 : 1;
+
+							auto collider = it->getComponent<ColliderComponent>();
+							if (collider)
+							{
+								auto baseTransform = it->getComponent<TransformComponent>()->getTransform();
+								auto localTransform = math::transformMultiply(baseTransform, math::makeRotation(collider->getQuaternion(), collider->getCenter()));
+
+								math::float3 translate;
+								math::float3 scale;
+								math::Quaternion rotation;
+								localTransform.getTransform(translate, rotation, scale);
+
+								pmxRigidbody.position = translate;
+								pmxRigidbody.rotate = math::eulerAngles(rotation);
+							}
+
+							if (auto boxCollider = it->getComponent<BoxColliderComponent>())
+							{
+								pmxRigidbody.shape = PmxShapeType::ShapeTypeSquare;
+								pmxRigidbody.scale = boxCollider->getSize();
+							}								
+							else if (auto capsuleCollider = it->getComponent<CapsuleColliderComponent>())
+							{
+								pmxRigidbody.shape = PmxShapeType::ShapeTypeCapsule;
+								pmxRigidbody.scale.x = capsuleCollider->getRadius();
+								pmxRigidbody.scale.y = capsuleCollider->getHeight();
+								pmxRigidbody.scale.z = 0.0f;
+							}
+							else if (auto sphereCollider = it->getComponent<SphereColliderComponent>())
+							{
+								pmxRigidbody.shape = PmxShapeType::ShapeTypeSphere;
+								pmxRigidbody.scale.x = sphereCollider->getRadius();
+								pmxRigidbody.scale.y = 0.0f;
+								pmxRigidbody.scale.z = 0.0f;
+							}
+						}
+
 						std::map<RigidbodyComponent*, std::size_t> rigidbodyMap;
 
-						for (std::size_t i = 0; i < pmx.numBones; i++)
+						for (std::size_t i = 0; i < pmx.numRigidbodys; i++)
 						{
-							auto rigidbody = smr->getTransforms()[i]->getComponent<RigidbodyComponent>();
+							auto rigidbody = rigidbodies[i]->downcast<RigidbodyComponent>();;
 							if (rigidbody)
-								rigidbodyMap[rigidbody.get()] = rigidbodyMap.size();
+								rigidbodyMap[rigidbody] = rigidbodyMap.size();
 						}
 
+						GameComponents joints;
 						for (std::size_t i = 0; i < pmx.numBones; i++)
 						{
 							auto bone = smr->getTransforms()[i];
-							auto it = bone->getComponent<RigidbodyComponent>();
-							if (it)
-							{
-								PmxRigidbody pmxRigidbody;
-								pmxRigidbody.bone = i;
-								pmxRigidbody.name = it->getName();
-								pmxRigidbody.nameEng = PmxName("");
-								pmxRigidbody.mass = it->getMass();
-								pmxRigidbody.group = it->getGroup();
-								pmxRigidbody.groupMask  = it->getGroupMask();
-								pmxRigidbody.elasticity = it->getRestitution();
-								pmxRigidbody.friction = it->getStaticFriction();
-								pmxRigidbody.movementDecay = it->getLinearDamping();
-								pmxRigidbody.rotationDecay = it->getAngularDamping();
-								pmxRigidbody.physicsOperation = it->getIsKinematic() ? 0 : 1;
-
-								auto collider = bone->getComponent<ColliderComponent>();
-								if (collider)
-								{
-									auto baseTransform = bone->getComponent<TransformComponent>()->getTransform();
-									auto localTransform = math::transformMultiply(baseTransform, math::makeRotation(collider->getQuaternion(), collider->getCenter()));
-
-									math::float3 translate;
-									math::float3 scale;
-									math::Quaternion rotation;
-									localTransform.getTransform(translate, rotation, scale);
-
-									pmxRigidbody.position = translate;
-									pmxRigidbody.rotate = math::eulerAngles(rotation);
-								}
-
-								if (auto boxCollider = bone->getComponent<BoxColliderComponent>())
-								{
-									pmxRigidbody.shape = PmxShapeType::ShapeTypeSquare;
-									pmxRigidbody.scale = boxCollider->getSize();
-								}								
-								else if (auto capsuleCollider = bone->getComponent<CapsuleColliderComponent>())
-								{
-									pmxRigidbody.shape = PmxShapeType::ShapeTypeCapsule;
-									pmxRigidbody.scale.x = capsuleCollider->getRadius();
-									pmxRigidbody.scale.y = capsuleCollider->getHeight();
-									pmxRigidbody.scale.z = 0.0f;
-								}
-								else if (auto sphereCollider = bone->getComponent<SphereColliderComponent>())
-								{
-									pmxRigidbody.shape = PmxShapeType::ShapeTypeSphere;
-									pmxRigidbody.scale.x = sphereCollider->getRadius();
-									pmxRigidbody.scale.y = 0.0f;
-									pmxRigidbody.scale.z = 0.0f;
-								}
-								
-								pmx.rigidbodies.push_back(pmxRigidbody);
-							}
+							bone->getComponents<ConfigurableJointComponent>(joints);
 						}
 
-						pmx.numRigidbodys = pmx.rigidbodies.size();
+						pmx.numJoints = joints.size();
+						pmx.joints.resize(pmx.numJoints);
 
-						for (std::size_t i = 0; i < pmx.numBones; i++)
+						for (std::size_t i = 0; i < pmx.numJoints; i++)
 						{
-							auto bone = smr->getTransforms()[i];
+							float minX, maxX, minY, maxY, minZ, maxZ;
 
-							auto joint = bone->getComponent<ConfigurableJointComponent>();
-							if (joint)
-							{
-								float minX, maxX, minY, maxY, minZ, maxZ;
-								joint->getAngularLimit(minX, maxX, minY, maxY, minZ, maxZ);
+							auto joint = joints[i]->downcast<ConfigurableJointComponent>();
+							joint->getAngularLimit(minX, maxX, minY, maxY, minZ, maxZ);
 
-								PmxJoint pmxJoint;
-								std::memset(&pmxJoint, 0, sizeof(PmxJoint));
-								pmxJoint.name = joint->getName();
-								pmxJoint.nameEng = PmxName("");
-								pmxJoint.type = 0;
-								pmxJoint.position = joint->getTargetPosition();
-								pmxJoint.rotation = math::eulerAngles(joint->getTargetRotation());
-								pmxJoint.relatedRigidBodyIndexA = rigidbodyMap[bone->getComponent<RigidbodyComponent>().get()];
-								pmxJoint.relatedRigidBodyIndexB = joint->getTarget() ? rigidbodyMap[joint->getTarget().get()] : -1;
-								pmxJoint.movementLowerLimit.x = joint->getLowXLimit();
-								pmxJoint.movementLowerLimit.y = joint->getLowYLimit();
-								pmxJoint.movementLowerLimit.z = joint->getLowZLimit();
-								pmxJoint.movementUpperLimit.x = joint->getHighXLimit();
-								pmxJoint.movementUpperLimit.y = joint->getHighYLimit();
-								pmxJoint.movementUpperLimit.z = joint->getHighZLimit();
-								pmxJoint.rotationLowerLimit.x = minX;
-								pmxJoint.rotationLowerLimit.y = minY;
-								pmxJoint.rotationLowerLimit.z = minZ;
-								pmxJoint.rotationUpperLimit.x = maxX;
-								pmxJoint.rotationUpperLimit.y = maxY;
-								pmxJoint.rotationUpperLimit.z = maxZ;
-								pmxJoint.springMovementConstant.x = joint->getDriveMotionX();
-								pmxJoint.springMovementConstant.y = joint->getDriveMotionY();
-								pmxJoint.springMovementConstant.z = joint->getDriveMotionZ();
-								pmxJoint.springRotationConstant.x = joint->getDriveAngularX();
-								pmxJoint.springRotationConstant.y = joint->getDriveAngularY();
-								pmxJoint.springRotationConstant.z = joint->getDriveAngularZ();
-
-								pmx.joints.push_back(pmxJoint);
-							}
+							auto& pmxJoint = pmx.joints[i];
+							pmxJoint.name = joint->getName();
+							pmxJoint.nameEng = PmxName("");
+							pmxJoint.type = 0;
+							pmxJoint.position = joint->getTargetPosition();
+							pmxJoint.rotation = math::eulerAngles(joint->getTargetRotation());
+							pmxJoint.relatedRigidBodyIndexA = rigidbodyMap[joint->getComponent<RigidbodyComponent>().get()];
+							pmxJoint.relatedRigidBodyIndexB = joint->getTarget() ? rigidbodyMap[joint->getTarget().get()] : -1;
+							pmxJoint.movementLowerLimit.x = joint->getLowXLimit();
+							pmxJoint.movementLowerLimit.y = joint->getLowYLimit();
+							pmxJoint.movementLowerLimit.z = joint->getLowZLimit();
+							pmxJoint.movementUpperLimit.x = joint->getHighXLimit();
+							pmxJoint.movementUpperLimit.y = joint->getHighYLimit();
+							pmxJoint.movementUpperLimit.z = joint->getHighZLimit();
+							pmxJoint.rotationLowerLimit.x = minX;
+							pmxJoint.rotationLowerLimit.y = minY;
+							pmxJoint.rotationLowerLimit.z = minZ;
+							pmxJoint.rotationUpperLimit.x = maxX;
+							pmxJoint.rotationUpperLimit.y = maxY;
+							pmxJoint.rotationUpperLimit.z = maxZ;
+							pmxJoint.springMovementConstant.x = joint->getDriveMotionX();
+							pmxJoint.springMovementConstant.y = joint->getDriveMotionY();
+							pmxJoint.springMovementConstant.z = joint->getDriveMotionZ();
+							pmxJoint.springRotationConstant.x = joint->getDriveAngularX();
+							pmxJoint.springRotationConstant.y = joint->getDriveAngularY();
+							pmxJoint.springRotationConstant.z = joint->getDriveAngularZ();
 						}
-
-						pmx.numJoints = pmx.joints.size();						
 					}
 				}
 			}

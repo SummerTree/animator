@@ -315,7 +315,7 @@ namespace octoon
 	{
 		if (joint_)
 			joint_->setDriveAngularX(motion);
-		driveAngular_.z = motion;
+		driveAngular_.x = motion;
 	}
 
 	void
@@ -323,7 +323,7 @@ namespace octoon
 	{
 		if (joint_)
 			joint_->setDriveAngularY(motion);
-		driveAngular_.z = motion;
+		driveAngular_.y = motion;
 	}
 
 	void
