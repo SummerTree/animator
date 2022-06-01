@@ -160,13 +160,7 @@ namespace unreal
 
 					if (!lightComponent->createLight((LightType)lightData.toInt()))
 					{
-						QMessageBox msg(this);
-						msg.setWindowTitle(tr("Error"));
-						msg.setText(tr("Unsupported light type."));
-						msg.setIcon(QMessageBox::Information);
-						msg.setStandardButtons(QMessageBox::Ok);
-
-						msg.exec();
+						QMessageBox::critical(this, tr("Error"), tr("Unsupported light type."));
 					}
 				}
 			}

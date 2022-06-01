@@ -738,36 +738,36 @@ $20 (Original cost $40)</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="141"/>
+        <location filename="../views/motion_dock.cpp" line="142"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="141"/>
+        <location filename="../views/motion_dock.cpp" line="142"/>
         <source>Are you sure you want to delete this motion data?</source>
         <translation>确定要删除此动作数据吗?</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="165"/>
+        <location filename="../views/motion_dock.cpp" line="166"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="165"/>
+        <location filename="../views/motion_dock.cpp" line="166"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="176"/>
         <location filename="../views/motion_dock.cpp" line="177"/>
-        <location filename="../views/motion_dock.cpp" line="226"/>
+        <location filename="../views/motion_dock.cpp" line="178"/>
         <location filename="../views/motion_dock.cpp" line="227"/>
+        <location filename="../views/motion_dock.cpp" line="228"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="176"/>
-        <location filename="../views/motion_dock.cpp" line="226"/>
+        <location filename="../views/motion_dock.cpp" line="177"/>
+        <location filename="../views/motion_dock.cpp" line="227"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -966,29 +966,29 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="236"/>
+        <location filename="../views/setting_window.cpp" line="229"/>
         <source>General</source>
         <translation>通用</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="236"/>
+        <location filename="../views/setting_window.cpp" line="229"/>
         <source>Interface</source>
         <translation>界面</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="236"/>
+        <location filename="../views/setting_window.cpp" line="229"/>
         <source>Graphics</source>
         <translation>图像</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="349"/>
+        <location filename="../views/setting_window.cpp" line="342"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="349"/>
+        <location filename="../views/setting_window.cpp" line="342"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1465,9 +1465,9 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="35"/>
-        <location filename="../views/toplevel_bar.cpp" line="247"/>
-        <location filename="../views/toplevel_bar.cpp" line="254"/>
-        <location filename="../views/toplevel_bar.cpp" line="298"/>
+        <location filename="../views/toplevel_bar.cpp" line="217"/>
+        <location filename="../views/toplevel_bar.cpp" line="224"/>
+        <location filename="../views/toplevel_bar.cpp" line="268"/>
         <source>Volume</source>
         <translation>音量打开</translation>
     </message>
@@ -1477,24 +1477,24 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="181"/>
-        <location filename="../views/toplevel_bar.cpp" line="219"/>
-        <location filename="../views/toplevel_bar.cpp" line="276"/>
+        <location filename="../views/toplevel_bar.cpp" line="174"/>
+        <location filename="../views/toplevel_bar.cpp" line="200"/>
+        <location filename="../views/toplevel_bar.cpp" line="246"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="182"/>
-        <location filename="../views/toplevel_bar.cpp" line="220"/>
-        <location filename="../views/toplevel_bar.cpp" line="276"/>
+        <location filename="../views/toplevel_bar.cpp" line="174"/>
+        <location filename="../views/toplevel_bar.cpp" line="200"/>
+        <location filename="../views/toplevel_bar.cpp" line="246"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="116"/>
-        <location filename="../views/toplevel_bar.cpp" line="146"/>
-        <location filename="../views/toplevel_bar.cpp" line="193"/>
-        <location filename="../views/toplevel_bar.cpp" line="231"/>
+        <location filename="../views/toplevel_bar.cpp" line="145"/>
+        <location filename="../views/toplevel_bar.cpp" line="180"/>
+        <location filename="../views/toplevel_bar.cpp" line="206"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -1505,12 +1505,12 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="101"/>
-        <location filename="../views/toplevel_bar.cpp" line="159"/>
+        <location filename="../views/toplevel_bar.cpp" line="153"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="292"/>
+        <location filename="../views/toplevel_bar.cpp" line="262"/>
         <source>VolumeOff</source>
         <translation>音量关闭</translation>
     </message>
@@ -1523,12 +1523,12 @@ $20 (Original cost $40)</source>
         <translation>相机</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="164"/>
+        <location filename="../views/view_dock.cpp" line="163"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="165"/>
+        <location filename="../views/view_dock.cpp" line="163"/>
         <source>Unsupported light type.</source>
         <translation>不支持的光源类型。</translation>
     </message>

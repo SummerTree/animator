@@ -148,44 +148,44 @@ namespace unreal
 
 		QStringList strList{ tr("General"), tr("Interface"), tr("Graphics") };
 
-		listWidget_ = std::make_unique<QListWidget>(this);
+		listWidget_ = new QListWidget(this);
 		listWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		listWidget_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		listWidget_->verticalScrollBar()->setFixedWidth(8);
 
 		for (std::size_t i = 0; i < strList.size(); i++)
 		{
-			listWidgetItems_[i] = std::make_unique<QListWidgetItem>();
+			listWidgetItems_[i] = new QListWidgetItem();
 			listWidgetItems_[i]->setText(strList[(int)i]);
 			listWidgetItems_[i]->setSizeHint(QSize(180, 30));
 			listWidgetItems_[i]->setTextAlignment(Qt::AlignCenter);
 
-			listWidget_->addItem(listWidgetItems_[i].get());
+			listWidget_->addItem(listWidgetItems_[i]);
 		}
 
 		listWidgetItems_[0]->setSelected(true);
 
-		scrollWidget_ = std::make_unique<QWidget>(this);
+		scrollWidget_ = new QWidget(this);
 		scrollWidget_->setFixedWidth(490);
 		scrollWidget_->setStyleSheet("background-color: rgb(40,40,40);");
 
-		mainPlaneGeneral_ = std::make_unique<SettingMainPlaneGeneral>(scrollWidget_.get(), behaviour);
-		mainPlaneInterface_ = std::make_unique<SettingMainPlaneInterface>(scrollWidget_.get());
-		mainPlaneGraphics_ = std::make_unique<SettingMainPlaneGraphics>(scrollWidget_.get());
+		mainPlaneGeneral_ = new SettingMainPlaneGeneral(scrollWidget_, behaviour);
+		mainPlaneInterface_ = new SettingMainPlaneInterface(scrollWidget_);
+		mainPlaneGraphics_ = new SettingMainPlaneGraphics(scrollWidget_);
 
-		gridLayout_ = std::make_unique<QVBoxLayout>(scrollWidget_.get());
-		gridLayout_->addWidget(mainPlaneGeneral_.get());
-		gridLayout_->addWidget(mainPlaneInterface_.get());
-		gridLayout_->addWidget(mainPlaneGraphics_.get());
+		gridLayout_ = new QVBoxLayout(scrollWidget_);
+		gridLayout_->addWidget(mainPlaneGeneral_);
+		gridLayout_->addWidget(mainPlaneInterface_);
+		gridLayout_->addWidget(mainPlaneGraphics_);
 
-		scrollArea_ = std::make_unique<QScrollArea>(this);
-		scrollArea_->setWidget(scrollWidget_.get());
+		scrollArea_ = new QScrollArea(this);
+		scrollArea_->setWidget(scrollWidget_);
 		scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		scrollArea_->verticalScrollBar()->setObjectName("settingScrollBar");
 
-		layout_ = std::make_unique<QHBoxLayout>(this);
-		layout_->addWidget(listWidget_.get());
-		layout_->addWidget(scrollArea_.get());
+		layout_ = new QHBoxLayout(this);
+		layout_->addWidget(listWidget_);
+		layout_->addWidget(scrollArea_);
 		layout_->setSpacing(0);
 		layout_->setContentsMargins(0, 0, 0, 0);
 
@@ -210,7 +210,7 @@ namespace unreal
 			throw std::runtime_error("SettingContextPlane::SettingContextPlane: resolution not found");
 
 		connect(scrollArea_->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
-		connect(listWidget_.get(), SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
+		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(mainPlaneGeneral_->resetButton, SIGNAL(clicked()), this, SLOT(onResetButton()));
 		connect(mainPlaneGeneral_->infoButton, SIGNAL(clicked()), this, SLOT(onCheckVersion()));
 		connect(mainPlaneInterface_->resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
@@ -221,13 +221,6 @@ namespace unreal
 
 	SettingContextPlane::~SettingContextPlane()
 	{
-		mainPlaneGeneral_.reset();
-		mainPlaneInterface_.reset();
-		mainPlaneGraphics_.reset();
-		gridLayout_.reset();
-		scrollWidget_.reset();
-		scrollArea_.reset();
-		layout_.reset();
 	}
 
 	void

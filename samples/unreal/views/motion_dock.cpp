@@ -21,10 +21,11 @@ namespace unreal
 		this->setWindowTitle(tr("Motion Library"));
 		this->setObjectName("MotionDock");
 
-		importButton_ = new QToolButton;
+		importButton_ = new UPushButton;
 		importButton_->setObjectName("Import");
 		importButton_->setText(tr("Import"));
 		importButton_->installEventFilter(this);
+		importButton_->setFixedSize(190, 35);
 
 		topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
