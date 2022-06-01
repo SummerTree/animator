@@ -7,7 +7,7 @@
 
 namespace octoon::math
 {
-	class OCTOON_EXPORT Variant
+	class OCTOON_EXPORT Variant final
 	{
 	public:
 		enum class Type
@@ -354,6 +354,42 @@ namespace octoon::math
 			return false;
 		}
 
+		friend Variant operator+(const Variant& lhs, const Variant& rhs) noexcept(false)
+		{
+			assert(lhs.type_ == rhs.type_);
+
+			switch (lhs.type_)
+			{
+			case Type::Int:
+				return Variant(lhs.value_.i * rhs.value_.i);
+			case Type::Float:
+				return Variant(lhs.value_.f.x * rhs.value_.f.x);
+			case Type::Float4:
+				return Variant(lhs.value_.f * rhs.value_.f);
+			case Type::Quaternion:
+				return Variant(lhs.value_.quaternion + rhs.value_.quaternion);
+			default:
+				throw std::runtime_error("Variant::operator+(): invalid variant type!");
+			}
+		}
+
+		friend Variant operator*(const Variant& v, float value) noexcept(false)
+		{
+			switch (v.type_)
+			{
+			case Type::Int:
+				return Variant(v.value_.i * value);
+			case Type::Float:
+				return Variant(v.value_.f.x * value);
+			case Type::Float4:
+				return Variant(v.value_.f * value);
+			case Type::Quaternion:
+				return Variant(v.value_.quaternion * value);
+			default:
+				throw std::runtime_error("Variant::operator*(): invalid variant type!");
+			}
+		}
+
 	private:
 		Type type_;
 
@@ -361,10 +397,10 @@ namespace octoon::math
 		{
 			int i;
 			bool b;
-			float f[4];
-			Quaternion quaternion;
-			float4x4* matrix;
 			const void* object;
+			float4 f;
+			float4x4* matrix;
+			Quaternion quaternion;
 			std::string* string;
 			std::vector<int>* intArray;
 			std::vector<float>* floatArray;

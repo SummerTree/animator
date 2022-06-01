@@ -218,6 +218,16 @@ namespace octoon
 					return !(q1 == q2);
 				}
 
+				friend Quaternion<T> operator+(const Quaternion<T>& q1, const Quaternion<T>& q2) noexcept
+				{
+					return Quaternion<T>(q1.x + q2.x, q1.y + q2.y, q1.z + q2.z, q1.w + q2.w);
+				}
+
+				friend Quaternion<T> operator*(const Quaternion<T>& q, const T& scale) noexcept
+				{
+					return Quaternion<T>(q.x * scale, q.y * scale, q.z * scale, q.w * scale);
+				}
+
 				friend Quaternion<T> operator*(const Quaternion<T>& q1, const Quaternion<T>& q2) noexcept
 				{
 					return Quaternion<T>(
