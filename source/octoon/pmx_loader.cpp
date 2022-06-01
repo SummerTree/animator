@@ -836,7 +836,7 @@ namespace octoon
 									{
 										pmxBone.IKLimitedRadian = rotationLimit->getMaximumAngle();
 
-										ik.rotateLimited = true;
+										ik.rotateLimited = rotationLimit->getAxisLimitEnable();
 										ik.minimumRadian = rotationLimit->getMinimumAxis();
 										ik.maximumRadian = rotationLimit->getMaximumAxis();
 									}
