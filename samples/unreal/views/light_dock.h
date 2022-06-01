@@ -7,6 +7,7 @@
 #include <qlistwidget.h>
 
 #include "unreal_profile.h"
+#include "../widgets/udockwidget.h"
 #include "../widgets/color_dialog.h"
 
 namespace unreal
@@ -25,7 +26,7 @@ namespace unreal
 		QPoint startPos;
 	};
 
-	class LightDock final : public QDockWidget
+	class LightDock final : public UDockWidget
 	{
 		Q_OBJECT
 	public:

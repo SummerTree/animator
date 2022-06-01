@@ -12,6 +12,8 @@
 #include <qprogressdialog.h>
 #include <QToolButton>
 
+#include "../widgets/upushbutton.h"
+
 namespace unreal
 {
 	ModelDock::ModelDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
@@ -22,9 +24,11 @@ namespace unreal
 		this->setWindowTitle(tr("Model Library"));
 		this->setObjectName("ModelDock");
 
-		importButton_ = new QToolButton;
+		importButton_ = new UPushButton;
 		importButton_->setObjectName("Import");
 		importButton_->setText(tr("Import"));
+		importButton_->setFixedSize(190, 35);
+		importButton_->installEventFilter(this);
 
 		topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
@@ -85,11 +89,13 @@ namespace unreal
 		{
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setObjectName("preview");
-			imageLabel->setFixedSize(QSize(100, 100));
+			imageLabel->setFixedSize(QSize(150, 150));
+			imageLabel->installEventFilter(this);
 
 			QLabel* nameLabel = new QLabel();
 			nameLabel->setObjectName("name");
 			nameLabel->setFixedHeight(30);
+			nameLabel->installEventFilter(this);
 
 			QVBoxLayout* widgetLayout = new QVBoxLayout;
 			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
@@ -102,7 +108,7 @@ namespace unreal
 
 			QListWidgetItem* item = new QListWidgetItem;
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
+			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(15, 15));
 
 			listWidget_->addItem(item);
 			listWidget_->setItemWidget(item, widget);
@@ -161,8 +167,8 @@ namespace unreal
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("PMX Files (*.pmx)"));
 		if (!filepaths.isEmpty())
 		{
-			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<ModelComponent>();
-			if (!hdrComponent)
+			auto modelComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<ModelComponent>();
+			if (!modelComponent)
 				return;
 
 			try
@@ -181,16 +187,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = hdrComponent->importModel(filepaths[i].toStdString());
+					auto package = modelComponent->importModel(filepaths[i].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				hdrComponent->save();
+				modelComponent->save();
 			}
 			catch (...)
 			{
-				hdrComponent->save();
+				modelComponent->save();
 			}
 		}
 	}
@@ -253,5 +259,19 @@ namespace unreal
 
 		for (auto& uuid : this->profile_->resourceModule->modelIndexList_.getValue())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
+	}
+
+	bool
+	ModelDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }

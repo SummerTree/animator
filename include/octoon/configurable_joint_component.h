@@ -24,6 +24,10 @@ namespace octoon
 		void setTargetVelocity(const math::float3& velocity) noexcept;
 		void setTargetRotation(const math::Quaternion& quat) noexcept;
 
+		const math::float3& getTargetPosition() const noexcept;
+		const math::float3& setTargetVelocity() const noexcept;
+		const math::Quaternion& getTargetRotation() const noexcept;
+
 		void setXMotion(ConfigurableJointMotion motion) noexcept;
 		void setYMotion(ConfigurableJointMotion motion) noexcept;
 		void setZMotion(ConfigurableJointMotion motion) noexcept;
@@ -61,6 +65,24 @@ namespace octoon
 		void setDriveAngularX(float motion) noexcept;
 		void setDriveAngularY(float motion) noexcept;
 		void setDriveAngularZ(float motion) noexcept;
+
+		float getLowXLimit() const noexcept;
+		float getLowYLimit() const noexcept;
+		float getLowZLimit() const noexcept;
+
+		float getHighXLimit() const noexcept;
+		float getHighYLimit() const noexcept;
+		float getHighZLimit() const noexcept;
+
+		float getDriveMotionX() const noexcept;
+		float getDriveMotionY() const noexcept;
+		float getDriveMotionZ() const noexcept;
+
+		float getDriveAngularX() const noexcept;
+		float getDriveAngularY() const noexcept;
+		float getDriveAngularZ() const noexcept;
+
+		void getAngularLimit(float& minX, float& maxX, float& minY, float& maxY, float& minZ, float& maxZ) noexcept;
 
 		void enableProjection(bool enable) noexcept;
 		void enablePreprocessing(bool enable) noexcept;

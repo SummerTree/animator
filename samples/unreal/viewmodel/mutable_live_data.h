@@ -6,7 +6,7 @@
 namespace unreal
 {
 	template <typename T>
-	class MutableLiveData
+	class MutableLiveData final
 	{
 	public:
 		MutableLiveData()

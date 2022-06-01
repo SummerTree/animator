@@ -28,6 +28,8 @@ namespace unreal
 		void onEnable() noexcept override;
 		void onDisable() noexcept override;
 
+		void onFixedUpdate() noexcept override;
+
 		void update() noexcept;
 
 	private:

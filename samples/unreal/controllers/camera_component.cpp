@@ -19,9 +19,9 @@ namespace unreal
 		{
 			auto& profile = this->getContext()->profile;
 
-			auto animator = profile->entitiesModule->camera.getValue()->getComponent<octoon::AnimatorComponent>();
+			auto animator = this->getModel()->camera.getValue()->getComponent<octoon::AnimatorComponent>();
 			if (!animator)
-				animator = profile->entitiesModule->camera.getValue()->addComponent<octoon::AnimatorComponent>();
+				animator = this->getModel()->camera.getValue()->addComponent<octoon::AnimatorComponent>();
 
 			animator->setAnimation(std::move(animation));
 			animator->sample(profile->playerModule->curTime);
@@ -51,7 +51,7 @@ namespace unreal
 	CameraComponent::removeAnimation() noexcept(false)
 	{
 		auto& profile = this->getContext()->profile;
-		auto mainCamera = profile->entitiesModule->camera.getValue();
+		auto mainCamera = this->getModel()->camera.getValue();
 		mainCamera->removeComponent<octoon::AnimatorComponent>();
 
 		profile->cameraModule->reset();
@@ -62,7 +62,7 @@ namespace unreal
 	{
 		this->getModel()->fov += [this](float value)
 		{
-			auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
+			auto camera = this->getModel()->camera.getValue();
 			if (camera)
 			{
 				auto cameraComponent = camera->getComponent<octoon::FilmCameraComponent>();
@@ -76,7 +76,7 @@ namespace unreal
 
 		this->getModel()->focalLength += [this](float value)
 		{
-			auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
+			auto camera = this->getModel()->camera.getValue();
 			if (camera)
 			{
 				auto cameraComponent = camera->getComponent<octoon::FilmCameraComponent>();
@@ -90,7 +90,7 @@ namespace unreal
 
 		this->getModel()->focusDistance += [this](float value)
 		{
-			auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
+			auto camera = this->getModel()->camera.getValue();
 			if (camera)
 			{
 				auto cameraComponent = camera->getComponent<octoon::FilmCameraComponent>();
@@ -101,7 +101,7 @@ namespace unreal
 
 		this->getModel()->aperture += [this](float value)
 		{
-			auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
+			auto camera = this->getModel()->camera.getValue();
 			if (camera)
 			{
 				auto cameraComponent = camera->getComponent<octoon::FilmCameraComponent>();
@@ -112,7 +112,7 @@ namespace unreal
 
 		this->getModel()->useDepthOfFiled += [this](bool value)
 		{
-			auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
+			auto camera = this->getModel()->camera.getValue();
 			if (camera)
 			{
 				auto cameraComponent = camera->getComponent<octoon::FilmCameraComponent>();
@@ -123,7 +123,7 @@ namespace unreal
 
 		this->getModel()->translate += [this](const octoon::math::float3& translate)
 		{
-			auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
+			auto camera = this->getModel()->camera.getValue();
 			if (camera)
 			{
 				auto transform = camera->getComponent<octoon::TransformComponent>();
@@ -133,12 +133,20 @@ namespace unreal
 
 		this->getModel()->rotation += [this](const octoon::math::float3& rotation)
 		{
-			auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
+			auto camera = this->getModel()->camera.getValue();
 			if (camera)
 			{
 				auto transform = camera->getComponent<octoon::TransformComponent>();
 				transform->setEulerAngles(rotation);
 			}
+		};
+
+		this->getModel()->animation += [this](const std::string& value)
+		{
+			if (!value.empty())
+				this->loadAnimation(value);
+			else
+				this->removeAnimation();
 		};
 
 		this->getContext()->profile->playerModule->isPlaying += [this](bool value)
@@ -165,6 +173,19 @@ namespace unreal
 	void
 	CameraComponent::onEnable() noexcept
 	{
+		auto mainCamera = octoon::GameObject::create("MainCamera");
+		mainCamera->addComponent<octoon::FirstPersonCameraComponent>();
+		mainCamera->getComponent<octoon::TransformComponent>()->setTranslate(this->getModel()->translate);
+		mainCamera->getComponent<octoon::TransformComponent>()->setEulerAngles(this->getModel()->rotation);
+
+		auto camera = mainCamera->addComponent<octoon::FilmCameraComponent>();
+		camera->setFov(this->getModel()->fov);
+		camera->setAperture(this->getModel()->useDepthOfFiled ? this->getModel()->aperture.getValue() : 0.0f);
+		camera->setCameraType(octoon::CameraType::Main);
+		camera->setClearColor(octoon::math::float4(0.0f, 0.0f, 0.0f, 1.0f));
+		camera->setupFramebuffers(this->getContext()->profile->recordModule->width, this->getContext()->profile->recordModule->height, 0, octoon::GraphicsFormat::R32G32B32SFloat);
+
+		this->getModel()->camera = mainCamera;
 	}
 
 	void
@@ -173,9 +194,26 @@ namespace unreal
 	}
 
 	void
+	CameraComponent::onFixedUpdate() noexcept
+	{
+		auto& model = this->getModel();
+
+		auto camera = this->getModel()->camera.getValue();
+		if (camera)
+		{
+			auto transformComponent = camera->getComponent<octoon::TransformComponent>();
+			if (transformComponent)
+			{
+				model->translate = camera->getComponent<octoon::TransformComponent>()->getTranslate();
+				model->rotation = camera->getComponent<octoon::TransformComponent>()->getEulerAngles();
+			}
+		}
+	}
+
+	void
 	CameraComponent::update() noexcept
 	{
-		auto camera = this->getContext()->profile->entitiesModule->camera.getValue();
+		auto camera = this->getModel()->camera.getValue();
 		if (camera)
 		{
 			auto& model = this->getModel();

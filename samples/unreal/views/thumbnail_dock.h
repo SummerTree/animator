@@ -47,6 +47,7 @@ namespace unreal
 		void environmentSignal();
 		void cameraSignal();
 		void motionSignal();
+		void languageChangeSignal(QString filename);
 
 	public:
 		QToolButton* recordButton_;

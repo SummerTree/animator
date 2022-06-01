@@ -4,24 +4,6 @@
 
 namespace unreal
 {
-	class SpinBox final : public QSpinBox
-	{
-	public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QSpinBox::focusOutEvent(event);
-		}
-	};
-
 	ColorPlane::ColorPlane(QWidget* parent)
 		: QLabel(parent)
 		, mousePress_(false)
@@ -286,15 +268,15 @@ namespace unreal
 		labelV_ = std::make_unique<QLabel>();
 		labelV_->setText(tr("Value"));
 
-		editH_ = std::make_unique<SpinBox>();
+		editH_ = std::make_unique<USpinBox>();
 		editH_->setFixedWidth(50);
 		editH_->setMaximum(360);
 		editH_->setAlignment(Qt::AlignRight);
-		editS_ = std::make_unique<SpinBox>();
+		editS_ = std::make_unique<USpinBox>();
 		editS_->setFixedWidth(50);
 		editS_->setMaximum(255);
 		editS_->setAlignment(Qt::AlignRight);
-		editV_ = std::make_unique<SpinBox>();
+		editV_ = std::make_unique<USpinBox>();
 		editV_->setFixedWidth(50);
 		editV_->setMaximum(255);
 		editV_->setAlignment(Qt::AlignRight);

@@ -19,9 +19,19 @@
 #include <qtimer.h>
 #include <qtoolbutton.h>
 
+#include "../widgets/uspinbox.h"
+#include "../widgets/udoublespinbox.h"
+#include "../widgets/ulabel.h"
+#include "../widgets/ucombobox.h"
+#include "../widgets/udockwidget.h"
+#include "../widgets/upushbutton.h"
+#include "../widgets/uspinline.h"
+#include "../widgets/udoublespinline.h"
+
+
 namespace unreal
 {
-	class RecordDock final : public QDockWidget
+	class RecordDock final : public UDockWidget
 	{
 		Q_OBJECT
 	  public:
@@ -51,38 +61,38 @@ namespace unreal
 		void onCrfChanged(double);
 
 	  public:
-		QLabel* quality_;
-		QLabel* videoRatio_;
-		QLabel* frame_;
-		QLabel* outputType_;
-		QLabel* sppLabel;
-		QLabel* bouncesLabel_;
-		QLabel* crfLabel;
-		QLabel* startLabel_;
-		QLabel* endLabel_;
-		QLabel* denoiseLabel_;
+		ULabel* quality_;
+		ULabel* videoRatio_;
+		ULabel* frame_;
+		ULabel* outputType_;
+		ULabel* sppLabel;
+		ULabel* bouncesLabel_;
+		ULabel* crfLabel;
+		ULabel* startLabel_;
+		ULabel* endLabel_;
+		ULabel* denoiseLabel_;
 
 		QButtonGroup* group_;
 		QButtonGroup* speedGroup_;
 
-		QComboBox* outputTypeCombo_;
+		UComboBox* outputTypeCombo_;
 
-		QToolButton* select1_;
-		QToolButton* select2_;
-		QToolButton* speed1_;
-		QToolButton* speed2_;
-		QToolButton* speed3_;
-		QToolButton* speed4_;
-		QToolButton* recordButton_;
-		QToolButton* markButton_;
+		UPushButton* select1_;
+		UPushButton* select2_;
+		UPushButton* speed1_;
+		UPushButton* speed2_;
+		UPushButton* speed3_;
+		UPushButton* speed4_;
+		UPushButton* recordButton_;
+		UPushButton* markButton_;
 		QCheckBox* denoiseButton_;
 
-		QSpinBox* startFrame_;
-		QSpinBox* endFrame_;
-		QSpinBox* sppSpinbox_;
-		QSpinBox* bouncesSpinbox_;
+		USpinBox* startFrame_;
+		USpinBox* endFrame_;
+		USpinLine* sppSpinbox_;
+		USpinLine* bouncesSpinbox_;
 
-		QDoubleSpinBox* crfSpinbox;
+		UDoubleSpinLine* crfSpinbox;
 
 		QHBoxLayout* videoRatioLayout_;
 		QHBoxLayout* frameLayout_;

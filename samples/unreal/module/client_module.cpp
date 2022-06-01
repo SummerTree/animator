@@ -44,7 +44,7 @@ namespace unreal
 	}
 
 	void 
-	ClientModule::load(octoon::runtime::json& reader) noexcept
+	ClientModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
 		if (reader.find("autoLogin") != reader.end())
 			this->autoLogin = reader["autoLogin"];
@@ -58,7 +58,7 @@ namespace unreal
 	}
 
 	void 
-	ClientModule::save(octoon::runtime::json& writer) noexcept
+	ClientModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 		writer["autoLogin"] = this->autoLogin;
 		writer["username"] = this->username;

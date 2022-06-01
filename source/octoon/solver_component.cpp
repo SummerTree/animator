@@ -157,6 +157,12 @@ namespace octoon
 		bones_ = bones;
 	}
 
+	const GameObjectPtr&
+	CCDSolverComponent::getBone(std::size_t i) const noexcept
+	{
+		return bones_[i];
+	}
+
 	const GameObjects&
 	CCDSolverComponent::getBones() const noexcept
 	{
@@ -338,10 +344,11 @@ namespace octoon
 
 					if (limitComponent)
 					{
-						auto& low = limitComponent->getMinimumAxis();
-						auto& upper = limitComponent->getMaximumAxis();
-						if (low.x != 0 || upper.x != 0 || low.y != 0 || upper.y != 0 || low.z != 0 || upper.z != 0)
+						if (limitComponent->getAxisLimitEnable())
 						{
+							auto& low = limitComponent->getMinimumAxis();
+							auto& upper = limitComponent->getMaximumAxis();
+
 							auto& spin = transform->getLocalEulerAngles();
 							auto rotation = math::eulerAngles(math::normalize(math::Quaternion(axis, deltaAngle)));
 							rotation = math::clamp(rotation, low - spin, upper - spin) + spin;

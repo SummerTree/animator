@@ -33,7 +33,7 @@ namespace octoon
 		void sleepForFps(float fps) const noexcept;
 
 	private:
-		void onActivate() except override;
+		void onActivate() noexcept override;
 		void onDeactivate() noexcept override;
 
 		void onFrameBegin() noexcept override;
@@ -46,7 +46,7 @@ namespace octoon
 		float time_;
 		float timeStep_;
 
-		std::unique_ptr<runtime::Timer> timer_;
+		std::unique_ptr<Timer> timer_;
 	};
 }
 

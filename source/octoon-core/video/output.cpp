@@ -1,4 +1,4 @@
-#include "output.h"
+#include <octoon/video/output.h>
 
 namespace octoon
 {

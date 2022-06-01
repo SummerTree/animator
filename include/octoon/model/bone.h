@@ -1,7 +1,8 @@
 #ifndef OCTOON_BONE_H_
 #define OCTOON_BONE_H_
 
-#include <octoon/model/modtypes.h>
+#include <octoon/math/math.h>
+#include <octoon/runtime/platform.h>
 
 namespace octoon
 {

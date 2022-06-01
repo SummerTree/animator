@@ -4,6 +4,7 @@
 #include <unreal_model.h>
 #include <octoon/math/vector2.h>
 #include <octoon/math/vector3.h>
+#include <octoon/game_object.h>
 #include <octoon/hal/graphics_texture.h>
 
 namespace unreal
@@ -16,8 +17,8 @@ namespace unreal
 
 		virtual void reset() noexcept override;
 
-		virtual void load(octoon::runtime::json& reader) noexcept override;
-		virtual void save(octoon::runtime::json& reader) noexcept override;
+		virtual void load(octoon::runtime::json& reader, std::string_view path) noexcept override;
+		virtual void save(octoon::runtime::json& writer, std::string_view path) noexcept override;
 
 		virtual void disconnect() noexcept;
 
@@ -31,7 +32,9 @@ namespace unreal
 		MutableLiveData<float> intensity;
 		MutableLiveData<octoon::math::float2> offset;
 		MutableLiveData<octoon::math::float3> color;
+		MutableLiveData<std::string> texturePath;
 		MutableLiveData<std::shared_ptr<octoon::GraphicsTexture>> texture;
+		MutableLiveData<octoon::GameObjectPtr> environmentLight;
 	};
 }
 

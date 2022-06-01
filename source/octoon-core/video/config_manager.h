@@ -1,5 +1,5 @@
-#ifndef OCTOON_RTX_MANAGER_H_
-#define OCTOON_RTX_MANAGER_H_
+#ifndef OCTOON_CONFIG_MANAGER_H_
+#define OCTOON_CONFIG_MANAGER_H_
 
 #include <vector>
 #include <memory>
@@ -44,13 +44,18 @@ namespace octoon
 		};
 
 	public:
-		ConfigManager(std::string_view deviceName) noexcept(false);
+		ConfigManager(std::string_view deviceName, std::string_view path) noexcept(false);
 
 		void setOutput(OutputType type, Output* output);
 		Output* getOutput(OutputType type) const;
 
 		void setMaxBounces(std::uint32_t num_bounces);
 		std::uint32_t getMaxBounces() const;
+
+		void setCachePath(std::string_view path);
+		const std::string& getCachePath() const;
+
+		std::uint32_t getSampleCounter() const;
 
 		void setFramebufferSize(std::uint32_t w, std::uint32_t h) noexcept;
 		void getFramebufferSize(std::uint32_t& w, std::uint32_t& h) const noexcept;
@@ -97,6 +102,7 @@ namespace octoon
 		std::vector<Config> configs_;
 		std::array<Output*, static_cast<std::size_t>(OutputType::kMax)> outputs_;
 
+		std::string cachePath_;
 		std::string currentRenderDeviceName;
 	};
 }

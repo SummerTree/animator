@@ -3,7 +3,7 @@
 
 namespace unreal
 {
-	class UnrealContext
+	class UnrealContext final
 	{
 	public:
 		class UnrealProfile* profile = nullptr;

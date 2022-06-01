@@ -16,32 +16,28 @@ namespace unreal
 	{
 		this->enable = true;
 		this->size = 0.1f;
-		this->intensity = 2.0f;
+		this->intensity = 1.0f;
 		this->color = octoon::math::float3(0.90196078f, 0.90196078f, 0.925490196f);
 		this->rotation = octoon::math::float3::Zero;
 	}
 
 	void 
-	MainLightModule::load(octoon::runtime::json& reader) noexcept
+	MainLightModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
-		if (reader.find("enable") != reader.end())
+		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
-
-		if (reader.find("size") != reader.end())
+		if (reader["size"].is_number_float())
 			this->size = reader["size"].get<nlohmann::json::number_float_t>();
-
-		if (reader.find("intensity") != reader.end())
+		if (reader["intensity"].is_number_float())
 			this->intensity = reader["intensity"].get<nlohmann::json::number_float_t>();
-
-		if (reader.count("color"))
+		if (reader["color"].is_array())
 			this->color = octoon::math::float3(reader["color"][0], reader["color"][1], reader["color"][2]);
-
-		if (reader.count("rotation"))
+		if (reader["rotation"].is_array())
 			this->rotation = octoon::math::float3(reader["rotation"][0], reader["rotation"][1], reader["rotation"][2]);
 	}
 
 	void 
-	MainLightModule::save(octoon::runtime::json& writer) noexcept
+	MainLightModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 		writer["enable"] = this->enable.getValue();
 		writer["intensity"] = this->intensity.getValue();

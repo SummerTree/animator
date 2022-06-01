@@ -79,7 +79,7 @@ namespace octoon
 		btTransform	 transformB_;
 		std::shared_ptr<BulletRigidbody> frameA_;
 		std::shared_ptr<BulletRigidbody> frameB_;
-		std::unique_ptr<btGeneric6DofSpringConstraint> _joint;
+		std::unique_ptr<btGeneric6DofSpringConstraint> joint_;
 	};
 }
 

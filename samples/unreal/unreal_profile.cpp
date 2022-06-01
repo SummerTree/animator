@@ -9,14 +9,13 @@ namespace unreal
 		: physicsModule(std::make_shared<PhysicsModule>())
 		, encodeModule(std::make_shared<EncodeModule>())
 		, playerModule(std::make_shared<PlayerModule>())
-		, fileModule(std::make_shared<FileModule>())
+		, soundModule(std::make_shared<SoundModule>())
 		, entitiesModule(std::make_shared<EntitiesModule>())
 		, offlineModule(std::make_shared<OfflineModule>())
 		, recordModule(std::make_shared<RecordModule>())
 		, markModule(std::make_shared<MarkModule>())
 		, mainLightModule(std::make_shared<MainLightModule>())
 		, environmentLightModule(std::make_shared<EnvironmentModule>())
-		, clientModule(std::make_shared<ClientModule>())
 		, resourceModule(std::make_shared<ResourceModule>())
 		, selectorModule(std::make_shared<SelectorModule>())
 		, gridModule(std::make_shared<GridModule>())
@@ -24,44 +23,10 @@ namespace unreal
 	{
 	}
 
-	UnrealProfile::UnrealProfile(std::string_view path) noexcept(false)
+	UnrealProfile::UnrealProfile(std::string_view path_) noexcept(false)
 		: UnrealProfile()
 	{
-		std::ifstream stream(path);
-		if (stream)
-		{
-			auto json = octoon::runtime::json::parse(stream);
-			if (json.find("physics") != json.end())
-				this->physicsModule->load(json["physics"]);
-			if (json.find("encode") != json.end())
-				this->encodeModule->load(json["encode"]);
-			if (json.find("time") != json.end())
-				this->playerModule->load(json["time"]);
-			if (json.find("file") != json.end())
-				this->fileModule->load(json["file"]);
-			if (json.find("entities") != json.end())
-				this->entitiesModule->load(json["entities"]);
-			if (json.find("offline") != json.end())
-				this->offlineModule->load(json["offline"]);
-			if (json.find("canvas") != json.end())
-				this->recordModule->load(json["canvas"]);
-			if (json.find("camera") != json.end())
-				this->cameraModule->load(json["camera"]);
-			if (json.find("mark") != json.end())
-				this->markModule->load(json["mark"]);
-			if (json.find("mainLight") != json.end())
-				this->mainLightModule->load(json["mainLight"]);
-			if (json.find("environmentLight") != json.end())
-				this->environmentLightModule->load(json["environmentLight"]);
-			if (json.find("client") != json.end())
-				this->clientModule->load(json["client"]);
-			if (json.find("resource") != json.end())
-				this->resourceModule->load(json["resource"]);
-			if (json.find("drag") != json.end())
-				this->selectorModule->load(json["drag"]);
-			if (json.find("grid") != json.end())
-				this->gridModule->load(json["grid"]);
-		}
+		this->load(path_);
 	}
 
 	UnrealProfile::~UnrealProfile() noexcept
@@ -74,7 +39,7 @@ namespace unreal
 		this->physicsModule->disconnect();
 		this->encodeModule->disconnect();
 		this->playerModule->disconnect();
-		this->fileModule->disconnect();
+		this->soundModule->disconnect();
 		this->entitiesModule->disconnect();
 		this->offlineModule->disconnect();
 		this->recordModule->disconnect();
@@ -82,47 +47,82 @@ namespace unreal
 		this->mainLightModule->disconnect();
 		this->environmentLightModule->disconnect();
 		this->cameraModule->disconnect();
-		this->clientModule->disconnect();
 		this->resourceModule->disconnect();
 		this->selectorModule->disconnect();
 		this->gridModule->disconnect();
 	}
 
-	std::unique_ptr<UnrealProfile>
-	UnrealProfile::load(std::string_view path) noexcept(false)
+	void
+	UnrealProfile::load(std::string_view path_) noexcept(false)
 	{
-		return std::make_unique<UnrealProfile>(path);
+		std::ifstream stream(path_);
+		if (stream)
+		{
+			auto json = octoon::runtime::json::parse(stream);
+
+			this->path = path_;
+
+			if (json["physics"].is_object())
+				this->physicsModule->load(json["physics"], path);
+			if (json["encode"].is_object())
+				this->encodeModule->load(json["encode"], path);
+			if (json["time"].is_object())
+				this->playerModule->load(json["time"], path);
+			if (json["sound"].is_object())
+				this->soundModule->load(json["sound"], path);
+			if (json["entities"].is_object())
+				this->entitiesModule->load(json["entities"], path);
+			if (json["offline"].is_object())
+				this->offlineModule->load(json["offline"], path);
+			if (json["canvas"].is_object())
+				this->recordModule->load(json["canvas"], path);
+			if (json["camera"].is_object())
+				this->cameraModule->load(json["camera"], path);
+			if (json["mark"].is_object())
+				this->markModule->load(json["mark"], path);
+			if (json["mainLight"].is_object())
+				this->mainLightModule->load(json["mainLight"], path);
+			if (json["environmentLight"].is_object())
+				this->environmentLightModule->load(json["environmentLight"], path);
+			if (json["resource"].is_object())
+				this->resourceModule->load(json["resource"], path);
+			if (json["drag"].is_object())
+				this->selectorModule->load(json["drag"], path);
+			if (json["grid"].is_object())
+				this->gridModule->load(json["grid"], path);
+		}
 	}
 
 	void
-	UnrealProfile::save(std::string_view path, const UnrealProfile& profile) noexcept(false)
+	UnrealProfile::save(std::string_view path_) noexcept(false)
 	{
-		std::ofstream stream(path);
+		std::ofstream stream(path_);
 		if (stream)
 		{
 			octoon::runtime::json json;
-			profile.physicsModule->save(json["physics"]);
-			profile.encodeModule->save(json["encode"]);
-			profile.playerModule->save(json["time"]);
-			profile.fileModule->save(json["file"]);
-			profile.entitiesModule->save(json["entities"]);
-			profile.offlineModule->save(json["offline"]);
-			profile.cameraModule->save(json["camera"]);
-			profile.recordModule->save(json["canvas"]);
-			profile.markModule->save(json["mark"]);
-			profile.mainLightModule->save(json["mainLight"]);
-			profile.environmentLightModule->save(json["environmentLight"]);
-			profile.clientModule->save(json["client"]);
-			profile.resourceModule->save(json["resource"]);
-			profile.selectorModule->save(json["drag"]);
-			profile.gridModule->save(json["grid"]);
+
+			this->path = path_;
+			this->physicsModule->save(json["physics"], path_);
+			this->encodeModule->save(json["encode"], path_);
+			this->playerModule->save(json["time"], path_);
+			this->soundModule->save(json["sound"], path_);
+			this->entitiesModule->save(json["entities"], path_);
+			this->offlineModule->save(json["offline"], path_);
+			this->cameraModule->save(json["camera"], path_);
+			this->recordModule->save(json["canvas"], path_);
+			this->markModule->save(json["mark"], path_);
+			this->mainLightModule->save(json["mainLight"], path_);
+			this->environmentLightModule->save(json["environmentLight"], path_);
+			this->resourceModule->save(json["resource"], path_);
+			this->selectorModule->save(json["drag"], path_);
+			this->gridModule->save(json["grid"], path_);
 
 			auto string = json.dump();
 			stream.write(string.c_str(), string.size());
 		}
 		else
 		{
-			throw std::runtime_error("Failed to create file: " + std::string(path));
+			throw std::runtime_error("Failed to create file: " + std::string(path_));
 		}
 	}
 }

@@ -7,197 +7,9 @@
 #include <octoon/animation/path_interpolator.h>
 #include <iconv.h>
 #include <map>
-#include <set>
 
 namespace octoon
 {
-	typedef char          VMD_char;
-	typedef std::int8_t   VMD_int8_t;
-	typedef std::uint8_t  VMD_uint8_t;
-	typedef std::uint16_t VMD_uint16_t;
-	typedef std::uint32_t VMD_uint32_t;
-
-	typedef float VMD_Float;
-
-#pragma pack(push)
-#pragma pack(1)
-
-	struct VMD_Vector2
-	{
-		float x;
-		float y;
-	};
-
-	struct VMD_Vector3
-	{
-		float x;
-		float y;
-		float z;
-	};
-
-	struct VMD_Vector4
-	{
-		float x;
-		float y;
-		float z;
-		float w;
-	};
-
-	struct VMD_Quaternion
-	{
-		float x;
-		float y;
-		float z;
-		float w;
-	};
-
-	struct VMD_Header
-	{
-		VMD_char magic[30];
-		VMD_char name[20];
-	};
-
-	struct VMDMotion
-	{
-		VMD_char name[15];
-		VMD_uint32_t frame;
-		VMD_Vector3 translate;
-		VMD_Quaternion rotate;
-		VMD_int8_t interpolation_x[4];
-		VMD_int8_t interpolation_y[4];
-		VMD_int8_t interpolation_z[4];
-		VMD_int8_t interpolation_rotation[4];
-		VMD_int8_t interpolation[48];
-	};
-
-	struct VMDMorph
-	{
-		VMD_char name[15];
-		VMD_uint32_t frame;
-		VMD_Float weight;
-	};
-
-	struct VMDCamera
-	{
-		VMD_uint32_t frame;
-		VMD_Float length;
-		VMD_Vector3 location;
-		VMD_Vector3 rotation;
-		VMD_int8_t interpolation_x[4];
-		VMD_int8_t interpolation_y[4];
-		VMD_int8_t interpolation_z[4];
-		VMD_int8_t interpolation_rotation[4];
-		VMD_int8_t interpolation_distance[4];
-		VMD_int8_t interpolation_angleview[4];
-		VMD_uint32_t viewingAngle;
-		VMD_uint8_t perspective;
-	};
-
-	struct VMDLight
-	{
-		VMD_uint32_t frame;
-		VMD_Vector3 rgb;
-		VMD_Vector3 location;
-	};
-
-	struct VMDSelfShadow
-	{
-		VMD_uint32_t frame;
-		VMD_uint8_t mode; // 00-02
-		VMD_Float distance; // 0.1 - (dist * 0.000001)
-	};
-
-#pragma pack(pop)
-
-	struct VMD
-	{
-		VMD_Header Header;
-
-		VMD_uint32_t NumMotion;
-		VMD_uint32_t NumMorph;
-		VMD_uint32_t NumCamera;
-		VMD_uint32_t NumLight;
-		VMD_uint32_t NumSelfShadow;
-
-		std::vector<VMDMotion> MotionLists;
-		std::vector<VMDMorph> MorphLists;
-		std::vector<VMDCamera> CameraLists;
-		std::vector<VMDLight> LightLists;
-		std::vector<VMDSelfShadow> SelfShadowLists;
-
-		void load(io::istream& stream) noexcept(false)
-		{
-			if (!stream.read((char*)&this->Header, sizeof(this->Header))) {
-				throw runtime::runtime_error::create(R"(Cannot read property "Header" from stream)");
-			}
-
-			if (!stream.read((char*)&this->NumMotion, sizeof(this->NumMotion))) {
-				throw runtime::runtime_error::create(R"(Cannot read property "NumMotion" from stream)");
-			}
-
-			if (this->NumMotion > 0)
-			{
-				this->MotionLists.resize(this->NumMotion);
-
-				if (!stream.read((char*)this->MotionLists.data(), sizeof(VMDMotion) * this->NumMotion)) {
-					throw runtime::runtime_error::create(R"(Cannot read property "VMDMotion" from stream)");
-				}
-			}
-
-			if (!stream.read((char*)&this->NumMorph, sizeof(this->NumMorph))) {
-				throw runtime::runtime_error::create(R"(Cannot read property "NumMorph" from stream)");
-			}
-
-			if (this->NumMorph > 0)
-			{
-				this->MorphLists.resize(this->NumMorph);
-
-				if (!stream.read((char*)this->MorphLists.data(), sizeof(VMDMorph) * this->NumMorph)) {
-					throw runtime::runtime_error::create(R"(Cannot read property "VMDMorph" from stream)");
-				}
-			}
-
-			if (!stream.read((char*)&this->NumCamera, sizeof(this->NumCamera))) {
-				throw runtime::runtime_error::create(R"(Cannot read property "NumCamera" from stream)");
-			}
-
-			if (this->NumCamera > 0)
-			{
-				this->CameraLists.resize(this->NumCamera);
-
-				if (!stream.read((char*)this->CameraLists.data(), sizeof(VMDCamera) * this->NumCamera)) {
-					throw runtime::runtime_error::create(R"(Cannot read property "VMDCamera" from stream)");
-				}
-			}
-
-			if (!stream.read((char*)&this->NumLight, sizeof(this->NumLight))) {
-				throw runtime::runtime_error::create(R"(Cannot read property "NumLight" from stream)");
-			}
-
-			if (this->NumLight > 0)
-			{
-				this->LightLists.resize(this->NumLight);
-
-				if (!stream.read((char*)this->LightLists.data(), sizeof(VMDLight) * this->NumLight)) {
-					throw runtime::runtime_error::create(R"(Cannot read property "VMDLight" from stream)");
-				}
-			}
-
-			if (!stream.read((char*)&this->NumSelfShadow, sizeof(this->NumSelfShadow))) {
-				throw runtime::runtime_error::create(R"(Cannot read property "NumSelfShadow" from stream)");
-			}
-
-			if (this->NumSelfShadow > 0)
-			{
-				this->SelfShadowLists.resize(this->NumSelfShadow);
-
-				if (!stream.read((char*)this->SelfShadowLists.data(), sizeof(VMDSelfShadow) * this->NumSelfShadow)) {
-					throw runtime::runtime_error::create(R"(Cannot read property "VMDSelfShadow" from stream)");
-				}
-			}
-		}
-	};
-
 	std::string sjis2utf8(const std::string& sjis)
 	{
 		std::size_t in_size = sjis.size();
@@ -217,13 +29,181 @@ namespace octoon
 			ic = iconv_open("utf-8", "SJIS");
 			iconv(ic, &in, &in_size, &out, &out_size);
 			iconv_close(ic);
+
+			return std::string(outbuf.get());
 		}
 		catch (const std::exception&)
 		{
 			iconv_close(ic);
 		}
 
-		return std::string(outbuf.get());
+		return std::string();
+	}
+
+	std::string utf82sjis(const std::string& utf8)
+	{
+		std::size_t in_size = utf8.size();
+		std::size_t out_size = utf8.size() * 2;
+
+		auto inbuf = std::make_unique<char[]>(in_size);
+		auto outbuf = std::make_unique<char[]>(out_size);
+		char* in = inbuf.get();
+		char* out = outbuf.get();
+
+		std::memcpy(in, utf8.c_str(), in_size);
+
+		iconv_t ic = nullptr;
+
+		try
+		{
+			ic = iconv_open("SJIS", "utf-8");
+			iconv(ic, &in, &in_size, &out, &out_size);
+			iconv_close(ic);
+
+			return std::string(outbuf.get());
+		}
+		catch (const std::exception&)
+		{
+			iconv_close(ic);
+		}
+
+		return std::string();
+	}
+
+	void
+	VMD::load(io::istream& stream) noexcept(false)
+	{
+		if (!stream.read((char*)&this->Header, sizeof(this->Header))) {
+			throw runtime::runtime_error::create(R"(Cannot read property "Header" from stream)");
+		}
+
+		if (!stream.read((char*)&this->NumMotion, sizeof(this->NumMotion))) {
+			throw runtime::runtime_error::create(R"(Cannot read property "NumMotion" from stream)");
+		}
+
+		if (this->NumMotion > 0)
+		{
+			this->MotionLists.resize(this->NumMotion);
+
+			if (!stream.read((char*)this->MotionLists.data(), sizeof(VMDMotion) * this->NumMotion)) {
+				throw runtime::runtime_error::create(R"(Cannot read property "VMDMotion" from stream)");
+			}
+		}
+
+		if (!stream.read((char*)&this->NumMorph, sizeof(this->NumMorph))) {
+			throw runtime::runtime_error::create(R"(Cannot read property "NumMorph" from stream)");
+		}
+
+		if (this->NumMorph > 0)
+		{
+			this->MorphLists.resize(this->NumMorph);
+
+			if (!stream.read((char*)this->MorphLists.data(), sizeof(VMDMorph) * this->NumMorph)) {
+				throw runtime::runtime_error::create(R"(Cannot read property "VMDMorph" from stream)");
+			}
+		}
+
+		if (!stream.read((char*)&this->NumCamera, sizeof(this->NumCamera))) {
+			throw runtime::runtime_error::create(R"(Cannot read property "NumCamera" from stream)");
+		}
+
+		if (this->NumCamera > 0)
+		{
+			this->CameraLists.resize(this->NumCamera);
+
+			if (!stream.read((char*)this->CameraLists.data(), sizeof(VMDCamera) * this->NumCamera)) {
+				throw runtime::runtime_error::create(R"(Cannot read property "VMDCamera" from stream)");
+			}
+		}
+
+		if (!stream.read((char*)&this->NumLight, sizeof(this->NumLight))) {
+			throw runtime::runtime_error::create(R"(Cannot read property "NumLight" from stream)");
+		}
+
+		if (this->NumLight > 0)
+		{
+			this->LightLists.resize(this->NumLight);
+
+			if (!stream.read((char*)this->LightLists.data(), sizeof(VMDLight) * this->NumLight)) {
+				throw runtime::runtime_error::create(R"(Cannot read property "VMDLight" from stream)");
+			}
+		}
+
+		if (!stream.read((char*)&this->NumSelfShadow, sizeof(this->NumSelfShadow))) {
+			throw runtime::runtime_error::create(R"(Cannot read property "NumSelfShadow" from stream)");
+		}
+
+		if (this->NumSelfShadow > 0)
+		{
+			this->SelfShadowLists.resize(this->NumSelfShadow);
+
+			if (!stream.read((char*)this->SelfShadowLists.data(), sizeof(VMDSelfShadow) * this->NumSelfShadow)) {
+				throw runtime::runtime_error::create(R"(Cannot read property "VMDSelfShadow" from stream)");
+			}
+		}
+	}
+
+	void
+	VMD::save(io::ostream& stream) noexcept(false)
+	{
+		if (!stream.write((char*)&this->Header, sizeof(this->Header))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "Header" from stream)");
+		}
+
+		if (!stream.write((char*)&this->NumMotion, sizeof(this->NumMotion))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumMotion" from stream)");
+		}
+
+		if (this->NumMotion > 0 && this->MotionLists.size() > 0)
+		{
+			if (!stream.write((char*)this->MotionLists.data(), sizeof(VMDMotion) * this->NumMotion)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDMotion" from stream)");
+			}
+		}
+
+		if (!stream.write((char*)&this->NumMorph, sizeof(this->NumMorph))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumMorph" from stream)");
+		}
+
+		if (this->NumMorph > 0 && this->MorphLists.size() > 0)
+		{
+			if (!stream.write((char*)this->MorphLists.data(), sizeof(VMDMorph) * this->NumMorph)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDMorph" from stream)");
+			}
+		}
+
+		if (!stream.write((char*)&this->NumCamera, sizeof(this->NumCamera))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumCamera" from stream)");
+		}
+
+		if (this->NumCamera > 0 && this->CameraLists.size() > 0)
+		{
+			if (!stream.write((char*)this->CameraLists.data(), sizeof(VMDCamera) * this->NumCamera)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDCamera" from stream)");
+			}
+		}
+
+		if (!stream.write((char*)&this->NumLight, sizeof(this->NumLight))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumLight" from stream)");
+		}
+
+		if (this->NumLight > 0 && this->LightLists.size() > 0)
+		{
+			if (!stream.write((char*)this->LightLists.data(), sizeof(VMDLight) * this->NumLight)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDLight" from stream)");
+			}
+		}
+
+		if (!stream.write((char*)&this->NumSelfShadow, sizeof(this->NumSelfShadow))) {
+			throw runtime::runtime_error::create(R"(Cannot write property "NumSelfShadow" from stream)");
+		}
+
+		if (this->NumSelfShadow > 0 && this->SelfShadowLists.size() > 0)
+		{
+			if (!stream.write((char*)this->SelfShadowLists.data(), sizeof(VMDSelfShadow) * this->NumSelfShadow)) {
+				throw runtime::runtime_error::create(R"(Cannot write property "VMDSelfShadow" from stream)");
+			}
+		}
 	}
 
 	VMDLoader::VMDLoader() noexcept

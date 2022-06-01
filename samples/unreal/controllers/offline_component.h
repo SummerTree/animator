@@ -23,6 +23,8 @@ namespace unreal
 		void onEnable() noexcept override;
 		void onDisable() noexcept override;
 
+		void onLateUpdate() noexcept override;
+
 	private:
 		OfflineComponent(const OfflineComponent&) = delete;
 		OfflineComponent& operator=(const OfflineComponent&) = delete;

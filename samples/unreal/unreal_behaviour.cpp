@@ -1,4 +1,7 @@
 #include "unreal_behaviour.h"
+#include "../utils/pmm_loader.h"
+#include "../utils/ass_loader.h"
+
 #include <filesystem>
 
 namespace unreal
@@ -24,37 +27,63 @@ namespace unreal
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".pmm")
 		{
-			entitiesComponent_->importPMM(path);
+			PMMLoader::load(*profile_, path);
+
 			playerComponent_->updateTimeLength();
 			playerComponent_->reset();
+
+			this->sendMessage("editor:project:open");
+
 			return true;
 		}
 		else if (ext == ".scene")
 		{
-			entitiesComponent_->importAss(path);
+			AssLoader::load(*profile_, path);
+
+			playerComponent_->updateTimeLength();
+			playerComponent_->reset();
+
+			this->sendMessage("editor:project:open");
+
+			return true;
+		}
+		else if (ext == ".agp")
+		{
+			profile_->load(path);
+
+			playerComponent_->updateTimeLength();
+			playerComponent_->reset();
+
+			this->sendMessage("editor:project:open");
+
 			return true;
 		}
 
 		return false;
 	}
 
-	bool
+	void
 	UnrealBehaviour::save(std::string_view path) noexcept(false)
 	{
-		return false;
+		profile_->save(path);
 	}
 
 	void
 	UnrealBehaviour::close() noexcept
 	{
 		this->cameraComponent_->removeAnimation();
-		this->entitiesComponent_->clearAudio();
 
+		this->profile_->soundModule->reset();
 		this->profile_->cameraModule->reset();
-		this->profile_->entitiesModule->objects.clear();
+		this->profile_->entitiesModule->reset();
 		this->profile_->mainLightModule->reset();
 		this->profile_->environmentLightModule->reset();
 		this->profile_->selectorModule->reset();
+		this->profile_->encodeModule->reset();
+		this->profile_->offlineModule->reset();
+		this->profile_->physicsModule->reset();
+		this->profile_->recordModule->reset();
+		this->profile_->playerModule->reset();
 	}
 
 	bool
@@ -63,7 +92,7 @@ namespace unreal
 		if (profile_->playerModule->timeLength > 0)
 			return true;
 
-		return !profile_->entitiesModule->objects.empty();
+		return !profile_->entitiesModule->objects.getValue().empty();
 	}
 
 	void
@@ -80,7 +109,7 @@ namespace unreal
 		else if (ext == ".abc")
 			entitiesComponent_->importAbc(path);
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
-			entitiesComponent_->importAudio(path);
+			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")
 			materialComponent_->importMdl(path);
 		else if (ext == ".vmd")
@@ -129,30 +158,6 @@ namespace unreal
 	}
 
 	void
-	UnrealBehaviour::loadAudio(std::string_view filepath) noexcept
-	{
-		entitiesComponent_->importAudio(filepath);
-	}
-
-	void
-	UnrealBehaviour::setVolume(float volume) noexcept
-	{
-		entitiesComponent_->setVolume(volume);
-	}
-
-	float
-	UnrealBehaviour::getVolume() const noexcept
-	{
-		return entitiesComponent_->getVolume();
-	}
-
-	void
-	UnrealBehaviour::clearAudio() noexcept
-	{
-		entitiesComponent_->clearAudio();
-	}
-
-	void
 	UnrealBehaviour::renderPicture(std::string_view filepath) noexcept(false)
 	{
 		recordComponent_->setActive(true);
@@ -162,7 +167,7 @@ namespace unreal
 	std::optional<octoon::RaycastHit>
 	UnrealBehaviour::raycastHit(const octoon::math::float2& pos) noexcept
 	{
-		auto camera = this->profile_->entitiesModule->camera.getValue();
+		auto camera = this->profile_->cameraModule->camera.getValue();
 		if (camera)
 		{
 			auto cameraComponent = camera->getComponent<octoon::CameraComponent>();
@@ -244,9 +249,6 @@ namespace unreal
 	void
 	UnrealBehaviour::onActivate() noexcept(false)
 	{
-		if (!profile_)
-			profile_ = UnrealProfile::load("sys:config/config.conf");
-
 		if (!std::filesystem::exists(profile_->resourceModule->rootPath))
 			std::filesystem::create_directory(profile_->resourceModule->rootPath);
 
@@ -267,6 +269,7 @@ namespace unreal
 		cameraComponent_ = std::make_unique<CameraComponent>();
 		offlineComponent_ = std::make_unique<OfflineComponent>();
 		playerComponent_ = std::make_unique<PlayerComponent>();
+		soundComponent_ = std::make_unique<SoundComponent>();
 		h264Component_ = std::make_unique<H264Component>();
 		h265Component_ = std::make_unique<H265Component>();
 		frameSequenceComponent_ = std::make_unique<FrameSequenceComponent>();
@@ -285,6 +288,7 @@ namespace unreal
 		mainLightComponent_->init(context_, profile_->mainLightModule);
 		environmentComponent_->init(context_, profile_->environmentLightModule);
 		cameraComponent_->init(context_, profile_->cameraModule);
+		soundComponent_->init(context_, profile_->soundModule);
 		offlineComponent_->init(context_, profile_->offlineModule);
 		playerComponent_->init(context_, profile_->playerModule);
 		h264Component_->init(context_, profile_->encodeModule);
@@ -304,6 +308,7 @@ namespace unreal
 		this->addComponent(mainLightComponent_.get());
 		this->addComponent(environmentComponent_.get());
 		this->addComponent(cameraComponent_.get());
+		this->addComponent(soundComponent_.get());
 		this->addComponent(offlineComponent_.get());
 		this->addComponent(playerComponent_.get());
 		this->addComponent(markComponent_.get());

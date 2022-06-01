@@ -12,8 +12,6 @@
 
 namespace octoon
 {
-	typedef io::istream istream;
-
 	struct PmmVector2
 	{
 		float x;
@@ -58,20 +56,20 @@ namespace octoon
 		std::int32_t x;
 		std::int32_t y;
 
-		std::optional<PmmInt2> load(istream& reader);
+		std::optional<PmmInt2> load(io::istream& reader);
 
-		static std::optional<std::vector<PmmInt2>> load_arrays(istream& reader);
-		static std::optional<std::vector<PmmInt2>> load_fixed_arrays(istream& reader, std::size_t len);
+		static std::optional<std::vector<PmmInt2>> load_arrays(io::istream& reader);
+		static std::optional<std::vector<PmmInt2>> load_fixed_arrays(io::istream& reader, std::size_t len);
 	};
 
 	class PmmName
 	{
 	public:
 		static std::string sjis2utf8(const std::string& sjis);
-		static std::optional<std::string> load(istream& reader);
-		static std::optional<std::string> load_fixed_utf8(istream& reader, std::size_t len);
-		static std::optional<std::string> load_fixed_path(istream& reader, std::size_t len);
-		static std::optional<std::vector<std::string>> load_arrays(istream& reader);
+		static std::optional<std::string> load(io::istream& reader);
+		static std::optional<std::string> load_fixed_utf8(io::istream& reader, std::size_t len);
+		static std::optional<std::string> load_fixed_path(io::istream& reader, std::size_t len);
+		static std::optional<std::vector<std::string>> load_arrays(io::istream& reader);
 	};
 
 	class PmmUint8
@@ -79,19 +77,19 @@ namespace octoon
 	public:
 		std::uint8_t value;
 
-		static std::optional<std::vector<std::uint8_t>> load_array_from_u8(istream& reader);
-		static std::optional<std::vector<std::uint8_t>> load_fixed_arrays(istream& reader, std::size_t len);
+		static std::optional<std::vector<std::uint8_t>> load_array_from_u8(io::istream& reader);
+		static std::optional<std::vector<std::uint8_t>> load_fixed_arrays(io::istream& reader, std::size_t len);
 	};
 
 	class PmmInt32
 	{
 	public:
-		static std::optional<std::vector<std::int32_t>> load_arrays(istream& reader);
+		static std::optional<std::vector<std::int32_t>> load_arrays(io::istream& reader);
 	};
 
 	class PmmFloat
 	{
-		static std::optional<std::vector<float>> load_arrays(istream& reader);
+		static std::optional<std::vector<float>> load_arrays(io::istream& reader);
 	};
 
 	struct PmmHeader
@@ -117,7 +115,7 @@ namespace octoon
 
 		PmmHeader();
 
-		static std::optional<PmmHeader> load(istream& reader);
+		static std::optional<PmmHeader> load(io::istream& reader);
 	};
 
 	struct PmmDataBody
@@ -132,8 +130,8 @@ namespace octoon
 
 		PmmDataBody();
 
-		static std::optional<PmmDataBody> load(istream& reader);
-		static std::optional<std::vector<PmmDataBody>> load_arrays(istream& reader);
+		static std::optional<PmmDataBody> load(io::istream& reader);
+		static std::optional<std::vector<PmmDataBody>> load_arrays(io::istream& reader);
 	};
 
 	struct PmmKeyframe
@@ -146,8 +144,8 @@ namespace octoon
 
 		PmmKeyframe();
 
-		static std::optional<PmmKeyframe> load(istream& reader);
-		static std::optional<std::vector<PmmKeyframe>> load_arrays(istream& reader);
+		static std::optional<PmmKeyframe> load(io::istream& reader);
+		static std::optional<std::vector<PmmKeyframe>> load_arrays(io::istream& reader);
 	};
 
 	struct PmmKeyframeBone
@@ -167,9 +165,9 @@ namespace octoon
 
 		PmmKeyframeBone();
 
-		static std::optional<PmmKeyframeBone> load(istream& reader, bool is_init);
-		static std::optional<std::vector<PmmKeyframeBone>> load_fixed_arrays(istream& reader, std::size_t len, bool is_init);
-		static std::optional<std::vector<PmmKeyframeBone>> load_arrays(istream& reader, bool is_init);
+		static std::optional<PmmKeyframeBone> load(io::istream& reader, bool is_init);
+		static std::optional<std::vector<PmmKeyframeBone>> load_fixed_arrays(io::istream& reader, std::size_t len, bool is_init);
+		static std::optional<std::vector<PmmKeyframeBone>> load_arrays(io::istream& reader, bool is_init);
 	};
 
 	struct PmmKeyframeMorph
@@ -183,9 +181,9 @@ namespace octoon
 
 		PmmKeyframeMorph();
 
-		static std::optional<PmmKeyframeMorph> load(istream& reader, bool is_init);
-		static std::optional<std::vector<PmmKeyframeMorph>> load_fixed_arrays(istream& reader, std::size_t len, bool is_init);
-		static std::optional<std::vector<PmmKeyframeMorph>> load_arrays(istream& reader, bool is_init);
+		static std::optional<PmmKeyframeMorph> load(io::istream& reader, bool is_init);
+		static std::optional<std::vector<PmmKeyframeMorph>> load_fixed_arrays(io::istream& reader, std::size_t len, bool is_init);
+		static std::optional<std::vector<PmmKeyframeMorph>> load_arrays(io::istream& reader, bool is_init);
 	};
 
 	struct PmmKeyframeOp
@@ -201,8 +199,8 @@ namespace octoon
 
 		PmmKeyframeOp() noexcept;
 
-		static std::optional<PmmKeyframeOp> load(istream& reader, std::size_t ik_count, std::size_t op_count, bool is_init);
-		static std::optional<std::vector<PmmKeyframeOp>> load_arrays(istream& reader, std::size_t ik_count, std::size_t op_count, bool is_init);
+		static std::optional<PmmKeyframeOp> load(io::istream& reader, std::size_t ik_count, std::size_t op_count, bool is_init);
+		static std::optional<std::vector<PmmKeyframeOp>> load_arrays(io::istream& reader, std::size_t ik_count, std::size_t op_count, bool is_init);
 	};
 
 	struct PmmKeyframeCamera
@@ -228,8 +226,8 @@ namespace octoon
 
 		PmmKeyframeCamera();
 
-		static std::optional<PmmKeyframeCamera> load(istream& reader, bool is_init);
-		static std::optional<std::vector<PmmKeyframeCamera>> load_arrays(istream& reader, bool is_init);
+		static std::optional<PmmKeyframeCamera> load(io::istream& reader, bool is_init);
+		static std::optional<std::vector<PmmKeyframeCamera>> load_arrays(io::istream& reader, bool is_init);
 	};
 
 	struct PmmKeyframeLight
@@ -244,8 +242,8 @@ namespace octoon
 
 		PmmKeyframeLight();
 
-		static std::optional<PmmKeyframeLight> load(istream& reader, bool is_init);
-		static std::optional<std::vector<PmmKeyframeLight>> load_arrays(istream& reader, bool is_init);
+		static std::optional<PmmKeyframeLight> load(io::istream& reader, bool is_init);
+		static std::optional<std::vector<PmmKeyframeLight>> load_arrays(io::istream& reader, bool is_init);
 	};
 
 	struct PmmKeyFrameGravity
@@ -262,8 +260,8 @@ namespace octoon
 
 		PmmKeyFrameGravity();
 
-		static std::optional<PmmKeyFrameGravity> load(istream& reader, bool is_init);
-		static std::optional<std::vector<PmmKeyFrameGravity>> load_arrays(istream& reader, bool is_init);
+		static std::optional<PmmKeyFrameGravity> load(io::istream& reader, bool is_init);
+		static std::optional<std::vector<PmmKeyFrameGravity>> load_arrays(io::istream& reader, bool is_init);
 	};
 
 	struct PmmKeyFrameSelfShadow
@@ -278,8 +276,8 @@ namespace octoon
 
 		PmmKeyFrameSelfShadow();
 
-		static std::optional<PmmKeyFrameSelfShadow> load(istream& reader, bool is_init);
-		static std::optional<std::vector<PmmKeyFrameSelfShadow>> load_arrays(istream& reader, bool is_init);
+		static std::optional<PmmKeyFrameSelfShadow> load(io::istream& reader, bool is_init);
+		static std::optional<std::vector<PmmKeyFrameSelfShadow>> load_arrays(io::istream& reader, bool is_init);
 	};
 
 	struct PmmBone
@@ -292,8 +290,8 @@ namespace octoon
 
 		PmmBone();
 
-		static std::optional<PmmBone> load(istream& reader);
-		static std::optional<std::vector<PmmBone>> load_arrays(istream& reader);
+		static std::optional<PmmBone> load(io::istream& reader);
+		static std::optional<std::vector<PmmBone>> load_arrays(io::istream& reader);
 	};
 
 	struct PmmOp
@@ -305,8 +303,8 @@ namespace octoon
 
 		PmmOp();
 
-		static std::optional<PmmOp> load(istream& reader);
-		static std::optional<std::vector<PmmOp>> load_arrays(istream& reader);
+		static std::optional<PmmOp> load(io::istream& reader);
+		static std::optional<std::vector<PmmOp>> load_arrays(io::istream& reader);
 	};
 
 	struct PmmModel
@@ -344,8 +342,8 @@ namespace octoon
 
 		PmmModel();
 
-		static std::optional<PmmModel> load(istream& reader);
-		static std::optional<std::vector<PmmModel>> load_arrays(istream& reader, std::size_t len);
+		static std::optional<PmmModel> load(io::istream& reader);
+		static std::optional<std::vector<PmmModel>> load_arrays(io::istream& reader, std::size_t len);
 	};
 
 	struct PmmCamera
@@ -357,8 +355,8 @@ namespace octoon
 
 		PmmCamera();
 
-		static std::optional<PmmCamera> load(istream& reader);
-		static std::optional<std::vector<PmmCamera>> load_arrays(istream& reader);
+		static std::optional<PmmCamera> load(io::istream& reader);
+		static std::optional<std::vector<PmmCamera>> load_arrays(io::istream& reader);
 	};
 
 	struct PmmLight
@@ -369,8 +367,8 @@ namespace octoon
 
 		PmmLight();
 
-		static std::optional<PmmLight> load(istream& reader);
-		static std::optional<std::vector<PmmLight>> load_arrays(istream& reader);
+		static std::optional<PmmLight> load(io::istream& reader);
+		static std::optional<std::vector<PmmLight>> load_arrays(io::istream& reader);
 	};
 
 	struct PmmAccessoryData
@@ -386,8 +384,8 @@ namespace octoon
 
 		PmmAccessoryData();
 
-		static std::optional<PmmAccessoryData> load(istream& reader);
-		static std::optional<std::vector<PmmAccessoryData>> load_arrays(istream& reader);
+		static std::optional<PmmAccessoryData> load(io::istream& reader);
+		static std::optional<std::vector<PmmAccessoryData>> load_arrays(io::istream& reader);
 	};
 
 	struct PmmGravity
@@ -399,8 +397,8 @@ namespace octoon
 
 		PmmGravity();
 
-		static std::optional<PmmGravity> load(istream& reader);
-		static std::optional<std::vector<PmmGravity>> load_arrays(istream& reader);
+		static std::optional<PmmGravity> load(io::istream& reader);
+		static std::optional<std::vector<PmmGravity>> load_arrays(io::istream& reader);
 	};
 
 	struct PmmCSelectorChoice
@@ -410,8 +408,8 @@ namespace octoon
 
 		PmmCSelectorChoice();
 
-		static std::optional<PmmCSelectorChoice> load(istream& reader);
-		static std::optional<std::vector<PmmCSelectorChoice>> load_arrays(istream& reader);
+		static std::optional<PmmCSelectorChoice> load(io::istream& reader);
+		static std::optional<std::vector<PmmCSelectorChoice>> load_arrays(io::istream& reader);
 	};
 
 	struct PMMFile
@@ -482,16 +480,7 @@ namespace octoon
 		std::vector<PmmCSelectorChoice> selector_choice_datas;
 
 		PMMFile() noexcept;
-		static std::optional<PMMFile> load(istream& reader);
-	};
-
-	class PMMLoader final
-	{
-	public:
-		PMMLoader();
-
-		bool can_read(io::istream& reader);
-		bool do_load(io::istream& reader, PMMFile& pmm);
+		static std::optional<PMMFile> load(io::istream& reader);
 	};
 }
 

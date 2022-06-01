@@ -105,6 +105,24 @@ namespace octoon
 	}
 
 	void
+	VideoFeature::setCachePath(std::string_view path)
+	{
+		Renderer::instance()->setCachePath(path);
+	}
+
+	const std::string&
+	VideoFeature::getCachePath() const
+	{
+		return Renderer::instance()->getCachePath();
+	}
+
+	std::uint32_t
+	VideoFeature::getSampleCounter() const noexcept
+	{
+		return Renderer::instance()->getSampleCounter();
+	}
+
+	void
 	VideoFeature::setOverrideMaterial(const std::shared_ptr<Material>& material) noexcept
 	{
 		Renderer::instance()->setOverrideMaterial(material);

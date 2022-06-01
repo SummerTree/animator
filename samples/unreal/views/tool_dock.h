@@ -26,6 +26,7 @@ namespace unreal
 		bool eventFilter(QObject* watched, QEvent* event);
 
 	private Q_SLOTS:
+		void openEvent() noexcept;
 		void importEvent() noexcept;
 		void saveEvent() noexcept;
 		void shotEvent() noexcept;
@@ -46,8 +47,9 @@ namespace unreal
 		QIcon audioIcon_;
 		QIcon audioOnIcon_;
 
-		QToolButton* importButton_;
+		QToolButton* openButton_;
 		QToolButton* saveButton_;
+		QToolButton* importButton_;
 		QToolButton* shotButton_;
 		QToolButton* gpuButton_;
 		QToolButton* audioButton_;

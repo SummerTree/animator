@@ -482,8 +482,58 @@ namespace octoon
 		header.pixel_size = pixelSize;
 		header.attributes = hasAlpha ? TGA_ATTRIB_ALPHA : 0;
 
-		stream.write((char*)&header, sizeof(header));
-		stream.write((char*)image.data(), image.size());
+		if (image.format() == Format::R8G8B8A8SRGB)
+		{
+			auto width = image.width();
+			auto height = image.height();
+			auto data = image.data();
+			auto img_ptr = std::make_unique<std::uint8_t[]>(width * height * 4);
+
+			for (std::uint32_t y = 0; y < height; y++)
+			{
+				for (std::uint32_t x = 0; x < width; x++)
+				{
+					auto src = (y * width + x) * 4;
+					auto dst = ((height - y - 1) * width + x) * 4;
+
+					img_ptr[dst + 2] = data[src];
+					img_ptr[dst + 1] = data[src + 1];
+					img_ptr[dst + 0] = data[src + 2];
+					img_ptr[dst + 3] = data[src + 3];
+				}
+			}
+
+			stream.write((char*)&header, sizeof(header));
+			stream.write((char*)img_ptr.get(), image.size());
+		}
+		else if (image.format() == Format::R8G8B8SRGB)
+		{
+			auto width = image.width();
+			auto height = image.height();
+			auto data = image.data();
+			auto img_ptr = std::make_unique<std::uint8_t[]>(width * height * 3);
+
+			for (std::uint32_t y = 0; y < height; y++)
+			{
+				for (std::uint32_t x = 0; x < width; x++)
+				{
+					auto src = (y * width + x) * 3;
+					auto dst = ((height - y - 1) * width + x) * 3;
+
+					img_ptr[dst + 2] = data[src];
+					img_ptr[dst + 1] = data[src + 1];
+					img_ptr[dst + 0] = data[src + 2];
+				}
+			}
+
+			stream.write((char*)&header, sizeof(header));
+			stream.write((char*)img_ptr.get(), image.size());
+		}
+		else
+		{
+			stream.write((char*)&header, sizeof(header));
+			stream.write((char*)image.data(), image.size());
+		}
 
 		return true;
 	}

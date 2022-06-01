@@ -21,9 +21,11 @@ namespace unreal
 		this->setWindowTitle(tr("Motion Library"));
 		this->setObjectName("MotionDock");
 
-		importButton_ = new QToolButton;
+		importButton_ = new UPushButton;
 		importButton_->setObjectName("Import");
 		importButton_->setText(tr("Import"));
+		importButton_->installEventFilter(this);
+		importButton_->setFixedSize(190, 35);
 
 		topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
@@ -38,6 +40,7 @@ namespace unreal
 		listWidget_ = new DraggableListWindow;
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setSpacing(0);
+		listWidget_->installEventFilter(this);
 
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
@@ -49,6 +52,7 @@ namespace unreal
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("MotionWidget");
 		mainWidget_->setLayout(mainLayout_);
+		mainWidget_->installEventFilter(this);
 
 		this->setWidget(mainWidget_);
 
@@ -85,10 +89,11 @@ namespace unreal
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setObjectName("preview");
 			imageLabel->setFixedSize(QSize(100, 100));
+			imageLabel->installEventFilter(this);
 
 			QLabel* nameLabel = new QLabel();
-			nameLabel->setObjectName("name");
 			nameLabel->setFixedHeight(30);
+			nameLabel->installEventFilter(this);
 
 			QVBoxLayout* widgetLayout = new QVBoxLayout;
 			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
@@ -121,6 +126,7 @@ namespace unreal
 				QFontMetrics metrics(nameLabel->font());
 
 				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+				item->setWhatsThis(name);
 				imageLabel->setToolTip(name);
 				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
 				nameLabel->setToolTip(name);
@@ -182,14 +188,14 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = motionComponent->importMotion(filepaths[i].toStdString());
+						auto package = motionComponent->importMotion(filepaths[i].toUtf8().toStdString());
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = motionComponent->importMotion(filepaths[0].toStdString());
+					auto package = motionComponent->importMotion(filepaths[0].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -266,6 +272,7 @@ namespace unreal
 										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
 								}
 
+								animator->setName(filepath);
 								animator->sample();
 
 								if (smr)
@@ -281,12 +288,14 @@ namespace unreal
 						}
 						else
 						{
-							auto animation = loader.loadCameraMotion(stream);
+							octoon::VMD vmd;
+							vmd.load(stream);
+
+							if (vmd.NumCamera > 0)
+								profile_->cameraModule->animation = filepath;
 
 							dialog.setValue(1);
 							QCoreApplication::processEvents();
-
-							behaviour->getComponent<CameraComponent>()->loadAnimation(std::move(animation));
 						}
 
 						behaviour->getComponent<PlayerComponent>()->updateTimeLength();
@@ -319,5 +328,19 @@ namespace unreal
 
 		for (auto& uuid : profile_->resourceModule->motionIndexList_.getValue())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
+	}
+
+	bool
+	MotionDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }

@@ -32,11 +32,11 @@ namespace unreal
 
 		username_ = std::make_unique<QPushButton>();
 		username_->setObjectName("user");
-		username_->setText(behaviour->getProfile()->clientModule->username.c_str());
+		//username_->setText(behaviour->getProfile()->clientModule->username.c_str());
 
 		countLabel_ = std::make_unique<QPushButton>();
 		countLabel_->setObjectName("count");
-		countLabel_->setText(tr("balance") + QString::fromStdString(std::to_string(behaviour->getProfile()->clientModule->coin)) + tr("$"));
+		//countLabel_->setText(tr("balance") + QString::fromStdString(std::to_string(behaviour->getProfile()->clientModule->coin)) + tr("$"));
 
 		vipLabel_ = std::make_unique<QLabel>();
 		vipLabel_->setObjectName("vip");
@@ -240,7 +240,7 @@ namespace unreal
 			if (client)
 				client->refresh();
 
-			countLabel_->setText(tr("balance") + QString::fromStdString(std::to_string(behaviour_->getProfile()->clientModule->coin)) + tr("$"));
+			//countLabel_->setText(tr("balance") + QString::fromStdString(std::to_string(behaviour_->getProfile()->clientModule->coin)) + tr("$"));
 		}
 		catch (const std::exception&)
 		{

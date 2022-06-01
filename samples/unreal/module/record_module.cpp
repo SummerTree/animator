@@ -36,19 +36,22 @@ namespace unreal
 	}
 
 	void 
-	RecordModule::load(octoon::runtime::json& reader) noexcept
+	RecordModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
-		if (reader.find("width") != reader.end())
+		if (reader["width"].is_number_unsigned())
 			this->width = reader["width"].get<nlohmann::json::number_unsigned_t>();
-		if (reader.find("height") != reader.end())
+		if (reader["height"].is_number_unsigned())
 			this->height = reader["height"].get<nlohmann::json::number_unsigned_t>();
+		if (reader["denoise"].is_boolean())
+			this->denoise = reader["denoise"].get<nlohmann::json::boolean_t>();
 	}
 
 	void 
-	RecordModule::save(octoon::runtime::json& reader) noexcept
+	RecordModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
-		reader["width"] = this->width.getValue();
-		reader["height"] = this->height.getValue();
+		writer["width"] = this->width.getValue();
+		writer["height"] = this->height.getValue();
+		writer["denoise"] = this->denoise.getValue();
 	}
 
 	void

@@ -38,6 +38,12 @@ namespace octoon
 		return estimator_->getMaxBounces();
 	}
 
+	std::uint32_t
+	MonteCarloRenderer::getSampleCounter() const noexcept
+	{
+		return sampleCounter_;
+	}
+
 	void
 	MonteCarloRenderer::clear(const math::float4& val)
 	{

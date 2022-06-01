@@ -1,605 +1,364 @@
 #include <octoon/pmx_loader.h>
-#include <octoon/model/modtypes.h>
-#include <octoon/mesh/mesh.h>
-#include <octoon/material/mesh_standard_material.h>
-#include <octoon/model/model.h>
-#include <octoon/texture_loader.h>
-#include <octoon/io/fstream.h>
-#include <octoon/math/mathfwd.h>
-#include <octoon/math/mathutil.h>
-#include <octoon/runtime/string.h>
-#include <octoon/hal/graphics_texture.h>
+#include <octoon/pmx.h>
 
-#include <map>
-#include <cstring>
+#include <octoon/runtime/string.h>
+#include <octoon/runtime/uuid.h>
+
+#include <octoon/material/mesh_standard_material.h>
+
+#include <octoon/transform_component.h>
+#include <octoon/solver_component.h>
+#include <octoon/animator_component.h>
+#include <octoon/skinned_morph_component.h>
+#include <octoon/skinned_mesh_renderer_component.h>
+#include <octoon/skinned_joint_renderer_component.h>
+#include <octoon/rotation_limit_component.h>
+#include <octoon/rigidbody_component.h>
+#include <octoon/sphere_collider_component.h>
+#include <octoon/box_collider_component.h>
+#include <octoon/capsule_collider_component.h>
+#include <octoon/configurable_joint_component.h>
+#include <octoon/rotation_link_component.h>
+#include <octoon/rotation_link_limit_component.h>
+#include <octoon/cloth_component.h>
+
+#include <octoon/io/fstream.h>
+#include <octoon/texture_loader.h>
+
+#include <set>
 #include <codecvt>
 
 namespace octoon
 {
-	bool
-	PmxLoader::canRead(io::istream& stream) const noexcept
+	void createBones(const PMX& pmx, GameObjects& bones) noexcept(false)
 	{
-		PmxHeader header;
-		if (stream.read((char*)&header, sizeof(header)))
-		{
-			if ((header.magic[0] == 'p' || header.magic[0] == 'P') &&
-				(header.magic[1] == 'm' || header.magic[1] == 'M') &&
-				(header.magic[2] == 'x' || header.magic[2] == 'X'))
-			{
-				if (header.version >= 2.0 || header.version <= 2.1)
-					return true;
-			}
-		}
-		return false;
-	}
-
-	bool
-	PmxLoader::canRead(std::string_view type) const noexcept
-	{
-		return type.compare("pmx") == 0;
-	}
-
-	bool
-	PmxLoader::canRead(const char* type) const noexcept
-	{
-		return std::strncmp(type, "pmx", 3) == 0;
-	}
-
-	bool
-	PmxLoader::load(std::string_view filepath, PMX& pmx) noexcept
-	{
-		io::ifstream stream;
-		if (!stream.open(std::string(filepath))) return false;
-
-		if (!stream.read((char*)&pmx.header, sizeof(pmx.header))) return false;
-		if (!stream.read((char*)&pmx.description.japanModelLength, sizeof(pmx.description.japanModelLength))) return false;
-
-		if (pmx.description.japanModelLength > 0)
-		{
-			pmx.description.japanModelName.resize(pmx.description.japanModelLength);
-
-			if (!stream.read((char*)&pmx.description.japanModelName[0], pmx.description.japanModelLength)) return false;
-		}
-
-		if (!stream.read((char*)&pmx.description.englishModelLength, sizeof(pmx.description.englishModelLength))) return false;
-
-		if (pmx.description.englishModelLength > 0)
-		{
-			pmx.description.englishModelName.resize(pmx.description.englishModelLength);
-
-			if (!stream.read((char*)&pmx.description.englishModelName[0], pmx.description.englishModelLength)) return false;
-		}
-
-		if (!stream.read((char*)&pmx.description.japanCommentLength, sizeof(pmx.description.japanCommentLength))) return false;
-
-		if (pmx.description.japanCommentLength > 0)
-		{
-			pmx.description.japanCommentName.resize(pmx.description.japanCommentLength);
-
-			if (!stream.read((char*)&pmx.description.japanCommentName[0], pmx.description.japanCommentLength)) return false;
-		}
-
-		if (!stream.read((char*)&pmx.description.englishCommentLength, sizeof(pmx.description.englishCommentLength))) return false;
-
-		if (pmx.description.englishCommentLength > 0)
-		{
-			pmx.description.englishCommentName.resize(pmx.description.englishCommentLength);
-
-			if (!stream.read((char*)&pmx.description.englishCommentName[0], pmx.description.englishCommentLength)) return false;
-		}
-
-		if (!stream.read((char*)&pmx.numVertices, sizeof(pmx.numVertices))) return false;
-
-		if (pmx.numVertices > 0)
-		{
-			pmx.vertices.resize(pmx.numVertices);
-
-			for (auto& vertex : pmx.vertices)
-			{
-				if (pmx.header.addUVCount == 0)
-				{
-					std::streamsize size = sizeof(vertex.position) + sizeof(vertex.normal) + sizeof(vertex.coord);
-					if (!stream.read((char*)&vertex.position, size)) return false;
-				}
-				else
-				{
-					std::streamsize size = sizeof(vertex.position) + sizeof(vertex.normal) + sizeof(vertex.coord) + sizeof(vertex.addCoord[0]) * pmx.header.addUVCount;
-					if (!stream.read((char*)&vertex.position, size)) return false;
-				}
-
-				if (!stream.read((char*)&vertex.type, sizeof(vertex.type))) return false;
-				switch (vertex.type)
-				{
-					case PMX_BDEF1:
-					{
-						if (!stream.read((char*)&vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
-						vertex.weight.weight1 = 1.0f;
-					}
-					break;
-					case PMX_BDEF2:
-					{
-						if (!stream.read((char*)&vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)&vertex.weight.bone2, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)&vertex.weight.weight1, sizeof(vertex.weight.weight2))) return false;
-						vertex.weight.weight2 = 1.0f - vertex.weight.weight1;
-					}
-					break;
-					case PMX_BDEF4:
-					{
-						if (!stream.read((char*)&vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)&vertex.weight.bone2, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)&vertex.weight.bone3, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)&vertex.weight.bone4, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)&vertex.weight.weight1, sizeof(vertex.weight.weight1))) return false;
-						if (!stream.read((char*)&vertex.weight.weight2, sizeof(vertex.weight.weight2))) return false;
-						if (!stream.read((char*)&vertex.weight.weight3, sizeof(vertex.weight.weight3))) return false;
-						if (!stream.read((char*)&vertex.weight.weight4, sizeof(vertex.weight.weight4))) return false;
-					}
-					break;
-					case PMX_SDEF:
-					{
-						if (!stream.read((char*)&vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)&vertex.weight.bone2, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)&vertex.weight.weight1, sizeof(vertex.weight.weight1))) return false;
-						if (!stream.read((char*)&vertex.weight.SDEF_C, sizeof(vertex.weight.SDEF_C))) return false;
-						if (!stream.read((char*)&vertex.weight.SDEF_R0, sizeof(vertex.weight.SDEF_R0))) return false;
-						if (!stream.read((char*)&vertex.weight.SDEF_R1, sizeof(vertex.weight.SDEF_R1))) return false;
-
-						vertex.weight.weight2 = 1.0f - vertex.weight.weight1;
-					}
-					break;
-					case PMX_QDEF:
-					{
-						if (!stream.read((char*)& vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)& vertex.weight.bone2, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)& vertex.weight.bone3, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)& vertex.weight.bone4, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)& vertex.weight.weight1, sizeof(vertex.weight.weight1))) return false;
-						if (!stream.read((char*)& vertex.weight.weight2, sizeof(vertex.weight.weight2))) return false;
-						if (!stream.read((char*)& vertex.weight.weight3, sizeof(vertex.weight.weight3))) return false;
-						if (!stream.read((char*)& vertex.weight.weight4, sizeof(vertex.weight.weight4))) return false;
-					}
-					default:
-						return false;
-				}
-
-				if (!stream.read((char*)&vertex.edge, sizeof(vertex.edge))) return false;
-			}
-		}
-
-		if (!stream.read((char*)&pmx.numIndices, sizeof(pmx.numIndices))) return false;
-
-		if (pmx.numIndices > 0)
-		{
-			pmx.indices.resize(pmx.numIndices * pmx.header.sizeOfIndices);
-			if (!stream.read((char*)pmx.indices.data(), pmx.indices.size())) return false;
-		}
-
-		if (!stream.read((char*)&pmx.numTextures, sizeof(pmx.numTextures))) return false;
-
-		if (pmx.numTextures > 0)
-		{
-			pmx.textures.resize(pmx.numTextures);
-
-			for (auto& texture : pmx.textures)
-			{
-				if (!stream.read((char*)&texture.length, sizeof(texture.length))) return false;
-				if (!stream.read((char*)&texture.name, texture.length)) return false;
-			}
-		}
-
-		if (!stream.read((char*)&pmx.numMaterials, sizeof(pmx.numMaterials))) return false;
-
-		if (pmx.numMaterials > 0)
-		{
-			pmx.materials.resize(pmx.numMaterials);
-
-			for (auto& material : pmx.materials)
-			{
-				if (!stream.read((char*)&material.name.length, sizeof(material.name.length))) return false;
-				if (!stream.read((char*)&material.name.name, material.name.length)) return false;
-				if (!stream.read((char*)&material.nameEng.length, sizeof(material.nameEng.length))) return false;
-				if (!stream.read((char*)&material.nameEng.name, material.nameEng.length)) return false;
-				if (!stream.read((char*)&material.Diffuse, sizeof(material.Diffuse))) return false;
-				if (!stream.read((char*)&material.Opacity, sizeof(material.Opacity))) return false;
-				if (!stream.read((char*)&material.Specular, sizeof(material.Specular))) return false;
-				if (!stream.read((char*)&material.Shininess, sizeof(material.Shininess))) return false;
-				if (!stream.read((char*)&material.Ambient, sizeof(material.Ambient))) return false;
-				if (!stream.read((char*)&material.Flag, sizeof(material.Flag))) return false;
-				if (!stream.read((char*)&material.EdgeColor, sizeof(material.EdgeColor))) return false;
-				if (!stream.read((char*)&material.EdgeSize, sizeof(material.EdgeSize))) return false;
-				if (!stream.read((char*)&material.TextureIndex, pmx.header.sizeOfTexture)) return false;
-				if (!stream.read((char*)&material.SphereTextureIndex, pmx.header.sizeOfTexture)) return false;
-				if (!stream.read((char*)&material.SphereMode, sizeof(material.SphereMode))) return false;
-				if (!stream.read((char*)&material.ToonIndex, sizeof(material.ToonIndex))) return false;
-
-				if (material.ToonIndex == 1)
-				{
-					if (!stream.read((char*)&material.ToonTexture, 1)) return false;
-				}
-				else
-				{
-					if (!stream.read((char*)&material.ToonTexture, pmx.header.sizeOfTexture)) return false;
-				}
-
-				if (!stream.read((char*)&material.memLength, sizeof(material.memLength))) return false;
-				if (material.memLength > 0)
-				{
-					if (!stream.read((char*)&material.mem, material.memLength)) return false;
-				}
-
-				if (!stream.read((char*)&material.FaceCount, sizeof(material.FaceCount))) return false;
-			}
-		}
-
-		if (!stream.read((char*)&pmx.numBones, sizeof(pmx.numBones))) return false;
-
-		if (pmx.numBones > 0)
-		{
-			pmx.bones.resize(pmx.numBones);
-
-			for (auto& bone : pmx.bones)
-			{
-				if (!stream.read((char*)&bone.name.length, sizeof(bone.name.length))) return false;
-				if (!stream.read((char*)&bone.name.name, bone.name.length)) return false;
-				if (!stream.read((char*)&bone.nameEng.length, sizeof(bone.nameEng.length))) return false;
-				if (!stream.read((char*)&bone.nameEng.name, bone.nameEng.length)) return false;
-
-				if (!stream.read((char*)&bone.position, sizeof(bone.position))) return false;
-				if (!stream.read((char*)&bone.Parent, pmx.header.sizeOfBone)) return false;
-				if (!stream.read((char*)&bone.Level, sizeof(bone.Level))) return false;
-				if (!stream.read((char*)&bone.Flag, sizeof(bone.Flag))) return false;
-
-				if (bone.Flag & PMX_BONE_DISPLAY)
-					bone.Visable = true;
-				else
-					bone.Visable = false;
-
-				if (bone.Flag & PMX_BONE_INDEX)
-				{
-					if (!stream.read((char*)&bone.ConnectedBoneIndex, pmx.header.sizeOfBone)) return false;
-				}
-				else
-				{
-					if (!stream.read((char*)&bone.Offset, sizeof(bone.Offset))) return false;
-				}
-
-				if ((bone.Flag & (PMX_BONE_ADD_ROTATION | PMX_BONE_ADD_MOVE)) != 0)
-				{
-					if (!stream.read((char*)&bone.ProvidedParentBoneIndex, pmx.header.sizeOfBone)) return false;
-					if (!stream.read((char*)&bone.ProvidedRatio, sizeof(bone.ProvidedRatio))) return false;
-				}
-				else
-				{
-					bone.ProvidedParentBoneIndex = std::numeric_limits<PmxUInt16>::max();
-					bone.ProvidedRatio = 0;
-				}
-
-				if (bone.Flag & PMX_BONE_FIXED_AXIS)
-				{
-					if (!stream.read((char*)&bone.AxisDirection, sizeof(bone.AxisDirection))) return false;
-				}
-
-				if (bone.Flag & PMX_BONE_LOCAL_AXIS)
-				{
-					if (!stream.read((char*)&bone.DimentionXDirection, sizeof(bone.DimentionXDirection))) return false;
-					if (!stream.read((char*)&bone.DimentionZDirection, sizeof(bone.DimentionZDirection))) return false;
-				}
-
-				if (bone.Flag & PMX_BONE_EXTERNAL_PARENT_TRANSFORM)
-				{
-					if (!stream.read((char*)& bone.ExternalParent, sizeof(bone.ExternalParent))) return false;
-				}
-
-				if (bone.Flag & PMX_BONE_IK)
-				{
-					if (!stream.read((char*)&bone.IKTargetBoneIndex, pmx.header.sizeOfBone)) return false;
-					if (!stream.read((char*)&bone.IKLoopCount, sizeof(bone.IKLoopCount))) return false;
-					if (!stream.read((char*)&bone.IKLimitedRadian, sizeof(bone.IKLimitedRadian))) return false;
-					if (!stream.read((char*)&bone.IKLinkCount, sizeof(bone.IKLinkCount))) return false;
-
-					if (bone.IKLinkCount > 0)
-					{
-						bone.IKList.resize(bone.IKLinkCount);
-
-						for (auto& chain : bone.IKList)
-						{
-							if (!stream.read((char*)&chain.BoneIndex, pmx.header.sizeOfBone)) return false;
-							if (!stream.read((char*)&chain.rotateLimited, (std::streamsize)sizeof(chain.rotateLimited))) return false;
-							if (chain.rotateLimited)
-							{
-								if (!stream.read((char*)&chain.minimumRadian, (std::streamsize)sizeof(chain.minimumRadian))) return false;
-								if (!stream.read((char*)&chain.maximumRadian, (std::streamsize)sizeof(chain.maximumRadian))) return false;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (!stream.read((char*)&pmx.numMorphs, sizeof(pmx.numMorphs))) return false;
-
-		if (pmx.numMorphs > 0)
-		{
-			pmx.morphs.resize(pmx.numMorphs);
-
-			for (auto& morph : pmx.morphs)
-			{
-				if (!stream.read((char*)&morph.name.length, sizeof(morph.name.length))) return false;
-				if (!stream.read((char*)&morph.name.name, morph.name.length)) return false;
-				if (!stream.read((char*)&morph.nameEng.length, sizeof(morph.nameEng.length))) return false;
-				if (!stream.read((char*)&morph.nameEng.name, morph.nameEng.length)) return false;
-				if (!stream.read((char*)&morph.control, sizeof(morph.control))) return false;
-				if (!stream.read((char*)&morph.morphType, sizeof(morph.morphType))) return false;
-				if (!stream.read((char*)&morph.morphCount, sizeof(morph.morphCount))) return false;
-
-				if (morph.morphType == PmxMorphType::PMX_MorphTypeGroup)
-				{
-					morph.groupList.resize(morph.morphCount);
-
-					for (auto& group : morph.groupList)
-					{
-						if (!stream.read((char*)& group.morphIndex, pmx.header.sizeOfMorph)) return false;
-						if (!stream.read((char*)& group.morphRate, sizeof(group.morphRate))) return false;
-					}
-				}
-				else if (morph.morphType == PmxMorphType::PMX_MorphTypeVertex)
-				{
-					morph.vertices.resize(morph.morphCount);
-
-					for (auto& vertex : morph.vertices)
-					{
-						if (!stream.read((char*)&vertex.index, pmx.header.sizeOfIndices)) return false;
-						if (!stream.read((char*)&vertex.offset, sizeof(vertex.offset))) return false;
-					}
-				}
-				else if (morph.morphType == PmxMorphType::PMX_MorphTypeBone)
-				{
-					morph.boneList.resize(morph.morphCount);
-
-					for (auto& bone : morph.boneList)
-					{
-						if (!stream.read((char*)&bone.boneIndex, pmx.header.sizeOfBone)) return false;
-						if (!stream.read((char*)&bone.position, sizeof(bone.position))) return false;
-						if (!stream.read((char*)&bone.rotation, sizeof(bone.rotation))) return false;
-					}
-				}
-				else if (morph.morphType == PmxMorphType::PMX_MorphTypeUV || morph.morphType == PmxMorphType::PMX_MorphTypeExtraUV1 ||
-							morph.morphType == PmxMorphType::PMX_MorphTypeExtraUV2 || morph.morphType == PmxMorphType::PMX_MorphTypeExtraUV3 ||
-							morph.morphType == PmxMorphType::PMX_MorphTypeExtraUV4)
-				{
-					morph.texcoordList.resize(morph.morphCount);
-
-					for (auto& texcoord : morph.texcoordList)
-					{
-						if (!stream.read((char*)&texcoord.index, pmx.header.sizeOfIndices)) return false;
-						if (!stream.read((char*)&texcoord.offset, sizeof(texcoord.offset))) return false;
-					}
-				}
-				else if (morph.morphType == PmxMorphType::PMX_MorphTypeMaterial)
-				{
-					morph.materialList.resize(morph.morphCount);
-
-					for (auto& material : morph.materialList)
-					{
-						if (!stream.read((char*)&material.index, pmx.header.sizeOfMaterial)) return false;
-						if (!stream.read((char*)&material.offset, sizeof(material.offset))) return false;
-						if (!stream.read((char*)&material.diffuse, sizeof(material.diffuse))) return false;
-						if (!stream.read((char*)&material.specular, sizeof(material.specular))) return false;
-						if (!stream.read((char*)&material.shininess, sizeof(material.shininess))) return false;
-						if (!stream.read((char*)&material.ambient, sizeof(material.ambient))) return false;
-						if (!stream.read((char*)&material.edgeColor, sizeof(material.edgeColor))) return false;
-						if (!stream.read((char*)&material.edgeSize, sizeof(material.edgeSize))) return false;
-						if (!stream.read((char*)&material.tex, sizeof(material.tex))) return false;
-						if (!stream.read((char*)&material.sphere, sizeof(material.sphere))) return false;
-						if (!stream.read((char*)&material.toon, sizeof(material.toon))) return false;
-					}
-				}
-			}
-		}
-
-		if (!stream.read((char*)&pmx.numDisplayFrames, sizeof(pmx.numDisplayFrames))) return false;
-
-		if (pmx.numDisplayFrames > 0)
-		{
-			pmx.displayFrames.resize(pmx.numDisplayFrames);
-
-			for (auto& displayFrame : pmx.displayFrames)
-			{
-				if (!stream.read((char*)&displayFrame.name.length, sizeof(displayFrame.name.length))) return false;
-				if (!stream.read((char*)&displayFrame.name.name, displayFrame.name.length)) return false;
-				if (!stream.read((char*)&displayFrame.nameEng.length, sizeof(displayFrame.nameEng.length))) return false;
-				if (!stream.read((char*)&displayFrame.nameEng.name, displayFrame.nameEng.length)) return false;
-				if (!stream.read((char*)&displayFrame.type, sizeof(displayFrame.type))) return false;
-				if (!stream.read((char*)&displayFrame.elementsWithinFrame, sizeof(displayFrame.elementsWithinFrame))) return false;
-
-				displayFrame.elements.resize(displayFrame.elementsWithinFrame);
-				for (auto& element : displayFrame.elements)
-				{
-					if (!stream.read((char*)&element.target, sizeof(element.target))) return false;
-
-					if (element.target == 0)
-					{
-						if (!stream.read((char*)&element.index, pmx.header.sizeOfBone))
-							return false;
-					}
-					else if (element.target == 1)
-					{
-						if (!stream.read((char*)&element.index, pmx.header.sizeOfMorph))
-							return false;
-					}
-				}
-			}
-		}
-
-		if (!stream.read((char*)&pmx.numRigidbodys, sizeof(pmx.numRigidbodys))) return false;
-
-		if (pmx.numRigidbodys > 0)
-		{
-			pmx.rigidbodies.resize(pmx.numRigidbodys);
-
-			for (auto& rigidbody : pmx.rigidbodies)
-			{
-				if (!stream.read((char*)&rigidbody.name.length, sizeof(rigidbody.name.length))) return false;
-				if (!stream.read((char*)&rigidbody.name.name, rigidbody.name.length)) return false;
-				if (!stream.read((char*)&rigidbody.nameEng.length, sizeof(rigidbody.nameEng.length))) return false;
-				if (!stream.read((char*)&rigidbody.nameEng.name, rigidbody.nameEng.length)) return false;
-
-				if (!stream.read((char*)&rigidbody.bone, pmx.header.sizeOfBone)) return false;
-				if (!stream.read((char*)&rigidbody.group, sizeof(rigidbody.group))) return false;
-				if (!stream.read((char*)&rigidbody.groupMask, sizeof(rigidbody.groupMask))) return false;
-
-				if (!stream.read((char*)&rigidbody.shape, sizeof(rigidbody.shape))) return false;
-
-				if (!stream.read((char*)&rigidbody.scale, sizeof(rigidbody.scale))) return false;
-				if (!stream.read((char*)&rigidbody.position, sizeof(rigidbody.position))) return false;
-				if (!stream.read((char*)&rigidbody.rotate, sizeof(rigidbody.rotate))) return false;
-
-				if (!stream.read((char*)&rigidbody.mass, sizeof(rigidbody.mass))) return false;
-				if (!stream.read((char*)&rigidbody.movementDecay, sizeof(rigidbody.movementDecay))) return false;
-				if (!stream.read((char*)&rigidbody.rotationDecay, sizeof(rigidbody.rotationDecay))) return false;
-				if (!stream.read((char*)&rigidbody.elasticity, sizeof(rigidbody.elasticity))) return false;
-				if (!stream.read((char*)&rigidbody.friction, sizeof(rigidbody.friction))) return false;
-				if (!stream.read((char*)&rigidbody.physicsOperation, sizeof(rigidbody.physicsOperation))) return false;
-			}
-		}
-
-		if (!stream.read((char*)&pmx.numJoints, sizeof(pmx.numJoints))) return false;
-
-		if (pmx.numJoints > 0)
-		{
-			pmx.joints.resize(pmx.numJoints);
-
-			for (auto& joint : pmx.joints)
-			{
-				if (!stream.read((char*)&joint.name.length, sizeof(joint.name.length))) return false;
-				if (!stream.read((char*)&joint.name.name, joint.name.length)) return false;
-				if (!stream.read((char*)&joint.nameEng.length, sizeof(joint.nameEng.length))) return false;
-				if (!stream.read((char*)&joint.nameEng.name, joint.nameEng.length)) return false;
-
-				if (!stream.read((char*)&joint.type, sizeof(joint.type))) return false;
-
-				if (!stream.read((char*)&joint.relatedRigidBodyIndexA, pmx.header.sizeOfBody)) return false;
-				if (!stream.read((char*)&joint.relatedRigidBodyIndexB, pmx.header.sizeOfBody)) return false;
-
-				if (!stream.read((char*)&joint.position, sizeof(joint.position))) return false;
-				if (!stream.read((char*)&joint.rotation, sizeof(joint.rotation))) return false;
-
-				if (!stream.read((char*)&joint.movementLowerLimit, sizeof(joint.movementLowerLimit))) return false;
-				if (!stream.read((char*)&joint.movementUpperLimit, sizeof(joint.movementUpperLimit))) return false;
-
-				if (!stream.read((char*)&joint.rotationLowerLimit, sizeof(joint.rotationLowerLimit))) return false;
-				if (!stream.read((char*)&joint.rotationUpperLimit, sizeof(joint.rotationUpperLimit))) return false;
-
-				if (!stream.read((char*)&joint.springMovementConstant, sizeof(joint.springMovementConstant))) return false;
-				if (!stream.read((char*)&joint.springRotationConstant, sizeof(joint.springRotationConstant))) return false;
-			}
-		}
-
-		if (pmx.header.version > 2.0)
-		{
-			if (!stream.read((char*)& pmx.numSoftbodies, sizeof(pmx.numSoftbodies))) return false;
-
-			if (pmx.numSoftbodies > 0)
-			{
-				pmx.softbodies.resize(pmx.numSoftbodies);
-
-				for (auto& body : pmx.softbodies)
-				{
-					if (!stream.read((char*)& body.name.length, sizeof(body.name.length))) return false;
-					if (!stream.read((char*)& body.name.name, body.name.length)) return false;
-					if (!stream.read((char*)& body.nameEng.length, sizeof(body.nameEng.length))) return false;
-					if (!stream.read((char*)& body.nameEng.name, body.nameEng.length)) return false;
-
-					if (!stream.read((char*)& body.type, sizeof(body.type))) return false;
-
-					if (!stream.read((char*)& body.materialIndex, pmx.header.sizeOfMaterial)) return false;
-
-					if (!stream.read((char*)& body.group, sizeof(body.group))) return false;
-					if (!stream.read((char*)& body.groupMask, sizeof(body.groupMask))) return false;
-
-					if (!stream.read((char*)& body.flag, sizeof(body.flag))) return false;
-
-					if (!stream.read((char*)& body.blinkLength, sizeof(body.blinkLength))) return false;
-					if (!stream.read((char*)& body.numClusters, sizeof(body.numClusters))) return false;
-
-					if (!stream.read((char*)& body.totalMass, sizeof(body.totalMass))) return false;
-					if (!stream.read((char*)& body.collisionMargin, sizeof(body.collisionMargin))) return false;
-
-					if (!stream.read((char*)& body.aeroModel, sizeof(body.aeroModel))) return false;
-
-					if (!stream.read((char*)& body.VCF, sizeof(body.VCF))) return false;
-					if (!stream.read((char*)& body.DP, sizeof(body.DP))) return false;
-					if (!stream.read((char*)& body.DG, sizeof(body.DG))) return false;
-					if (!stream.read((char*)& body.LF, sizeof(body.LF))) return false;
-					if (!stream.read((char*)& body.PR, sizeof(body.PR))) return false;
-					if (!stream.read((char*)& body.VC, sizeof(body.VC))) return false;
-					if (!stream.read((char*)& body.DF, sizeof(body.DF))) return false;
-					if (!stream.read((char*)& body.MT, sizeof(body.MT))) return false;
-					if (!stream.read((char*)& body.CHR, sizeof(body.CHR))) return false;
-					if (!stream.read((char*)& body.KHR, sizeof(body.KHR))) return false;
-					if (!stream.read((char*)& body.SHR, sizeof(body.SHR))) return false;
-					if (!stream.read((char*)& body.AHR, sizeof(body.AHR))) return false;
-
-					if (!stream.read((char*)& body.SRHR_CL, sizeof(body.SRHR_CL))) return false;
-					if (!stream.read((char*)& body.SKHR_CL, sizeof(body.SKHR_CL))) return false;
-					if (!stream.read((char*)& body.SSHR_CL, sizeof(body.SSHR_CL))) return false;
-					if (!stream.read((char*)& body.SR_SPLT_CL, sizeof(body.SR_SPLT_CL))) return false;
-					if (!stream.read((char*)& body.SK_SPLT_CL, sizeof(body.SK_SPLT_CL))) return false;
-					if (!stream.read((char*)& body.SS_SPLT_CL, sizeof(body.SS_SPLT_CL))) return false;
-
-					if (!stream.read((char*)& body.V_IT, sizeof(body.V_IT))) return false;
-					if (!stream.read((char*)& body.P_IT, sizeof(body.P_IT))) return false;
-					if (!stream.read((char*)& body.D_IT, sizeof(body.D_IT))) return false;
-					if (!stream.read((char*)& body.C_IT, sizeof(body.C_IT))) return false;
-
-					if (!stream.read((char*)& body.LST, sizeof(body.LST))) return false;
-					if (!stream.read((char*)& body.AST, sizeof(body.AST))) return false;
-					if (!stream.read((char*)& body.VST, sizeof(body.VST))) return false;
-
-					if (!stream.read((char*)& body.numRigidbody, sizeof(body.numRigidbody))) return false;
-					if (body.numRigidbody > 0)
-					{
-						body.anchorRigidbodies.resize(body.numRigidbody);
-
-						for (auto& ar : body.anchorRigidbodies)
-						{
-							if (!stream.read((char*)& ar.rigidBodyIndex, pmx.header.sizeOfBody)) return false;
-							if (!stream.read((char*)& ar.vertexIndex, sizeof(ar.vertexIndex))) return false;
-							if (!stream.read((char*)& ar.nearMode, sizeof(ar.nearMode))) return false;
-						}
-					}
-
-					if (!stream.read((char*)& body.numIndices, sizeof(body.numIndices))) return false;
-					if (body.numIndices > 0)
-					{
-						body.pinVertexIndices.resize(body.numIndices * pmx.header.sizeOfIndices);
-						if (!stream.read((char*) body.pinVertexIndices.data(), body.numIndices * pmx.header.sizeOfIndices)) return false;
-					}
-				}
-			}
-		}
-
-		return true;
-	}
-
-	bool PmxLoader::load(std::string_view filepath, Model& model) noexcept
-	{
-		PMX pmx;
-		if (!this->load(filepath, pmx))
-			return false;
-
-		auto rootPath = runtime::string::directory(std::string(filepath));
-
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
+		bones.reserve(pmx.bones.size());
+
+		for (auto& it : pmx.bones)
+			bones.emplace_back(GameObject::create(cv.to_bytes(it.name.name)));
+
+		for (std::size_t i = 0; i < pmx.bones.size(); i++)
+		{
+			auto& it = pmx.bones[i];
+
+			auto parent = it.Parent;
+			if (parent >= 0 && parent < bones.size())
+				bones[i]->setParent(bones[parent]);
+
+			auto transform = bones[i]->getComponent<TransformComponent>();
+			transform->setTranslate(math::float3(it.position.x, it.position.y, it.position.z));
+
+			auto additiveParent = it.ProvidedParentBoneIndex;
+			if (additiveParent >= 0 && additiveParent < bones.size())
+			{
+				auto limit = bones[i]->addComponent<RotationLinkLimitComponent>();
+				limit->setTranslate(transform->getTranslate());
+				limit->setQuaternion(transform->getQuaternion());
+				limit->setLocalTranslate(transform->getLocalTranslate());
+				limit->setLocalQuaternion(transform->getLocalQuaternion());
+				limit->setAdditiveUseLocal(!(it.Flag & PMX_BONE_ADD_LOCAL));
+
+				if (it.Flag & PMX_BONE_ADD_MOVE)
+					limit->setAdditiveMoveRatio(it.ProvidedRatio);
+				if (it.Flag & PMX_BONE_ADD_ROTATION)
+					limit->setAdditiveRotationRatio(it.ProvidedRatio);
+
+				auto parentController = bones[additiveParent]->getComponent<RotationLinkComponent>();
+				if (parentController)
+					parentController->addBone(bones[i]);
+				else
+				{
+					auto additiveTransform = bones[additiveParent]->getComponent<TransformComponent>();
+					auto rotationLink = bones[additiveParent]->addComponent<RotationLinkComponent>(bones[i]);
+					rotationLink->setTranslate(additiveTransform->getTranslate());
+					rotationLink->setQuaternion(additiveTransform->getQuaternion());
+					rotationLink->setLocalTranslate(additiveTransform->getLocalTranslate());
+					rotationLink->setLocalQuaternion(additiveTransform->getLocalQuaternion());
+				}
+			}
+
+			if (it.Flag & PMX_BONE_IK)
+			{
+				auto solver = std::make_shared<CCDSolverComponent>();
+				solver->setTarget(bones[it.IKTargetBoneIndex]);
+				solver->setIterations(it.IKLoopCount);
+				solver->setAutomaticUpdate(false);
+
+				for (auto& child : it.IKList)
+				{
+					auto rotationLimit = bones[child.BoneIndex]->addComponent<RotationLimitComponent>();
+					rotationLimit->setMininumAngle(-it.IKLimitedRadian);
+					rotationLimit->setMaximumAngle(it.IKLimitedRadian);
+					rotationLimit->setMinimumAxis(math::float3(child.minimumRadian.x, child.minimumRadian.y, child.minimumRadian.z));
+					rotationLimit->setMaximumAxis(math::float3(child.maximumRadian.x, child.maximumRadian.y, child.maximumRadian.z));
+					rotationLimit->setAxisLimitEnable(child.rotateLimited);
+
+					solver->addBone(bones[child.BoneIndex]);
+				}
+
+				bones[i]->addComponent(std::move(solver));
+			}
+		}
+	}
+
+	void createClothes(const PMX& pmx, GameObjectPtr& meshes, const GameObjects& bones) noexcept(false)
+	{
+		for (auto& it : pmx.softbodies)
+		{
+			GameObjects collider;
+
+			for (auto& body : bones)
+			{
+				auto rigidbody = body->getComponent<RigidbodyComponent>();
+				if ((1 << rigidbody->getGroup()) & ~it.groupMask)
+					continue;
+
+				collider.push_back(body);
+			}
+
+			math::uint1s pinVertexIndices;
+
+			for (std::size_t i = 0; i < it.numIndices; i++)
+			{
+				std::uint32_t index = 0;
+				if (pmx.header.sizeOfIndices == 1)
+					index = *((std::uint8_t*)it.pinVertexIndices.data() + i);
+				else if (pmx.header.sizeOfIndices == 2)
+					index = *((std::uint16_t*)it.pinVertexIndices.data() + i);
+				else if (pmx.header.sizeOfIndices == 4)
+					index = *((std::uint32_t*)it.pinVertexIndices.data() + i);
+
+				pinVertexIndices.push_back(index);
+			}
+
+			auto cloth = ClothComponent::create();
+			cloth->setColliders(collider);
+			cloth->setTotalMass(it.totalMass);
+			cloth->setPinVertexIndices(pinVertexIndices);
+			cloth->setSolverFrequency(300.0f);
+			cloth->setEnableCCD(true);
+			cloth->setMaterialId(it.materialIndex);
+
+			if (!it.anchorRigidbodies.empty())
+			{
+				auto rigidbody = bones[it.anchorRigidbodies[0].rigidBodyIndex];
+				if (rigidbody)
+				{
+					if (rigidbody->getParent())
+						cloth->setTarget(rigidbody->getParent()->downcast_pointer<GameObject>());
+				}
+			}
+			
+			meshes->addComponent(cloth);
+		}
+	}
+
+	void createColliders(const PMX& pmx, GameObjects& bones) noexcept(false)
+	{
+		for (auto& it : pmx.rigidbodies)
+		{
+			if (it.bone >= bones.size())
+				continue;
+
+			auto bone = bones[it.bone];
+			auto baseTransformInverse = bone->getComponent<TransformComponent>()->getTransformInverse();
+			auto localTransform = math::transformMultiply(baseTransformInverse, math::makeRotation(math::Quaternion(octoon::math::float3(it.rotate.x, it.rotate.y, it.rotate.z)), octoon::math::float3(it.position.x, it.position.y, it.position.z)));
+
+			math::float3 translate;
+			math::float3 scale;
+			math::Quaternion rotation;
+			localTransform.getTransform(translate, rotation, scale);
+
+			if (it.shape == PmxShapeType::ShapeTypeSphere)
+			{
+				auto collider = bone->addComponent<SphereColliderComponent>(it.scale.x > 0.0f ? it.scale.x : math::EPSILON_E3);
+				collider->setCenter(translate);
+				collider->setQuaternion(rotation);
+			}
+			else if (it.shape == PmxShapeType::ShapeTypeSquare)
+			{
+				auto collider = bone->addComponent<BoxColliderComponent>(math::max(math::float3(0.001, 0.001, 0.001), math::float3(it.scale.x, it.scale.y, it.scale.z) * 2.0f));
+				collider->setCenter(translate);
+				collider->setQuaternion(rotation);
+			}
+			else if (it.shape == PmxShapeType::ShapeTypeCapsule)
+			{
+				auto collider = bone->addComponent<CapsuleColliderComponent>(it.scale.x > 0.0f ? it.scale.x : math::EPSILON_E3, it.scale.y);
+				collider->setCenter(translate);
+				collider->setQuaternion(rotation);
+			}
+		}
+	}
+
+	void createRigidbodies(const PMX& pmx, GameObjects& bones) noexcept(false)
+	{
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
+		for (auto& it : pmx.rigidbodies)
+		{
+			if (it.bone >= bones.size())
+				continue;
+
+			auto bone = bones[it.bone];
+
+			if (!bone->getComponent<RigidbodyComponent>())
+			{
+				auto component = bone->addComponent<RigidbodyComponent>();
+				component->setName(cv.to_bytes(it.name.name));
+				component->setMass(it.mass);
+				component->setGroup(it.group);
+				component->setGroupMask(it.groupMask);
+				component->setRestitution(it.elasticity);
+				component->setStaticFriction(it.friction);
+				component->setDynamicFriction(it.friction);
+				component->setLinearDamping(it.movementDecay);
+				component->setAngularDamping(it.rotationDecay);
+
+				if (it.physicsOperation == 0)
+					component->setIsKinematic(it.physicsOperation == 0);
+				else
+					component->setSleepThreshold(0.0f);
+
+				component->wakeUp();
+			}
+		}
+	}
+
+	void createJoints(const PMX& pmx, GameObjects& bones) noexcept(false)
+	{
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
+		for (auto& it : pmx.joints)
+		{
+			if (it.relatedRigidBodyIndexA >= pmx.rigidbodies.size()|| it.relatedRigidBodyIndexB >= pmx.rigidbodies.size())
+				continue;
+
+			auto boneA = pmx.rigidbodies[it.relatedRigidBodyIndexA].bone;
+			auto boneB = pmx.rigidbodies[it.relatedRigidBodyIndexB].bone;
+
+			if (boneA >= pmx.bones.size() || boneB >= pmx.bones.size())
+				continue;
+
+			auto& bodyA = bones[boneA];
+			auto& bodyB = bones[boneB];
+
+			if (bodyA != bodyB && bodyA && bodyB)
+			{
+				auto joint = bodyA->addComponent<ConfigurableJointComponent>();
+				joint->setName(cv.to_bytes(it.name.name));
+				joint->setTargetPosition(math::float3(it.position.x, it.position.y, it.position.z));
+				joint->setTargetRotation(math::Quaternion(math::float3(it.rotation.x, it.rotation.y, it.rotation.z)));
+				joint->setTarget(bodyB->getComponent<RigidbodyComponent>());
+				joint->enablePreprocessing(false);
+
+				if (it.movementLowerLimit.x == 0.0f && it.movementUpperLimit.x == 0.0f)
+					joint->setXMotion(ConfigurableJointMotion::Locked);
+				else if (it.movementLowerLimit.x > it.movementUpperLimit.x)
+					joint->setXMotion(ConfigurableJointMotion::Free);
+				else
+				{
+					joint->setHighXLimit(it.movementUpperLimit.x);
+					joint->setLowXLimit(it.movementLowerLimit.x);
+					joint->setXMotion(ConfigurableJointMotion::Limited);
+				}
+
+				if (it.movementLowerLimit.y == 0.0f && it.movementUpperLimit.y == 0.0f)
+					joint->setYMotion(ConfigurableJointMotion::Locked);
+				else if (it.movementLowerLimit.y > it.movementUpperLimit.y)
+					joint->setYMotion(ConfigurableJointMotion::Free);
+				else
+				{
+					joint->setHighYLimit(it.movementUpperLimit.y);
+					joint->setLowYLimit(it.movementLowerLimit.y);
+					joint->setYMotion(ConfigurableJointMotion::Limited);
+				}
+
+				if (it.movementLowerLimit.z == 0.0f && it.movementUpperLimit.z == 0.0f)
+					joint->setZMotion(ConfigurableJointMotion::Locked);
+				else if (it.movementLowerLimit.z > it.movementUpperLimit.z)
+					joint->setZMotion(ConfigurableJointMotion::Free);
+				else
+				{
+					joint->setHighZLimit(it.movementUpperLimit.z);
+					joint->setLowZLimit(it.movementLowerLimit.z);
+					joint->setZMotion(ConfigurableJointMotion::Limited);
+				}
+
+				if (it.rotationLowerLimit.x == 0.0f && it.rotationUpperLimit.x == 0.0f)
+					joint->setAngularXMotion(ConfigurableJointMotion::Locked);
+				else if (it.rotationLowerLimit.x > it.rotationUpperLimit.x)
+					joint->setAngularXMotion(ConfigurableJointMotion::Free);
+				else
+					joint->setAngularXMotion(ConfigurableJointMotion::Limited);
+
+				if (it.rotationLowerLimit.y == 0.0f && it.rotationUpperLimit.y == 0.0f)
+					joint->setAngularYMotion(ConfigurableJointMotion::Locked);
+				else if (it.rotationLowerLimit.y > it.rotationUpperLimit.y)
+					joint->setAngularYMotion(ConfigurableJointMotion::Free);
+				else
+					joint->setAngularYMotion(ConfigurableJointMotion::Limited);
+
+				if (it.rotationLowerLimit.z == 0.0f && it.rotationUpperLimit.z == 0.0f)
+					joint->setAngularZMotion(ConfigurableJointMotion::Locked);
+				else if (it.rotationLowerLimit.z > it.rotationUpperLimit.z)
+					joint->setAngularZMotion(ConfigurableJointMotion::Free);
+				else
+					joint->setAngularZMotion(ConfigurableJointMotion::Limited);
+
+				joint->setAngularLimit(it.rotationLowerLimit.x, it.rotationUpperLimit.x, it.rotationLowerLimit.y, it.rotationUpperLimit.y, it.rotationLowerLimit.z, it.rotationUpperLimit.z);
+				
+				joint->setDriveMotionX(it.springMovementConstant.x);
+				joint->setDriveMotionY(it.springMovementConstant.y);
+				joint->setDriveMotionZ(it.springMovementConstant.z);
+
+				joint->setDriveAngularX(it.springRotationConstant.x);
+				joint->setDriveAngularY(it.springRotationConstant.y);
+				joint->setDriveAngularZ(it.springRotationConstant.z);
+			}
+		}
+	}
+
+	void createMorph(const PMX& pmx, GameObjectPtr& mesh) noexcept(false)
+	{
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
+		for (auto& it : pmx.morphs)
+		{
+			switch (it.morphType)
+			{
+			case PmxMorphType::PMX_MorphTypeVertex:
+			{
+				math::float3s offsets;
+				math::uint1s indices;
+
+				for (auto& v : it.vertices)
+				{
+					offsets.push_back(math::float3(v.offset.x, v.offset.y, v.offset.z));
+					indices.push_back(v.index);
+				}
+
+				auto animation = mesh->addComponent<SkinnedMorphComponent>();
+				animation->setName(cv.to_bytes(it.name.name));
+				animation->setOffsets(std::move(offsets));
+				animation->setIndices(std::move(indices));
+			}
+			break;
+			}
+		}
+	}
+
+	void createMaterials(const PMX& pmx, Materials& materials) noexcept(false)
+	{
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
+		materials.reserve(pmx.materials.size());
 
 		for (auto& it : pmx.materials)
 		{
 			auto material = std::make_shared<MeshStandardMaterial>();
-			if (it.name.length > 0)
-				material->setName(cv.to_bytes(it.name.name));
-			else
-				material->setName("Untitled");
+			material->setName(it.name.length > 0 ? cv.to_bytes(it.name.name) : "Untitled");
 			material->setColor(math::srgb2linear(math::float3(it.Diffuse.x, it.Diffuse.y, it.Diffuse.z)));
 			material->setOpacity(it.Opacity);
 
@@ -614,10 +373,7 @@ namespace octoon
 			try
 			{
 				if (it.TextureIndex < limits)
-				{
-					std::string u8_conv = cv.to_bytes(pmx.textures[it.TextureIndex].name);
-					material->setColorMap(TextureLoader::load(rootPath + "/" + u8_conv));
-				}
+					material->setColorMap(TextureLoader::load(pmx.textures[it.TextureIndex].fullpath));
 			}
 			catch (...)
 			{
@@ -644,8 +400,14 @@ namespace octoon
 				material->setBlendDest(BlendMode::OneMinusSrcAlpha);
 			}
 
-			model.materials.emplace_back(std::move(material));
+			materials.emplace_back(std::move(material));
 		}
+	}
+
+	void createMeshes(const PMX& pmx, GameObjectPtr& object, const GameObjects& bones) noexcept(false)
+	{
+		Materials materials;
+		createMaterials(pmx, materials);
 
 		math::float4x4s bindposes(pmx.bones.size());
 		for (std::size_t i = 0; i < pmx.bones.size(); i++)
@@ -655,6 +417,7 @@ namespace octoon
 		math::float3s normals_;
 		math::float2s texcoords_;
 		std::vector<VertexWeight> weights;
+		std::vector<std::shared_ptr<Mesh>> meshes;
 
 		vertices_.resize(pmx.numVertices);
 		normals_.resize(pmx.numVertices);
@@ -719,539 +482,534 @@ namespace octoon
 		}
 
 		mesh->computeBoundingBox();
-		model.meshes.emplace_back(std::move(mesh));
 
+		object->addComponent<MeshFilterComponent>(std::move(mesh));
+
+		if (bones.empty())
+		{
+			auto meshRender = object->addComponent<MeshRendererComponent>(std::move(materials));
+			meshRender->setGlobalIllumination(true);
+		}
+		else
+		{
+			auto smr = SkinnedMeshRendererComponent::create();
+			smr->setMaterials(std::move(materials));
+			smr->setTransforms(bones);
+			smr->setMorphBlendEnable(true);
+			smr->setTextureBlendEnable(true);
+			smr->setGlobalIllumination(true);
+
+			object->addComponent(smr);
+		}
+	}
+
+	std::shared_ptr<Geometry>
+	PMXLoader::loadGeometry(const PMX& pmx) noexcept(false)
+	{
+		Materials materials;
+		createMaterials(pmx, materials);
+
+		math::float4x4s bindposes(pmx.bones.size());
 		for (std::size_t i = 0; i < pmx.bones.size(); i++)
+			bindposes[i].makeTranslate(-math::float3(pmx.bones[i].position.x, pmx.bones[i].position.y, pmx.bones[i].position.z));
+
+		math::float3s vertices_;
+		math::float3s normals_;
+		math::float2s texcoords_;
+		std::vector<VertexWeight> weights;
+		std::vector<std::shared_ptr<Mesh>> meshes;
+
+		vertices_.resize(pmx.numVertices);
+		normals_.resize(pmx.numVertices);
+		texcoords_.resize(pmx.numVertices);
+
+		if (pmx.numBones)
+			weights.resize(pmx.numVertices);
+
+		for (std::size_t i = 0; i < pmx.numVertices; i++)
 		{
-			auto& it = pmx.bones[i];
+			auto& v = pmx.vertices[i];
 
-			Bone bone;
-			bone.setName(cv.to_bytes(it.name.name));
-			bone.setPosition(math::float3(it.position.x, it.position.y, it.position.z));
-			bone.setParent(it.Parent);
-			bone.setVisable(it.Visable);
-			bone.setAdditiveParent(it.ProvidedParentBoneIndex);
-			bone.setAdditiveUseLocal(!(it.Flag & PMX_BONE_ADD_LOCAL));
+			vertices_[i].set(v.position.x, v.position.y, v.position.z);
+			normals_[i].set(v.normal.x, v.normal.y, v.normal.z);
+			texcoords_[i].set(v.coord.x, v.coord.y);
 
-			if (it.Flag & PMX_BONE_ADD_MOVE)
-				bone.setAdditiveMoveRatio(it.ProvidedRatio);
-			if (it.Flag & PMX_BONE_ADD_ROTATION)
-				bone.setAdditiveRotationRatio(it.ProvidedRatio);
-
-			model.bones.emplace_back(std::make_shared<Bone>(bone));
-
-			if (it.Flag & PMX_BONE_IK)
+			if (pmx.numBones)
 			{
-				IKAttr attr;
-				attr.boneIndex = static_cast<uint16_t>(i);
-				attr.targetBoneIndex = it.IKTargetBoneIndex;
-				attr.chainLength = it.IKLinkCount;
-				attr.iterations = it.IKLoopCount;
+				VertexWeight weight;
+				weight.weight1 = v.weight.weight1;
+				weight.weight2 = v.weight.weight2;
+				weight.weight3 = v.weight.weight3;
+				weight.weight4 = v.weight.weight4;
+				weight.bone1 = v.weight.bone1 < pmx.numBones ? v.weight.bone1 : 0;
+				weight.bone2 = v.weight.bone2 < pmx.numBones ? v.weight.bone2 : 0;
+				weight.bone3 = v.weight.bone3 < pmx.numBones ? v.weight.bone3 : 0;
+				weight.bone4 = v.weight.bone4 < pmx.numBones ? v.weight.bone4 : 0;
 
-				for (auto& ik : it.IKList)
-				{
-					IKChild child;
-					child.boneIndex = ik.BoneIndex;
-					child.angleRadian = it.IKLimitedRadian;
-					child.minimumRadian.set(ik.minimumRadian.x, ik.minimumRadian.y, ik.minimumRadian.z);
-					child.maximumRadian.set(ik.maximumRadian.x, ik.maximumRadian.y, ik.maximumRadian.z);
-					child.rotateLimited = ik.rotateLimited;
-
-					attr.child.push_back(child);
-				}
-
-				model.iks.emplace_back(std::make_shared<IKAttr>(attr));
+				weights[i] = weight;
 			}
 		}
 
-		for (auto& it : pmx.morphs)
+		auto mesh = std::make_shared<Mesh>();
+		mesh->setBindposes(std::move(bindposes));
+		mesh->setVertexArray(std::move(vertices_));
+		mesh->setNormalArray(std::move(normals_));
+		mesh->setTexcoordArray(std::move(texcoords_));
+		mesh->setWeightArray(std::move(weights));
+
+		PmxUInt32 startIndices = 0;
+
+		for (std::size_t i = 0; i < pmx.materials.size(); i++)
 		{
-			switch (it.morphType)
-			{
-			case PmxMorphType::PMX_MorphTypeVertex:
-			{
-				auto morph = std::make_shared<Morph>();
-				morph->name = cv.to_bytes(it.name.name);
-				morph->morphType = it.morphType;
-				morph->control = it.control;
-				morph->morphCount = it.morphCount;
-				morph->vertices.reserve(it.vertices.size());
+			math::uint1s indices_(pmx.materials[i].FaceCount);
 
-				for (auto& v : it.vertices)
-				{
-					MorphVertex vertex;
-					vertex.index = v.index;
-					vertex.offset.set(v.offset.x, v.offset.y, v.offset.z);
-					morph->vertices.push_back(vertex);
-				}
-
-				model.morphs.emplace_back(morph);
-			}
-			break;
-			}
-		}
-
-		for (auto& it : pmx.rigidbodies)
-		{
-			auto body = std::make_shared<Rigidbody>();
-			body->name = cv.to_bytes(it.name.name);
-			body->bone = it.bone;
-			body->group = it.group;
-			body->groupMask = it.groupMask;
-			body->shape = (ShapeType)it.shape;
-			body->scale.set(it.scale.x, it.scale.y, it.scale.z);
-			body->position.set(it.position.x, it.position.y, it.position.z);
-			body->rotation.set(it.rotate.x, it.rotate.y, it.rotate.z);
-			body->mass = it.mass;
-			body->movementDecay = it.movementDecay;
-			body->rotationDecay = it.rotationDecay;
-			body->elasticity = it.elasticity;
-			body->friction = it.friction;
-			body->physicsOperation = it.physicsOperation;
-
-			if (body->shape == ShapeType::ShapeTypeCapsule && body->scale.y == 0.0f)
-				body->shape = ShapeType::ShapeTypeSphere;
-
-			model.rigidbodies.emplace_back(std::move(body));
-		}
-
-		for (auto& it : pmx.joints)
-		{
-			auto joint = std::make_shared<Joint>();
-			joint->name = cv.to_bytes(it.name.name);
-			joint->type = it.type;
-			joint->bodyIndexA = it.relatedRigidBodyIndexA;
-			joint->bodyIndexB = it.relatedRigidBodyIndexB;
-			joint->position.set(it.position.x, it.position.y, it.position.z);
-			joint->rotation.set(it.rotation.x, it.rotation.y, it.rotation.z);
-			joint->movementLowerLimit.set(it.movementLowerLimit.x, it.movementLowerLimit.y, it.movementLowerLimit.z);
-			joint->movementUpperLimit.set(it.movementUpperLimit.x, it.movementUpperLimit.y, it.movementUpperLimit.z);
-			joint->rotationLowerLimit.set(it.rotationLowerLimit.x, it.rotationLowerLimit.y, it.rotationLowerLimit.z);
-			joint->rotationUpperLimit.set(it.rotationUpperLimit.x, it.rotationUpperLimit.y, it.rotationUpperLimit.z);
-			joint->springMovementConstant.set(it.springMovementConstant.x, it.springMovementConstant.y, it.springMovementConstant.z);
-			joint->springRotationConstant.set(it.springRotationConstant.x, it.springRotationConstant.y, it.springRotationConstant.z);
-
-			model.joints.emplace_back(std::move(joint));
-		}
-
-		for (auto& it : pmx.softbodies)
-		{
-			auto softbody = std::make_shared<Softbody>();
-			softbody->name = cv.to_bytes(it.name.name);
-			softbody->materialIndex = it.materialIndex;
-			softbody->group = it.group;
-			softbody->groupMask = it.groupMask;
-			softbody->blinkLength = it.blinkLength;
-			softbody->numClusters = it.numClusters;
-			softbody->totalMass = it.totalMass;
-			softbody->collisionMargin = it.collisionMargin;
-			softbody->aeroModel = it.aeroModel;
-			softbody->LST = it.LST;
-			softbody->anchorRigidbodies.reserve(it.numRigidbody);
-				
-			for (auto& rigidbody : it.anchorRigidbodies)
-				softbody->anchorRigidbodies.push_back(rigidbody.rigidBodyIndex);
-
-			for (std::size_t i = 0; i < it.numIndices; i++)
+			for (std::size_t j = startIndices; j < startIndices + pmx.materials[i].FaceCount; j++)
 			{
 				std::uint32_t index = 0;
 				if (pmx.header.sizeOfIndices == 1)
-					index = *((std::uint8_t*)it.pinVertexIndices.data() + i);
+					index = *((std::uint8_t*)pmx.indices.data() + j);
 				else if (pmx.header.sizeOfIndices == 2)
-					index = *((std::uint16_t*)it.pinVertexIndices.data() + i);
+					index = *((std::uint16_t*)pmx.indices.data() + j);
 				else if (pmx.header.sizeOfIndices == 4)
-					index = *((std::uint32_t*)it.pinVertexIndices.data() + i);
+					index = *((std::uint32_t*)pmx.indices.data() + j);
 
-				softbody->pinVertexIndices.push_back(index);
+				indices_[j - startIndices] = index;
 			}
 
-			model.softbodies.emplace_back(std::move(softbody));
+			mesh->setIndicesArray(std::move(indices_), i);
+
+			startIndices += pmx.materials[i].FaceCount;
 		}
 
-		return true;
+		mesh->computeBoundingBox();
+
+		auto geometry = std::make_shared<Geometry>();
+		geometry->setMesh(mesh);
+		geometry->setMaterials(materials);
+
+		return geometry;
+	}
+
+	std::shared_ptr<GameObject>
+	PMXLoader::load(std::string_view filepath) noexcept(false)
+	{
+		PMX pmx;
+		if (PMX::load(filepath, pmx))
+		{
+			if (pmx.numMaterials > 0)
+			{
+				GameObjects bones;
+				GameObjectPtr actor = GameObject::create();
+
+				if (!pmx.description.japanModelName.empty())
+				{
+					std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+					actor->setName(cv.to_bytes(pmx.description.japanModelName.data()));
+				}
+
+				createBones(pmx, bones);
+				createColliders(pmx, bones);
+				createRigidbodies(pmx, bones);
+				createJoints(pmx, bones);
+
+				createMeshes(pmx, actor, bones);
+				createMorph(pmx, actor);
+				createClothes(pmx, actor, bones);
+
+				return actor;
+			}
+		}
+
+		return nullptr;
+	}
+
+	std::shared_ptr<GameObject>
+	PMXLoader::load(const PMX& pmx) noexcept(false)
+	{
+		if (pmx.numMaterials > 0)
+		{
+			GameObjects bones;
+			GameObjectPtr actor = GameObject::create();
+
+			if (!pmx.description.japanModelName.empty())
+			{
+				std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+				actor->setName(cv.to_bytes(pmx.description.japanModelName.data()));
+			}
+
+			createBones(pmx, bones);
+			createColliders(pmx, bones);
+			createRigidbodies(pmx, bones);
+			createJoints(pmx, bones);
+
+			createMeshes(pmx, actor, bones);
+			createMorph(pmx, actor);
+			createClothes(pmx, actor, bones);
+
+			return actor;
+		}
+
+		return nullptr;
 	}
 
 	bool
-	PmxLoader::save(io::ostream& stream, const PMX& pmx) noexcept
+	PMXLoader::save(const GameObject& gameObject, PMX& pmx, std::string_view path) noexcept(false)
 	{
-		if (!stream.write((char*)&pmx.header, sizeof(pmx.header))) return false;
-
-		if (!stream.write((char*)&pmx.description.japanModelLength, sizeof(pmx.description.japanModelLength))) return false;
-		if (pmx.description.japanModelLength)
-			if (!stream.write((char*)&pmx.description.japanModelName[0], pmx.description.japanModelLength)) return false;
-
-		if (!stream.write((char*)&pmx.description.englishModelLength, sizeof(pmx.description.englishModelLength))) return false;
-		if (pmx.description.englishModelLength)
-			if (!stream.write((char*)&pmx.description.englishModelName[0], pmx.description.englishModelLength)) return false;
-
-		if (!stream.write((char*)&pmx.description.japanCommentLength, sizeof(pmx.description.japanCommentLength))) return false;
-		if (pmx.description.japanCommentLength)
-			if (!stream.write((char*)&pmx.description.japanCommentName[0], pmx.description.japanCommentLength)) return false;
-
-		if (!stream.write((char*)&pmx.description.englishCommentLength, sizeof(pmx.description.englishCommentLength))) return false;
-		if (pmx.description.englishCommentLength)
-			if (!stream.write((char*)&pmx.description.englishCommentName[0], pmx.description.englishCommentLength)) return false;
-
-		if (!stream.write((char*)&pmx.numVertices, sizeof(pmx.numVertices))) return false;
-		if (pmx.numVertices)
+		if (!gameObject.getName().empty())
 		{
-			for (auto& vertex : pmx.vertices)
+			pmx.header.magic[0] = 'P';
+			pmx.header.magic[1] = 'M';
+			pmx.header.magic[2] = 'X';
+			pmx.header.offset = 0x20;
+			pmx.header.version = 2.0f;
+			pmx.header.dataSize = 0x08;
+			pmx.header.encode = 0x0;
+			pmx.header.addUVCount = 0;
+			pmx.header.sizeOfIndices = 4;
+			pmx.header.sizeOfTexture = 1;
+			pmx.header.sizeOfMaterial = 1;
+			pmx.header.sizeOfBone = 2;
+			pmx.header.sizeOfMorph = 1;
+			pmx.header.sizeOfBody = 1;
+
+			pmx.numVertices = 0;
+			pmx.numIndices = 0;
+			pmx.numTextures = 0;
+			pmx.numMaterials = 0;
+			pmx.numBones = 0;
+			pmx.numMorphs = 0;
+			pmx.numDisplayFrames = 0;
+			pmx.numRigidbodys = 0;
+			pmx.numJoints = 0;
+			pmx.numSoftbodies = 0;
+
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+			auto utf16 = cv.from_bytes(gameObject.getName());
+			pmx.description.japanModelLength = utf16.length() * 2;
+			pmx.description.japanModelName.resize(utf16.length());
+
+			std::memcpy(pmx.description.japanModelName.data(), utf16.data(), pmx.description.japanModelLength);
+
+			auto mf = gameObject.getComponent<MeshFilterComponent>();
+			if (mf && mf->getMesh())
 			{
-				if (pmx.header.addUVCount > 0)
+				auto mesh = mf->getMesh();
+				auto& weight = mesh->getWeightArray();
+
+				pmx.numVertices = mesh->getNumVertices();
+				pmx.numIndices = mesh->getNumIndices();
+
+				pmx.vertices.resize(pmx.numVertices);
+				pmx.indices.resize(pmx.numIndices * sizeof(std::uint32_t));
+
+				for (std::size_t i = 0; i < pmx.numVertices; i++)
 				{
-					std::streamsize size = sizeof(vertex.position) + sizeof(vertex.normal) + sizeof(vertex.coord) + sizeof(vertex.addCoord[0]) * pmx.header.addUVCount;
-					if (!stream.write((char*)&vertex.position, size)) return false;
-				}
-				else
-				{
-					std::streamsize size = sizeof(vertex.position) + sizeof(vertex.normal) + sizeof(vertex.coord);
-					if (!stream.write((char*)&vertex.position, size)) return false;
+					auto& pmxVertex = pmx.vertices[i];
+					pmxVertex.position = mesh->getVertexArray()[i];
+					pmxVertex.normal = mesh->getNormalArray()[i];
+					pmxVertex.coord = mesh->getTexcoordArray()[i];
+					pmxVertex.edge = 1.0f;
+					pmxVertex.type = PmxVertexSkinningType::PMX_BDEF1;
+					pmxVertex.weight.bone1 = weight[i].bone1;
+					pmxVertex.weight.bone2 = weight[i].bone2;
+					pmxVertex.weight.bone3 = weight[i].bone3;
+					pmxVertex.weight.bone4 = weight[i].bone4;
+					pmxVertex.weight.weight1 = weight[i].weight1;
+					pmxVertex.weight.weight2 = weight[i].weight2;
+					pmxVertex.weight.weight3 = weight[i].weight3;
+					pmxVertex.weight.weight4 = weight[i].weight4;
+
+					if (pmxVertex.weight.weight1 != 0 && pmxVertex.weight.weight2 != 0 && pmxVertex.weight.weight3 != 0 && pmxVertex.weight.weight4 != 0)
+						pmxVertex.type = PmxVertexSkinningType::PMX_BDEF4;
+					else if (pmxVertex.weight.weight1 != 0 && pmxVertex.weight.weight2 != 0)
+						pmxVertex.type = PmxVertexSkinningType::PMX_BDEF2;
+					else if (pmxVertex.weight.weight1 != 0)
+						pmxVertex.type = PmxVertexSkinningType::PMX_BDEF1;
 				}
 
-				if (!stream.write((char*)&vertex.type, sizeof(vertex.type))) return false;
-
-				switch (vertex.type)
+				for (std::size_t i = 0, offset = 0; i < mesh->getNumSubsets(); i++)
 				{
-					case PMX_BDEF1:
+					auto& indices = mesh->getIndicesArray(i);
+					std::memcpy(pmx.indices.data() + offset, indices.data(), indices.size() * sizeof(std::uint32_t));
+					offset += indices.size() * sizeof(std::uint32_t);
+				}
+
+				auto smr = gameObject.getComponent<SkinnedMeshRendererComponent>();
+				if (smr)
+				{
+					std::map<std::shared_ptr<GraphicsTexture>, std::size_t> textureMap;
+
+					pmx.numMaterials = smr->getMaterials().size();
+					pmx.materials.resize(pmx.numMaterials);
+
+					for (std::size_t i = 0; i < pmx.numMaterials; i++)
 					{
-						if (!stream.write((char*)&vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
+						auto standard = smr->getMaterial(i)->downcast_pointer<MeshStandardMaterial>();
+						auto texture = standard->getColorMap();
+
+						if (texture && textureMap.find(texture) == textureMap.end())
+							textureMap.insert(std::make_pair(texture, textureMap.size()));
+
+						auto& pmxMaterial = pmx.materials[i];
+						pmxMaterial.name = PmxName(standard->getName());
+						pmxMaterial.nameEng = PmxName("");
+						pmxMaterial.Diffuse = math::linear2srgb(standard->getColor());
+						pmxMaterial.Ambient = math::float3(0.5f, 0.5f, 0.5f);
+						pmxMaterial.Opacity = standard->getOpacity();
+						pmxMaterial.TextureIndex = texture ? textureMap[texture] : -1;
+						pmxMaterial.ToonTexture = -1;
+						pmxMaterial.SphereTextureIndex = -1;
+						pmxMaterial.FaceCount = mesh->getIndicesArray(i).size();
 					}
-					break;
-					case PMX_BDEF2:
+
+					pmx.numTextures = textureMap.size();
+					pmx.textures.resize(textureMap.size());
+
+					for (auto& it : textureMap)
 					{
-						if (!stream.write((char*)&vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.bone2, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.weight1, sizeof(vertex.weight.weight2))) return false;
+						auto texture = it.first;
+						auto name = texture->getTextureDesc().getName();
+						auto filename = make_guid() + name.substr(name.find_last_of("."));
+						auto outputPath = std::string(path) + filename;
+						TextureLoader::save(outputPath, texture);
+						pmx.textures[it.second] = PmxName(filename);
 					}
-					break;
-					case PMX_BDEF4:
+
+					auto transforms = smr->getTransforms();
+					if (!transforms.empty())
 					{
-						if (!stream.write((char*)&vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.bone2, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.bone3, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.bone4, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.weight1, sizeof(vertex.weight.weight1))) return false;
-						if (!stream.write((char*)&vertex.weight.weight2, sizeof(vertex.weight.weight2))) return false;
-						if (!stream.write((char*)&vertex.weight.weight3, sizeof(vertex.weight.weight3))) return false;
-						if (!stream.write((char*)&vertex.weight.weight4, sizeof(vertex.weight.weight4))) return false;
-					}
-					break;
-					case PMX_SDEF:
-					{
-						if (!stream.write((char*)&vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.bone2, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.weight1, sizeof(vertex.weight.weight1))) return false;
-						if (!stream.write((char*)&vertex.weight.SDEF_C, sizeof(vertex.weight.SDEF_C))) return false;
-						if (!stream.write((char*)&vertex.weight.SDEF_R0, sizeof(vertex.weight.SDEF_R0))) return false;
-						if (!stream.write((char*)&vertex.weight.SDEF_R1, sizeof(vertex.weight.SDEF_R1))) return false;
-					}
-					break;
-					case PMX_QDEF:
-					{
-						if (!stream.write((char*)&vertex.weight.bone1, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.bone2, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&vertex.weight.weight1, sizeof(vertex.weight.weight1))) return false;
-					}
-					default:
-						return false;
-				}
+						pmx.numBones = smr->getTransforms().size();
+						pmx.bones.resize(pmx.numBones);
 
-				if (!stream.write((char*)&vertex.edge, sizeof(vertex.edge))) return false;
-			}
-		}
+						std::map<GameObject*, std::size_t> boneMap;
 
-		if (!stream.write((char*)&pmx.numIndices, sizeof(pmx.numIndices))) return false;
-		if (pmx.numIndices)
-			if (!stream.write((char*)pmx.indices.data(), pmx.indices.size())) return false;
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+							boneMap[smr->getTransforms()[i].get()] = i;
 
-		if (!stream.write((char*)&pmx.numTextures, sizeof(pmx.numTextures))) return false;
-		if (pmx.numTextures)
-		{
-			for (auto& texture : pmx.textures)
-			{
-				if (!stream.write((char*)&texture.length, sizeof(texture.length))) return false;
-				if (!stream.write((char*)&texture.name, texture.length)) return false;
-			}
-		}
-
-		if (!stream.write((char*)&pmx.numMaterials, sizeof(pmx.numMaterials))) return false;
-		if (pmx.numMaterials)
-		{
-			for (auto& material : pmx.materials)
-			{
-				if (!stream.write((char*)&material.name.length, sizeof(material.name.length))) return false;
-
-				if (material.name.length)
-					if (!stream.write((char*)&material.name.name, material.name.length)) return false;
-
-				if (!stream.write((char*)&material.nameEng.length, sizeof(material.nameEng.length))) return false;
-
-				if (material.nameEng.length)
-					if (!stream.write((char*)&material.nameEng.name, material.nameEng.length)) return false;
-
-				if (!stream.write((char*)&material.Diffuse, sizeof(material.Diffuse))) return false;
-				if (!stream.write((char*)&material.Opacity, sizeof(material.Opacity))) return false;
-				if (!stream.write((char*)&material.Specular, sizeof(material.Specular))) return false;
-				if (!stream.write((char*)&material.Shininess, sizeof(material.Shininess))) return false;
-				if (!stream.write((char*)&material.Ambient, sizeof(material.Ambient))) return false;
-				if (!stream.write((char*)&material.Flag, sizeof(material.Flag))) return false;
-				if (!stream.write((char*)&material.EdgeColor, sizeof(material.EdgeColor))) return false;
-				if (!stream.write((char*)&material.EdgeSize, sizeof(material.EdgeSize))) return false;
-				if (!stream.write((char*)&material.TextureIndex, pmx.header.sizeOfTexture)) return false;
-				if (!stream.write((char*)&material.SphereTextureIndex, pmx.header.sizeOfTexture)) return false;
-				if (!stream.write((char*)&material.SphereMode, sizeof(material.SphereMode))) return false;
-				if (!stream.write((char*)&material.ToonIndex, sizeof(material.ToonIndex))) return false;
-
-				if (material.ToonIndex == 1)
-				{
-					if (!stream.write((char*)&material.ToonTexture, 1)) return false;
-				}
-				else
-				{
-					if (!stream.write((char*)&material.ToonTexture, pmx.header.sizeOfTexture)) return false;
-				}
-
-				if (!stream.write((char*)&material.memLength, sizeof(material.memLength))) return false;
-				if (material.memLength > 0)
-				{
-					if (!stream.write((char*)&material.mem, material.memLength)) return false;
-				}
-
-				if (!stream.write((char*)&material.FaceCount, sizeof(material.FaceCount))) return false;
-			}
-		}
-
-		if (!stream.write((char*)&pmx.numBones, sizeof(pmx.numBones))) return false;
-		if (pmx.numBones)
-		{
-			for (auto& bone : pmx.bones)
-			{
-				if (!stream.write((char*)&bone.name.length, sizeof(bone.name.length))) return false;
-				if (bone.name.length)
-					if (!stream.write((char*)&bone.name.name, bone.name.length)) return false;
-				if (!stream.write((char*)&bone.nameEng.length, sizeof(bone.nameEng.length))) return false;
-				if (bone.nameEng.length)
-					if (!stream.write((char*)&bone.nameEng.name, bone.nameEng.length)) return false;
-
-				if (!stream.write((char*)&bone.position, sizeof(bone.position))) return false;
-				if (!stream.write((char*)&bone.Parent, pmx.header.sizeOfBone)) return false;
-				if (!stream.write((char*)&bone.Level, sizeof(bone.Level))) return false;
-				if (!stream.write((char*)&bone.Flag, sizeof(bone.Flag))) return false;
-
-				if (bone.Flag & PMX_BONE_INDEX)
-				{
-					if (!stream.write((char*)&bone.ConnectedBoneIndex, pmx.header.sizeOfBone)) return false;
-				}
-				else
-				{
-					if (!stream.write((char*)&bone.Offset, sizeof(bone.Offset))) return false;
-				}
-
-				if (bone.Flag & (PMX_BONE_ADD_ROTATION | PMX_BONE_ADD_MOVE))
-				{
-					if (!stream.write((char*)&bone.ProvidedParentBoneIndex, pmx.header.sizeOfBone)) return false;
-					if (!stream.write((char*)&bone.ProvidedRatio, sizeof(bone.ProvidedRatio))) return false;
-				}
-
-				if (bone.Flag & PMX_BONE_FIXED_AXIS)
-				{
-					if (!stream.write((char*)&bone.AxisDirection, sizeof(bone.AxisDirection))) return false;
-				}
-
-				if (bone.Flag & PMX_BONE_LOCAL_AXIS)
-				{
-					if (!stream.write((char*)&bone.DimentionXDirection, sizeof(bone.DimentionXDirection))) return false;
-					if (!stream.write((char*)&bone.DimentionZDirection, sizeof(bone.DimentionZDirection))) return false;
-				}
-
-				if (bone.Flag & PMX_BONE_IK)
-				{
-					if (!stream.write((char*)&bone.IKTargetBoneIndex, pmx.header.sizeOfBone)) return false;
-					if (!stream.write((char*)&bone.IKLoopCount, sizeof(bone.IKLoopCount))) return false;
-					if (!stream.write((char*)&bone.IKLimitedRadian, sizeof(bone.IKLimitedRadian))) return false;
-					if (!stream.write((char*)&bone.IKLinkCount, sizeof(bone.IKLinkCount))) return false;
-
-					if (bone.IKLinkCount > 0)
-					{
-						for (auto& chain : bone.IKList)
+						for (std::size_t i = 0; i < pmx.numBones; i++)
 						{
-							if (!stream.write((char*)&chain.BoneIndex, pmx.header.sizeOfBone)) return false;
-							if (!stream.write((char*)&chain.rotateLimited, (std::streamsize)sizeof(chain.rotateLimited))) return false;
-							if (chain.rotateLimited)
+							auto transform = smr->getTransforms()[i];
+
+							auto& pmxBone = pmx.bones[i];
+							pmxBone.name = transform->getName();
+							pmxBone.Visable = true;
+							pmxBone.position = -mesh->getBindposes()[i].getTranslate();
+							pmxBone.Parent = transform->getParent() ? boneMap[transform->getParent()] : -1;
+							pmxBone.ProvidedParentBoneIndex = -1;
+							pmxBone.Flag |= PMX_BONE_ROTATION | PMX_BONE_OPERATOR | PMX_BONE_DISPLAY;
+
+							auto linkLimit = transform->getComponent<RotationLinkLimitComponent>();
+							if (linkLimit)
 							{
-								if (!stream.write((char*)&chain.minimumRadian, (std::streamsize)sizeof(chain.minimumRadian))) return false;
-								if (!stream.write((char*)&chain.maximumRadian, (std::streamsize)sizeof(chain.maximumRadian))) return false;
+								pmxBone.ProvidedRatio = linkLimit->getAdditiveRotationRatio();
+
+								if (!linkLimit->getAdditiveUseLocal())
+									pmxBone.Flag |= PMX_BONE_ADD_LOCAL;
+								if (linkLimit->getAdditiveMoveRatio() != 0.0f)
+									pmxBone.Flag |= PMX_BONE_ADD_MOVE;
+								if (linkLimit->getAdditiveRotationRatio() != 0.0f)
+									pmxBone.Flag |= PMX_BONE_ADD_ROTATION;
 							}
+							else
+							{
+								pmxBone.Flag |= PMX_BONE_MOVE;
+							}
+
+							auto slover = transform->getComponent<CCDSolverComponent>();
+							if (slover)
+							{
+								pmxBone.Flag |= PMX_BONE_IK;
+								pmxBone.Level = 1;
+								pmxBone.IKLoopCount = slover->getIterations();
+								pmxBone.IKTargetBoneIndex = boneMap[slover->getTarget().get()];
+								pmxBone.IKLinkCount = slover->getBones().size();
+								pmxBone.IKList.resize(pmxBone.IKLinkCount);
+
+								for (std::size_t n = 0; n < pmxBone.IKLinkCount; n++)
+								{
+									auto bone = slover->getBone(n);
+									auto rotationLimit = bone->getComponent<RotationLimitComponent>();
+
+									auto& ik = pmxBone.IKList[n];
+									ik.BoneIndex = boneMap[bone.get()];
+									
+									if (rotationLimit)
+									{
+										pmxBone.IKLimitedRadian = rotationLimit->getMaximumAngle();
+
+										ik.rotateLimited = rotationLimit->getAxisLimitEnable();
+										ik.minimumRadian = rotationLimit->getMinimumAxis();
+										ik.maximumRadian = rotationLimit->getMaximumAxis();
+									}
+								}
+							}
+						}
+
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+						{
+							auto transform = smr->getTransforms()[i];
+							auto links = transform->getComponent<RotationLinkComponent>();
+							if (links)
+							{
+								for (auto& bone : links->getBones())
+									pmx.bones[boneMap[bone.get()]].ProvidedParentBoneIndex = i;
+							}
+						}
+
+						std::vector<std::size_t> rigidbodyToBone;
+						std::vector<RigidbodyComponent*> rigidbodies;
+
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+						{
+							auto bone = smr->getTransforms()[i];
+							auto rigibdody = bone->getComponent<RigidbodyComponent>();
+							if (rigibdody)
+							{
+								rigidbodies.push_back(rigibdody.get());
+								rigidbodyToBone.push_back(i);
+							}
+						}
+
+						pmx.numRigidbodys = rigidbodies.size();
+						pmx.rigidbodies.resize(pmx.numRigidbodys);
+
+						for (std::size_t i = 0; i < pmx.numRigidbodys; i++)
+						{
+							auto it = rigidbodies[i]->downcast<RigidbodyComponent>();
+
+							auto& pmxRigidbody = pmx.rigidbodies[i];
+							pmxRigidbody.bone = rigidbodyToBone[i];
+							pmxRigidbody.name = it->getName();
+							pmxRigidbody.nameEng = PmxName("");
+							pmxRigidbody.mass = it->getMass();
+							pmxRigidbody.group = it->getGroup();
+							pmxRigidbody.groupMask  = it->getGroupMask();
+							pmxRigidbody.elasticity = it->getRestitution();
+							pmxRigidbody.friction = it->getStaticFriction();
+							pmxRigidbody.movementDecay = it->getLinearDamping();
+							pmxRigidbody.rotationDecay = it->getAngularDamping();
+							pmxRigidbody.physicsOperation = it->getIsKinematic() ? 0 : 1;
+
+							auto collider = it->getComponent<ColliderComponent>();
+							if (collider)
+							{
+								auto baseTransform = it->getComponent<TransformComponent>()->getTransform();
+								auto localTransform = math::transformMultiply(baseTransform, math::makeRotation(collider->getQuaternion(), collider->getCenter()));
+
+								math::float3 translate;
+								math::float3 scale;
+								math::Quaternion rotation;
+								localTransform.getTransform(translate, rotation, scale);
+
+								pmxRigidbody.position = translate;
+								pmxRigidbody.rotate = math::eulerAngles(rotation);
+							}
+
+							if (auto boxCollider = it->getComponent<BoxColliderComponent>())
+							{
+								pmxRigidbody.shape = PmxShapeType::ShapeTypeSquare;
+								pmxRigidbody.scale = boxCollider->getSize();
+							}								
+							else if (auto capsuleCollider = it->getComponent<CapsuleColliderComponent>())
+							{
+								pmxRigidbody.shape = PmxShapeType::ShapeTypeCapsule;
+								pmxRigidbody.scale.x = capsuleCollider->getRadius();
+								pmxRigidbody.scale.y = capsuleCollider->getHeight();
+								pmxRigidbody.scale.z = 0.0f;
+							}
+							else if (auto sphereCollider = it->getComponent<SphereColliderComponent>())
+							{
+								pmxRigidbody.shape = PmxShapeType::ShapeTypeSphere;
+								pmxRigidbody.scale.x = sphereCollider->getRadius();
+								pmxRigidbody.scale.y = 0.0f;
+								pmxRigidbody.scale.z = 0.0f;
+							}
+						}
+
+						std::map<RigidbodyComponent*, std::size_t> rigidbodyMap;
+
+						for (std::size_t i = 0; i < pmx.numRigidbodys; i++)
+						{
+							auto rigidbody = rigidbodies[i]->downcast<RigidbodyComponent>();;
+							if (rigidbody)
+								rigidbodyMap[rigidbody] = rigidbodyMap.size();
+						}
+
+						GameComponents joints;
+						for (std::size_t i = 0; i < pmx.numBones; i++)
+						{
+							auto bone = smr->getTransforms()[i];
+							bone->getComponents<ConfigurableJointComponent>(joints);
+						}
+
+						pmx.numJoints = joints.size();
+						pmx.joints.resize(pmx.numJoints);
+
+						for (std::size_t i = 0; i < pmx.numJoints; i++)
+						{
+							float minX, maxX, minY, maxY, minZ, maxZ;
+
+							auto joint = joints[i]->downcast<ConfigurableJointComponent>();
+							joint->getAngularLimit(minX, maxX, minY, maxY, minZ, maxZ);
+
+							auto& pmxJoint = pmx.joints[i];
+							pmxJoint.name = joint->getName();
+							pmxJoint.nameEng = PmxName("");
+							pmxJoint.type = 0;
+							pmxJoint.position = joint->getTargetPosition();
+							pmxJoint.rotation = math::eulerAngles(joint->getTargetRotation());
+							pmxJoint.relatedRigidBodyIndexA = rigidbodyMap[joint->getComponent<RigidbodyComponent>().get()];
+							pmxJoint.relatedRigidBodyIndexB = joint->getTarget() ? rigidbodyMap[joint->getTarget().get()] : -1;
+							pmxJoint.movementLowerLimit.x = joint->getLowXLimit();
+							pmxJoint.movementLowerLimit.y = joint->getLowYLimit();
+							pmxJoint.movementLowerLimit.z = joint->getLowZLimit();
+							pmxJoint.movementUpperLimit.x = joint->getHighXLimit();
+							pmxJoint.movementUpperLimit.y = joint->getHighYLimit();
+							pmxJoint.movementUpperLimit.z = joint->getHighZLimit();
+							pmxJoint.rotationLowerLimit.x = minX;
+							pmxJoint.rotationLowerLimit.y = minY;
+							pmxJoint.rotationLowerLimit.z = minZ;
+							pmxJoint.rotationUpperLimit.x = maxX;
+							pmxJoint.rotationUpperLimit.y = maxY;
+							pmxJoint.rotationUpperLimit.z = maxZ;
+							pmxJoint.springMovementConstant.x = joint->getDriveMotionX();
+							pmxJoint.springMovementConstant.y = joint->getDriveMotionY();
+							pmxJoint.springMovementConstant.z = joint->getDriveMotionZ();
+							pmxJoint.springRotationConstant.x = joint->getDriveAngularX();
+							pmxJoint.springRotationConstant.y = joint->getDriveAngularY();
+							pmxJoint.springRotationConstant.z = joint->getDriveAngularZ();
 						}
 					}
 				}
 			}
-		}
 
-		if (!stream.write((char*)&pmx.numMorphs, sizeof(pmx.numMorphs))) return false;
-		if (pmx.numMorphs)
-		{
-			for (auto& morph : pmx.morphs)
+			GameComponents morphComponents;
+			gameObject.getComponents<SkinnedMorphComponent>(morphComponents);
+
+			if (!morphComponents.empty())
 			{
-				if (morph.name.length) 
-					if (!stream.write((char*)&morph.name.length, sizeof(morph.name.length))) return false;
-				if (!stream.write((char*)&morph.name.name, morph.name.length)) return false;
-				if (!stream.write((char*)&morph.nameEng.length, sizeof(morph.nameEng.length))) return false;
-				if (morph.nameEng.length)
-					if (!stream.write((char*)&morph.nameEng.name, morph.nameEng.length)) return false;
-				if (!stream.write((char*)&morph.control, sizeof(morph.control))) return false;
-				if (!stream.write((char*)&morph.morphType, sizeof(morph.morphType))) return false;
-				if (!stream.write((char*)&morph.morphCount, sizeof(morph.morphCount))) return false;
+				pmx.numMorphs = morphComponents.size();
+				pmx.morphs.resize(pmx.numMorphs);
 
-				if (morph.morphType == PmxMorphType::PMX_MorphTypeGroup)
+				for (std::size_t i = 0; i < pmx.numMorphs; i++)
 				{
-					for (auto& group : morph.groupList)
+					auto morphComponent = morphComponents[i]->downcast<SkinnedMorphComponent>();
+					auto& offsets = morphComponent->getOffsets();
+					auto& indices = morphComponent->getIndices();
+
+					auto& morph = pmx.morphs[i];
+					morph.name = morphComponent->getName();
+					morph.control = morphComponent->getControl();
+					morph.morphType = PmxMorphType::PMX_MorphTypeVertex;
+					morph.morphCount = indices.size();
+					morph.vertices.resize(indices.size());
+
+					for (std::size_t n = 0; n < indices.size(); n++)
 					{
-						if (!stream.write((char*)& group.morphIndex, pmx.header.sizeOfMorph)) return false;
-						if (!stream.write((char*)& group.morphRate, sizeof(group.morphRate))) return false;
+						morph.vertices[n].index = indices[n];
+						morph.vertices[n].offset = offsets[n];
 					}
 				}
-				else if (morph.morphType == PmxMorphType::PMX_MorphTypeVertex)
-				{
-					for (auto& vertex : morph.vertices)
-					{
-						if (!stream.write((char*)&vertex.index, pmx.header.sizeOfIndices)) return false;
-						if (!stream.write((char*)&vertex.offset, sizeof(vertex.offset))) return false;
-					}
-				}
-				else if (morph.morphType == PmxMorphType::PMX_MorphTypeBone)
-				{
-					for (auto& bone : morph.boneList)
-					{
-						if (!stream.write((char*)&bone.boneIndex, pmx.header.sizeOfBone)) return false;
-						if (!stream.write((char*)&bone.position, sizeof(bone.position))) return false;
-						if (!stream.write((char*)&bone.rotation, sizeof(bone.rotation))) return false;
-					}
-				}
-				else if (morph.morphType == PmxMorphType::PMX_MorphTypeUV || morph.morphType == PmxMorphType::PMX_MorphTypeExtraUV1 ||
-							morph.morphType == PmxMorphType::PMX_MorphTypeExtraUV2 || morph.morphType == PmxMorphType::PMX_MorphTypeExtraUV3 ||
-							morph.morphType == PmxMorphType::PMX_MorphTypeExtraUV4)
-				{
-					for (auto& texcoord : morph.texcoordList)
-					{
-						if (!stream.write((char*)&texcoord.index, pmx.header.sizeOfIndices)) return false;
-						if (!stream.write((char*)&texcoord.offset, sizeof(texcoord.offset))) return false;
-					}
-				}
-				else if (morph.morphType == PmxMorphType::PMX_MorphTypeMaterial)
-				{
-					for (auto& material : morph.materialList)
-					{
-						if (!stream.write((char*)&material.index, pmx.header.sizeOfMaterial)) return false;
-						if (!stream.write((char*)&material.offset, sizeof(material.offset))) return false;
-						if (!stream.write((char*)&material.diffuse, sizeof(material.diffuse))) return false;
-						if (!stream.write((char*)&material.specular, sizeof(material.specular))) return false;
-						if (!stream.write((char*)&material.shininess, sizeof(material.shininess))) return false;
-						if (!stream.write((char*)&material.ambient, sizeof(material.ambient))) return false;
-						if (!stream.write((char*)&material.edgeColor, sizeof(material.edgeColor))) return false;
-						if (!stream.write((char*)&material.edgeSize, sizeof(material.edgeSize))) return false;
-						if (!stream.write((char*)&material.tex, sizeof(material.tex))) return false;
-						if (!stream.write((char*)&material.sphere, sizeof(material.sphere))) return false;
-						if (!stream.write((char*)&material.toon, sizeof(material.toon))) return false;
-					}
-				}
-			}
-		}
-
-		if (!stream.write((char*)&pmx.numDisplayFrames, sizeof(pmx.numDisplayFrames))) return false;
-		if (pmx.numDisplayFrames)
-		{
-			for (auto& displayFrame : pmx.displayFrames)
-			{
-				if (!stream.write((char*)&displayFrame.name.length, sizeof(displayFrame.name.length))) return false;
-				if (displayFrame.name.length)
-					if (!stream.write((char*)&displayFrame.name.name, displayFrame.name.length)) return false;
-				if (!stream.write((char*)&displayFrame.nameEng.length, sizeof(displayFrame.nameEng.length))) return false;
-				if (displayFrame.nameEng.length)
-					if (!stream.write((char*)&displayFrame.nameEng.name, displayFrame.nameEng.length)) return false;
-				if (!stream.write((char*)&displayFrame.type, sizeof(displayFrame.type))) return false;
-				if (!stream.write((char*)&displayFrame.elementsWithinFrame, sizeof(displayFrame.elementsWithinFrame))) return false;
-
-				for (auto& element : displayFrame.elements)
-				{
-					if (!stream.write((char*)&element.target, sizeof(element.target))) return false;
-
-					if (element.target == 0)
-					{
-						if (!stream.write((char*)&element.index, pmx.header.sizeOfBone))
-							return false;
-					}
-					else if (element.target == 1)
-					{
-						if (!stream.write((char*)&element.index, pmx.header.sizeOfMorph))
-							return false;
-					}
-				}
-			}
-		}
-
-		if (!stream.write((char*)&pmx.numRigidbodys, sizeof(pmx.numRigidbodys))) return false;
-		if (pmx.numRigidbodys)
-		{
-			for (auto& rigidbody : pmx.rigidbodies)
-			{
-				if (!stream.write((char*)&rigidbody.name.length, sizeof(rigidbody.name.length))) return false;
-				if (rigidbody.name.length)
-					if (!stream.write((char*)&rigidbody.name.name, rigidbody.name.length)) return false;
-				if (!stream.write((char*)&rigidbody.nameEng.length, sizeof(rigidbody.nameEng.length))) return false;
-				if (rigidbody.nameEng.length)
-					if (!stream.write((char*)&rigidbody.nameEng.name, rigidbody.nameEng.length)) return false;
-
-				if (!stream.write((char*)&rigidbody.bone, pmx.header.sizeOfBone)) return false;
-				if (!stream.write((char*)&rigidbody.group, sizeof(rigidbody.group))) return false;
-				if (!stream.write((char*)&rigidbody.groupMask, sizeof(rigidbody.groupMask))) return false;
-
-				if (!stream.write((char*)&rigidbody.shape, sizeof(rigidbody.shape))) return false;
-
-				if (!stream.write((char*)&rigidbody.scale, sizeof(rigidbody.scale))) return false;
-				if (!stream.write((char*)&rigidbody.position, sizeof(rigidbody.position))) return false;
-				if (!stream.write((char*)&rigidbody.rotate, sizeof(rigidbody.rotate))) return false;
-
-				if (!stream.write((char*)&rigidbody.mass, sizeof(rigidbody.mass))) return false;
-				if (!stream.write((char*)&rigidbody.movementDecay, sizeof(rigidbody.movementDecay))) return false;
-				if (!stream.write((char*)&rigidbody.rotationDecay, sizeof(rigidbody.rotationDecay))) return false;
-				if (!stream.write((char*)&rigidbody.elasticity, sizeof(rigidbody.elasticity))) return false;
-				if (!stream.write((char*)&rigidbody.friction, sizeof(rigidbody.friction))) return false;
-				if (!stream.write((char*)&rigidbody.physicsOperation, sizeof(rigidbody.physicsOperation))) return false;
-			}
-		}
-
-		if (!stream.write((char*)&pmx.numJoints, sizeof(pmx.numJoints))) return false;
-		if (pmx.numJoints)
-		{
-			for (auto& joint : pmx.joints)
-			{
-				if (!stream.write((char*)&joint.name.length, sizeof(joint.name.length))) return false;
-				if (joint.name.length)
-					if (!stream.write((char*)&joint.name.name, joint.name.length)) return false;
-				if (!stream.write((char*)&joint.nameEng.length, sizeof(joint.nameEng.length))) return false;
-				if (joint.nameEng.length)
-					if (!stream.write((char*)&joint.nameEng.name, joint.nameEng.length)) return false;
-
-				if (!stream.write((char*)&joint.type, sizeof(joint.type))) return false;
-
-				if (joint.type != 0)
-					return false;
-
-				if (!stream.write((char*)&joint.relatedRigidBodyIndexA, pmx.header.sizeOfBody)) return false;
-				if (!stream.write((char*)&joint.relatedRigidBodyIndexB, pmx.header.sizeOfBody)) return false;
-
-				if (!stream.write((char*)&joint.position, sizeof(joint.position))) return false;
-				if (!stream.write((char*)&joint.rotation, sizeof(joint.rotation))) return false;
-
-				if (!stream.write((char*)&joint.movementLowerLimit, sizeof(joint.movementLowerLimit))) return false;
-				if (!stream.write((char*)&joint.movementUpperLimit, sizeof(joint.movementUpperLimit))) return false;
-
-				if (!stream.write((char*)&joint.rotationLowerLimit, sizeof(joint.rotationLowerLimit))) return false;
-				if (!stream.write((char*)&joint.rotationUpperLimit, sizeof(joint.rotationUpperLimit))) return false;
-
-				if (!stream.write((char*)&joint.springMovementConstant, sizeof(joint.springMovementConstant))) return false;
-				if (!stream.write((char*)&joint.springRotationConstant, sizeof(joint.springRotationConstant))) return false;
 			}
 		}
 
@@ -1259,8 +1017,42 @@ namespace octoon
 	}
 
 	bool
-	PmxLoader::save(io::ostream& stream, const Model& model) noexcept
+	PMXLoader::save(const GameObject& gameObject, std::string_view path) noexcept(false)
 	{
+		auto stream = octoon::io::ofstream(std::string(path), std::ios_base::in | std::ios_base::out);
+		if (stream)
+		{
+			auto pmx = std::make_unique<PMX>();
+			auto root = runtime::string::directory(std::string(path));
+
+			save(gameObject, *pmx, root);
+
+			PMX::save(stream, *pmx);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	bool
+	PMXLoader::save(const GameObject& gameObject, std::wstring_view path) noexcept(false)
+	{
+		auto stream = octoon::io::ofstream(std::wstring(path), std::ios_base::in | std::ios_base::out);
+		if (stream)
+		{
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
+			auto pmx = std::make_unique<PMX>();
+			auto root = runtime::string::directory(std::wstring(path));
+
+			save(gameObject, *pmx, cv.to_bytes(root));
+
+			PMX::save(stream, *pmx);
+
+			return true;
+		}
+
 		return false;
 	}
 }

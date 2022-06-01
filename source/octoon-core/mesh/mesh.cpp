@@ -3,6 +3,7 @@
 
 #include <map>
 #include <cstring>
+#include <iostream>
 
 using namespace octoon::math;
 

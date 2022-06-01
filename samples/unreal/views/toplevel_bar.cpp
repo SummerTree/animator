@@ -67,6 +67,10 @@ namespace unreal
 			this->repaint();
 		};
 
+		profile->soundModule->volume += [this](float value) {
+			volumeSlider_.setValue(value * 100.0f);
+		};
+
 		this->connect(&resetButton, SIGNAL(clicked()), this, SLOT(resetEvent()));
 		this->connect(&playButton, SIGNAL(clicked()), this, SLOT(playEvent()));
 		this->connect(&leftButton, SIGNAL(clicked()), this, SLOT(leftEvent()));
@@ -83,55 +87,33 @@ namespace unreal
 	void
 	ToplevelBar::playEvent() noexcept
 	{
-		auto playSignal = [this](bool enable) noexcept
+		try
 		{
-			try
+			if (behaviour_ && !profile_->recordModule->active)
 			{
-				if (behaviour_ && !profile_->recordModule->active)
+				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+				if (behaviour)
 				{
-					auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-					if (behaviour->isOpen())
+					if (playEnable_)
 					{
-						if (enable)
-							behaviour->play();
-						else
-							behaviour->pause();
-
-						return true;
+						behaviour->pause();
+						playButton.setIcon(playIcon_);
+						playButton.setToolTip(tr("Play"));
+						playEnable_ = false;
 					}
 					else
 					{
-						QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
-						return false;
+						behaviour->play();
+						playButton.setIcon(playOnIcon_);
+						playButton.setToolTip(tr("Pause"));
+						playEnable_ = true;
 					}
 				}
-
-				return false;
-			}
-			catch (const std::exception& e)
-			{
-				QMessageBox::critical(this, tr("Error"), e.what());
-				return false;
-			}
-		};
-
-		if (!playEnable_)
-		{
-			if (playSignal(true))
-			{
-				playButton.setIcon(playOnIcon_);
-				playButton.setToolTip(tr("Pause"));
-				playEnable_ = true;
 			}
 		}
-		else
+		catch (const std::exception& e)
 		{
-			if (playSignal(false))
-			{
-				playButton.setIcon(playIcon_);
-				playButton.setToolTip(tr("Play"));
-				playEnable_ = false;
-			}
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 
@@ -160,13 +142,7 @@ namespace unreal
 			}
 			catch (const std::exception& e)
 			{
-				QMessageBox msg(this);
-				msg.setWindowTitle(tr("Error"));
-				msg.setText(e.what());
-				msg.setIcon(QMessageBox::Information);
-				msg.setStandardButtons(QMessageBox::Ok);
-
-				msg.exec();
+				QMessageBox::critical(this, tr("Error"), e.what());
 				return false;
 			}
 		};
@@ -195,25 +171,13 @@ namespace unreal
 				}
 				else
 				{
-					QMessageBox msg(this);
-					msg.setWindowTitle(tr("Warning"));
-					msg.setText(tr("Please load a project with pmm extension."));
-					msg.setIcon(QMessageBox::Information);
-					msg.setStandardButtons(QMessageBox::Ok);
-
-					msg.exec();
+					QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
 				}
 			}
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 
@@ -233,25 +197,13 @@ namespace unreal
 				}
 				else
 				{
-					QMessageBox msg(this);
-					msg.setWindowTitle(tr("Warning"));
-					msg.setText(tr("Please load a project with pmm extension."));
-					msg.setIcon(QMessageBox::Information);
-					msg.setStandardButtons(QMessageBox::Ok);
-
-					msg.exec();
+					QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
 				}
 			}
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 
@@ -260,25 +212,17 @@ namespace unreal
 	{
 		if (!volumeEnable_)
 		{
-			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-			if (behaviour->isOpen())
-			{
-				behaviour->setVolume(1.0f);
-				volumeButton.setIcon(volumeOnIcon_);
-				volumeButton.setToolTip(tr("Volume"));
-				volumeEnable_ = true;
-			}
+			this->profile_->soundModule->volume = 1.0f;
+			volumeButton.setIcon(volumeOnIcon_);
+			volumeButton.setToolTip(tr("Volume"));
+			volumeEnable_ = true;
 		}
 		else
 		{
-			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-			if (behaviour->isOpen())
-			{
-				behaviour->setVolume(0.0f);
-				volumeButton.setIcon(volumeOffIcon_);
-				volumeButton.setToolTip(tr("VolumeOff"));
-				volumeEnable_ = false;
-			}
+			this->profile_->soundModule->volume = 0.0f;
+			volumeButton.setIcon(volumeOnIcon_);
+			volumeButton.setToolTip(tr("Volume"));
+			volumeEnable_ = true;
 		}
 	}
 	
@@ -310,7 +254,8 @@ namespace unreal
 		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 		if (behaviour->isOpen())
 		{
-			behaviour->setVolume(value/100.0f);
+			this->profile_->soundModule->volume = value / 100.0f;
+
 			if (value == 0 && volumeEnable_)
 			{
 				volumeButton.setIcon(volumeOffIcon_);

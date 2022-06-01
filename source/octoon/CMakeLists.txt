@@ -151,14 +151,14 @@ SET(IO_FEATURES_LIST
 SOURCE_GROUP("system\\io" FILES ${IO_FEATURES_LIST})
 
 SET(LOADER_LIST
-	${HEADER_PATH}/mesh_loader.h
-	${SOURCE_PATH}/mesh_loader.cpp
+	${HEADER_PATH}/pmx.h
+	${SOURCE_PATH}/pmx.cpp
+	${HEADER_PATH}/pmx_loader.h
+	${SOURCE_PATH}/pmx_loader.cpp
 	${HEADER_PATH}/texture_loader.h
 	${SOURCE_PATH}/texture_loader.cpp
 	${HEADER_PATH}/vmd_loader.h
 	${SOURCE_PATH}/vmd_loader.cpp
-	${HEADER_PATH}/pmx_loader.h
-	${SOURCE_PATH}/pmx_loader.cpp
 	${HEADER_PATH}/mdl_loader.h
 	${SOURCE_PATH}/mdl_loader.cpp
 	${HEADER_PATH}/PMREM_loader.h

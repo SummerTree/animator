@@ -11,7 +11,7 @@ namespace unreal
 {
 	MainDock::MainDock(SplashScreen* splash) noexcept
 		: init_flag(false)
-		, profile_(UnrealProfile::load(QDir::homePath().toStdString() + "/.animator/config.json"))
+		, profile_(std::make_unique<UnrealProfile>())
 		, gameApp_(std::make_shared<octoon::GameApp>())
 		, behaviour_(octoon::GameObject::create())
 		, splash_(splash)
@@ -84,6 +84,8 @@ namespace unreal
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::modelSignal, this, &MainDock::onModelSignal);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::cameraSignal, this, &MainDock::onCameraSignal);
 		this->connect(thumbnailDock_.get(), &ThumbnailDock::motionSignal, this, &MainDock::onMotionSignal);
+		
+		this->connect(thumbnailDock_.get(), SIGNAL(languageChangeSignal(QString)), this, SLOT(onLanguageChanged(QString)));
 
 		timer.start();
 
@@ -93,8 +95,6 @@ namespace unreal
 	MainDock::~MainDock() noexcept
 	{
 		timer.stop();
-
-		UnrealProfile::save(QDir::homePath().toStdString() + "/.animator/config.json", *profile_);
 
 		this->saveLayout();
 		this->removeToolBar(toplevelDock_.get());
@@ -163,6 +163,31 @@ namespace unreal
 		settings.setValue("geometry", saveGeometry());
 		settings.setValue("state", saveState());
 		settings.endGroup();
+	}
+
+	void
+	MainDock::setTranslator(std::shared_ptr<QTranslator> translator)
+	{
+		translator_ = translator;
+	}
+
+	std::shared_ptr<QTranslator>
+	MainDock::getTranslator()
+	{
+		return translator_;
+	}
+
+	void
+	MainDock::onLanguageChanged(QString filename)	
+	{
+		auto app = QApplication::instance();
+		// get all translators
+		auto empty = translator_->isEmpty();
+		if (translator_ && !translator_->isEmpty())
+			app->removeTranslator(translator_.get());
+		
+		translator_->load(filename, ":res/languages/");
+		app->installTranslator(translator_.get());
 	}
 
 	void

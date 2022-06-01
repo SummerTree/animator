@@ -13,26 +13,8 @@
 #include <qpainter.h>
 #include <qprogressdialog.h>
 
-	namespace unreal
+namespace unreal
 {
-	class DoubleSpinBox final : public QDoubleSpinBox
-	{
-	public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QDoubleSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QDoubleSpinBox::focusOutEvent(event);
-		}
-	};
-
 	EnvironmentListDialog::EnvironmentListDialog(QWidget * parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: QDialog(parent)
 		, behaviour_(behaviour)
@@ -181,7 +163,7 @@
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = hdrComponent->importHDRi(filepaths[i].toStdString());
+					auto package = hdrComponent->importHDRi(filepaths[i].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -325,7 +307,7 @@
 		this->intensitySlider->setMinimumWidth(270);
 		this->intensitySlider->installEventFilter(this);
 
-		this->intensitySpinBox = new DoubleSpinBox;
+		this->intensitySpinBox = new UDoubleSpinBox;
 		this->intensitySpinBox->setFixedWidth(50);
 		this->intensitySpinBox->setMaximum(10.0f);
 		this->intensitySpinBox->setSingleStep(0.1f);
@@ -345,7 +327,7 @@
 		this->horizontalRotationSlider->setMinimumWidth(270);
 		this->horizontalRotationSlider->installEventFilter(this);
 
-		this->horizontalRotationSpinBox = new DoubleSpinBox;
+		this->horizontalRotationSpinBox = new UDoubleSpinBox;
 		this->horizontalRotationSpinBox->setFixedWidth(50);
 		this->horizontalRotationSpinBox->setMinimum(-1.0f);
 		this->horizontalRotationSpinBox->setMaximum(1.0f);
@@ -365,7 +347,7 @@
 		this->verticalRotationSlider->setMinimumWidth(270);
 		this->verticalRotationSlider->installEventFilter(this);
 
-		this->verticalRotationSpinBox = new DoubleSpinBox;
+		this->verticalRotationSpinBox = new UDoubleSpinBox;
 		this->verticalRotationSpinBox->setFixedWidth(50);
 		this->verticalRotationSpinBox->setMinimum(-1.0f);
 		this->verticalRotationSpinBox->setMaximum(1.0f);
@@ -494,8 +476,41 @@
 			this->updatePreviewImage();
 		};
 
-		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture) {
-			if (!texture)
+		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
+		{
+			if (texture && this->isVisible())
+			{
+				auto texel = texture;
+				auto texturePath = QString::fromStdString(this->profile_->environmentLightModule->texturePath);
+				if (texel && thumbnailPath->toolTip() != texturePath)
+				{
+					auto width = texel->getTextureDesc().getWidth();
+					auto height = texel->getTextureDesc().getHeight();
+					float* data_ = nullptr;
+
+					if (texel->map(0, 0, width, height, 0, (void**)&data_))
+					{
+						auto size = width * height * 3;
+						auto pixels = std::make_unique<std::uint8_t[]>(size);
+
+						for (std::size_t i = 0; i < size; i += 3)
+						{
+							pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
+							pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
+							pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
+						}
+
+						texel->unmap();
+
+						QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+						auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
+
+						this->setPreviewImage(QFileInfo(texturePath).fileName(), previewImage);
+						this->setThumbnailImage(texturePath, *previewImage);
+					}
+				}
+			}
+			else
 			{
 				this->previewName_->setText(tr("Untitled"));
 				this->thumbnailPath->clear();
@@ -618,7 +633,7 @@
 	}
 
 	void
-	EnvironmentDock::itemSelected(QListWidgetItem * item)
+	EnvironmentDock::itemSelected(QListWidgetItem* item)
 	{
 		try
 		{
@@ -633,10 +648,6 @@
 					auto hdrPath = package["path"].get<nlohmann::json::string_t>();
 					auto previewPath = package["preview"].get<nlohmann::json::string_t>();
 
-					octoon::Image image;
-					if (!image.load(hdrPath))
-						throw std::runtime_error("Cannot load the image");
-
 					auto previewImage = std::make_shared<QImage>();
 					if (!previewImage->load(QString::fromStdString(previewPath)))
 						throw std::runtime_error("Cannot generate image for preview");
@@ -645,7 +656,7 @@
 					this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
 
 					this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-					this->profile_->environmentLightModule->texture = octoon::TextureLoader::load(image, hdrPath, true);
+					this->profile_->environmentLightModule->texturePath = hdrPath;
 				}
 			}
 		}
@@ -669,7 +680,10 @@
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
 			if (!filepath.isEmpty())
 			{
-				auto texel = octoon::TextureLoader::load(filepath.toStdString());
+				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
+				this->profile_->environmentLightModule->texturePath = filepath.toUtf8().toStdString();
+
+				auto texel = this->profile_->environmentLightModule->texture.getValue();
 				if (texel)
 				{
 					auto width = texel->getTextureDesc().getWidth();
@@ -695,9 +709,7 @@
 
 						this->setPreviewImage(QFileInfo(filepath).fileName(), previewImage);
 						this->setThumbnailImage(filepath, *previewImage);
-
-						this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-						this->profile_->environmentLightModule->texture = texel;
+						this->updatePreviewImage();
 					}
 				}
 			}
@@ -808,6 +820,47 @@
 		this->thumbnailToggle->setChecked(profile_->environmentLightModule->useTexture);
 
 		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
+
+		auto texel = this->profile_->environmentLightModule->texture.getValue();
+		auto texturePath = QString::fromStdString(this->profile_->environmentLightModule->texturePath);
+		if (texel)
+		{
+			if (thumbnailPath->toolTip() != texturePath)
+			{
+				auto width = texel->getTextureDesc().getWidth();
+				auto height = texel->getTextureDesc().getHeight();
+				float* data_ = nullptr;
+
+				if (texel->map(0, 0, width, height, 0, (void**)&data_))
+				{
+					auto size = width * height * 3;
+					auto pixels = std::make_unique<std::uint8_t[]>(size);
+
+					for (std::size_t i = 0; i < size; i += 3)
+					{
+						pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
+						pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
+						pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
+					}
+
+					texel->unmap();
+
+					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+					auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
+
+					this->setPreviewImage(QFileInfo(texturePath).fileName(), previewImage);
+					this->setThumbnailImage(texturePath, *previewImage);
+				}
+			}
+		}
+		else
+		{
+			this->previewName_->setText(tr("Untitled"));
+			this->thumbnailPath->clear();
+			this->thumbnailPath->setToolTip(QString());
+			this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
+		}
+
 		this->updatePreviewImage();
 	}
 

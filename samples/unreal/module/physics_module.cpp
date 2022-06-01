@@ -23,26 +23,31 @@ namespace unreal
 	}
 
 	void 
-	PhysicsModule::load(octoon::runtime::json& reader) noexcept
+	PhysicsModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
-		if (reader.find("gravityScale") != reader.end())
+		if (reader["enable"].is_boolean())
+			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
+		if (reader["gravity"].is_array())
+			this->gravity = octoon::math::float3(reader["gravity"][0], reader["gravity"][1], reader["gravity"][2]);
+		if (reader["gravityScale"].is_number_float())
 			this->gravityScale = reader["gravityScale"].get<nlohmann::json::number_float_t>();
-		if (reader.find("playSolverIterationCounts") != reader.end())
+		if (reader["playSolverIterationCounts"].is_number_unsigned())
 			this->playSolverIterationCounts = reader["playSolverIterationCounts"].get<nlohmann::json::number_unsigned_t>();
-		if (reader.find("recordSolverIterationCounts") != reader.end())
+		if (reader["recordSolverIterationCounts"].is_number_unsigned())
 			this->recordSolverIterationCounts = reader["recordSolverIterationCounts"].get<nlohmann::json::number_unsigned_t>();
-		if (reader.find("previewSolverIterationCounts") != reader.end())
+		if (reader["previewSolverIterationCounts"].is_number_unsigned())
 			this->previewSolverIterationCounts = reader["previewSolverIterationCounts"].get<nlohmann::json::number_unsigned_t>();
 	}
 
 	void 
-	PhysicsModule::save(octoon::runtime::json& reader) noexcept
+	PhysicsModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
-		reader["gravity"] = { this->gravity.getValue()[0], this->gravity.getValue()[1], this->gravity.getValue()[2] };
-		reader["gravityScale"] = this->gravityScale.getValue();
-		reader["playSolverIterationCounts"] = this->playSolverIterationCounts.getValue();
-		reader["recordSolverIterationCounts"] = this->recordSolverIterationCounts.getValue();
-		reader["previewSolverIterationCounts"] = this->previewSolverIterationCounts.getValue();
+		writer["enable"] = this->enable.getValue();
+		writer["gravity"] = { this->gravity.getValue()[0], this->gravity.getValue()[1], this->gravity.getValue()[2] };
+		writer["gravityScale"] = this->gravityScale.getValue();
+		writer["playSolverIterationCounts"] = this->playSolverIterationCounts.getValue();
+		writer["recordSolverIterationCounts"] = this->recordSolverIterationCounts.getValue();
+		writer["previewSolverIterationCounts"] = this->previewSolverIterationCounts.getValue();
 	}
 
 	void

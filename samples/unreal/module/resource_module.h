@@ -13,8 +13,8 @@ namespace unreal
 
 		virtual void reset() noexcept override;
 
-		virtual void load(octoon::runtime::json& reader) noexcept override;
-		virtual void save(octoon::runtime::json& reader) noexcept override;
+		virtual void load(octoon::runtime::json& reader, std::string_view path) noexcept override;
+		virtual void save(octoon::runtime::json& writer, std::string_view path) noexcept override;
 
 	private:
 		ResourceModule(const ResourceModule&) = delete;
@@ -26,6 +26,7 @@ namespace unreal
 		std::string modelPath;
 		std::string motionPath;
 		std::string materialPath;
+		std::string cachePath;
 
 		MutableLiveData<nlohmann::json> hdriIndexList_;
 		MutableLiveData<nlohmann::json> modelIndexList_;

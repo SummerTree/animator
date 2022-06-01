@@ -8,42 +8,6 @@
 
 namespace unreal
 {
-	class SpinBox final : public QSpinBox
-	{
-	  public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QSpinBox::focusOutEvent(event);
-		}
-	};
-
-	class DoubleSpinBox final : public QDoubleSpinBox
-	{
-	  public:
-		void
-		focusInEvent(QFocusEvent* event) override
-		{
-			this->grabKeyboard();
-			QDoubleSpinBox::focusInEvent(event);
-		}
-
-		void
-		focusOutEvent(QFocusEvent* event) override
-		{
-			this->releaseKeyboard();
-			QDoubleSpinBox::focusOutEvent(event);
-		}
-	};
-
 	RecordDock::RecordDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept
 		: behaviour_(behaviour)
 		, profile_(profile)
@@ -51,23 +15,23 @@ namespace unreal
 		this->setObjectName("RecordDock");
 		this->setWindowTitle(tr("Record"));
 
-		markButton_ = new QToolButton();
+		markButton_ = new UPushButton();
 		markButton_->setObjectName("mark");
 		markButton_->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 		markButton_->setIconSize(QSize(139, 143));
 		markButton_->installEventFilter(this);
 
-		quality_ = new QLabel();
+		quality_ = new ULabel();
 		quality_->setText(tr("Render Quality"));
 
-		select1_ = new QToolButton();
+		select1_ = new UPushButton();
 		select1_->setObjectName("select1");
 		select1_->setText(tr("Ultra Render"));
 		select1_->setCheckable(true);
 		select1_->click();
 		select1_->installEventFilter(this);
 
-		select2_ = new QToolButton();
+		select2_ = new UPushButton();
 		select2_->setObjectName("select2");
 		select2_->setText(tr("Fast Render"));
 		select2_->setCheckable(true);
@@ -77,29 +41,29 @@ namespace unreal
 		group_->addButton(select1_, 0);
 		group_->addButton(select2_, 1);
 
-		videoRatio_ = new QLabel();
+		videoRatio_ = new ULabel();
 		videoRatio_->setText(tr("Frame Per Second"));
 
-		speed1_ = new QToolButton();
+		speed1_ = new UPushButton();
 		speed1_->setObjectName("speed1");
 		speed1_->setText(tr("24"));
 		speed1_->setCheckable(true);
 		speed1_->click();
 		speed1_->installEventFilter(this);
 
-		speed2_ = new QToolButton();
+		speed2_ = new UPushButton();
 		speed2_->setObjectName("speed2");
 		speed2_->setText(tr("25"));
 		speed2_->setCheckable(true);
 		speed2_->installEventFilter(this);
 
-		speed3_ = new QToolButton();
+		speed3_ = new UPushButton();
 		speed3_->setObjectName("speed3");
 		speed3_->setText(tr("30"));
 		speed3_->setCheckable(true);
 		speed3_->installEventFilter(this);
 
-		speed4_ = new QToolButton();
+		speed4_ = new UPushButton();
 		speed4_->setObjectName("speed4");
 		speed4_->setText(tr("60"));
 		speed4_->setCheckable(true);
@@ -112,40 +76,40 @@ namespace unreal
 		speedGroup_->addButton(speed4_, 3);
 
 		// output video type
-		outputType_ = new QLabel();
+		outputType_ = new ULabel();
 		outputType_->setText(tr("Output Type"));
 
-		outputTypeCombo_ = new QComboBox();
+		outputTypeCombo_ = new UComboBox();
 		outputTypeCombo_->addItem(tr("H265"));
 		outputTypeCombo_->addItem(tr("H264"));
 		outputTypeCombo_->addItem(tr("Frame Sequence"));
 		outputTypeCombo_->setStyleSheet("color:white");
 		outputTypeCombo_->installEventFilter(this);
 
-		frame_ = new QLabel();
+		frame_ = new ULabel();
 		frame_->setText(tr("Play:"));
 
-		startLabel_ = new QLabel();
+		startLabel_ = new ULabel();
 		startLabel_->setText(tr("Start"));
 
-		endLabel_ = new QLabel();
+		endLabel_ = new ULabel();
 		endLabel_->setText(tr("- End"));
 
-		startFrame_ = new SpinBox();
+		startFrame_ = new USpinBox();
 		startFrame_->setObjectName("start");
 		startFrame_->setAlignment(Qt::AlignRight);
 		startFrame_->setMinimum(0);
 		startFrame_->setMaximum(99999);
 		startFrame_->installEventFilter(this);
 
-		endFrame_ = new SpinBox();
+		endFrame_ = new USpinBox();
 		endFrame_->setObjectName("end");
 		endFrame_->setAlignment(Qt::AlignRight);
 		endFrame_->setMinimum(0);
 		endFrame_->setMaximum(99999);
 		endFrame_->installEventFilter(this);
 
-		denoiseLabel_ = new QLabel();
+		denoiseLabel_ = new ULabel();
 		denoiseLabel_->setText(tr("Denoise:"));
 
 		denoiseButton_ = new QCheckBox();
@@ -158,41 +122,10 @@ namespace unreal
 		denoiseLayout_->setSpacing(0);
 		denoiseLayout_->setContentsMargins(0, 0, 0, 0);
 
-		bouncesLabel_ = new QLabel();
-		bouncesLabel_->setText(tr("Recursion depth per pixel:"));
-		bouncesLabel_->setStyleSheet("color: rgb(200,200,200);");
+		bouncesSpinbox_ = USpinLine::create(this, tr("Recursion depth per pixel:"), 1, 32, 1, 0);
+		sppSpinbox_ = USpinLine::create(this, tr("Sample number per pixel:"), 1, 9999, 1, 0);
 
-		bouncesSpinbox_ = new SpinBox();
-		bouncesSpinbox_->setMinimum(1);
-		bouncesSpinbox_->setMaximum(32);
-		bouncesSpinbox_->setValue(0);
-		bouncesSpinbox_->setAlignment(Qt::AlignRight);
-		bouncesSpinbox_->setFixedWidth(100);
-		bouncesSpinbox_->installEventFilter(this);
-
-		sppLabel = new QLabel();
-		sppLabel->setText(tr("Sample number per pixel:"));
-		sppLabel->setStyleSheet("color: rgb(200,200,200);");
-
-		sppSpinbox_ = new SpinBox();
-		sppSpinbox_->setMinimum(1);
-		sppSpinbox_->setMaximum(9999);
-		sppSpinbox_->setValue(0);
-		sppSpinbox_->setAlignment(Qt::AlignRight);
-		sppSpinbox_->setFixedWidth(100);
-		sppSpinbox_->installEventFilter(this);
-
-		crfSpinbox = new DoubleSpinBox();
-		crfSpinbox->setMinimum(0);
-		crfSpinbox->setMaximum(63.0);
-		crfSpinbox->setValue(0);
-		crfSpinbox->setAlignment(Qt::AlignRight);
-		crfSpinbox->setFixedWidth(100);
-		crfSpinbox->installEventFilter(this);
-
-		crfLabel = new QLabel();
-		crfLabel->setText(tr("Constant Rate Factor (CRF):"));
-		crfLabel->setStyleSheet("color: rgb(200,200,200);");
+		crfSpinbox = UDoubleSpinLine::create(this, tr("Constant Rate Factor (CRF):"), 0.0f, 63.0f, 0);
 
 		frameLayout_ = new QHBoxLayout();
 		frameLayout_->addSpacing(20);
@@ -202,7 +135,7 @@ namespace unreal
 		frameLayout_->addWidget(endFrame_, 0, Qt::AlignLeft);
 		frameLayout_->addStretch();
 
-		recordButton_ = new QToolButton();
+		recordButton_ = new UPushButton();
 		recordButton_->setObjectName("render");
 		recordButton_->setText(tr("Start Render"));
 		recordButton_->setContentsMargins(0, 0, 0, 0);
@@ -235,13 +168,10 @@ namespace unreal
 		videoLayout->addWidget(outputTypeCombo_);
 		videoLayout->addSpacing(10);
 		videoLayout->addLayout(denoiseLayout_);
-		videoLayout->addWidget(sppLabel);
 		videoLayout->addWidget(sppSpinbox_);
 		videoLayout->addSpacing(10);
-		videoLayout->addWidget(bouncesLabel_);
 		videoLayout->addWidget(bouncesSpinbox_);
 		videoLayout->addSpacing(10);
-		videoLayout->addWidget(crfLabel);
 		videoLayout->addWidget(crfSpinbox);
 		videoLayout->setContentsMargins(20, 10, 0, 0);
 
@@ -286,7 +216,7 @@ namespace unreal
 			bouncesSpinbox_->blockSignals(false);
 		};
 
-		profile_->playerModule->spp += [this](std::uint32_t value)
+		profile_->offlineModule->spp += [this](std::uint32_t value)
 		{
 			sppSpinbox_->blockSignals(true);
 			sppSpinbox_->setValue(value);
@@ -296,7 +226,7 @@ namespace unreal
 		profile_->encodeModule->crf += [this](float value)
 		{
 			crfSpinbox->blockSignals(true);
-			crfSpinbox->setValue(value);
+			crfSpinbox->doublespinbox_->setValue(value);
 			crfSpinbox->blockSignals(false);
 		};
 
@@ -375,7 +305,7 @@ namespace unreal
 	void
 	RecordDock::onSppChanged(int value)
 	{
-		profile_->playerModule->spp = value;
+		profile_->offlineModule->spp = value;
 	}
 
 	void
@@ -482,7 +412,7 @@ namespace unreal
 
 				QString fileName;
 				if (profile_->encodeModule->encodeMode == EncodeMode::H264 || profile_->encodeModule->encodeMode == EncodeMode::H265)
-					fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), "", tr("MP4 Files (*.mp4)"));
+					fileName = QFileDialog::getSaveFileName(this, tr("Save Video"), tr("New Video"), tr("MP4 Files (*.mp4)"));
 				else if (profile_->encodeModule->encodeMode == EncodeMode::Frame)
 					fileName = QFileDialog::getSaveFileName(this, tr("Save Image Sequence"), "", tr("PNG Files (*.png)"));
 				else
@@ -490,7 +420,7 @@ namespace unreal
 
 				if (!fileName.isEmpty())
 				{
-					if (!behaviour->startRecord(fileName.toUtf8().data()))
+					if (!behaviour->startRecord(fileName.toUtf8().toStdString()))
 						QMessageBox::information(this, tr("Error"), tr("Failed to create file"));
 				}
 			}
@@ -538,8 +468,8 @@ namespace unreal
 			speed4_->click();
 
 		denoiseButton_->setCheckState(profile_->recordModule->denoise ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
-		sppSpinbox_->setValue(profile_->playerModule->spp);
-		crfSpinbox->setValue(profile_->encodeModule->crf);
+		sppSpinbox_->setValue(profile_->offlineModule->spp);
+		crfSpinbox->doublespinbox_->setValue(profile_->encodeModule->crf);
 		bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
 	}
 

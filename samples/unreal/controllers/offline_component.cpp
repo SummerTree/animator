@@ -15,9 +15,17 @@ namespace unreal
 	void
 	OfflineComponent::onInit() noexcept
 	{
+		auto videoFeature = this->getFeature<octoon::VideoFeature>();
+		if (videoFeature)
+		{
+			videoFeature->setCachePath(this->getContext()->profile->resourceModule->cachePath);
+		}
+
 		this->getModel()->enable += [this](bool enable)
 		{
-			for (auto& object : this->getContext()->profile->entitiesModule->objects)
+			this->getModel()->sppCount = 0;
+
+			for (auto& object : this->getContext()->profile->entitiesModule->objects.getValue())
 			{
 				auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
@@ -48,5 +56,17 @@ namespace unreal
 	void
 	OfflineComponent::onDisable() noexcept
 	{
+	}
+
+	void
+	OfflineComponent::onLateUpdate() noexcept
+	{
+		auto& model = this->getModel();
+		if (this->getModel()->enable)
+		{
+			auto videoFeature = this->getFeature<octoon::VideoFeature>();
+			if (videoFeature)
+				model->sppCount = videoFeature->getSampleCounter();
+		}
 	}
 }

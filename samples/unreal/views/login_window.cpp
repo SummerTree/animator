@@ -368,7 +368,7 @@ namespace unreal
 		this->addWidget(forgetWidget_.get());
 		this->addWidget(registerWidget_.get());
 
-		loginWidget_->autoLoginBox_->setChecked(behaviour->getProfile()->clientModule->autoLogin);
+		//loginWidget_->autoLoginBox_->setChecked(behaviour->getProfile()->clientModule->autoLogin);
 
 		closeAnimation_ = std::make_unique<QPropertyAnimation>(this, "windowOpacity");
 		closeAnimation_->setDuration(100);
@@ -604,7 +604,6 @@ namespace unreal
 	void
 	LoginWindow::autoLoginToggled(bool enable)
 	{
-		behaviour_->getProfile()->clientModule->autoLogin = enable;
 	}
 
 	void 

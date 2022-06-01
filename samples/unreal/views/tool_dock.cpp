@@ -24,10 +24,17 @@ namespace unreal
 		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 		this->setFeatures(DockWidgetFeature::DockWidgetMovable | DockWidgetFeature::DockWidgetFloatable);
 
+		openButton_ = new QToolButton;
+		openButton_->setObjectName("import");
+		openButton_->setText(tr("Open"));
+		openButton_->setToolTip(tr("Open Project(.pmm, .apg)"));
+		openButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		openButton_->installEventFilter(this);
+
 		importButton_ = new QToolButton;
 		importButton_->setObjectName("import");
 		importButton_->setText(tr("Import"));
-		importButton_->setToolTip(tr("Import Resource File(.pmm, .mdl)"));
+		importButton_->setToolTip(tr("Import Resource File(.pmm, .apg)"));
 		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		importButton_->installEventFilter(this);
 
@@ -69,8 +76,9 @@ namespace unreal
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
+		layout->addWidget(openButton_, 0, Qt::AlignCenter);
+		layout->addWidget(saveButton_, 0, Qt::AlignCenter);
 		layout->addWidget(importButton_, 0, Qt::AlignCenter);
-		//layout->addWidget(saveButton_, 0, Qt::AlignCenter);
 		layout->addWidget(gpuButton_, 0, Qt::AlignCenter);
 		layout->addWidget(shotButton_, 0, Qt::AlignCenter);
 		layout->addWidget(audioButton_, 0, Qt::AlignCenter);
@@ -100,10 +108,11 @@ namespace unreal
 			this->update();
 		};
 
-		profile->entitiesModule->sound += [this](const octoon::GameObjectPtr& value) {
+		profile->soundModule->sound += [this](const octoon::GameObjectPtr& value) {
 			this->update();
 		};
 
+		this->connect(openButton_, SIGNAL(clicked()), this, SLOT(openEvent()));
 		this->connect(importButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
 		this->connect(saveButton_, SIGNAL(clicked()), this, SLOT(saveEvent()));
 		this->connect(audioButton_, SIGNAL(clicked()), this, SLOT(audioEvent()));
@@ -119,9 +128,9 @@ namespace unreal
 	}
 
 	void
-	ToolDock::importEvent() noexcept
+	ToolDock::openEvent() noexcept
 	{
-		spdlog::debug("Entered importEvent");
+		spdlog::debug("Entered openEvent");
 		try
 		{
 			if (behaviour_ && !profile_->playerModule->isPlaying)
@@ -129,15 +138,15 @@ namespace unreal
 				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 				if (behaviour)
 				{
-					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)"));
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.pmm *.agp);; PMM Files (*.pmm);; APG Files (*.apg)"));
 					if (!fileName.isEmpty())
 					{
 #if 1
-						behaviour->open(fileName.toUtf8().data());
+						behaviour->open(fileName.toUtf8().toStdString());
 #else
 						// load task
 						auto fn = [&]() {
-							behaviour->open(fileName.toUtf8().data());
+							behaviour->open(fileName.toUtf8().toStdString());
 						};
 						QFuture<void> fu = QtConcurrent::run(fn);
 
@@ -178,6 +187,36 @@ namespace unreal
 			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
 			QMessageBox::critical(this, tr("Error"), tr("Failed to open project: ") + QString::fromStdString(e.what()));
 		}
+		spdlog::debug("Exited openEvent");
+	}
+
+	void
+	ToolDock::importEvent() noexcept
+	{
+		spdlog::debug("Entered importEvent");
+		try
+		{
+			if (behaviour_ && !profile_->playerModule->isPlaying)
+			{
+				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
+				if (behaviour)
+				{
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmx *.abc *.mdl *.vmd);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)"));
+					if (!fileName.isEmpty())
+					{
+						behaviour->load(fileName.toUtf8().toStdString());
+					}
+				}
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QCoreApplication::processEvents();
+
+			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
+			QMessageBox::critical(this, tr("Error"), tr("Failed to import resource: ") + QString::fromStdString(e.what()));
+		}
+
 		spdlog::debug("Exited importEvent");
 	}
 
@@ -190,12 +229,11 @@ namespace unreal
 
 			if (behaviour_)
 			{
-				QString fileName = QFileDialog::getSaveFileName(this, tr("Export Project"), "", tr("APG Files (*.agp)"));
+				QString fileName = QFileDialog::getSaveFileName(this, tr("Export Project"), tr("New Project"), tr("APG Files (*.agp)"));
 				if (!fileName.isEmpty())
 				{
 					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-					if (!behaviour->save(fileName.toUtf8().data()))
-						QMessageBox::warning(this, tr("Error"), tr("Faield to export project"));
+					behaviour->save(fileName.toUtf8().toStdString());
 				}
 			}
 
@@ -212,58 +250,36 @@ namespace unreal
 	{
 		spdlog::debug("Entered audioEvent");
 
-		auto audioSignal = [this](bool enable) -> bool {
+		try
+		{
 			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
 			{
-				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-				if (behaviour)
+				if (!audioEnable_)
 				{
-					try
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
+					if (!fileName.isEmpty())
 					{
-						if (enable)
-						{
-							QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
-							if (!fileName.isEmpty())
-							{
-								behaviour->loadAudio(fileName.toUtf8().data());
-								return true;
-							}
-						}
-						else
-						{
-							behaviour->clearAudio();
-							return true;
-						}
-					}
-					catch (const std::exception& e)
-					{
-						QCoreApplication::processEvents();
-
-						spdlog::error("Function audioEvent raised exception: " + std::string(e.what()));
-						QMessageBox::critical(this, tr("Error"), e.what());
+						profile_->soundModule->filepath = fileName.toUtf8().toStdString();
+						audioButton_->setIcon(audioOnIcon_);
+						audioEnable_ = true;
 					}
 				}
-			}
-
-			return false;
-		};
-
-		if (!audioEnable_)
-		{
-			if (audioSignal(true))
-			{
-				audioButton_->setIcon(audioOnIcon_);
-				audioEnable_ = true;
+				else
+				{
+					profile_->soundModule->filepath = std::string();
+					audioButton_->setIcon(audioIcon_);
+					audioEnable_ = false;
+				}
 			}
 		}
-		else
+		catch (const std::exception& e)
 		{
-			if (audioSignal(false))
-			{
-				audioButton_->setIcon(audioIcon_);
-				audioEnable_ = false;
-			}
+			spdlog::error("Function audioEvent raised exception: " + std::string(e.what()));
+
+			QCoreApplication::processEvents();
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
+
 		spdlog::debug("Exited audioEvent");
 	}
 
@@ -280,7 +296,7 @@ namespace unreal
 				if (!fileName.isEmpty())
 				{
 					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-					behaviour->renderPicture(fileName.toUtf8().data());
+					behaviour->renderPicture(fileName.toUtf8().toStdString());
 				}
 			}
 
@@ -357,7 +373,7 @@ namespace unreal
 			}
 		}
 
-		if (this->profile_->entitiesModule->sound.getValue())
+		if (this->profile_->soundModule->sound.getValue())
 		{
 			if (!audioEnable_)
 			{

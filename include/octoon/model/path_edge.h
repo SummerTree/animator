@@ -1,7 +1,7 @@
 #ifndef OCTOON_PATH_EDGE_H_
 #define OCTOON_PATH_EDGE_H_
 
-#include <octoon/model/modtypes.h>
+#include <octoon/model/path_types.h>
 #include <functional>
 
 namespace octoon

@@ -1,55 +1,5 @@
-unreal--UComboBox {
-	color: rgb(220,220,220);
-    border-radius:2px;
-    padding:1px 18px 1px 3px;
-    max-width:120px;
-	border:1px solid darkgray;
-}
-
-unreal--UComboBox:editable {
-    background: darkgray;
-}
-
-unreal--UComboBox:on {
-    padding-top: 3px;
-    padding-left: 4px;
-}
-
-unreal--UComboBox::drop-down {
-    subcontrol-origin: padding;
-
-    subcontrol-position: top right;
-
-    width: 25px;
-
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-}
-
-unreal--UComboBox::down-arrow:on {
-    top: 1px;
-    left: 1px;
-}
-
-unreal--UComboBox QAbstractItemView {
-	color: rgb(220,220,220);
-    border: 2px solid darkgray;
-    selection-background-color: green;
-}
-
-unreal--ULabel {
-	color: rgb(220,220,220);
-}
-
-QWidget {
-	background: rgb(30, 30, 30);
-}
 QLabel{
 	color: rgb(255,255,255);
-}
-QPushButton{
-	background-color: rgba(0,0,0,0);
-	border:none;
 }
 QToolButton{
 	color:rgb(200,200,200);
@@ -105,32 +55,6 @@ QSlider::sub-page:Horizontal#Intensity{
 }
 QSlider#H{
 	background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255),stop:0.15 rgba(255, 255, 0, 255),stop:0.33 rgba(0, 255, 0, 255),stop:0.49 rgba(1, 255, 255, 255),stop:0.67 rgba(0, 0, 255, 255),stop:0.84 rgba(255, 0, 255, 255),stop:1 rgba(255, 0, 0, 255));
-}
-QSpinBox{
-	color:rgb(150,150,150);
-	border:1px solid #141414;
-	border-radius:3px;
-}
-QSpinBox::up-button{
-	height: 0px;
-	width: 0px;
-}
-QSpinBox::down-button{
-	height: 0px;
-	width: 0px;
-}
-QDoubleSpinBox{
-	color:rgb(150,150,150);
-	border:1px solid #141414;
-	border-radius:3px;
-}
-QDoubleSpinBox::up-button{
-	height: 0px;
-	width: 0px;
-}
-QDoubleSpinBox::down-button{
-	height: 0px;
-	width: 0px;
 }
 QScrollArea{
 	border:none;
@@ -226,7 +150,9 @@ QColorDialog > QTextEdit,QLineEdit,QPushButton{
   background-color: transparent;
   border: 1px solid #1c1c1c;
 }
-
+QWidget{
+	background: rgb(40, 40, 40);
+}
 QWidget#SplashWindow{
 	min-width:500px;
 	max-width:500px;
@@ -585,81 +511,6 @@ QWidget#infoWindow > QPushButton#qrcode{
 	max-height:180;
 	background-color: rgb(255,255,255);
 }
-QWidget#RecordDock QRadioButton{
-	color:rgb(200,200,200);
-}
-QWidget#RecordDock QToolButton#render{
-	width:240;
-	height:35;
-	color:rgb(150,150,150);
-	background-color:rgb(60,60,64);
-}
-QWidget#RecordDock QToolButton#select1{
-	min-width:120;
-	min-height:35;
-	border:1px solid #a5a5a5;
-	border-radius:5px;
-	font-size:18px;
-	font-family: "Microsoft YaHei";
-}
-QWidget#RecordDock QToolButton#select2{
-	min-width:120;
-	min-height:35;
-	border:1px solid #a5a5a5;
-	border-radius:5px;
-	font-size:18px;
-	font-family: "Microsoft YaHei";
-}
-QWidget#RecordDock QToolButton#select1:checked{
-	border:2px solid #009ACC;
-}
-QWidget#RecordDock QToolButton#select2:checked{
-	border:2px solid #009ACC;
-}
-QWidget#RecordDock QToolButton#speed1{
-	min-width:66;
-	min-height:25;
-	border:1px solid #a5a5a5;
-	border-radius:5px;
-	border-top-right-radius:0px;
-	border-bottom-right-radius:0px;
-	font-size:18px;
-	font-family: "Microsoft YaHei";
-}
-QWidget#RecordDock QToolButton#speed2,QToolButton#speed3{
-	min-width:66;
-	min-height:25;
-	border:1px solid #a5a5a5;
-	font-size:18px;
-	font-family: "Microsoft YaHei";
-}
-QWidget#RecordDock QToolButton#speed4{
-	min-width:66;
-	min-height:25;
-	border:1px solid #a5a5a5;
-	border-radius:5px;
-	border-top-left-radius:0px;
-	border-bottom-left-radius:0px;
-	font-size:18px;
-	font-family: "Microsoft YaHei";
-}
-QWidget#RecordDock QToolButton#speed1:checked{
-	border:2px solid #009ACC;
-}
-QWidget#RecordDock QToolButton#speed2:checked{
-	border:2px solid #009ACC;
-}
-QWidget#RecordDock QToolButton#speed3:checked{
-	border:2px solid #009ACC;
-}
-QWidget#RecordDock QToolButton#speed4:checked{
-	border:2px solid #009ACC;
-}
-QWidget#RecordDock QLineEdit{
-	max-width:60;
-	max-height:25;
-	border:1px solid #959595;
-}
 QWidget#ColorDialog > QLabel{
 	color:rgb(200,200,200);
 	font-family: "Microsoft YaHei";
@@ -688,4 +539,168 @@ QWidget#EnvironmentDialog > QToolButton#Ok, QWidget#EnvironmentDialog > QToolBut
 QWidget#ModelWidget > QToolButton#Import, QWidget#MotionWidget > QToolButton#Import{
 	width:60;
 	height:30;
+}
+
+unreal--UComboBox {
+	color: rgb(220,220,220);
+    border-radius:2px;
+    padding:1px 18px 1px 3px;
+    max-width:220px;
+	border:1px solid rgb(80,80,80);
+}
+
+unreal--UComboBox:editable {
+    background: rgb(80,80,80);
+}
+
+unreal--UComboBox:on {
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+unreal--UComboBox::drop-down {
+    subcontrol-origin: padding;
+
+    subcontrol-position: top right;
+
+    width: 25px;
+
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+unreal--UComboBox::down-arrow:on {
+    top: 1px;
+    left: 1px;
+}
+
+unreal--UComboBox QAbstractItemView {
+	color: rgb(220,220,220);
+    border: 2px solid rgb(80,80,80);
+    selection-background-color: green;
+}
+
+unreal--ULabel {
+	color: rgb(220,220,220);
+}
+
+unreal--UPushButton {
+	background: rgb(50,50,50);
+	border:2px solid #646464;
+	border-radius:4px;
+	color: rgb(200,200,200);
+}
+
+unreal--UPushButton:hover{
+	background: rgb(200,200,200);
+	color: rgb(20,20,20);
+}
+
+unreal--UDoubleSpinBox {
+	color: rgb(220,220,220);
+	border: 1px solid #242424;
+	border-radius:2px;
+	padding:1px 18px 1px 3px;
+	max-width:220px;
+	background: rgb(60, 60, 60);
+}
+unreal--UDoubleSpinBox::up-button{
+	height: 0px;
+	width: 0px;
+}
+unreal--UDoubleSpinBox::down-button{
+	height: 0px;
+	width: 0px;
+}
+
+unreal--USpinBox {
+	color: rgb(220,220,220);
+	border: 1px solid #242424;
+	border-radius:2px;
+	padding:1px 18px 1px 3px;
+	max-width:220px;
+	background: rgb(60, 60, 60);
+}
+unreal--USpinBox::up-button{
+	height: 0px;
+	width: 0px;
+}
+unreal--USpinBox::down-button{
+	height: 0px;
+	width: 0px;
+}
+QWidget#RecordDock QRadioButton{
+	color:rgb(200,200,200);
+}
+QWidget#RecordDock unreal--UPushButton#render{
+	width:240;
+	height:35;
+	color:rgb(150,150,150);
+	background-color:rgb(60,60,64);
+}
+QWidget#RecordDock unreal--UPushButton#select1{
+	min-width:120;
+	min-height:35;
+	border:1px solid #a5a5a5;
+	border-radius:5px;
+	font-size:18px;
+	font-family: "Microsoft YaHei";
+}
+QWidget#RecordDock unreal--UPushButton#select2{
+	min-width:120;
+	min-height:35;
+	border:1px solid #a5a5a5;
+	border-radius:5px;
+	font-size:18px;
+	font-family: "Microsoft YaHei";
+}
+QWidget#RecordDock unreal--UPushButton#select1:checked{
+	border:2px solid #009ACC;
+}
+QWidget#RecordDock unreal--UPushButton#select2:checked{
+	border:2px solid #009ACC;
+}
+QWidget#RecordDock unreal--UPushButton#speed1{
+	min-width:66;
+	min-height:25;
+	border:1px solid #a5a5a5;
+	border-radius:5px;
+	border-top-right-radius:0px;
+	border-bottom-right-radius:0px;
+	font-size:18px;
+	font-family: "Microsoft YaHei";
+}
+QWidget#RecordDock unreal--UPushButton#speed2, unreal--UPushButton#speed3{
+	min-width:66;
+	min-height:25;
+	border:1px solid #a5a5a5;
+	font-size:18px;
+	font-family: "Microsoft YaHei";
+}
+QWidget#RecordDock unreal--UPushButton#speed4{
+	min-width:66;
+	min-height:25;
+	border:1px solid #a5a5a5;
+	border-radius:5px;
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+	font-size:18px;
+	font-family: "Microsoft YaHei";
+}
+QWidget#RecordDock unreal--UPushButton#speed1:checked{
+	border:2px solid #009ACC;
+}
+QWidget#RecordDock unreal--UPushButton#speed2:checked{
+	border:2px solid #009ACC;
+}
+QWidget#RecordDock unreal--UPushButton#speed3:checked{
+	border:2px solid #009ACC;
+}
+QWidget#RecordDock unreal--UPushButton#speed4:checked{
+	border:2px solid #009ACC;
+}
+QWidget#RecordDock QLineEdit{
+	max-width:60;
+	max-height:25;
+	border:1px solid #959595;
 }

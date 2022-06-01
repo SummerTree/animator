@@ -1,5 +1,4 @@
 #include <octoon/obj_loader.h>
-#include <octoon/mesh_loader.h>
 #include <octoon/texture_loader.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/transform_component.h>

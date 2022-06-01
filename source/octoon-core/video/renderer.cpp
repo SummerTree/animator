@@ -121,6 +121,28 @@ namespace octoon
 	}
 
 	void
+	Renderer::setCachePath(std::string_view path)
+	{
+		if (pathRenderer_)
+			return pathRenderer_->setCachePath(path);
+		cachePath_ = path;
+	}
+
+	const std::string&
+	Renderer::getCachePath() const
+	{
+		return cachePath_;
+	}
+
+	std::uint32_t
+	Renderer::getSampleCounter() const
+	{
+		if (pathRenderer_)
+			return pathRenderer_->getSampleCounter();
+		return 0;
+	}
+
+	void
 	Renderer::setOverrideMaterial(const std::shared_ptr<Material>& material) noexcept
 	{
 		this->overrideMaterial_ = material;
@@ -207,7 +229,7 @@ namespace octoon
 		{
 			if (!pathRenderer_)
 			{
-				pathRenderer_ = std::make_unique<ConfigManager>(this->context_->getDevice()->getSystemInfo().graphicsDeviceName);
+				pathRenderer_ = std::make_unique<ConfigManager>(this->context_->getDevice()->getSystemInfo().graphicsDeviceName, cachePath_);
 				pathRenderer_->setMaxBounces(this->getMaxBounces());
 				pathRenderer_->setFramebufferSize(this->width_, this->height_);
 

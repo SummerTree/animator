@@ -37,6 +37,7 @@ namespace octoon
 
 		void setBones(GameObjects&& bones) noexcept;
 		void setBones(const GameObjects& bones) noexcept;
+		const GameObjectPtr& getBone(std::size_t i) const noexcept;
 		const GameObjects& getBones() const noexcept;
 
 		void solve() noexcept;

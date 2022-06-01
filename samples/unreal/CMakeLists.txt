@@ -24,8 +24,8 @@ SET(MAIN_LIST
 SOURCE_GROUP("launcher" FILES ${MAIN_LIST})
 
 SET(MODULES_LIST
-	${SOURCE_PATH}/module/file_module.h
-	${SOURCE_PATH}/module/file_module.cpp
+	${SOURCE_PATH}/module/sound_module.h
+	${SOURCE_PATH}/module/sound_module.cpp
 	${SOURCE_PATH}/module/camera_module.h
 	${SOURCE_PATH}/module/camera_module.cpp
 	${SOURCE_PATH}/module/main_light_module.h
@@ -71,6 +71,22 @@ SET(WIDGETS_LIST
 	${SOURCE_PATH}/widgets/ucombobox.cpp
 	${SOURCE_PATH}/widgets/ulabel.h
 	${SOURCE_PATH}/widgets/ulabel.cpp
+	${SOURCE_PATH}/widgets/udockwidget.h
+	${SOURCE_PATH}/widgets/udockwidget.cpp
+	${SOURCE_PATH}/widgets/utranslatable.h
+	${SOURCE_PATH}/widgets/utranslatable.cpp
+	${SOURCE_PATH}/widgets/upanel.h
+	${SOURCE_PATH}/widgets/upanel.cpp
+	${SOURCE_PATH}/widgets/uspinbox.h
+	${SOURCE_PATH}/widgets/uspinbox.cpp
+	${SOURCE_PATH}/widgets/udoublespinbox.h
+	${SOURCE_PATH}/widgets/udoublespinbox.cpp
+	${SOURCE_PATH}/widgets/upushbutton.h
+	${SOURCE_PATH}/widgets/upushbutton.cpp
+	${SOURCE_PATH}/widgets/uspinline.h
+	${SOURCE_PATH}/widgets/uspinline.cpp
+	${SOURCE_PATH}/widgets/udoublespinline.h
+	${SOURCE_PATH}/widgets/udoublespinline.cpp
 )
 SOURCE_GROUP("launcher\\widgets" FILES ${WIDGETS_LIST})
 
@@ -144,6 +160,8 @@ SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/offline_component.cpp
 	${SOURCE_PATH}/controllers/record_component.h
 	${SOURCE_PATH}/controllers/record_component.cpp
+	${SOURCE_PATH}/controllers/sound_component.h
+	${SOURCE_PATH}/controllers/sound_component.cpp
 	${SOURCE_PATH}/controllers/h264_component.h
 	${SOURCE_PATH}/controllers/h264_component.cpp
 	${SOURCE_PATH}/controllers/h265_component.h
@@ -168,6 +186,10 @@ SOURCE_GROUP("launcher\\controllers" FILES ${CONTROLLERS_LIST})
 SET(UTILS_LIST
 	${SOURCE_PATH}/utils/pmm.h
 	${SOURCE_PATH}/utils/pmm.cpp
+	${SOURCE_PATH}/utils/pmm_loader.h
+	${SOURCE_PATH}/utils/pmm_loader.cpp
+	${SOURCE_PATH}/utils/ass_loader.h
+	${SOURCE_PATH}/utils/ass_loader.cpp
 )
 SOURCE_GROUP("launcher\\utils" FILES ${UTILS_LIST})
 

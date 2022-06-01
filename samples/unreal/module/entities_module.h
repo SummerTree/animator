@@ -14,19 +14,15 @@ namespace unreal
 
 		virtual void reset() noexcept override;
 
-		virtual void load(octoon::runtime::json& reader) noexcept override;
-		virtual void save(octoon::runtime::json& reader) noexcept override;
+		virtual void load(octoon::runtime::json& reader, std::string_view path) noexcept(false) override;
+		virtual void save(octoon::runtime::json& writer, std::string_view path) noexcept(false) override;
 
 	private:
 		EntitiesModule(const EntitiesModule&) = delete;
 		EntitiesModule& operator=(const EntitiesModule&) = delete;
 
 	public:
-		octoon::GameObjects objects;
-		MutableLiveData<octoon::GameObjectPtr> camera;
-		MutableLiveData<octoon::GameObjectPtr> sound;
-		MutableLiveData<octoon::GameObjectPtr> mainLight;
-		MutableLiveData<octoon::GameObjectPtr> environmentLight;
+		MutableLiveData<octoon::GameObjects> objects;
 	};
 }
 

@@ -17,13 +17,19 @@
 
 #include <octoon/game_object.h>
 
+#include "../widgets/udockwidget.h"
 #include "../widgets/spoiler.h"
 #include "../widgets/draggable_button.h"
+#include "../widgets/uspinbox.h"
+#include "../widgets/udoublespinbox.h"
+#include "../widgets/ulabel.h"
+#include "../widgets/udoublespinline.h"
+
 
 namespace unreal
 {
 
-	class CameraDock final : public QDockWidget
+	class CameraDock final : public UDockWidget
 	{
 		Q_OBJECT
 	public:
@@ -46,20 +52,18 @@ namespace unreal
 		void onUnloadAnimation();
 
 	public:
-		QLabel* dofInfoLabel_;
-		QLabel* apertureLabel_;
-		QLabel* fovLabel_;
-		QLabel* focalLengthLabel_;
-		QLabel* focusDistanceName_;
-		QLabel* focusDistanceLabel_;
-		QLabel* dofLabel_;
+		ULabel* dofInfoLabel_;
+		ULabel* focalLengthLabel_;
+		ULabel* focusDistanceName_;
+		ULabel* focusDistanceLabel_;
+		ULabel* dofLabel_;
 
 		QCheckBox* dofButton_;
 		QToolButton* focusTargetButton_;
-		QDoubleSpinBox* fovSpinbox_;
-		QDoubleSpinBox* apertureSpinbox_;
-		QDoubleSpinBox* focalLengthSpinbox_;
-		QDoubleSpinBox* focusDistanceSpinbox_;
+		UDoubleSpinLine* fovSpinbox_;
+		UDoubleSpinLine* apertureSpinbox_;
+		UDoubleSpinLine* focalLengthSpinbox_;
+		UDoubleSpinLine* focusDistanceSpinbox_;
 
 		QToolButton* loadButton_;
 		QToolButton* unloadButton_;

@@ -1,9 +1,9 @@
 #include "hdri_component.h"
 #include "unreal_behaviour.h"
 #include <octoon/image/image.h>
+#include <octoon/runtime/uuid.h>
 #include <fstream>
 #include <filesystem>
-#include <quuid.h>
 
 namespace unreal
 {
@@ -35,9 +35,7 @@ namespace unreal
 				pixels[i + 2] = std::clamp<float>(std::pow(data[i + 2], 1 / 2.2) * 255.0f, 0, 255);
 			}
 
-			auto id = QUuid::createUuid().toString();
-			auto uuid = id.toStdString().substr(1, id.length() - 2);
-
+			auto uuid = octoon::make_guid();
 			auto rootPath = std::filesystem::path(this->getModel()->hdriPath).append(uuid);
 			auto hdriPath = std::filesystem::path(rootPath).append(uuid + ".hdr");
 			auto previewPath = std::filesystem::path(rootPath).append(uuid + ".png");

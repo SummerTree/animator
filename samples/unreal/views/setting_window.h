@@ -11,61 +11,77 @@
 #include <QtGui/qevent.h>
 #include <qlistwidget.h>
 #include <qscrollarea.h>
-#include <qdialog.h>
+#include <QDialog>
 #include <qpropertyanimation.h>
 #include <qspinbox.h>
+#include <QTranslator>
 
 #include "../widgets/ulabel.h"
 #include "../widgets/ucombobox.h"
+#include "../widgets/upanel.h"
+#include "../widgets/upushbutton.h"
 
 #include "title_bar.h"
 #include "unreal_behaviour.h"
 
 namespace unreal
 {
-	class SettingMainPlaneGeneral final : public QWidget
+	class SettingMainPlaneGeneral final : public UPanel
 	{
 		Q_OBJECT
 	public:
 		SettingMainPlaneGeneral(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour);
 
+		void retranslate() override;
+		void setupUI();
+
 		ULabel* infoLabel;
-		QToolButton* infoButton;
+		UPushButton* infoButton;
 		ULabel* versionLabel;
 		ULabel* resetLabel;
-		QToolButton* resetButton;
+		UPushButton* resetButton;
 
 	private:
-		std::unique_ptr<QVBoxLayout> layout_;
+		QVBoxLayout* layout_;
 	};
 
-	class SettingMainPlaneInterface final : public QWidget
+	class SettingMainPlaneInterface final : public UPanel
 	{
 		Q_OBJECT
 	public:
 		SettingMainPlaneInterface(QWidget* parent);
 
-		std::unique_ptr<QLabel> renderLabel;
-		std::unique_ptr<QLabel> resolutionLabel;
-		std::unique_ptr<UComboBox> resolutionCombo;
+		void retranslate();
+		void setupUI();
 
+		ULabel* langLabel_;
+		UComboBox* langCombo_;
+		ULabel* renderLabel;
+		ULabel* resolutionLabel;
+		UComboBox* resolutionCombo;
+
+		std::vector<QString> languages_;
 	private:
-		std::unique_ptr<QVBoxLayout> layout_;
+		QVBoxLayout* layout_;
 	};
 
-	class SettingMainPlaneGraphics final : public QWidget
+	class SettingMainPlaneGraphics final : public UPanel
 	{
 		Q_OBJECT
 	public:
 		SettingMainPlaneGraphics(QWidget* parent);
+
+		void retranslate();
 	};
 
-	class SettingContextPlane final : public QWidget
+	class SettingContextPlane final : public UPanel
 	{
 		Q_OBJECT
 	public:
 		SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept(false);
 		~SettingContextPlane() noexcept;
+
+		void retranslate();
 
 	public Q_SLOTS:
 		void valueChanged(int value);
@@ -74,20 +90,23 @@ namespace unreal
 		void onResetButton();
 		void onResolutionCombo(int index);
 		void onCheckVersion();
-
+		void onLangCombo(int index);
+	
+	Q_SIGNALS:
+		void languageChangeSignal(QString filename);
 	private:
 		bool m_sign;
 		std::shared_ptr<unreal::UnrealBehaviour> behaviour_;
 
-		std::unique_ptr<QListWidget> listWidget_;
-		std::unique_ptr<QListWidgetItem> listWidgetItems_[3];
-		std::unique_ptr<SettingMainPlaneGeneral> mainPlane_;
-		std::unique_ptr<SettingMainPlaneInterface> mainPlane2_;
-		std::unique_ptr<SettingMainPlaneGraphics> mainPlane3_;
-		std::unique_ptr<QVBoxLayout> gridLayout_;
-		std::unique_ptr<QScrollArea> scrollArea_;
-		std::unique_ptr<QWidget> scrollWidget_;
-		std::unique_ptr<QHBoxLayout> layout_;
+		QListWidget* listWidget_;
+		QListWidgetItem* listWidgetItems_[3];
+		SettingMainPlaneGeneral* mainPlaneGeneral_;
+		SettingMainPlaneInterface* mainPlaneInterface_;
+		SettingMainPlaneGraphics* mainPlaneGraphics_;
+		QVBoxLayout* gridLayout_;
+		QScrollArea* scrollArea_;
+		QWidget* scrollWidget_;
+		QHBoxLayout* layout_;
 	};
 
 	class SettingWindow final : public QDialog
@@ -99,6 +118,9 @@ namespace unreal
 
 	public Q_SLOTS:
 		void closeEvent();
+
+	Q_SIGNALS:
+		void languageChangeSignal(QString filename);		
 
 	private:
 		std::unique_ptr<QVBoxLayout> contextLayout_;

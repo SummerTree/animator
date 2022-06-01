@@ -16,8 +16,8 @@ namespace unreal
 
 		virtual void reset() noexcept override;
 
-		virtual void load(octoon::runtime::json& reader) noexcept override;
-		virtual void save(octoon::runtime::json& reader) noexcept override;
+		virtual void load(octoon::runtime::json& reader, std::string_view path) noexcept override;
+		virtual void save(octoon::runtime::json& writer, std::string_view path) noexcept override;
 
 		virtual void disconnect() noexcept;
 
@@ -28,9 +28,6 @@ namespace unreal
 	public:
 		MutableLiveData<bool> finish;
 		MutableLiveData<bool> isPlaying;
-
-		MutableLiveData<std::uint32_t> spp;
-		MutableLiveData<std::uint32_t> sppCount;
 
 		MutableLiveData<std::uint32_t> endFrame;
 		MutableLiveData<std::uint32_t> startFrame;

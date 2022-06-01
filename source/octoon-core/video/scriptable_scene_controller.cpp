@@ -18,6 +18,8 @@
 #include <octoon/hal/graphics_data.h>
 #include <octoon/hal/graphics_context.h>
 
+#include <stdexcept>
+
 namespace octoon
 {
 	ScriptableSceneController::ScriptableSceneController()
