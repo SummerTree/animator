@@ -364,9 +364,21 @@ namespace unreal
 		auto& model = this->getModel();
 		model->curTime = model->curTime.getValue() + delta;
 
-		auto& context = this->getContext()->profile;
+		auto& profile = this->getContext()->profile;
 
-		for (auto& it : this->getContext()->profile->entitiesModule->objects.getValue())
+		auto& sound = profile->soundModule->sound.getValue();
+		if (sound)
+		{
+			auto source = sound->getComponent<octoon::AudioSourceComponent>();
+			if (source && source->isPlaying())
+			{
+				auto time = source->getTime();
+				if (time > (model->curTime + model->syncTime) || time < (model->curTime - model->syncTime))
+					model->curTime = source->getTime();
+			}
+		}
+
+		for (auto& it : profile->entitiesModule->objects.getValue())
 		{
 			for (auto component : it->getComponents())
 			{
@@ -389,7 +401,7 @@ namespace unreal
 				}
 			}
 
-			if (this->getContext()->profile->offlineModule->getEnable())
+			if (profile->offlineModule->getEnable())
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
@@ -397,7 +409,7 @@ namespace unreal
 			}
 		}
 
-		auto camera = this->getContext()->profile->cameraModule->camera.getValue();
+		auto camera = profile->cameraModule->camera.getValue();
 		if (camera)
 		{
 			auto animation = camera->getComponent<octoon::AnimationComponent>();
@@ -409,7 +421,7 @@ namespace unreal
 		}
 
 		auto physicsFeature = this->getContext()->behaviour->getFeature<octoon::PhysicsFeature>();
-		if (physicsFeature && context->physicsModule->getEnable())
+		if (physicsFeature && profile->physicsModule->getEnable())
 			physicsFeature->simulate(delta);
 
 		if (camera)

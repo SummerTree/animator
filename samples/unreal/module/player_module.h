@@ -37,6 +37,7 @@ namespace unreal
 		MutableLiveData<float> recordFps;
 
 		MutableLiveData<float> curTime;
+		MutableLiveData<float> syncTime;
 		MutableLiveData<float> takeupTime;
 		MutableLiveData<float> estimatedTime;
 		MutableLiveData<float> timeLength;

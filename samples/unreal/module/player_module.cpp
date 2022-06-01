@@ -23,6 +23,7 @@ namespace unreal
 		this->startFrame = 0;
 		this->timeLength = 0;
 		this->curTime = 0;
+		this->syncTime = 0.1f; // 100ms
 		this->takeupTime = 0;
 		this->estimatedTime = 0;
 	}
