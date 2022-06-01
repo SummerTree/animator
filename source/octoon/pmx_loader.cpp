@@ -2,6 +2,8 @@
 #include <octoon/pmx.h>
 
 #include <octoon/runtime/string.h>
+#include <octoon/runtime/uuid.h>
+
 #include <octoon/material/mesh_standard_material.h>
 
 #include <octoon/transform_component.h>
@@ -735,7 +737,7 @@ namespace octoon
 				auto smr = gameObject.getComponent<SkinnedMeshRendererComponent>();
 				if (smr)
 				{
-					std::map<std::string, std::size_t> textureMap;
+					std::map<std::shared_ptr<GraphicsTexture>, std::size_t> textureMap;
 
 					pmx.numMaterials = smr->getMaterials().size();
 					pmx.materials.resize(pmx.numMaterials);
@@ -745,16 +747,8 @@ namespace octoon
 						auto standard = smr->getMaterial(i)->downcast_pointer<MeshStandardMaterial>();
 						auto texture = standard->getColorMap();
 
-						if (texture)
-						{
-							auto name = texture->getTextureDesc().getName();
-							if (textureMap.find(name) == textureMap.end())
-							{
-								auto outputPath = std::string(path) + name.substr(name.find_last_of("\\") + 1);
-								TextureLoader::save(outputPath, texture);
-								textureMap.insert(std::make_pair(name, textureMap.size()));
-							}
-						}
+						if (texture && textureMap.find(texture) == textureMap.end())
+							textureMap.insert(std::make_pair(texture, textureMap.size()));
 
 						auto& pmxMaterial = pmx.materials[i];
 						pmxMaterial.name = PmxName(standard->getName());
@@ -762,9 +756,9 @@ namespace octoon
 						pmxMaterial.Diffuse = math::linear2srgb(standard->getColor());
 						pmxMaterial.Ambient = math::float3(0.5f, 0.5f, 0.5f);
 						pmxMaterial.Opacity = standard->getOpacity();
-						pmxMaterial.TextureIndex = texture ? textureMap[texture->getTextureDesc().getName()] : 255;
-						pmxMaterial.ToonIndex = 255;
-						pmxMaterial.SphereTextureIndex = 255;
+						pmxMaterial.TextureIndex = texture ? textureMap[texture] : -1;
+						pmxMaterial.ToonTexture = -1;
+						pmxMaterial.SphereTextureIndex = -1;
 						pmxMaterial.FaceCount = mesh->getIndicesArray(i).size();
 					}
 
@@ -772,7 +766,14 @@ namespace octoon
 					pmx.textures.resize(textureMap.size());
 
 					for (auto& it : textureMap)
-						pmx.textures[it.second] = PmxName(it.first.substr(it.first.find_last_of("\\") + 1));
+					{
+						auto texture = it.first;
+						auto name = texture->getTextureDesc().getName();
+						auto filename = runtime::make_guid() + name.substr(name.find_last_of("."));
+						auto outputPath = std::string(path) + filename;
+						TextureLoader::save(outputPath, texture);
+						pmx.textures[it.second] = PmxName(filename);
+					}
 
 					auto transforms = smr->getTransforms();
 					if (!transforms.empty())
