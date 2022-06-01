@@ -445,11 +445,15 @@ namespace octoon
     ScriptableSceneController::updateShapes(const std::shared_ptr<RenderScene>& scene, RenderingData& out, bool force)
     {
 		out.geometries = scene->getGeometries();
-		out.screenQuad = Geometry::create();
-		out.screenQuad->setMesh(PlaneMesh::create(2.0f, 2.0f));
 
-		auto screenMesh = out.screenQuad->getMesh();
-		out.buffers_[screenMesh.get()] = std::make_shared<ScriptableRenderBuffer>(this->context_->getDevice(), screenMesh);
+		if (!out.screenQuad)
+		{
+			out.screenQuad = Geometry::create();
+			out.screenQuad->setMesh(PlaneMesh::create(2.0f, 2.0f));
+
+			auto screenMesh = out.screenQuad->getMesh();
+			out.buffers_[screenMesh.get()] = std::make_shared<ScriptableRenderBuffer>(this->context_->getDevice(), screenMesh);
+		}
 
 		for (auto& geometry : scene->getGeometries())
 		{
