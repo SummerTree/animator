@@ -88,8 +88,8 @@ namespace octoon
 	void
 	SkinnedMorphComponent::onAnimationUpdate(const std::any& value) noexcept
 	{
-		assert(value.type() == typeid(float));
-		this->setControl(std::any_cast<float>(value));
+		assert(value.type() == typeid(math::Variant));
+		this->setControl(std::any_cast<math::Variant>(value).getFloat());
 	}
 
 	void

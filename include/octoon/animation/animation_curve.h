@@ -15,17 +15,17 @@ namespace octoon
 		ClampForever
 	};
 
-	template<typename _Elem = float, typename _Time = float>
+	template<typename _Time = float>
 	class AnimationCurve final
 	{
 	public:
-		using Keyframes = std::vector<Keyframe<_Elem, _Time>>;
+		using Keyframes = std::vector<Keyframe<_Time>>;
 
 		bool finish;
 		bool negative;
 		_Time time;
 		_Time timeLength;
-		_Elem value;
+		math::Variant value;
 		Keyframes frames;
 		std::shared_ptr<Interpolator<_Time>> interpolator;
 		AnimationMode preWrapMode;
@@ -70,13 +70,14 @@ namespace octoon
 			{
 				this->time = 0;
 				this->timeLength = 0;
-				this->value = 0;
+				this->value.setType(math::Variant::Type::Void);
 			}
 			else
 			{
 				this->time = frames.front().time;
 				this->timeLength = frames.back().time;
-				this->value = frames.front().value;
+				this->value.setType(frames.front().value.getType());
+				this->value.assign(frames.front().value);
 			}
 		}
 
@@ -90,37 +91,50 @@ namespace octoon
 			{
 				this->time = 0;
 				this->timeLength = 0;
-				this->value = 0;
+				this->value.setType(math::Variant::Type::Void);
 			}
 			else
 			{
 				this->time = frames.front().time;
 				this->timeLength = frames.back().time;
-				this->value = frames.front().value;
+				this->value.setType(frames.front().value.getType());
+				this->value.assign(frames.front().value);
 			}
 		}
 
-		void insert(Keyframe<_Elem, _Time>&& frame_) noexcept
+		void insert(Keyframe<_Time>&& frame_) noexcept
 		{
 			frames.emplace_back(std::move(frame_));
+
 			this->sort();
-			this->time = frames.front().time;
 			this->timeLength = frames.back().time;
-			this->value = frames.front().value;
+
+			if (frames.size() == 1)
+			{
+				this->time = frames.front().time;
+				this->value.setType(frames.front().value.getType());
+				this->value.assign(frames.front().value);
+			}
 		}
 
-		void insert(const Keyframe<_Elem, _Time>& frame_) noexcept
+		void insert(const Keyframe<_Time>& frame_) noexcept
 		{
 			frames.emplace_back(frame_);				
+
 			this->sort();
-			this->time = frames.front().time;
 			this->timeLength = frames.back().time;
-			this->value = frames.front().value;
+
+			if (frames.size() == 1)
+			{
+				this->time = frames.front().time;
+				this->value.setType(frames.front().value.getType());
+				this->value.assign(frames.front().value);
+			}
 		}
 
 		void sort() noexcept
 		{
-			std::sort(frames.begin(), frames.end(), [](const Keyframe<_Elem, _Time>& a, const Keyframe<_Elem, _Time>& b) { return a.time < b.time; });
+			std::sort(frames.begin(), frames.end(), [](const Keyframe<_Time>& a, const Keyframe<_Time>& b) { return a.time < b.time; });
 		}
 
 		bool empty() const noexcept
@@ -135,7 +149,7 @@ namespace octoon
 			this->evaluate(0);
 		}
 
-		const _Elem& evaluate(const _Time& delta) noexcept
+		const math::Variant& evaluate(const _Time& delta) noexcept
 		{
 			if (negative)
 				this->time -= delta;
@@ -163,7 +177,7 @@ namespace octoon
 			}
 			else
 			{
-				auto it = std::upper_bound(frames.begin(), frames.end(), this->time, [](const _Time& time, const Keyframe<_Elem, _Time>& a)
+				auto it = std::upper_bound(frames.begin(), frames.end(), this->time, [](const _Time& time, const Keyframe<_Time>& a)
 				{
 					return time <= a.time;
 				});
@@ -178,7 +192,7 @@ namespace octoon
 					t = interpolator->interpolator(t);
 
 				this->finish = false;
-				this->value = math::lerp(a.value, b.value, t);
+				this->value = math::interpolator(a.value, b.value, t);
 			}
 
 			return this->value;

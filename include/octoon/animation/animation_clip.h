@@ -6,12 +6,12 @@
 
 namespace octoon
 {
-	template<typename _Elem = float, typename _Time = float>
+	template<typename _Time = float>
 	class AnimationClip final
 	{
 	public:
 		std::string name;
-		std::unordered_map<std::string, AnimationCurve<_Elem, _Time>> curves;
+		std::unordered_map<std::string, AnimationCurve<_Time>> curves;
 		bool finish;
 		_Time timeLength;
 
@@ -33,7 +33,7 @@ namespace octoon
 			this->name = _name;
 		}
 
-		void setCurve(const char* _name, AnimationCurve<_Elem, _Time>&& curve) noexcept
+		void setCurve(const char* _name, AnimationCurve<_Time>&& curve) noexcept
 		{
 			this->curves[_name] = std::move(curve);
 			timeLength = 0;
@@ -41,7 +41,7 @@ namespace octoon
 				timeLength = std::max(it.second.timeLength, timeLength);
 		}
 
-		void setCurve(const char* _name, const AnimationCurve<_Elem, _Time>& curve) noexcept
+		void setCurve(const char* _name, const AnimationCurve<_Time>& curve) noexcept
 		{
 			this->curves[_name] = curve;
 			timeLength = 0;
@@ -49,7 +49,7 @@ namespace octoon
 				timeLength = std::max(it.second.timeLength, timeLength);
 		}
 
-		void setCurve(const std::string& _name, AnimationCurve<_Elem, _Time>&& curve) noexcept
+		void setCurve(const std::string& _name, AnimationCurve<_Time>&& curve) noexcept
 		{
 			this->curves[_name] = std::move(curve);
 			timeLength = 0;
@@ -57,7 +57,7 @@ namespace octoon
 				timeLength = std::max(it.second.timeLength, timeLength);
 		}
 
-		void setCurve(const std::string& _name, const AnimationCurve<_Elem, _Time>& curve) noexcept
+		void setCurve(const std::string& _name, const AnimationCurve<_Time>& curve) noexcept
 		{
 			this->curves[_name] = curve;
 			timeLength = 0;
@@ -65,22 +65,22 @@ namespace octoon
 				timeLength = std::max(it.second.timeLength, timeLength);
 		}
 
-		AnimationCurve<_Elem, _Time>& getCurve(const char* _name) noexcept
+		AnimationCurve<_Time>& getCurve(const char* _name) noexcept
 		{
 			return this->curves[_name];
 		}
 
-		const AnimationCurve<_Elem, _Time>& getCurve(const char* _name) const noexcept
+		const AnimationCurve<_Time>& getCurve(const char* _name) const noexcept
 		{
 			return this->curves[_name];
 		}
 
-		AnimationCurve<_Elem, _Time>& getCurve(const std::string& _name) noexcept
+		AnimationCurve<_Time>& getCurve(const std::string& _name) noexcept
 		{
 			return this->curves[_name];
 		}
 
-		const AnimationCurve<_Elem, _Time>& getCurve(const std::string& _name) const noexcept
+		const AnimationCurve<_Time>& getCurve(const std::string& _name) const noexcept
 		{
 			return this->curves[_name];
 		}
@@ -118,8 +118,8 @@ namespace octoon
 		}
 	};
 
-	template<typename _Elem, typename _Time = float>
-	using AnimationClips = std::vector<AnimationClip<_Elem, _Time>>;
+	template<typename _Time = float>
+	using AnimationClips = std::vector<AnimationClip<_Time>>;
 }
 
 #endif

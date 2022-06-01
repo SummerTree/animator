@@ -20,22 +20,31 @@ namespace octoon::math
 		value_.i = rhs;
 	}
 
-	Variant::Variant(float rhs)
+	Variant::Variant(const void* ptr)
+		: type_(Type::Object)
+	{
+		value_.object = ptr;
+	}
+
+	Variant::Variant(const float1& rhs)
 		: type_(Type::Float)
 	{
 		value_.f[0] = rhs;
 	}
 
-	Variant::Variant(const char* chrPtr)
-		: type_(Type::String)
+	Variant::Variant(const float2& rhs)
+		: type_(Type::Float2)
 	{
-		value_.string = new std::string(chrPtr);
+		value_.f[0] = rhs.x;
+		value_.f[1] = rhs.y;
 	}
 
-	Variant::Variant(const void* ptr)
-		: type_(Type::Object)
+	Variant::Variant(const float3& rhs)
+		: type_(Type::Float3)
 	{
-		value_.object = ptr;
+		value_.f[0] = rhs.x;
+		value_.f[1] = rhs.y;
+		value_.f[2] = rhs.z;
 	}
 
 	Variant::Variant(const float4& rhs)
@@ -45,12 +54,6 @@ namespace octoon::math
 		value_.f[1] = rhs.y;
 		value_.f[2] = rhs.z;
 		value_.f[3] = rhs.w;
-	}
-
-	Variant::Variant(const std::string& rhs)
-		:type_(Type::String)
-	{
-		value_.string = new std::string(rhs);
 	}
 
 	Variant::Variant(const Quaternion& rhs)
@@ -63,6 +66,12 @@ namespace octoon::math
 		: type_(Type::Float4x4)
 	{
 		value_.matrix = new float4x4(rhs);
+	}
+
+	Variant::Variant(const std::string& rhs)
+		: type_(Type::String)
+	{
+		value_.string = new std::string(rhs);
 	}
 
 	Variant::Variant(const std::vector<int>& rhs)
@@ -102,62 +111,50 @@ namespace octoon::math
 	}
 
 	Variant::Variant(const Variant& rhs)
-		: type_(rhs.type_)
+		: type_(Type::Void)
 	{
+		this->setType(rhs.type_);
 		this->setVariant(rhs);
+	}
+
+	Variant::Variant(Variant&& rhs)
+		: type_(Type::Void)
+	{
+		this->setVariant(std::move(rhs));
 	}
 
 	Variant::~Variant()
 	{
-		this->destroy();
+		this->setType(Type::Void);
 	}
 
 	void
-	Variant::setType(Type t)
+	Variant::setType(Type type)
 	{
-		type_ = t;
-
-		switch (t)
+		switch (type_)
 		{
-		case Type::Void:
-			this->destroy();
-			break;
-		case Type::String:
-			this->destroy();
-			value_.string = new std::string;
-			break;
-		case Type::Float4x4:
-			this->destroy();
-			value_.matrix = new float4x4;
-			break;
-		case Type::Object:
-			this->destroy();
-			value_.object = nullptr;
-			break;
-		case Type::IntArray:
-			this->destroy();
-			value_.intArray = new std::vector<int>;
-			break;
-		case Type::FloatArray:
-			this->destroy();
-			value_.floatArray = new std::vector<float>;
-			break;
-		case Type::BoolArray:
-			this->destroy();
-			value_.boolArray = new std::vector<bool>;
-			break;
-		case Type::Float4Array:
-			this->destroy();
-			value_.float4Array = new std::vector<float4>;
-			break;
-		case Type::Float4x4Array:
-			this->destroy();
-			value_.float4x4Array = new std::vector<float4x4>;
-			break;
-		case Type::StringArray:
-			this->destroy();
-			value_.stringArray = new std::vector<std::string>;
-			break;
+		case Type::String: delete value_.string; break;
+		case Type::Float4x4: delete value_.matrix; break;
+		case Type::IntArray: delete value_.intArray; break;
+		case Type::FloatArray: delete value_.floatArray; break;
+		case Type::BoolArray: delete value_.boolArray; break;
+		case Type::Float4Array: delete value_.float4Array; break;
+		case Type::Float4x4Array: delete value_.float4x4Array; break;
+		case Type::StringArray: delete value_.stringArray; break;
+		}
+
+		type_ = type;
+
+		switch (type_)
+		{
+		case Type::String: value_.string = new std::string; break;
+		case Type::Float4x4: value_.matrix = new float4x4; break;
+		case Type::IntArray: value_.intArray = new std::vector<int>; break;
+		case Type::FloatArray: value_.floatArray = new std::vector<float>; break;
+		case Type::BoolArray: value_.boolArray = new std::vector<bool>; break;
+		case Type::Float4Array: value_.float4Array = new std::vector<float4>; break;
+		case Type::Float4x4Array: value_.float4x4Array = new std::vector<float4x4>; break;
+		case Type::StringArray: value_.stringArray = new std::vector<std::string>; break;
 		default:
 			break;
 		}
@@ -177,13 +174,6 @@ namespace octoon::math
 	}
 
 	void
-	Variant::setFloat(float val)
-	{
-		assert(type_ == Type::Float);
-		value_.f[0] = val;
-	}
-
-	void
 	Variant::setBool(bool val)
 	{
 		assert(type_ == Type::Bool);
@@ -195,6 +185,30 @@ namespace octoon::math
 	{
 		assert(type_ == Type::String);
 		*value_.string = val;
+	}
+
+	void
+	Variant::setFloat(const float1& val)
+	{
+		assert(type_ == Type::Float);
+		value_.f[0] = val;
+	}
+
+	void
+	Variant::setFloat2(const float2& val)
+	{
+		assert(type_ == Type::Float2);
+		value_.f[0] = val.x;
+		value_.f[1] = val.y;
+	}
+
+	void
+	Variant::setFloat3(const float3& val)
+	{
+		assert(type_ == Type::Float3);
+		value_.f[0] = val.x;
+		value_.f[1] = val.y;
+		value_.f[2] = val.z;
 	}
 
 	void
@@ -275,8 +289,6 @@ namespace octoon::math
 	{
 		assert(type_ == rhs.type_);
 
-		type_ = rhs.type_;
-
 		switch (rhs.type_)
 		{
 		case Type::Void:
@@ -332,18 +344,82 @@ namespace octoon::math
 		}
 	}
 
+	void
+	Variant::setVariant(Variant&& rhs)
+	{
+		this->setType(Type::Void);
+
+		type_ = rhs.type_;
+
+		switch (type_)
+		{
+		case Type::Void:
+			break;
+		case Type::Bool:
+			value_.b = rhs.value_.b;
+			break;
+		case Type::Int:
+			value_.i = rhs.value_.i;
+			break;
+		case Type::Float:
+			value_.f[0] = rhs.value_.f[0];
+			break;
+		case Type::Float4:
+			value_.f[0] = rhs.value_.f[0];
+			value_.f[1] = rhs.value_.f[1];
+			value_.f[2] = rhs.value_.f[2];
+			value_.f[3] = rhs.value_.f[3];
+			break;
+		case Type::Quaternion:
+			value_.quaternion = rhs.value_.quaternion;
+			break;
+		case Type::Object:
+			value_.object = rhs.value_.object;
+			rhs.value_.object = nullptr;
+			break;
+		case Type::String:
+			value_.string = rhs.value_.string;
+			rhs.value_.string = nullptr;
+			break;
+		case Type::Float4x4:
+			value_.matrix = value_.matrix;
+			rhs.value_.matrix = nullptr;
+			break;
+		case Type::IntArray:
+			value_.intArray = value_.intArray;
+			rhs.value_.intArray = nullptr;
+			break;
+		case Type::FloatArray:
+			value_.floatArray = value_.floatArray;
+			rhs.value_.floatArray = nullptr;
+			break;
+		case Type::BoolArray:
+			value_.boolArray = value_.boolArray;
+			rhs.value_.boolArray = nullptr;
+			break;
+		case Type::Float4Array:
+			value_.float4Array = value_.float4Array;
+			rhs.value_.float4Array = nullptr;
+			break;
+		case Type::Float4x4Array:
+			value_.float4x4Array = value_.float4x4Array;
+			rhs.value_.float4x4Array = nullptr;
+			break;
+		case Type::StringArray:
+			value_.stringArray = value_.stringArray;
+			rhs.value_.stringArray = nullptr;
+			break;
+		default:
+			throw std::runtime_error("Variant::copy(): invalid type!");
+			break;
+		}
+	}
+
 	int
 	Variant::getInt() const
 	{
 		assert(Type::Int == type_);
 		return value_.i;
-	}
-
-	float
-	Variant::getFloat() const
-	{
-		assert(Type::Float == type_);
-		return value_.f[0];
 	}
 
 	bool
@@ -358,6 +434,27 @@ namespace octoon::math
 	{
 		assert(Type::String == type_);
 		return *(value_.string);
+	}
+
+	const float1&
+	Variant::getFloat() const
+	{
+		assert(Type::Float == type_);
+		return (float1&)value_.f;
+	}
+
+	const float2&
+	Variant::getFloat2() const
+	{
+		assert(Type::Float2 == type_);
+		return (float2&)value_.f;
+	}
+
+	const float3&
+	Variant::getFloat3() const
+	{
+		assert(Type::Float3 == type_);
+		return (float3&)value_.f;
 	}
 
 	const float4&
@@ -459,14 +556,14 @@ namespace octoon::math
 	Variant::Type
 	Variant::to_type(const std::string& str)
 	{
-		if ("void" == str)             return Type::Void;
+		if ("void" == str)					return Type::Void;
 		else if ("int" == str)              return Type::Int;
 		else if ("float" == str)            return Type::Float;
 		else if ("bool" == str)             return Type::Bool;
 		else if ("float4" == str)           return Type::Float4;
 		else if ("color" == str)            return Type::Float4; // NOT A BUG!
 		else if ("string" == str)           return Type::String;
-		else if ("Float4x4" == str)        return Type::Float4x4;
+		else if ("Float4x4" == str)			return Type::Float4x4;
 		else if ("blob" == str)             return Type::Blob;
 		else if ("guid" == str)             return Type::Guid;
 		else if ("object" == str)           return Type::Object;
@@ -474,74 +571,11 @@ namespace octoon::math
 		else if ("floatarray" == str)       return Type::FloatArray;
 		else if ("boolarray" == str)        return Type::BoolArray;
 		else if ("float4array" == str)      return Type::Float4Array;
-		else if ("Float4x4array" == str)   return Type::Float4x4Array;
+		else if ("Float4x4array" == str)	return Type::Float4x4Array;
 		else if ("stringarray" == str)      return Type::StringArray;
 		else
 		{
 			throw std::runtime_error("Variant::stringToType(): invalid type string!");
 		}
-	}
-
-	void
-	Variant::destroy()
-	{
-		if (Type::String == type_)
-		{
-			assert(value_.string);
-			delete value_.string;
-			value_.string = 0;
-		}
-		else if (Type::Float4x4 == type_)
-		{
-			assert(value_.matrix);
-			delete value_.matrix;
-			value_.matrix = 0;
-		}
-		else if (Type::Object == type_)
-		{
-			if (value_.object)
-			{
-				//_value.object->Release();
-				value_.object = 0;
-			}
-		}
-		else if (Type::IntArray == type_)
-		{
-			assert(value_.intArray);
-			delete value_.intArray;
-			value_.intArray = 0;
-		}
-		else if (Type::FloatArray == type_)
-		{
-			assert(value_.floatArray);
-			delete value_.floatArray;
-			value_.floatArray = 0;
-		}
-		else if (Type::BoolArray == type_)
-		{
-			assert(value_.boolArray);
-			delete value_.boolArray;
-			value_.boolArray = 0;
-		}
-		else if (Type::Float4Array == type_)
-		{
-			assert(value_.float4Array);
-			delete value_.float4Array;
-			value_.float4Array = 0;
-		}
-		else if (Type::Float4x4Array == type_)
-		{
-			assert(value_.float4x4Array);
-			delete value_.float4x4Array;
-			value_.float4x4Array = 0;
-		}
-		else if (Type::StringArray == type_)
-		{
-			assert(value_.stringArray);
-			delete value_.stringArray;
-			value_.stringArray = 0;
-		}
-
-		type_ = Type::Void;
 	}
 }

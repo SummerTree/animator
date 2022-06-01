@@ -8,12 +8,12 @@
 
 namespace octoon
 {
-	template<typename _Elem = float, typename _Time = float>
+	template<typename _Time = float>
 	class Keyframe final
 	{
 	public:
 		_Time time;
-		_Elem value;
+		math::Variant value;
 		std::shared_ptr<Interpolator<_Time>> interpolator;
 
 		Keyframe() noexcept
@@ -22,14 +22,14 @@ namespace octoon
 		{
 		}
 
-		Keyframe(const _Time& time_, const _Elem& value_, std::shared_ptr<Interpolator<float>>&& interpolator_ = nullptr) noexcept
+		Keyframe(const _Time& time_, const math::Variant& value_, std::shared_ptr<Interpolator<float>>&& interpolator_ = nullptr) noexcept
 			: time(time_)
 			, value(value_)
 			, interpolator(std::move(interpolator_))
 		{
 		}
 
-		Keyframe(_Time&& time_, _Elem&& value_, std::shared_ptr<Interpolator<float>>&& interpolator_ = nullptr) noexcept
+		Keyframe(_Time&& time_, math::Variant&& value_, std::shared_ptr<Interpolator<float>>&& interpolator_ = nullptr) noexcept
 			: time(std::move(time_))
 			, value(std::move(value_))
 			, interpolator(std::move(interpolator_))
@@ -90,8 +90,8 @@ namespace octoon
 		}
 	};
 
-	template<typename _Elem = float, typename _Time = float>
-	using Keyframes = std::vector<Keyframe<_Elem, _Time>>;
+	template<typename _Time = float>
+	using Keyframes = std::vector<Keyframe<_Time>>;
 }
 
 #endif

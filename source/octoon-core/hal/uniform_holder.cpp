@@ -82,6 +82,7 @@ namespace octoon
 				case UniformAttributeFormat::Float2x2: m2Value_ = new math::float2x2; break;
 				case UniformAttributeFormat::Float3x3: m3Value_ = new math::float3x3; break;
 				case UniformAttributeFormat::Float4x4: m4Value_ = new math::float4x4; break;
+				case UniformAttributeFormat::Float2x2Array: m2array_ = new std::vector<math::float2x2>; break;
 				case UniformAttributeFormat::Float3x3Array: m3array_ = new std::vector<math::float3x3>; break;
 				case UniformAttributeFormat::Float4x4Array: m4array_ = new std::vector<math::float4x4>; break;
 				case UniformAttributeFormat::UniformBuffer: ubo_ = new GraphicsDataPtr; break;

@@ -254,13 +254,13 @@ namespace octoon
 				motions[it.name].setName(sjis2utf8(vmd.Header.name));
 
 			auto& clip = motions[it.name];
-			clip.getCurve("Position.X").insert(Keyframe<float, float>((float)it.frame, it.translate.x));
-			clip.getCurve("Position.Y").insert(Keyframe<float, float>((float)it.frame, it.translate.y));
-			clip.getCurve("Position.Z").insert(Keyframe<float, float>((float)it.frame, it.translate.z));
-			clip.getCurve("Rotation.X").insert(Keyframe<float, float>((float)it.frame, it.rotate.x));
-			clip.getCurve("Rotation.Y").insert(Keyframe<float, float>((float)it.frame, it.rotate.y));
-			clip.getCurve("Rotation.Z").insert(Keyframe<float, float>((float)it.frame, it.rotate.z));
-			clip.getCurve("Rotation.W").insert(Keyframe<float, float>((float)it.frame, it.rotate.w));
+			clip.getCurve("Position.X").insert(Keyframe<float>((float)it.frame, it.translate.x));
+			clip.getCurve("Position.Y").insert(Keyframe<float>((float)it.frame, it.translate.y));
+			clip.getCurve("Position.Z").insert(Keyframe<float>((float)it.frame, it.translate.z));
+			clip.getCurve("Rotation.X").insert(Keyframe<float>((float)it.frame, it.rotate.x));
+			clip.getCurve("Rotation.Y").insert(Keyframe<float>((float)it.frame, it.rotate.y));
+			clip.getCurve("Rotation.Z").insert(Keyframe<float>((float)it.frame, it.rotate.z));
+			clip.getCurve("Rotation.W").insert(Keyframe<float>((float)it.frame, it.rotate.w));
 		}
 
 		Animation animation;

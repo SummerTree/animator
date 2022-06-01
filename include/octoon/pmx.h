@@ -184,7 +184,7 @@ namespace octoon
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 			std::wstring utf16 = cv.from_bytes(name);
 
-			this->length = utf16.size() * 2;
+			this->length = (PmxUInt32)(utf16.size() * 2);
 			std::memset(this->name, 0, MAX_PATH);
 			std::memcpy(this->name, utf16.data(), this->length);
 			std::memset(this->fullpath, 0, MAX_PATH);
