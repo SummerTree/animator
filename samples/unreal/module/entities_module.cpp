@@ -35,8 +35,9 @@ namespace unreal
 		{
 			for (auto& it : reader["scene"])
 			{
-				auto name = it["name"].get<nlohmann::json::string_t>();
-				auto object = octoon::PMXLoader::load(root + name + "/"  + name + ".pmx");
+				auto uuid = it["uuid"].get<nlohmann::json::string_t>();
+				auto object = octoon::PMXLoader::load(root + uuid + "/"  + uuid + ".pmx");
+				object->setName(uuid);
 
 				for (auto& animationJson : reader["animation"])
 				{
@@ -46,12 +47,14 @@ namespace unreal
 					if (type == 0)
 					{
 						auto animationData = octoon::VMDLoader::loadMotion(root + path);
-						object->addComponent<octoon::AnimatorComponent>(std::move(animationData), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+						auto animator = object->addComponent<octoon::AnimatorComponent>(std::move(animationData), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+						animator->setName(animationJson["uuid"].get<nlohmann::json::string_t>());
 					}
 					else
 					{
 						auto animationData = octoon::VMDLoader::loadMorph(root + path);
-						object->addComponent<octoon::AnimatorComponent>(std::move(animationData));
+						auto animator = object->addComponent<octoon::AnimatorComponent>(std::move(animationData));
+						animator->setName(animationJson["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 
@@ -75,7 +78,7 @@ namespace unreal
 		for (auto& it : this->objects.getValue())
 		{
 			nlohmann::json json;
-			json["name"] = it->getName();
+			json["uuid"] = it->getName();
 
 			auto rootPath = cv.from_bytes(root + it->getName() + "/");
 			auto outputPath = cv.from_bytes(root + it->getName() + "/" + it->getName() + ".pmx");
@@ -98,6 +101,7 @@ namespace unreal
 
 						nlohmann::json animationJson;
 						animationJson["type"] = 1;
+						animationJson["uuid"] = animationName;
 						animationJson["path"] = fileName;
 						writer["animation"].push_back(std::move(animationJson));
 					}
@@ -107,6 +111,7 @@ namespace unreal
 
 						nlohmann::json animationJson;
 						animationJson["type"] = 0;
+						animationJson["uuid"] = animationName;
 						animationJson["path"] = fileName;
 						writer["animation"].push_back(std::move(animationJson));
 					}
