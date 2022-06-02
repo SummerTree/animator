@@ -55,7 +55,10 @@ namespace octoon
 		explicit AnimationCurve(const Keyframes& frames_, const std::shared_ptr<Interpolator<_Time>>& interpolator_ = nullptr) noexcept
 			: interpolator(interpolator_)
 			, finish(false)
+			, negative(false)
 			, timeLength(0)
+			, preWrapMode(AnimationMode::Default)
+			, postWrapMode(AnimationMode::Default)
 		{
 			this->assign(frames_);
 		}

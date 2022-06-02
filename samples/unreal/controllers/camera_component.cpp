@@ -40,7 +40,6 @@ namespace unreal
 		if (stream.open(std::string(filepath)))
 		{
 			octoon::VMDLoader loader;
-
 			return this->loadAnimation(loader.loadCameraMotion(stream));
 		}
 
@@ -147,6 +146,7 @@ namespace unreal
 				this->loadAnimation(value);
 			else
 				this->removeAnimation();
+			this->update();
 		};
 
 		this->getContext()->profile->playerModule->isPlaying += [this](bool value)

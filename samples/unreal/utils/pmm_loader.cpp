@@ -1,7 +1,5 @@
 #include "pmm_loader.h"
-#include "../unreal_profile.h"
-#include "../unreal_behaviour.h"
-#include <quuid.h>
+#include <octoon/runtime/uuid.h>
 
 namespace unreal
 {
@@ -32,12 +30,12 @@ namespace unreal
 				octoon::AnimationClip<float> morphClip;
 				setupMorphAnimation(it, morphClip);
 
-				auto id = QUuid::createUuid().toString();
-				auto uuid = id.toStdString().substr(1, id.length() - 2);
+				auto motion = std::make_shared<octoon::Animation<float>>(std::move(boneClips));
+				auto morph = std::make_shared<octoon::Animation<float>>(std::move(morphClip));
 
-				object->setName(uuid);
-				object->addComponent<octoon::AnimatorComponent>(std::make_shared<octoon::Animation<float>>(std::move(boneClips)), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
-				object->addComponent<octoon::AnimatorComponent>(std::make_shared<octoon::Animation<float>>(std::move(morphClip)));
+				object->setName(octoon::make_guid());
+				object->addComponent<octoon::AnimatorComponent>(std::move(morph))->setName(octoon::make_guid());
+				object->addComponent<octoon::AnimatorComponent>(std::move(motion), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms())->setName(octoon::make_guid());
 				object->getComponent<octoon::SkinnedMeshRendererComponent>()->setAutomaticUpdate(!profile.offlineModule->getEnable());
 
 				objects.emplace_back(std::move(object));
@@ -54,34 +52,33 @@ namespace unreal
 		profile.mainLightModule->intensity = 1.0f;
 		profile.mainLightModule->color = octoon::math::float3(pmm.main_light.rgb.x, pmm.main_light.rgb.y, pmm.main_light.rgb.z);
 		profile.mainLightModule->rotation = octoon::math::degrees(octoon::math::eulerAngles(octoon::math::Quaternion(octoon::math::float3(-0.1, octoon::math::PI + 0.5f, 0.0f))));
-		profile.cameraModule->camera = createCamera(profile, pmm);
 		profile.entitiesModule->objects = objects;
-	}
 
-	octoon::GameObjectPtr
-	PMMLoader::createCamera(UnrealProfile& profile, const octoon::PMMFile& pmm) noexcept
-	{
 		auto animtion = std::make_shared<octoon::Animation<float>>();
 		setupCameraAnimation(pmm.camera_keyframes, *animtion);
 
 		auto eye = octoon::math::float3(pmm.camera.eye.x, pmm.camera.eye.y, pmm.camera.eye.z);
 		auto target = octoon::math::float3(pmm.camera.target.x, pmm.camera.target.y, pmm.camera.target.z);
-		auto quat = octoon::math::Quaternion(-octoon::math::float3(pmm.camera.rotation.x, pmm.camera.rotation.y, pmm.camera.rotation.z));
+		auto quat = -octoon::math::float3(pmm.camera.rotation.x, pmm.camera.rotation.y, pmm.camera.rotation.z);
 
+		profile.cameraModule->camera = createCamera(profile, pmm);
+		profile.cameraModule->animation = std::move(animtion);
+		profile.cameraModule->fov = (float)pmm.camera_keyframes[0].fov;
+		profile.cameraModule->rotation = quat;
+		profile.cameraModule->translate = eye + octoon::math::rotate(octoon::math::Quaternion(quat), octoon::math::float3::Forward) * octoon::math::distance(eye, target);
+	}
+
+	octoon::GameObjectPtr
+	PMMLoader::createCamera(UnrealProfile& profile, const octoon::PMMFile& pmm) noexcept
+	{
 		auto mainCamera = octoon::GameObject::create("MainCamera");
 		mainCamera->addComponent<octoon::FirstPersonCameraComponent>();
-		mainCamera->addComponent<octoon::AnimatorComponent>(animtion);
 
-		auto camera = mainCamera->addComponent<octoon::FilmCameraComponent>();
-		camera->setFov((float)pmm.camera_keyframes[0].fov);
+		auto camera = mainCamera->addComponent<octoon::FilmCameraComponent>();		
 		camera->setCameraType(octoon::CameraType::Main);
 		camera->setClearFlags(octoon::ClearFlagBits::AllBit);
 		camera->setClearColor(octoon::math::float4(0.0f, 0.0f, 0.0f, 1.0f));
 		camera->setupFramebuffers(profile.recordModule->width, profile.recordModule->height, 0, octoon::GraphicsFormat::R32G32B32SFloat);
-
-		auto transform = mainCamera->getComponent<octoon::TransformComponent>();
-		transform->setQuaternion(quat);
-		transform->setTranslate(eye + octoon::math::rotate(quat, octoon::math::float3::Forward) * octoon::math::distance(eye, target));
 
 		return mainCamera;
 	}

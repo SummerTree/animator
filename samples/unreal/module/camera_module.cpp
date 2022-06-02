@@ -36,8 +36,6 @@ namespace unreal
 			this->aperture = reader["aperture"].get<nlohmann::json::number_float_t>();
 		if (reader["focusDistance"].is_number_float())
 			this->focusDistance = reader["focusDistance"].get<nlohmann::json::number_float_t>();
-		if (reader["animation"].is_string())
-			this->animation = octoon::VMDLoader::loadCameraMotion(reader["animation"].get<nlohmann::json::string_t>());
 		if (reader["translate"].is_array())
 		{
 			this->translate = octoon::math::float3(reader["translate"][0], reader["translate"][1], reader["translate"][2]);
@@ -48,6 +46,8 @@ namespace unreal
 			this->rotation = octoon::math::float3(reader["rotation"][0], reader["rotation"][1], reader["rotation"][2]);
 			this->rotation.submit();
 		}
+		if (reader["animation"].is_string())
+			this->animation = octoon::VMDLoader::loadCameraMotion(reader["animation"].get<nlohmann::json::string_t>());
 	}
 
 	void 

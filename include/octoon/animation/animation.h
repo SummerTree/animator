@@ -32,37 +32,25 @@ namespace octoon
 		Animation(AnimationClip<_Time>&& _clip) noexcept
 			: Animation()
 		{
-			clips.emplace_back(std::move(_clip));
-
-			for (auto& clip : clips)
-				state.timeLength = std::max(clip.timeLength, state.timeLength);
-		}
-
-		Animation(const AnimationClip<_Time>& _clip) noexcept
-			: Animation()
-		{
-			clips.emplace_back(_clip);
-
-			for (auto& clip : clips)
-				state.timeLength = std::max(clip.timeLength, state.timeLength);
+			this->setClip(std::move(_clip));
 		}
 
 		Animation(AnimationClips<_Time>&& _clips) noexcept
 			: Animation()
 		{
-			clips = std::move(_clips);
+			this->setClips(std::move(_clips));
+		}
 
-			for (auto& clip : clips)
-				state.timeLength = std::max(clip.timeLength, state.timeLength);
+		Animation(const AnimationClip<_Time>& _clip) noexcept
+			: Animation()
+		{
+			this->setClip(_clip);
 		}
 
 		Animation(const AnimationClips<_Time>& _clips) noexcept
 			: Animation()
 		{
-			clips = _clips;
-
-			for (auto& clip : clips)
-				state.timeLength = std::max(clip.timeLength, state.timeLength);
+			this->setClips(_clips);
 		}
 
 		Animation(std::string&& _name, AnimationClips<_Time>&& _clips) noexcept
@@ -95,47 +83,93 @@ namespace octoon
 
 		void setName(std::string_view _name) noexcept
 		{
-			this->name = name;
+			this->name = _name;
 		}
 
 		void addClip(AnimationClip<_Time>&& clip) noexcept
 		{
 			this->clips.push_back(std::move(clip));
+			this->clips.back().setTime(state.time);
 
-			for (auto& it : clips)
-				state.timeLength = std::max(it.timeLength, state.timeLength);
+			state.timeLength = std::max(this->clips.back().timeLength, state.timeLength);
 		}
 
 		void addClip(const AnimationClip<_Time>& clip) noexcept
 		{
 			this->clips.push_back(clip);
+			this->clips.back().setTime(state.time);
+
+			state.timeLength = std::max(clip.timeLength, state.timeLength);
+		}
+
+		void setClip(AnimationClip<_Time>&& clip) noexcept
+		{
+			state.time = 0;
+			state.timeLength = 0;
+			state.finish = true;
+
+			this->clips.clear();
+			this->clips.push_back(std::move(clip));
 
 			for (auto& it : clips)
+			{
+				it.evaluate(0.0f);
+
+				state.finish &= it.finish;
 				state.timeLength = std::max(it.timeLength, state.timeLength);
+			}
+		}
+
+		void setClip(const AnimationClip<_Time>& clip) noexcept
+		{
+			state.time = 0;
+			state.timeLength = 0;
+			state.finish = true;
+
+			this->clips.clear();
+			this->clips.push_back(clip);
+
+			for (auto& it : clips)
+			{
+				it.evaluate(0.0f);
+
+				state.finish &= it.finish;
+				state.timeLength = std::max(it.timeLength, state.timeLength);
+			}
 		}
 
 		void setClips(const std::vector<AnimationClip<_Time>>& clip) noexcept
 		{
-			state.finish = false;
 			state.time = 0;
 			state.timeLength = 0;
+			state.finish = true;
 
 			this->clips = clip;
 
 			for (auto& it : clips)
+			{
+				it.evaluate(0.0f);
+
+				state.finish &= it.finish;
 				state.timeLength = std::max(it.timeLength, state.timeLength);
+			}
 		}
 
 		void setClips(std::vector<AnimationClip<_Time>>&& clip) noexcept
 		{
-			state.finish = false;
 			state.time = 0;
 			state.timeLength = 0;
+			state.finish = true;
 
 			this->clips = std::move(clip);
 
 			for (auto& it : clips)
+			{
+				it.evaluate(0.0f);
+
+				state.finish &= it.finish;
 				state.timeLength = std::max(it.timeLength, state.timeLength);
+			}
 		}
 
 		float timeLength() const noexcept

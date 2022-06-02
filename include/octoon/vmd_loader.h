@@ -119,7 +119,7 @@ namespace octoon
 
 #pragma pack(pop)
 
-	class OCTOON_EXPORT VMD
+	class OCTOON_EXPORT VMD final
 	{
 	public:
 		VMD_Header Header;
@@ -138,6 +138,9 @@ namespace octoon
 
 		void load(io::istream& stream) noexcept(false);
 		void save(io::ostream& stream) noexcept(false);
+
+		bool load(std::string_view& filepath) noexcept(false);
+		bool save(std::string_view& filepath) noexcept(false);
 	};
 
 	class OCTOON_EXPORT VMDLoader final
@@ -152,10 +155,15 @@ namespace octoon
 		static Animation<float> load(io::istream& stream) noexcept(false);
 
 		static std::shared_ptr<Animation<float>> loadMotion(io::istream& stream) noexcept(false);
+		static std::shared_ptr<Animation<float>> loadMotion(std::string_view filepath) noexcept(false);
+
 		static std::shared_ptr<Animation<float>> loadCameraMotion(io::istream& stream) noexcept(false);
 		static std::shared_ptr<Animation<float>> loadCameraMotion(std::string_view filepath) noexcept(false);
 
+		static void saveMotion(io::ostream& stream, const Animation<float>& animation) noexcept(false);
 		static void saveCameraMotion(io::ostream& stream, const Animation<float>& animation) noexcept(false);
+
+		static void saveMotion(std::string_view filepath, const Animation<float>& animation) noexcept(false);
 		static void saveCameraMotion(std::string_view filepath, const Animation<float>& animation) noexcept(false);
 
 	private:
