@@ -24,6 +24,9 @@ namespace unreal
 	bool
 	UnrealBehaviour::open(std::string_view path) noexcept(false)
 	{
+		if (this->isOpen())
+			this->close();
+
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".pmm")
 		{

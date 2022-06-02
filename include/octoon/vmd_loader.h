@@ -157,12 +157,17 @@ namespace octoon
 		static std::shared_ptr<Animation<float>> loadMotion(io::istream& stream) noexcept(false);
 		static std::shared_ptr<Animation<float>> loadMotion(std::string_view filepath) noexcept(false);
 
+		static std::shared_ptr<Animation<float>> loadMorph(io::istream& stream) noexcept(false);
+		static std::shared_ptr<Animation<float>> loadMorph(std::string_view filepath) noexcept(false);
+
 		static std::shared_ptr<Animation<float>> loadCameraMotion(io::istream& stream) noexcept(false);
 		static std::shared_ptr<Animation<float>> loadCameraMotion(std::string_view filepath) noexcept(false);
 
+		static void saveMorph(io::ostream& stream, const Animation<float>& animation) noexcept(false);
 		static void saveMotion(io::ostream& stream, const Animation<float>& animation) noexcept(false);
 		static void saveCameraMotion(io::ostream& stream, const Animation<float>& animation) noexcept(false);
 
+		static void saveMorph(std::string_view filepath, const Animation<float>& animation) noexcept(false);
 		static void saveMotion(std::string_view filepath, const Animation<float>& animation) noexcept(false);
 		static void saveCameraMotion(std::string_view filepath, const Animation<float>& animation) noexcept(false);
 

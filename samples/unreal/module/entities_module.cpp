@@ -24,10 +24,12 @@ namespace unreal
 	}
 
 	void 
-	EntitiesModule::load(octoon::runtime::json& reader, std::string_view path) noexcept(false)
+	EntitiesModule::load(octoon::runtime::json& reader, std::string_view profilePath) noexcept(false)
 	{
-		auto root = std::string(path);
+		auto root = std::string(profilePath);
 		root = root.substr(0, root.find_last_of('/')) + "/Assets/";
+
+		octoon::GameObjects objects_;
 
 		if (reader["scene"].is_array())
 		{
@@ -36,25 +38,37 @@ namespace unreal
 				auto name = it["name"].get<nlohmann::json::string_t>();
 				auto object = octoon::PMXLoader::load(root + name + "/"  + name + ".pmx");
 
-				for (auto& animation : reader["animation"])
+				for (auto& animationJson : reader["animation"])
 				{
-					auto name = animation.get<nlohmann::json::string_t>();
-					auto animationData = octoon::VMDLoader::loadMotion(root + name);
-					object->addComponent<octoon::AnimatorComponent>(std::move(animationData), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+					auto type = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
+					auto path = animationJson["path"].get<nlohmann::json::string_t>();
+
+					if (type == 0)
+					{
+						auto animationData = octoon::VMDLoader::loadMotion(root + path);
+						object->addComponent<octoon::AnimatorComponent>(std::move(animationData), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+					}
+					else
+					{
+						auto animationData = octoon::VMDLoader::loadMorph(root + path);
+						object->addComponent<octoon::AnimatorComponent>(std::move(animationData));
+					}
 				}
 
-				this->objects.getValue().push_back(std::move(object));
+				objects_.push_back(std::move(object));
 			}
 		}
+
+		this->objects = std::move(objects_);
 	}
 
 	void 
-	EntitiesModule::save(octoon::runtime::json& writer, std::string_view path) noexcept(false)
+	EntitiesModule::save(octoon::runtime::json& writer, std::string_view profilePath) noexcept(false)
 	{
-		auto root = std::string(path);
+		auto root = std::string(profilePath);
 		root = root.substr(0, root.find_last_of('/')) + "/Assets/";
 
-		nlohmann::json jsons;
+		nlohmann::json sceneJson;
 
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
@@ -75,21 +89,33 @@ namespace unreal
 				if (component->isA<octoon::AnimatorComponent>())
 				{
 					auto animation = component->downcast<octoon::AnimatorComponent>();
-					if (!animation->getAvatar().empty())
-					{
-						auto animationName = animation->getName();
-						auto fileName = (animationName.empty() ? octoon::make_guid() : animation->getName()) + ".vmd";
+					auto animationName = animation->getName();
+					auto fileName = (animationName.empty() ? octoon::make_guid() : animation->getName()) + ".vmd";
 
+					if (animation->getAvatar().empty())
+					{
+						octoon::VMDLoader::saveMorph(root + fileName, *animation->getAnimation());
+
+						nlohmann::json animationJson;
+						animationJson["type"] = 1;
+						animationJson["path"] = fileName;
+						writer["animation"].push_back(std::move(animationJson));
+					}
+					else
+					{
 						octoon::VMDLoader::saveMotion(root + fileName, *animation->getAnimation());
 
-						writer["animation"].push_back(fileName);
+						nlohmann::json animationJson;
+						animationJson["type"] = 0;
+						animationJson["path"] = fileName;
+						writer["animation"].push_back(std::move(animationJson));
 					}
 				}
 			}
 
-			jsons.push_back(std::move(json));
+			sceneJson.push_back(std::move(json));
 		}
 
-		writer["scene"] = jsons;
+		writer["scene"] = sceneJson;
 	}
 }

@@ -357,6 +357,37 @@ namespace octoon
 	}
 
 	std::shared_ptr<Animation<float>>
+	VMDLoader::loadMorph(io::istream& stream) noexcept(false)
+	{
+		VMD vmd;
+		vmd.load(stream);
+
+		Animation animation;
+		animation.setName(sjis2utf8(vmd.Header.name));
+
+		std::unordered_map<std::string, std::vector<VMDMorph>> morphList;
+		for (auto& motion : vmd.MorphLists)
+			morphList[sjis2utf8(motion.name)].push_back(motion);
+
+		octoon::AnimationClip<float> clip;
+
+		for (auto it = morphList.begin(); it != morphList.end(); ++it)
+		{
+			auto& morphData = (*it).second;
+
+			octoon::Keyframes<float> keyframe;
+			keyframe.reserve(morphData.size());
+
+			for (auto& morph : morphData)
+				keyframe.emplace_back((float)morph.frame / 30.0f, morph.weight);
+
+			clip.setCurve((*it).first, octoon::AnimationCurve(std::move(keyframe)));
+		}
+
+		return std::make_shared<Animation<float>>(std::move(clip));
+	}
+
+	std::shared_ptr<Animation<float>>
 	VMDLoader::loadCameraMotion(io::istream& stream) noexcept(false)
 	{
 		VMD vmd;
@@ -410,6 +441,47 @@ namespace octoon
 		}
 
 		return animation;
+	}
+
+	void
+	VMDLoader::saveMorph(io::ostream& stream, const Animation<float>& animation) noexcept(false)
+	{
+		auto sjis = utf82sjis(animation.name);
+
+		VMD vmd;
+		std::memset(&vmd.Header, 0, sizeof(vmd.Header));
+		std::memcpy(&vmd.Header.magic, "Vocaloid Motion Data 0002", 15);
+		std::memcpy(&vmd.Header.name, sjis.data(), sjis.size());
+
+		vmd.NumLight = 0;
+		vmd.NumCamera = 0;
+		vmd.NumMorph = 0;
+		vmd.NumMotion = 0;
+		vmd.NumSelfShadow = 0;
+
+		for (auto& clip : animation.clips)
+		{
+			for (auto& curve : clip.curves)
+			{
+				std::vector<VMDMorph> morphData;
+
+				auto name = utf82sjis(curve.first);
+
+				for (auto& keyframe : curve.second.frames)
+				{
+					VMDMorph morph;
+					std::memset(&morph, 0, sizeof(VMDMorph));
+					std::memcpy(&morph.name, name.data(), name.size());
+					morph.frame = (VMD_uint32_t)(keyframe.time * 30.0f);
+					morph.weight = keyframe.value.getFloat();
+
+					vmd.MorphLists.push_back(std::move(morph));
+				}
+			}
+		}
+
+		vmd.NumMorph = (VMD_uint32_t)vmd.MorphLists.size();
+		vmd.save(stream);
 	}
 
 	void
@@ -577,6 +649,16 @@ namespace octoon
 	}
 
 	std::shared_ptr<Animation<float>>
+	VMDLoader::loadMorph(std::string_view filepath) noexcept(false)
+	{
+		io::ifstream stream(std::string(filepath), std::ios_base::binary);
+		if (stream)
+			return loadMorph(stream);
+
+		return nullptr;
+	}
+
+	std::shared_ptr<Animation<float>>
 	VMDLoader::loadCameraMotion(std::string_view filepath) noexcept(false)
 	{
 		io::ifstream stream(std::string(filepath), std::ios_base::binary);
@@ -584,6 +666,14 @@ namespace octoon
 			return loadCameraMotion(stream);
 
 		return nullptr;
+	}
+
+	void
+	VMDLoader::saveMorph(std::string_view filepath, const Animation<float>& animation) noexcept(false)
+	{
+		io::ofstream stream(std::string(filepath), io::ios_base::in | io::ios_base::out);
+		if (stream)
+			saveMorph(stream, animation);
 	}
 
 	void
