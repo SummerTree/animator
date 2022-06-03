@@ -947,11 +947,8 @@ namespace octoon
 						}
 
 						GameComponents joints;
-						for (std::size_t i = 0; i < pmx.numBones; i++)
-						{
-							auto bone = smr->getTransforms()[i];
-							bone->getComponents<ConfigurableJointComponent>(joints);
-						}
+						for (std::size_t i = 0; i < pmx.numRigidbodys; i++)
+							rigidbodies[i]->getComponents<ConfigurableJointComponent>(joints);
 
 						pmx.numJoints = joints.size();
 						pmx.joints.resize(pmx.numJoints);
