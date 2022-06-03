@@ -193,7 +193,7 @@ void main()
 )";
 
 	std::shared_ptr<GraphicsTexture>
-	PMREMLoader::load(const std::shared_ptr<GraphicsTexture>& environmentMap, std::uint8_t mipNums, bool cache) noexcept(false)
+	PMREMLoader::load(const std::shared_ptr<GraphicsTexture>& environmentMap, std::uint8_t mipNums) noexcept(false)
 	{
 		if (environmentMap)
 		{
@@ -297,8 +297,8 @@ void main()
 	}
 
 	std::shared_ptr<GraphicsTexture>
-	PMREMLoader::load(std::string_view filepath, std::uint8_t mipNums, bool cache) noexcept(false)
+	PMREMLoader::load(std::string_view filepath, std::uint8_t mipNums) noexcept(false)
 	{
-		return load(TextureLoader::load(filepath, true, cache), mipNums, cache);
+		return load(TextureLoader::load(filepath, true), mipNums);
 	}
 }

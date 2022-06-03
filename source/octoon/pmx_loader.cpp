@@ -352,8 +352,21 @@ namespace octoon
 	void createMaterials(const PMX& pmx, Materials& materials) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+		std::unordered_map<std::string, std::shared_ptr<GraphicsTexture>> textureMap;
 
 		materials.reserve(pmx.materials.size());
+
+		for (auto& it : pmx.textures)
+		{
+			try
+			{
+				if (textureMap.find(it.fullpath) == textureMap.end())
+					textureMap[it.fullpath] = TextureLoader::load(it.fullpath);
+			}
+			catch (...)
+			{
+			}
+		}
 
 		for (auto& it : pmx.materials)
 		{
@@ -370,13 +383,11 @@ namespace octoon
 			else if (pmx.header.sizeOfTexture == 4)
 				limits = std::numeric_limits<PmxUInt32>::max();
 
-			try
+			if (it.TextureIndex < limits)
 			{
-				if (it.TextureIndex < limits)
-					material->setColorMap(TextureLoader::load(pmx.textures[it.TextureIndex].fullpath));
-			}
-			catch (...)
-			{
+				auto& fullpath = pmx.textures[it.TextureIndex].fullpath;
+				if (textureMap.find(fullpath) != textureMap.end())
+					material->setColorMap(textureMap.at(fullpath));
 			}
 
 			bool hasAlphaTexture = it.TextureIndex < limits ? std::wstring_view(pmx.textures[it.TextureIndex].name).find(L".png") != std::string::npos : false;

@@ -7,8 +7,6 @@
 
 namespace octoon
 {
-	std::map<std::string, std::shared_ptr<GraphicsTexture>, std::less<>> textureCaches_;
-
 	std::shared_ptr<GraphicsTexture>
 	TextureLoader::load(const Image& image, std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
@@ -85,33 +83,21 @@ namespace octoon
 	}
 
 	std::shared_ptr<GraphicsTexture>
-	TextureLoader::load(std::string_view filepath, bool generateMipmap, bool cache) noexcept(false)
+	TextureLoader::load(std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
 		assert(!filepath.empty());
 
 		std::string path = std::string(filepath);
 
-		auto it = textureCaches_.find(path);
-		if (it != textureCaches_.end())
-			return (*it).second;
-
 		Image image;
 		if (image.load(path))
-		{
-			auto texture = load(image, path, generateMipmap);
-			if (cache)
-				textureCaches_[path] = texture;
-
-			return texture;
-		}
+			return load(image, path, generateMipmap);
 		else
-		{
 			throw std::runtime_error("Failed to open file :" + path);
-		}
 	}
 
 	bool
-	TextureLoader::save(std::string_view filepath, std::shared_ptr<GraphicsTexture> texture) noexcept(false)
+	TextureLoader::save(std::string_view filepath, const std::shared_ptr<GraphicsTexture>& texture) noexcept(false)
 	{
 		auto& textureDesc = texture->getTextureDesc();
 		auto width = textureDesc.getWidth();
