@@ -12,6 +12,8 @@ namespace unreal
 		, behaviour_(behaviour)
 		, profile_(profile)
 	{
+		auto& framebufferSize = profile->cameraModule->framebufferSize.getValue();
+
 		this->setAttribute(Qt::WA_PaintOnScreen, true);
 		this->setAttribute(Qt::WA_AcceptDrops, true);
 		this->setObjectName("ViewDock");
@@ -20,7 +22,7 @@ namespace unreal
 		this->setAcceptDrops(true);
 		this->setFocusPolicy(Qt::StrongFocus);
 		this->setContextMenuPolicy(Qt::PreventContextMenu);
-		this->setMinimumSize(profile->recordModule->width, profile->recordModule->height);
+		this->setMinimumSize(framebufferSize.x, framebufferSize.y);
 
 		this->installEventFilter(this);
 	}

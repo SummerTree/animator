@@ -966,29 +966,29 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="229"/>
+        <location filename="../views/setting_window.cpp" line="230"/>
         <source>General</source>
         <translation>通用</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="229"/>
+        <location filename="../views/setting_window.cpp" line="230"/>
         <source>Interface</source>
         <translation>界面</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="229"/>
+        <location filename="../views/setting_window.cpp" line="230"/>
         <source>Graphics</source>
         <translation>图像</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="342"/>
+        <location filename="../views/setting_window.cpp" line="335"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="342"/>
+        <location filename="../views/setting_window.cpp" line="335"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1523,12 +1523,12 @@ $20 (Original cost $40)</source>
         <translation>相机</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="163"/>
+        <location filename="../views/view_dock.cpp" line="165"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="163"/>
+        <location filename="../views/view_dock.cpp" line="165"/>
         <source>Unsupported light type.</source>
         <translation>不支持的光源类型。</translation>
     </message>

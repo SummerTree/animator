@@ -21,6 +21,7 @@ namespace unreal
 		this->focalLength = 31.18f;
 		this->aperture = 5.6f;
 		this->focusDistance = 10.0f;
+		this->framebufferSize = octoon::math::uint2(1280, 720);
 		this->translate = octoon::math::float3(0, 10, -10);
 		this->rotation = octoon::math::float3::Zero;
 	}
@@ -36,6 +37,8 @@ namespace unreal
 			this->aperture = reader["aperture"].get<nlohmann::json::number_float_t>();
 		if (reader["focusDistance"].is_number_float())
 			this->focusDistance = reader["focusDistance"].get<nlohmann::json::number_float_t>();
+		if (reader["width"].is_number_unsigned() && reader["height"].is_number_unsigned())
+			this->framebufferSize = octoon::math::uint2(reader["width"].get<nlohmann::json::number_unsigned_t>(), reader["height"].get<nlohmann::json::number_unsigned_t>());
 		if (reader["translate"].is_array())
 		{
 			this->translate = octoon::math::float3(reader["translate"][0], reader["translate"][1], reader["translate"][2]);
@@ -56,7 +59,9 @@ namespace unreal
 		writer["useDepthOfFiled"] = this->useDepthOfFiled.getValue();
 		writer["fov"] = this->fov.getValue();
 		writer["aperture"] = this->aperture.getValue();
-		writer["focusDistance"] = this->focusDistance.getValue();		
+		writer["focusDistance"] = this->focusDistance.getValue();
+		writer["width"].push_back(this->framebufferSize.getValue().x);
+		writer["height"].push_back(this->framebufferSize.getValue().y);
 		writer["translate"].push_back(this->translate.getValue().x);
 		writer["translate"].push_back(this->translate.getValue().y);
 		writer["translate"].push_back(this->translate.getValue().z);

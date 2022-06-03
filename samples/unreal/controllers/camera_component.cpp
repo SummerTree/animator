@@ -149,6 +149,16 @@ namespace unreal
 			this->update();
 		};
 
+		this->getModel()->framebufferSize += [this](const octoon::math::uint2& size)
+		{
+			auto camera = this->getModel()->camera.getValue();
+			if (camera)
+			{
+				auto cameraComponent = camera->addComponent<octoon::FilmCameraComponent>();
+				cameraComponent->setupFramebuffers(size.x, size.y, 0, octoon::GraphicsFormat::R32G32B32SFloat);
+			}
+		};
+
 		this->getContext()->profile->playerModule->isPlaying += [this](bool value)
 		{
 			this->update();
@@ -182,8 +192,8 @@ namespace unreal
 		camera->setFov(this->getModel()->fov);
 		camera->setAperture(this->getModel()->useDepthOfFiled ? this->getModel()->aperture.getValue() : 0.0f);
 		camera->setCameraType(octoon::CameraType::Main);
+		camera->setClearFlags(octoon::ClearFlagBits::AllBit);
 		camera->setClearColor(octoon::math::float4(0.0f, 0.0f, 0.0f, 1.0f));
-		camera->setupFramebuffers(this->getContext()->profile->recordModule->width, this->getContext()->profile->recordModule->height, 0, octoon::GraphicsFormat::R32G32B32SFloat);
 
 		this->getModel()->camera = mainCamera;
 	}

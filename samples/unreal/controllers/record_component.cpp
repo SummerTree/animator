@@ -48,22 +48,23 @@ namespace unreal
 	{
 		auto& model = this->getContext()->profile->recordModule;
 		auto& profile = this->getContext()->profile;
+		auto& framebufferSize = profile->cameraModule->framebufferSize.getValue();
 
 		if (profile->offlineModule->getEnable() && profile->recordModule->denoise)
 		{
 			device_ = oidnNewDevice(OIDN_DEVICE_TYPE_DEFAULT);
 			oidnCommitDevice(device_);
 
-			oidnColorBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
-			oidnNormalBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
-			oidnAlbedoBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
-			oidnOutputBuffer_ = oidnNewBuffer(device_, model->width * model->height * sizeof(octoon::math::float3));
+			oidnColorBuffer_ = oidnNewBuffer(device_, framebufferSize.x * framebufferSize.y * sizeof(octoon::math::float3));
+			oidnNormalBuffer_ = oidnNewBuffer(device_, framebufferSize.x * framebufferSize.y * sizeof(octoon::math::float3));
+			oidnAlbedoBuffer_ = oidnNewBuffer(device_, framebufferSize.x * framebufferSize.y * sizeof(octoon::math::float3));
+			oidnOutputBuffer_ = oidnNewBuffer(device_, framebufferSize.x * framebufferSize.y * sizeof(octoon::math::float3));
 
 			filter_ = oidnNewFilter(device_, "RT");
-			oidnSetFilterImage(filter_, "color", oidnColorBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
-			oidnSetFilterImage(filter_, "albedo", oidnAlbedoBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
-			oidnSetFilterImage(filter_, "normal", oidnNormalBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
-			oidnSetFilterImage(filter_, "output", oidnOutputBuffer_, OIDN_FORMAT_FLOAT3, model->width, model->height, 0, 0, 0);
+			oidnSetFilterImage(filter_, "color", oidnColorBuffer_, OIDN_FORMAT_FLOAT3, framebufferSize.x, framebufferSize.y, 0, 0, 0);
+			oidnSetFilterImage(filter_, "albedo", oidnAlbedoBuffer_, OIDN_FORMAT_FLOAT3, framebufferSize.x, framebufferSize.y, 0, 0, 0);
+			oidnSetFilterImage(filter_, "normal", oidnNormalBuffer_, OIDN_FORMAT_FLOAT3, framebufferSize.x, framebufferSize.y, 0, 0, 0);
+			oidnSetFilterImage(filter_, "output", oidnOutputBuffer_, OIDN_FORMAT_FLOAT3, framebufferSize.x, framebufferSize.y, 0, 0, 0);
 			oidnSetFilter1b(filter_, "hdr", this->getModel()->hdr);
 			oidnSetFilter1b(filter_, "srgb", this->getModel()->srgb);
 			oidnCommitFilter(filter_);
@@ -110,6 +111,7 @@ namespace unreal
 		auto& model = this->getModel();
 		auto& context = this->getContext();
 		auto& profile = this->getContext()->profile;
+		auto& framebufferSize = profile->cameraModule->framebufferSize.getValue();
 
 		if (profile->offlineModule->getEnable())
 		{
@@ -154,9 +156,9 @@ namespace unreal
 			auto normal = oidnMapBuffer(oidnNormalBuffer_, OIDN_ACCESS_WRITE_DISCARD, 0, 0);
 			auto albedo = oidnMapBuffer(oidnAlbedoBuffer_, OIDN_ACCESS_WRITE_DISCARD, 0, 0);
 
-			std::memcpy(color, colorBuffer_.data(), model->width * model->height * sizeof(octoon::math::float3));
-			std::memcpy(normal, normalBuffer_.data(), model->width * model->height * sizeof(octoon::math::float3));
-			std::memcpy(albedo, albedoBuffer_.data(), model->width * model->height * sizeof(octoon::math::float3));
+			std::memcpy(color, colorBuffer_.data(), framebufferSize.x * framebufferSize.y * sizeof(octoon::math::float3));
+			std::memcpy(normal, normalBuffer_.data(), framebufferSize.x * framebufferSize.y * sizeof(octoon::math::float3));
+			std::memcpy(albedo, albedoBuffer_.data(), framebufferSize.x * framebufferSize.y * sizeof(octoon::math::float3));
 
 			oidnUnmapBuffer(oidnColorBuffer_, color);
 			oidnUnmapBuffer(oidnNormalBuffer_, normal);
@@ -171,13 +173,13 @@ namespace unreal
 			auto output = oidnMapBuffer(oidnOutputBuffer_, OIDN_ACCESS_READ, 0, 0);
 			if (output)
 			{
-				std::memcpy(denoiseBuffer_.data(), output, model->width * model->height * sizeof(octoon::math::float3));
+				std::memcpy(denoiseBuffer_.data(), output, framebufferSize.x * framebufferSize.y * sizeof(octoon::math::float3));
 				oidnUnmapBuffer(oidnOutputBuffer_, output);
 			}
 		}
 		else
 		{
-			std::memcpy(denoiseBuffer_.data(), colorBuffer_.data(), model->width * model->height * sizeof(octoon::math::float3));
+			std::memcpy(denoiseBuffer_.data(), colorBuffer_.data(), framebufferSize.x * framebufferSize.y * sizeof(octoon::math::float3));
 		}
 
 		auto markComponent = this->getComponent<MarkComponent>();
@@ -185,15 +187,15 @@ namespace unreal
 		{
 			auto markModel = markComponent->getModel();
 
-			auto width = std::min<std::uint32_t>(markModel->width, model->width);
-			auto height = std::min<std::uint32_t>(markModel->height, model->height);
+			auto width = std::min<std::uint32_t>(markModel->width, framebufferSize.x);
+			auto height = std::min<std::uint32_t>(markModel->height, framebufferSize.y);
 
 			for (std::uint32_t y = 0; y < height; y++)
 			{
 				for (std::uint32_t x = 0; x < width; x++)
 				{
 					auto src = ((markModel->height - y - 1) * markModel->width + x) * markModel->channel;
-					auto& dst = denoiseBuffer_[(y + markModel->y) * model->width + x + markModel->x];
+					auto& dst = denoiseBuffer_[(y + markModel->y) * framebufferSize.x + x + markModel->x];
 
 					auto b = markModel->pixels[src] / 255.0f;
 					auto g = markModel->pixels[src + 1] / 255.0f;
@@ -213,11 +215,12 @@ namespace unreal
 	RecordComponent::captureImage(std::string_view filepath) noexcept
 	{
 		auto& model = this->getModel();
+		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
 
-		this->albedoBuffer_.resize(model->width * model->height);
-		this->normalBuffer_.resize(model->width * model->height);
-		this->colorBuffer_.resize(model->width * model->height);
-		this->denoiseBuffer_.resize(model->width * model->height);
+		this->albedoBuffer_.resize(framebufferSize.x * framebufferSize.y);
+		this->normalBuffer_.resize(framebufferSize.x * framebufferSize.y);
+		this->colorBuffer_.resize(framebufferSize.x * framebufferSize.y);
+		this->denoiseBuffer_.resize(framebufferSize.x * framebufferSize.y);
 
 		try
 		{
@@ -225,9 +228,8 @@ namespace unreal
 			this->captureImage();
 			this->shutdownDenoise();
 
-			auto canvas = this->getContext()->profile->recordModule;
-			auto width = canvas->width;
-			auto height = canvas->height;
+			auto width = framebufferSize.x;
+			auto height = framebufferSize.y;
 			auto output = this->getContext()->profile->offlineModule->getEnable() ? denoiseBuffer_.data() : colorBuffer_.data();
 
 			octoon::Image image;
@@ -264,11 +266,12 @@ namespace unreal
 	{
 		auto& model = this->getContext()->profile->recordModule;
 		auto& profile = this->getContext()->profile;
+		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
 
-		this->albedoBuffer_.resize(model->width * model->height);
-		this->normalBuffer_.resize(model->width * model->height);
-		this->colorBuffer_.resize(model->width * model->height);
-		this->denoiseBuffer_.resize(model->width * model->height);
+		this->albedoBuffer_.resize(framebufferSize.x * framebufferSize.y);
+		this->normalBuffer_.resize(framebufferSize.x * framebufferSize.y);
+		this->colorBuffer_.resize(framebufferSize.x * framebufferSize.y);
+		this->denoiseBuffer_.resize(framebufferSize.x * framebufferSize.y);
 
 		if (profile->encodeModule->enable)
 		{

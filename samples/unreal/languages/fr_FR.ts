@@ -923,29 +923,29 @@ $20 (Original cost $40)</source>
     <name>unreal::SettingContextPlane</name>
     <message>
         <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="229"/>
+        <location filename="../views/setting_window.cpp" line="230"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="229"/>
+        <location filename="../views/setting_window.cpp" line="230"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="229"/>
+        <location filename="../views/setting_window.cpp" line="230"/>
         <source>Graphics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="342"/>
+        <location filename="../views/setting_window.cpp" line="335"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="342"/>
+        <location filename="../views/setting_window.cpp" line="335"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1410,12 +1410,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="163"/>
+        <location filename="../views/view_dock.cpp" line="165"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="163"/>
+        <location filename="../views/view_dock.cpp" line="165"/>
         <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>

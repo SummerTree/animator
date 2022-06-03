@@ -35,8 +35,9 @@ namespace unreal
 	H265Component::create(std::string_view filepath) noexcept(false)
 	{
 		auto& context = this->getContext();
-		this->width_ = context->profile->recordModule->width;
-		this->height_ = context->profile->recordModule->height;
+		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
+		this->width_ = framebufferSize.x;
+		this->height_ = framebufferSize.y;
 		this->buf_ = std::make_unique<std::uint8_t[]>(this->width_ * this->height_ * 3);
 		this->filepath_ = filepath;
 		this->ostream_ = std::make_shared<std::ofstream>(this->filepath_ + ".h265", std::ios_base::binary);

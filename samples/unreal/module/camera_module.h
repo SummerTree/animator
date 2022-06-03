@@ -35,6 +35,7 @@ namespace unreal
 		MutableLiveData<float> focusDistance;
 		MutableLiveData<octoon::math::float3> translate;
 		MutableLiveData<octoon::math::float3> rotation;
+		MutableLiveData<octoon::math::uint2> framebufferSize;
 		MutableLiveData<octoon::GameObjectPtr> camera;
 		MutableLiveData<std::shared_ptr<octoon::Animation<float>>> animation;
 	};

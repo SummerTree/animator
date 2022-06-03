@@ -26,8 +26,9 @@ namespace unreal
 	FrameSequenceComponent::create(std::string_view filepath) noexcept(false)
 	{
 		auto& context = this->getContext();
-		width_ = context->profile->recordModule->width;
-		height_ = context->profile->recordModule->height;
+		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
+		this->width_ = framebufferSize.x;
+		this->height_ = framebufferSize.y;
 
 		filepath_ = filepath;
 		QFileInfo file(QString::fromStdString(filepath_));

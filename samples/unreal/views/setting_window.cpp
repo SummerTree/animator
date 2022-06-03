@@ -190,21 +190,22 @@ namespace unreal
 		layout_->setContentsMargins(0, 0, 0, 0);
 
 		auto& profile = behaviour->getProfile();
-		if (profile->recordModule->width == 720 && profile->recordModule->height == 480)
+		auto& framebufferSize = profile->cameraModule->framebufferSize.getValue();
+		if (framebufferSize.x == 720 && framebufferSize.y == 480)
 			mainPlaneInterface_->resolutionCombo->setCurrentIndex(0);
-		else if (profile->recordModule->width == 800 && profile->recordModule->height == 480)
+		else if (framebufferSize.x == 800 && framebufferSize.y == 480)
 			mainPlaneInterface_->resolutionCombo->setCurrentIndex(1);
-		else if (profile->recordModule->width == 1024 && profile->recordModule->height == 576)
+		else if (framebufferSize.x == 1024 && framebufferSize.y == 576)
 			mainPlaneInterface_->resolutionCombo->setCurrentIndex(2);
-		else if (profile->recordModule->width == 1280 && profile->recordModule->height == 720)
+		else if (framebufferSize.x == 1280 && framebufferSize.y == 720)
 			mainPlaneInterface_->resolutionCombo->setCurrentIndex(3);
-		else if (profile->recordModule->width == 1920 && profile->recordModule->height == 1080)
+		else if (framebufferSize.x == 1920 && framebufferSize.y == 1080)
 			mainPlaneInterface_->resolutionCombo->setCurrentIndex(4);
-		else if (profile->recordModule->width == 540 && profile->recordModule->height == 960)
+		else if (framebufferSize.x == 540 && framebufferSize.y == 960)
 			mainPlaneInterface_->resolutionCombo->setCurrentIndex(5);
-		else if (profile->recordModule->width == 720 && profile->recordModule->height == 1280)
+		else if (framebufferSize.x == 720 && framebufferSize.y == 1280)
 			mainPlaneInterface_->resolutionCombo->setCurrentIndex(6);
-		else if (profile->recordModule->width == 1080 && profile->recordModule->height == 1920)
+		else if (framebufferSize.x == 1080 && framebufferSize.y == 1920)
 			mainPlaneInterface_->resolutionCombo->setCurrentIndex(7);
 		else
 			throw std::runtime_error("SettingContextPlane::SettingContextPlane: resolution not found");
@@ -290,43 +291,35 @@ namespace unreal
 		switch (mainPlaneInterface_->resolutionCombo->currentIndex())
 		{
 		case 0: {
-			profile->recordModule->width = 720;
-			profile->recordModule->height = 480;
+			profile->cameraModule->framebufferSize = octoon::math::uint2(720, 480);
 		}
 		break;
 		case 1: {
-			profile->recordModule->width = 800;
-			profile->recordModule->height = 480;
+			profile->cameraModule->framebufferSize = octoon::math::uint2(800, 480);
 		}
 		break;
 		case 2: {
-			profile->recordModule->width = 1024;
-			profile->recordModule->height = 576;
+			profile->cameraModule->framebufferSize = octoon::math::uint2(1024, 576);
 		}
 		break;
 		case 3: {
-			profile->recordModule->width = 1280;
-			profile->recordModule->height = 720;
+			profile->cameraModule->framebufferSize = octoon::math::uint2(1280, 720);
 		}
 		break;
 		case 4: {
-			profile->recordModule->width = 1920;
-			profile->recordModule->height = 1080;
+			profile->cameraModule->framebufferSize = octoon::math::uint2(1920, 1080);
 		}
 		break;
 		case 5: {
-			profile->recordModule->width = 540;
-			profile->recordModule->height = 960;
+			profile->cameraModule->framebufferSize = octoon::math::uint2(540, 960);
 		}
 		break;
 		case 6: {
-			profile->recordModule->width = 720;
-			profile->recordModule->height = 1280;
+			profile->cameraModule->framebufferSize = octoon::math::uint2(720, 1280);
 		}
 		break;
 		case 7: {
-			profile->recordModule->width = 1080;
-			profile->recordModule->height = 1920;
+			profile->cameraModule->framebufferSize = octoon::math::uint2(1080, 1920);
 		}
 		break;
 		}

@@ -61,26 +61,10 @@ namespace unreal
 		auto target = octoon::math::float3(pmm.camera.target.x, pmm.camera.target.y, pmm.camera.target.z);
 		auto quat = -octoon::math::float3(pmm.camera.rotation.x, pmm.camera.rotation.y, pmm.camera.rotation.z);
 
-		profile.cameraModule->camera = createCamera(profile, pmm);
 		profile.cameraModule->animation = std::move(animtion);
 		profile.cameraModule->fov = (float)pmm.camera_keyframes[0].fov;
 		profile.cameraModule->rotation = quat;
 		profile.cameraModule->translate = eye + octoon::math::rotate(octoon::math::Quaternion(quat), octoon::math::float3::Forward) * octoon::math::distance(eye, target);
-	}
-
-	octoon::GameObjectPtr
-	PMMLoader::createCamera(UnrealProfile& profile, const octoon::PMMFile& pmm) noexcept
-	{
-		auto mainCamera = octoon::GameObject::create("MainCamera");
-		mainCamera->addComponent<octoon::FirstPersonCameraComponent>();
-
-		auto camera = mainCamera->addComponent<octoon::FilmCameraComponent>();		
-		camera->setCameraType(octoon::CameraType::Main);
-		camera->setClearFlags(octoon::ClearFlagBits::AllBit);
-		camera->setClearColor(octoon::math::float4(0.0f, 0.0f, 0.0f, 1.0f));
-		camera->setupFramebuffers(profile.recordModule->width, profile.recordModule->height, 0, octoon::GraphicsFormat::R32G32B32SFloat);
-
-		return mainCamera;
 	}
 
 	void
