@@ -201,9 +201,9 @@ namespace unreal
 	}
 
 	nlohmann::json
-	TextureImporter::createMetadata(const std::shared_ptr<octoon::GraphicsTexture>& animation) const noexcept
+	TextureImporter::createMetadata(const std::shared_ptr<octoon::GraphicsTexture>& texture) const noexcept
 	{
-		auto it = textureList_.find(animation);
+		auto it = textureList_.find(texture);
 		if (it != textureList_.end())
 		{
 			auto& package = (*it).second;
@@ -214,7 +214,7 @@ namespace unreal
 
 			return json;
 		}
-		auto path = texturePathList_.find(animation);
+		auto path = texturePathList_.find(texture);
 		if (path != texturePathList_.end())
 		{
 			nlohmann::json json;
