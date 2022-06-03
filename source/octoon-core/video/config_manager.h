@@ -93,7 +93,7 @@ namespace octoon
 		std::unique_ptr<Output> normalImage_;
 		std::unique_ptr<Output> albedoImage_;
 
-		std::shared_ptr<GraphicsTexture> edgeTexture_;
+		std::shared_ptr<GraphicsTexture> colorTexture_;
 		std::shared_ptr<GraphicsTexture> normalTexture_;
 		std::shared_ptr<GraphicsTexture> albedoTexture_;
 

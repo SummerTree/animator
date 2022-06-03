@@ -329,10 +329,10 @@ namespace octoon
 	void
 	ConfigManager::readColorBuffer(math::float3 colorBuffer[])
 	{
-		auto& desc = edgeTexture_->getTextureDesc();
+		auto& desc = colorTexture_->getTextureDesc();
 
 		void* data = nullptr;
-		if (edgeTexture_->map(0, 0, desc.getWidth(), desc.getHeight(), 0, &data))
+		if (colorTexture_->map(0, 0, desc.getWidth(), desc.getHeight(), 0, &data))
 		{
 			if (desc.getTexFormat() == octoon::GraphicsFormat::R32G32B32A32SFloat)
 			{
@@ -344,7 +344,7 @@ namespace octoon
 				std::memcpy(colorBuffer, data, desc.getWidth() * desc.getHeight() * 3 * sizeof(float));
 			}
 
-			edgeTexture_->unmap();
+			colorTexture_->unmap();
 		}
 	}
 
@@ -411,8 +411,8 @@ namespace octoon
 			colorTextureDesc.setHeight(this->height_);
 			colorTextureDesc.setTexDim(TextureDimension::Texture2D);
 			colorTextureDesc.setTexFormat(GraphicsFormat::R32G32B32A32SFloat);
-			edgeTexture_ = context.getDevice()->createTexture(colorTextureDesc);
-			if (!edgeTexture_)
+			colorTexture_ = context.getDevice()->createTexture(colorTextureDesc);
+			if (!colorTexture_)
 				throw runtime::runtime_error::create("createTexture() failed");
 
 			normalTexture_ = context.getDevice()->createTexture(colorTextureDesc);
@@ -441,13 +441,13 @@ namespace octoon
 			framebufferDesc.setHeight(this->height_);
 			framebufferDesc.setFramebufferLayout(context.getDevice()->createFramebufferLayout(framebufferLayoutDesc));
 			framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture_, 0, 0));
-			framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(edgeTexture_, 0, 0));
+			framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture_, 0, 0));
 
 			this->framebuffer_ = context.getDevice()->createFramebuffer(framebufferDesc);
 			if (!this->framebuffer_)
 				throw runtime::runtime_error::create("createFramebuffer() failed");
 
-			this->colorImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(edgeTexture_->handle()), this->width_, this->height_);
+			this->colorImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(colorTexture_->handle()), this->width_, this->height_);
 			this->normalImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(normalTexture_->handle()), this->width_, this->height_);
 			this->albedoImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(albedoTexture_->handle()), this->width_, this->height_);
 
