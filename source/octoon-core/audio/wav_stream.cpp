@@ -21,7 +21,7 @@ namespace octoon
 		return false;
 	}
 
-	void
+	bool
 	WavStreamBuffer::open(const char* filepath) noexcept(false)
 	{
 		io::ifstream stream(filepath);
@@ -41,6 +41,8 @@ namespace octoon
 
 					drwav_read_pcm_frames_s16(wav, this->samples_, (drwav_int16*)buffer_.data());
 					drwav_uninit(wav);
+
+					return true;
 				}
 				else
 				{
@@ -48,6 +50,8 @@ namespace octoon
 				}
 			}
 		}
+
+		return false;
 	}
 
 	io::streamsize
@@ -180,10 +184,16 @@ namespace octoon
 	{
 	}
 
-	void
+	bool
 	WavAudioReader::open(const char* path) noexcept(false)
 	{
 		return this->buf_.open(path);
+	}
+
+	bool
+	WavAudioReader::is_open() const noexcept(false)
+	{
+		return this->buf_.is_open();
 	}
 
 	std::shared_ptr<AudioReader>

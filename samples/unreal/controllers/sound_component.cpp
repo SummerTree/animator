@@ -36,11 +36,19 @@ namespace unreal
 		{
 			if (!path.empty())
 			{
-				auto audio = octoon::GameObject::create();
-				audio->setName(path);
-				audio->addComponent<octoon::AudioSourceComponent>()->setAudioReader(octoon::AudioLoader::load(path));
+				auto source = octoon::AudioLoader::load(path);
+				if (source)
+				{
+					auto audio = octoon::GameObject::create();
+					audio->setName(path);
+					audio->addComponent<octoon::AudioSourceComponent>()->setAudioReader(std::move(source));
 
-				this->getContext()->profile->soundModule->sound = audio;
+					this->getContext()->profile->soundModule->sound = audio;
+				}
+				else
+				{
+					this->getContext()->profile->soundModule->sound = nullptr;
+				}
 			}
 			else
 			{

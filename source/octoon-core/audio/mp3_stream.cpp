@@ -21,7 +21,7 @@ namespace octoon
 		return false;
 	}
 
-	void
+	bool
 	Mp3StreamBuffer::open(const char* filepath) noexcept(false)
 	{
 		io::ifstream stream(filepath);
@@ -41,6 +41,8 @@ namespace octoon
 
 					drmp3_read_pcm_frames_s16(mp3, this->samples_, (drmp3_int16*)buffer_.data());
 					drmp3_uninit(mp3);
+
+					return true;
 				}
 				else
 				{
@@ -48,6 +50,8 @@ namespace octoon
 				}
 			}
 		}
+
+		return false;
 	}
 
 	io::streamsize
@@ -180,10 +184,16 @@ namespace octoon
 	{
 	}
 
-	void
+	bool
 	Mp3AudioReader::open(const char* path) noexcept(false)
 	{
 		return this->buf_.open(path);
+	}
+
+	bool
+	Mp3AudioReader::is_open() const noexcept(false)
+	{
+		return this->buf_.is_open();
 	}
 
 	std::shared_ptr<AudioReader>

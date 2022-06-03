@@ -11,7 +11,7 @@ namespace octoon
 		Mp3StreamBuffer() noexcept;
 		~Mp3StreamBuffer() noexcept;
 
-		virtual void open(const char* filepath) noexcept(false);
+		virtual bool open(const char* filepath) noexcept(false);
 		virtual bool access(io::istream& stream) const noexcept;
 
 		virtual io::streamsize read(char* str, io::streamsize cnt) noexcept;
@@ -48,7 +48,8 @@ namespace octoon
 		Mp3AudioReader(const char* path) noexcept;
 		virtual ~Mp3AudioReader() noexcept;
 
-		void open(const char* path) noexcept(false);
+		bool open(const char* path) noexcept(false);
+		bool is_open() const noexcept(false);
 
 		std::shared_ptr<AudioReader> clone() const noexcept override;
 

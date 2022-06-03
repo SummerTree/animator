@@ -49,6 +49,7 @@ namespace octoon
 		virtual ~FlacAudioReader() noexcept;
 
 		void open(const char* path) noexcept(false);
+		bool is_open() const noexcept(false);
 
 		std::shared_ptr<AudioReader> clone() const noexcept override;
 

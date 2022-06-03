@@ -78,7 +78,7 @@ namespace octoon
 		return (err < 0) ? false : true;
 	}
 
-	void
+	bool
 	OggStreamBuffer::open(const char* filepath) noexcept(false)
 	{
 		assert(!oggVorbisFile_);
@@ -98,13 +98,13 @@ namespace octoon
 		if (err < 0)
 		{
 			::ov_clear(&ogg);
-			return;
+			return false;
 		}
 
 		oggVorbisFile_ = new OggVorbis_File;
 		std::memcpy(oggVorbisFile_, &ogg, sizeof(OggVorbis_File));
 
-		return;
+		return true;
 	}
 
 	io::streamsize
@@ -266,10 +266,16 @@ namespace octoon
 	{
 	}
 
-	void
+	bool
 	OggAudioReader::open(const char* filepath) noexcept(false)
 	{
-		buf_.open(filepath);
+		return buf_.open(filepath);
+	}
+
+	bool
+	OggAudioReader::is_open() const noexcept(false)
+	{
+		return buf_.is_open();
 	}
 
 	std::shared_ptr<AudioReader>

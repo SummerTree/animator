@@ -186,6 +186,12 @@ namespace octoon
 		return this->buf_.open(path);
 	}
 
+	bool
+	FlacAudioReader::is_open() const noexcept(false)
+	{
+		return this->buf_.is_open();
+	}
+
 	std::shared_ptr<AudioReader>
 	FlacAudioReader::clone() const noexcept
 	{

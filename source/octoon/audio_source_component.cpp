@@ -39,18 +39,21 @@ namespace octoon
 	void
 	AudioSourceComponent::setTime(float time) noexcept
 	{
+		assert(audioReader_);
 		source_->setSampleOffset(time * audioReader_->frequency());
 	}
 
 	float
 	AudioSourceComponent::getTime() const noexcept
 	{
+		assert(audioReader_);
 		return source_->getSampleOffset() / (float)audioReader_->frequency();
 	}
 
 	float
 	AudioSourceComponent::getTimeLength() const noexcept
 	{
+		assert(audioReader_);
 		return audioReader_->samples() / float(audioReader_->frequency());
 	}
 
