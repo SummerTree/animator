@@ -13,7 +13,7 @@ namespace unreal
 		virtual ~EntitiesComponent() noexcept;
 
 		void importAbc(std::string_view path) noexcept(false);
-		bool importModel(std::string_view path) noexcept;
+		octoon::GameObjectPtr importModel(std::string_view path) noexcept;
 
 		virtual const std::type_info& type_info() const noexcept
 		{

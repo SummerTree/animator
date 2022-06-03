@@ -134,6 +134,18 @@ namespace unreal
 		return this->packageList_[std::string(uuid)];
 	}
 
+	octoon::GameObjectPtr
+	ModelComponent::loadPackage(const nlohmann::json& package) noexcept
+	{
+		if (package["path"].is_string())
+		{
+			auto path = package["path"].get<nlohmann::json::string_t>();
+			return this->getComponent<EntitiesComponent>()->importModel(path);
+		}
+
+		return nullptr;
+	}
+
 	bool
 	ModelComponent::removePackage(std::string_view uuid) noexcept
 	{

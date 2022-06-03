@@ -22,7 +22,7 @@ namespace unreal
 		this->sendMessage("editor:project:open");
 	}
 
-	bool
+	octoon::GameObjectPtr
 	EntitiesComponent::importModel(std::string_view path) noexcept
 	{
 		auto model = octoon::PMXLoader::load(path);
@@ -33,10 +33,10 @@ namespace unreal
 				smr->setAutomaticUpdate(!this->getContext()->profile->offlineModule->getEnable());
 
 			this->getContext()->profile->entitiesModule->objects.getValue().push_back(model);
-			return true;
+			return model;
 		}
 
-		return false;
+		return nullptr;
 	}
 
 	void

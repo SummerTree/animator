@@ -46,7 +46,6 @@ namespace unreal
 	void
 	RecordComponent::setupDenoise() noexcept
 	{
-		auto& model = this->getContext()->profile->recordModule;
 		auto& profile = this->getContext()->profile;
 		auto& framebufferSize = profile->cameraModule->framebufferSize.getValue();
 
@@ -108,7 +107,6 @@ namespace unreal
 	void
 	RecordComponent::captureImage() noexcept
 	{
-		auto& model = this->getModel();
 		auto& context = this->getContext();
 		auto& profile = this->getContext()->profile;
 		auto& framebufferSize = profile->cameraModule->framebufferSize.getValue();
@@ -214,7 +212,6 @@ namespace unreal
 	void
 	RecordComponent::captureImage(std::string_view filepath) noexcept
 	{
-		auto& model = this->getModel();
 		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
 
 		this->albedoBuffer_.resize(framebufferSize.x * framebufferSize.y);
@@ -264,7 +261,6 @@ namespace unreal
 	bool
 	RecordComponent::startRecord(std::string_view filepath) noexcept
 	{
-		auto& model = this->getContext()->profile->recordModule;
 		auto& profile = this->getContext()->profile;
 		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
 

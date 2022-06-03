@@ -221,22 +221,21 @@ namespace unreal
 			{
 				auto uuid = item->data(Qt::UserRole).toString().toStdString();
 				auto package = modelComponent->getPackage(uuid);
+				if (package.is_object())
+				{
+					QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
+					dialog.setWindowTitle(tr("Loading..."));
+					dialog.setWindowModality(Qt::WindowModal);
+					dialog.setLabelText(package["name"].is_string() ? QString::fromStdString(package["name"].get<nlohmann::json::string_t>()) : tr("Unknown-name"));
+					dialog.setValue(0);
+					dialog.show();
 
-				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
-				dialog.setWindowTitle(tr("Loading..."));
-				dialog.setWindowModality(Qt::WindowModal);
-				dialog.setValue(0);
-				dialog.show();
+					QCoreApplication::processEvents();
 
-				if (package["name"].is_string())
-					dialog.setLabelText(QString::fromStdString(package["name"].get<nlohmann::json::string_t>()));
+					modelComponent->loadPackage(package);
 
-				QCoreApplication::processEvents();
-
-				if (package["path"].is_string())
-					behaviour->load(package["path"].get<nlohmann::json::string_t>());
-
-				dialog.setValue(1);
+					dialog.setValue(1);
+				}
 			}
 		}
 	}
