@@ -163,7 +163,7 @@ namespace unreal
 		if (package["path"].is_string())
 		{
 			auto path = package["path"].get<nlohmann::json::string_t>();
-			auto motion = octoon::VMDLoader::loadCameraMotion(path);
+			auto motion = octoon::VMDLoader::loadMotion(path);
 			if (motion)
 			{
 				motionList_[motion] = package;

@@ -1,4 +1,5 @@
 #include "camera_module.h"
+#include "../importer/motion_importer.h"
 #include <octoon/vmd_loader.h>
 #include <octoon/io/fstream.h>
 
@@ -50,8 +51,13 @@ namespace unreal
 			this->rotation = octoon::math::float3(reader["rotation"][0], reader["rotation"][1], reader["rotation"][2]);
 			this->rotation.submit();
 		}
-		if (reader["animation"].is_string())
-			this->animation = octoon::VMDLoader::loadCameraMotion(reader["animation"].get<nlohmann::json::string_t>());
+		if (reader["animation"].is_object())
+		{
+			auto& animationJson = reader["animation"];
+			if (animationJson.find("path") != animationJson.end())
+				this->animation = octoon::VMDLoader::loadCameraMotion(animationJson["path"].get<nlohmann::json::string_t>());
+		}
+			
 	}
 
 	void 
@@ -72,12 +78,22 @@ namespace unreal
 
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
 		{
-			auto root = std::string(path);
-			root = root.substr(0, root.find_last_of('/')) + "/Assets/" + this->animation.getValue()->name + ".vmd";
+			nlohmann::json animationJson = MotionImporter::instance()->createMetadata(this->animation.getValue());
+			if (animationJson.is_object())
+			{
+				writer["animation"] = std::move(animationJson);
+			}
+			else
+			{
+				auto root = std::string(path);
+				root = root.substr(0, root.find_last_of('/')) + "/Assets/" + this->animation.getValue()->name + ".vmd";
 
-			octoon::VMDLoader::saveCameraMotion(root, *this->animation.getValue());
+				octoon::VMDLoader::saveCameraMotion(root, *this->animation.getValue());
 
-			writer["animation"] = root;
+				animationJson["path"] = root;
+
+				writer["animation"] = std::move(animationJson);
+			}
 		}
 	}
 

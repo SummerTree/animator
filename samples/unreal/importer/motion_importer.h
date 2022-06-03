@@ -29,6 +29,7 @@ namespace unreal
 		bool removePackage(std::string_view uuid) noexcept;
 
 		std::shared_ptr<octoon::Animation<float>> loadMetaData(const nlohmann::json& metadata) noexcept;
+		std::shared_ptr<octoon::Animation<float>> loadCameraMetaData(const nlohmann::json& metadata) noexcept;
 		nlohmann::json createMetadata(const std::shared_ptr<octoon::Animation<float>>& gameObject) const noexcept;
 
 		MutableLiveData<nlohmann::json>& getIndexList() noexcept;
