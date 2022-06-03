@@ -26,30 +26,35 @@ namespace octoon
 	void
 	Camera::setClearColor(const math::float4& color) noexcept
 	{
+		this->setDirty(true);
 		clearColor_ = color;
 	}
 
 	void
 	Camera::setViewport(const math::float4& viewport) noexcept
 	{
+		this->setDirty(true);
 		viewport_ = viewport;
 	}
 
 	void
 	Camera::setRenderToScreen(bool enable) noexcept
 	{
+		this->setDirty(true);
 		blitToScreen_ = enable;
 	}
 
 	void
 	Camera::setClearFlags(ClearFlags clearflags) noexcept
 	{
+		this->setDirty(true);
 		clearflags_ = clearflags;
 	}
 
 	void
 	Camera::setFramebuffer(const GraphicsFramebufferPtr& framebuffer) noexcept
 	{
+		this->setDirty(true);
 		colorFramebuffer_ = framebuffer;
 	}
 
@@ -279,5 +284,7 @@ namespace octoon
 		colorFramebuffer_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createFramebuffer(framebufferDesc);
 		if (!colorFramebuffer_)
 			throw runtime::runtime_error::create("createFramebuffer() failed");
+
+		this->setDirty(true);
 	}
 }
