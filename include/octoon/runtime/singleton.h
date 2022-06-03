@@ -41,7 +41,7 @@ private:
 #define OctoonImplementSingleton(type) \
 type* type::instance() \
 {\
-    return runtime::Singleton<type>::instance();\
+    return octoon::runtime::Singleton<type>::instance();\
 }
 
 #endif

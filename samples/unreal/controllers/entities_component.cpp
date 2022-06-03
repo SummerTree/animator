@@ -1,6 +1,7 @@
 #include "entities_component.h"
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
+#include "../importer/model_importer.h"
 
 namespace unreal
 {
@@ -12,20 +13,10 @@ namespace unreal
 	{
 	}
 
-	void
-	EntitiesComponent::importAbc(std::string_view path) noexcept(false)
-	{
-		auto model = octoon::GameObject::create();
-		model->addComponent<octoon::MeshAnimationComponent>(path);
-
-		this->getContext()->profile->entitiesModule->objects.getValue().push_back(model);
-		this->sendMessage("editor:project:open");
-	}
-
 	octoon::GameObjectPtr
-	EntitiesComponent::importModel(std::string_view path) noexcept
+	EntitiesComponent::importModel(std::string_view path) noexcept(false)
 	{
-		auto model = octoon::PMXLoader::load(path);
+		auto model = ModelImporter::instance()->importModel(path);
 		if (model)
 		{
 			auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();

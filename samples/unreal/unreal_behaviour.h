@@ -18,7 +18,6 @@
 #include "controllers/camera_component.h"
 #include "controllers/mark_component.h"
 #include "controllers/material_component.h"
-#include "controllers/model_component.h"
 #include "controllers/sound_component.h"
 #include "controllers/motion_component.h"
 #include "controllers/offline_component.h"
@@ -63,7 +62,7 @@ namespace unreal
 		void disableComponents() noexcept;
 
 		IUnrealComponent* getComponent(const std::type_info& type) const noexcept;
-		template <typename T>
+		template<typename T, typename = std::enable_if_t<std::is_base_of<IUnrealComponent, T>::value>>
 		T* getComponent() const noexcept { return dynamic_cast<T*>(this->getComponent(typeid(T))); }
 
 		virtual octoon::GameComponentPtr clone() const noexcept override;
@@ -101,7 +100,6 @@ namespace unreal
 		std::unique_ptr<FrameSequenceComponent> frameSequenceComponent_;
 		std::unique_ptr<MarkComponent> markComponent_;
 		std::unique_ptr<MaterialComponent> materialComponent_;
-		std::unique_ptr<ModelComponent> modelComponent_;
 		std::unique_ptr<MotionComponent> motionComponent_;
 		std::unique_ptr<SelectorComponent> selectorComponent_;
 		std::unique_ptr<GridComponent> gridComponent_;

@@ -1,4 +1,5 @@
 #include "pmm_loader.h"
+#include "../importer/model_importer.h"
 #include <octoon/runtime/uuid.h>
 
 namespace unreal
@@ -21,7 +22,7 @@ namespace unreal
 
 		for (auto& it : pmm.model)
 		{
-			auto object = octoon::PMXLoader::load(it.path);
+			auto object = ModelImporter::instance()->importModel(it.path);
 			if (object)
 			{
 				octoon::AnimationClips<float> boneClips;

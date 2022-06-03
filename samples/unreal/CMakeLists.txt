@@ -138,16 +138,8 @@ SET(VIEWMODEL_LIST
 SOURCE_GROUP("launcher\\viewmodel" FILES ${VIEWMODEL_LIST})
 
 SET(CONTROLLERS_LIST
-	${SOURCE_PATH}/controllers/material_component.h
-	${SOURCE_PATH}/controllers/material_component.cpp
-	${SOURCE_PATH}/controllers/hdri_component.h
-	${SOURCE_PATH}/controllers/hdri_component.cpp
-	${SOURCE_PATH}/controllers/model_component.h
-	${SOURCE_PATH}/controllers/model_component.cpp
 	${SOURCE_PATH}/controllers/camera_component.h
 	${SOURCE_PATH}/controllers/camera_component.cpp
-	${SOURCE_PATH}/controllers/motion_component.h
-	${SOURCE_PATH}/controllers/motion_component.cpp
 	${SOURCE_PATH}/controllers/player_component.h
 	${SOURCE_PATH}/controllers/player_component.cpp
 	${SOURCE_PATH}/controllers/entities_component.h
@@ -182,6 +174,18 @@ SET(CONTROLLERS_LIST
 	${SOURCE_PATH}/controllers/light_component.cpp
 )
 SOURCE_GROUP("launcher\\controllers" FILES ${CONTROLLERS_LIST})
+
+SET(IMPORTER_LIST
+	${SOURCE_PATH}/controllers/material_component.h
+	${SOURCE_PATH}/controllers/material_component.cpp
+	${SOURCE_PATH}/controllers/hdri_component.h
+	${SOURCE_PATH}/controllers/hdri_component.cpp
+	${SOURCE_PATH}/importer/model_importer.h
+	${SOURCE_PATH}/importer/model_importer.cpp
+	${SOURCE_PATH}/controllers/motion_component.h
+	${SOURCE_PATH}/controllers/motion_component.cpp
+)
+SOURCE_GROUP("launcher\\importer" FILES ${IMPORTER_LIST})
 
 SET(UTILS_LIST
 	${SOURCE_PATH}/utils/pmm.h
@@ -248,6 +252,7 @@ ADD_EXECUTABLE(${LIB_OUTNAME}
 	${MODULES_LIST} 
 	${CONTROLLERS_LIST}
 	${UTILS_LIST}
+	${IMPORTER_LIST}
 	${MINIH264E_LIST}
 	${BASE64_LIST}
 	${OIDN_LIST}

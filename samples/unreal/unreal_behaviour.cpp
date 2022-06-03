@@ -1,6 +1,7 @@
 #include "unreal_behaviour.h"
 #include "../utils/pmm_loader.h"
 #include "../utils/ass_loader.h"
+#include "../importer/model_importer.h"
 
 #include <filesystem>
 
@@ -100,15 +101,8 @@ namespace unreal
 	UnrealBehaviour::load(std::string_view path) noexcept(false)
 	{
 		auto ext = path.substr(path.find_last_of("."));
-		if (ext == ".pmx")
+		if (ext == ".pmx" || ext == ".abc")
 			entitiesComponent_->importModel(path);
-		else if (ext == ".hdr")
-		{
-			hdriComponent_->importHDRi(path);
-			profile_->resourceModule->hdriIndexList_.submit();
-		}
-		else if (ext == ".abc")
-			entitiesComponent_->importAbc(path);
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
 			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")
@@ -117,6 +111,11 @@ namespace unreal
 		{
 			motionComponent_->importMotion(path);
 			profile_->resourceModule->motionIndexList_.submit();
+		}
+		else if (ext == ".hdr")
+		{
+			hdriComponent_->importHDRi(path);
+			profile_->resourceModule->hdriIndexList_.submit();
 		}
 	}
 
@@ -259,9 +258,14 @@ namespace unreal
 		if (!std::filesystem::exists(profile_->resourceModule->materialPath))
 			std::filesystem::create_directory(profile_->resourceModule->materialPath);
 
+		if (!std::filesystem::exists(profile_->resourceModule->modelPath))
+			std::filesystem::create_directory(profile_->resourceModule->modelPath);
+
 		context_ = std::make_shared<UnrealContext>();
 		context_->behaviour = this;
 		context_->profile = profile_.get();
+
+		ModelImporter::instance()->open(profile_->resourceModule->modelPath);
 
 		recordComponent_ = std::make_unique<RecordComponent>();
 		entitiesComponent_ = std::make_unique<EntitiesComponent>();
@@ -276,7 +280,6 @@ namespace unreal
 		frameSequenceComponent_ = std::make_unique<FrameSequenceComponent>();
 		markComponent_ = std::make_unique<MarkComponent>();
 		materialComponent_ = std::make_unique<MaterialComponent>();
-		modelComponent_ = std::make_unique<ModelComponent>();
 		motionComponent_ = std::make_unique<MotionComponent>();
 		hdriComponent_ = std::make_unique<HDRiComponent>();
 		selectorComponent_ = std::make_unique<SelectorComponent>();
@@ -297,7 +300,6 @@ namespace unreal
 		frameSequenceComponent_->init(context_, profile_->encodeModule);
 		markComponent_->init(context_, profile_->markModule);
 		materialComponent_->init(context_, profile_->resourceModule);
-		modelComponent_->init(context_, profile_->resourceModule);
 		motionComponent_->init(context_, profile_->resourceModule);
 		hdriComponent_->init(context_, profile_->resourceModule);
 		gizmoComponent_->init(context_, profile_->selectorModule);
@@ -314,7 +316,6 @@ namespace unreal
 		this->addComponent(playerComponent_.get());
 		this->addComponent(markComponent_.get());
 		this->addComponent(materialComponent_.get());
-		this->addComponent(modelComponent_.get());
 		this->addComponent(motionComponent_.get());
 		this->addComponent(hdriComponent_.get());
 		this->addComponent(gizmoComponent_.get());
@@ -365,7 +366,6 @@ namespace unreal
 		context_.reset();
 		profile_.reset();
 		materialComponent_.reset();
-		modelComponent_.reset();
 		motionComponent_.reset();
 		hdriComponent_.reset();
 		selectorComponent_.reset();
@@ -383,6 +383,8 @@ namespace unreal
 				gameObjectManager->removeMessageListener("feature:input:drop", std::bind(&UnrealBehaviour::onDrop, this, std::placeholders::_1));
 			}
 		}
+
+		ModelImporter::instance()->close();
 	}
 
 	void

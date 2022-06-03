@@ -1,4 +1,5 @@
 #include "model_dock.h"
+#include "../importer/model_importer.h"
 #include "../widgets/draggable_list_widget.h"
 
 #include <qpainter.h>
@@ -57,13 +58,13 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		this->profile_->resourceModule->modelIndexList_ += [this](const nlohmann::json& json)
+		ModelImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
 		{
 			if (this->isVisible())
 			{
 				listWidget_->clear();
 
-				for (auto& uuid : this->profile_->resourceModule->modelIndexList_.getValue())
+				for (auto& uuid : ModelImporter::instance()->getIndexList().getValue())
 					this->addItem(uuid.get<nlohmann::json::string_t>());
 			}
 		};
@@ -80,11 +81,7 @@ namespace unreal
 	void 
 	ModelDock::addItem(std::string_view uuid) noexcept
 	{
-		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<ModelComponent>();
-		if (!hdrComponent)
-			return;
-
-		auto package = hdrComponent->getPackage(uuid);
+		auto package = ModelImporter::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -144,17 +141,13 @@ namespace unreal
 			{
 				if (clickedItem_)
 				{
-					auto modelComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<ModelComponent>();
-					if (modelComponent)
+					auto uuid = clickedItem_->data(Qt::UserRole).toString();
+					if (ModelImporter::instance()->removePackage(uuid.toStdString()))
 					{
-						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						if (modelComponent->removePackage(uuid.toStdString()))
-						{
-							listWidget_->takeItem(listWidget_->row(clickedItem_));
-							delete clickedItem_;
-							clickedItem_ = listWidget_->currentItem();
-							modelComponent->save();
-						}
+						listWidget_->takeItem(listWidget_->row(clickedItem_));
+						delete clickedItem_;
+						clickedItem_ = listWidget_->currentItem();
+						ModelImporter::instance()->save();
 					}
 				}
 			}
@@ -167,10 +160,6 @@ namespace unreal
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("PMX Files (*.pmx)"));
 		if (!filepaths.isEmpty())
 		{
-			auto modelComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<ModelComponent>();
-			if (!modelComponent)
-				return;
-
 			try
 			{
 				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
@@ -187,16 +176,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = modelComponent->importModel(filepaths[i].toUtf8().toStdString());
+					auto package = ModelImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				modelComponent->save();
+				ModelImporter::instance()->save();
 			}
 			catch (...)
 			{
-				modelComponent->save();
+				ModelImporter::instance()->save();
 			}
 		}
 	}
@@ -216,26 +205,24 @@ namespace unreal
 		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 		if (behaviour)
 		{
-			auto modelComponent = behaviour->getComponent<ModelComponent>();
-			if (modelComponent)
+			auto uuid = item->data(Qt::UserRole).toString().toStdString();
+			auto package = ModelImporter::instance()->getPackage(uuid);
+			if (package.is_object())
 			{
-				auto uuid = item->data(Qt::UserRole).toString().toStdString();
-				auto package = modelComponent->getPackage(uuid);
-				if (package.is_object())
-				{
-					QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
-					dialog.setWindowTitle(tr("Loading..."));
-					dialog.setWindowModality(Qt::WindowModal);
-					dialog.setLabelText(package["name"].is_string() ? QString::fromStdString(package["name"].get<nlohmann::json::string_t>()) : tr("Unknown-name"));
-					dialog.setValue(0);
-					dialog.show();
+				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
+				dialog.setWindowTitle(tr("Loading..."));
+				dialog.setWindowModality(Qt::WindowModal);
+				dialog.setLabelText(package["name"].is_string() ? QString::fromStdString(package["name"].get<nlohmann::json::string_t>()) : tr("Unknown-name"));
+				dialog.setValue(0);
+				dialog.show();
 
-					QCoreApplication::processEvents();
+				QCoreApplication::processEvents();
 
-					modelComponent->loadPackage(package);
+				auto model = ModelImporter::instance()->loadPackage(package);
+				if (model)
+					this->profile_->entitiesModule->objects.getValue().push_back(model);
 
-					dialog.setValue(1);
-				}
+				dialog.setValue(1);
 			}
 		}
 	}
@@ -256,7 +243,7 @@ namespace unreal
 		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : this->profile_->resourceModule->modelIndexList_.getValue())
+		for (auto& uuid : ModelImporter::instance()->getIndexList().getValue())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

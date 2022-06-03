@@ -4,10 +4,12 @@
 #include <octoon/math/vector4.h>
 #include <octoon/math/quat.h>
 #include <octoon/runtime/except.h>
+#include <octoon/runtime/string.h>
 #include <octoon/animation/path_interpolator.h>
 #include <octoon/io/fstream.h>
 #include <iconv.h>
 #include <map>
+#include <filesystem>
 
 namespace octoon
 {
@@ -671,6 +673,8 @@ namespace octoon
 	void
 	VMDLoader::saveMorph(std::string_view filepath, const Animation<float>& animation) noexcept(false)
 	{
+		std::filesystem::create_directories(runtime::string::directory(std::string(filepath)));
+
 		io::ofstream stream(std::string(filepath), io::ios_base::in | io::ios_base::out);
 		if (stream)
 			saveMorph(stream, animation);
@@ -679,6 +683,8 @@ namespace octoon
 	void
 	VMDLoader::saveMotion(std::string_view filepath, const Animation<float>& animation) noexcept(false)
 	{
+		std::filesystem::create_directories(runtime::string::directory(std::string(filepath)));
+
 		io::ofstream stream(std::string(filepath), io::ios_base::in | io::ios_base::out);
 		if (stream)
 			saveMotion(stream, animation);
@@ -687,6 +693,8 @@ namespace octoon
 	void
 	VMDLoader::saveCameraMotion(std::string_view filepath, const Animation<float>& animation) noexcept(false)
 	{
+		std::filesystem::create_directories(runtime::string::directory(std::string(filepath)));
+
 		io::ofstream stream(std::string(filepath), io::ios_base::in | io::ios_base::out);
 		if (stream)
 			saveCameraMotion(stream, animation);

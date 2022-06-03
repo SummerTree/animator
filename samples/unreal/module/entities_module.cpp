@@ -1,4 +1,5 @@
 #include "entities_module.h"
+#include "../importer/model_importer.h"
 #include <octoon/pmx_loader.h>
 #include <octoon/vmd_loader.h>
 #include <octoon/animator_component.h>
@@ -35,30 +36,36 @@ namespace unreal
 		{
 			for (auto& it : reader["scene"])
 			{
-				auto uuid = it["uuid"].get<nlohmann::json::string_t>();
-				auto object = octoon::PMXLoader::load(root + uuid + "/"  + uuid + ".pmx");
-				object->setName(uuid);
-
-				for (auto& animationJson : reader["animation"])
+				auto object = ModelImporter::instance()->loadMetaData(it["model"]);
+				if (object)
 				{
-					auto type = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
-					auto path = animationJson["path"].get<nlohmann::json::string_t>();
+					for (auto& animationJson : it["animation"])
+					{
+						auto type = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
+						auto path = animationJson["path"].get<nlohmann::json::string_t>();
 
-					if (type == 0)
-					{
-						auto animationData = octoon::VMDLoader::loadMotion(root + path);
-						auto animator = object->addComponent<octoon::AnimatorComponent>(std::move(animationData), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
-						animator->setName(animationJson["uuid"].get<nlohmann::json::string_t>());
+						if (type == 0)
+						{
+							auto animationData = octoon::VMDLoader::loadMotion(root + path);
+							if (animationData)
+							{
+								auto animator = object->addComponent<octoon::AnimatorComponent>(std::move(animationData), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+								animator->setName(animationJson["uuid"].get<nlohmann::json::string_t>());
+							}
+						}
+						else
+						{
+							auto animationData = octoon::VMDLoader::loadMorph(root + path);
+							if (animationData)
+							{
+								auto animator = object->addComponent<octoon::AnimatorComponent>(std::move(animationData));
+								animator->setName(animationJson["uuid"].get<nlohmann::json::string_t>());
+							}
+						}
 					}
-					else
-					{
-						auto animationData = octoon::VMDLoader::loadMorph(root + path);
-						auto animator = object->addComponent<octoon::AnimatorComponent>(std::move(animationData));
-						animator->setName(animationJson["uuid"].get<nlohmann::json::string_t>());
-					}
+
+					objects_.push_back(std::move(object));
 				}
-
-				objects_.push_back(std::move(object));
 			}
 		}
 
@@ -78,47 +85,43 @@ namespace unreal
 		for (auto& it : this->objects.getValue())
 		{
 			nlohmann::json json;
-			json["uuid"] = it->getName();
+			json["model"] = ModelImporter::instance()->createMetadata(it);
 
-			auto rootPath = cv.from_bytes(root + it->getName() + "/");
-			auto outputPath = cv.from_bytes(root + it->getName() + "/" + it->getName() + ".pmx");
-
-			std::filesystem::create_directories(rootPath);
-
-			octoon::PMXLoader::save(*it, outputPath);
-
-			for (auto& component : it->getComponents())
+			if (json["model"].is_object())
 			{
-				if (component->isA<octoon::AnimatorComponent>())
+				for (auto& component : it->getComponents())
 				{
-					auto animation = component->downcast<octoon::AnimatorComponent>();
-					auto animationName = animation->getName();
-					auto fileName = (animationName.empty() ? octoon::make_guid() : animation->getName()) + ".vmd";
-
-					if (animation->getAvatar().empty())
+					if (component->isA<octoon::AnimatorComponent>())
 					{
-						octoon::VMDLoader::saveMorph(root + fileName, *animation->getAnimation());
+						auto animation = component->downcast<octoon::AnimatorComponent>();
+						auto animationName = animation->getName();
+						auto fileName = (animationName.empty() ? octoon::make_guid() : animation->getName()) + ".vmd";
 
-						nlohmann::json animationJson;
-						animationJson["type"] = 1;
-						animationJson["uuid"] = animationName;
-						animationJson["path"] = fileName;
-						writer["animation"].push_back(std::move(animationJson));
-					}
-					else
-					{
-						octoon::VMDLoader::saveMotion(root + fileName, *animation->getAnimation());
+						if (animation->getAvatar().empty())
+						{
+							octoon::VMDLoader::saveMorph(root + fileName, *animation->getAnimation());
 
-						nlohmann::json animationJson;
-						animationJson["type"] = 0;
-						animationJson["uuid"] = animationName;
-						animationJson["path"] = fileName;
-						writer["animation"].push_back(std::move(animationJson));
+							nlohmann::json animationJson;
+							animationJson["type"] = 1;
+							animationJson["uuid"] = animationName;
+							animationJson["path"] = fileName;
+							json["animation"].push_back(std::move(animationJson));
+						}
+						else
+						{
+							octoon::VMDLoader::saveMotion(root + fileName, *animation->getAnimation());
+
+							nlohmann::json animationJson;
+							animationJson["type"] = 0;
+							animationJson["uuid"] = animationName;
+							animationJson["path"] = fileName;
+							json["animation"].push_back(std::move(animationJson));
+						}
 					}
 				}
-			}
 
-			sceneJson.push_back(std::move(json));
+				sceneJson.push_back(std::move(json));
+			}
 		}
 
 		writer["scene"] = sceneJson;

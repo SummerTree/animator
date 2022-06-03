@@ -681,51 +681,51 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ModelDock</name>
     <message>
-        <location filename="../views/model_dock.cpp" line="24"/>
+        <location filename="../views/model_dock.cpp" line="25"/>
         <source>Model Library</source>
         <translation>模型库</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="29"/>
+        <location filename="../views/model_dock.cpp" line="30"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="143"/>
+        <location filename="../views/model_dock.cpp" line="140"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="143"/>
+        <location filename="../views/model_dock.cpp" line="140"/>
         <source>Are you sure you want to delete this model?</source>
         <translation>确定要删除此模型吗?</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="167"/>
+        <location filename="../views/model_dock.cpp" line="160"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="167"/>
+        <location filename="../views/model_dock.cpp" line="160"/>
         <source>PMX Files (*.pmx)</source>
         <translation>PMX 文件 (*.pmx)</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="176"/>
-        <location filename="../views/model_dock.cpp" line="177"/>
-        <location filename="../views/model_dock.cpp" line="226"/>
-        <location filename="../views/model_dock.cpp" line="227"/>
+        <location filename="../views/model_dock.cpp" line="165"/>
+        <location filename="../views/model_dock.cpp" line="166"/>
+        <location filename="../views/model_dock.cpp" line="212"/>
+        <location filename="../views/model_dock.cpp" line="213"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="176"/>
-        <location filename="../views/model_dock.cpp" line="226"/>
+        <location filename="../views/model_dock.cpp" line="165"/>
+        <location filename="../views/model_dock.cpp" line="212"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="229"/>
+        <location filename="../views/model_dock.cpp" line="215"/>
         <source>Unknown-name</source>
         <translation type="unfinished"></translation>
     </message>
