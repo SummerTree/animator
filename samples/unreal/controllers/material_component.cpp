@@ -29,7 +29,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	MaterialComponent::importMdl(std::string_view path) noexcept(false)
+	MaterialComponent::importPackage(std::string_view path) noexcept(false)
 	{
 		octoon::io::ifstream stream(QString::fromStdString(std::string(path)).toStdWString());
 		if (stream)

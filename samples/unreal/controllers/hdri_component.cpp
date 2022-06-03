@@ -16,7 +16,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	HDRiComponent::importHDRi(std::string_view filepath) noexcept(false)
+	HDRiComponent::importPackage(std::string_view filepath) noexcept(false)
 	{
 		octoon::Image image;
 

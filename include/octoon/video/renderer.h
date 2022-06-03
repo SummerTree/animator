@@ -16,10 +16,6 @@
 #include <octoon/video/rendering_data.h>
 #include <octoon/video/scriptable_render_context.h>
 
-#include <octoon/lightmap/lightmap.h>
-
-#include <unordered_map>
-
 namespace octoon
 {
 	class OCTOON_EXPORT Renderer final

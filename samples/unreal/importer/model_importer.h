@@ -1,9 +1,11 @@
-#ifndef UNREAL_MODEL_COMPONENT_H_
-#define UNREAL_MODEL_COMPONENT_H_
+#ifndef UNREAL_MODEL_IMPORTER_H_
+#define UNREAL_MODEL_IMPORTER_H_
 
 #include <unreal_component.h>
 #include <octoon/game_object.h>
 #include <octoon/video/renderer.h>
+#include <octoon/light/directional_light.h>
+#include <octoon/light/environment_light.h>
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/runtime/singleton.h>
 

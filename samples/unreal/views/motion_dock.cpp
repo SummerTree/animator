@@ -188,14 +188,14 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = motionComponent->importMotion(filepaths[i].toUtf8().toStdString());
+						auto package = motionComponent->importPackage(filepaths[i].toUtf8().toStdString());
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = motionComponent->importMotion(filepaths[0].toUtf8().toStdString());
+					auto package = motionComponent->importPackage(filepaths[0].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}

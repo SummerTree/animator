@@ -1,16 +1,17 @@
 #ifndef UNREAL_MATERIAL_COMPONENT_H_
 #define UNREAL_MATERIAL_COMPONENT_H_
 
-#include "../unreal_component.h"
-#include "../module/resource_module.h"
-
 #include <set>
 #include <map>
-#include <optional>
 #include <qpixmap.h>
 #include <octoon/video/renderer.h>
+#include <octoon/light/directional_light.h>
+#include <octoon/light/environment_light.h>
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/material/mesh_standard_material.h>
+
+#include "../unreal_component.h"
+#include "../module/resource_module.h"
 
 namespace unreal
 {
@@ -20,7 +21,7 @@ namespace unreal
 		MaterialComponent() noexcept;
 		virtual ~MaterialComponent() noexcept;
 
-		nlohmann::json importMdl(std::string_view path) noexcept(false);
+		nlohmann::json importPackage(std::string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept(false);
 		bool removePackage(std::string_view uuid) noexcept;
 

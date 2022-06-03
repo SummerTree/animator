@@ -106,15 +106,15 @@ namespace unreal
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
 			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")
-			materialComponent_->importMdl(path);
+			materialComponent_->importPackage(path);
 		else if (ext == ".vmd")
 		{
-			motionComponent_->importMotion(path);
+			motionComponent_->importPackage(path);
 			profile_->resourceModule->motionIndexList_.submit();
 		}
 		else if (ext == ".hdr")
 		{
-			hdriComponent_->importHDRi(path);
+			hdriComponent_->importPackage(path);
 			profile_->resourceModule->hdriIndexList_.submit();
 		}
 	}

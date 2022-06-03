@@ -16,7 +16,7 @@ namespace unreal
 		HDRiComponent() noexcept;
 		~HDRiComponent() noexcept;
 
-		nlohmann::json importHDRi(std::string_view path) noexcept(false);
+		nlohmann::json importPackage(std::string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		bool removePackage(std::string_view uuid) noexcept;
 
