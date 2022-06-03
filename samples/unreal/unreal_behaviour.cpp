@@ -74,8 +74,6 @@ namespace unreal
 	void
 	UnrealBehaviour::close() noexcept
 	{
-		this->cameraComponent_->removeAnimation();
-
 		this->profile_->soundModule->reset();
 		this->profile_->cameraModule->reset();
 		this->profile_->entitiesModule->reset();

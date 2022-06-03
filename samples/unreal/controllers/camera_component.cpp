@@ -142,11 +142,27 @@ namespace unreal
 
 		this->getModel()->animation += [this](const std::shared_ptr<octoon::Animation<float>>& value)
 		{
-			if (value)
-				this->loadAnimation(value);
-			else
-				this->removeAnimation();
-			this->update();
+			auto mainCamera = this->getModel()->camera.getValue();
+			if (mainCamera)
+			{
+				auto& profile = this->getContext()->profile;
+
+				if (value)
+				{
+					auto animator = mainCamera->getComponent<octoon::AnimatorComponent>();
+					if (!animator)
+						animator = mainCamera->addComponent<octoon::AnimatorComponent>();
+
+					animator->setAnimation(value);
+					animator->sample(profile->playerModule->curTime);
+				}
+				else
+				{
+					mainCamera->removeComponent<octoon::AnimatorComponent>();
+				}
+
+				this->update();
+			}
 		};
 
 		this->getModel()->framebufferSize += [this](const octoon::math::uint2& size)
@@ -183,6 +199,8 @@ namespace unreal
 	void
 	CameraComponent::onEnable() noexcept
 	{
+		auto& size = this->getModel()->framebufferSize.getValue();
+
 		auto mainCamera = octoon::GameObject::create("MainCamera");
 		mainCamera->addComponent<octoon::FirstPersonCameraComponent>();
 		mainCamera->getComponent<octoon::TransformComponent>()->setTranslate(this->getModel()->translate);
@@ -194,6 +212,7 @@ namespace unreal
 		camera->setCameraType(octoon::CameraType::Main);
 		camera->setClearFlags(octoon::ClearFlagBits::AllBit);
 		camera->setClearColor(octoon::math::float4(0.0f, 0.0f, 0.0f, 1.0f));
+		camera->setupFramebuffers(size.x, size.y, 0, octoon::GraphicsFormat::R32G32B32SFloat);
 
 		this->getModel()->camera = mainCamera;
 	}

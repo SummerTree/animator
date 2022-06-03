@@ -24,6 +24,7 @@ namespace unreal
 		this->framebufferSize = octoon::math::uint2(1280, 720);
 		this->translate = octoon::math::float3(0, 10, -10);
 		this->rotation = octoon::math::float3::Zero;
+		this->animation = nullptr;
 	}
 
 	void 
