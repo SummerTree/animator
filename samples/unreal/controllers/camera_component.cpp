@@ -170,7 +170,7 @@ namespace unreal
 			auto camera = this->getModel()->camera.getValue();
 			if (camera)
 			{
-				auto cameraComponent = camera->addComponent<octoon::FilmCameraComponent>();
+				auto cameraComponent = camera->getComponent<octoon::FilmCameraComponent>();
 				cameraComponent->setupFramebuffers(size.x, size.y, 0, octoon::GraphicsFormat::R32G32B32SFloat);
 			}
 		};

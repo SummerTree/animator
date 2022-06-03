@@ -50,7 +50,7 @@ namespace octoon
 	void
 	Camera::setFramebuffer(const GraphicsFramebufferPtr& framebuffer) noexcept
 	{
-		edgeFramebuffer_ = framebuffer;
+		colorFramebuffer_ = framebuffer;
 	}
 
 	void
@@ -206,12 +206,12 @@ namespace octoon
 	{
 		std::uint32_t width = 1920, height = 1080;
 
-		if (!edgeFramebuffer_)
+		if (!colorFramebuffer_)
 			Renderer::instance()->getFramebufferSize(width, height);
 		else
 		{
-			width = edgeFramebuffer_->getFramebufferDesc().getWidth();
-			height = edgeFramebuffer_->getFramebufferDesc().getHeight();
+			width = colorFramebuffer_->getFramebufferDesc().getWidth();
+			height = colorFramebuffer_->getFramebufferDesc().getHeight();
 		}
 
 		math::float4 result;
@@ -239,7 +239,7 @@ namespace octoon
 	const GraphicsFramebufferPtr&
 	Camera::getFramebuffer() const noexcept
 	{
-		return edgeFramebuffer_;
+		return colorFramebuffer_;
 	}
 
 	void
@@ -276,8 +276,8 @@ namespace octoon
 		framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture_, 0, 0));
 		framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(edgeTexture_, 0, 0));
 
-		edgeFramebuffer_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createFramebuffer(framebufferDesc);
-		if (!edgeFramebuffer_)
+		colorFramebuffer_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createFramebuffer(framebufferDesc);
+		if (!colorFramebuffer_)
 			throw runtime::runtime_error::create("createFramebuffer() failed");
 	}
 }

@@ -56,7 +56,7 @@ namespace octoon
 
 		ClearFlags clearflags_;
 
-		GraphicsFramebufferPtr edgeFramebuffer_;
+		GraphicsFramebufferPtr colorFramebuffer_;
 		std::shared_ptr<GraphicsTexture> edgeTexture_;
 		std::shared_ptr<GraphicsTexture> depthTexture_;
 

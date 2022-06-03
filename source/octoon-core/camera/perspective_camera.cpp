@@ -126,12 +126,12 @@ namespace octoon
 	{
 		std::uint32_t width = 1920, height = 1080;
 
-		if (!edgeFramebuffer_)
+		if (!colorFramebuffer_)
 			Renderer::instance()->getFramebufferSize(width, height);
 		else
 		{
-			width = edgeFramebuffer_->getFramebufferDesc().getWidth();
-			height = edgeFramebuffer_->getFramebufferDesc().getHeight();
+			width = colorFramebuffer_->getFramebufferDesc().getWidth();
+			height = colorFramebuffer_->getFramebufferDesc().getHeight();
 		}
 
 		if (width_ != width || height_ != height)
