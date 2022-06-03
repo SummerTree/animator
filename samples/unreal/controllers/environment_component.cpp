@@ -1,6 +1,7 @@
 #include "environment_component.h"
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
+#include "../importer/texture_importer.h"
 
 #include <octoon/PMREM_loader.h>
 #include <octoon/material/mesh_basic_material.h>
@@ -120,12 +121,6 @@ namespace unreal
 					material->setColorMap(model->useTexture ? texture_ : nullptr);
 				}
 			}
-		};
-
-		this->getModel()->texturePath += [this](const std::string& texturePath)
-		{
-			auto& model = this->getModel();
-			model->texture = texturePath.empty() ? nullptr : octoon::TextureLoader::load(texturePath, true);
 		};
 
 		this->getModel()->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)

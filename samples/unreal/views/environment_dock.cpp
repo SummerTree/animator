@@ -1,4 +1,5 @@
 #include "environment_dock.h"
+#include "../importer/texture_importer.h"
 #include <octoon/environment_light_component.h>
 #include <octoon/image/image.h>
 #include <octoon/mesh_renderer_component.h>
@@ -66,13 +67,13 @@ namespace unreal
 		mainLayout_->addLayout(bottomLayout_);
 		mainLayout_->setContentsMargins(5, 10, 5, 10);
 
-		this->profile_->resourceModule->hdriIndexList_ += [this](const nlohmann::json& json)
+		TextureImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
 		{
 			if (this->isVisible())
 			{
 				listWidget_->clear();
 
-				for (auto& uuid : this->profile_->resourceModule->hdriIndexList_.getValue())
+				for (auto& uuid : TextureImporter::instance()->getIndexList().getValue())
 					this->addItem(uuid.get<nlohmann::json::string_t>());
 			}
 		};
@@ -91,11 +92,7 @@ namespace unreal
 	void
 	EnvironmentListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
-		if (!hdrComponent)
-			return;
-
-		auto package = hdrComponent->getPackage(uuid);
+		auto package = TextureImporter::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -143,10 +140,6 @@ namespace unreal
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("HDRi Files (*.hdr)"));
 		if (!filepaths.isEmpty())
 		{
-			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
-			if (!hdrComponent)
-				return;
-
 			try
 			{
 				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
@@ -163,16 +156,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = hdrComponent->importPackage(filepaths[i].toUtf8().toStdString());
+					auto package = TextureImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				hdrComponent->save();
+				TextureImporter::instance()->save();
 			}
 			catch (...)
 			{
-				hdrComponent->save();
+				TextureImporter::instance()->save();
 			}
 		}
 	}
@@ -221,7 +214,7 @@ namespace unreal
 	{
 		listWidget_->clear();
 
-		for (auto& uuid : this->profile_->resourceModule->hdriIndexList_.getValue())
+		for (auto& uuid : TextureImporter::instance()->getIndexList().getValue())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 
@@ -234,17 +227,13 @@ namespace unreal
 			{
 				if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this picture?")) == QMessageBox::Yes)
 				{
-					auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
-					if (hdrComponent)
+					auto uuid = clickedItem_->data(Qt::UserRole).toString();
+					if (TextureImporter::instance()->removePackage(uuid.toStdString()))
 					{
-						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						if (hdrComponent->removePackage(uuid.toStdString()))
-						{
-							listWidget_->takeItem(listWidget_->row(clickedItem_));
-							delete clickedItem_;
-							clickedItem_ = listWidget_->currentItem();
-							hdrComponent->save();
-						}
+						listWidget_->takeItem(listWidget_->row(clickedItem_));
+						delete clickedItem_;
+						clickedItem_ = listWidget_->currentItem();
+						TextureImporter::instance()->save();
 					}
 				}
 			}
@@ -481,8 +470,9 @@ namespace unreal
 			if (texture && this->isVisible())
 			{
 				auto texel = texture;
-				auto texturePath = QString::fromStdString(this->profile_->environmentLightModule->texturePath);
-				if (texel && thumbnailPath->toolTip() != texturePath)
+				auto textureMetadata = TextureImporter::instance()->createMetadata(texture);
+				auto name = textureMetadata["name"].get<nlohmann::json::string_t>();
+				if (texel && thumbnailPath->toolTip() != QString::fromStdString(name))
 				{
 					auto width = texel->getTextureDesc().getWidth();
 					auto height = texel->getTextureDesc().getHeight();
@@ -505,8 +495,8 @@ namespace unreal
 						QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
 						auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
 
-						this->setPreviewImage(QFileInfo(texturePath).fileName(), previewImage);
-						this->setThumbnailImage(texturePath, *previewImage);
+						this->setPreviewImage(QFileInfo(QString::fromStdString(name)).fileName(), previewImage);
+						this->setThumbnailImage(QString::fromStdString(name), *previewImage);
 					}
 				}
 			}
@@ -637,27 +627,23 @@ namespace unreal
 	{
 		try
 		{
-			auto hdrComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<HDRiComponent>();
-			if (hdrComponent)
+			auto uuid = item->data(Qt::UserRole).toString();
+			auto package = TextureImporter::instance()->getPackage(uuid.toStdString());
+			if (package.is_object())
 			{
-				auto uuid = item->data(Qt::UserRole).toString();
-				auto package = hdrComponent->getPackage(uuid.toStdString());
-				if (package.is_object())
-				{
-					auto name = package["name"].get<nlohmann::json::string_t>();
-					auto hdrPath = package["path"].get<nlohmann::json::string_t>();
-					auto previewPath = package["preview"].get<nlohmann::json::string_t>();
+				auto name = package["name"].get<nlohmann::json::string_t>();
+				auto hdrPath = package["path"].get<nlohmann::json::string_t>();
+				auto previewPath = package["preview"].get<nlohmann::json::string_t>();
 
-					auto previewImage = std::make_shared<QImage>();
-					if (!previewImage->load(QString::fromStdString(previewPath)))
-						throw std::runtime_error("Cannot generate image for preview");
+				auto previewImage = std::make_shared<QImage>();
+				if (!previewImage->load(QString::fromStdString(previewPath)))
+					throw std::runtime_error("Cannot generate image for preview");
 
-					this->setPreviewImage(QString::fromStdString(name), previewImage);
-					this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
+				this->setPreviewImage(QString::fromStdString(name), previewImage);
+				this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
 
-					this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-					this->profile_->environmentLightModule->texturePath = hdrPath;
-				}
+				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
+				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importHDRi(hdrPath, true);
 			}
 		}
 		catch (const std::exception& e)
@@ -681,7 +667,7 @@ namespace unreal
 			if (!filepath.isEmpty())
 			{
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texturePath = filepath.toUtf8().toStdString();
+				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importHDRi(filepath.toUtf8().toStdString());
 
 				auto texel = this->profile_->environmentLightModule->texture.getValue();
 				if (texel)
@@ -822,10 +808,12 @@ namespace unreal
 		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
 
 		auto texel = this->profile_->environmentLightModule->texture.getValue();
-		auto texturePath = QString::fromStdString(this->profile_->environmentLightModule->texturePath);
 		if (texel)
 		{
-			if (thumbnailPath->toolTip() != texturePath)
+			auto textureMetadata = TextureImporter::instance()->createMetadata(texel);
+			auto texturePath = textureMetadata["name"].get<nlohmann::json::string_t>();
+
+			if (thumbnailPath->toolTip() != QString::fromStdString(texturePath))
 			{
 				auto width = texel->getTextureDesc().getWidth();
 				auto height = texel->getTextureDesc().getHeight();
@@ -848,8 +836,8 @@ namespace unreal
 					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
 					auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
 
-					this->setPreviewImage(QFileInfo(texturePath).fileName(), previewImage);
-					this->setThumbnailImage(texturePath, *previewImage);
+					this->setPreviewImage(QFileInfo(QString::fromStdString(texturePath)).fileName(), previewImage);
+					this->setThumbnailImage(QString::fromStdString(texturePath), *previewImage);
 				}
 			}
 		}

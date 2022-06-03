@@ -18,18 +18,18 @@
 
 namespace unreal
 {
-	MaterialComponent::MaterialComponent() noexcept
+	MaterialImporter::MaterialImporter() noexcept
 		: previewWidth_(200)
 		, previewHeight_(200)
 	{
 	}
 
-	MaterialComponent::~MaterialComponent() noexcept
+	MaterialImporter::~MaterialImporter() noexcept
 	{
 	}
 
 	nlohmann::json
-	MaterialComponent::importPackage(std::string_view path) noexcept(false)
+	MaterialImporter::importPackage(std::string_view path) noexcept(false)
 	{
 		octoon::io::ifstream stream(QString::fromStdString(std::string(path)).toStdWString());
 		if (stream)
@@ -185,19 +185,19 @@ namespace unreal
 	}
 
 	const nlohmann::json&
-	MaterialComponent::getIndexList() const noexcept
+	MaterialImporter::getIndexList() const noexcept
 	{
 		return this->indexList_;
 	}
 
 	const nlohmann::json&
-	MaterialComponent::getSceneList() const noexcept
+	MaterialImporter::getSceneList() const noexcept
 	{
 		return this->sceneList_;
 	}
 
 	nlohmann::json
-	MaterialComponent::getPackage(std::string_view uuid) noexcept(false)
+	MaterialImporter::getPackage(std::string_view uuid) noexcept(false)
 	{
 		auto it = this->packageList_.find(std::string(uuid));
 		if (it == this->packageList_.end())
@@ -219,7 +219,7 @@ namespace unreal
 	}
 
 	bool
-	MaterialComponent::removePackage(std::string_view uuid) noexcept
+	MaterialImporter::removePackage(std::string_view uuid) noexcept
 	{
 		try
 		{
@@ -247,7 +247,7 @@ namespace unreal
 	}
 
 	const std::shared_ptr<octoon::MeshStandardMaterial>
-	MaterialComponent::getMaterial(std::string_view uuid) noexcept(false)
+	MaterialImporter::getMaterial(std::string_view uuid) noexcept(false)
 	{
 		auto material = this->materials_.find(uuid);
 		if (material == this->materials_.end())
@@ -444,7 +444,7 @@ namespace unreal
 	}
 
 	bool
-	MaterialComponent::addMaterial(const std::shared_ptr<octoon::Material>& mat)
+	MaterialImporter::addMaterial(const std::shared_ptr<octoon::Material>& mat)
 	{
 		if (this->materialSets_.find((void*)mat.get()) == this->materialSets_.end())
 		{
@@ -476,7 +476,7 @@ namespace unreal
 	}
 
 	void
-	MaterialComponent::createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h)
+	MaterialImporter::createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h)
 	{
 		assert(material);
 
@@ -530,7 +530,7 @@ namespace unreal
 	}
 
 	void
-	MaterialComponent::initMaterialScene() noexcept(false)
+	MaterialImporter::initMaterialScene() noexcept(false)
 	{
 		auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
 		if (renderer)
@@ -599,7 +599,7 @@ namespace unreal
 	}
 
 	void
-	MaterialComponent::initPackageIndices() noexcept(false)
+	MaterialImporter::initPackageIndices() noexcept(false)
 	{
 		std::ifstream indexStream(this->getModel()->materialPath + "/index.json");
 		if (indexStream)
@@ -648,7 +648,7 @@ namespace unreal
 	}
 
 	void
-	MaterialComponent::save() const noexcept
+	MaterialImporter::save() const noexcept
 	{
 		try
 		{
@@ -668,7 +668,7 @@ namespace unreal
 	}
 
 	void
-	MaterialComponent::onEnable() noexcept(false)
+	MaterialImporter::onEnable() noexcept(false)
 	{
 		this->initMaterialScene();
 
@@ -712,7 +712,7 @@ namespace unreal
 	}
 
 	void
-	MaterialComponent::onDisable() noexcept
+	MaterialImporter::onDisable() noexcept
 	{
 	}
 }

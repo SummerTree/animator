@@ -32,7 +32,6 @@ namespace unreal
 		MutableLiveData<float> intensity;
 		MutableLiveData<octoon::math::float2> offset;
 		MutableLiveData<octoon::math::float3> color;
-		MutableLiveData<std::string> texturePath;
 		MutableLiveData<std::shared_ptr<octoon::GraphicsTexture>> texture;
 		MutableLiveData<octoon::GameObjectPtr> environmentLight;
 	};

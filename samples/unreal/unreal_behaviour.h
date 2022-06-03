@@ -11,18 +11,18 @@
 #include "controllers/grid_component.h"
 #include "controllers/h264_component.h"
 #include "controllers/h265_component.h"
-#include "controllers/hdri_component.h"
 #include "controllers/light_component.h"
 #include "controllers/environment_component.h"
 #include "controllers/main_light_component.h"
 #include "controllers/camera_component.h"
 #include "controllers/mark_component.h"
-#include "controllers/material_component.h"
 #include "controllers/sound_component.h"
 #include "controllers/offline_component.h"
 #include "controllers/player_component.h"
 #include "controllers/record_component.h"
 #include "controllers/selector_component.h"
+
+#include "importer/material_component.h"
 
 #include <octoon/octoon.h>
 
@@ -98,12 +98,11 @@ namespace unreal
 		std::unique_ptr<H265Component> h265Component_;
 		std::unique_ptr<FrameSequenceComponent> frameSequenceComponent_;
 		std::unique_ptr<MarkComponent> markComponent_;
-		std::unique_ptr<MaterialComponent> materialComponent_;
+		std::unique_ptr<MaterialImporter> materialComponent_;
 		std::unique_ptr<SelectorComponent> selectorComponent_;
 		std::unique_ptr<GridComponent> gridComponent_;
 		std::unique_ptr<GizmoComponent> gizmoComponent_;
 		std::unique_ptr<LightComponent> lightComponent_;
-		std::unique_ptr<HDRiComponent> hdriComponent_;
 
 		std::vector<IUnrealComponent*> components_;
 	};

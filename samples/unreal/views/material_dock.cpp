@@ -106,7 +106,7 @@ namespace unreal
 	void 
 	MaterialListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialComponent>();
+		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialImporter>();
 		if (!materialComponent)
 			return;
 
@@ -158,7 +158,7 @@ namespace unreal
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("NVIDIA MDL Files (*.mdl)"));
 		if (!filepaths.isEmpty())
 		{
-			auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialComponent>();
+			auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialImporter>();
 			if (!materialComponent)
 				return;
 
@@ -242,7 +242,7 @@ namespace unreal
 		{
 			mainWidget_->clear();
 
-			auto materialComponent = behaviour->getComponent<MaterialComponent>();
+			auto materialComponent = behaviour->getComponent<MaterialImporter>();
 			for (auto& uuid : materialComponent->getIndexList())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}
@@ -1014,7 +1014,7 @@ namespace unreal
 	void
 	MaterialEditWindow::itemSelected(QListWidgetItem* item)
 	{
-		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialComponent>();
+		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialImporter>();
 		if (materialComponent)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
@@ -1360,7 +1360,7 @@ namespace unreal
 		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour && this->material_)
 		{
-			auto materialComponent = behaviour->getComponent<MaterialComponent>();
+			auto materialComponent = behaviour->getComponent<MaterialImporter>();
 			if (materialComponent)
 			{
 				QPixmap pixmap;
@@ -1765,7 +1765,7 @@ namespace unreal
 			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
 			if (selectedItem)
 			{
-				auto materialComponent = behaviour->getComponent<MaterialComponent>();
+				auto materialComponent = behaviour->getComponent<MaterialImporter>();
 				if (materialComponent)
 				{
 					auto hit = selectedItem.value();
@@ -1811,7 +1811,7 @@ namespace unreal
 				mainWidget_->addItem(item);
 				mainWidget_->setItemWidget(item, widget);
 
-				auto materialComponent = behaviour_->getComponent<unreal::UnrealBehaviour>()->getComponent<MaterialComponent>();
+				auto materialComponent = behaviour_->getComponent<unreal::UnrealBehaviour>()->getComponent<MaterialImporter>();
 				if (!materialComponent)
 					return;
 
@@ -1853,7 +1853,7 @@ namespace unreal
 	void 
 	MaterialListPanel::addItem(std::string_view uuid) noexcept
 	{
-		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialComponent>();
+		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialImporter>();
 		if (materialComponent)
 		{
 			auto package = materialComponent->getPackage(uuid);
@@ -1868,7 +1868,7 @@ namespace unreal
 		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour)
 		{
-			auto materialComponent = behaviour->getComponent<MaterialComponent>();
+			auto materialComponent = behaviour->getComponent<MaterialImporter>();
 			if (materialComponent)
 			{
 				mainWidget_->clear();
@@ -1980,7 +1980,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
 			{
-				auto materialComponent = behaviour->getComponent<MaterialComponent>();
+				auto materialComponent = behaviour->getComponent<MaterialImporter>();
 				if (!materialComponent)
 					return;
 

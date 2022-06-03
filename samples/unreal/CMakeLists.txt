@@ -176,10 +176,10 @@ SET(CONTROLLERS_LIST
 SOURCE_GROUP("launcher\\controllers" FILES ${CONTROLLERS_LIST})
 
 SET(IMPORTER_LIST
-	${SOURCE_PATH}/controllers/material_component.h
-	${SOURCE_PATH}/controllers/material_component.cpp
-	${SOURCE_PATH}/controllers/hdri_component.h
-	${SOURCE_PATH}/controllers/hdri_component.cpp
+	${SOURCE_PATH}/importer/material_component.h
+	${SOURCE_PATH}/importer/material_component.cpp
+	${SOURCE_PATH}/importer/texture_importer.h
+	${SOURCE_PATH}/importer/texture_importer.cpp
 	${SOURCE_PATH}/importer/model_importer.h
 	${SOURCE_PATH}/importer/model_importer.cpp
 	${SOURCE_PATH}/importer/motion_importer.h

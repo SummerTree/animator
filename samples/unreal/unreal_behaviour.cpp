@@ -3,6 +3,7 @@
 #include "../utils/ass_loader.h"
 #include "../importer/model_importer.h"
 #include "../importer/motion_importer.h"
+#include "../importer/texture_importer.h"
 
 #include <filesystem>
 
@@ -111,11 +112,12 @@ namespace unreal
 		else if (ext == ".vmd")
 		{
 			MotionImporter::instance()->importPackage(path);
+			MotionImporter::instance()->getIndexList().submit();
 		}
 		else if (ext == ".hdr")
 		{
-			hdriComponent_->importPackage(path);
-			profile_->resourceModule->hdriIndexList_.submit();
+			TextureImporter::instance()->importPackage(path);
+			TextureImporter::instance()->getIndexList().submit();
 		}
 	}
 
@@ -267,6 +269,7 @@ namespace unreal
 
 		ModelImporter::instance()->open(profile_->resourceModule->modelPath);
 		MotionImporter::instance()->open(profile_->resourceModule->motionPath);
+		TextureImporter::instance()->open(profile_->resourceModule->hdriPath);
 
 		recordComponent_ = std::make_unique<RecordComponent>();
 		entitiesComponent_ = std::make_unique<EntitiesComponent>();
@@ -280,8 +283,7 @@ namespace unreal
 		h265Component_ = std::make_unique<H265Component>();
 		frameSequenceComponent_ = std::make_unique<FrameSequenceComponent>();
 		markComponent_ = std::make_unique<MarkComponent>();
-		materialComponent_ = std::make_unique<MaterialComponent>();
-		hdriComponent_ = std::make_unique<HDRiComponent>();
+		materialComponent_ = std::make_unique<MaterialImporter>();
 		selectorComponent_ = std::make_unique<SelectorComponent>();
 		gizmoComponent_ = std::make_unique<GizmoComponent>();
 		gridComponent_ = std::make_unique<GridComponent>();
@@ -300,7 +302,6 @@ namespace unreal
 		frameSequenceComponent_->init(context_, profile_->encodeModule);
 		markComponent_->init(context_, profile_->markModule);
 		materialComponent_->init(context_, profile_->resourceModule);
-		hdriComponent_->init(context_, profile_->resourceModule);
 		gizmoComponent_->init(context_, profile_->selectorModule);
 		selectorComponent_->init(context_, profile_->selectorModule);
 		gridComponent_->init(context_, profile_->gridModule);
@@ -315,7 +316,6 @@ namespace unreal
 		this->addComponent(playerComponent_.get());
 		this->addComponent(markComponent_.get());
 		this->addComponent(materialComponent_.get());
-		this->addComponent(hdriComponent_.get());
 		this->addComponent(gizmoComponent_.get());
 		this->addComponent(selectorComponent_.get());
 		this->addComponent(gridComponent_.get());
@@ -364,7 +364,6 @@ namespace unreal
 		context_.reset();
 		profile_.reset();
 		materialComponent_.reset();
-		hdriComponent_.reset();
 		selectorComponent_.reset();
 		gridComponent_.reset();
 
@@ -383,6 +382,7 @@ namespace unreal
 
 		ModelImporter::instance()->close();
 		MotionImporter::instance()->close();
+		TextureImporter::instance()->close();
 	}
 
 	void

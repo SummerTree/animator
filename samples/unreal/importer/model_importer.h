@@ -1,6 +1,7 @@
 #ifndef UNREAL_MODEL_IMPORTER_H_
 #define UNREAL_MODEL_IMPORTER_H_
 
+#include <qpixmap.h>
 #include <unreal_component.h>
 #include <octoon/game_object.h>
 #include <octoon/video/renderer.h>
@@ -8,8 +9,6 @@
 #include <octoon/light/environment_light.h>
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/runtime/singleton.h>
-
-#include <qpixmap.h>
 
 #include "../unreal_component.h"
 #include "../module/resource_module.h"

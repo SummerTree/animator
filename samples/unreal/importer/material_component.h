@@ -1,5 +1,5 @@
-#ifndef UNREAL_MATERIAL_COMPONENT_H_
-#define UNREAL_MATERIAL_COMPONENT_H_
+#ifndef UNREAL_MATERIAL_IMPORTER_H_
+#define UNREAL_MATERIAL_IMPORTER_H_
 
 #include <set>
 #include <map>
@@ -15,11 +15,11 @@
 
 namespace unreal
 {
-	class MaterialComponent final : public UnrealComponent<ResourceModule>
+	class MaterialImporter final : public UnrealComponent<ResourceModule>
 	{
 	public:
-		MaterialComponent() noexcept;
-		virtual ~MaterialComponent() noexcept;
+		MaterialImporter() noexcept;
+		virtual ~MaterialImporter() noexcept;
 
 		nlohmann::json importPackage(std::string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept(false);
@@ -37,7 +37,7 @@ namespace unreal
 
 		virtual const std::type_info& type_info() const noexcept
 		{
-			return typeid(MaterialComponent);
+			return typeid(MaterialImporter);
 		}
 
 	private:
@@ -49,8 +49,8 @@ namespace unreal
 		void initPackageIndices() noexcept(false);
 
 	private:
-		MaterialComponent(const MaterialComponent&) = delete;
-		MaterialComponent& operator=(const MaterialComponent&) = delete;
+		MaterialImporter(const MaterialImporter&) = delete;
+		MaterialImporter& operator=(const MaterialImporter&) = delete;
 
 	private:
 		std::uint32_t previewWidth_;
