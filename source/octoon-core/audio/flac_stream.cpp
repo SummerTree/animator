@@ -22,7 +22,7 @@ namespace octoon
 	}
 
 	void
-	FlacStreamBuffer::open(const char* filepath) noexcept(false)
+	FlacStreamBuffer::open(std::string_view filepath) noexcept(false)
 	{
 		io::ifstream stream(filepath);
 		if (stream)
@@ -170,7 +170,7 @@ namespace octoon
 	{
 	}
 
-	FlacAudioReader::FlacAudioReader(const char* path) noexcept
+	FlacAudioReader::FlacAudioReader(std::string_view path) noexcept
 		: AudioReader(&buf_)
 	{
 		this->open(path);
@@ -181,7 +181,7 @@ namespace octoon
 	}
 
 	void
-	FlacAudioReader::open(const char* path) noexcept(false)
+	FlacAudioReader::open(std::string_view path) noexcept(false)
 	{
 		return this->buf_.open(path);
 	}

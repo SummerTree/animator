@@ -11,7 +11,7 @@ namespace octoon
 		WavStreamBuffer() noexcept;
 		~WavStreamBuffer() noexcept;
 
-		virtual bool open(const char* filepath) noexcept(false);
+		virtual bool open(std::string_view filepath) noexcept(false);
 		virtual bool access(io::istream& stream) const noexcept;
 
 		virtual io::streamsize read(char* str, io::streamsize cnt) noexcept;
@@ -45,10 +45,10 @@ namespace octoon
 	{
 	public:
 		WavAudioReader() noexcept;
-		WavAudioReader(const char* path) noexcept;
+		WavAudioReader(std::string_view path) noexcept;
 		virtual ~WavAudioReader() noexcept;
 
-		bool open(const char* path) noexcept(false);
+		bool open(std::string_view path) noexcept(false);
 		bool is_open() const noexcept(false);
 
 		std::shared_ptr<AudioReader> clone() const noexcept override;

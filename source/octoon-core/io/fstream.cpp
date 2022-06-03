@@ -35,6 +35,12 @@ namespace octoon
 			this->open(path, mode);
 		}
 
+		ifstream::ifstream(const std::string_view& path, const ios_base::open_mode mode) noexcept
+			: istream(&file_)
+		{
+			this->open(path, mode);
+		}
+
 		ifstream::~ifstream() noexcept
 		{
 			this->close();
@@ -86,6 +92,12 @@ namespace octoon
 		ifstream::open(const std::wstring& path, const ios_base::open_mode mode) noexcept
 		{
 			return this->open(path.c_str(), mode);
+		}
+
+		ifstream&
+		ifstream::open(const std::string_view& path, const ios_base::open_mode mode) noexcept
+		{
+			return this->open(std::string(path), mode);
 		}
 
 		ifstream&

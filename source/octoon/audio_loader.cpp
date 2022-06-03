@@ -38,25 +38,25 @@ namespace octoon
 	{
 		if (filepath.find(".ogg") != std::string::npos)
 		{
-			auto reader = std::make_shared<OggAudioReader>(std::string(filepath).c_str());
+			auto reader = std::make_shared<OggAudioReader>(filepath);
 			if (reader->is_open())
 				return reader;
 		}
 		else if (filepath.find(".mp3") != std::string::npos)
 		{
-			auto reader = std::make_shared<Mp3AudioReader>(std::string(filepath).c_str());
+			auto reader = std::make_shared<Mp3AudioReader>(filepath);
 			if (reader->is_open())
 				return reader;
 		}
 		else if (filepath.find(".wav") != std::string::npos)
 		{
-			auto reader = std::make_shared<WavAudioReader>(std::string(filepath).c_str());
+			auto reader = std::make_shared<WavAudioReader>(filepath);
 			if (reader->is_open())
 				return reader;
 		}
 		else if (filepath.find(".flac") != std::string::npos)
 		{
-			auto reader = std::make_shared<FlacAudioReader>(std::string(filepath).c_str());
+			auto reader = std::make_shared<FlacAudioReader>(filepath);
 			if (reader->is_open())
 				return reader;
 		}

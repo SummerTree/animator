@@ -16,12 +16,14 @@ namespace octoon
 			ifstream(const wchar_t* path, const ios_base::open_mode mode = ios_base::in) noexcept;
 			ifstream(const std::string& path, const ios_base::open_mode mode = ios_base::in) noexcept;
 			ifstream(const std::wstring& path, const ios_base::open_mode mode = ios_base::in) noexcept;
+			ifstream(const std::string_view& path, const ios_base::open_mode mode = ios_base::in) noexcept;
 			~ifstream() noexcept;
 
 			ifstream& open(const char* path, const ios_base::open_mode mode = ios_base::in) noexcept;
 			ifstream& open(const wchar_t* path, const ios_base::open_mode mode = ios_base::in) noexcept;
 			ifstream& open(const std::string& path, const ios_base::open_mode mode = ios_base::in) noexcept;
 			ifstream& open(const std::wstring& path, const ios_base::open_mode mode = ios_base::in) noexcept;
+			ifstream& open(const std::string_view& path, const ios_base::open_mode mode = ios_base::in) noexcept;
 
 			ifstream& close() noexcept;
 
