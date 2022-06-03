@@ -355,6 +355,30 @@ namespace octoon
 			clip.setCurve("LocalRotation", octoon::AnimationCurve(std::move(rotation)));
 		}
 
+		if (vmd.NumMorph > 0)
+		{
+			std::unordered_map<std::string, std::vector<VMDMorph>> morphList;
+			for (auto& motion : vmd.MorphLists)
+				morphList[sjis2utf8(motion.name)].push_back(motion);
+
+			octoon::AnimationClip<float> clip;
+
+			for (auto it = morphList.begin(); it != morphList.end(); ++it)
+			{
+				auto& morphData = (*it).second;
+
+				octoon::Keyframes<float> keyframe;
+				keyframe.reserve(morphData.size());
+
+				for (auto& morph : morphData)
+					keyframe.emplace_back((float)morph.frame / 30.0f, morph.weight);
+
+				clip.setCurve((*it).first, octoon::AnimationCurve(std::move(keyframe)));
+			}
+
+			clips.push_back(std::move(clip));
+		}
+
 		return std::make_shared<Animation<float>>(std::move(clips));
 	}
 
@@ -465,6 +489,14 @@ namespace octoon
 		{
 			for (auto& curve : clip.curves)
 			{
+				if (curve.first == "LocalPosition.x" ||
+					curve.first == "LocalPosition.y" ||
+					curve.first == "LocalPosition.z" ||
+					curve.first == "LocalRotation")
+				{
+					continue;
+				}
+
 				std::vector<VMDMorph> morphData;
 
 				auto name = utf82sjis(curve.first);
@@ -504,6 +536,14 @@ namespace octoon
 
 		for (auto& clip : animation.clips)
 		{
+			if (!clip.hasCurve("LocalPosition.x") ||
+				!clip.hasCurve("LocalPosition.y") ||
+				!clip.hasCurve("LocalPosition.z") ||
+				!clip.hasCurve("LocalRotation"))
+			{
+				continue;
+			}
+
 			auto name = utf82sjis(clip.name);
 			auto& eyeX = clip.getCurve("LocalPosition.x");
 			auto& eyeY = clip.getCurve("LocalPosition.y");
@@ -551,6 +591,37 @@ namespace octoon
 
 			vmd.NumMotion = (VMD_uint32_t)vmd.MotionLists.size();
 		}
+
+		for (auto& clip : animation.clips)
+		{
+			for (auto& curve : clip.curves)
+			{
+				if (curve.first == "LocalPosition.x" ||
+					curve.first == "LocalPosition.y" ||
+					curve.first == "LocalPosition.z" ||
+					curve.first == "LocalRotation")
+				{
+					continue;
+				}
+
+				std::vector<VMDMorph> morphData;
+
+				auto name = utf82sjis(curve.first);
+
+				for (auto& keyframe : curve.second.frames)
+				{
+					VMDMorph morph;
+					std::memset(&morph, 0, sizeof(VMDMorph));
+					std::memcpy(&morph.name, name.data(), name.size());
+					morph.frame = (VMD_uint32_t)(keyframe.time * 30.0f);
+					morph.weight = keyframe.value.getFloat();
+
+					vmd.MorphLists.push_back(std::move(morph));
+				}
+			}
+		}
+
+		vmd.NumMorph = (VMD_uint32_t)vmd.MorphLists.size();
 
 		vmd.save(stream);
 	}

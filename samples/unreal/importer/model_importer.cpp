@@ -25,11 +25,13 @@ namespace unreal
 	void
 	ModelImporter::open(std::string indexPath) noexcept(false)
 	{
-		this->assertPath_ = indexPath;
 		this->initRenderScene();
 
-		if (std::filesystem::exists(assertPath_))
+		if (std::filesystem::exists(indexPath))
+		{
+			this->assertPath_ = indexPath;
 			this->initPackageIndices();
+		}
 	}
 
 	void

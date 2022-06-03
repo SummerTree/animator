@@ -733,46 +733,46 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MotionDock</name>
     <message>
-        <location filename="../views/motion_dock.cpp" line="21"/>
+        <location filename="../views/motion_dock.cpp" line="22"/>
         <source>Motion Library</source>
         <translation>动作库</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="26"/>
+        <location filename="../views/motion_dock.cpp" line="27"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="142"/>
+        <location filename="../views/motion_dock.cpp" line="139"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="142"/>
+        <location filename="../views/motion_dock.cpp" line="139"/>
         <source>Are you sure you want to delete this motion data?</source>
         <translation>确定要删除此动作数据吗?</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="166"/>
+        <location filename="../views/motion_dock.cpp" line="159"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="166"/>
+        <location filename="../views/motion_dock.cpp" line="159"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="177"/>
-        <location filename="../views/motion_dock.cpp" line="178"/>
-        <location filename="../views/motion_dock.cpp" line="227"/>
-        <location filename="../views/motion_dock.cpp" line="228"/>
+        <location filename="../views/motion_dock.cpp" line="166"/>
+        <location filename="../views/motion_dock.cpp" line="167"/>
+        <location filename="../views/motion_dock.cpp" line="216"/>
+        <location filename="../views/motion_dock.cpp" line="217"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="177"/>
-        <location filename="../views/motion_dock.cpp" line="227"/>
+        <location filename="../views/motion_dock.cpp" line="166"/>
+        <location filename="../views/motion_dock.cpp" line="216"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -1528,12 +1528,12 @@ $20 (Original cost $40)</source>
         <translation>相机</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="165"/>
+        <location filename="../views/view_dock.cpp" line="164"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="165"/>
+        <location filename="../views/view_dock.cpp" line="164"/>
         <source>Unsupported light type.</source>
         <translation>不支持的光源类型。</translation>
     </message>

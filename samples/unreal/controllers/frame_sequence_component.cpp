@@ -25,7 +25,6 @@ namespace unreal
 	bool
 	FrameSequenceComponent::create(std::string_view filepath) noexcept(false)
 	{
-		auto& context = this->getContext();
 		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
 		this->width_ = framebufferSize.x;
 		this->height_ = framebufferSize.y;
@@ -52,7 +51,7 @@ namespace unreal
 			{
 				std::uint8_t* img_ptr = const_cast<std::uint8_t*>(image.data());
 
-				for (std::int32_t y = 0; y < height_; y++)
+				for (std::uint32_t y = 0; y < height_; y++)
 				{
 					for (std::uint32_t x = 0; x < width_; x++)
 					{

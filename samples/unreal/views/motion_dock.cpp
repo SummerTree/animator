@@ -1,4 +1,5 @@
 #include "motion_dock.h"
+#include "../importer/motion_importer.h"
 #include "../widgets/draggable_list_widget.h"
 
 #include <qpainter.h>
@@ -56,13 +57,13 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		this->profile_->resourceModule->motionIndexList_ += [this](const nlohmann::json& json)
+		MotionImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
 		{
 			if (this->isVisible())
 			{
 				listWidget_->clear();
 
-				for (auto& uuid : this->profile_->resourceModule->motionIndexList_.getValue())
+				for (auto& uuid : MotionImporter::instance()->getIndexList().getValue())
 					this->addItem(uuid.get<nlohmann::json::string_t>());
 			}
 		};
@@ -79,11 +80,7 @@ namespace unreal
 	void 
 	MotionDock::addItem(std::string_view uuid) noexcept
 	{
-		auto motionComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
-		if (!motionComponent)
-			return;
-
-		auto package = motionComponent->getPackage(uuid);
+		auto package = MotionImporter::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -143,17 +140,13 @@ namespace unreal
 			{
 				if (clickedItem_)
 				{
-					auto motionComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
-					if (motionComponent)
+					auto uuid = clickedItem_->data(Qt::UserRole).toString();
+					if (MotionImporter::instance()->removePackage(uuid.toStdString()))
 					{
-						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						if (motionComponent->removePackage(uuid.toStdString()))
-						{
-							listWidget_->takeItem(listWidget_->row(clickedItem_));
-							delete clickedItem_;
-							clickedItem_ = listWidget_->currentItem();
-							motionComponent->save();
-						}
+						listWidget_->takeItem(listWidget_->row(clickedItem_));
+						delete clickedItem_;
+						clickedItem_ = listWidget_->currentItem();
+						MotionImporter::instance()->save();
 					}
 				}
 			}
@@ -166,10 +159,6 @@ namespace unreal
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("VMD Files (*.vmd)"));
 		if (!filepaths.isEmpty())
 		{
-			auto motionComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MotionComponent>();
-			if (!motionComponent)
-				return;
-
 			try
 			{
 				if (filepaths.size() > 1)
@@ -188,23 +177,23 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = motionComponent->importPackage(filepaths[i].toUtf8().toStdString());
+						auto package = MotionImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString());
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = motionComponent->importPackage(filepaths[0].toUtf8().toStdString());
+					auto package = MotionImporter::instance()->importPackage(filepaths[0].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				motionComponent->save();
+				MotionImporter::instance()->save();
 			}
 			catch (...)
 			{
-				motionComponent->save();
+				MotionImporter::instance()->save();
 			}
 		}
 	}
@@ -232,76 +221,70 @@ namespace unreal
 
 			QCoreApplication::processEvents();
 
-			auto motionComponent = behaviour->getComponent<MotionComponent>();
-			if (motionComponent)
+			auto uuid = item->data(Qt::UserRole).toString().toStdString();
+			auto package = MotionImporter::instance()->getPackage(uuid);
+
+			if (package["path"].is_string())
 			{
-				auto uuid = item->data(Qt::UserRole).toString().toStdString();
-				auto package = motionComponent->getPackage(uuid);
+				auto filepath = package["path"].get<nlohmann::json::string_t>();
 
-				if (package["path"].is_string())
+				octoon::io::ifstream stream;
+
+				if (stream.open(filepath))
 				{
-					auto filepath = package["path"].get<nlohmann::json::string_t>();
+					octoon::VMD vmd;
+					vmd.load(stream);
 
-					octoon::io::ifstream stream;
-
-					if (stream.open(filepath))
+					auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
+					if (selectedItem.has_value())
 					{
-						octoon::VMDLoader loader;
+						auto animation = MotionImporter::instance()->importMotion(filepath);
 
-						auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
-						if (selectedItem.has_value())
+						dialog.setValue(1);
+						QCoreApplication::processEvents();
+
+						if (animation && !animation->clips.empty())
 						{
-							auto animation = loader.loadMotion(stream);
+							auto model = selectedItem->object.lock();
+							auto animator = model->getComponent<octoon::AnimatorComponent>();
+							auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
 
-							dialog.setValue(1);
-							QCoreApplication::processEvents();
-
-							if (animation && !animation->clips.empty())
+							if (animator)
+								animator->setAnimation(std::move(animation));
+							else
 							{
-								auto model = selectedItem->object.lock();
-								auto animator = model->getComponent<octoon::AnimatorComponent>();
-								auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
-
-								if (animator)
-									animator->setAnimation(std::move(animation));
-								else
-								{
-									if (smr)
-										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getTransforms());
-									else
-										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
-								}
-
-								animator->setName(filepath);
-								animator->sample();
-
 								if (smr)
+									animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getTransforms());
+								else
+									animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
+							}
+
+							animator->setName(filepath);
+							animator->sample();
+
+							if (smr)
+							{
+								for (auto& transform : smr->getTransforms())
 								{
-									for (auto& transform : smr->getTransforms())
-									{
-										auto solver = transform->getComponent<octoon::CCDSolverComponent>();
-										if (solver)
-											solver->solve();
-									}
+									auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+									if (solver)
+										solver->solve();
 								}
 							}
 						}
-						else
-						{
-							octoon::VMD vmd;
-							vmd.load(stream);
-
-							if (vmd.NumCamera > 0)
-								profile_->cameraModule->animation = octoon::VMDLoader::loadCameraMotion(filepath);
-
-							dialog.setValue(1);
-							QCoreApplication::processEvents();
-						}
-
-						behaviour->getComponent<PlayerComponent>()->updateTimeLength();
-
-						dialog.setValue(2);
 					}
+					else
+					{
+						if (vmd.NumCamera > 0)
+							profile_->cameraModule->animation = MotionImporter::instance()->importCameraMotion(filepath);
+
+						dialog.setValue(1);
+						QCoreApplication::processEvents();
+					}
+
+					behaviour->getComponent<PlayerComponent>()->updateTimeLength();
+
+					dialog.setValue(2);
 				}
 			}
 		}
@@ -326,7 +309,7 @@ namespace unreal
 
 		listWidget_->clear();
 
-		for (auto& uuid : profile_->resourceModule->motionIndexList_.getValue())
+		for (auto& uuid : MotionImporter::instance()->getIndexList().getValue())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

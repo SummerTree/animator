@@ -29,7 +29,6 @@ namespace unreal
 		std::string cachePath;
 
 		MutableLiveData<nlohmann::json> hdriIndexList_;
-		MutableLiveData<nlohmann::json> motionIndexList_;
 	};
 }
 

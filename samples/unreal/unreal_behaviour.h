@@ -19,7 +19,6 @@
 #include "controllers/mark_component.h"
 #include "controllers/material_component.h"
 #include "controllers/sound_component.h"
-#include "controllers/motion_component.h"
 #include "controllers/offline_component.h"
 #include "controllers/player_component.h"
 #include "controllers/record_component.h"
@@ -100,7 +99,6 @@ namespace unreal
 		std::unique_ptr<FrameSequenceComponent> frameSequenceComponent_;
 		std::unique_ptr<MarkComponent> markComponent_;
 		std::unique_ptr<MaterialComponent> materialComponent_;
-		std::unique_ptr<MotionComponent> motionComponent_;
 		std::unique_ptr<SelectorComponent> selectorComponent_;
 		std::unique_ptr<GridComponent> gridComponent_;
 		std::unique_ptr<GizmoComponent> gizmoComponent_;

@@ -65,6 +65,11 @@ namespace octoon
 				timeLength = std::max(it.second.timeLength, timeLength);
 		}
 
+		bool hasCurve(const char* _name) const noexcept
+		{
+			return this->curves.find(_name) != this->curves.end();
+		}
+
 		AnimationCurve<_Time>& getCurve(const char* _name) noexcept
 		{
 			return this->curves.at(_name);

@@ -694,46 +694,46 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MotionDock</name>
     <message>
-        <location filename="../views/motion_dock.cpp" line="21"/>
+        <location filename="../views/motion_dock.cpp" line="22"/>
         <source>Motion Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="26"/>
+        <location filename="../views/motion_dock.cpp" line="27"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="142"/>
+        <location filename="../views/motion_dock.cpp" line="139"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="142"/>
+        <location filename="../views/motion_dock.cpp" line="139"/>
         <source>Are you sure you want to delete this motion data?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="166"/>
+        <location filename="../views/motion_dock.cpp" line="159"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="166"/>
+        <location filename="../views/motion_dock.cpp" line="159"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="177"/>
-        <location filename="../views/motion_dock.cpp" line="178"/>
-        <location filename="../views/motion_dock.cpp" line="227"/>
-        <location filename="../views/motion_dock.cpp" line="228"/>
+        <location filename="../views/motion_dock.cpp" line="166"/>
+        <location filename="../views/motion_dock.cpp" line="167"/>
+        <location filename="../views/motion_dock.cpp" line="216"/>
+        <location filename="../views/motion_dock.cpp" line="217"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="177"/>
-        <location filename="../views/motion_dock.cpp" line="227"/>
+        <location filename="../views/motion_dock.cpp" line="166"/>
+        <location filename="../views/motion_dock.cpp" line="216"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1415,12 +1415,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="165"/>
+        <location filename="../views/view_dock.cpp" line="164"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="165"/>
+        <location filename="../views/view_dock.cpp" line="164"/>
         <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>
