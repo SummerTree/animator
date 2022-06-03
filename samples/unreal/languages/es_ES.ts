@@ -674,15 +674,20 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/model_dock.cpp" line="176"/>
         <location filename="../views/model_dock.cpp" line="177"/>
-        <location filename="../views/model_dock.cpp" line="225"/>
         <location filename="../views/model_dock.cpp" line="226"/>
+        <location filename="../views/model_dock.cpp" line="227"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/model_dock.cpp" line="176"/>
-        <location filename="../views/model_dock.cpp" line="225"/>
+        <location filename="../views/model_dock.cpp" line="226"/>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/model_dock.cpp" line="229"/>
+        <source>Unknown-name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
