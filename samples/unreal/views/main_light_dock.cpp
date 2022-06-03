@@ -382,7 +382,8 @@ namespace unreal
 	bool
 	MainLightDock::eventFilter(QObject* watched, QEvent* event)
 	{
-		if (event->type() != QEvent::Paint)
+		if (event->type() != QEvent::Paint &&
+			event->type() != QEvent::Resize)
 		{
 			if (profile_->playerModule->isPlaying)
 			{
