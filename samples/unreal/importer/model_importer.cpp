@@ -220,6 +220,9 @@ namespace unreal
 			{
 				auto packagePath = std::filesystem::path(assertPath_).append(uuid).u16string();
 
+				for (auto& it : std::filesystem::recursive_directory_iterator(packagePath))
+					std::filesystem::permissions(it, std::filesystem::perms::owner_write);
+
 				std::filesystem::remove_all(packagePath);
 
 				auto package = this->packageList_.find(std::string(uuid));
