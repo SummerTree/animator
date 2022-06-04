@@ -78,21 +78,14 @@ namespace unreal
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
 		{
 			nlohmann::json animationJson = MotionImporter::instance()->createMetadata(this->animation.getValue());
-			if (animationJson.is_object())
+			if (!animationJson.is_object())
 			{
-				writer["animation"] = std::move(animationJson);
-			}
-			else
-			{
-				auto root = std::string(path);
-				root = root.substr(0, root.find_last_of('/')) + "/Assets/" + this->animation.getValue()->name + ".vmd";
-
+				auto root = std::string(path).substr(0, path.find_last_of('/')) + "/Assets/" + this->animation.getValue()->name + ".vmd";
 				octoon::VMDLoader::saveCameraMotion(root, *this->animation.getValue());
-
 				animationJson["path"] = root;
-
-				writer["animation"] = std::move(animationJson);
 			}
+
+			writer["animation"] = std::move(animationJson);
 		}
 	}
 

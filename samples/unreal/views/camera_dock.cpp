@@ -1,4 +1,5 @@
 #include "camera_dock.h"
+#include "../importer/motion_importer.h"
 #include <octoon/io/fstream.h>
 #include <octoon/vmd_loader.h>
 #include <qapplication.h>
@@ -97,16 +98,6 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		profile_->cameraModule->camera += [this](const octoon::GameObjectPtr& camera) {
-			if (camera)
-			{
-				if (camera->getComponent<octoon::AnimatorComponent>())
-					unloadButton_->setEnabled(true);
-				else
-					unloadButton_->setEnabled(false);
-			}
-		};
-
 		profile_->cameraModule->fov += [this](float fov) {
 			this->fovSpinbox_->blockSignals(true);
 			this->fovSpinbox_->setValue(fov);
@@ -129,6 +120,13 @@ namespace unreal
 			this->focalLengthSpinbox_->blockSignals(true);
 			this->focalLengthSpinbox_->setValue(fov);
 			this->focalLengthSpinbox_->blockSignals(false);
+		};
+
+		profile_->cameraModule->animation += [this](const std::shared_ptr<octoon::Animation<float>>& animation) {
+			if (animation)
+				unloadButton_->setEnabled(true);
+			else
+				unloadButton_->setEnabled(false);
 		};
 
 		connect(focusTargetButton_, SIGNAL(mouseMoveSignal()), this, SLOT(onUpdateTarget()));
@@ -230,8 +228,11 @@ namespace unreal
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
 			if (!filepath.isEmpty())
 			{
-				this->profile_->cameraModule->animation = octoon::VMDLoader::loadCameraMotion(filepath.toUtf8().toStdString());
-				unloadButton_->setEnabled(true);
+				this->profile_->cameraModule->animation = MotionImporter::instance()->importCameraMotion(filepath.toUtf8().toStdString());
+
+				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+				if (behaviour)
+					behaviour->getComponent<PlayerComponent>()->updateTimeLength();
 			}
 		}
 		catch (const std::exception& e)
@@ -243,14 +244,11 @@ namespace unreal
 	void
 	CameraDock::onUnloadAnimation()
 	{
+		this->profile_->cameraModule->animation = nullptr;
+
 		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 		if (behaviour)
-		{
-			behaviour->getComponent<CameraComponent>()->removeAnimation();
 			behaviour->getComponent<PlayerComponent>()->updateTimeLength();
-
-			unloadButton_->setEnabled(false);
-		}
 	}
 
 	void
