@@ -131,38 +131,29 @@ namespace unreal
 		return this->packageList_[std::string(uuid)];
 	}
 
-	bool
-	MotionImporter::removePackage(std::string_view uuid) noexcept
+	void
+	MotionImporter::removePackage(std::string_view uuid) noexcept(false)
 	{
-		try
+		auto& indexList = indexList_.getValue();
+
+		for (auto it = indexList.begin(); it != indexList.end(); ++it)
 		{
-			auto& indexList = indexList_.getValue();
-
-			for (auto it = indexList.begin(); it != indexList.end(); ++it)
+			if (uuid == (*it).get<nlohmann::json::string_t>())
 			{
-				if (uuid == (*it).get<nlohmann::json::string_t>())
-				{
-					auto packagePath = std::filesystem::path(assertPath_).append(uuid);
+				auto packagePath = std::filesystem::path(assertPath_).append(uuid);
 
-					for (auto& it : std::filesystem::recursive_directory_iterator(packagePath))
-						std::filesystem::permissions(it, std::filesystem::perms::owner_write);
+				for (auto& it : std::filesystem::recursive_directory_iterator(packagePath))
+					std::filesystem::permissions(it, std::filesystem::perms::owner_write);
 
-					std::filesystem::remove_all(packagePath);
+				std::filesystem::remove_all(packagePath);
 
-					auto package = this->packageList_.find(std::string(uuid));
-					if (package != this->packageList_.end())
-						this->packageList_.erase(package);
+				auto package = this->packageList_.find(std::string(uuid));
+				if (package != this->packageList_.end())
+					this->packageList_.erase(package);
 
-					indexList.erase(it);
-					return true;
-				}
+				indexList.erase(it);
 			}
 		}
-		catch (...)
-		{
-		}
-
-		return false;
 	}
 
 	std::shared_ptr<octoon::Animation<float>>

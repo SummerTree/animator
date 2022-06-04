@@ -30,7 +30,7 @@ namespace unreal
 		nlohmann::json importPackage(std::string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		octoon::GameObjectPtr loadPackage(const nlohmann::json& package) noexcept(false);
-		bool removePackage(std::string_view uuid) noexcept(false);
+		void removePackage(std::string_view uuid) noexcept(false);
 
 		octoon::GameObjectPtr loadMetaData(const nlohmann::json& metadata) noexcept;
 		nlohmann::json createMetadata(const octoon::GameObjectPtr& gameObject) const noexcept;

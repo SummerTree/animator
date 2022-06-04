@@ -209,7 +209,7 @@ namespace unreal
 		return nullptr;
 	}
 
-	bool
+	void
 	ModelImporter::removePackage(std::string_view uuid) noexcept(false)
 	{
 		auto& indexList = this->modelIndexList_.getValue();
@@ -230,11 +230,8 @@ namespace unreal
 					this->packageList_.erase(package);
 
 				indexList.erase(it);
-				return true;
 			}
 		}
-
-		return false;
 	}
 
 	octoon::GameObjectPtr

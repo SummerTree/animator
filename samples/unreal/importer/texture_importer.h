@@ -26,7 +26,7 @@ namespace unreal
 		nlohmann::json importPackage(std::string_view path, bool blockSignals = false) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		std::shared_ptr<octoon::GraphicsTexture> loadPackage(const nlohmann::json& package) noexcept(false);
-		bool removePackage(std::string_view uuid) noexcept;
+		void removePackage(std::string_view uuid) noexcept(false);
 
 		std::shared_ptr<octoon::GraphicsTexture> loadMetaData(const nlohmann::json& metadata) noexcept;
 		nlohmann::json createMetadata(const std::shared_ptr<octoon::GraphicsTexture>& texture) const noexcept;
