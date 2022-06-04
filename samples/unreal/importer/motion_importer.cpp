@@ -86,8 +86,8 @@ namespace unreal
 
 			nlohmann::json item;
 			item["uuid"] = uuid;
-			item["name"] = filename.substr(0, filename.find_last_of('.'));
-			item["path"] = motionPath.u8string();
+			item["name"] = (char*)filename.substr(0, filename.find_last_of('.')).c_str();
+			item["path"] = (char*)motionPath.u8string().c_str();
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)

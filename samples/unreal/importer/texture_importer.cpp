@@ -86,9 +86,9 @@ namespace unreal
 
 			nlohmann::json item;
 			item["uuid"] = uuid;
-			item["name"] = std::filesystem::path(filepath).filename().u8string();
-			item["preview"] = previewPath.u8string();
-			item["path"] = hdriPath.u8string();
+			item["name"] = (char*)std::filesystem::path(filepath).filename().u8string().c_str();
+			item["preview"] = (char*)previewPath.u8string().c_str();
+			item["path"] = (char*)hdriPath.u8string().c_str();
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)

@@ -141,8 +141,8 @@ namespace unreal
 
 				nlohmann::json item;
 				item["uuid"] = uuid;
-				item["name"] = filename.u8string();
-				item["path"] = modelPath.u8string();
+				item["name"] = (char*)filename.u8string().c_str();
+				item["path"] = (char*)modelPath.u8string().c_str();
 				item["preview"] = writePreview(geometry, bound, rootPath);
 				item["bound"][0] = { minBounding.x, minBounding.y, minBounding.z };
 				item["bound"][1] = { maxBounding.x, maxBounding.y, maxBounding.z };
