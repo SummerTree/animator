@@ -177,14 +177,14 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = MotionImporter::instance()->importPackage((char8_t*)filepaths[i].toUtf8().data());
+						auto package = MotionImporter::instance()->importPackage((char8_t*)filepaths[i].toUtf8().data(), true);
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = MotionImporter::instance()->importPackage((char8_t*)filepaths[0].toUtf8().data());
+					auto package = MotionImporter::instance()->importPackage((char8_t*)filepaths[0].toUtf8().data(), true);
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}

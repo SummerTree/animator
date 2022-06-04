@@ -67,7 +67,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	MotionImporter::importPackage(std::u8string_view filepath) noexcept(false)
+	MotionImporter::importPackage(std::u8string_view filepath, bool blockSignals) noexcept(false)
 	{
 		std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes((char*)std::u8string(filepath).data());
 
@@ -98,7 +98,9 @@ namespace unreal
 			}
 
 			indexList_.getValue().push_back(uuid);
-			indexList_.submit();
+
+			if (!blockSignals)
+				indexList_.submit();
 
 			return item;
 		}
@@ -137,7 +139,7 @@ namespace unreal
 
 			for (auto it = indexList.begin(); it != indexList.end(); ++it)
 			{
-				if ((*it).get<nlohmann::json::string_t>() == uuid)
+				if (uuid == (*it).get<nlohmann::json::string_t>())
 				{
 					auto packagePath = std::filesystem::path(assertPath_).append(uuid);
 					std::filesystem::remove_all(packagePath);
