@@ -4,6 +4,7 @@
 #include "../importer/model_importer.h"
 #include "../importer/motion_importer.h"
 #include "../importer/texture_importer.h"
+#include "../importer/material_importer.h"
 
 #include <filesystem>
 
@@ -108,7 +109,7 @@ namespace unreal
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
 			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")
-			materialComponent_->importPackage(path);
+			MaterialImporter::instance()->importPackage(path);
 		else if (ext == ".vmd")
 			MotionImporter::instance()->importPackage((char8_t*)path.data());
 		else if (ext == ".hdr")
@@ -264,6 +265,7 @@ namespace unreal
 		ModelImporter::instance()->open(profile_->resourceModule->modelPath);
 		MotionImporter::instance()->open(profile_->resourceModule->motionPath);
 		TextureImporter::instance()->open(profile_->resourceModule->hdriPath);
+		MaterialImporter::instance()->open(profile_->resourceModule->materialPath);
 
 		recordComponent_ = std::make_unique<RecordComponent>();
 		entitiesComponent_ = std::make_unique<EntitiesComponent>();
@@ -277,7 +279,7 @@ namespace unreal
 		h265Component_ = std::make_unique<H265Component>();
 		frameSequenceComponent_ = std::make_unique<FrameSequenceComponent>();
 		markComponent_ = std::make_unique<MarkComponent>();
-		materialComponent_ = std::make_unique<MaterialImporter>();
+		materialComponent_ = std::make_unique<MaterialComponent>();
 		selectorComponent_ = std::make_unique<SelectorComponent>();
 		gizmoComponent_ = std::make_unique<GizmoComponent>();
 		gridComponent_ = std::make_unique<GridComponent>();
@@ -377,6 +379,7 @@ namespace unreal
 		ModelImporter::instance()->close();
 		MotionImporter::instance()->close();
 		TextureImporter::instance()->close();
+		MaterialImporter::instance()->close();
 	}
 
 	void

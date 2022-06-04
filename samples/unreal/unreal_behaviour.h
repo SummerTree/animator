@@ -21,8 +21,7 @@
 #include "controllers/player_component.h"
 #include "controllers/record_component.h"
 #include "controllers/selector_component.h"
-
-#include "importer/material_component.h"
+#include "controllers/material_component.h"
 
 #include <octoon/octoon.h>
 
@@ -98,7 +97,7 @@ namespace unreal
 		std::unique_ptr<H265Component> h265Component_;
 		std::unique_ptr<FrameSequenceComponent> frameSequenceComponent_;
 		std::unique_ptr<MarkComponent> markComponent_;
-		std::unique_ptr<MaterialImporter> materialComponent_;
+		std::unique_ptr<MaterialComponent> materialComponent_;
 		std::unique_ptr<SelectorComponent> selectorComponent_;
 		std::unique_ptr<GridComponent> gridComponent_;
 		std::unique_ptr<GizmoComponent> gizmoComponent_;

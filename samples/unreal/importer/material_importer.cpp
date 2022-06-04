@@ -1,4 +1,4 @@
-#include "material_component.h"
+#include "material_importer.h"
 
 #include <octoon/mdl_loader.h>
 #include <octoon/PMREM_loader.h>
@@ -18,6 +18,8 @@
 
 namespace unreal
 {
+	OctoonImplementSingleton(MaterialImporter)
+
 	MaterialImporter::MaterialImporter() noexcept
 		: previewWidth_(200)
 		, previewHeight_(200)
@@ -26,6 +28,28 @@ namespace unreal
 
 	MaterialImporter::~MaterialImporter() noexcept
 	{
+	}
+
+	void
+	MaterialImporter::open(std::string indexPath) noexcept(false)
+	{
+		this->initMaterialScene();
+
+		if (std::filesystem::exists(indexPath))
+		{
+			this->assertPath_ = indexPath;
+			this->initPackageIndices();
+		}
+	}
+
+	void
+	MaterialImporter::close() noexcept
+	{
+		camera_.reset();
+		geometry_.reset();
+		directionalLight_.reset();
+		environmentLight_.reset();
+		scene_.reset();
 	}
 
 	nlohmann::json
@@ -98,9 +122,9 @@ namespace unreal
 			for (auto& mat : loader.getMaterials())
 			{
 				auto uuid = octoon::make_guid();
-				auto outputPath = std::filesystem::path(this->getModel()->materialPath).append(uuid);
+				auto outputPath = std::filesystem::path(assertPath_).append(uuid);
 
-				std::filesystem::create_directory(this->getModel()->materialPath);
+				std::filesystem::create_directory(assertPath_);
 				std::filesystem::create_directory(outputPath);
 
 				nlohmann::json item;
@@ -176,7 +200,6 @@ namespace unreal
 			}
 
 			this->save();
-			this->sendMessage("editor:material:change");
 
 			return items;
 		}
@@ -202,7 +225,7 @@ namespace unreal
 		auto it = this->packageList_.find(std::string(uuid));
 		if (it == this->packageList_.end())
 		{
-			std::ifstream ifs(std::filesystem::path(this->getModel()->materialPath).append(uuid).append("package.json"));
+			std::ifstream ifs(std::filesystem::path(assertPath_).append(uuid).append("package.json"));
 			if (ifs)
 			{
 				auto package = nlohmann::json::parse(ifs);
@@ -218,6 +241,23 @@ namespace unreal
 		return this->packageList_[std::string(uuid)];
 	}
 
+	std::shared_ptr<octoon::Material>
+	MaterialImporter::loadPackage(const nlohmann::json& package) noexcept(false)
+	{
+		if (package["path"].is_string())
+		{
+			auto path = package["path"].get<nlohmann::json::string_t>();
+			auto material = octoon::MeshStandardMaterial::create();
+			if (material)
+			{
+				materialList_[material] = package;
+				return material;
+			}
+		}
+
+		return nullptr;
+	}
+
 	bool
 	MaterialImporter::removePackage(std::string_view uuid) noexcept
 	{
@@ -227,7 +267,7 @@ namespace unreal
 			{
 				if ((*it).get<nlohmann::json::string_t>() == uuid)
 				{
-					auto packagePath = std::filesystem::path(this->getModel()->hdriPath).append(uuid);
+					auto packagePath = std::filesystem::path(assertPath_).append(uuid);
 					std::filesystem::remove_all(packagePath);
 
 					auto package = this->packageList_.find(std::string(uuid));
@@ -244,6 +284,44 @@ namespace unreal
 		}
 
 		return false;
+	}
+
+	bool
+	MaterialImporter::addMaterial(const std::shared_ptr<octoon::Material>& mat)
+	{
+		if (this->materialSets_.find((void*)mat.get()) == this->materialSets_.end())
+		{
+			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
+			auto uuid = octoon::make_guid();
+
+			auto& color = standard->getColor();
+			auto& colorMap = standard->getColorMap();
+
+			nlohmann::json item;
+			item["uuid"] = uuid;
+			item["name"] = mat->getName();
+			item["color"] = { color.x, color.y, color.z };
+
+			if (colorMap)
+				item["colorMap"] = colorMap->getTextureDesc().getName();
+
+			this->sceneList_ += uuid;
+			this->packageList_[uuid] = item;
+
+			this->materials_[uuid] = standard;
+			this->materialSets_.insert((void*)mat.get());
+			this->materialsRemap_[mat] = uuid;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	std::string
+	MaterialImporter::getSceneMetadate(const std::shared_ptr<octoon::Material>& material) const noexcept(false)
+	{
+		return materialsRemap_.at(material);
 	}
 
 	const std::shared_ptr<octoon::MeshStandardMaterial>
@@ -443,36 +521,51 @@ namespace unreal
 		}
 	}
 
-	bool
-	MaterialImporter::addMaterial(const std::shared_ptr<octoon::Material>& mat)
+	std::shared_ptr<octoon::Material>
+	MaterialImporter::loadMetaData(const nlohmann::json& metadata) noexcept
 	{
-		if (this->materialSets_.find((void*)mat.get()) == this->materialSets_.end())
+		if (metadata.find("uuid") != metadata.end())
 		{
-			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
-			auto uuid = octoon::make_guid();
+			auto uuid = metadata["uuid"].get<nlohmann::json::string_t>();
+			auto package = this->getPackage(uuid);
+			if (package.is_object())
+				return this->loadPackage(package);
+		
+		}
+		/*if (metadata.find("path") != metadata.end())
+		{
+			auto path = metadata["path"].get<nlohmann::json::string_t>();
+			return this->importPackage(path);
+		}*/
 
-			auto& color = standard->getColor();
-			auto& colorMap = standard->getColorMap();
+		return nullptr;
+	}
 
-			nlohmann::json item;
-			item["uuid"] = uuid;
-			item["name"] = mat->getName();
-			item["color"] = { color.x, color.y, color.z };
+	nlohmann::json
+	MaterialImporter::createMetadata(const std::shared_ptr<octoon::Material>& material) const noexcept
+	{
+		auto it = materialList_.find(material);
+		if (it != materialList_.end())
+		{
+			auto& package = (*it).second;
 
-			if (colorMap)
-				item["colorMap"] = colorMap->getTextureDesc().getName();
+			nlohmann::json json;
+			json["name"] = package["name"];
+			json["uuid"] = package["uuid"].get<nlohmann::json::string_t>();
 
-			this->sceneList_ += uuid;
-			this->packageList_[uuid] = item;
+			return json;
+		}
+		auto path = materialPathList_.find(material);
+		if (path != materialPathList_.end())
+		{
+			nlohmann::json json;
+			json["path"] = (*path).second;
+			json["name"] = std::filesystem::path((*path).second).filename().string();
 
-			this->materials_[uuid] = standard;
-			this->materialSets_.insert((void*)mat.get());
-			this->materialsRemap_[mat] = uuid;
-
-			return true;
+			return json;
 		}
 
-		return false;
+		return nlohmann::json();
 	}
 
 	void
@@ -482,7 +575,7 @@ namespace unreal
 
 		if (scene_)
 		{
-			auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
+			auto renderer = octoon::Renderer::instance();
 			if (renderer)
 			{
 				geometry_->setMaterial(material);
@@ -532,7 +625,7 @@ namespace unreal
 	void
 	MaterialImporter::initMaterialScene() noexcept(false)
 	{
-		auto renderer = this->getFeature<octoon::VideoFeature>()->getRenderer();
+		auto renderer = octoon::Renderer::instance();
 		if (renderer)
 		{
 			std::uint32_t width = previewWidth_ * 2;
@@ -601,7 +694,7 @@ namespace unreal
 	void
 	MaterialImporter::initPackageIndices() noexcept(false)
 	{
-		std::ifstream indexStream(this->getModel()->materialPath + "/index.json");
+		std::ifstream indexStream(assertPath_ + "/index.json");
 		if (indexStream)
 			this->indexList_ = nlohmann::json::parse(indexStream);
 
@@ -611,13 +704,13 @@ namespace unreal
 
 		for (auto& it : this->indexList_)
 		{
-			if (!std::filesystem::exists(std::filesystem::path(this->getModel()->materialPath).append(it.get<nlohmann::json::string_t>())))
+			if (!std::filesystem::exists(std::filesystem::path(assertPath_).append(it.get<nlohmann::json::string_t>())))
 				needUpdateIndexFile = true;
 			else
 				indexSet.insert(it.get<nlohmann::json::string_t>());
 		}
 
-		for (auto& it : std::filesystem::directory_iterator(this->getModel()->materialPath))
+		for (auto& it : std::filesystem::directory_iterator(assertPath_))
 		{
 			if (std::filesystem::is_directory(it))
 			{
@@ -648,71 +741,16 @@ namespace unreal
 	}
 
 	void
-	MaterialImporter::save() const noexcept
+	MaterialImporter::save() const noexcept(false)
 	{
-		try
+		if (!std::filesystem::exists(assertPath_))
+			std::filesystem::create_directory(assertPath_);
+
+		std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
+		if (ifs)
 		{
-			if (!std::filesystem::exists(this->getModel()->materialPath))
-				std::filesystem::create_directory(this->getModel()->materialPath);
-
-			std::ofstream ifs(this->getModel()->materialPath + "/index.json", std::ios_base::binary);
-			if (ifs)
-			{
-				auto data = indexList_.dump();
-				ifs.write(data.c_str(), data.size());
-			}
+			auto data = indexList_.dump();
+			ifs.write(data.c_str(), data.size());
 		}
-		catch (...)
-		{
-		}
-	}
-
-	void
-	MaterialImporter::onEnable() noexcept(false)
-	{
-		this->initMaterialScene();
-
-		if (std::filesystem::exists(this->getModel()->materialPath))		
-			this->initPackageIndices();
-		else
-			std::filesystem::create_directory(this->getModel()->materialPath);
-
-		this->addMessageListener("editor:selected", [this](const std::any& data) {
-			if (data.has_value())
-			{
-				auto hit = std::any_cast<octoon::RaycastHit>(data);
-				if (!hit.object.lock())
-					return;
-
-				octoon::Materials materials;
-				auto renderComponent = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
-				if (renderComponent)
-					materials = renderComponent->getMaterials();
-				else
-				{
-					auto smr = hit.object.lock()->getComponent<octoon::SkinnedMeshRendererComponent>();
-					if (smr)
-						materials = smr->getMaterials();
-				}
-
-				bool dirty = false;
-
-				for (auto& mat : materials)
-				{
-					dirty |= this->addMaterial(mat);
-				}
-
-				if (dirty)
-					this->sendMessage("editor:material:change");
-
-				auto selectedMaterial_ = this->materialsRemap_[materials[hit.mesh]];
-				this->sendMessage("editor:material:selected", selectedMaterial_);
-			}
-		});
-	}
-
-	void
-	MaterialImporter::onDisable() noexcept
-	{
 	}
 }

@@ -1,4 +1,5 @@
 #include "material_dock.h"
+#include "../importer/material_importer.h"
 #include "../widgets/draggable_list_widget.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
@@ -106,11 +107,7 @@ namespace unreal
 	void 
 	MaterialListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialImporter>();
-		if (!materialComponent)
-			return;
-
-		auto package = materialComponent->getPackage(uuid);
+		auto package = MaterialImporter::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -158,10 +155,6 @@ namespace unreal
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("NVIDIA MDL Files (*.mdl)"));
 		if (!filepaths.isEmpty())
 		{
-			auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialImporter>();
-			if (!materialComponent)
-				return;
-
 			try
 			{
 				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
@@ -178,16 +171,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto list = materialComponent->importPackage(filepaths[i].toUtf8().toStdString());
+					auto list = MaterialImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString());
 					for (auto& it : list)
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}
 
-				materialComponent->save();
+				MaterialImporter::instance()->save();
 			}
 			catch (...)
 			{
-				materialComponent->save();
+				MaterialImporter::instance()->save();
 			}
 		}
 	}
@@ -242,8 +235,7 @@ namespace unreal
 		{
 			mainWidget_->clear();
 
-			auto materialComponent = behaviour->getComponent<MaterialImporter>();
-			for (auto& uuid : materialComponent->getIndexList())
+			for (auto& uuid : MaterialImporter::instance()->getIndexList())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}
 	}
@@ -1014,18 +1006,18 @@ namespace unreal
 	void
 	MaterialEditWindow::itemSelected(QListWidgetItem* item)
 	{
-		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialImporter>();
+		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialComponent>();
 		if (materialComponent)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
 
-			auto package = materialComponent->getPackage(uuid);
+			auto package = MaterialImporter::instance()->getPackage(uuid);
 			if (!package.is_null())
 			{
-				auto material = materialComponent->getMaterial(uuid);
+				auto material = MaterialImporter::instance()->getMaterial(uuid);
 				if (material)
 				{
-					materialComponent->addMaterial(this->material_->clone());
+					MaterialImporter::instance()->addMaterial(this->material_->clone());
 
 					this->material_->copy(*material);
 
@@ -1360,14 +1352,10 @@ namespace unreal
 		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 		if (behaviour && this->material_)
 		{
-			auto materialComponent = behaviour->getComponent<MaterialImporter>();
-			if (materialComponent)
-			{
-				QPixmap pixmap;
-				materialComponent->createMaterialPreview(this->material_, pixmap, previewButton_->width(), previewButton_->height());
-				this->previewButton_->setIcon(pixmap);
-				this->previewButton_->setIconSize(previewButton_->size());
-			}
+			QPixmap pixmap;
+			MaterialImporter::instance()->createMaterialPreview(this->material_, pixmap, previewButton_->width(), previewButton_->height());
+			this->previewButton_->setIcon(pixmap);
+			this->previewButton_->setIconSize(previewButton_->size());
 		}
 	}
 
@@ -1765,17 +1753,13 @@ namespace unreal
 			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
 			if (selectedItem)
 			{
-				auto materialComponent = behaviour->getComponent<MaterialImporter>();
-				if (materialComponent)
-				{
-					auto hit = selectedItem.value();
-					auto uuid = item->data(Qt::UserRole).toString().toStdString();
-					auto material = materialComponent->getMaterial(uuid);
+				auto hit = selectedItem.value();
+				auto uuid = item->data(Qt::UserRole).toString().toStdString();
+				auto material = MaterialImporter::instance()->getMaterial(uuid);
 
-					auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
-					if (meshRenderer)
-						meshRenderer->setMaterial(material, hit.mesh);
-				}
+				auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
+				if (meshRenderer)
+					meshRenderer->setMaterial(material, hit.mesh);
 			}
 		}
 	}
@@ -1811,18 +1795,14 @@ namespace unreal
 				mainWidget_->addItem(item);
 				mainWidget_->setItemWidget(item, widget);
 
-				auto materialComponent = behaviour_->getComponent<unreal::UnrealBehaviour>()->getComponent<MaterialImporter>();
-				if (!materialComponent)
-					return;
-
-				auto material = materialComponent->getMaterial(package["uuid"].get<nlohmann::json::string_t>());
+				auto material = MaterialImporter::instance()->getMaterial(package["uuid"].get<nlohmann::json::string_t>());
 				if (material)
 				{
 					QFontMetrics metrics(nameLabel->font());
 					nameLabel->setText(metrics.elidedText(QString::fromStdString(material->getName()), Qt::ElideRight, imageLabel->width()));
 
 					QPixmap pixmap;
-					materialComponent->createMaterialPreview(material, pixmap, imageLabel->width(), imageLabel->height());
+					MaterialImporter::instance()->createMaterialPreview(material, pixmap, imageLabel->width(), imageLabel->height());
 					imageLabel->setPixmap(pixmap);
 					imageLabel->setToolTip(QString::fromStdString(material->getName()));
 				}
@@ -1853,30 +1833,18 @@ namespace unreal
 	void 
 	MaterialListPanel::addItem(std::string_view uuid) noexcept
 	{
-		auto materialComponent = behaviour_->getComponent<UnrealBehaviour>()->getComponent<MaterialImporter>();
-		if (materialComponent)
-		{
-			auto package = materialComponent->getPackage(uuid);
-			if (package.is_object())
-				this->addItem(package);
-		}
+		auto package = MaterialImporter::instance()->getPackage(uuid);
+		if (package.is_object())
+			this->addItem(package);
 	}
 
 	void
 	MaterialListPanel::updateItemList()
 	{
-		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-		if (behaviour)
-		{
-			auto materialComponent = behaviour->getComponent<MaterialImporter>();
-			if (materialComponent)
-			{
-				mainWidget_->clear();
+		mainWidget_->clear();
 
-				for (auto& it : materialComponent->getSceneList())
-					this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
-			}
-		}
+		for (auto& it : MaterialImporter::instance()->getSceneList())
+			this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
 	}
 
 	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false)
@@ -1980,11 +1948,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
 			{
-				auto materialComponent = behaviour->getComponent<MaterialImporter>();
-				if (!materialComponent)
-					return;
-
-				auto material = materialComponent->getMaterial(item->data(Qt::UserRole).toString().toStdString());
+				auto material = MaterialImporter::instance()->getMaterial(item->data(Qt::UserRole).toString().toStdString());
 				if (material)
 				{
 					this->setWindowTitle(tr("Material Properties"));

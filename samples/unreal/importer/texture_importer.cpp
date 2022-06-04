@@ -4,6 +4,7 @@
 #include <octoon/runtime/uuid.h>
 #include <fstream>
 #include <filesystem>
+#include <qpixmap.h>
 
 namespace unreal
 {

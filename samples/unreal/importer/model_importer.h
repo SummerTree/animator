@@ -45,9 +45,10 @@ namespace unreal
 		void createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, QPixmap& pixmap, int w, int h);
 
 	private:
+		std::string assertPath_;
+
 		std::uint32_t previewWidth_;
 		std::uint32_t previewHeight_;
-		std::string assertPath_;
 
 		MutableLiveData<nlohmann::json> modelIndexList_;
 
