@@ -469,16 +469,15 @@ namespace unreal
 		{
 			if (texture && this->isVisible())
 			{
-				auto texel = texture;
 				auto textureMetadata = TextureImporter::instance()->createMetadata(texture);
 				auto name = textureMetadata["name"].get<nlohmann::json::string_t>();
-				if (texel && thumbnailPath->toolTip() != QString::fromStdString(name))
+				if (texture && thumbnailPath->toolTip() != QString::fromStdString(name))
 				{
-					auto width = texel->getTextureDesc().getWidth();
-					auto height = texel->getTextureDesc().getHeight();
+					auto width = texture->getTextureDesc().getWidth();
+					auto height = texture->getTextureDesc().getHeight();
 					float* data_ = nullptr;
 
-					if (texel->map(0, 0, width, height, 0, (void**)&data_))
+					if (texture->map(0, 0, width, height, 0, (void**)&data_))
 					{
 						auto size = width * height * 3;
 						auto pixels = std::make_unique<std::uint8_t[]>(size);
@@ -490,7 +489,7 @@ namespace unreal
 							pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
 						}
 
-						texel->unmap();
+						texture->unmap();
 
 						QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
 						auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));

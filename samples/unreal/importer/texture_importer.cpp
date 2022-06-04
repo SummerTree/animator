@@ -219,7 +219,7 @@ namespace unreal
 		{
 			nlohmann::json json;
 			json["path"] = (*path).second;
-			json["name"] = (*path).second.substr((*path).second.find_last_of(".") + 1);
+			json["name"] = std::filesystem::path((*path).second).filename().string();
 
 			return json;
 		}
