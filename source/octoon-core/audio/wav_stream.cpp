@@ -24,7 +24,7 @@ namespace octoon
 	bool
 	WavStreamBuffer::open(std::string_view filepath) noexcept(false)
 	{
-		io::ifstream stream(filepath);
+		io::ifstream stream((std::string)filepath);
 		if (stream)
 		{
 			auto size = stream.size();

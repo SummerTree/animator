@@ -92,7 +92,7 @@ namespace octoon
 		callbacks.close_func = &ogg_stream_close;
 
 		pos_ = 0;
-		stream_ = std::make_shared<io::ifstream>(filepath);
+		stream_ = std::make_shared<io::ifstream>((std::string)filepath);
 
 		auto err = ::ov_open_callbacks(stream_.get(), &ogg, nullptr, 0, callbacks);
 		if (err < 0)

@@ -177,14 +177,14 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = MotionImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString());
+						auto package = MotionImporter::instance()->importPackage((char8_t*)filepaths[i].toUtf8().data());
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = MotionImporter::instance()->importPackage(filepaths[0].toUtf8().toStdString());
+					auto package = MotionImporter::instance()->importPackage((char8_t*)filepaths[0].toUtf8().data());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -238,7 +238,7 @@ namespace unreal
 					auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
 					if (selectedItem.has_value())
 					{
-						auto animation = MotionImporter::instance()->importMotion(filepath);
+						auto animation = MotionImporter::instance()->importMotion((char8_t*)filepath.c_str());
 
 						dialog.setValue(1);
 						QCoreApplication::processEvents();
@@ -276,7 +276,7 @@ namespace unreal
 					else
 					{
 						if (vmd.NumCamera > 0)
-							profile_->cameraModule->animation = MotionImporter::instance()->importCameraMotion(filepath);
+							profile_->cameraModule->animation = MotionImporter::instance()->importCameraMotion((char8_t*)filepath.c_str());
 
 						dialog.setValue(1);
 						QCoreApplication::processEvents();

@@ -17,13 +17,13 @@ namespace unreal
 		MotionImporter() noexcept;
 		~MotionImporter() noexcept;
 
-		void open(std::string indexPath) noexcept(false);
+		void open(std::u8string_view indexPath) noexcept(false);
 		void close() noexcept;
 
-		std::shared_ptr<octoon::Animation<float>> importMotion(std::string_view path) noexcept(false);
-		std::shared_ptr<octoon::Animation<float>> importCameraMotion(std::string_view path) noexcept(false);
+		std::shared_ptr<octoon::Animation<float>> importMotion(std::u8string_view path) noexcept(false);
+		std::shared_ptr<octoon::Animation<float>> importCameraMotion(std::u8string_view path) noexcept(false);
 
-		nlohmann::json importPackage(std::string_view path) noexcept(false);
+		nlohmann::json importPackage(std::u8string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		std::shared_ptr<octoon::Animation<float>> loadPackage(const nlohmann::json& package) noexcept(false);
 		bool removePackage(std::string_view uuid) noexcept;
@@ -45,13 +45,13 @@ namespace unreal
 		void initPackageIndices() noexcept(false);
 
 	private:
-		std::string assertPath_;
+		std::u8string assertPath_;
 
 		MutableLiveData<nlohmann::json> indexList_;
 
 		std::map<std::string, nlohmann::json> packageList_;
 		std::map<std::weak_ptr<octoon::Animation<float>>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Animation<float>>>> motionList_;
-		std::map<std::weak_ptr<octoon::Animation<float>>, std::string, std::owner_less<std::weak_ptr<octoon::Animation<float>>>> motionPathList_;
+		std::map<std::weak_ptr<octoon::Animation<float>>, std::u8string, std::owner_less<std::weak_ptr<octoon::Animation<float>>>> motionPathList_;
 	};
 }
 

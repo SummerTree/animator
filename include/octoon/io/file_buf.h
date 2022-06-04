@@ -18,9 +18,11 @@ namespace octoon
 			bool is_open() const noexcept;
 
 			bool open(const char* filename, ios_base::openmode mode) noexcept;
+			bool open(const char8_t* filename, ios_base::openmode mode) noexcept;
 			bool open(const wchar_t* filename, ios_base::openmode mode) noexcept;
 			bool open(const std::string& filename, ios_base::openmode mode) noexcept;
 			bool open(const std::wstring& filename, ios_base::openmode mode) noexcept;
+			bool open(const std::u8string& filename, ios_base::openmode mode) noexcept;
 
 			bool close() noexcept;
 

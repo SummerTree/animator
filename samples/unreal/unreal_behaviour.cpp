@@ -111,7 +111,7 @@ namespace unreal
 			materialComponent_->importPackage(path);
 		else if (ext == ".vmd")
 		{
-			MotionImporter::instance()->importPackage(path);
+			MotionImporter::instance()->importPackage((char8_t*)path.data());
 			MotionImporter::instance()->getIndexList().submit();
 		}
 		else if (ext == ".hdr")

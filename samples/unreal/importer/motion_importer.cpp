@@ -18,7 +18,7 @@ namespace unreal
 	}
 
 	void
-	MotionImporter::open(std::string indexPath) noexcept(false)
+	MotionImporter::open(std::u8string_view indexPath) noexcept(false)
 	{
 		if (std::filesystem::exists(indexPath))
 		{
@@ -33,10 +33,10 @@ namespace unreal
 	}
 
 	std::shared_ptr<octoon::Animation<float>>
-	MotionImporter::importMotion(std::string_view path) noexcept(false)
+	MotionImporter::importMotion(std::u8string_view path) noexcept(false)
 	{
-		auto ext = path.substr(path.find_last_of("."));
-		if (ext == ".vmd")
+		auto ext = path.substr(path.find_last_of('.'));
+		if (ext == u8".vmd")
 		{
 			auto motion = octoon::VMDLoader::loadMotion(path);
 			if (motion)
@@ -50,10 +50,10 @@ namespace unreal
 	}
 
 	std::shared_ptr<octoon::Animation<float>>
-	MotionImporter::importCameraMotion(std::string_view path) noexcept(false)
+	MotionImporter::importCameraMotion(std::u8string_view path) noexcept(false)
 	{
-		auto ext = path.substr(path.find_last_of("."));
-		if (ext == ".vmd")
+		auto ext = path.substr(path.find_last_of('.'));
+		if (ext == u8".vmd")
 		{
 			auto motion = octoon::VMDLoader::loadCameraMotion(path);
 			if (motion)
@@ -67,9 +67,9 @@ namespace unreal
 	}
 
 	nlohmann::json
-	MotionImporter::importPackage(std::string_view filepath) noexcept(false)
+	MotionImporter::importPackage(std::u8string_view filepath) noexcept(false)
 	{
-		std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(std::string(filepath));
+		std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes((char*)std::u8string(filepath).data());
 
 		if (std::filesystem::exists(u16_conv))
 		{
@@ -94,6 +94,7 @@ namespace unreal
 			{
 				auto dump = item.dump();
 				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
 			}
 
 			indexList_.getValue().push_back(uuid);
@@ -163,7 +164,7 @@ namespace unreal
 		if (package["path"].is_string())
 		{
 			auto path = package["path"].get<nlohmann::json::string_t>();
-			auto motion = octoon::VMDLoader::loadMotion(path);
+			auto motion = octoon::VMDLoader::loadMotion((char8_t*)path.c_str());
 			if (motion)
 			{
 				motionList_[motion] = package;
@@ -194,7 +195,7 @@ namespace unreal
 		if (metadata.find("path") != metadata.end())
 		{
 			auto path = metadata["path"].get<nlohmann::json::string_t>();
-			return this->importMotion(path);
+			return this->importMotion((char8_t*)path.c_str());
 		}
 
 		return nullptr;
@@ -233,7 +234,7 @@ namespace unreal
 			if (!std::filesystem::exists(assertPath_))
 				std::filesystem::create_directory(assertPath_);
 
-			std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
+			std::ofstream ifs(assertPath_ + u8"/index.json", std::ios_base::binary);
 			if (ifs)
 			{
 				auto data = indexList_.getValue().dump();
@@ -248,7 +249,7 @@ namespace unreal
 	void
 	MotionImporter::initPackageIndices() noexcept(false)
 	{
-		std::ifstream indexStream(assertPath_ + "/index.json");
+		std::ifstream indexStream(assertPath_ + u8"/index.json");
 		if (indexStream)
 			indexList_ = nlohmann::json::parse(indexStream);
 

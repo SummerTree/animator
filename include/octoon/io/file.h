@@ -14,23 +14,31 @@ namespace octoon
 			File(File&& move) noexcept;
 			File(const char* filename, ios_base::openmode mode) noexcept;
 			File(const char* filename, ios_base::open_mode mode) noexcept;
+			File(const char8_t* filename, ios_base::openmode mode) noexcept;
+			File(const char8_t* filename, ios_base::open_mode mode) noexcept;
 			File(const wchar_t* filename, ios_base::openmode mode) noexcept;
 			File(const wchar_t* filename, ios_base::open_mode mode) noexcept;
 			File(const std::string& filename, ios_base::openmode mode) noexcept;
 			File(const std::string& filename, ios_base::open_mode mode) noexcept;
 			File(const std::wstring& filename, ios_base::openmode mode) noexcept;
 			File(const std::wstring& filename, ios_base::open_mode mode) noexcept;
+			File(const std::u8string& filename, ios_base::openmode mode) noexcept;
+			File(const std::u8string& filename, ios_base::open_mode mode) noexcept;
 			~File() noexcept;
 
 			File* open(const char* filename, ios_base::openmode mode) noexcept;
 			File* open(const char* filename, ios_base::open_mode mode) noexcept;
+			File* open(const char8_t* filename, ios_base::openmode mode) noexcept;
+			File* open(const char8_t* filename, ios_base::open_mode mode) noexcept;
 			File* open(const wchar_t* filename, ios_base::openmode mode) noexcept;
 			File* open(const wchar_t* filename, ios_base::open_mode mode) noexcept;
 			File* open(const std::string& filename, ios_base::openmode mode) noexcept;
 			File* open(const std::string& filename, ios_base::open_mode mode) noexcept;
 			File* open(const std::wstring& filename, ios_base::openmode mode) noexcept;
 			File* open(const std::wstring& filename, ios_base::open_mode mode) noexcept;
-
+			File* open(const std::u8string& filename, ios_base::openmode mode) noexcept;
+			File* open(const std::u8string& filename, ios_base::open_mode mode) noexcept;
+			
 			bool is_open() const noexcept;
 			bool close() noexcept;
 

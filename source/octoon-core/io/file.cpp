@@ -194,11 +194,6 @@ namespace octoon
 			return ::OCTOON_POSIX_OPEN(filename, flag, mode);
 		}
 
-		inline int open(const std::string& filename, int flag, int mode)
-		{
-			return ::OCTOON_POSIX_OPEN(filename.data(), flag, mode);
-		}
-
 		inline int open(const wchar_t* filename, int flag, int mode)
 		{
 #if defined(__WINDOWS__)
@@ -214,19 +209,10 @@ namespace octoon
 #endif
 		}
 
-		inline int open(const std::wstring& filename, int flag, int mode)
+		inline int open(const char8_t* filepath, int flag, int mode)
 		{
-#if defined(__WINDOWS__)
-			return ::OCTOON_POSIX_WOPEN(filename.c_str(), flag, mode);
-#elif defined(__LINUX__) || defined(__APPLE__)
-			char fn[PATHLIMIT];
-			if (::wcstombs(fn, filename.c_str(), PATHLIMIT) == (std::size_t) - 1)
-				return EOF;
-
-			return ::OCTOON_POSIX_OPEN(fn, flag, mode);
-#else
-			return EOF;
-#endif
+			std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes((char*)filepath);
+			return open(u16_conv.c_str(), flag, mode);
 		}
 
 		inline long long seek(int fd, long offset, int origin)
@@ -265,46 +251,6 @@ namespace octoon
 		inline int close(int fd)
 		{
 			return ::OCTOON_POSIX_CLOSE(fd);
-		}
-
-		inline bool mkdir(const char* path)
-		{
-			char name[PATHLIMIT];
-			strcpy(name, path);
-			std::size_t len = strlen(path);
-
-			if (name[len - 1] != '/' && name[len - 1] != '\\')
-			{
-				strcat(name, "/");
-				len += 1;
-			}
-
-			for (std::size_t i = 1; i < len; i++)
-			{
-				if (name[i] != '/' && name[i] != '\\')
-					continue;
-
-				name[i] = 0;
-
-				if (access(name, 0) != 0)
-				{
-#if __WINDOWS__
-					if (!CreateDirectory(name, 0))
-						return false;
-#elif __LINUX__
-					if (::mkdir(name, S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRWXO) == -1)
-						return false;
-#endif
-				}
-
-#if __WINDOWS__
-				name[i] = '\\';
-#else
-				name[i] = '/';
-#endif
-			}
-
-			return true;
 		}
 
 #if __WINDOWS__
@@ -438,6 +384,38 @@ namespace octoon
 			return fopen(filename, (ios_base::openmode)mode);
 		}
 
+		_Iobuf* fopen(const char8_t* filepath, ios_base::openmode mode) noexcept
+		{
+#if defined(__WINDOWS__)
+			int flags = O_BINARY;
+#else
+			int flags = 0;
+#endif
+
+			if (mode & ios_base::in && mode & ios_base::out)
+				flags |= O_RDWR | O_CREAT;
+			else if (mode & ios_base::in)
+				flags |= O_RDONLY;
+			else if (mode & ios_base::out)
+				flags |= O_WRONLY | O_TRUNC;
+
+			if (mode & ios_base::app)     flags |= O_APPEND;
+			if (mode & ios_base::trunc)   flags |= O_TRUNC;
+
+			int access = io::PP_DEFAULT;
+
+#if defined(__WINDOWS__)
+			access |= io::PP_IRUSR | io::PP_IWUSR;
+#endif
+
+			return fmalloc(io::open(filepath, flags, access));
+		}
+
+		_Iobuf* fopen(const char8_t* filename, ios_base::open_mode mode) noexcept
+		{
+			return fopen(filename, (ios_base::openmode)mode);
+		}
+
 		_Iobuf* fopen(const wchar_t* filename, ios_base::openmode mode) noexcept
 		{
 		#if defined(__WINDOWS__)
@@ -468,26 +446,6 @@ namespace octoon
 		_Iobuf* fopen(const wchar_t* filename, ios_base::open_mode mode) noexcept
 		{
 			return fopen(filename, (ios_base::openmode)mode);
-		}
-
-		_Iobuf* fopen(const std::string& filename, ios_base::openmode mode) noexcept
-		{
-			return fopen(filename.c_str(), mode);
-		}
-
-		_Iobuf* fopen(const std::string& filename, ios_base::open_mode mode) noexcept
-		{
-			return fopen(filename.c_str(), (ios_base::openmode)mode);
-		}
-
-		_Iobuf* fopen(const std::wstring& filename, ios_base::openmode mode) noexcept
-		{
-			return fopen(filename.c_str(), mode);
-		}
-
-		_Iobuf* fopen(const std::wstring& filename, ios_base::open_mode mode) noexcept
-		{
-			return fopen(filename.c_str(), (ios_base::openmode)mode);
 		}
 
 		int fclose(_Iobuf* stream) noexcept
@@ -732,6 +690,18 @@ namespace octoon
 			this->open(filename, mode);
 		}
 
+		File::File(const char8_t* filename, ios_base::openmode mode) noexcept
+			: File()
+		{
+			this->open(filename, mode);
+		}
+
+		File::File(const char8_t* filename, ios_base::open_mode mode) noexcept
+			: File()
+		{
+			this->open(filename, mode);
+		}
+
 		File::File(const wchar_t* filename, ios_base::openmode mode) noexcept
 			: File()
 		{
@@ -768,6 +738,18 @@ namespace octoon
 			this->open(filename, mode);
 		}
 
+		File::File(const std::u8string& filename, ios_base::openmode mode) noexcept
+			: File()
+		{
+			this->open(filename, mode);
+		}
+
+		File::File(const std::u8string& filename, ios_base::open_mode mode) noexcept
+			: File()
+		{
+			this->open(filename, mode);
+		}
+
 		File::~File() noexcept
 		{
 			this->close();
@@ -792,6 +774,19 @@ namespace octoon
 		}
 
 		File*
+		File::open(const char8_t* filename, ios_base::openmode mode) noexcept
+		{
+			if (stream_)
+				fclose(stream_);
+
+			stream_ = fopen(filename, mode);
+			if (stream_)
+				return this;
+
+			return nullptr;
+		}
+
+		File*
 		File::open(const wchar_t* filename, ios_base::openmode mode) noexcept
 		{
 			if (stream_)
@@ -806,6 +801,12 @@ namespace octoon
 
 		File*
 		File::open(const char* filename, ios_base::open_mode mode) noexcept
+		{
+			return this->open(filename, (ios_base::openmode)mode);
+		}
+
+		File*
+		File::open(const char8_t* filename, ios_base::open_mode mode) noexcept
 		{
 			return this->open(filename, (ios_base::openmode)mode);
 		}
@@ -836,6 +837,18 @@ namespace octoon
 
 		File*
 		File::open(const std::wstring& filename, ios_base::open_mode mode) noexcept
+		{
+			return this->open(filename.c_str(), (ios_base::openmode)mode);
+		}
+
+		File*
+		File::open(const std::u8string& filename, ios_base::openmode mode) noexcept
+		{
+			return this->open(filename.c_str(), mode);
+		}
+
+		File*
+		File::open(const std::u8string& filename, ios_base::open_mode mode) noexcept
 		{
 			return this->open(filename.c_str(), (ios_base::openmode)mode);
 		}

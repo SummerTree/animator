@@ -17,6 +17,12 @@ namespace octoon
 			this->open(path, mode);
 		}
 
+		ifstream::ifstream(const char8_t* path, const ios_base::open_mode mode) noexcept
+			: istream(&file_)
+		{
+			this->open(path, mode);
+		}
+
 		ifstream::ifstream(const wchar_t* path, const ios_base::open_mode mode) noexcept
 			: istream(&file_)
 		{
@@ -29,13 +35,13 @@ namespace octoon
 			this->open(path, mode);
 		}
 
-		ifstream::ifstream(const std::wstring& path, const ios_base::open_mode mode) noexcept
+		ifstream::ifstream(const std::u8string& path, const ios_base::open_mode mode) noexcept
 			: istream(&file_)
 		{
 			this->open(path, mode);
 		}
 
-		ifstream::ifstream(const std::string_view& path, const ios_base::open_mode mode) noexcept
+		ifstream::ifstream(const std::wstring& path, const ios_base::open_mode mode) noexcept
 			: istream(&file_)
 		{
 			this->open(path, mode);
@@ -68,6 +74,21 @@ namespace octoon
 		}
 
 		ifstream&
+		ifstream::open(const char8_t* path, const ios_base::open_mode mode) noexcept
+		{
+			const isentry ok(this);
+			if (ok)
+			{
+				if (!file_.open(path, mode))
+					this->setstate(ios_base::failbit, mode);
+				else
+					this->clear(ios_base::goodbit, mode);
+			}
+
+			return (*this);
+		}
+
+		ifstream&
 		ifstream::open(const wchar_t* path, const ios_base::open_mode mode) noexcept
 		{
 			const isentry ok(this);
@@ -85,19 +106,46 @@ namespace octoon
 		ifstream&
 		ifstream::open(const std::string& path, const ios_base::open_mode mode) noexcept
 		{
-			return this->open(path.c_str(), mode);
+			const isentry ok(this);
+			if (ok)
+			{
+				if (!file_.open(path, mode))
+					this->setstate(ios_base::failbit, mode);
+				else
+					this->clear(ios_base::goodbit, mode);
+			}
+
+			return (*this);
+		}
+
+		ifstream&
+		ifstream::open(const std::u8string& path, const ios_base::open_mode mode) noexcept
+		{
+			const isentry ok(this);
+			if (ok)
+			{
+				if (!file_.open(path, mode))
+					this->setstate(ios_base::failbit, mode);
+				else
+					this->clear(ios_base::goodbit, mode);
+			}
+
+			return (*this);
 		}
 
 		ifstream&
 		ifstream::open(const std::wstring& path, const ios_base::open_mode mode) noexcept
 		{
-			return this->open(path.c_str(), mode);
-		}
+			const isentry ok(this);
+			if (ok)
+			{
+				if (!file_.open(path, mode))
+					this->setstate(ios_base::failbit, mode);
+				else
+					this->clear(ios_base::goodbit, mode);
+			}
 
-		ifstream&
-		ifstream::open(const std::string_view& path, const ios_base::open_mode mode) noexcept
-		{
-			return this->open(std::string(path), mode);
+			return (*this);
 		}
 
 		ifstream&
@@ -124,6 +172,12 @@ namespace octoon
 			this->open(path, mode);
 		}
 
+		ofstream::ofstream(const char8_t* path, const ios_base::open_mode mode) noexcept
+			: ostream(&file_)
+		{
+			this->open(path, mode);
+		}
+
 		ofstream::ofstream(const wchar_t* path, const ios_base::open_mode mode) noexcept
 			: ostream(&file_)
 		{
@@ -142,6 +196,12 @@ namespace octoon
 			this->open(path, mode);
 		}
 
+		ofstream::ofstream(const std::u8string& path, const ios_base::open_mode mode) noexcept
+			: ostream(&file_)
+		{
+			this->open(path, mode);
+		}
+
 		ofstream::~ofstream() noexcept
 		{
 			this->close();
@@ -155,6 +215,21 @@ namespace octoon
 
 		ofstream&
 		ofstream::open(const char* path, const ios_base::open_mode mode) noexcept
+		{
+			const osentry ok(this);
+			if (ok)
+			{
+				if (!file_.open(path, mode))
+					this->setstate(ios_base::failbit, mode);
+				else
+					this->clear(ios_base::goodbit, mode);
+			}
+
+			return (*this);
+		}
+
+		ofstream&
+		ofstream::open(const char8_t* path, const ios_base::open_mode mode) noexcept
 		{
 			const osentry ok(this);
 			if (ok)
@@ -196,6 +271,12 @@ namespace octoon
 		}
 
 		ofstream&
+		ofstream::open(const std::u8string& path, const ios_base::open_mode mode) noexcept
+		{
+			return this->open(path.c_str(), mode);
+		}
+
+		ofstream&
 		ofstream::close() noexcept
 		{
 			const osentry ok(this);
@@ -225,6 +306,12 @@ namespace octoon
 			this->open(path, mode);
 		}
 
+		fstream::fstream(const char8_t* path, const ios_base::open_mode mode) noexcept
+			: iostream(&file_)
+		{
+			this->open(path, mode);
+		}
+
 		fstream::fstream(const std::string& path, const ios_base::open_mode mode) noexcept
 			: iostream(&file_)
 		{
@@ -232,6 +319,12 @@ namespace octoon
 		}
 
 		fstream::fstream(const std::wstring& path, const ios_base::open_mode mode) noexcept
+			: iostream(&file_)
+		{
+			this->open(path, mode);
+		}
+
+		fstream::fstream(const std::u8string& path, const ios_base::open_mode mode) noexcept
 			: iostream(&file_)
 		{
 			this->open(path, mode);
@@ -273,6 +366,21 @@ namespace octoon
 		}
 
 		fstream&
+		fstream::open(const char8_t* path, const ios_base::open_mode mode) noexcept
+		{
+			const osentry ok(this);
+			if (ok)
+			{
+				if (!file_.open(path, mode))
+					this->setstate(ios_base::failbit, mode);
+				else
+					this->clear(ios_base::goodbit, mode);
+			}
+
+			return (*this);
+		}
+
+		fstream&
 		fstream::open(const std::string& path, const ios_base::open_mode mode) noexcept
 		{
 			return this->open(path.c_str(), mode);
@@ -280,6 +388,12 @@ namespace octoon
 
 		fstream&
 		fstream::open(const std::wstring& path, const ios_base::open_mode mode) noexcept
+		{
+			return this->open(path.c_str(), mode);
+		}
+
+		fstream&
+		fstream::open(const std::u8string& path, const ios_base::open_mode mode) noexcept
 		{
 			return this->open(path.c_str(), mode);
 		}

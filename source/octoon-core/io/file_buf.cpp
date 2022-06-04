@@ -30,6 +30,12 @@ namespace octoon
 		}
 
 		bool
+		filebuf::open(const char8_t* filename, ios_base::openmode mode) noexcept
+		{
+			return _file.open(filename, mode) ? true : false;
+		}
+
+		bool
 		filebuf::open(const wchar_t* filename, ios_base::openmode mode) noexcept
 		{
 			return _file.open(filename, mode) ? true : false;
@@ -37,6 +43,12 @@ namespace octoon
 
 		bool
 		filebuf::open(const std::string& filename, ios_base::openmode mode) noexcept
+		{
+			return _file.open(filename, mode) ? true : false;
+		}
+
+		bool
+		filebuf::open(const std::u8string& filename, ios_base::openmode mode) noexcept
 		{
 			return _file.open(filename, mode) ? true : false;
 		}
