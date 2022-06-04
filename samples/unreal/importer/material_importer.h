@@ -31,8 +31,8 @@ namespace unreal
 		octoon::MaterialPtr loadPackage(const nlohmann::json& package) noexcept(false);
 		bool removePackage(std::string_view uuid) noexcept;
 
-		const nlohmann::json& getIndexList() const noexcept;
-		const nlohmann::json& getSceneList() const noexcept;
+		const MutableLiveData<nlohmann::json>& getIndexList() const noexcept;
+		const MutableLiveData<nlohmann::json>& getSceneList() const noexcept;
 
 		std::shared_ptr<octoon::Material> loadMetaData(const nlohmann::json& metadata) noexcept;
 		nlohmann::json createMetadata(const std::shared_ptr<octoon::Material>& material) const noexcept;
@@ -64,8 +64,8 @@ namespace unreal
 		std::uint32_t previewWidth_;
 		std::uint32_t previewHeight_;
 
-		nlohmann::json indexList_;
-		nlohmann::json sceneList_;
+		MutableLiveData<nlohmann::json> indexList_;
+		MutableLiveData<nlohmann::json> sceneList_;
 
 		std::map<std::string, nlohmann::json> packageList_;
 

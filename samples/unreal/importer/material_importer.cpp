@@ -195,7 +195,7 @@ namespace unreal
 
 					items.push_back(uuid);
 
-					this->indexList_.push_back(uuid);
+					this->indexList_.getValue().push_back(uuid);
 				}
 			}
 
@@ -207,13 +207,13 @@ namespace unreal
 		return nlohmann::json();
 	}
 
-	const nlohmann::json&
+	const MutableLiveData<nlohmann::json>&
 	MaterialImporter::getIndexList() const noexcept
 	{
 		return this->indexList_;
 	}
 
-	const nlohmann::json&
+	const MutableLiveData<nlohmann::json>&
 	MaterialImporter::getSceneList() const noexcept
 	{
 		return this->sceneList_;
@@ -263,7 +263,9 @@ namespace unreal
 	{
 		try
 		{
-			for (auto it = indexList_.begin(); it != indexList_.end(); ++it)
+			auto& indexList = indexList_.getValue();
+
+			for (auto it = indexList.begin(); it != indexList.end(); ++it)
 			{
 				if ((*it).get<nlohmann::json::string_t>() == uuid)
 				{
@@ -274,7 +276,7 @@ namespace unreal
 					if (package != this->packageList_.end())
 						this->packageList_.erase(package);
 
-					indexList_.erase(it);
+					indexList.erase(it);
 					return true;
 				}
 			}
@@ -305,7 +307,7 @@ namespace unreal
 			if (colorMap)
 				item["colorMap"] = colorMap->getTextureDesc().getName();
 
-			this->sceneList_ += uuid;
+			this->sceneList_.getValue().push_back(uuid);
 			this->packageList_[uuid] = item;
 
 			this->materials_[uuid] = standard;
@@ -702,7 +704,7 @@ namespace unreal
 
 		std::set<std::string> indexSet;
 
-		for (auto& it : this->indexList_)
+		for (auto& it : this->indexList_.getValue())
 		{
 			if (!std::filesystem::exists(std::filesystem::path(assertPath_).append(it.get<nlohmann::json::string_t>())))
 				needUpdateIndexFile = true;
@@ -749,7 +751,7 @@ namespace unreal
 		std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
 		if (ifs)
 		{
-			auto data = indexList_.dump();
+			auto data = indexList_.getValue().dump();
 			ifs.write(data.c_str(), data.size());
 		}
 	}

@@ -235,7 +235,7 @@ namespace unreal
 		{
 			mainWidget_->clear();
 
-			for (auto& uuid : MaterialImporter::instance()->getIndexList())
+			for (auto& uuid : MaterialImporter::instance()->getIndexList().getValue())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}
 	}
@@ -1843,7 +1843,7 @@ namespace unreal
 	{
 		mainWidget_->clear();
 
-		for (auto& it : MaterialImporter::instance()->getSceneList())
+		for (auto& it : MaterialImporter::instance()->getSceneList().getValue())
 			this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
 	}
 
