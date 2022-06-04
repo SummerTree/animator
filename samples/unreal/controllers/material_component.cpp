@@ -42,7 +42,7 @@ namespace unreal
 				}
 
 				if (dirty)
-					this->sendMessage("editor:material:change");
+					MaterialImporter::instance()->getSceneList().submit();
 
 				this->sendMessage("editor:material:selected", MaterialImporter::instance()->getSceneMetadate(materials[hit.mesh]));
 			}

@@ -31,6 +31,9 @@ namespace unreal
 		octoon::MaterialPtr loadPackage(const nlohmann::json& package) noexcept(false);
 		bool removePackage(std::string_view uuid) noexcept;
 
+		MutableLiveData<nlohmann::json>& getIndexList() noexcept;
+		MutableLiveData<nlohmann::json>& getSceneList() noexcept;
+
 		const MutableLiveData<nlohmann::json>& getIndexList() const noexcept;
 		const MutableLiveData<nlohmann::json>& getSceneList() const noexcept;
 

@@ -1875,10 +1875,10 @@ namespace unreal
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(backEvent()));
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
-		behaviour->addMessageListener("editor:material:change", [this](const std::any&) {
+		MaterialImporter::instance()->getSceneList() += [this](const nlohmann::json& json) {
 			if (materialList_->isVisible())
 				materialList_->updateItemList();
-		});
+		};
 
 		behaviour->addMessageListener("editor:material:selected", [this](const std::any& any_data) {
 			if (materialList_->isVisible())

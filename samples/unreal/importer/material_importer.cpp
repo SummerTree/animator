@@ -207,6 +207,18 @@ namespace unreal
 		return nlohmann::json();
 	}
 
+	MutableLiveData<nlohmann::json>&
+	MaterialImporter::getIndexList() noexcept
+	{
+		return this->indexList_;
+	}
+
+	MutableLiveData<nlohmann::json>&
+	MaterialImporter::getSceneList() noexcept
+	{
+		return this->sceneList_;
+	}
+
 	const MutableLiveData<nlohmann::json>&
 	MaterialImporter::getIndexList() const noexcept
 	{
