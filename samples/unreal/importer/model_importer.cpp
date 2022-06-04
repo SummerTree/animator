@@ -174,7 +174,9 @@ namespace unreal
 	ModelImporter::getPackage(std::string_view uuid) noexcept
 	{
 		auto it = this->packageList_.find(std::string(uuid));
-		if (it == this->packageList_.end())
+		if (it != this->packageList_.end())
+			return this->packageList_[std::string(uuid)];
+		else
 		{
 			std::ifstream ifs(std::filesystem::path(assertPath_).append(uuid).append("package.json"));
 			if (ifs)
@@ -183,17 +185,13 @@ namespace unreal
 				this->packageList_[std::string(uuid)] = package;
 				return package;
 			}
-			else
-			{
-				return nlohmann::json();
-			}			
 		}
 
-		return this->packageList_[std::string(uuid)];
+		return nlohmann::json();
 	}
 
 	octoon::GameObjectPtr
-	ModelImporter::loadPackage(const nlohmann::json& package) noexcept
+	ModelImporter::loadPackage(const nlohmann::json& package) noexcept(false)
 	{
 		if (package["path"].is_string())
 		{
@@ -210,30 +208,25 @@ namespace unreal
 	}
 
 	bool
-	ModelImporter::removePackage(std::string_view uuid) noexcept
+	ModelImporter::removePackage(std::string_view uuid) noexcept(false)
 	{
-		try
-		{
-			auto& indexList = this->modelIndexList_.getValue();
+		auto& indexList = this->modelIndexList_.getValue();
 
-			for (auto it = indexList.begin(); it != indexList.end(); ++it)
+		for (auto it = indexList.begin(); it != indexList.end(); ++it)
+		{
+			if ((*it).get<nlohmann::json::string_t>() == uuid)
 			{
-				if ((*it).get<nlohmann::json::string_t>() == uuid)
-				{
-					auto packagePath = std::filesystem::path(assertPath_).append(uuid);
-					std::filesystem::remove_all(packagePath);
+				auto packagePath = std::filesystem::path(assertPath_).append(uuid).u16string();
 
-					auto package = this->packageList_.find(std::string(uuid));
-					if (package != this->packageList_.end())
-						this->packageList_.erase(package);
+				std::filesystem::remove_all(packagePath);
 
-					indexList.erase(it);
-					return true;
-				}
+				auto package = this->packageList_.find(std::string(uuid));
+				if (package != this->packageList_.end())
+					this->packageList_.erase(package);
+
+				indexList.erase(it);
+				return true;
 			}
-		}
-		catch (const std::exception&)
-		{
 		}
 
 		return false;

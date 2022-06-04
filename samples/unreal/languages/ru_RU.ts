@@ -652,41 +652,46 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="140"/>
+        <location filename="../views/model_dock.cpp" line="142"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="140"/>
+        <location filename="../views/model_dock.cpp" line="142"/>
         <source>Are you sure you want to delete this model?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/model_dock.cpp" line="160"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/model_dock.cpp" line="167"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="160"/>
+        <location filename="../views/model_dock.cpp" line="167"/>
         <source>PMX Files (*.pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="165"/>
-        <location filename="../views/model_dock.cpp" line="166"/>
-        <location filename="../views/model_dock.cpp" line="212"/>
-        <location filename="../views/model_dock.cpp" line="213"/>
+        <location filename="../views/model_dock.cpp" line="172"/>
+        <location filename="../views/model_dock.cpp" line="173"/>
+        <location filename="../views/model_dock.cpp" line="219"/>
+        <location filename="../views/model_dock.cpp" line="220"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="165"/>
-        <location filename="../views/model_dock.cpp" line="212"/>
+        <location filename="../views/model_dock.cpp" line="172"/>
+        <location filename="../views/model_dock.cpp" line="219"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="215"/>
+        <location filename="../views/model_dock.cpp" line="222"/>
         <source>Unknown-name</source>
         <translation type="unfinished"></translation>
     </message>

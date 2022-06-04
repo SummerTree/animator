@@ -124,9 +124,10 @@ namespace unreal
 
 		for (std::int32_t i = 0; i < numBone; i++)
 		{
-			auto keyframeCount = 1u;
-			auto next_index = it.bone_init_frame[i].next_index;
-			auto final_frame = it.bone_init_frame[i].frame;
+			std::size_t keyframeCount = 1u;
+			std::size_t next_index = it.bone_init_frame[i].next_index;
+			std::size_t final_frame = it.bone_init_frame[i].frame;
+
 			while (next_index > 0)
 			{
 				keyframeCount++;
@@ -199,7 +200,7 @@ namespace unreal
 			keyframes.reserve(keyframeCount);
 			keyframes.emplace_back((float)it.morph_init_frame[i].frame / 30.0f, it.morph_init_frame[i].value);
 
-			auto next = it.morph_init_frame[i].next_index;
+			std::size_t next = it.morph_init_frame[i].next_index;
 			while (next > 0)
 			{
 				next -= it.morph_init_frame.size();

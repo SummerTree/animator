@@ -135,22 +135,29 @@ namespace unreal
 	void
 	ModelDock::keyPressEvent(QKeyEvent * event) noexcept
 	{
-		if (event->key() == Qt::Key_Delete)
+		try
 		{
-			if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this model?")) == QMessageBox::Yes)
+			if (event->key() == Qt::Key_Delete)
 			{
-				if (clickedItem_)
+				if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this model?")) == QMessageBox::Yes)
 				{
-					auto uuid = clickedItem_->data(Qt::UserRole).toString();
-					if (ModelImporter::instance()->removePackage(uuid.toStdString()))
+					if (clickedItem_)
 					{
-						listWidget_->takeItem(listWidget_->row(clickedItem_));
-						delete clickedItem_;
-						clickedItem_ = listWidget_->currentItem();
-						ModelImporter::instance()->save();
+						auto uuid = clickedItem_->data(Qt::UserRole).toString();
+						if (ModelImporter::instance()->removePackage(uuid.toStdString()))
+						{
+							listWidget_->takeItem(listWidget_->row(clickedItem_));
+							delete clickedItem_;
+							clickedItem_ = listWidget_->currentItem();
+							ModelImporter::instance()->save();
+						}
 					}
 				}
 			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 
