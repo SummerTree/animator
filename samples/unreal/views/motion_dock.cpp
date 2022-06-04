@@ -134,15 +134,16 @@ namespace unreal
 	void
 	MotionDock::keyPressEvent(QKeyEvent * event) noexcept
 	{
-		if (event->key() == Qt::Key_Delete)
+		try
 		{
-			if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this motion data?")) == QMessageBox::Yes)
+			if (event->key() == Qt::Key_Delete)
 			{
-				if (clickedItem_)
+				if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this motion data?")) == QMessageBox::Yes)
 				{
-					auto uuid = clickedItem_->data(Qt::UserRole).toString();
-					if (MotionImporter::instance()->removePackage(uuid.toStdString()))
+					if (clickedItem_)
 					{
+						auto uuid = clickedItem_->data(Qt::UserRole).toString();
+						MotionImporter::instance()->removePackage(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
@@ -150,6 +151,10 @@ namespace unreal
 					}
 				}
 			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 

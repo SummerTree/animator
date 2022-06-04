@@ -144,13 +144,11 @@ namespace unreal
 					if (clickedItem_)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						if (ModelImporter::instance()->removePackage(uuid.toStdString()))
-						{
-							listWidget_->takeItem(listWidget_->row(clickedItem_));
-							delete clickedItem_;
-							clickedItem_ = listWidget_->currentItem();
-							ModelImporter::instance()->save();
-						}
+						ModelImporter::instance()->removePackage(uuid.toStdString());
+						listWidget_->takeItem(listWidget_->row(clickedItem_));
+						delete clickedItem_;
+						clickedItem_ = listWidget_->currentItem();
+						ModelImporter::instance()->save();
 					}
 				}
 			}
