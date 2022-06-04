@@ -79,6 +79,7 @@ namespace unreal
 			std::filesystem::create_directory(assertPath_);
 			std::filesystem::create_directory(rootPath);
 			std::filesystem::copy(filepath, hdriPath);
+			std::filesystem::permissions(hdriPath, std::filesystem::perms::owner_write);
 
 			QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
 			qimage = qimage.scaled(260, 130);

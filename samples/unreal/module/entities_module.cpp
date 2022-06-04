@@ -1,6 +1,7 @@
 #include "entities_module.h"
 #include "../importer/model_importer.h"
 #include "../importer/motion_importer.h"
+#include "../importer/material_importer.h"
 #include <octoon/pmx_loader.h>
 #include <octoon/vmd_loader.h>
 #include <octoon/animator_component.h>
@@ -105,6 +106,15 @@ namespace unreal
 							animationJson["path"] = root + fileName;
 							json["animation"].push_back(std::move(animationJson));
 						}
+					}
+				}
+
+				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
+				if (smr)
+				{
+					auto& materials = smr->getMaterials();
+					for (auto& material : materials)
+					{
 					}
 				}
 

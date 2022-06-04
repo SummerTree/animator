@@ -81,6 +81,7 @@ namespace unreal
 			std::filesystem::create_directory(assertPath_);
 			std::filesystem::create_directory(rootPath);
 			std::filesystem::copy(u16_conv, motionPath);
+			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
 
 			auto filename = std::filesystem::path(u16_conv).filename().u8string();
 

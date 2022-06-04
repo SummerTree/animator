@@ -97,6 +97,7 @@ namespace unreal
 			{
 				std::filesystem::create_directories(rootPath);
 				std::filesystem::copy(wfilepath, modelPath);
+				std::filesystem::permissions(modelPath, std::filesystem::perms::owner_write);
 
 				for (auto& texture : pmx.textures)
 				{
@@ -109,6 +110,7 @@ namespace unreal
 						auto textureRootPath = octoon::runtime::string::directory(texturePath.string());
 						std::filesystem::create_directories(textureRootPath);
 						std::filesystem::copy(path, texturePath);
+						std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 					}
 				}
 
