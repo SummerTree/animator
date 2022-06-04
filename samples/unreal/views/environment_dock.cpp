@@ -156,7 +156,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = TextureImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString());
+					auto package = TextureImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString(), true);
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -458,11 +458,11 @@ namespace unreal
 		};
 
 		this->profile_->environmentLightModule->useTexture += [this](bool value) {
-			this->thumbnailToggle->blockSignals(true);
-			this->thumbnailToggle->setChecked(value);
-			this->thumbnailToggle->blockSignals(false);
+			thumbnailToggle->blockSignals(true);
+			thumbnailToggle->setChecked(value);
+			thumbnailToggle->blockSignals(false);
 
-			this->updatePreviewImage();
+			updatePreviewImage();
 		};
 
 		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)

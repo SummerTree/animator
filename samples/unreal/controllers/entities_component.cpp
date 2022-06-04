@@ -29,19 +29,4 @@ namespace unreal
 
 		return nullptr;
 	}
-
-	void
-	EntitiesComponent::onInit() noexcept
-	{
-	}
-
-	void
-	EntitiesComponent::onEnable() noexcept
-	{
-	}
-
-	void
-	EntitiesComponent::onDisable() noexcept
-	{
-	}
 }

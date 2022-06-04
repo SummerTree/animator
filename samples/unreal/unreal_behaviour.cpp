@@ -110,15 +110,9 @@ namespace unreal
 		else if (ext == ".mdl")
 			materialComponent_->importPackage(path);
 		else if (ext == ".vmd")
-		{
 			MotionImporter::instance()->importPackage((char8_t*)path.data());
-			MotionImporter::instance()->getIndexList().submit();
-		}
 		else if (ext == ".hdr")
-		{
 			TextureImporter::instance()->importPackage(path);
-			TextureImporter::instance()->getIndexList().submit();
-		}
 	}
 
 	void

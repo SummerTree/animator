@@ -153,10 +153,10 @@ namespace unreal
 		listWidget_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		listWidget_->verticalScrollBar()->setFixedWidth(8);
 
-		for (std::size_t i = 0; i < strList.size(); i++)
+		for (qsizetype i = 0; i < strList.size(); i++)
 		{
 			listWidgetItems_[i] = new QListWidgetItem();
-			listWidgetItems_[i]->setText(strList[(int)i]);
+			listWidgetItems_[i]->setText(strList[i]);
 			listWidgetItems_[i]->setSizeHint(QSize(180, 30));
 			listWidgetItems_[i]->setTextAlignment(Qt::AlignCenter);
 

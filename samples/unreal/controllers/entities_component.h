@@ -18,12 +18,6 @@ namespace unreal
 		{
 			return typeid(EntitiesComponent);
 		}
-
-	private:
-		void onInit() noexcept override;
-
-		void onEnable() noexcept override;
-		void onDisable() noexcept override;
 	};
 }
 

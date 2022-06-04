@@ -50,7 +50,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	TextureImporter::importPackage(std::string_view filepath) noexcept(false)
+	TextureImporter::importPackage(std::string_view filepath, bool blockSignals) noexcept(false)
 	{
 		octoon::Image image;
 
@@ -95,9 +95,13 @@ namespace unreal
 			{
 				auto dump = item.dump();
 				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
 			}
 
 			indexList_.getValue().push_back(uuid);
+
+			if (!blockSignals)
+				indexList_.submit();
 
 			return item;
 		}
