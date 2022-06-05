@@ -275,9 +275,9 @@ namespace unreal
 	{
 		auto& indexList = indexList_.getValue();
 
-		for (auto it = indexList.begin(); it != indexList.end(); ++it)
+		for (auto index = indexList.begin(); index != indexList.end(); ++index)
 		{
-			if ((*it).get<nlohmann::json::string_t>() == uuid)
+			if ((*index).get<nlohmann::json::string_t>() == uuid)
 			{
 				auto packagePath = std::filesystem::path(assertPath_).append(uuid);
 
@@ -290,7 +290,7 @@ namespace unreal
 				if (package != this->packageList_.end())
 					this->packageList_.erase(package);
 
-				indexList.erase(it);
+				indexList.erase(index);
 			}
 		}
 	}

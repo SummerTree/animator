@@ -34,7 +34,7 @@ namespace unreal
 	}
 
 	std::shared_ptr<octoon::GraphicsTexture>
-	TextureImporter::importHDRi(std::string_view path, bool generatorMipmap) noexcept(false)
+	TextureImporter::importTexture(std::string_view path, bool generatorMipmap) noexcept(false)
 	{
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".hdr")
@@ -138,9 +138,9 @@ namespace unreal
 	{
 		auto& indexList = indexList_.getValue();
 
-		for (auto it = indexList.begin(); it != indexList.end(); ++it)
+		for (auto index = indexList.begin(); index != indexList.end(); ++index)
 		{
-			if ((*it).get<nlohmann::json::string_t>() == uuid)
+			if ((*index).get<nlohmann::json::string_t>() == uuid)
 			{
 				auto packagePath = std::filesystem::path(assertPath_).append(uuid);
 
@@ -153,7 +153,7 @@ namespace unreal
 				if (package != this->packageList_.end())
 					this->packageList_.erase(package);
 
-				indexList.erase(it);
+				indexList.erase(index);
 			}
 		}
 	}
@@ -195,7 +195,7 @@ namespace unreal
 		if (metadata.find("path") != metadata.end())
 		{
 			auto path = metadata["path"].get<nlohmann::json::string_t>();
-			return this->importHDRi(path);
+			return this->importTexture(path, true);
 		}
 
 		return nullptr;

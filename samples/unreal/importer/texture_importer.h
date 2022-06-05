@@ -21,7 +21,7 @@ namespace unreal
 		void open(std::string indexPath) noexcept(false);
 		void close() noexcept;
 
-		std::shared_ptr<octoon::GraphicsTexture> importHDRi(std::string_view path, bool generatorMipmap = false) noexcept(false);
+		std::shared_ptr<octoon::GraphicsTexture> importTexture(std::string_view path, bool generatorMipmap = false) noexcept(false);
 
 		nlohmann::json importPackage(std::string_view path, bool blockSignals = false) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;

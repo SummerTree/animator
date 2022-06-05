@@ -647,7 +647,7 @@ namespace unreal
 				this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
 
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importHDRi(hdrPath, true);
+				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importTexture(hdrPath, true);
 			}
 		}
 		catch (const std::exception& e)
@@ -671,7 +671,7 @@ namespace unreal
 			if (!filepath.isEmpty())
 			{
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importHDRi(filepath.toUtf8().toStdString());
+				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importTexture(filepath.toUtf8().toStdString());
 
 				auto texel = this->profile_->environmentLightModule->texture.getValue();
 				if (texel)
