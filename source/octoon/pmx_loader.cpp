@@ -415,11 +415,8 @@ namespace octoon
 		}
 	}
 
-	void createMeshes(const PMX& pmx, GameObjectPtr& object, const GameObjects& bones) noexcept(false)
+	void createMeshes(const PMX& pmx, GameObjectPtr& object, const GameObjects& bones, PMXLoadFlags flags) noexcept(false)
 	{
-		//Materials materials;
-		//createMaterials(pmx, materials);
-
 		math::float4x4s bindposes(pmx.bones.size());
 		for (std::size_t i = 0; i < pmx.bones.size(); i++)
 			bindposes[i].makeTranslate(-math::float3(pmx.bones[i].position.x, pmx.bones[i].position.y, pmx.bones[i].position.z));
@@ -499,17 +496,29 @@ namespace octoon
 		if (bones.empty())
 		{
 			auto meshRender = object->addComponent<MeshRendererComponent>();
-			//meshRender->setMaterials(std::move(materials));
 			meshRender->setGlobalIllumination(true);
+
+			if (flags & PMXLoadFlagBits::MaterialBit)
+			{
+				Materials materials;
+				createMaterials(pmx, materials);
+				meshRender->setMaterials(std::move(materials));
+			}
 		}
 		else
 		{
 			auto smr = SkinnedMeshRendererComponent::create();
-			//smr->setMaterials(std::move(materials));
 			smr->setTransforms(bones);
 			smr->setMorphBlendEnable(true);
 			smr->setTextureBlendEnable(true);
 			smr->setGlobalIllumination(true);
+
+			if (flags & PMXLoadFlagBits::MaterialBit)
+			{
+				Materials materials;
+				createMaterials(pmx, materials);
+				smr->setMaterials(std::move(materials));
+			}
 
 			object->addComponent(smr);
 		}
@@ -603,7 +612,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<GameObject>
-	PMXLoader::load(std::string_view filepath) noexcept(false)
+	PMXLoader::load(std::string_view filepath, PMXLoadFlags flags) noexcept(false)
 	{
 		PMX pmx;
 		if (PMX::load(filepath, pmx))
@@ -624,7 +633,7 @@ namespace octoon
 				createRigidbodies(pmx, bones);
 				createJoints(pmx, bones);
 
-				createMeshes(pmx, actor, bones);
+				createMeshes(pmx, actor, bones, flags);
 				createMorph(pmx, actor);
 				createClothes(pmx, actor, bones);
 
@@ -636,7 +645,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<GameObject>
-	PMXLoader::load(const PMX& pmx) noexcept(false)
+	PMXLoader::load(const PMX& pmx, PMXLoadFlags flags) noexcept(false)
 	{
 		if (pmx.numMaterials > 0)
 		{
@@ -654,7 +663,7 @@ namespace octoon
 			createRigidbodies(pmx, bones);
 			createJoints(pmx, bones);
 
-			createMeshes(pmx, actor, bones);
+			createMeshes(pmx, actor, bones, flags);
 			createMorph(pmx, actor);
 			createClothes(pmx, actor, bones);
 

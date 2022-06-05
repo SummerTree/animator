@@ -38,7 +38,11 @@ namespace unreal
 		{
 			for (auto& it : reader["scene"])
 			{
-				auto object = ModelImporter::instance()->loadMetaData(it["model"]);
+				octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit;
+				if (it.find("materials") != it.end())
+					flags = flags & ~octoon::PMXLoadFlagBits::MaterialBit;
+
+				auto object = ModelImporter::instance()->loadMetaData(it["model"], flags);
 				if (object)
 				{
 					for (auto& animationJson : it["animation"])
@@ -55,36 +59,39 @@ namespace unreal
 						}
 					}
 
-					std::vector<std::shared_ptr<octoon::Material>> materials;
-					materials.resize(it["materials"].size());
-
-					for (auto& materialJson : it["materials"])
+					if (it.find("materials") != it.end())
 					{
-						if (materialJson.find("uuid") == materialJson.end())
-							continue;
+						std::vector<std::shared_ptr<octoon::Material>> materials;
+						materials.resize(it["materials"].size());
 
-						if (materialJson.find("path") != materialJson.end())
+						for (auto& materialJson : it["materials"])
 						{
-							auto uuid = materialJson["uuid"].get<nlohmann::json::string_t>();
-							auto path = materialJson["path"].get<nlohmann::json::string_t>();
-							auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-							auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid), std::string_view(path));
+							if (materialJson.find("uuid") == materialJson.end())
+								continue;
 
-							materials[index] = std::move(material);
-						}
-						else
-						{
-							auto uuid = materialJson["uuid"].get<nlohmann::json::string_t>();
-							auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-							auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid));
+							if (materialJson.find("path") != materialJson.end())
+							{
+								auto uuid = materialJson["uuid"].get<nlohmann::json::string_t>();
+								auto path = materialJson["path"].get<nlohmann::json::string_t>();
+								auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
+								auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid), std::string_view(path));
 
-							materials[index] = std::move(material);
+								materials[index] = std::move(material);
+							}
+							else
+							{
+								auto uuid = materialJson["uuid"].get<nlohmann::json::string_t>();
+								auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
+								auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid));
+
+								materials[index] = std::move(material);
+							}
 						}
+
+						auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
+						if (smr)
+							smr->setMaterials(std::move(materials));
 					}
-
-					auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
-					if (smr)
-						smr->setMaterials(std::move(materials));
 
 					objects_.push_back(std::move(object));
 				}

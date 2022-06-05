@@ -5,6 +5,7 @@
 #include <unreal_component.h>
 #include <octoon/game_object.h>
 #include <octoon/video/renderer.h>
+#include <octoon/pmx_loader.h>
 #include <octoon/light/directional_light.h>
 #include <octoon/light/environment_light.h>
 #include <octoon/camera/perspective_camera.h>
@@ -25,14 +26,14 @@ namespace unreal
 		void open(std::string indexPath) noexcept(false);
 		void close() noexcept;
 
-		octoon::GameObjectPtr importModel(std::string_view path) noexcept(false);
+		octoon::GameObjectPtr importModel(std::string_view path, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
 
 		nlohmann::json createPackage(std::string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
-		octoon::GameObjectPtr loadPackage(const nlohmann::json& package) noexcept(false);
+		octoon::GameObjectPtr loadPackage(const nlohmann::json& package, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
 		void removePackage(std::string_view uuid) noexcept(false);
 
-		octoon::GameObjectPtr loadMetaData(const nlohmann::json& metadata) noexcept;
+		octoon::GameObjectPtr loadMetaData(const nlohmann::json& metadata, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept;
 		nlohmann::json createMetadata(const octoon::GameObjectPtr& gameObject) const noexcept;
 
 		MutableLiveData<nlohmann::json>& getIndexList() noexcept;

@@ -46,12 +46,12 @@ namespace unreal
 	}
 
 	octoon::GameObjectPtr
-	ModelImporter::importModel(std::string_view path) noexcept(false)
+	ModelImporter::importModel(std::string_view path, octoon::PMXLoadFlags flags) noexcept(false)
 	{
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".pmx")
 		{
-			auto model = octoon::PMXLoader::load(path);
+			auto model = octoon::PMXLoader::load(path, flags);
 			if (model)
 			{
 				modelPathList_[model] = path;
@@ -193,12 +193,12 @@ namespace unreal
 	}
 
 	octoon::GameObjectPtr
-	ModelImporter::loadPackage(const nlohmann::json& package) noexcept(false)
+	ModelImporter::loadPackage(const nlohmann::json& package, octoon::PMXLoadFlags flags) noexcept(false)
 	{
 		if (package["path"].is_string())
 		{
 			auto path = package["path"].get<nlohmann::json::string_t>();
-			auto model = octoon::PMXLoader::load(path);
+			auto model = octoon::PMXLoader::load(path, flags);
 			if (model)
 			{
 				modelList_[model] = package;
@@ -214,9 +214,9 @@ namespace unreal
 	{
 		auto& indexList = this->modelIndexList_.getValue();
 
-		for (auto it = indexList.begin(); it != indexList.end(); ++it)
+		for (auto index = indexList.begin(); index != indexList.end(); ++index)
 		{
-			if ((*it).get<nlohmann::json::string_t>() == uuid)
+			if ((*index).get<nlohmann::json::string_t>() == uuid)
 			{
 				auto packagePath = std::filesystem::path(assertPath_).append(uuid).u16string();
 
@@ -229,26 +229,26 @@ namespace unreal
 				if (package != this->packageList_.end())
 					this->packageList_.erase(package);
 
-				indexList.erase(it);
+				indexList.erase(index);
 			}
 		}
 	}
 
 	octoon::GameObjectPtr
-	ModelImporter::loadMetaData(const nlohmann::json& metadata) noexcept
+	ModelImporter::loadMetaData(const nlohmann::json& metadata, octoon::PMXLoadFlags flags) noexcept
 	{
 		if (metadata.find("uuid") != metadata.end())
 		{
 			auto uuid = metadata["uuid"].get<nlohmann::json::string_t>();
 			auto package = this->getPackage(uuid);
 			if (package.is_object())
-				return this->loadPackage(package);
+				return this->loadPackage(package, flags);
 		
 		}
 		if (metadata.find("path") != metadata.end())
 		{
 			auto path = metadata["path"].get<nlohmann::json::string_t>();
-			return this->importModel(path);
+			return this->importModel(path, flags);
 		}
 
 		return nullptr;
