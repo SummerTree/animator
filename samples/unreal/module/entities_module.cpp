@@ -99,6 +99,8 @@ namespace unreal
 		}
 
 		this->objects = std::move(objects_);
+
+		MaterialImporter::instance()->getSceneList().submit();
 	}
 
 	void 

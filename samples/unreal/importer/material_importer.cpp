@@ -470,6 +470,7 @@ namespace unreal
 
 		this->materials_[uuid] = standard;
 		this->materialUUIDs_[standard] = uuid;
+		this->sceneList_.getValue().push_back(uuid);
 
 		return standard;
 	}
