@@ -1010,20 +1010,15 @@ namespace unreal
 		if (materialComponent)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-
-			auto package = MaterialImporter::instance()->getPackage(uuid);
-			if (!package.is_null())
+			auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid));
+			if (material)
 			{
-				auto material = MaterialImporter::instance()->getMaterial(uuid);
-				if (material)
-				{
-					MaterialImporter::instance()->addMaterial(this->material_->clone());
+				MaterialImporter::instance()->addMaterial(this->material_->clone());
 
-					this->material_->copy(*material);
+				this->material_->copy(*material);
 
-					this->updateMaterial();
-					this->updatePreviewImage();
-				}
+				this->updateMaterial();
+				this->updatePreviewImage();
 			}
 		}
 	}
@@ -1755,7 +1750,7 @@ namespace unreal
 			{
 				auto hit = selectedItem.value();
 				auto uuid = item->data(Qt::UserRole).toString().toStdString();
-				auto material = MaterialImporter::instance()->getMaterial(uuid);
+				auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid));
 
 				auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
 				if (meshRenderer)
@@ -1795,7 +1790,7 @@ namespace unreal
 				mainWidget_->addItem(item);
 				mainWidget_->setItemWidget(item, widget);
 
-				auto material = MaterialImporter::instance()->getMaterial(package["uuid"].get<nlohmann::json::string_t>());
+				auto material = MaterialImporter::instance()->loadPackage(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
 				if (material)
 				{
 					QFontMetrics metrics(nameLabel->font());
@@ -1970,7 +1965,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
 			{
-				auto material = MaterialImporter::instance()->getMaterial(item->data(Qt::UserRole).toString().toStdString());
+				auto material = MaterialImporter::instance()->loadPackage(std::string_view(item->data(Qt::UserRole).toString().toStdString()));
 				if (material)
 				{
 					this->setWindowTitle(tr("Material Properties"));
