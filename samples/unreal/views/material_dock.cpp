@@ -1900,15 +1900,18 @@ namespace unreal
 				if (dirty)
 					MaterialImporter::instance()->getSceneList().submit();
 
-				auto uuid = QString::fromStdString(MaterialImporter::instance()->getSceneMetadate(materials[hit.mesh]));
-				auto count = this->materialList_->mainWidget_->count();
-				for (int i = 0; i < count; i++)
+				if (hit.mesh < materials.size())
 				{
-					auto item = this->materialList_->mainWidget_->item(i);
-					if (item->data(Qt::UserRole).toString() == uuid)
+					auto uuid = QString::fromStdString(MaterialImporter::instance()->getMaterialID(materials[hit.mesh]));
+					auto count = this->materialList_->mainWidget_->count();
+					for (int i = 0; i < count; i++)
 					{
-						this->materialList_->mainWidget_->setCurrentItem(item);
-						break;
+						auto item = this->materialList_->mainWidget_->item(i);
+						if (item->data(Qt::UserRole).toString() == uuid)
+						{
+							this->materialList_->mainWidget_->setCurrentItem(item);
+							break;
+						}
 					}
 				}
 			}

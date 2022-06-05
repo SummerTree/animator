@@ -417,8 +417,8 @@ namespace octoon
 
 	void createMeshes(const PMX& pmx, GameObjectPtr& object, const GameObjects& bones) noexcept(false)
 	{
-		Materials materials;
-		createMaterials(pmx, materials);
+		//Materials materials;
+		//createMaterials(pmx, materials);
 
 		math::float4x4s bindposes(pmx.bones.size());
 		for (std::size_t i = 0; i < pmx.bones.size(); i++)
@@ -498,13 +498,14 @@ namespace octoon
 
 		if (bones.empty())
 		{
-			auto meshRender = object->addComponent<MeshRendererComponent>(std::move(materials));
+			auto meshRender = object->addComponent<MeshRendererComponent>();
+			//meshRender->setMaterials(std::move(materials));
 			meshRender->setGlobalIllumination(true);
 		}
 		else
 		{
 			auto smr = SkinnedMeshRendererComponent::create();
-			smr->setMaterials(std::move(materials));
+			//smr->setMaterials(std::move(materials));
 			smr->setTransforms(bones);
 			smr->setMorphBlendEnable(true);
 			smr->setTextureBlendEnable(true);

@@ -27,8 +27,8 @@ namespace unreal
 
 		nlohmann::json createPackage(std::string_view path) noexcept(false);
 		nlohmann::json createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& material, std::string_view rootPath) noexcept(false);
-		nlohmann::json getPackage(std::string_view uuid) noexcept(false);
-		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(std::string_view uuid) noexcept(false);
+		nlohmann::json getPackage(std::string_view uuid, std::string_view rootPath = "") noexcept(false);
+		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(std::string_view uuid, std::string_view rootPath = "") noexcept(false);
 		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(const nlohmann::json& package) noexcept(false);
 		void removePackage(std::string_view uuid) noexcept(false);
 
@@ -38,11 +38,8 @@ namespace unreal
 		const MutableLiveData<nlohmann::json>& getIndexList() const noexcept;
 		const MutableLiveData<nlohmann::json>& getSceneList() const noexcept;
 
-		std::shared_ptr<octoon::Material> loadMetaData(const nlohmann::json& metadata) noexcept;
-		nlohmann::json createMetadata(const std::shared_ptr<octoon::Material>& material) const noexcept;
-
 		bool addMaterial(const std::shared_ptr<octoon::Material>& material);
-		std::string getSceneMetadate(const std::shared_ptr<octoon::Material>& material) const noexcept(false);
+		std::string getMaterialID(const std::shared_ptr<octoon::Material>& material) const noexcept(false);
 
 		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
 
@@ -62,7 +59,7 @@ namespace unreal
 		MaterialImporter& operator=(const MaterialImporter&) = delete;
 
 	private:
-		std::string assertPath_;
+		std::string defaultPath_;
 
 		std::uint32_t previewWidth_;
 		std::uint32_t previewHeight_;

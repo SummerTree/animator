@@ -36,7 +36,7 @@ namespace unreal
 
 		if (std::filesystem::exists(indexPath))
 		{
-			this->assertPath_ = indexPath;
+			this->defaultPath_ = indexPath;
 			this->initPackageIndices();
 		}
 	}
@@ -64,7 +64,7 @@ namespace unreal
 
 			for (auto& mat : loader.getMaterials())
 			{
-				auto package = this->createPackage(mat, assertPath_);
+				auto package = this->createPackage(mat, defaultPath_);
 
 				items.push_back(package["uuid"]);
 				this->indexList_.getValue().push_back(package["uuid"]);
@@ -244,12 +244,12 @@ namespace unreal
 	}
 
 	nlohmann::json
-	MaterialImporter::getPackage(std::string_view uuid) noexcept(false)
+	MaterialImporter::getPackage(std::string_view uuid, std::string_view rootPath) noexcept(false)
 	{
 		auto it = this->packageList_.find(std::string(uuid));
 		if (it == this->packageList_.end())
 		{
-			std::ifstream ifs(std::filesystem::path(assertPath_).append(uuid).append("package.json"));
+			std::ifstream ifs(std::filesystem::path(rootPath.empty() ? defaultPath_ : rootPath).append(uuid).append("package.json"));
 			if (ifs)
 			{
 				auto package = nlohmann::json::parse(ifs);
@@ -266,12 +266,12 @@ namespace unreal
 	}
 
 	std::shared_ptr<octoon::MeshStandardMaterial>
-	MaterialImporter::loadPackage(std::string_view uuid) noexcept(false)
+	MaterialImporter::loadPackage(std::string_view uuid, std::string_view rootPath) noexcept(false)
 	{
 		auto material = this->materials_.find(uuid);
 		if (material == this->materials_.end())
 		{
-			auto package = MaterialImporter::instance()->getPackage(uuid);
+			auto package = MaterialImporter::instance()->getPackage(uuid, rootPath);
 			if (package.is_object())
 				return loadPackage(package);
 
@@ -483,7 +483,7 @@ namespace unreal
 		{
 			if ((*index).get<nlohmann::json::string_t>() == uuid)
 			{
-				auto packagePath = std::filesystem::path(assertPath_).append(uuid);
+				auto packagePath = std::filesystem::path(defaultPath_).append(uuid);
 
 				for (auto& it : std::filesystem::recursive_directory_iterator(packagePath))
 					std::filesystem::permissions(it, std::filesystem::perms::owner_write);
@@ -531,56 +531,11 @@ namespace unreal
 	}
 
 	std::string
-	MaterialImporter::getSceneMetadate(const std::shared_ptr<octoon::Material>& material) const noexcept(false)
+	MaterialImporter::getMaterialID(const std::shared_ptr<octoon::Material>& material) const noexcept(false)
 	{
-		return materialsRemap_.at(material);
-	}
-
-	std::shared_ptr<octoon::Material>
-	MaterialImporter::loadMetaData(const nlohmann::json& metadata) noexcept
-	{
-		if (metadata.find("uuid") != metadata.end())
-		{
-			auto uuid = metadata["uuid"].get<nlohmann::json::string_t>();
-			auto package = this->getPackage(uuid);
-			if (package.is_object())
-				return this->loadPackage(package);
-		
-		}
-		/*if (metadata.find("path") != metadata.end())
-		{
-			auto path = metadata["path"].get<nlohmann::json::string_t>();
-			return this->importPackage(path);
-		}*/
-
-		return nullptr;
-	}
-
-	nlohmann::json
-	MaterialImporter::createMetadata(const std::shared_ptr<octoon::Material>& material) const noexcept
-	{
-		auto it = materialList_.find(material);
-		if (it != materialList_.end())
-		{
-			auto& package = (*it).second;
-
-			nlohmann::json json;
-			json["name"] = package["name"];
-			json["uuid"] = package["uuid"].get<nlohmann::json::string_t>();
-
-			return json;
-		}
-		auto path = materialPathList_.find(material);
-		if (path != materialPathList_.end())
-		{
-			nlohmann::json json;
-			json["path"] = (*path).second;
-			json["name"] = std::filesystem::path((*path).second).filename().string();
-
-			return json;
-		}
-
-		return nlohmann::json();
+		if (materialsRemap_.find(material) != materialsRemap_.end())
+			return materialsRemap_.at(material);
+		return std::string();
 	}
 
 	void
@@ -709,7 +664,7 @@ namespace unreal
 	void
 	MaterialImporter::initPackageIndices() noexcept(false)
 	{
-		std::ifstream indexStream(assertPath_ + "/index.json");
+		std::ifstream indexStream(defaultPath_ + "/index.json");
 		if (indexStream)
 			this->indexList_ = nlohmann::json::parse(indexStream);
 
@@ -719,13 +674,13 @@ namespace unreal
 
 		for (auto& it : this->indexList_.getValue())
 		{
-			if (!std::filesystem::exists(std::filesystem::path(assertPath_).append(it.get<nlohmann::json::string_t>())))
+			if (!std::filesystem::exists(std::filesystem::path(defaultPath_).append(it.get<nlohmann::json::string_t>())))
 				needUpdateIndexFile = true;
 			else
 				indexSet.insert(it.get<nlohmann::json::string_t>());
 		}
 
-		for (auto& it : std::filesystem::directory_iterator(assertPath_))
+		for (auto& it : std::filesystem::directory_iterator(defaultPath_))
 		{
 			if (std::filesystem::is_directory(it))
 			{
@@ -758,10 +713,10 @@ namespace unreal
 	void
 	MaterialImporter::save() const noexcept(false)
 	{
-		if (!std::filesystem::exists(assertPath_))
-			std::filesystem::create_directory(assertPath_);
+		if (!std::filesystem::exists(defaultPath_))
+			std::filesystem::create_directory(defaultPath_);
 
-		std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
+		std::ofstream ifs(defaultPath_ + "/index.json", std::ios_base::binary);
 		if (ifs)
 		{
 			auto data = indexList_.getValue().dump();
