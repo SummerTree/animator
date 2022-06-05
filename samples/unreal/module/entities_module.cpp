@@ -115,6 +115,9 @@ namespace unreal
 					auto& materials = smr->getMaterials();
 					for (auto& material : materials)
 					{
+						auto materialJson = MaterialImporter::instance()->createMetadata(material);
+						if (materialJson.is_object())
+							json["material"].push_back(std::move(materialJson));
 					}
 				}
 
