@@ -490,7 +490,7 @@ namespace unreal
 	bool
 	MaterialImporter::addMaterial(const std::shared_ptr<octoon::Material>& mat)
 	{
-		if (this->materialSets_.find((void*)mat.get()) == this->materialSets_.end())
+		if (this->materialsRemap_.find(mat) == this->materialsRemap_.end())
 		{
 			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
 			auto uuid = octoon::make_guid();
@@ -510,7 +510,6 @@ namespace unreal
 			this->packageList_[uuid] = item;
 
 			this->materials_[uuid] = standard;
-			this->materialSets_.insert((void*)mat.get());
 			this->materialsRemap_[mat] = uuid;
 
 			return true;

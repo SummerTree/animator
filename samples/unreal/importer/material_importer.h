@@ -1,7 +1,6 @@
 #ifndef UNREAL_MATERIAL_IMPORTER_H_
 #define UNREAL_MATERIAL_IMPORTER_H_
 
-#include <set>
 #include <map>
 #include <qpixmap.h>
 #include <octoon/video/renderer.h>
@@ -74,7 +73,6 @@ namespace unreal
 
 		octoon::GraphicsFramebufferPtr framebuffer_;
 
-		std::set<void*> materialSets_;
 		std::map<std::string, std::shared_ptr<octoon::MeshStandardMaterial>, std::less<>> materials_;
 		std::map<std::weak_ptr<octoon::Material>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Material>>> materialList_;
 		std::map<std::weak_ptr<octoon::Material>, std::string, std::owner_less<std::weak_ptr<octoon::Material>>> materialPathList_;

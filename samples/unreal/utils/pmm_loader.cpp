@@ -122,7 +122,7 @@ namespace unreal
 
 		clips.resize(numBone);
 
-		for (std::int32_t i = 0; i < numBone; i++)
+		for (std::size_t i = 0; i < numBone; i++)
 		{
 			std::size_t keyframeCount = 1u;
 			std::size_t next_index = it.bone_init_frame[i].next_index;
