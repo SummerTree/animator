@@ -271,7 +271,7 @@ namespace unreal
 		if (path != modelPathList_.end())
 		{
 			nlohmann::json json;
-			json["path"] = (*path).second;
+			json["path"] = (char*)(*path).second.c_str();
 
 			return json;
 		}
