@@ -23,7 +23,7 @@ namespace unreal
 
 		std::shared_ptr<octoon::GraphicsTexture> importTexture(std::string_view path, bool generatorMipmap = false) noexcept(false);
 
-		nlohmann::json importPackage(std::string_view path, bool blockSignals = false) noexcept(false);
+		nlohmann::json createPackage(std::string_view path, bool blockSignals = false) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		std::shared_ptr<octoon::GraphicsTexture> loadPackage(const nlohmann::json& package) noexcept(false);
 		void removePackage(std::string_view uuid) noexcept(false);

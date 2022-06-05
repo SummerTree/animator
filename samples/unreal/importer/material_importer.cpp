@@ -11,7 +11,6 @@
 #include <fstream>
 
 #include <qimage.h>
-#include <qstring.h>
 
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
@@ -53,9 +52,9 @@ namespace unreal
 	}
 
 	nlohmann::json
-	MaterialImporter::importPackage(std::string_view path) noexcept(false)
+	MaterialImporter::createPackage(std::string_view path) noexcept(false)
 	{
-		octoon::io::ifstream stream(QString::fromStdString(std::string(path)).toStdWString());
+		octoon::io::ifstream stream((std::string)path);
 		if (stream)
 		{
 			octoon::MDLLoader loader;
@@ -63,140 +62,12 @@ namespace unreal
 
 			nlohmann::json items;
 
-			auto writeTexture = [](const std::shared_ptr<octoon::GraphicsTexture>& texture, std::filesystem::path rootPath) -> nlohmann::json
-			{
-				if (texture)
-				{
-					auto textureDesc = texture->getTextureDesc();
-					auto width = textureDesc.getWidth();
-					auto height = textureDesc.getHeight();
-					auto textureFormat = textureDesc.getTexFormat();
-
-					std::uint8_t* data_ = nullptr;
-
-					if (texture->map(0, 0, width, height, 0, (void**)&data_))
-					{
-						auto format = QImage::Format::Format_RGB888;
-
-						if (textureFormat == octoon::GraphicsFormat::R8G8B8UNorm)
-							format = QImage::Format::Format_RGB888;
-						else if (textureFormat == octoon::GraphicsFormat::R8G8B8A8UNorm)
-							format = QImage::Format::Format_RGBA8888;
-
-						QImage qimage(data_, width, height, format);
-
-						texture->unmap();
-
-						auto uuid = octoon::make_guid();
-						auto outputPath = rootPath.append(uuid + ".png").string();
-
-						qimage.save(QString::fromStdString(outputPath), "png");
-
-						return outputPath;
-					}
-				}
-
-				return nlohmann::json();
-			};
-
-			auto writePreview = [this](const std::shared_ptr<octoon::MeshStandardMaterial> material, std::filesystem::path outputPath) -> nlohmann::json
-			{
-				QPixmap pixmap;
-				auto uuid = octoon::make_guid();
-				auto previewPath = std::filesystem::path(outputPath).append(uuid + ".png");
-				this->createMaterialPreview(material, pixmap, previewWidth_, previewHeight_);
-				pixmap.save(QString::fromStdString(previewPath.string()), "png");
-				return previewPath.string();
-			};
-
-			auto writeFloat2 = [](const octoon::math::float2& v)
-			{
-				return nlohmann::json({ v.x, v.y });
-			};
-
-			auto writeFloat3 = [](const octoon::math::float3& v)
-			{
-				return nlohmann::json({ v.x, v.y, v.z });
-			};
-
 			for (auto& mat : loader.getMaterials())
 			{
-				auto uuid = octoon::make_guid();
-				auto outputPath = std::filesystem::path(assertPath_).append(uuid);
+				auto package = this->createPackage(mat, assertPath_);
 
-				std::filesystem::create_directory(assertPath_);
-				std::filesystem::create_directory(outputPath);
-
-				nlohmann::json item;
-				item["uuid"] = uuid;
-				item["name"] = mat->getName();
-				item["preview"] = writePreview(mat, outputPath);
-				item["colorMap"] = writeTexture(mat->getColorMap(), outputPath);
-				item["opacityMap"] = writeTexture(mat->getOpacityMap(), outputPath);
-				item["normalMap"] = writeTexture(mat->getNormalMap(), outputPath);
-				item["roughnessMap"] = writeTexture(mat->getRoughnessMap(), outputPath);
-				item["specularMap"] = writeTexture(mat->getSpecularMap(), outputPath);
-				item["metalnessMap"] = writeTexture(mat->getMetalnessMap(), outputPath);
-				item["emissiveMap"] = writeTexture(mat->getEmissiveMap(), outputPath);
-				item["anisotropyMap"] = writeTexture(mat->getAnisotropyMap(), outputPath);
-				item["clearCoatMap"] = writeTexture(mat->getClearCoatMap(), outputPath);
-				item["clearCoatRoughnessMap"] = writeTexture(mat->getClearCoatRoughnessMap(), outputPath);
-				item["subsurfaceMap"] = writeTexture(mat->getSubsurfaceMap(), outputPath);
-				item["subsurfaceColorMap"] = writeTexture(mat->getSubsurfaceColorMap(), outputPath);
-				item["sheenMap"] = writeTexture(mat->getSheenMap(), outputPath);
-				item["lightMap"] = writeTexture(mat->getLightMap(), outputPath);
-				item["emissiveIntensity"] = mat->getEmissiveIntensity();
-				item["opacity"] = mat->getOpacity();
-				item["smoothness"] = mat->getSmoothness();
-				item["roughness"] = mat->getRoughness();
-				item["metalness"] = mat->getMetalness();
-				item["anisotropy"] = mat->getAnisotropy();
-				item["sheen"] = mat->getSheen();
-				item["specular"] = mat->getSpecular();
-				item["refractionRatio"] = mat->getRefractionRatio();
-				item["clearCoat"] = mat->getClearCoat();
-				item["clearCoatRoughness"] = mat->getClearCoatRoughness();
-				item["subsurface"] = mat->getSubsurface();
-				item["reflectionRatio"] = mat->getReflectionRatio();
-				item["transmission"] = mat->getTransmission();
-				item["lightMapIntensity"] = mat->getLightMapIntensity();
-				item["gamma"] = mat->getGamma();
-				item["offset"] = writeFloat2(mat->getOffset());
-				item["repeat"] = writeFloat2(mat->getRepeat());
-				item["normalScale"] = writeFloat2(mat->getNormalScale());
-				item["color"] = writeFloat3(mat->getColor());
-				item["emissive"] = writeFloat3(mat->getEmissive());
-				item["subsurfaceColor"] = writeFloat3(mat->getSubsurfaceColor());
-				item["blendEnable"] = mat->getBlendEnable();
-				item["blendOp"] = mat->getBlendOp();
-				item["blendSrc"] = mat->getBlendSrc();
-				item["blendDest"] = mat->getBlendDest();
-				item["blendAlphaOp"] = mat->getBlendAlphaOp();
-				item["blendAlphaSrc"] = mat->getBlendAlphaSrc();
-				item["blendAlphaDest"] = mat->getBlendAlphaDest();
-				item["colorWriteMask"] = mat->getColorWriteMask();
-				item["depthEnable"] = mat->getDepthEnable();
-				item["depthBiasEnable"] = mat->getDepthBiasEnable();
-				item["depthBoundsEnable"] = mat->getDepthBoundsEnable();
-				item["depthClampEnable"] = mat->getDepthClampEnable();
-				item["depthWriteEnable"] = mat->getDepthWriteEnable();
-				item["stencilEnable"] = mat->getStencilEnable();
-				item["scissorTestEnable"] = mat->getScissorTestEnable();
-				item["depthMin"] = mat->getDepthMin();
-				item["depthMax"] = mat->getDepthMax();
-				item["depthBias"] = mat->getDepthBias();
-				item["depthSlopeScaleBias"] = mat->getDepthSlopeScaleBias();
-
-				std::ofstream ifs(std::filesystem::path(outputPath).append("package.json"), std::ios_base::binary);
-				if (ifs)
-				{
-					auto dump = item.dump();
-					ifs.write(dump.c_str(), dump.size());
-
-					items.push_back(uuid);
-
-					this->indexList_.getValue().push_back(uuid);
-				}
+				items.push_back(package["uuid"]);
+				this->indexList_.getValue().push_back(package["uuid"]);
 			}
 
 			this->save();
@@ -205,6 +76,147 @@ namespace unreal
 		}
 
 		return nlohmann::json();
+	}
+
+	nlohmann::json
+	MaterialImporter::createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& mat, std::string_view rootPath) noexcept(false)
+	{
+		auto writeTexture = [](const std::shared_ptr<octoon::GraphicsTexture>& texture, std::filesystem::path rootPath) -> nlohmann::json
+		{
+			if (texture)
+			{
+				auto textureDesc = texture->getTextureDesc();
+				auto width = textureDesc.getWidth();
+				auto height = textureDesc.getHeight();
+				auto textureFormat = textureDesc.getTexFormat();
+
+				std::uint8_t* data_ = nullptr;
+
+				if (texture->map(0, 0, width, height, 0, (void**)&data_))
+				{
+					auto format = QImage::Format::Format_RGB888;
+					if (textureFormat == octoon::GraphicsFormat::R8G8B8UNorm)
+						format = QImage::Format::Format_RGB888;
+					else if (textureFormat == octoon::GraphicsFormat::R8G8B8A8UNorm)
+						format = QImage::Format::Format_RGBA8888;
+
+					QImage qimage(data_, width, height, format);
+
+					texture->unmap();
+
+					auto uuid = octoon::make_guid();
+					auto outputPath = rootPath.append(uuid + ".png").string();
+
+					qimage.save(QString::fromStdString(outputPath), "png");
+
+					return outputPath;
+				}
+			}
+
+			return nlohmann::json();
+		};
+
+		auto writePreview = [this](const std::shared_ptr<octoon::MeshStandardMaterial> material, std::filesystem::path outputPath) -> nlohmann::json
+		{
+			QPixmap pixmap;
+			auto uuid = octoon::make_guid();
+			auto previewPath = std::filesystem::path(outputPath).append(uuid + ".png");
+			this->createMaterialPreview(material, pixmap, previewWidth_, previewHeight_);
+			pixmap.save(QString::fromStdString(previewPath.string()), "png");
+			return previewPath.string();
+		};
+
+		auto writeFloat2 = [](const octoon::math::float2& v)
+		{
+			return nlohmann::json({ v.x, v.y });
+		};
+
+		auto writeFloat3 = [](const octoon::math::float3& v)
+		{
+			return nlohmann::json({ v.x, v.y, v.z });
+		};
+
+		auto uuid = octoon::make_guid();
+		auto outputPath = std::filesystem::path(rootPath).append(uuid);
+
+		std::filesystem::create_directories(outputPath);
+
+		try
+		{
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["name"] = mat->getName();
+			package["preview"] = writePreview(mat, outputPath);
+			package["colorMap"] = writeTexture(mat->getColorMap(), outputPath);
+			package["opacityMap"] = writeTexture(mat->getOpacityMap(), outputPath);
+			package["normalMap"] = writeTexture(mat->getNormalMap(), outputPath);
+			package["roughnessMap"] = writeTexture(mat->getRoughnessMap(), outputPath);
+			package["specularMap"] = writeTexture(mat->getSpecularMap(), outputPath);
+			package["metalnessMap"] = writeTexture(mat->getMetalnessMap(), outputPath);
+			package["emissiveMap"] = writeTexture(mat->getEmissiveMap(), outputPath);
+			package["anisotropyMap"] = writeTexture(mat->getAnisotropyMap(), outputPath);
+			package["clearCoatMap"] = writeTexture(mat->getClearCoatMap(), outputPath);
+			package["clearCoatRoughnessMap"] = writeTexture(mat->getClearCoatRoughnessMap(), outputPath);
+			package["subsurfaceMap"] = writeTexture(mat->getSubsurfaceMap(), outputPath);
+			package["subsurfaceColorMap"] = writeTexture(mat->getSubsurfaceColorMap(), outputPath);
+			package["sheenMap"] = writeTexture(mat->getSheenMap(), outputPath);
+			package["lightMap"] = writeTexture(mat->getLightMap(), outputPath);
+			package["emissiveIntensity"] = mat->getEmissiveIntensity();
+			package["opacity"] = mat->getOpacity();
+			package["smoothness"] = mat->getSmoothness();
+			package["roughness"] = mat->getRoughness();
+			package["metalness"] = mat->getMetalness();
+			package["anisotropy"] = mat->getAnisotropy();
+			package["sheen"] = mat->getSheen();
+			package["specular"] = mat->getSpecular();
+			package["refractionRatio"] = mat->getRefractionRatio();
+			package["clearCoat"] = mat->getClearCoat();
+			package["clearCoatRoughness"] = mat->getClearCoatRoughness();
+			package["subsurface"] = mat->getSubsurface();
+			package["reflectionRatio"] = mat->getReflectionRatio();
+			package["transmission"] = mat->getTransmission();
+			package["lightMapIntensity"] = mat->getLightMapIntensity();
+			package["gamma"] = mat->getGamma();
+			package["offset"] = writeFloat2(mat->getOffset());
+			package["repeat"] = writeFloat2(mat->getRepeat());
+			package["normalScale"] = writeFloat2(mat->getNormalScale());
+			package["color"] = writeFloat3(mat->getColor());
+			package["emissive"] = writeFloat3(mat->getEmissive());
+			package["subsurfaceColor"] = writeFloat3(mat->getSubsurfaceColor());
+			package["blendEnable"] = mat->getBlendEnable();
+			package["blendOp"] = mat->getBlendOp();
+			package["blendSrc"] = mat->getBlendSrc();
+			package["blendDest"] = mat->getBlendDest();
+			package["blendAlphaOp"] = mat->getBlendAlphaOp();
+			package["blendAlphaSrc"] = mat->getBlendAlphaSrc();
+			package["blendAlphaDest"] = mat->getBlendAlphaDest();
+			package["colorWriteMask"] = mat->getColorWriteMask();
+			package["depthEnable"] = mat->getDepthEnable();
+			package["depthBiasEnable"] = mat->getDepthBiasEnable();
+			package["depthBoundsEnable"] = mat->getDepthBoundsEnable();
+			package["depthClampEnable"] = mat->getDepthClampEnable();
+			package["depthWriteEnable"] = mat->getDepthWriteEnable();
+			package["stencilEnable"] = mat->getStencilEnable();
+			package["scissorTestEnable"] = mat->getScissorTestEnable();
+			package["depthMin"] = mat->getDepthMin();
+			package["depthMax"] = mat->getDepthMax();
+			package["depthBias"] = mat->getDepthBias();
+			package["depthSlopeScaleBias"] = mat->getDepthSlopeScaleBias();
+
+			std::ofstream ifs(std::filesystem::path(outputPath).append("package.json"), std::ios_base::binary);
+			if (ifs)
+			{
+				auto dump = package.dump();
+				ifs.write(dump.c_str(), dump.size());
+			}
+
+			return package;
+		}
+		catch (std::exception& e)
+		{
+			std::filesystem::remove_all(outputPath);
+			throw e;
+		}
 	}
 
 	MutableLiveData<nlohmann::json>&

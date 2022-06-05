@@ -27,7 +27,7 @@ namespace unreal
 
 		octoon::GameObjectPtr importModel(std::string_view path) noexcept(false);
 
-		nlohmann::json importPackage(std::string_view path) noexcept(false);
+		nlohmann::json createPackage(std::string_view path) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		octoon::GameObjectPtr loadPackage(const nlohmann::json& package) noexcept(false);
 		void removePackage(std::string_view uuid) noexcept(false);

@@ -25,7 +25,8 @@ namespace unreal
 		void open(std::string indexPath) noexcept(false);
 		void close() noexcept;
 
-		nlohmann::json importPackage(std::string_view path) noexcept(false);
+		nlohmann::json createPackage(std::string_view path) noexcept(false);
+		nlohmann::json createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& material, std::string_view rootPath) noexcept(false);
 		nlohmann::json getPackage(std::string_view uuid) noexcept(false);
 		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(std::string_view uuid) noexcept(false);
 		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(const nlohmann::json& package) noexcept(false);

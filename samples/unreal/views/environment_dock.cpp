@@ -156,7 +156,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = TextureImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString(), true);
+					auto package = TextureImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString(), true);
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}

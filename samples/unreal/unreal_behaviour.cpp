@@ -109,11 +109,11 @@ namespace unreal
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
 			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")
-			MaterialImporter::instance()->importPackage(path);
+			MaterialImporter::instance()->createPackage(path);
 		else if (ext == ".vmd")
-			MotionImporter::instance()->importPackage((char8_t*)path.data());
+			MotionImporter::instance()->createPackage((char8_t*)path.data());
 		else if (ext == ".hdr")
-			TextureImporter::instance()->importPackage(path);
+			TextureImporter::instance()->createPackage(path);
 	}
 
 	void

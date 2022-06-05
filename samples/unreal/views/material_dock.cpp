@@ -171,7 +171,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto list = MaterialImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString());
+					auto list = MaterialImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString());
 					for (auto& it : list)
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}

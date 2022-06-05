@@ -79,7 +79,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	ModelImporter::importPackage(std::string_view filepath) noexcept(false)
+	ModelImporter::createPackage(std::string_view filepath) noexcept(false)
 	{
 		octoon::PMX pmx;
 

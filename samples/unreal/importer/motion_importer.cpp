@@ -67,7 +67,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	MotionImporter::importPackage(std::u8string_view filepath, bool blockSignals) noexcept(false)
+	MotionImporter::createPackage(std::u8string_view filepath, bool blockSignals) noexcept(false)
 	{
 		std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes((char*)std::u8string(filepath).data());
 
