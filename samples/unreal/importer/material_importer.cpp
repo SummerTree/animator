@@ -52,7 +52,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	MaterialImporter::createPackage(std::string_view path) noexcept(false)
+	MaterialImporter::createPackage(std::string_view path, std::string_view outputPath) noexcept(false)
 	{
 		octoon::io::ifstream stream((std::string)path);
 		if (stream)
@@ -64,7 +64,7 @@ namespace unreal
 
 			for (auto& mat : loader.getMaterials())
 			{
-				auto package = this->createPackage(mat, defaultPath_);
+				auto package = this->createPackage(mat, outputPath);
 
 				items.push_back(package["uuid"]);
 				this->indexList_.getValue().push_back(package["uuid"]);
@@ -137,7 +137,7 @@ namespace unreal
 		};
 
 		auto uuid = octoon::make_guid();
-		auto outputPath = std::filesystem::path(rootPath).append(uuid);
+		auto outputPath = std::filesystem::path(rootPath.empty() ? defaultPath_ : rootPath).append(uuid);
 
 		std::filesystem::create_directories(outputPath);
 
@@ -469,7 +469,7 @@ namespace unreal
 			standard->setSubsurfaceColor(octoon::math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
 
 		this->materials_[uuid] = standard;
-		this->materialsRemap_[standard] = uuid;
+		this->materialUUIDs_[standard] = uuid;
 
 		return standard;
 	}
@@ -502,7 +502,7 @@ namespace unreal
 	bool
 	MaterialImporter::addMaterial(const std::shared_ptr<octoon::Material>& mat)
 	{
-		if (this->materialsRemap_.find(mat) == this->materialsRemap_.end())
+		if (this->materialUUIDs_.find(mat) == this->materialUUIDs_.end())
 		{
 			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
 			auto uuid = octoon::make_guid();
@@ -522,7 +522,7 @@ namespace unreal
 			this->packageList_[uuid] = item;
 
 			this->materials_[uuid] = standard;
-			this->materialsRemap_[mat] = uuid;
+			this->materialUUIDs_[mat] = uuid;
 
 			return true;
 		}
@@ -533,8 +533,8 @@ namespace unreal
 	std::string
 	MaterialImporter::getMaterialID(const std::shared_ptr<octoon::Material>& material) const noexcept(false)
 	{
-		if (materialsRemap_.find(material) != materialsRemap_.end())
-			return materialsRemap_.at(material);
+		if (materialUUIDs_.find(material) != materialUUIDs_.end())
+			return materialUUIDs_.at(material);
 		return std::string();
 	}
 

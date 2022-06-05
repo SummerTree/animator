@@ -25,10 +25,10 @@ namespace unreal
 		void open(std::string indexPath) noexcept(false);
 		void close() noexcept;
 
-		nlohmann::json createPackage(std::string_view path) noexcept(false);
-		nlohmann::json createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& material, std::string_view rootPath) noexcept(false);
-		nlohmann::json getPackage(std::string_view uuid, std::string_view rootPath = "") noexcept(false);
-		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(std::string_view uuid, std::string_view rootPath = "") noexcept(false);
+		nlohmann::json createPackage(std::string_view path, std::string_view outputPath = "") noexcept(false);
+		nlohmann::json createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& material, std::string_view outputPath = "") noexcept(false);
+		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
+		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
 		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(const nlohmann::json& package) noexcept(false);
 		void removePackage(std::string_view uuid) noexcept(false);
 
@@ -74,7 +74,7 @@ namespace unreal
 		std::map<std::string, std::shared_ptr<octoon::MeshStandardMaterial>, std::less<>> materials_;
 		std::map<std::weak_ptr<octoon::Material>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Material>>> materialList_;
 		std::map<std::weak_ptr<octoon::Material>, std::string, std::owner_less<std::weak_ptr<octoon::Material>>> materialPathList_;
-		std::map<std::weak_ptr<octoon::Material>, std::string, std::owner_less<std::weak_ptr<octoon::Material>>> materialsRemap_;
+		std::map<std::weak_ptr<octoon::Material>, std::string, std::owner_less<std::weak_ptr<octoon::Material>>> materialUUIDs_;
 
 		std::shared_ptr<octoon::PerspectiveCamera> camera_;
 		std::shared_ptr<octoon::Geometry> geometry_;
