@@ -1750,7 +1750,7 @@ namespace unreal
 			if (!behaviour)
 				return;
 
-			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
+			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
 			if (selectedItem)
 			{
 				auto hit = selectedItem.value();
@@ -1880,10 +1880,32 @@ namespace unreal
 				materialList_->updateItemList();
 		};
 
-		behaviour->addMessageListener("editor:material:selected", [this](const std::any& any_data) {
-			if (materialList_->isVisible())
+		profile->selectorModule->selectedItem_ += [this](std::optional<octoon::RaycastHit> data_) {
+			if (data_.has_value() && materialList_->isVisible())
 			{
-				auto uuid = QString::fromStdString(std::any_cast<std::string>(any_data));
+				auto hit = data_.value();
+				if (!hit.object.lock())
+					return;
+
+				octoon::Materials materials;
+				auto renderComponent = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
+				if (renderComponent)
+					materials = renderComponent->getMaterials();
+				else
+				{
+					auto smr = hit.object.lock()->getComponent<octoon::SkinnedMeshRendererComponent>();
+					if (smr)
+						materials = smr->getMaterials();
+				}
+
+				bool dirty = false;
+				for (auto& mat : materials)
+					dirty |= MaterialImporter::instance()->addMaterial(mat);
+
+				if (dirty)
+					MaterialImporter::instance()->getSceneList().submit();
+
+				auto uuid = QString::fromStdString(MaterialImporter::instance()->getSceneMetadate(materials[hit.mesh]));
 				auto count = this->materialList_->mainWidget_->count();
 				for (int i = 0; i < count; i++)
 				{
@@ -1895,7 +1917,7 @@ namespace unreal
 					}
 				}
 			}
-		});
+		};
 	}
 
 	MaterialDock::~MaterialDock() noexcept

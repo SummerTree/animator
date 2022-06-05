@@ -148,7 +148,7 @@ namespace unreal
 	{
 		if (!profile_->playerModule->isPlaying)
 		{
-			auto hit = profile_->selectorModule->selectedItemHover_;
+			auto hit = profile_->selectorModule->selectedItemHover_.getValue();
 			if (hit)
 			{
 				profile_->playerModule->dofTarget = hit;

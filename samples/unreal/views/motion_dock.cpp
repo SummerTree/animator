@@ -240,7 +240,7 @@ namespace unreal
 					octoon::VMD vmd;
 					vmd.load(stream);
 
-					auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_;
+					auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
 					if (selectedItem.has_value())
 					{
 						auto animation = MotionImporter::instance()->importMotion((char8_t*)filepath.c_str());

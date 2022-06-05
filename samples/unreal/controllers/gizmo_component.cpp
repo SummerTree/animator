@@ -267,7 +267,7 @@ namespace unreal
 	void
 	GizmoComponent::handleMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
-		auto pickerObject = this->getContext()->profile->selectorModule->selectedItem_.value().object.lock();
+		auto pickerObject = this->getContext()->profile->selectorModule->selectedItem_.getValue().value().object.lock();
 		if (!pickerObject)
 			return;
 
@@ -309,7 +309,7 @@ namespace unreal
 	void
 	GizmoComponent::handleMouseMove(const octoon::input::InputEvent& event) noexcept
 	{
-		auto pickerObject = this->getContext()->profile->selectorModule->selectedItem_.value().object.lock();
+		auto pickerObject = this->getContext()->profile->selectorModule->selectedItem_.getValue().value().object.lock();
 		if (!pickerObject)
 			return;
 
@@ -364,7 +364,7 @@ namespace unreal
 	void
 	GizmoComponent::onMouseDown(const octoon::input::InputEvent& event) noexcept
 	{
-		if (this->getContext()->profile->selectorModule->selectedItem_)
+		if (this->getContext()->profile->selectorModule->selectedItem_.getValue())
 		{
 			if (event.button.button == octoon::input::InputButton::Code::Left)
 				this->handleMouseDown(event);
@@ -380,7 +380,7 @@ namespace unreal
 	void
 	GizmoComponent::onMouseMotion(const octoon::input::InputEvent& event) noexcept
 	{
-		if (this->getContext()->profile->selectorModule->selectedItem_)
+		if (this->getContext()->profile->selectorModule->selectedItem_.getValue())
 		{
 			if (this->isCapture())
 				this->handleMouseMove(event);
@@ -394,9 +394,9 @@ namespace unreal
 	{
 		auto& profile = this->getContext()->profile;
 
-		if (profile->selectorModule->selectedItem_ && !profile->playerModule->isPlaying)
+		if (profile->selectorModule->selectedItem_.getValue() && !profile->playerModule->isPlaying)
 		{
-			auto item = profile->selectorModule->selectedItem_->object.lock();
+			auto item = profile->selectorModule->selectedItem_.getValue()->object.lock();
 			if (item)
 				gizmo_[gizmoMode_]->handleGizmos->setActiveDownwards(true);
 			else

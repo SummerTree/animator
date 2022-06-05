@@ -9,8 +9,6 @@
 
 #include <module/selector_module.h>
 
-#include <optional>
-
 namespace unreal
 {
 	class SelectorComponent final : public UnrealComponent<SelectorModule>
@@ -43,11 +41,11 @@ namespace unreal
 		std::optional<octoon::RaycastHit> intersectObjects(float x, float y) noexcept;
 
 	private:
-		octoon::GameObjectPtr gizmoHover_;
-		octoon::GameObjectPtr gizmoSelected_;
-
 		octoon::MaterialPtr gizmoHoverMtl_;
 		octoon::MaterialPtr gizmoSelectedMtl_;
+
+		octoon::GameObjectPtr gizmoHover_;
+		octoon::GameObjectPtr gizmoSelected_;
 	};
 }
 

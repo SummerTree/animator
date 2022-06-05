@@ -23,8 +23,8 @@ namespace unreal
 		SelectorModule& operator=(const SelectorModule&) = delete;
 
 	public:
-		std::optional<octoon::RaycastHit> selectedItem_;
-		std::optional<octoon::RaycastHit> selectedItemHover_;
+		MutableLiveData<std::optional<octoon::RaycastHit>> selectedItem_;
+		MutableLiveData<std::optional<octoon::RaycastHit>> selectedItemHover_;
 	};
 }
 

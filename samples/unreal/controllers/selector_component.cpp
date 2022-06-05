@@ -40,19 +40,12 @@ namespace unreal
 		auto& model = this->getModel();
 
 		auto selected = this->intersectObjects(event.button.x, event.button.y);
-		if (model->selectedItem_ != selected)
+		if (model->selectedItem_.getValue() != selected)
 		{
 			model->selectedItem_ = selected;
 
 			if (selected)
-			{
 				this->captureEvent();
-				this->sendMessage("editor:selected", selected.value());
-			}
-			else
-			{
-				this->sendMessage("editor:selected");
-			}
 		}
 	}
 
@@ -67,15 +60,8 @@ namespace unreal
 		auto& model = this->getModel();
 
 		auto hover = this->intersectObjects(event.motion.x, event.motion.y);
-		if (model->selectedItemHover_ != hover)
-		{
+		if (model->selectedItemHover_.getValue() != hover)
 			model->selectedItemHover_ = hover;
-
-			if (hover)
-				this->sendMessage("editor:hover", hover.value());
-			else
-				this->sendMessage("editor:hover");
-		}
 	}
 
 	void
@@ -140,9 +126,9 @@ namespace unreal
 		auto& model = this->getModel();
 		auto& profile = this->getContext()->profile;
 
-		if (model->selectedItem_ && !profile->playerModule->isPlaying)
+		if (model->selectedItem_.getValue() && !profile->playerModule->isPlaying)
 		{
-			auto hit = model->selectedItem_.value();
+			auto hit = model->selectedItem_.getValue().value();
 			auto hitObject = hit.object.lock();
 			if (hitObject)
 			{
@@ -171,7 +157,7 @@ namespace unreal
 			}
 			else
 			{
-				model->selectedItem_.emplace();
+				model->selectedItem_.getValue().emplace();
 				this->gizmoSelected_->getComponent<octoon::MeshRendererComponent>()->setVisible(false);
 			}
 		}
@@ -180,9 +166,9 @@ namespace unreal
 			gizmoSelected_->getComponent<octoon::MeshRendererComponent>()->setVisible(false);
 		}
 
-		if (model->selectedItemHover_ && model->selectedItem_ != model->selectedItemHover_ && !profile->playerModule->isPlaying)
+		if (model->selectedItemHover_.getValue() && model->selectedItem_.getValue() != model->selectedItemHover_.getValue() && !profile->playerModule->isPlaying)
 		{
-			auto hit = model->selectedItemHover_.value();
+			auto hit = model->selectedItemHover_.getValue().value();
 			auto hitObject = hit.object.lock();
 
 			if (hitObject)
@@ -212,7 +198,7 @@ namespace unreal
 			}
 			else
 			{
-				model->selectedItemHover_.emplace();
+				model->selectedItemHover_.getValue().emplace();
 				this->gizmoHover_->getComponent<octoon::MeshRendererComponent>()->setVisible(false);
 			}
 		}
