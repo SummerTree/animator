@@ -272,29 +272,17 @@ namespace unreal
 	std::shared_ptr<octoon::MeshStandardMaterial>
 	MaterialImporter::loadPackage(std::string_view uuid, std::string_view rootPath) noexcept(false)
 	{
-		auto material = this->materials_.find(uuid);
-		if (material == this->materials_.end())
-		{
-			auto package = MaterialImporter::instance()->getPackage(uuid, rootPath);
-			if (package.is_object())
-				return loadPackage(package);
+		auto package = MaterialImporter::instance()->getPackage(uuid, rootPath);
+		if (package.is_object())
+			return loadPackage(package);
 
-			return nullptr;
-		}
-		else
-		{
-			return (*material).second;
-		}
+		return nullptr;
 	}
 
 	std::shared_ptr<octoon::MeshStandardMaterial>
 	MaterialImporter::loadPackage(const nlohmann::json& package) noexcept(false)
 	{
 		auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-		auto material = this->materials_.find(uuid);
-		if (material != this->materials_.end())
-			return (*material).second;
-
 		auto standard = std::make_shared<octoon::MeshStandardMaterial>();
 
 		auto name = package.find("name");
@@ -476,7 +464,6 @@ namespace unreal
 		if (it == this->packageList_.end())
 			this->packageList_[uuid] = package;
 
-		this->materials_[uuid] = standard;
 		this->materialList_[standard] = package;
 		this->sceneList_.getValue().push_back(uuid);
 
@@ -519,19 +506,17 @@ namespace unreal
 			auto& color = standard->getColor();
 			auto& colorMap = standard->getColorMap();
 
-			nlohmann::json item;
-			item["uuid"] = uuid;
-			item["name"] = mat->getName();
-			item["color"] = { color.x, color.y, color.z };
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["name"] = mat->getName();
+			package["color"] = { color.x, color.y, color.z };
 
 			if (colorMap)
-				item["colorMap"] = colorMap->getTextureDesc().getName();
+				package["colorMap"] = colorMap->getTextureDesc().getName();
 
 			this->sceneList_.getValue().push_back(uuid);
-			this->packageList_[uuid] = item;
-
-			this->materials_[uuid] = standard;
-			this->materialList_[mat] = item;
+			this->packageList_[uuid] = package;
+			this->materialList_[mat] = package;
 
 			return true;
 		}

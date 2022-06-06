@@ -71,7 +71,6 @@ namespace unreal
 
 		std::map<std::string, nlohmann::json> packageList_;
 
-		std::map<std::string, std::shared_ptr<octoon::MeshStandardMaterial>, std::less<>> materials_;
 		std::map<std::weak_ptr<octoon::Material>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Material>>> materialList_;
 
 		std::shared_ptr<octoon::PerspectiveCamera> camera_;
