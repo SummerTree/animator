@@ -131,6 +131,18 @@ namespace octoon
 				image.save(outputPath, extension.c_str());
 			}
 		}
+		else if (textureDesc.getTexFormat() == GraphicsFormat::R32G32B32SFloat)
+		{
+			octoon::Image image;
+			if (image.create(octoon::Format::R32G32B32SFloat, width, height))
+			{
+				std::memcpy((void*)image.data(), data, image.size());
+
+				auto outputPath = std::string(filepath);
+				auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
+				image.save(outputPath, extension.c_str());
+			}
+		}
 
 		texture->unmap();
 

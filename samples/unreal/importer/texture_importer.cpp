@@ -5,6 +5,7 @@
 #include <fstream>
 #include <filesystem>
 #include <qpixmap.h>
+#include <qimage.h>
 
 namespace unreal
 {
@@ -120,20 +121,55 @@ namespace unreal
 				return this->textureList_[texture];
 
 			auto uuid = octoon::make_guid();
+			auto filename = texture->getTextureDesc().getName();
+			filename = filename.substr(filename.find_last_of("."));
 			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
-			auto texturePath = std::filesystem::path(rootPath).append(uuid + ".png");
+			auto texturePath = std::filesystem::path(rootPath).append(uuid + filename);
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");
 
-			std::filesystem::create_directory(outputPath.empty() ? assertPath_ : outputPath);
-			std::filesystem::create_directory(rootPath);
+			std::filesystem::create_directories(rootPath);
 
 			octoon::TextureLoader::save(texturePath.string(), texture);
 			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
-			package["name"] = uuid + ".png";
+			package["name"] = uuid + filename;
 			package["path"] = (char*)texturePath.u8string().c_str();
+
+			if (filename == ".hdr")
+			{
+				auto name = texture->getTextureDesc().getName();
+				auto width = texture->getTextureDesc().getWidth();
+				auto height = texture->getTextureDesc().getHeight();
+				float* data_ = nullptr;
+
+				if (texture->map(0, 0, width, height, 0, (void**)&data_))
+				{
+					auto size = width * height * 3;
+					auto pixels = std::make_unique<std::uint8_t[]>(size);
+
+					for (std::size_t i = 0; i < size; i += 3)
+					{
+						pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
+						pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
+						pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
+					}
+
+					texture->unmap();
+
+					auto uuid2 = octoon::make_guid();
+					auto texturePath2 = std::filesystem::path(rootPath).append(uuid2 + ".png");
+
+					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+					qimage = qimage.scaled(260, 130);
+					qimage.save(QString::fromStdString(texturePath2.string()), "PNG");
+
+					package["preview"] = texturePath2.string();
+				}
+
+				texture->unmap();
+			}
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)
@@ -181,7 +217,12 @@ namespace unreal
 		{
 			auto it = textureList_.find(texture);
 			if (it != textureList_.end())
-				return (*it).second;
+			{
+				auto& package = (*it).second;
+				auto path = package["path"].get<nlohmann::json::string_t>();
+				if (std::filesystem::exists(path))
+					return package;
+			}
 		}
 
 		return nlohmann::json();
