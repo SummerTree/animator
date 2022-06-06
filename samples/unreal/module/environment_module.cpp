@@ -39,7 +39,7 @@ namespace unreal
 		if (reader["texture"].is_object())
 		{
 			auto root = std::string(profilePath);
-			root = root.substr(0, root.find_last_of('/')) + "/Assets/";
+			root = root.substr(0, root.find_last_of('/')) + "/Assets/Textures";
 			this->texture = TextureImporter::instance()->loadPackage(reader["texture"], true, root);
 		}
 	}
@@ -65,7 +65,7 @@ namespace unreal
 			else
 			{
 				auto root = std::string(profilePath);
-				root = root.substr(0, root.find_last_of('/')) + "/Assets/";
+				root = root.substr(0, root.find_last_of('/')) + "/Assets/Textures";
 				writer["texture"] = TextureImporter::instance()->createPackage(this->texture.getValue(), root);
 			}
 		}
