@@ -28,7 +28,11 @@ namespace unreal
 			if (sound)
 			{
 				auto audioSource = sound->getComponent<octoon::AudioSourceComponent>();
+				if (this->getModel()->enable)
+					audioSource->pause();
 				audioSource->setVolume(value);
+				if (this->getModel()->enable)
+					audioSource->play();
 			}
 		};
 
