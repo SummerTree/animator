@@ -24,13 +24,17 @@ namespace unreal
 		std::shared_ptr<octoon::Animation<float>> importCameraMotion(std::u8string_view path) noexcept(false);
 
 		nlohmann::json createPackage(std::u8string_view path, bool blockSignals = false) noexcept(false);
+		nlohmann::json createPackage(const std::shared_ptr<octoon::Animation<float>>& animation, std::u8string_view outputPath = u8"") noexcept;
+
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
+		nlohmann::json getPackage(const std::shared_ptr<octoon::Animation<float>>& animation) const noexcept(false);
+
 		std::shared_ptr<octoon::Animation<float>> loadPackage(const nlohmann::json& package) noexcept(false);
 		void removePackage(std::string_view uuid) noexcept(false);
 
 		std::shared_ptr<octoon::Animation<float>> loadMetaData(const nlohmann::json& metadata) noexcept;
 		std::shared_ptr<octoon::Animation<float>> loadCameraMetaData(const nlohmann::json& metadata) noexcept;
-		nlohmann::json createMetadata(const std::shared_ptr<octoon::Animation<float>>& gameObject) const noexcept;
+		nlohmann::json createMetadata(const std::shared_ptr<octoon::Animation<float>>& animation) const noexcept;
 
 		MutableLiveData<nlohmann::json>& getIndexList() noexcept;
 

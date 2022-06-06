@@ -110,6 +110,48 @@ namespace unreal
 	}
 
 	nlohmann::json
+	MotionImporter::createPackage(const std::shared_ptr<octoon::Animation<float>>& animation, std::u8string_view outputPath) noexcept
+	{
+		if (animation)
+		{
+			auto it = this->motionList_.find(animation);
+			if (it != this->motionList_.end())
+				return this->motionList_[animation];
+
+			auto uuid = octoon::make_guid();
+			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
+			auto motionPath = std::filesystem::path(rootPath).append(uuid + ".png");
+			auto packagePath = std::filesystem::path(rootPath).append("package.json");
+
+			std::filesystem::create_directory(outputPath.empty() ? assertPath_ : outputPath);
+			std::filesystem::create_directory(rootPath);
+
+			octoon::VMDLoader::saveMotion(motionPath.string(), *animation);
+			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
+
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["name"] = uuid + ".png";
+			package["path"] = (char*)motionPath.u8string().c_str();
+
+			std::ofstream ifs(packagePath, std::ios_base::binary);
+			if (ifs)
+			{
+				auto dump = package.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+			}
+
+			this->motionList_[animation] = package;
+			this->packageList_[std::string(uuid)] = package;
+
+			return package;
+		}
+
+		return nlohmann::json();
+	}
+
+	nlohmann::json
 	MotionImporter::getPackage(std::string_view uuid) noexcept
 	{
 		auto it = this->packageList_.find(std::string(uuid));
@@ -131,14 +173,27 @@ namespace unreal
 		return this->packageList_[std::string(uuid)];
 	}
 
+	nlohmann::json
+	MotionImporter::getPackage(const std::shared_ptr<octoon::Animation<float>>& animation) const noexcept(false)
+	{
+		if (animation)
+		{
+			auto it = motionList_.find(animation);
+			if (it != motionList_.end())
+				return (*it).second;
+		}
+
+		return nlohmann::json();
+	}
+
 	void
 	MotionImporter::removePackage(std::string_view uuid) noexcept(false)
 	{
 		auto& indexList = indexList_.getValue();
 
-		for (auto it = indexList.begin(); it != indexList.end(); ++it)
+		for (auto index = indexList.begin(); index != indexList.end(); ++index)
 		{
-			if (uuid == (*it).get<nlohmann::json::string_t>())
+			if (uuid == (*index).get<nlohmann::json::string_t>())
 			{
 				auto packagePath = std::filesystem::path(assertPath_).append(uuid);
 
@@ -151,7 +206,7 @@ namespace unreal
 				if (package != this->packageList_.end())
 					this->packageList_.erase(package);
 
-				indexList.erase(it);
+				indexList.erase(index);
 			}
 		}
 	}
