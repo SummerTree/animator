@@ -196,12 +196,12 @@ namespace unreal
 			package["depthBoundsEnable"] = mat->getDepthBoundsEnable();
 			package["depthClampEnable"] = mat->getDepthClampEnable();
 			package["depthWriteEnable"] = mat->getDepthWriteEnable();
-			package["stencilEnable"] = mat->getStencilEnable();
-			package["scissorTestEnable"] = mat->getScissorTestEnable();
 			package["depthMin"] = mat->getDepthMin();
 			package["depthMax"] = mat->getDepthMax();
 			package["depthBias"] = mat->getDepthBias();
 			package["depthSlopeScaleBias"] = mat->getDepthSlopeScaleBias();
+			package["stencilEnable"] = mat->getStencilEnable();
+			package["scissorTestEnable"] = mat->getScissorTestEnable();
 
 			std::ofstream ifs(std::filesystem::path(outputPath).append("package.json"), std::ios_base::binary);
 			if (ifs)
