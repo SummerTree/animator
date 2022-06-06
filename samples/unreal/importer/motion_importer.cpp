@@ -120,18 +120,17 @@ namespace unreal
 
 			auto uuid = octoon::make_guid();
 			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
-			auto motionPath = std::filesystem::path(rootPath).append(uuid + ".png");
+			auto motionPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");
 
-			std::filesystem::create_directory(outputPath.empty() ? assertPath_ : outputPath);
-			std::filesystem::create_directory(rootPath);
+			std::filesystem::create_directories(rootPath);
 
 			octoon::VMDLoader::saveMotion(motionPath.string(), *animation);
 			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
-			package["name"] = uuid + ".png";
+			package["name"] = uuid + ".vmd";
 			package["path"] = (char*)motionPath.u8string().c_str();
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
@@ -220,6 +219,11 @@ namespace unreal
 			auto motion = octoon::VMDLoader::loadMotion((char8_t*)path.c_str());
 			if (motion)
 			{
+				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
+				auto it = this->packageList_.find(uuid);
+				if (it == this->packageList_.end())
+					this->packageList_[uuid] = package;
+
 				motionList_[motion] = package;
 				return motion;
 			}

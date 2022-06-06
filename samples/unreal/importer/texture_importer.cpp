@@ -76,8 +76,7 @@ namespace unreal
 			auto previewPath = std::filesystem::path(rootPath).append(uuid + ".png");
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");
 
-			std::filesystem::create_directory(assertPath_);
-			std::filesystem::create_directory(rootPath);
+			std::filesystem::create_directories(rootPath);
 			std::filesystem::copy(filepath, texturePath);
 			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 

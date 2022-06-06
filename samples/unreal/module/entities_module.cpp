@@ -47,8 +47,9 @@ namespace unreal
 				{
 					for (auto& animationJson : it["animation"])
 					{
+						auto data = animationJson["data"];
 						auto type = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
-						auto animation = MotionImporter::instance()->loadMetaData(animationJson);
+						auto animation = MotionImporter::instance()->loadPackage(data);
 
 						if (animation)
 						{
@@ -116,23 +117,24 @@ namespace unreal
 						if (!animation->getAnimation())
 							continue;
 
-						nlohmann::json animationJson = MotionImporter::instance()->createMetadata(animation->getAnimation());
-						if (animationJson.is_object())
+						nlohmann::json package = MotionImporter::instance()->getPackage(animation->getAnimation());
+						if (package.is_object())
 						{
+							nlohmann::json animationJson;
+							animationJson["data"] = package;
 							animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
 
 							json["animation"].push_back(std::move(animationJson));
 						}
 						else
 						{
-							auto animationName = animation->getName();
-							auto fileName = (animationName.empty() ? octoon::make_guid() : animation->getName()) + ".vmd";
+							auto animationPath = root + "/Animation";
 
-							octoon::VMDLoader::saveMotion(root + fileName, *animation->getAnimation());
-
+							nlohmann::json animationJson;
+							animationJson["data"] = MotionImporter::instance()->createPackage(animation->getAnimation(), (char8_t*)animationPath.c_str());
 							animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
-							animationJson["path"] = root + fileName;
-							json["animation"].push_back(std::move(animationJson));
+
+							json["animation"].push_back(animationJson);
 						}
 					}
 				}
@@ -148,7 +150,7 @@ namespace unreal
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
 						auto package = MaterialImporter::instance()->getPackage(materials[i]);
-						if (!package.empty())
+						if (package.is_object())
 						{
 							nlohmann::json materialJson;
 							materialJson["data"] = package;
