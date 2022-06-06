@@ -71,17 +71,15 @@ namespace unreal
 
 		std::map<std::string, nlohmann::json> packageList_;
 
-		octoon::GraphicsFramebufferPtr framebuffer_;
-
 		std::map<std::string, std::shared_ptr<octoon::MeshStandardMaterial>, std::less<>> materials_;
 		std::map<std::weak_ptr<octoon::Material>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Material>>> materialList_;
-		std::map<std::weak_ptr<octoon::Material>, std::string, std::owner_less<std::weak_ptr<octoon::Material>>> materialPathList_;
 
 		std::shared_ptr<octoon::PerspectiveCamera> camera_;
 		std::shared_ptr<octoon::Geometry> geometry_;
 		std::shared_ptr<octoon::DirectionalLight> directionalLight_;
 		std::shared_ptr<octoon::EnvironmentLight> environmentLight_;
 		std::shared_ptr<octoon::RenderScene> scene_;
+		std::shared_ptr<octoon::GraphicsFramebuffer> framebuffer_;
 	};
 }
 

@@ -472,8 +472,12 @@ namespace unreal
 		if (subsurfaceColor != package.end() && (*subsurfaceColor).is_array())
 			standard->setSubsurfaceColor(octoon::math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
 
+		auto it = this->packageList_.find(uuid);
+		if (it == this->packageList_.end())
+			this->packageList_[uuid] = package;
+
 		this->materials_[uuid] = standard;
-		this->materialList_[standard] = uuid;
+		this->materialList_[standard] = package;
 		this->sceneList_.getValue().push_back(uuid);
 
 		return standard;
@@ -527,7 +531,7 @@ namespace unreal
 			this->packageList_[uuid] = item;
 
 			this->materials_[uuid] = standard;
-			this->materialList_[mat] = uuid;
+			this->materialList_[mat] = item;
 
 			return true;
 		}
