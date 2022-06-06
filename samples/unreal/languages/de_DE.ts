@@ -1221,7 +1221,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="44"/>
-        <location filename="../views/tool_dock.cpp" line="232"/>
+        <location filename="../views/tool_dock.cpp" line="242"/>
         <source>Export Project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1267,7 +1267,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="141"/>
-        <location filename="../views/tool_dock.cpp" line="259"/>
+        <location filename="../views/tool_dock.cpp" line="279"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1277,73 +1277,95 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="154"/>
+        <location filename="../views/tool_dock.cpp" line="146"/>
+        <source>Load Project...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="164"/>
         <source>Opening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="154"/>
+        <location filename="../views/tool_dock.cpp" line="145"/>
+        <location filename="../views/tool_dock.cpp" line="164"/>
+        <location filename="../views/tool_dock.cpp" line="245"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="155"/>
+        <location filename="../views/tool_dock.cpp" line="165"/>
         <source>Open Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="188"/>
-        <location filename="../views/tool_dock.cpp" line="217"/>
-        <location filename="../views/tool_dock.cpp" line="244"/>
-        <location filename="../views/tool_dock.cpp" line="280"/>
-        <location filename="../views/tool_dock.cpp" line="307"/>
-        <location filename="../views/tool_dock.cpp" line="333"/>
-        <location filename="../views/tool_dock.cpp" line="352"/>
+        <location filename="../views/tool_dock.cpp" line="198"/>
+        <location filename="../views/tool_dock.cpp" line="227"/>
+        <location filename="../views/tool_dock.cpp" line="264"/>
+        <location filename="../views/tool_dock.cpp" line="300"/>
+        <location filename="../views/tool_dock.cpp" line="327"/>
+        <location filename="../views/tool_dock.cpp" line="353"/>
+        <location filename="../views/tool_dock.cpp" line="372"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="188"/>
+        <location filename="../views/tool_dock.cpp" line="198"/>
         <source>Failed to open project: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="204"/>
+        <location filename="../views/tool_dock.cpp" line="214"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="204"/>
+        <location filename="../views/tool_dock.cpp" line="214"/>
         <source>All Files(*.pmx *.abc *.mdl *.vmd);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="217"/>
+        <location filename="../views/tool_dock.cpp" line="227"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="232"/>
+        <location filename="../views/tool_dock.cpp" line="242"/>
         <source>APG Files (*.agp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="232"/>
+        <location filename="../views/tool_dock.cpp" line="242"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="259"/>
+        <location filename="../views/tool_dock.cpp" line="145"/>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="245"/>
+        <source>Save...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="246"/>
+        <source>Save Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="279"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="295"/>
+        <location filename="../views/tool_dock.cpp" line="315"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="295"/>
+        <location filename="../views/tool_dock.cpp" line="315"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>

@@ -147,8 +147,6 @@ namespace unreal
 					auto materialPath = root + "/Materials";
 					auto texturePath = root + "/Textures";
 
-					std::map<octoon::MaterialPtr, nlohmann::json> materialCache;
-
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
 						auto package = MaterialImporter::instance()->getPackage(materials[i]);

@@ -142,7 +142,17 @@ namespace unreal
 					if (!fileName.isEmpty())
 					{
 #if 1
+						QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
+						dialog.setWindowTitle(tr("Load Project..."));
+						dialog.setWindowModality(Qt::WindowModal);
+						dialog.setValue(0);
+						dialog.show();
+
+						QCoreApplication::processEvents();
+
 						behaviour->open(fileName.toUtf8().toStdString());
+
+						dialog.setValue(1);
 #else
 						// load task
 						auto fn = [&]() {
@@ -232,8 +242,18 @@ namespace unreal
 				QString fileName = QFileDialog::getSaveFileName(this, tr("Export Project"), tr("New Project"), tr("APG Files (*.agp)"));
 				if (!fileName.isEmpty())
 				{
+					QProgressDialog dialog(tr("Save..."), tr("Cancel"), 0, 1, this);
+					dialog.setWindowTitle(tr("Save Project"));
+					dialog.setWindowModality(Qt::WindowModal);
+					dialog.setValue(0);
+					dialog.show();
+
+					QCoreApplication::processEvents();
+					
 					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 					behaviour->save(fileName.toUtf8().toStdString());
+
+					dialog.setValue(1);
 				}
 			}
 
