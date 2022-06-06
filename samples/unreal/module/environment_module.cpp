@@ -24,8 +24,11 @@ namespace unreal
 	}
 
 	void 
-	EnvironmentModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
+	EnvironmentModule::load(octoon::runtime::json& reader, std::string_view profilePath) noexcept
 	{
+		auto root = std::string(profilePath);
+		root = root.substr(0, root.find_last_of('/')) + "/Assets/";
+
 		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
 		if (reader["showBackground"].is_boolean())
@@ -33,7 +36,7 @@ namespace unreal
 		if (reader["useTexture"].is_boolean())
 			this->useTexture = reader["useTexture"].get<nlohmann::json::boolean_t>();
 		if (reader["texture"].is_object())
-			this->texture = TextureImporter::instance()->loadMetaData(reader["texture"]);
+			this->texture = TextureImporter::instance()->loadPackage(reader["texture"], true, root);
 		if (reader["color"].is_array())
 			this->color = octoon::math::float3(reader["color"][0], reader["color"][1], reader["color"][2]);
 		if (reader["offset"].is_array())
@@ -41,8 +44,11 @@ namespace unreal
 	}
 
 	void 
-	EnvironmentModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
+	EnvironmentModule::save(octoon::runtime::json& writer, std::string_view profilePath) noexcept
 	{
+		auto root = std::string(profilePath);
+		root = root.substr(0, root.find_last_of('/')) + "/Assets/";
+
 		writer["enable"] = this->enable.getValue();
 		writer["intensity"] = this->intensity.getValue();
 		writer["showBackground"] = this->showBackground.getValue();
@@ -55,8 +61,11 @@ namespace unreal
 
 		if (this->texture.getValue())
 		{
-			nlohmann::json json;
-			writer["texture"] = TextureImporter::instance()->createMetadata(this->texture.getValue());
+			auto package = TextureImporter::instance()->getPackage(this->texture.getValue());
+			if (package.is_object())
+				writer["texture"] = package;
+			else
+				writer["texture"] = TextureImporter::instance()->createPackage(this->texture.getValue(), root);
 		}
 	}
 

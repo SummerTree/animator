@@ -474,10 +474,23 @@ namespace unreal
 		{
 			if (texture && this->isVisible())
 			{
-				auto textureMetadata = TextureImporter::instance()->createMetadata(texture);
-				auto name = textureMetadata["name"].get<nlohmann::json::string_t>();
-				if (texture && thumbnailPath->toolTip() != QString::fromStdString(name))
+				auto package = TextureImporter::instance()->getPackage(texture);
+				if (package.is_object())
 				{
+					auto name = package["name"].get<nlohmann::json::string_t>();
+					if (thumbnailPath->toolTip() != QString::fromStdString(name))
+					{
+						auto previewImage = std::make_shared<QImage>();
+						if (!previewImage->load(QString::fromStdString(package["preview"].get<nlohmann::json::string_t>())))
+							throw std::runtime_error("Cannot generate image for preview");
+
+						this->setPreviewImage(QFileInfo(QString::fromStdString(name)).fileName(), previewImage);
+						this->setThumbnailImage(QString::fromStdString(name), *previewImage);
+					}
+				}
+				else
+				{
+					auto name = texture->getTextureDesc().getName();
 					auto width = texture->getTextureDesc().getWidth();
 					auto height = texture->getTextureDesc().getHeight();
 					float* data_ = nullptr;
@@ -647,7 +660,7 @@ namespace unreal
 				this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
 
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importTexture(hdrPath, true);
+				this->profile_->environmentLightModule->texture = TextureImporter::instance()->loadPackage(package, true);
 			}
 		}
 		catch (const std::exception& e)
@@ -671,7 +684,7 @@ namespace unreal
 			if (!filepath.isEmpty())
 			{
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importTexture(filepath.toUtf8().toStdString());
+				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importTexture(filepath.toUtf8().toStdString(), true);
 
 				auto texel = this->profile_->environmentLightModule->texture.getValue();
 				if (texel)
@@ -814,8 +827,8 @@ namespace unreal
 		auto texel = this->profile_->environmentLightModule->texture.getValue();
 		if (texel)
 		{
-			auto textureMetadata = TextureImporter::instance()->createMetadata(texel);
-			auto texturePath = textureMetadata["name"].get<nlohmann::json::string_t>();
+			auto texturePackage = TextureImporter::instance()->getPackage(texel);
+			auto texturePath = texturePackage["name"].get<nlohmann::json::string_t>();
 
 			if (thumbnailPath->toolTip() != QString::fromStdString(texturePath))
 			{

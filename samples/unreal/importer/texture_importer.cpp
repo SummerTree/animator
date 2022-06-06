@@ -72,14 +72,14 @@ namespace unreal
 
 			auto uuid = octoon::make_guid();
 			auto rootPath = std::filesystem::path(assertPath_).append(uuid);
-			auto hdriPath = std::filesystem::path(rootPath).append(uuid + ".hdr");
+			auto texturePath = std::filesystem::path(rootPath).append(uuid + ".hdr");
 			auto previewPath = std::filesystem::path(rootPath).append(uuid + ".png");
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");
 
 			std::filesystem::create_directory(assertPath_);
 			std::filesystem::create_directory(rootPath);
-			std::filesystem::copy(filepath, hdriPath);
-			std::filesystem::permissions(hdriPath, std::filesystem::perms::owner_write);
+			std::filesystem::copy(filepath, texturePath);
+			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
 			QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
 			qimage = qimage.scaled(260, 130);
@@ -90,7 +90,7 @@ namespace unreal
 			item["uuid"] = uuid;
 			item["name"] = (char*)std::filesystem::path(filepath).filename().u8string().c_str();
 			item["preview"] = (char*)previewPath.u8string().c_str();
-			item["path"] = (char*)hdriPath.u8string().c_str();
+			item["path"] = (char*)texturePath.u8string().c_str();
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)
@@ -140,6 +140,9 @@ namespace unreal
 				ifs.close();
 			}
 
+			this->textureList_[texture] = package;
+			this->packageList_[std::string(uuid)] = package;
+
 			return package;
 		}
 
@@ -147,12 +150,12 @@ namespace unreal
 	}
 
 	nlohmann::json
-	TextureImporter::getPackage(std::string_view uuid) noexcept
+	TextureImporter::getPackage(std::string_view uuid, std::string_view outputPath) noexcept
 	{
 		auto it = this->packageList_.find(std::string(uuid));
 		if (it == this->packageList_.end())
 		{
-			std::ifstream ifs(std::filesystem::path(assertPath_).append(uuid).append("package.json"));
+			std::ifstream ifs(std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid).append("package.json"));
 			if (ifs)
 			{
 				auto package = nlohmann::json::parse(ifs);
@@ -168,8 +171,43 @@ namespace unreal
 		return this->packageList_[std::string(uuid)];
 	}
 
+	nlohmann::json
+	TextureImporter::getPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture) const noexcept(false)
+	{
+		if (texture)
+		{
+			auto it = textureList_.find(texture);
+			if (it != textureList_.end())
+				return (*it).second;
+		}
+
+		return nlohmann::json();
+	}
+
+	std::shared_ptr<octoon::GraphicsTexture>
+	TextureImporter::loadPackage(const nlohmann::json& package, bool generateMipmap, std::string_view outputPath) noexcept(false)
+	{
+		if (package.find("path") != package.end())
+		{
+			auto path = package["path"].get<nlohmann::json::string_t>();
+			auto texture = octoon::TextureLoader::load(path, generateMipmap);
+			if (texture)
+			{
+				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
+				auto it = this->packageList_.find(uuid);
+				if (it == this->packageList_.end())
+					this->packageList_[uuid] = package;
+
+				textureList_[texture] = package;
+				return texture;
+			}
+		}
+
+		return nullptr;
+	}
+
 	void
-	TextureImporter::removePackage(std::string_view uuid) noexcept(false)
+	TextureImporter::removePackage(std::string_view uuid, std::string_view outputPath) noexcept(false)
 	{
 		auto& indexList = indexList_.getValue();
 
@@ -177,7 +215,7 @@ namespace unreal
 		{
 			if ((*index).get<nlohmann::json::string_t>() == uuid)
 			{
-				auto packagePath = std::filesystem::path(assertPath_).append(uuid);
+				auto packagePath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
 
 				for (auto& it : std::filesystem::recursive_directory_iterator(packagePath))
 					std::filesystem::permissions(it, std::filesystem::perms::owner_write);
@@ -193,94 +231,23 @@ namespace unreal
 		}
 	}
 
-	std::shared_ptr<octoon::GraphicsTexture>
-	TextureImporter::loadPackage(const nlohmann::json& package) noexcept(false)
-	{
-		if (package["path"].is_string())
-		{
-			auto path = package["path"].get<nlohmann::json::string_t>();
-			auto hdri = octoon::TextureLoader::load(path, true);
-			if (hdri)
-			{
-				textureList_[hdri] = package;
-				return hdri;
-			}
-		}
-
-		return nullptr;
-	}
-
 	MutableLiveData<nlohmann::json>&
 	TextureImporter::getIndexList() noexcept
 	{
 		return indexList_;
 	}
 
-	std::shared_ptr<octoon::GraphicsTexture>
-	TextureImporter::loadMetaData(const nlohmann::json& metadata) noexcept
-	{
-		if (metadata.find("uuid") != metadata.end())
-		{
-			auto uuid = metadata["uuid"].get<nlohmann::json::string_t>();
-			auto package = this->getPackage(uuid);
-			if (package.is_object())
-				return this->loadPackage(package);
-		
-		}
-		if (metadata.find("path") != metadata.end())
-		{
-			auto path = metadata["path"].get<nlohmann::json::string_t>();
-			return this->importTexture(path, true);
-		}
-
-		return nullptr;
-	}
-
-	nlohmann::json
-	TextureImporter::createMetadata(const std::shared_ptr<octoon::GraphicsTexture>& texture) const noexcept
-	{
-		auto it = textureList_.find(texture);
-		if (it != textureList_.end())
-		{
-			auto& package = (*it).second;
-
-			nlohmann::json json;
-			json["name"] = package["name"];
-			json["uuid"] = package["uuid"].get<nlohmann::json::string_t>();
-
-			return json;
-		}
-		auto path = texturePathList_.find(texture);
-		if (path != texturePathList_.end())
-		{
-			nlohmann::json json;
-			json["path"] = (*path).second;
-			json["name"] = std::filesystem::path((*path).second).filename().string();
-
-			return json;
-		}
-
-		return nlohmann::json();
-	}
-
 	void
 	TextureImporter::save() noexcept(false)
 	{
-		try
-		{
-			if (!std::filesystem::exists(assertPath_))
-				std::filesystem::create_directory(assertPath_);
+		if (!std::filesystem::exists(assertPath_))
+			std::filesystem::create_directory(assertPath_);
 
-			std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
-			if (ifs)
-			{
-				auto& indexList = indexList_.getValue();
-				auto data = indexList.dump();
-				ifs.write(data.c_str(), data.size());
-			}
-		}
-		catch (...)
+		std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
+		if (ifs)
 		{
+			auto data = indexList_.getValue().dump();
+			ifs.write(data.c_str(), data.size());
 		}
 	}
 
