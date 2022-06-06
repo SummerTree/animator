@@ -66,26 +66,14 @@ namespace unreal
 
 						for (auto& materialJson : it["materials"])
 						{
-							if (materialJson.find("uuid") == materialJson.end())
+							if (materialJson.find("data") == materialJson.end())
 								continue;
 
-							if (materialJson.find("path") != materialJson.end())
-							{
-								auto uuid = materialJson["uuid"].get<nlohmann::json::string_t>();
-								auto path = materialJson["path"].get<nlohmann::json::string_t>();
-								auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-								auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid), std::string_view(path));
+							auto data = materialJson["data"].get<nlohmann::json::object_t>();
+							auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
+							auto material = MaterialImporter::instance()->loadPackage(data);
 
-								materials[index] = std::move(material);
-							}
-							else
-							{
-								auto uuid = materialJson["uuid"].get<nlohmann::json::string_t>();
-								auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-								auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid));
-
-								materials[index] = std::move(material);
-							}
+							materials[index] = std::move(material);
 						}
 
 						auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
@@ -159,26 +147,19 @@ namespace unreal
 
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
-						auto uuid = MaterialImporter::instance()->getPackage(materials[i]);
-						if (!uuid.empty())
+						auto package = MaterialImporter::instance()->getPackage(materials[i]);
+						if (!package.empty())
 						{
 							nlohmann::json materialJson;
-							materialJson["uuid"] = uuid;
+							materialJson["data"] = package;
 							materialJson["index"] = i;
 
 							json["materials"].push_back(materialJson);
 						}
 						else
 						{
-							if (materialCache.find(materials[i]) == materialCache.end())
-							{
-								auto package = MaterialImporter::instance()->createPackage(materials[i]->downcast_pointer<octoon::MeshStandardMaterial>(), materialPath);
-								materialCache[materials[i]] = package;
-							}
-
 							nlohmann::json materialJson;
-							materialJson["uuid"] = materialCache[materials[i]]["uuid"].get<nlohmann::json::string_t>();
-							materialJson["path"] = materialPath;
+							materialJson["data"] = MaterialImporter::instance()->createPackage(materials[i]->downcast_pointer<octoon::MeshStandardMaterial>(), materialPath);
 							materialJson["index"] = i;
 
 							json["materials"].push_back(materialJson);

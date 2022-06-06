@@ -82,7 +82,7 @@ namespace unreal
 	nlohmann::json
 	MaterialImporter::createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& mat, std::string_view rootPath) noexcept(false)
 	{
-		auto writeTexture = [](const std::shared_ptr<octoon::GraphicsTexture>& texture, std::filesystem::path rootPath) -> nlohmann::json
+		auto writeTexture = [](const std::shared_ptr<octoon::GraphicsTexture>& texture, std::filesystem::path path) -> nlohmann::json
 		{
 			if (texture)
 			{
@@ -106,7 +106,7 @@ namespace unreal
 					texture->unmap();
 
 					auto uuid = octoon::make_guid();
-					auto outputPath = rootPath.append(uuid + ".png").string();
+					auto outputPath = path.append(uuid + ".png").string();
 
 					qimage.save(QString::fromStdString(outputPath), "png");
 
@@ -117,11 +117,11 @@ namespace unreal
 			return nlohmann::json();
 		};
 
-		auto writePreview = [this](const std::shared_ptr<octoon::MeshStandardMaterial> material, std::filesystem::path outputPath) -> nlohmann::json
+		auto writePreview = [this](const std::shared_ptr<octoon::MeshStandardMaterial> material, std::filesystem::path path) -> nlohmann::json
 		{
 			QPixmap pixmap;
 			auto uuid = octoon::make_guid();
-			auto previewPath = std::filesystem::path(outputPath).append(uuid + ".png");
+			auto previewPath = std::filesystem::path(path).append(uuid + ".png");
 			this->createMaterialPreview(material, pixmap, previewWidth_, previewHeight_);
 			pixmap.save(QString::fromStdString(previewPath.string()), "png");
 			return previewPath.string();
@@ -210,6 +210,8 @@ namespace unreal
 				auto dump = package.dump();
 				ifs.write(dump.c_str(), dump.size());
 			}
+
+			materialList_[mat] = package;
 
 			return package;
 		}
@@ -470,7 +472,7 @@ namespace unreal
 			standard->setSubsurfaceColor(octoon::math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
 
 		this->materials_[uuid] = standard;
-		this->materialUUIDs_[standard] = uuid;
+		this->materialList_[standard] = uuid;
 		this->sceneList_.getValue().push_back(uuid);
 
 		return standard;
@@ -504,7 +506,7 @@ namespace unreal
 	bool
 	MaterialImporter::addMaterial(const std::shared_ptr<octoon::Material>& mat)
 	{
-		if (this->materialUUIDs_.find(mat) == this->materialUUIDs_.end())
+		if (this->materialList_.find(mat) == this->materialList_.end())
 		{
 			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
 			auto uuid = octoon::make_guid();
@@ -524,7 +526,7 @@ namespace unreal
 			this->packageList_[uuid] = item;
 
 			this->materials_[uuid] = standard;
-			this->materialUUIDs_[mat] = uuid;
+			this->materialList_[mat] = uuid;
 
 			return true;
 		}
@@ -532,12 +534,15 @@ namespace unreal
 		return false;
 	}
 
-	std::string
+	nlohmann::json
 	MaterialImporter::getPackage(const std::shared_ptr<octoon::Material>& material) const noexcept(false)
 	{
-		if (materialUUIDs_.find(material) != materialUUIDs_.end())
-			return materialUUIDs_.at(material);
-		return std::string();
+		if (material)
+		{
+			if (materialList_.find(material) != materialList_.end())
+				return materialList_.at(material);
+		}
+		return nlohmann::json();
 	}
 
 	void
