@@ -179,7 +179,12 @@ namespace unreal
 		{
 			auto it = motionList_.find(animation);
 			if (it != motionList_.end())
-				return (*it).second;
+			{
+				auto& package = (*it).second;
+				auto path = package["path"].get<nlohmann::json::string_t>();
+				if (std::filesystem::exists(path))
+					return package;
+			}
 		}
 
 		return nlohmann::json();
