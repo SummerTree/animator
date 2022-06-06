@@ -20,8 +20,8 @@ namespace unreal
 	OctoonImplementSingleton(MaterialImporter)
 
 	MaterialImporter::MaterialImporter() noexcept
-		: previewWidth_(200)
-		, previewHeight_(200)
+		: previewWidth_(256)
+		, previewHeight_(256)
 	{
 	}
 

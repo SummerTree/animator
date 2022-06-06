@@ -112,6 +112,36 @@ namespace unreal
 	}
 
 	nlohmann::json
+	TextureImporter::createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, std::string_view outputPath) noexcept(false)
+	{
+		auto uuid = octoon::make_guid();
+		auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
+		auto texturePath = std::filesystem::path(rootPath).append(uuid + ".png");
+		auto packagePath = std::filesystem::path(rootPath).append("package.json");
+
+		std::filesystem::create_directory(outputPath.empty() ? assertPath_ : outputPath);
+		std::filesystem::create_directory(rootPath);
+		std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
+
+		octoon::TextureLoader::save(texturePath.string(), texture);
+
+		nlohmann::json item;
+		item["uuid"] = uuid;
+		item["name"] = uuid + ".png";
+		item["path"] = (char*)texturePath.u8string().c_str();
+
+		std::ofstream ifs(packagePath, std::ios_base::binary);
+		if (ifs)
+		{
+			auto dump = item.dump();
+			ifs.write(dump.c_str(), dump.size());
+			ifs.close();
+		}
+
+		return item;
+	}
+
+	nlohmann::json
 	TextureImporter::getPackage(std::string_view uuid) noexcept
 	{
 		auto it = this->packageList_.find(std::string(uuid));
