@@ -809,6 +809,7 @@ namespace unreal
 	EnvironmentDock::showEvent(QShowEvent * event)
 	{
 		auto color = profile_->environmentLightModule->color.getValue();
+		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
 
 		this->intensitySpinBox->setValue(profile_->environmentLightModule->intensity);
 		this->intensitySlider->setValue(profile_->environmentLightModule->intensity * 10.0f);
@@ -822,51 +823,7 @@ namespace unreal
 		this->backgroundToggle->setChecked(profile_->environmentLightModule->showBackground);
 		this->thumbnailToggle->setChecked(profile_->environmentLightModule->useTexture);
 
-		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
-
-		auto texel = this->profile_->environmentLightModule->texture.getValue();
-		if (texel)
-		{
-			auto texturePackage = TextureImporter::instance()->getPackage(texel);
-			auto texturePath = texturePackage["name"].get<nlohmann::json::string_t>();
-
-			if (thumbnailPath->toolTip() != QString::fromStdString(texturePath))
-			{
-				auto width = texel->getTextureDesc().getWidth();
-				auto height = texel->getTextureDesc().getHeight();
-				float* data_ = nullptr;
-
-				if (texel->map(0, 0, width, height, 0, (void**)&data_))
-				{
-					auto size = width * height * 3;
-					auto pixels = std::make_unique<std::uint8_t[]>(size);
-
-					for (std::size_t i = 0; i < size; i += 3)
-					{
-						pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
-						pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
-						pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
-					}
-
-					texel->unmap();
-
-					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-					auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
-
-					this->setPreviewImage(QFileInfo(QString::fromStdString(texturePath)).fileName(), previewImage);
-					this->setThumbnailImage(QString::fromStdString(texturePath), *previewImage);
-				}
-			}
-		}
-		else
-		{
-			this->previewName_->setText(tr("Untitled"));
-			this->thumbnailPath->clear();
-			this->thumbnailPath->setToolTip(QString());
-			this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
-		}
-
-		this->updatePreviewImage();
+		this->profile_->environmentLightModule->texture.submit();
 	}
 
 	void

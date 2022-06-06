@@ -146,7 +146,6 @@
     <message>
         <location filename="../views/environment_dock.cpp" line="265"/>
         <location filename="../views/environment_dock.cpp" line="522"/>
-        <location filename="../views/environment_dock.cpp" line="863"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
