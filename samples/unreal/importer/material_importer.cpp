@@ -80,7 +80,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	MaterialImporter::createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& mat, std::string_view rootPath) noexcept(false)
+	MaterialImporter::createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& mat, std::string_view materialPath, std::string_view texturePath) noexcept(false)
 	{
 		auto writeTexture = [](const std::shared_ptr<octoon::GraphicsTexture>& texture, std::filesystem::path path) -> nlohmann::json
 		{
@@ -138,7 +138,8 @@ namespace unreal
 		};
 
 		auto uuid = octoon::make_guid();
-		auto outputPath = std::filesystem::path(rootPath.empty() ? defaultPath_ : rootPath).append(uuid);
+		auto outputPath = std::filesystem::path(materialPath.empty() ? defaultPath_ : materialPath).append(uuid);
+		auto outputTexturePath = std::filesystem::path(texturePath.empty() ? defaultPath_ : texturePath);
 
 		std::filesystem::create_directories(outputPath);
 
@@ -148,20 +149,20 @@ namespace unreal
 			package["uuid"] = uuid;
 			package["name"] = mat->getName();
 			package["preview"] = writePreview(mat, outputPath);
-			package["colorMap"] = TextureImporter::instance()->createPackage(mat->getColorMap(), outputPath.string());
-			package["opacityMap"] = TextureImporter::instance()->createPackage(mat->getOpacityMap(), outputPath.string());
-			package["normalMap"] = TextureImporter::instance()->createPackage(mat->getNormalMap(), outputPath.string());
-			package["roughnessMap"] = TextureImporter::instance()->createPackage(mat->getRoughnessMap(), outputPath.string());
-			package["specularMap"] = TextureImporter::instance()->createPackage(mat->getSpecularMap(), outputPath.string());
-			package["metalnessMap"] = TextureImporter::instance()->createPackage(mat->getMetalnessMap(), outputPath.string());
-			package["emissiveMap"] = TextureImporter::instance()->createPackage(mat->getEmissiveMap(), outputPath.string());
-			package["anisotropyMap"] = TextureImporter::instance()->createPackage(mat->getAnisotropyMap(), outputPath.string());
-			package["clearCoatMap"] = TextureImporter::instance()->createPackage(mat->getClearCoatMap(), outputPath.string());
-			package["clearCoatRoughnessMap"] = TextureImporter::instance()->createPackage(mat->getClearCoatRoughnessMap(), outputPath.string());
-			package["subsurfaceMap"] = TextureImporter::instance()->createPackage(mat->getSubsurfaceMap(), outputPath.string());
-			package["subsurfaceColorMap"] = TextureImporter::instance()->createPackage(mat->getSubsurfaceColorMap(), outputPath.string());
-			package["sheenMap"] = TextureImporter::instance()->createPackage(mat->getSheenMap(), outputPath.string());
-			package["lightMap"] = TextureImporter::instance()->createPackage(mat->getLightMap(), outputPath.string());
+			package["colorMap"] = TextureImporter::instance()->createPackage(mat->getColorMap(), outputTexturePath.string());
+			package["opacityMap"] = TextureImporter::instance()->createPackage(mat->getOpacityMap(), outputTexturePath.string());
+			package["normalMap"] = TextureImporter::instance()->createPackage(mat->getNormalMap(), outputTexturePath.string());
+			package["roughnessMap"] = TextureImporter::instance()->createPackage(mat->getRoughnessMap(), outputTexturePath.string());
+			package["specularMap"] = TextureImporter::instance()->createPackage(mat->getSpecularMap(), outputTexturePath.string());
+			package["metalnessMap"] = TextureImporter::instance()->createPackage(mat->getMetalnessMap(), outputTexturePath.string());
+			package["emissiveMap"] = TextureImporter::instance()->createPackage(mat->getEmissiveMap(), outputTexturePath.string());
+			package["anisotropyMap"] = TextureImporter::instance()->createPackage(mat->getAnisotropyMap(), outputTexturePath.string());
+			package["clearCoatMap"] = TextureImporter::instance()->createPackage(mat->getClearCoatMap(), outputTexturePath.string());
+			package["clearCoatRoughnessMap"] = TextureImporter::instance()->createPackage(mat->getClearCoatRoughnessMap(), outputTexturePath.string());
+			package["subsurfaceMap"] = TextureImporter::instance()->createPackage(mat->getSubsurfaceMap(), outputTexturePath.string());
+			package["subsurfaceColorMap"] = TextureImporter::instance()->createPackage(mat->getSubsurfaceColorMap(), outputTexturePath.string());
+			package["sheenMap"] = TextureImporter::instance()->createPackage(mat->getSheenMap(), outputTexturePath.string());
+			package["lightMap"] = TextureImporter::instance()->createPackage(mat->getLightMap(), outputTexturePath.string());
 			package["emissiveIntensity"] = mat->getEmissiveIntensity();
 			package["opacity"] = mat->getOpacity();
 			package["smoothness"] = mat->getSmoothness();

@@ -220,9 +220,9 @@ namespace unreal
 		else
 		{
 			this->profile_->soundModule->volume = 0.0f;
-			volumeButton.setIcon(volumeOnIcon_);
-			volumeButton.setToolTip(tr("Volume"));
-			volumeEnable_ = true;
+			volumeButton.setIcon(volumeOffIcon_);
+			volumeButton.setToolTip(tr("VolumeOff"));
+			volumeEnable_ = false;
 		}
 	}
 	

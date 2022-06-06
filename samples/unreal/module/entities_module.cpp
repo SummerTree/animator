@@ -145,6 +145,7 @@ namespace unreal
 				{
 					auto& materials = smr->getMaterials();
 					auto materialPath = root + "/Materials";
+					auto texturePath = root + "/Textures";
 
 					std::map<octoon::MaterialPtr, nlohmann::json> materialCache;
 
@@ -162,7 +163,7 @@ namespace unreal
 						else
 						{
 							nlohmann::json materialJson;
-							materialJson["data"] = MaterialImporter::instance()->createPackage(materials[i]->downcast_pointer<octoon::MeshStandardMaterial>(), materialPath);
+							materialJson["data"] = MaterialImporter::instance()->createPackage(materials[i]->downcast_pointer<octoon::MeshStandardMaterial>(), materialPath, texturePath);
 							materialJson["index"] = i;
 
 							json["materials"].push_back(materialJson);

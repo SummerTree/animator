@@ -226,9 +226,7 @@ namespace unreal
 
 			QCoreApplication::processEvents();
 
-			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto package = MotionImporter::instance()->getPackage(uuid);
-
+			auto package = MotionImporter::instance()->getPackage(item->data(Qt::UserRole).toString().toStdString());
 			if (package["path"].is_string())
 			{
 				auto filepath = package["path"].get<nlohmann::json::string_t>();
@@ -243,7 +241,7 @@ namespace unreal
 					auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
 					if (selectedItem.has_value())
 					{
-						auto animation = MotionImporter::instance()->importMotion((char8_t*)filepath.c_str());
+						auto animation = MotionImporter::instance()->loadPackage(package);
 
 						dialog.setValue(1);
 						QCoreApplication::processEvents();

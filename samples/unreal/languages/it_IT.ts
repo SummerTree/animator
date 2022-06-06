@@ -1373,7 +1373,6 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="35"/>
         <location filename="../views/toplevel_bar.cpp" line="217"/>
-        <location filename="../views/toplevel_bar.cpp" line="224"/>
         <location filename="../views/toplevel_bar.cpp" line="268"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
@@ -1417,6 +1416,7 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/toplevel_bar.cpp" line="224"/>
         <location filename="../views/toplevel_bar.cpp" line="262"/>
         <source>VolumeOff</source>
         <translation type="unfinished"></translation>
