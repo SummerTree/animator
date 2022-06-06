@@ -1,4 +1,5 @@
 #include "material_importer.h"
+#include "texture_importer.h"
 
 #include <octoon/mdl_loader.h>
 #include <octoon/PMREM_loader.h>
@@ -147,20 +148,20 @@ namespace unreal
 			package["uuid"] = uuid;
 			package["name"] = mat->getName();
 			package["preview"] = writePreview(mat, outputPath);
-			package["colorMap"] = writeTexture(mat->getColorMap(), outputPath);
-			package["opacityMap"] = writeTexture(mat->getOpacityMap(), outputPath);
-			package["normalMap"] = writeTexture(mat->getNormalMap(), outputPath);
-			package["roughnessMap"] = writeTexture(mat->getRoughnessMap(), outputPath);
-			package["specularMap"] = writeTexture(mat->getSpecularMap(), outputPath);
-			package["metalnessMap"] = writeTexture(mat->getMetalnessMap(), outputPath);
-			package["emissiveMap"] = writeTexture(mat->getEmissiveMap(), outputPath);
-			package["anisotropyMap"] = writeTexture(mat->getAnisotropyMap(), outputPath);
-			package["clearCoatMap"] = writeTexture(mat->getClearCoatMap(), outputPath);
-			package["clearCoatRoughnessMap"] = writeTexture(mat->getClearCoatRoughnessMap(), outputPath);
-			package["subsurfaceMap"] = writeTexture(mat->getSubsurfaceMap(), outputPath);
-			package["subsurfaceColorMap"] = writeTexture(mat->getSubsurfaceColorMap(), outputPath);
-			package["sheenMap"] = writeTexture(mat->getSheenMap(), outputPath);
-			package["lightMap"] = writeTexture(mat->getLightMap(), outputPath);
+			package["colorMap"] = TextureImporter::instance()->createPackage(mat->getColorMap(), outputPath.string());
+			package["opacityMap"] = TextureImporter::instance()->createPackage(mat->getOpacityMap(), outputPath.string());
+			package["normalMap"] = TextureImporter::instance()->createPackage(mat->getNormalMap(), outputPath.string());
+			package["roughnessMap"] = TextureImporter::instance()->createPackage(mat->getRoughnessMap(), outputPath.string());
+			package["specularMap"] = TextureImporter::instance()->createPackage(mat->getSpecularMap(), outputPath.string());
+			package["metalnessMap"] = TextureImporter::instance()->createPackage(mat->getMetalnessMap(), outputPath.string());
+			package["emissiveMap"] = TextureImporter::instance()->createPackage(mat->getEmissiveMap(), outputPath.string());
+			package["anisotropyMap"] = TextureImporter::instance()->createPackage(mat->getAnisotropyMap(), outputPath.string());
+			package["clearCoatMap"] = TextureImporter::instance()->createPackage(mat->getClearCoatMap(), outputPath.string());
+			package["clearCoatRoughnessMap"] = TextureImporter::instance()->createPackage(mat->getClearCoatRoughnessMap(), outputPath.string());
+			package["subsurfaceMap"] = TextureImporter::instance()->createPackage(mat->getSubsurfaceMap(), outputPath.string());
+			package["subsurfaceColorMap"] = TextureImporter::instance()->createPackage(mat->getSubsurfaceColorMap(), outputPath.string());
+			package["sheenMap"] = TextureImporter::instance()->createPackage(mat->getSheenMap(), outputPath.string());
+			package["lightMap"] = TextureImporter::instance()->createPackage(mat->getLightMap(), outputPath.string());
 			package["emissiveIntensity"] = mat->getEmissiveIntensity();
 			package["opacity"] = mat->getOpacity();
 			package["smoothness"] = mat->getSmoothness();
@@ -311,34 +312,34 @@ namespace unreal
 
 		if (name != package.end() && (*name).is_string())
 			standard->setName((*name).get<nlohmann::json::string_t>());
-		if (colorMap != package.end() && (*colorMap).is_string())
-			standard->setColorMap(octoon::TextureLoader::load((*colorMap).get<nlohmann::json::string_t>()));
-		if (opacityMap != package.end() && (*opacityMap).is_string())
-			standard->setOpacityMap(octoon::TextureLoader::load((*opacityMap).get<nlohmann::json::string_t>()));
-		if (normalMap != package.end() && (*normalMap).is_string())
-			standard->setNormalMap(octoon::TextureLoader::load((*normalMap).get<nlohmann::json::string_t>()));
-		if (roughnessMap != package.end() && (*roughnessMap).is_string())
-			standard->setRoughnessMap(octoon::TextureLoader::load((*roughnessMap).get<nlohmann::json::string_t>()));
-		if (specularMap != package.end() && (*specularMap).is_string())
-			standard->setSpecularMap(octoon::TextureLoader::load((*specularMap).get<nlohmann::json::string_t>()));
-		if (metalnessMap != package.end() && (*metalnessMap).is_string())
-			standard->setMetalnessMap(octoon::TextureLoader::load((*metalnessMap).get<nlohmann::json::string_t>()));
-		if (emissiveMap != package.end() && (*emissiveMap).is_string())
-			standard->setEmissiveMap(octoon::TextureLoader::load((*emissiveMap).get<nlohmann::json::string_t>()));
-		if (anisotropyMap != package.end() && (*anisotropyMap).is_string())
-			standard->setAnisotropyMap(octoon::TextureLoader::load((*anisotropyMap).get<nlohmann::json::string_t>()));
-		if (clearCoatMap != package.end() && (*clearCoatMap).is_string())
-			standard->setClearCoatMap(octoon::TextureLoader::load((*clearCoatMap).get<nlohmann::json::string_t>()));
-		if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_string())
-			standard->setClearCoatRoughnessMap(octoon::TextureLoader::load((*clearCoatRoughnessMap).get<nlohmann::json::string_t>()));
-		if (subsurfaceMap != package.end() && (*subsurfaceMap).is_string())
-			standard->setSubsurfaceMap(octoon::TextureLoader::load((*subsurfaceMap).get<nlohmann::json::string_t>()));
-		if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_string())
-			standard->setSubsurfaceColorMap(octoon::TextureLoader::load((*subsurfaceColorMap).get<nlohmann::json::string_t>()));
-		if (sheenMap != package.end() && (*sheenMap).is_string())
-			standard->setSheenMap(octoon::TextureLoader::load((*sheenMap).get<nlohmann::json::string_t>()));
-		if (lightMap != package.end() && (*lightMap).is_string())
-			standard->setLightMap(octoon::TextureLoader::load((*lightMap).get<nlohmann::json::string_t>()));
+		if (colorMap != package.end() && (*colorMap).is_object())
+			standard->setColorMap(TextureImporter::instance()->loadPackage(*colorMap));
+		if (opacityMap != package.end() && (*opacityMap).is_object())
+			standard->setOpacityMap(TextureImporter::instance()->loadPackage(*opacityMap));
+		if (normalMap != package.end() && (*normalMap).is_object())
+			standard->setNormalMap(TextureImporter::instance()->loadPackage(*normalMap));
+		if (roughnessMap != package.end() && (*roughnessMap).is_object())
+			standard->setRoughnessMap(TextureImporter::instance()->loadPackage(*roughnessMap));
+		if (specularMap != package.end() && (*specularMap).is_object())
+			standard->setSpecularMap(TextureImporter::instance()->loadPackage(*specularMap));
+		if (metalnessMap != package.end() && (*metalnessMap).is_object())
+			standard->setMetalnessMap(TextureImporter::instance()->loadPackage(*metalnessMap));
+		if (emissiveMap != package.end() && (*emissiveMap).is_object())
+			standard->setEmissiveMap(TextureImporter::instance()->loadPackage(*emissiveMap));
+		if (anisotropyMap != package.end() && (*anisotropyMap).is_object())
+			standard->setAnisotropyMap(TextureImporter::instance()->loadPackage(*anisotropyMap));
+		if (clearCoatMap != package.end() && (*clearCoatMap).is_object())
+			standard->setClearCoatMap(TextureImporter::instance()->loadPackage(*clearCoatMap));
+		if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_object())
+			standard->setClearCoatRoughnessMap(TextureImporter::instance()->loadPackage(*clearCoatRoughnessMap));
+		if (subsurfaceMap != package.end() && (*subsurfaceMap).is_object())
+			standard->setSubsurfaceMap(TextureImporter::instance()->loadPackage(*subsurfaceMap));
+		if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_object())
+			standard->setSubsurfaceColorMap(TextureImporter::instance()->loadPackage(*subsurfaceColorMap));
+		if (sheenMap != package.end() && (*sheenMap).is_object())
+			standard->setSheenMap(TextureImporter::instance()->loadPackage(*sheenMap));
+		if (lightMap != package.end() && (*lightMap).is_object())
+			standard->setLightMap(TextureImporter::instance()->loadPackage(*lightMap));
 
 		auto blendEnable = package.find("blendEnable");
 		auto blendOp = package.find("blendOp");
@@ -532,7 +533,7 @@ namespace unreal
 	}
 
 	std::string
-	MaterialImporter::getMaterialID(const std::shared_ptr<octoon::Material>& material) const noexcept(false)
+	MaterialImporter::getPackage(const std::shared_ptr<octoon::Material>& material) const noexcept(false)
 	{
 		if (materialUUIDs_.find(material) != materialUUIDs_.end())
 			return materialUUIDs_.at(material);

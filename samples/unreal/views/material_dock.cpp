@@ -1902,7 +1902,7 @@ namespace unreal
 
 				if (hit.mesh < materials.size())
 				{
-					auto uuid = QString::fromStdString(MaterialImporter::instance()->getMaterialID(materials[hit.mesh]));
+					auto uuid = QString::fromStdString(MaterialImporter::instance()->getPackage(materials[hit.mesh]));
 					auto count = this->materialList_->mainWidget_->count();
 					for (int i = 0; i < count; i++)
 					{

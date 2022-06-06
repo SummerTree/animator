@@ -116,6 +116,10 @@ namespace unreal
 	{
 		if (texture)
 		{
+			auto it = this->textureList_.find(texture);
+			if (it != this->textureList_.end())
+				return this->textureList_[texture];
+
 			auto uuid = octoon::make_guid();
 			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
 			auto texturePath = std::filesystem::path(rootPath).append(uuid + ".png");
@@ -123,9 +127,9 @@ namespace unreal
 
 			std::filesystem::create_directory(outputPath.empty() ? assertPath_ : outputPath);
 			std::filesystem::create_directory(rootPath);
-			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
 			octoon::TextureLoader::save(texturePath.string(), texture);
+			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
 			nlohmann::json package;
 			package["uuid"] = uuid;

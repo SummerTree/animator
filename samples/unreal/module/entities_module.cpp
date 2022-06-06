@@ -153,12 +153,13 @@ namespace unreal
 				if (smr)
 				{
 					auto& materials = smr->getMaterials();
+					auto materialPath = root + "/Materials";
 
 					std::map<octoon::MaterialPtr, nlohmann::json> materialCache;
 
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
-						auto uuid = MaterialImporter::instance()->getMaterialID(materials[i]);
+						auto uuid = MaterialImporter::instance()->getPackage(materials[i]);
 						if (!uuid.empty())
 						{
 							nlohmann::json materialJson;
@@ -171,13 +172,13 @@ namespace unreal
 						{
 							if (materialCache.find(materials[i]) == materialCache.end())
 							{
-								auto package = MaterialImporter::instance()->createPackage(materials[i]->downcast_pointer<octoon::MeshStandardMaterial>(), root);
+								auto package = MaterialImporter::instance()->createPackage(materials[i]->downcast_pointer<octoon::MeshStandardMaterial>(), materialPath);
 								materialCache[materials[i]] = package;
 							}
 
 							nlohmann::json materialJson;
 							materialJson["uuid"] = materialCache[materials[i]]["uuid"].get<nlohmann::json::string_t>();
-							materialJson["path"] = root;
+							materialJson["path"] = materialPath;
 							materialJson["index"] = i;
 
 							json["materials"].push_back(materialJson);
