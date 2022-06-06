@@ -32,8 +32,6 @@ namespace unreal
 		std::shared_ptr<octoon::Animation<float>> loadPackage(const nlohmann::json& package) noexcept(false);
 		void removePackage(std::string_view uuid) noexcept(false);
 
-		std::shared_ptr<octoon::Animation<float>> loadMetaData(const nlohmann::json& metadata) noexcept;
-		std::shared_ptr<octoon::Animation<float>> loadCameraMetaData(const nlohmann::json& metadata) noexcept;
 		nlohmann::json createMetadata(const std::shared_ptr<octoon::Animation<float>>& animation) const noexcept;
 
 		MutableLiveData<nlohmann::json>& getIndexList() noexcept;

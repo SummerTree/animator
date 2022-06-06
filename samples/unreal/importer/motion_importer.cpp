@@ -238,26 +238,6 @@ namespace unreal
 		return indexList_;
 	}
 
-	std::shared_ptr<octoon::Animation<float>>
-	MotionImporter::loadMetaData(const nlohmann::json& metadata) noexcept
-	{
-		if (metadata.find("uuid") != metadata.end())
-		{
-			auto uuid = metadata["uuid"].get<nlohmann::json::string_t>();
-			auto package = this->getPackage(uuid);
-			if (package.is_object())
-				return this->loadPackage(package);
-		
-		}
-		if (metadata.find("path") != metadata.end())
-		{
-			auto path = metadata["path"].get<nlohmann::json::string_t>();
-			return this->importMotion((char8_t*)path.c_str());
-		}
-
-		return nullptr;
-	}
-
 	nlohmann::json
 	MotionImporter::createMetadata(const std::shared_ptr<octoon::Animation<float>>& animation) const noexcept
 	{
