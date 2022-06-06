@@ -47,12 +47,13 @@ namespace unreal
 				{
 					for (auto& animationJson : it["animation"])
 					{
-						auto data = animationJson["data"];
-						auto type = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
-						auto animation = MotionImporter::instance()->loadPackage(data);
+						if (animationJson.find("data") == animationJson.end())
+							continue;
 
+						auto animation = MotionImporter::instance()->loadPackage(animationJson["data"]);
 						if (animation)
 						{
+							auto type = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
 							if (type == 0)
 								object->addComponent<octoon::AnimatorComponent>(std::move(animation), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
 							else
