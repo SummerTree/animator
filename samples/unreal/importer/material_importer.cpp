@@ -493,6 +493,7 @@ namespace unreal
 					this->packageList_.erase(package);
 
 				indexList.erase(index);
+				break;
 			}
 		}
 	}
@@ -506,7 +507,6 @@ namespace unreal
 			auto uuid = octoon::make_guid();
 
 			auto& color = standard->getColor();
-			auto& colorMap = standard->getColorMap();
 
 			nlohmann::json package;
 			package["uuid"] = uuid;

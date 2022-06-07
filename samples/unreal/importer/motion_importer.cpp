@@ -211,6 +211,7 @@ namespace unreal
 					this->packageList_.erase(package);
 
 				indexList.erase(index);
+				break;
 			}
 		}
 	}
