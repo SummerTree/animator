@@ -33,8 +33,8 @@ namespace unreal
 		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
 		nlohmann::json getPackage(const std::shared_ptr<octoon::Material>& material) const noexcept(false);
 
-		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
-		std::shared_ptr<octoon::MeshStandardMaterial> loadPackage(const nlohmann::json& package) noexcept(false);
+		std::shared_ptr<octoon::Material> loadPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
+		std::shared_ptr<octoon::Material> loadPackage(const nlohmann::json& package) noexcept(false);
 		void removePackage(std::string_view uuid) noexcept(false);
 
 		MutableLiveData<nlohmann::json>& getIndexList() noexcept;
@@ -70,7 +70,7 @@ namespace unreal
 		MutableLiveData<nlohmann::json> sceneList_;
 
 		std::map<std::string, nlohmann::json> packageList_;
-
+		std::map<std::string, std::shared_ptr<octoon::Material>> materials_;
 		std::map<std::weak_ptr<octoon::Material>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Material>>> materialList_;
 
 		std::shared_ptr<octoon::PerspectiveCamera> camera_;

@@ -269,9 +269,12 @@ namespace unreal
 		return this->packageList_[std::string(uuid)];
 	}
 
-	std::shared_ptr<octoon::MeshStandardMaterial>
+	std::shared_ptr<octoon::Material>
 	MaterialImporter::loadPackage(std::string_view uuid, std::string_view rootPath) noexcept(false)
 	{
+		if (materials_.find(std::string(uuid)) != materials_.end())
+			return materials_[std::string(uuid)];
+
 		auto package = MaterialImporter::instance()->getPackage(uuid, rootPath);
 		if (package.is_object())
 			return loadPackage(package);
@@ -279,7 +282,7 @@ namespace unreal
 		return nullptr;
 	}
 
-	std::shared_ptr<octoon::MeshStandardMaterial>
+	std::shared_ptr<octoon::Material>
 	MaterialImporter::loadPackage(const nlohmann::json& package) noexcept(false)
 	{
 		auto uuid = package["uuid"].get<nlohmann::json::string_t>();
@@ -510,11 +513,9 @@ namespace unreal
 			package["name"] = mat->getName();
 			package["color"] = { color.x, color.y, color.z };
 
-			if (colorMap)
-				package["colorMap"] = colorMap->getTextureDesc().getName();
-
 			this->sceneList_.getValue().push_back(uuid);
 			this->packageList_[uuid] = package;
+			this->materials_[uuid] = mat;
 			this->materialList_[mat] = package;
 
 			return true;

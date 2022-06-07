@@ -1015,7 +1015,7 @@ namespace unreal
 			{
 				MaterialImporter::instance()->addMaterial(this->material_->clone());
 
-				this->material_->copy(*material);
+				this->material_->copy(*material->downcast_pointer<octoon::MeshStandardMaterial>());
 
 				this->updateMaterial();
 				this->updatePreviewImage();
