@@ -122,6 +122,18 @@ namespace unreal
 				return this->textureList_[texture];
 
 			auto uuid = octoon::make_guid();
+
+			nlohmann::json package = this->getPackage(texture);
+			if (package.find("uuid") != package.end())
+			{
+				uuid = package["uuid"].get<nlohmann::json::string_t>();
+				for (auto& index : indexList_.getValue())
+				{
+					if (index == uuid)
+						return package;
+				}
+			}
+
 			auto filename = texture->getTextureDesc().getName();
 			filename = filename.substr(filename.find_last_of("."));
 			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
@@ -133,7 +145,6 @@ namespace unreal
 			octoon::TextureLoader::save(texturePath.string(), texture);
 			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
-			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
 			package["name"] = uuid + filename;

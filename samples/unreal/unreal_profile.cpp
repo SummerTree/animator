@@ -96,33 +96,67 @@ namespace unreal
 	void
 	UnrealProfile::save(std::string_view path_) noexcept(false)
 	{
-		std::ofstream stream(path_);
-		if (stream)
+		auto backupFile = std::string(path_) + "!";
+
+		if (std::filesystem::exists(backupFile))
+			std::filesystem::remove(backupFile);
+
+		if (std::filesystem::exists(path_))
 		{
-			octoon::runtime::json json;
-
-			this->path = path_;
-			this->physicsModule->save(json["physics"], path_);
-			this->encodeModule->save(json["encode"], path_);
-			this->playerModule->save(json["time"], path_);
-			this->soundModule->save(json["sound"], path_);
-			this->entitiesModule->save(json["entities"], path_);
-			this->offlineModule->save(json["offline"], path_);
-			this->cameraModule->save(json["camera"], path_);
-			this->recordModule->save(json["canvas"], path_);
-			this->markModule->save(json["mark"], path_);
-			this->mainLightModule->save(json["mainLight"], path_);
-			this->environmentLightModule->save(json["environmentLight"], path_);
-			this->resourceModule->save(json["resource"], path_);
-			this->selectorModule->save(json["drag"], path_);
-			this->gridModule->save(json["grid"], path_);
-
-			auto string = json.dump();
-			stream.write(string.c_str(), string.size());
+			std::filesystem::rename(path_, backupFile);
+#ifdef _WINDOWS_
+			SetFileAttributes(backupFile.c_str(), FILE_ATTRIBUTE_HIDDEN);
+#endif
 		}
-		else
+
+		try
 		{
-			throw std::runtime_error("Failed to create file: " + std::string(path_));
+			std::ofstream stream(path_);
+			if (stream)
+			{
+				octoon::runtime::json json;
+
+				this->path = path_;
+				this->physicsModule->save(json["physics"], path_);
+				this->encodeModule->save(json["encode"], path_);
+				this->playerModule->save(json["time"], path_);
+				this->soundModule->save(json["sound"], path_);
+				this->entitiesModule->save(json["entities"], path_);
+				this->offlineModule->save(json["offline"], path_);
+				this->cameraModule->save(json["camera"], path_);
+				this->recordModule->save(json["canvas"], path_);
+				this->markModule->save(json["mark"], path_);
+				this->mainLightModule->save(json["mainLight"], path_);
+				this->environmentLightModule->save(json["environmentLight"], path_);
+				this->resourceModule->save(json["resource"], path_);
+				this->selectorModule->save(json["drag"], path_);
+				this->gridModule->save(json["grid"], path_);
+
+				auto string = json.dump();
+				stream.write(string.c_str(), string.size());
+
+				if (std::filesystem::exists(backupFile))
+					std::filesystem::remove(backupFile);
+			}
+			else
+			{
+				throw std::runtime_error("Failed to create file: " + std::string(path_));
+			}
+		}
+		catch (std::exception& e)
+		{
+			if (std::filesystem::exists(path_))
+				std::filesystem::remove(path_);
+
+			if (std::filesystem::exists(backupFile))
+			{
+				std::filesystem::rename(backupFile, backupFile.substr(0, backupFile.size() - 1));
+#ifdef _WINDOWS_
+				SetFileAttributes(std::string(path_).c_str(), FILE_ATTRIBUTE_NORMAL);
+#endif
+			}
+
+			throw e;
 		}
 	}
 }

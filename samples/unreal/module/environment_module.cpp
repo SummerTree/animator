@@ -59,15 +59,9 @@ namespace unreal
 
 		if (this->texture.getValue())
 		{
-			auto package = TextureImporter::instance()->getPackage(this->texture.getValue());
-			if (package.is_object())
-				writer["texture"] = package;
-			else
-			{
-				auto root = std::string(profilePath);
-				root = root.substr(0, root.find_last_of('/')) + "/Assets/Textures";
-				writer["texture"] = TextureImporter::instance()->createPackage(this->texture.getValue(), root);
-			}
+			auto root = std::string(profilePath);
+			root = root.substr(0, root.find_last_of('/')) + "/Assets/Textures";
+			writer["texture"] = TextureImporter::instance()->createPackage(this->texture.getValue(), root);
 		}
 	}
 

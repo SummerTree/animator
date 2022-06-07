@@ -115,11 +115,19 @@ namespace unreal
 	{
 		if (animation)
 		{
-			auto it = this->motionList_.find(animation);
-			if (it != this->motionList_.end())
-				return this->motionList_[animation];
-
 			auto uuid = octoon::make_guid();
+
+			nlohmann::json package = this->getPackage(animation);
+			if (package.find("uuid") != package.end())
+			{
+				uuid = package["uuid"].get<nlohmann::json::string_t>();
+				for (auto& index : indexList_.getValue())
+				{
+					if (index == uuid)
+						return package;
+				}
+			}
+
 			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
 			auto motionPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");
@@ -129,7 +137,6 @@ namespace unreal
 			octoon::VMDLoader::saveMotion(motionPath.string(), *animation);
 			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
 
-			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
 			package["name"] = uuid + ".vmd";
@@ -181,12 +188,7 @@ namespace unreal
 		{
 			auto it = motionList_.find(animation);
 			if (it != motionList_.end())
-			{
-				auto& package = (*it).second;
-				auto path = package["path"].get<nlohmann::json::string_t>();
-				if (std::filesystem::exists(path))
-					return package;
-			}
+				return (*it).second;
 		}
 
 		return nlohmann::json();

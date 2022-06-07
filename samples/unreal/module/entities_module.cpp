@@ -115,19 +115,7 @@ namespace unreal
 					if (component->isA<octoon::AnimatorComponent>())
 					{
 						auto animation = component->downcast<octoon::AnimatorComponent>();
-						if (!animation->getAnimation())
-							continue;
-
-						nlohmann::json package = MotionImporter::instance()->getPackage(animation->getAnimation());
-						if (package.is_object())
-						{
-							nlohmann::json animationJson;
-							animationJson["data"] = package;
-							animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
-
-							json["animation"].push_back(std::move(animationJson));
-						}
-						else
+						if (animation->getAnimation())
 						{
 							auto animationPath = root + "/Animation";
 
@@ -149,23 +137,11 @@ namespace unreal
 
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
-						auto package = MaterialImporter::instance()->getPackage(materials[i]);
-						if (package.is_object())
-						{
-							nlohmann::json materialJson;
-							materialJson["data"] = package;
-							materialJson["index"] = i;
+						nlohmann::json materialJson;
+						materialJson["data"] = MaterialImporter::instance()->createPackage(materials[i]->downcast_pointer<octoon::MeshStandardMaterial>(), materialPath, texturePath);
+						materialJson["index"] = i;
 
-							json["materials"].push_back(materialJson);
-						}
-						else
-						{
-							nlohmann::json materialJson;
-							materialJson["data"] = MaterialImporter::instance()->createPackage(materials[i]->downcast_pointer<octoon::MeshStandardMaterial>(), materialPath, texturePath);
-							materialJson["index"] = i;
-
-							json["materials"].push_back(materialJson);
-						}
+						json["materials"].push_back(materialJson);
 					}
 				}
 

@@ -138,6 +138,18 @@ namespace unreal
 		};
 
 		auto uuid = octoon::make_guid();
+
+		nlohmann::json package = this->getPackage(mat);
+		if (package.find("uuid") != package.end())
+		{
+			uuid = package["uuid"].get<nlohmann::json::string_t>();
+			for (auto& index : indexList_.getValue())
+			{
+				if (index == uuid)
+					return package;
+			}
+		}
+
 		auto outputPath = std::filesystem::path(materialPath.empty() ? defaultPath_ : materialPath).append(uuid);
 		auto outputTexturePath = std::filesystem::path(texturePath.empty() ? defaultPath_ : texturePath);
 
@@ -145,7 +157,6 @@ namespace unreal
 
 		try
 		{
-			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["name"] = mat->getName();
 			package["visible"] = true;
