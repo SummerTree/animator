@@ -85,15 +85,16 @@ namespace unreal
 
 			auto filename = std::filesystem::path(u16_conv).filename().u8string();
 
-			nlohmann::json item;
-			item["uuid"] = uuid;
-			item["name"] = (char*)filename.substr(0, filename.find_last_of('.')).c_str();
-			item["path"] = (char*)motionPath.u8string().c_str();
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["visible"] = true;
+			package["name"] = (char*)filename.substr(0, filename.find_last_of('.')).c_str();
+			package["path"] = (char*)motionPath.u8string().c_str();
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)
 			{
-				auto dump = item.dump();
+				auto dump = package.dump();
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 			}
@@ -103,7 +104,7 @@ namespace unreal
 			if (!blockSignals)
 				indexList_.submit();
 
-			return item;
+			return package;
 		}
 
 		return nlohmann::json();
@@ -130,6 +131,7 @@ namespace unreal
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
+			package["visible"] = true;
 			package["name"] = uuid + ".vmd";
 			package["path"] = (char*)motionPath.u8string().c_str();
 

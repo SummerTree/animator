@@ -86,16 +86,17 @@ namespace unreal
 			if (!qimage.save(QString::fromStdString(previewPath.string())))
 				throw std::runtime_error("Cannot generate image for preview");
 
-			nlohmann::json item;
-			item["uuid"] = uuid;
-			item["name"] = (char*)std::filesystem::path(filepath).filename().u8string().c_str();
-			item["preview"] = (char*)previewPath.u8string().c_str();
-			item["path"] = (char*)texturePath.u8string().c_str();
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["visible"] = true;
+			package["name"] = (char*)std::filesystem::path(filepath).filename().u8string().c_str();
+			package["preview"] = (char*)previewPath.u8string().c_str();
+			package["path"] = (char*)texturePath.u8string().c_str();
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)
 			{
-				auto dump = item.dump();
+				auto dump = package.dump();
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 			}
@@ -105,7 +106,7 @@ namespace unreal
 			if (!blockSignals)
 				indexList_.submit();
 
-			return item;
+			return package;
 		}
 
 		return nlohmann::json();
@@ -134,6 +135,7 @@ namespace unreal
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
+			package["visible"] = true;
 			package["name"] = uuid + filename;
 			package["path"] = (char*)texturePath.u8string().c_str();
 

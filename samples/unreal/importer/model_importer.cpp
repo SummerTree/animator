@@ -141,24 +141,25 @@ namespace unreal
 					}
 				}
 
-				nlohmann::json item;
-				item["uuid"] = uuid;
-				item["name"] = (char*)filename.u8string().c_str();
-				item["path"] = (char*)modelPath.u8string().c_str();
-				item["preview"] = writePreview(geometry, bound, rootPath);
-				item["bound"][0] = { minBounding.x, minBounding.y, minBounding.z };
-				item["bound"][1] = { maxBounding.x, maxBounding.y, maxBounding.z };
+				nlohmann::json package;
+				package["uuid"] = uuid;
+				package["visible"] = true;
+				package["name"] = (char*)filename.u8string().c_str();
+				package["path"] = (char*)modelPath.u8string().c_str();
+				package["preview"] = writePreview(geometry, bound, rootPath);
+				package["bound"][0] = { minBounding.x, minBounding.y, minBounding.z };
+				package["bound"][1] = { maxBounding.x, maxBounding.y, maxBounding.z };
 
 				std::ofstream ifs(packagePath, std::ios_base::binary);
 				if (ifs)
 				{
-					auto dump = item.dump();
+					auto dump = package.dump();
 					ifs.write(dump.c_str(), dump.size());
 				}
 
 				this->modelIndexList_.getValue().push_back(uuid);
 
-				return item;
+				return package;
 			}
 			catch (std::exception& e)
 			{

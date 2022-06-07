@@ -148,6 +148,7 @@ namespace unreal
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["name"] = mat->getName();
+			package["visible"] = true;
 			package["preview"] = writePreview(mat, outputPath);
 			package["colorMap"] = TextureImporter::instance()->createPackage(mat->getColorMap(), outputTexturePath.string());
 			package["opacityMap"] = TextureImporter::instance()->createPackage(mat->getOpacityMap(), outputTexturePath.string());
