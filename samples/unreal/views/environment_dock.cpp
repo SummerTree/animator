@@ -660,7 +660,7 @@ namespace unreal
 				this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
 
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = TextureImporter::instance()->loadPackage(package, true);
+				this->profile_->environmentLightModule->texture = TextureImporter::instance()->loadPackage(package);
 			}
 		}
 		catch (const std::exception& e)
