@@ -48,7 +48,7 @@ namespace unreal
 
 	TransformGizmo::TransformGizmo()
 	{
-		auto planeGeometry = octoon::PlaneMesh::create(50, 50);
+		auto planeGeometry = octoon::PlaneMesh::create(50.0f, 50.0f);
 
 		auto material = std::make_shared<octoon::MeshBasicMaterial>();
 		material->setCullMode(octoon::CullMode::Off);

@@ -202,6 +202,8 @@ namespace octoon
 					return *this;
 				}
 
+				std::array<T, 4> to_array() const noexcept { return { x, y, z, w }; }
+
 			public:
 				friend Quaternion<T> operator-(const Quaternion<T>& q) noexcept
 				{

@@ -28,7 +28,7 @@ namespace unreal
 		bool addMaterial(const std::shared_ptr<octoon::Material>& material);
 
 		nlohmann::json createPackage(std::string_view path, std::string_view outputPath = "") noexcept(false);
-		nlohmann::json createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& material, std::string_view materialPath = "", std::string_view texturePath = "") noexcept(false);
+		nlohmann::json createPackage(const std::shared_ptr<octoon::Material>& material, std::string_view materialPath = "", std::string_view texturePath = "") noexcept(false);
 		
 		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
 		nlohmann::json getPackage(const std::shared_ptr<octoon::Material>& material) const noexcept(false);

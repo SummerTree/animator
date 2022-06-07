@@ -40,7 +40,7 @@ namespace octoon
 	AudioSourceComponent::setTime(float time) noexcept
 	{
 		assert(audioReader_);
-		source_->setSampleOffset(time * audioReader_->frequency());
+		source_->setSampleOffset(static_cast<std::int32_t>(time * audioReader_->frequency()));
 	}
 
 	float

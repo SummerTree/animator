@@ -55,7 +55,10 @@ namespace octoon
 				Vector4(const Vector2<T>& xy, T z, T w) noexcept : x(xy.x), y(xy.y), z(z), w(w) {}
 				explicit Vector4(T xyzw) noexcept : x(xyzw), y(xyzw), z(xyzw), w(xyzw) {}
 				explicit Vector4(const T xyzw[4]) noexcept : x(xyzw[0]), y(xyzw[1]), z(xyzw[2]), w(xyzw[3]) {}
+				explicit Vector4(const std::array<T, 4>& v) noexcept : x(v[0]), y(v[1]), z(v[2]), w(v[3]) {}
 				~Vector4() = default;
+
+				Vector4<T>& operator=(const std::array<T, 4>& v) noexcept { x = v[0]; y = v[1]; z = v[2]; w = v[3]; return *this; }
 
 				Vector4<T>& operator+=(T scale) noexcept { x += scale; y += scale; z += scale; w += scale; return *this; }
 				Vector4<T>& operator-=(T scale) noexcept { x -= scale; y -= scale; z -= scale; w -= scale; return *this; }
@@ -460,6 +463,9 @@ namespace octoon
 				const_pointer ptr() const noexcept { return (const_pointer)this; }
 				pointer data() noexcept { return (pointer)this; }
 				const_pointer data() const noexcept { return (const_pointer)this; }
+
+				void from_array(const std::array<T, 4>& v) noexcept { x = v[0]; y = v[1]; z = v[2]; w = v[3]; }
+				std::array<T, 4> to_array() const noexcept { return { x, y, z, w }; }
 
 			public:
 				friend bool operator==(const Vector4<T>& v1, const Vector4<T>& v2) noexcept

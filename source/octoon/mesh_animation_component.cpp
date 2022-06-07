@@ -355,6 +355,8 @@ namespace octoon
 	bool
 	MeshAnimationComponent::load(std::string_view path) noexcept(false)
 	{
+		this->path_ = path;
+
 		Alembic::AbcCoreFactory::IFactory factor;
 		auto archive = factor.getArchive(utf8_to_gb2312(path));
 		if (archive.valid())
@@ -377,6 +379,12 @@ namespace octoon
 		{
 			return false;
 		}
+	}
+
+	const std::string&
+	MeshAnimationComponent::getFilePath() const noexcept
+	{
+		return path_;
 	}
 
 	bool

@@ -42,15 +42,9 @@ namespace unreal
 		if (reader["width"].is_number_unsigned() && reader["height"].is_number_unsigned())
 			this->framebufferSize = octoon::math::uint2(reader["width"].get<nlohmann::json::number_unsigned_t>(), reader["height"].get<nlohmann::json::number_unsigned_t>());
 		if (reader["translate"].is_array())
-		{
-			this->translate = octoon::math::float3(reader["translate"][0], reader["translate"][1], reader["translate"][2]);
-			this->translate.submit();
-		}
+			this->translate = octoon::math::float3(reader["translate"].get<std::array<float, 3>>());
 		if (reader["rotation"].is_array())
-		{
-			this->rotation = octoon::math::float3(reader["rotation"][0], reader["rotation"][1], reader["rotation"][2]);
-			this->rotation.submit();
-		}
+			this->rotation = octoon::math::float3(reader["rotation"].get<std::array<float, 3>>());
 		if (reader["animation"].is_object())
 		{
 			auto& animationJson = reader["animation"];
@@ -71,12 +65,8 @@ namespace unreal
 		writer["focusDistance"] = this->focusDistance.getValue();
 		writer["width"].push_back(this->framebufferSize.getValue().x);
 		writer["height"].push_back(this->framebufferSize.getValue().y);
-		writer["translate"].push_back(this->translate.getValue().x);
-		writer["translate"].push_back(this->translate.getValue().y);
-		writer["translate"].push_back(this->translate.getValue().z);
-		writer["rotation"].push_back(this->rotation.getValue().x);
-		writer["rotation"].push_back(this->rotation.getValue().y);
-		writer["rotation"].push_back(this->rotation.getValue().z);
+		writer["translate"] = this->translate.getValue().to_array();
+		writer["rotation"] = this->rotation.getValue().to_array();
 
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
 		{

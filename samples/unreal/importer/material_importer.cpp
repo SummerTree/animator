@@ -80,7 +80,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	MaterialImporter::createPackage(const std::shared_ptr<octoon::MeshStandardMaterial>& mat, std::string_view materialPath, std::string_view texturePath) noexcept(false)
+	MaterialImporter::createPackage(const std::shared_ptr<octoon::Material>& mat, std::string_view materialPath, std::string_view texturePath) noexcept(false)
 	{
 		auto it = this->materialPackageCache_.find(mat);
 		if (it != this->materialPackageCache_.end())
@@ -106,7 +106,7 @@ namespace unreal
 
 		try
 		{
-			auto writePreview = [this](const std::shared_ptr<octoon::MeshStandardMaterial> material, std::filesystem::path path) -> nlohmann::json
+			auto writePreview = [this](const std::shared_ptr<octoon::Material> material, std::filesystem::path path) -> nlohmann::json
 			{
 				QPixmap pixmap;
 				auto uuid = octoon::make_guid();
@@ -126,65 +126,67 @@ namespace unreal
 				return nlohmann::json({ v.x, v.y, v.z });
 			};
 
+			auto standardMaterial = mat->downcast<octoon::MeshStandardMaterial>();
+
 			package["uuid"] = uuid;
 			package["name"] = mat->getName();
 			package["visible"] = true;
 			package["preview"] = writePreview(mat, outputPath);
-			package["colorMap"] = TextureImporter::instance()->createPackage(mat->getColorMap(), false, outputTexturePath.string());
-			package["opacityMap"] = TextureImporter::instance()->createPackage(mat->getOpacityMap(), false, outputTexturePath.string());
-			package["normalMap"] = TextureImporter::instance()->createPackage(mat->getNormalMap(), false, outputTexturePath.string());
-			package["roughnessMap"] = TextureImporter::instance()->createPackage(mat->getRoughnessMap(), false, outputTexturePath.string());
-			package["specularMap"] = TextureImporter::instance()->createPackage(mat->getSpecularMap(), false, outputTexturePath.string());
-			package["metalnessMap"] = TextureImporter::instance()->createPackage(mat->getMetalnessMap(), false, outputTexturePath.string());
-			package["emissiveMap"] = TextureImporter::instance()->createPackage(mat->getEmissiveMap(), false, outputTexturePath.string());
-			package["anisotropyMap"] = TextureImporter::instance()->createPackage(mat->getAnisotropyMap(), false, outputTexturePath.string());
-			package["clearCoatMap"] = TextureImporter::instance()->createPackage(mat->getClearCoatMap(), false, outputTexturePath.string());
-			package["clearCoatRoughnessMap"] = TextureImporter::instance()->createPackage(mat->getClearCoatRoughnessMap(), false, outputTexturePath.string());
-			package["subsurfaceMap"] = TextureImporter::instance()->createPackage(mat->getSubsurfaceMap(), false, outputTexturePath.string());
-			package["subsurfaceColorMap"] = TextureImporter::instance()->createPackage(mat->getSubsurfaceColorMap(), false, outputTexturePath.string());
-			package["sheenMap"] = TextureImporter::instance()->createPackage(mat->getSheenMap(), false, outputTexturePath.string());
-			package["lightMap"] = TextureImporter::instance()->createPackage(mat->getLightMap(), false, outputTexturePath.string());
-			package["emissiveIntensity"] = mat->getEmissiveIntensity();
-			package["opacity"] = mat->getOpacity();
-			package["smoothness"] = mat->getSmoothness();
-			package["roughness"] = mat->getRoughness();
-			package["metalness"] = mat->getMetalness();
-			package["anisotropy"] = mat->getAnisotropy();
-			package["sheen"] = mat->getSheen();
-			package["specular"] = mat->getSpecular();
-			package["refractionRatio"] = mat->getRefractionRatio();
-			package["clearCoat"] = mat->getClearCoat();
-			package["clearCoatRoughness"] = mat->getClearCoatRoughness();
-			package["subsurface"] = mat->getSubsurface();
-			package["reflectionRatio"] = mat->getReflectionRatio();
-			package["transmission"] = mat->getTransmission();
-			package["lightMapIntensity"] = mat->getLightMapIntensity();
-			package["gamma"] = mat->getGamma();
-			package["offset"] = writeFloat2(mat->getOffset());
-			package["repeat"] = writeFloat2(mat->getRepeat());
-			package["normalScale"] = writeFloat2(mat->getNormalScale());
-			package["color"] = writeFloat3(mat->getColor());
-			package["emissive"] = writeFloat3(mat->getEmissive());
-			package["subsurfaceColor"] = writeFloat3(mat->getSubsurfaceColor());
-			package["blendEnable"] = mat->getBlendEnable();
-			package["blendOp"] = mat->getBlendOp();
-			package["blendSrc"] = mat->getBlendSrc();
-			package["blendDest"] = mat->getBlendDest();
-			package["blendAlphaOp"] = mat->getBlendAlphaOp();
-			package["blendAlphaSrc"] = mat->getBlendAlphaSrc();
-			package["blendAlphaDest"] = mat->getBlendAlphaDest();
-			package["colorWriteMask"] = mat->getColorWriteMask();
-			package["depthEnable"] = mat->getDepthEnable();
-			package["depthBiasEnable"] = mat->getDepthBiasEnable();
-			package["depthBoundsEnable"] = mat->getDepthBoundsEnable();
-			package["depthClampEnable"] = mat->getDepthClampEnable();
-			package["depthWriteEnable"] = mat->getDepthWriteEnable();
-			package["depthMin"] = mat->getDepthMin();
-			package["depthMax"] = mat->getDepthMax();
-			package["depthBias"] = mat->getDepthBias();
-			package["depthSlopeScaleBias"] = mat->getDepthSlopeScaleBias();
-			package["stencilEnable"] = mat->getStencilEnable();
-			package["scissorTestEnable"] = mat->getScissorTestEnable();
+			package["colorMap"] = TextureImporter::instance()->createPackage(standardMaterial->getColorMap(), false, outputTexturePath.string());
+			package["opacityMap"] = TextureImporter::instance()->createPackage(standardMaterial->getOpacityMap(), false, outputTexturePath.string());
+			package["normalMap"] = TextureImporter::instance()->createPackage(standardMaterial->getNormalMap(), false, outputTexturePath.string());
+			package["roughnessMap"] = TextureImporter::instance()->createPackage(standardMaterial->getRoughnessMap(), false, outputTexturePath.string());
+			package["specularMap"] = TextureImporter::instance()->createPackage(standardMaterial->getSpecularMap(), false, outputTexturePath.string());
+			package["metalnessMap"] = TextureImporter::instance()->createPackage(standardMaterial->getMetalnessMap(), false, outputTexturePath.string());
+			package["emissiveMap"] = TextureImporter::instance()->createPackage(standardMaterial->getEmissiveMap(), false, outputTexturePath.string());
+			package["anisotropyMap"] = TextureImporter::instance()->createPackage(standardMaterial->getAnisotropyMap(), false, outputTexturePath.string());
+			package["clearCoatMap"] = TextureImporter::instance()->createPackage(standardMaterial->getClearCoatMap(), false, outputTexturePath.string());
+			package["clearCoatRoughnessMap"] = TextureImporter::instance()->createPackage(standardMaterial->getClearCoatRoughnessMap(), false, outputTexturePath.string());
+			package["subsurfaceMap"] = TextureImporter::instance()->createPackage(standardMaterial->getSubsurfaceMap(), false, outputTexturePath.string());
+			package["subsurfaceColorMap"] = TextureImporter::instance()->createPackage(standardMaterial->getSubsurfaceColorMap(), false, outputTexturePath.string());
+			package["sheenMap"] = TextureImporter::instance()->createPackage(standardMaterial->getSheenMap(), false, outputTexturePath.string());
+			package["lightMap"] = TextureImporter::instance()->createPackage(standardMaterial->getLightMap(), false, outputTexturePath.string());
+			package["emissiveIntensity"] = standardMaterial->getEmissiveIntensity();
+			package["opacity"] = standardMaterial->getOpacity();
+			package["smoothness"] = standardMaterial->getSmoothness();
+			package["roughness"] = standardMaterial->getRoughness();
+			package["metalness"] = standardMaterial->getMetalness();
+			package["anisotropy"] = standardMaterial->getAnisotropy();
+			package["sheen"] = standardMaterial->getSheen();
+			package["specular"] = standardMaterial->getSpecular();
+			package["refractionRatio"] = standardMaterial->getRefractionRatio();
+			package["clearCoat"] = standardMaterial->getClearCoat();
+			package["clearCoatRoughness"] = standardMaterial->getClearCoatRoughness();
+			package["subsurface"] = standardMaterial->getSubsurface();
+			package["reflectionRatio"] = standardMaterial->getReflectionRatio();
+			package["transmission"] = standardMaterial->getTransmission();
+			package["lightMapIntensity"] = standardMaterial->getLightMapIntensity();
+			package["gamma"] = standardMaterial->getGamma();
+			package["offset"] = writeFloat2(standardMaterial->getOffset());
+			package["repeat"] = writeFloat2(standardMaterial->getRepeat());
+			package["normalScale"] = writeFloat2(standardMaterial->getNormalScale());
+			package["color"] = standardMaterial->getColor().to_array();
+			package["emissive"] = standardMaterial->getEmissive().to_array();
+			package["subsurfaceColor"] = standardMaterial->getSubsurfaceColor().to_array();
+			package["blendEnable"] = standardMaterial->getBlendEnable();
+			package["blendOp"] = standardMaterial->getBlendOp();
+			package["blendSrc"] = standardMaterial->getBlendSrc();
+			package["blendDest"] = standardMaterial->getBlendDest();
+			package["blendAlphaOp"] = standardMaterial->getBlendAlphaOp();
+			package["blendAlphaSrc"] = standardMaterial->getBlendAlphaSrc();
+			package["blendAlphaDest"] = standardMaterial->getBlendAlphaDest();
+			package["colorWriteMask"] = standardMaterial->getColorWriteMask();
+			package["depthEnable"] = standardMaterial->getDepthEnable();
+			package["depthBiasEnable"] = standardMaterial->getDepthBiasEnable();
+			package["depthBoundsEnable"] = standardMaterial->getDepthBoundsEnable();
+			package["depthClampEnable"] = standardMaterial->getDepthClampEnable();
+			package["depthWriteEnable"] = standardMaterial->getDepthWriteEnable();
+			package["depthMin"] = standardMaterial->getDepthMin();
+			package["depthMax"] = standardMaterial->getDepthMax();
+			package["depthBias"] = standardMaterial->getDepthBias();
+			package["depthSlopeScaleBias"] = standardMaterial->getDepthSlopeScaleBias();
+			package["stencilEnable"] = standardMaterial->getStencilEnable();
+			package["scissorTestEnable"] = standardMaterial->getScissorTestEnable();
 
 			std::ofstream ifs(std::filesystem::path(outputPath).append("package.json"), std::ios_base::binary);
 			if (ifs)

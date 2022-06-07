@@ -6,6 +6,7 @@
 #include <octoon/vmd_loader.h>
 #include <octoon/animator_component.h>
 #include <octoon/skinned_mesh_renderer_component.h>
+#include <octoon/mesh_animation_component.h>
 #include <octoon/runtime/uuid.h>
 #include <filesystem>
 
@@ -138,11 +139,20 @@ namespace unreal
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
 						nlohmann::json materialJson;
-						materialJson["data"] = MaterialImporter::instance()->createPackage(materials[i]->downcast_pointer<octoon::MeshStandardMaterial>(), materialPath, texturePath);
+						materialJson["data"] = MaterialImporter::instance()->createPackage(materials[i], materialPath, texturePath);
 						materialJson["index"] = i;
 
 						json["materials"].push_back(materialJson);
 					}
+				}
+
+				auto abc = it->getComponent<octoon::MeshAnimationComponent>();
+				if (abc)
+				{
+					nlohmann::json alembicJson;
+					alembicJson["path"] = abc->getFilePath();
+
+					json["alembic"].push_back(alembicJson);
 				}
 
 				sceneJson.push_back(std::move(json));

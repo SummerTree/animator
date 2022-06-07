@@ -28,7 +28,7 @@ namespace unreal
 		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
 		if (reader["gravity"].is_array())
-			this->gravity = octoon::math::float3(reader["gravity"][0], reader["gravity"][1], reader["gravity"][2]);
+			this->gravity = octoon::math::float3(reader["gravity"].get<std::array<float, 3>>());
 		if (reader["gravityScale"].is_number_float())
 			this->gravityScale = reader["gravityScale"].get<nlohmann::json::number_float_t>();
 		if (reader["playSolverIterationCounts"].is_number_unsigned())
@@ -43,7 +43,7 @@ namespace unreal
 	PhysicsModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
 	{
 		writer["enable"] = this->enable.getValue();
-		writer["gravity"] = { this->gravity.getValue()[0], this->gravity.getValue()[1], this->gravity.getValue()[2] };
+		writer["gravity"] = this->gravity.getValue().to_array();
 		writer["gravityScale"] = this->gravityScale.getValue();
 		writer["playSolverIterationCounts"] = this->playSolverIterationCounts.getValue();
 		writer["recordSolverIterationCounts"] = this->recordSolverIterationCounts.getValue();

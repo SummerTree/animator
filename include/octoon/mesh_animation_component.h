@@ -19,6 +19,7 @@ namespace octoon
 		const std::string& getName() const noexcept;
 
 		bool load(std::string_view path) noexcept(false);
+		const std::string& getFilePath() const noexcept;
 
 		bool play(std::string_view status = "default") noexcept override;
 		void pause() noexcept override;

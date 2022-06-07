@@ -31,9 +31,9 @@ namespace unreal
 		if (reader["intensity"].is_number_float())
 			this->intensity = reader["intensity"].get<nlohmann::json::number_float_t>();
 		if (reader["color"].is_array())
-			this->color = octoon::math::float3(reader["color"][0], reader["color"][1], reader["color"][2]);
+			this->color = octoon::math::float3(reader["color"].get<std::array<float, 3>>());
 		if (reader["rotation"].is_array())
-			this->rotation = octoon::math::float3(reader["rotation"][0], reader["rotation"][1], reader["rotation"][2]);
+			this->rotation = octoon::math::float3(reader["rotation"].get<std::array<float, 3>>());
 	}
 
 	void 
@@ -42,12 +42,8 @@ namespace unreal
 		writer["enable"] = this->enable.getValue();
 		writer["intensity"] = this->intensity.getValue();
 		writer["size"] = this->size.getValue();
-		writer["color"].push_back(this->color.getValue().x);
-		writer["color"].push_back(this->color.getValue().y);
-		writer["color"].push_back(this->color.getValue().z);
-		writer["rotation"].push_back(this->rotation.getValue().x);
-		writer["rotation"].push_back(this->rotation.getValue().y);
-		writer["rotation"].push_back(this->rotation.getValue().z);
+		writer["color"] = this->color.getValue().to_array();
+		writer["rotation"] = this->rotation.getValue().to_array();
 	}
 
 	void

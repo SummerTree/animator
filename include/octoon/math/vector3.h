@@ -37,7 +37,10 @@ namespace octoon
 				Vector3(const Vector2<T>& xy, T zz) noexcept : x(xy.x), y(xy.y), z(zz) {}
 				explicit Vector3(const T xyz[3]) noexcept : x(xyz[0]), y(xyz[1]), z(xyz[2]) {}
 				explicit Vector3(T xyz) noexcept : x(xyz), y(xyz), z(xyz) {}
+				explicit Vector3(const std::array<T, 3>& v) noexcept : x(v[0]), y(v[1]), z(v[2]) {}
 				~Vector3() = default;
+
+				Vector3<T>& operator=(const std::array<T, 3>& v) noexcept { x = v[0]; y = v[1]; z = v[2]; return *this; }
 
 #pragma warning(push)
 #pragma warning(disable : 4244) // float multiply with double
@@ -159,6 +162,9 @@ namespace octoon
 				const_pointer ptr() const noexcept { return (const_pointer)this; }
 				pointer data() noexcept { return (pointer)this; }
 				const_pointer data() const noexcept { return (const_pointer)this; }
+
+				void from_array(const std::array<T, 3>& v) noexcept { x = v[0]; y = v[1]; z = v[2]; }
+				std::array<T, 3> to_array() const noexcept { return { x, y, z }; }
 
 			public:
 				friend bool operator==(const Vector3<T>& v1, const Vector3<T>& v2) noexcept

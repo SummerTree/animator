@@ -2,6 +2,7 @@
 #define OCTOON_MATH_MATHFWD_H_
 
 #include <vector>
+#include <array>
 #include <smmintrin.h>
 #include <octoon/math/mathutil.h>
 
