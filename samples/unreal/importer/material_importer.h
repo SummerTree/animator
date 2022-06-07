@@ -52,6 +52,8 @@ namespace unreal
 
 		void save() const noexcept(false);
 
+		void clearCache() noexcept;
+
 	private:
 		void initMaterialScene() noexcept(false);
 		void initPackageIndices() noexcept(false);
@@ -68,6 +70,9 @@ namespace unreal
 
 		MutableLiveData<nlohmann::json> indexList_;
 		MutableLiveData<nlohmann::json> sceneList_;
+
+		std::map<std::string, std::shared_ptr<octoon::Material>> materialCache_;
+		std::map<std::weak_ptr<octoon::Material>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Material>>> materialPackageCache_;
 
 		std::map<std::string, nlohmann::json> packageList_;
 		std::map<std::string, std::shared_ptr<octoon::Material>> materials_;

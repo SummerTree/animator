@@ -1,4 +1,7 @@
 #include "unreal_profile.h"
+#include "importer/texture_importer.h"
+#include "importer/material_importer.h"
+#include "importer/motion_importer.h"
 #include <fstream>
 #include <filesystem>
 #include <octoon/runtime/json.h>
@@ -55,6 +58,10 @@ namespace unreal
 	void
 	UnrealProfile::load(std::string_view path_) noexcept(false)
 	{
+		MotionImporter::instance()->clearCache();
+		TextureImporter::instance()->clearCache();
+		MaterialImporter::instance()->clearCache();
+
 		std::ifstream stream(path_);
 		if (stream)
 		{
@@ -98,19 +105,23 @@ namespace unreal
 	{
 		auto backupFile = std::string(path_) + "!";
 
-		if (std::filesystem::exists(backupFile))
-			std::filesystem::remove(backupFile);
-
-		if (std::filesystem::exists(path_))
-		{
-			std::filesystem::rename(path_, backupFile);
-#ifdef _WINDOWS_
-			SetFileAttributes(backupFile.c_str(), FILE_ATTRIBUTE_HIDDEN);
-#endif
-		}
-
 		try
 		{
+			if (std::filesystem::exists(backupFile))
+				std::filesystem::remove(backupFile);
+
+			if (std::filesystem::exists(path_))
+			{
+				std::filesystem::rename(path_, backupFile);
+#ifdef _WINDOWS_
+				SetFileAttributes(backupFile.c_str(), FILE_ATTRIBUTE_HIDDEN);
+#endif
+			}
+
+			MotionImporter::instance()->clearCache();
+			TextureImporter::instance()->clearCache();
+			MaterialImporter::instance()->clearCache();
+
 			std::ofstream stream(path_);
 			if (stream)
 			{

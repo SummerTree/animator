@@ -38,6 +38,8 @@ namespace unreal
 
 		void save() noexcept(false);
 
+		void clearCache() noexcept;
+
 		virtual const std::type_info& type_info() const noexcept
 		{
 			return typeid(MotionImporter);
@@ -50,6 +52,9 @@ namespace unreal
 		std::u8string assertPath_;
 
 		MutableLiveData<nlohmann::json> indexList_;
+
+		std::map<std::string, std::shared_ptr<octoon::Animation<float>>> motionCache_;
+		std::map<std::weak_ptr<octoon::Animation<float>>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Animation<float>>>> motionPackageCache_;
 
 		std::map<std::string, nlohmann::json> packageList_;
 		std::map<std::weak_ptr<octoon::Animation<float>>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Animation<float>>>> motionList_;

@@ -115,6 +115,10 @@ namespace unreal
 	{
 		if (animation)
 		{
+			auto it = this->motionPackageCache_.find(animation);
+			if (it != this->motionPackageCache_.end())
+				return this->motionPackageCache_[animation];
+
 			auto uuid = octoon::make_guid();
 
 			nlohmann::json package = this->getPackage(animation);
@@ -150,7 +154,7 @@ namespace unreal
 				ifs.close();
 			}
 
-			this->motionList_[animation] = package;
+			this->motionPackageCache_[animation] = package;
 			this->packageList_[std::string(uuid)] = package;
 
 			return package;
@@ -225,15 +229,17 @@ namespace unreal
 	{
 		if (package["path"].is_string())
 		{
+			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
+			auto it = this->motionCache_.find(uuid);
+			if (it != this->motionCache_.end())
+				return this->motionCache_[uuid];
+
 			auto path = package["path"].get<nlohmann::json::string_t>();
 			auto motion = octoon::VMDLoader::loadMotion((char8_t*)path.c_str());
 			if (motion)
 			{
-				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-				auto it = this->packageList_.find(uuid);
-				if (it == this->packageList_.end())
-					this->packageList_[uuid] = package;
-
+				packageList_[uuid] = package;
+				motionCache_[uuid] = motion;
 				motionList_[motion] = package;
 				return motion;
 			}
@@ -271,6 +277,13 @@ namespace unreal
 		}
 
 		return nlohmann::json();
+	}
+
+	void
+	MotionImporter::clearCache() noexcept
+	{
+		motionCache_.clear();
+		motionPackageCache_.clear();
 	}
 
 	void

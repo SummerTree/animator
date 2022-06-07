@@ -117,9 +117,9 @@ namespace unreal
 	{
 		if (texture)
 		{
-			auto it = this->textureList_.find(texture);
-			if (it != this->textureList_.end())
-				return this->textureList_[texture];
+			auto it = this->texturePackageCache_.find(texture);
+			if (it != this->texturePackageCache_.end())
+				return this->texturePackageCache_[texture];
 
 			auto uuid = octoon::make_guid();
 
@@ -192,7 +192,7 @@ namespace unreal
 				ifs.close();
 			}
 
-			this->textureList_[texture] = package;
+			this->texturePackageCache_[texture] = package;
 			this->packageList_[std::string(uuid)] = package;
 
 			return package;
@@ -246,16 +246,18 @@ namespace unreal
 	{
 		if (package.find("path") != package.end())
 		{
-			auto path = package["path"].get<nlohmann::json::string_t>();
-			auto texture = octoon::TextureLoader::load(path, generateMipmap);
-			if (texture)
-			{
-				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-				auto it = this->packageList_.find(uuid);
-				if (it == this->packageList_.end())
-					this->packageList_[uuid] = package;
+			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
+			auto it = this->textureCache_.find(uuid);
+			if (it != this->textureCache_.end())
+				return this->textureCache_[uuid];
 
+			auto texture = octoon::TextureLoader::load(package["path"].get<nlohmann::json::string_t>(), generateMipmap);
+			if (texture)
+			{	
+				packageList_[uuid] = package;
+				textureCache_[uuid] = texture;
 				textureList_[texture] = package;
+
 				return texture;
 			}
 		}
@@ -307,6 +309,13 @@ namespace unreal
 			auto data = indexList_.getValue().dump();
 			ifs.write(data.c_str(), data.size());
 		}
+	}
+
+	void
+	TextureImporter::clearCache() noexcept
+	{
+		textureCache_.clear();
+		texturePackageCache_.clear();
 	}
 
 	void

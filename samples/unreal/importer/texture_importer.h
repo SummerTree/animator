@@ -36,6 +36,8 @@ namespace unreal
 
 		void save() noexcept(false);
 
+		void clearCache() noexcept;
+
 	private:
 		void initPackageIndices() noexcept(false);
 
@@ -45,6 +47,9 @@ namespace unreal
 		MutableLiveData<nlohmann::json> indexList_;
 
 		std::map<std::string, nlohmann::json> packageList_;
+
+		std::map<std::string, std::shared_ptr<octoon::GraphicsTexture>> textureCache_;
+		std::map<std::weak_ptr<octoon::GraphicsTexture>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::GraphicsTexture>>> texturePackageCache_;
 
 		std::map<std::weak_ptr<octoon::GraphicsTexture>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::GraphicsTexture>>> textureList_;
 		std::map<std::weak_ptr<octoon::GraphicsTexture>, std::string, std::owner_less<std::weak_ptr<octoon::GraphicsTexture>>> texturePathList_;
