@@ -106,7 +106,7 @@ namespace unreal
 		for (auto& it : this->objects.getValue())
 		{
 			nlohmann::json json;
-			json["model"] = ModelImporter::instance()->createMetadata(it);
+			json["model"] = ModelImporter::instance()->createPackage(it);
 
 			if (json["model"].is_object())
 			{

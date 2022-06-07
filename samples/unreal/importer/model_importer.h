@@ -29,12 +29,13 @@ namespace unreal
 		octoon::GameObjectPtr importModel(std::string_view path, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
 
 		nlohmann::json createPackage(std::string_view path) noexcept(false);
+		nlohmann::json createPackage(const octoon::GameObjectPtr& gameObject) const noexcept;
+
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		octoon::GameObjectPtr loadPackage(const nlohmann::json& package, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
 		void removePackage(std::string_view uuid) noexcept(false);
 
 		octoon::GameObjectPtr loadMetaData(const nlohmann::json& metadata, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept;
-		nlohmann::json createMetadata(const octoon::GameObjectPtr& gameObject) const noexcept;
 
 		MutableLiveData<nlohmann::json>& getIndexList() noexcept;
 

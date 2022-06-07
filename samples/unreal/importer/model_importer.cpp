@@ -174,6 +174,31 @@ namespace unreal
 	}
 
 	nlohmann::json
+	ModelImporter::createPackage(const octoon::GameObjectPtr& gameObject) const noexcept
+	{
+		auto it = modelList_.find(gameObject);
+		if (it != modelList_.end())
+		{
+			auto& package = (*it).second;
+
+			nlohmann::json json;
+			json["uuid"] = package["uuid"].get<nlohmann::json::string_t>();
+
+			return json;
+		}
+		auto path = modelPathList_.find(gameObject);
+		if (path != modelPathList_.end())
+		{
+			nlohmann::json json;
+			json["path"] = (char*)(*path).second.c_str();
+
+			return json;
+		}
+
+		return std::string();
+	}
+
+	nlohmann::json
 	ModelImporter::getPackage(std::string_view uuid) noexcept
 	{
 		auto it = this->packageList_.find(std::string(uuid));
@@ -254,31 +279,6 @@ namespace unreal
 		}
 
 		return nullptr;
-	}
-
-	nlohmann::json
-	ModelImporter::createMetadata(const octoon::GameObjectPtr& gameObject) const noexcept
-	{
-		auto it = modelList_.find(gameObject);
-		if (it != modelList_.end())
-		{
-			auto& package = (*it).second;
-
-			nlohmann::json json;
-			json["uuid"] = package["uuid"].get<nlohmann::json::string_t>();
-
-			return json;
-		}
-		auto path = modelPathList_.find(gameObject);
-		if (path != modelPathList_.end())
-		{
-			nlohmann::json json;
-			json["path"] = (char*)(*path).second.c_str();
-
-			return json;
-		}
-
-		return std::string();
 	}
 
 	void
