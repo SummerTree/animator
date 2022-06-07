@@ -485,7 +485,8 @@ namespace unreal
 	bool
 	MaterialImporter::addMaterial(const std::shared_ptr<octoon::Material>& mat)
 	{
-		if (this->materialList_.find(mat) == this->materialList_.end())
+		auto it = this->materialList_.find(mat);
+		if (it == this->materialList_.end())
 		{
 			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
 			auto uuid = octoon::make_guid();
@@ -501,6 +502,25 @@ namespace unreal
 			this->packageList_[uuid] = package;
 			this->materials_[uuid] = mat;
 			this->materialList_[mat] = package;
+
+			return true;
+		}
+		else
+		{
+			auto uuid = (*it).second["uuid"].get<nlohmann::json::string_t>();
+			auto& sceneList = sceneList_.getValue();
+
+			bool found = false;
+			for (auto index = sceneList.begin(); index != sceneList.end(); ++index)
+			{
+				if ((*index).get<nlohmann::json::string_t>() == uuid)
+				{
+					found = true;
+				}
+			}
+
+			if (!found)
+				sceneList.push_back(uuid);
 
 			return true;
 		}

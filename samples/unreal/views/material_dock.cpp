@@ -1938,6 +1938,8 @@ namespace unreal
 		materialList_->resize(widget_->size());
 		materialList_->show();
 		materialList_->updateItemList();
+
+		MaterialImporter::instance()->getSceneList().submit();
 		profile_->selectorModule->selectedItem_.submit();
 	}
 
