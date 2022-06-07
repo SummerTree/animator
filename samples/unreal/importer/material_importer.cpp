@@ -465,7 +465,6 @@ namespace unreal
 			this->packageList_[uuid] = package;
 
 		this->materialList_[standard] = package;
-		this->sceneList_.getValue().push_back(uuid);
 
 		return standard;
 	}
@@ -529,8 +528,12 @@ namespace unreal
 	{
 		if (material)
 		{
-			if (materialList_.find(material) != materialList_.end())
-				return materialList_.at(material);
+			auto it = materialList_.find(material);
+			if (it != materialList_.end())
+			{
+				auto& package = (*it).second;
+				return package;
+			}
 		}
 		return nlohmann::json();
 	}

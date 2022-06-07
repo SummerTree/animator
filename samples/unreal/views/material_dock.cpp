@@ -1856,6 +1856,9 @@ namespace unreal
 		modifyWidget_ = new MaterialEditWindow(behaviour);
 		modifyWidget_->hide();
 
+		//QTabWidget* tabWidget = new QTabWidget;
+		//tabWidget->addTab(materialList_, "Scene");
+
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addWidget(materialList_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addWidget(modifyWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
@@ -1902,15 +1905,19 @@ namespace unreal
 
 				if (hit.mesh < materials.size())
 				{
-					auto uuid = QString::fromStdString(MaterialImporter::instance()->getPackage(materials[hit.mesh]));
-					auto count = this->materialList_->mainWidget_->count();
-					for (int i = 0; i < count; i++)
+					auto package = MaterialImporter::instance()->getPackage(materials[hit.mesh]);
+					if (package.is_object())
 					{
-						auto item = this->materialList_->mainWidget_->item(i);
-						if (item->data(Qt::UserRole).toString() == uuid)
+						auto uuid = QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>());
+						auto count = this->materialList_->mainWidget_->count();
+						for (int i = 0; i < count; i++)
 						{
-							this->materialList_->mainWidget_->setCurrentItem(item);
-							break;
+							auto item = this->materialList_->mainWidget_->item(i);
+							if (item->data(Qt::UserRole).toString() == uuid)
+							{
+								this->materialList_->mainWidget_->setCurrentItem(item);
+								break;
+							}
 						}
 					}
 				}
@@ -1931,6 +1938,7 @@ namespace unreal
 		materialList_->resize(widget_->size());
 		materialList_->show();
 		materialList_->updateItemList();
+		profile_->selectorModule->selectedItem_.submit();
 	}
 
 	void
