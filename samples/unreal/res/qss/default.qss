@@ -124,11 +124,11 @@ QListWidget{
 }
 QListWidget::Item:hover{
 	color: rgb(220,220,220);
-	background-color: rgb(48,48,48);
+	background-color: rgb(60,60,60);
 }
 QListWidget::Item:selected{
 	color: rgb(220,220,220);
-	background-color: rgb(84,84,84);
+	background-color: rgb(195,34,68);
 	border-width: 0px;
 }
 QCheckBox{
