@@ -23,13 +23,13 @@ namespace unreal
 
 		std::shared_ptr<octoon::GraphicsTexture> importTexture(std::string_view path, bool generatorMipmap = false) noexcept(false);
 
-		nlohmann::json createPackage(std::string_view path, bool blockSignals = false) noexcept(false);
-		nlohmann::json createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, std::string_view outputPath = "") noexcept(false);
+		nlohmann::json createPackage(std::string_view path, bool generateMipmap = false, bool blockSignals = false) noexcept(false);
+		nlohmann::json createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, bool generateMipmap = false, std::string_view outputPath = "") noexcept(false);
 
 		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath = "") noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture) const noexcept(false);
 
-		std::shared_ptr<octoon::GraphicsTexture> loadPackage(const nlohmann::json& package, bool generateMipmap = false, std::string_view outputPath = "") noexcept(false);
+		std::shared_ptr<octoon::GraphicsTexture> loadPackage(const nlohmann::json& package, std::string_view outputPath = "") noexcept(false);
 		void removePackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
 
 		MutableLiveData<nlohmann::json>& getIndexList() noexcept;

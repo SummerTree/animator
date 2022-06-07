@@ -52,7 +52,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	TextureImporter::createPackage(std::string_view filepath, bool blockSignals) noexcept(false)
+	TextureImporter::createPackage(std::string_view filepath, bool generateMipmap, bool blockSignals) noexcept(false)
 	{
 		octoon::Image image;
 
@@ -92,6 +92,7 @@ namespace unreal
 			package["name"] = (char*)std::filesystem::path(filepath).filename().u8string().c_str();
 			package["preview"] = (char*)previewPath.u8string().c_str();
 			package["path"] = (char*)texturePath.u8string().c_str();
+			package["mipmap"] = generateMipmap;
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);
 			if (ifs)
@@ -113,7 +114,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	TextureImporter::createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, std::string_view outputPath) noexcept(false)
+	TextureImporter::createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, bool generateMipmap, std::string_view outputPath) noexcept(false)
 	{
 		if (texture)
 		{
@@ -149,6 +150,7 @@ namespace unreal
 			package["visible"] = true;
 			package["name"] = uuid + filename;
 			package["path"] = (char*)texturePath.u8string().c_str();
+			package["mipmap"] = generateMipmap;
 
 			if (filename == ".hdr")
 			{
@@ -242,7 +244,7 @@ namespace unreal
 	}
 
 	std::shared_ptr<octoon::GraphicsTexture>
-	TextureImporter::loadPackage(const nlohmann::json& package, bool generateMipmap, std::string_view outputPath) noexcept(false)
+	TextureImporter::loadPackage(const nlohmann::json& package, std::string_view outputPath) noexcept(false)
 	{
 		if (package.find("path") != package.end())
 		{
@@ -250,6 +252,10 @@ namespace unreal
 			auto it = this->textureCache_.find(uuid);
 			if (it != this->textureCache_.end())
 				return this->textureCache_[uuid];
+
+			bool generateMipmap = false;
+			if (package.find("mipmap") != package.end())
+				generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
 
 			auto texture = octoon::TextureLoader::load(package["path"].get<nlohmann::json::string_t>(), generateMipmap);
 			if (texture)
