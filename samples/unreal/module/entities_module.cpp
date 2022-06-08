@@ -145,8 +145,8 @@ namespace unreal
 				auto abc = it->getComponent<octoon::MeshAnimationComponent>();
 				if (abc)
 				{
-					auto materialPath = root + "/Materials";
 					auto texturePath = root + "/Textures";
+					auto materialPath = root + "/Materials";
 
 					abc->save(json["alembic"]);
 

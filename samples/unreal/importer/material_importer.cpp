@@ -518,11 +518,14 @@ namespace unreal
 				if ((*index).get<nlohmann::json::string_t>() == uuid)
 				{
 					found = true;
+					break;
 				}
 			}
 
 			if (!found)
 				sceneList.push_back(uuid);
+
+			this->materials_[uuid] = mat;
 
 			return true;
 		}

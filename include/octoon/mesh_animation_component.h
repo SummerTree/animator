@@ -51,7 +51,7 @@ namespace octoon
 		void onMoveAfter() noexcept(false) override;
 
 	private:
-		void createAnimationData(const AnimationData& animationData) noexcept(false);
+		void createAnimationData(MeshAnimationComponent& parent, const AnimationData& animationData) noexcept(false);
 
 	private:
 		MeshAnimationComponent(const MeshAnimationComponent&) = delete;

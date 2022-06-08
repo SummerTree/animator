@@ -360,7 +360,7 @@ namespace octoon
 			this->animationState_.finish = false;
 
 			this->setName(object.getName());
-			this->createAnimationData(animationData);
+			this->createAnimationData(*this, animationData);
 
 			return true;
 		}
@@ -623,7 +623,7 @@ namespace octoon
 	}
 
 	void 
-	MeshAnimationComponent::createAnimationData(const AnimationData& animationData) noexcept(false)
+	MeshAnimationComponent::createAnimationData(MeshAnimationComponent& parent, const AnimationData& animationData) noexcept(false)
 	{
 		auto& object_header = animationData.object->getHeader();
 		if (IPolyMesh::matches(object_header))
@@ -687,17 +687,17 @@ namespace octoon
 				auto meshRender = gameObject->addComponent<MeshRendererComponent>();
 				meshRender->setGlobalIllumination(true);
 
-				if (materials_.contains(name))
-					meshRender->setMaterial(materials_[name]);
+				if (parent.materials_.contains(name))
+					meshRender->setMaterial(parent.materials_[name]);
 				else
 				{
 					auto material = std::make_shared<MeshStandardMaterial>(name, math::float3(0.9f, 0.9f, 0.9f));
-					materials_[name] = material;
+					parent.materials_[name] = material;
 					meshRender->setMaterial(std::move(material));
 				}
 
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
-				mesh->createAnimationData(childData);
+				mesh->createAnimationData(parent, childData);
 
 				animationState_.timeLength = std::max(animationState_.timeLength, mesh->animationState_.timeLength);
 
@@ -710,7 +710,7 @@ namespace octoon
 
 				auto gameObject = GameObject::create(std::string_view(child.getName()));
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
-				mesh->createAnimationData(childData);
+				mesh->createAnimationData(parent, childData);
 
 				animationState_.timeLength = std::max(animationState_.timeLength, mesh->animationState_.timeLength);
 
