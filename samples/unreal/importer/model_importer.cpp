@@ -24,6 +24,13 @@ namespace unreal
 	}
 
 	void
+	ModelImporter::open(std::string indexPath) noexcept(false)
+	{
+		AssetImporter::open(indexPath);
+		this->initRenderScene();
+	}
+
+	void
 	ModelImporter::close() noexcept
 	{
 		camera_.reset();

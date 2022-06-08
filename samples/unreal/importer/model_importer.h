@@ -23,6 +23,7 @@ namespace unreal
 		ModelImporter() noexcept;
 		~ModelImporter() noexcept;
 
+		void open(std::string indexPath) noexcept(false) override;
 		void close() noexcept override;
 
 		octoon::GameObjectPtr importModel(std::string_view path, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
