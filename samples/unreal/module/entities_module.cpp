@@ -56,9 +56,22 @@ namespace unreal
 
 					if (it.contains("alembic"))
 					{
-						auto abc = object->getComponent<octoon::MeshAnimationComponent>();
+						auto abc = object->addComponent<octoon::MeshAnimationComponent>();
 						if (abc)
+						{
+							std::unordered_map<std::string, octoon::MaterialPtr> materials;
+
+							for (auto& material : it["alembic"]["materials"])
+							{
+								auto data = material["data"].get<nlohmann::json::object_t>();
+								auto name = material["name"].get<std::string>();
+								auto material = MaterialImporter::instance()->loadPackage(data);
+								materials[name] = material;
+							}
+
+							abc->setMaterials(materials);
 							abc->load(it["alembic"]);
+						}
 					}
 
 					for (auto& animationJson : it["animation"])
@@ -136,8 +149,7 @@ namespace unreal
 					auto materialPath = root + "/Materials";
 					auto texturePath = root + "/Textures";
 
-					auto alembicJson = json["alembic"];
-					abc->save(alembicJson);
+					abc->save(json["alembic"]);
 
 					for (auto& it : abc->getMaterials())
 					{
@@ -145,7 +157,7 @@ namespace unreal
 						materialJson["data"] = MaterialImporter::instance()->createPackage(it.second, materialPath, texturePath);
 						materialJson["name"] = it.first;
 
-						json["materials"].push_back(materialJson);
+						json["alembic"]["materials"].push_back(materialJson);
 					}
 				}
 

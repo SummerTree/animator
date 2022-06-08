@@ -266,6 +266,64 @@ namespace octoon
 	}
 
 	Image
+	Image::scale(std::uint32_t width, std::uint32_t height) noexcept(false)
+	{
+		if (width == 0 || height == 0 || this->width() == 0 || this->height() == 0)
+			return Image();
+
+		Image image(this->format_, width, height);
+
+		switch (image.format())
+		{
+		case Format::B8G8R8SRGB:
+		case Format::R8G8B8SRGB:
+		{
+			for (std::uint32_t y = 0; y < height; ++y)
+			{
+				for (std::uint32_t x = 0; x < width; ++x)
+				{
+					std::size_t srcx = (x * width_ / width);
+					std::size_t srcy = (y * height_ / height);
+
+					auto dest = (y * width + x) * 3;
+					auto src = (srcy * width_ + srcx) * 3;
+
+					image.data_[dest + 0] = this->data_[src + 0];
+					image.data_[dest + 1] = this->data_[src + 1];
+					image.data_[dest + 2] = this->data_[src + 2];
+				}
+			}
+		}
+		break;
+		case Format::B8G8R8A8SRGB:
+		case Format::R8G8B8A8SRGB:
+		{
+			for (std::uint32_t y = 0; y < height; ++y)
+			{
+				for (std::uint32_t x = 0; x < width; ++x)
+				{
+					std::size_t srcx = (x * width_ / width);
+					std::size_t srcy = (y * height_ / height);
+
+					auto dest = (y * width + x) * 4;
+					auto src = (srcy * width_ + srcx) * 4;
+
+					image.data_[dest + 0] = this->data_[src + 0];
+					image.data_[dest + 1] = this->data_[src + 1];
+					image.data_[dest + 2] = this->data_[src + 2];
+					image.data_[dest + 3] = this->data_[src + 3];
+				}
+			}
+		}
+		break;
+		default:
+			break;
+		}
+
+		return image;
+	}
+
+	Image
 	Image::convert(Format format) noexcept(false)
 	{
 		assert(format != Format::Undefined);

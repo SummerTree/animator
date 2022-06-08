@@ -43,6 +43,8 @@ namespace octoon
 		const std::uint8_t* data() const noexcept;
 		const std::uint8_t* data(std::size_t i) const noexcept;
 
+		Image scale(std::uint32_t width, std::uint32_t height) noexcept(false);
+
 		Image convert(Format format) noexcept(false);
 
 	public:
