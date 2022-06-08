@@ -150,11 +150,11 @@ namespace unreal
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				octoon::TextureImporter::instance()->save();
+				octoon::TextureImporter::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::TextureImporter::instance()->save();
+				octoon::TextureImporter::instance()->saveAssets();
 			}
 		}
 	}
@@ -223,7 +223,7 @@ namespace unreal
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						octoon::TextureImporter::instance()->save();
+						octoon::TextureImporter::instance()->saveAssets();
 					}
 				}
 			}

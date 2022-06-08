@@ -171,6 +171,8 @@ SET(LOADER_LIST
 	${SOURCE_PATH}/obj_loader.cpp
 	${HEADER_PATH}/audio_loader.h
 	${SOURCE_PATH}/audio_loader.cpp
+	${HEADER_PATH}/asset_importer.h
+	${SOURCE_PATH}/asset_importer.cpp
 )
 SOURCE_GROUP("system\\loader" FILES ${LOADER_LIST})
 

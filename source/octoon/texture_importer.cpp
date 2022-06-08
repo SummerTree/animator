@@ -18,21 +18,6 @@ namespace octoon
 	{
 	}
 
-	void
-	TextureImporter::open(std::string indexPath) noexcept(false)
-	{
-		if (std::filesystem::exists(indexPath))
-		{
-			this->assertPath_ = indexPath;
-			this->initPackageIndices();
-		}
-	}
-
-	void
-	TextureImporter::close() noexcept
-	{
-	}
-
 	std::shared_ptr<octoon::GraphicsTexture>
 	TextureImporter::importTexture(std::string_view path, bool generatorMipmap) noexcept(false)
 	{
@@ -42,7 +27,7 @@ namespace octoon
 			auto hdri = octoon::TextureLoader::load(path, generatorMipmap);
 			if (hdri)
 			{
-				texturePathList_[hdri] = path;
+				assetPathList_[hdri] = path;
 				return hdri;
 			}
 		}
@@ -109,13 +94,13 @@ namespace octoon
 	}
 
 	nlohmann::json
-	TextureImporter::createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, bool generateMipmap, std::string_view outputPath) noexcept(false)
+	TextureImporter::createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, std::string_view outputPath) noexcept(false)
 	{
 		if (texture)
 		{
-			auto it = this->texturePackageCache_.find(texture);
-			if (it != this->texturePackageCache_.end())
-				return this->texturePackageCache_[texture];
+			auto it = this->assetPackageCache_.find(texture);
+			if (it != this->assetPackageCache_.end())
+				return this->assetPackageCache_[texture];
 
 			auto uuid = octoon::make_guid();
 
@@ -145,7 +130,7 @@ namespace octoon
 			package["visible"] = true;
 			package["name"] = uuid + filename;
 			package["path"] = (char*)texturePath.u8string().c_str();
-			package["mipmap"] = generateMipmap;
+			package["mipmap"] = texture->getTextureDesc().getMipNums() > 1;
 
 			if (filename == ".hdr")
 			{
@@ -188,50 +173,10 @@ namespace octoon
 				ifs.close();
 			}
 
-			this->texturePackageCache_[texture] = package;
+			this->assetPackageCache_[texture] = package;
 			this->packageList_[std::string(uuid)] = package;
 
 			return package;
-		}
-
-		return nlohmann::json();
-	}
-
-	nlohmann::json
-	TextureImporter::getPackage(std::string_view uuid, std::string_view outputPath) noexcept
-	{
-		auto it = this->packageList_.find(std::string(uuid));
-		if (it == this->packageList_.end())
-		{
-			std::ifstream ifs(std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid).append("package.json"));
-			if (ifs)
-			{
-				auto package = nlohmann::json::parse(ifs);
-				this->packageList_[std::string(uuid)] = package;
-				return package;
-			}
-			else
-			{
-				return nlohmann::json();
-			}
-		}
-
-		return this->packageList_[std::string(uuid)];
-	}
-
-	nlohmann::json
-	TextureImporter::getPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture) const noexcept(false)
-	{
-		if (texture)
-		{
-			auto it = textureList_.find(texture);
-			if (it != textureList_.end())
-			{
-				auto& package = (*it).second;
-				auto path = package["path"].get<nlohmann::json::string_t>();
-				if (std::filesystem::exists(path))
-					return package;
-			}
 		}
 
 		return nlohmann::json();
@@ -243,9 +188,9 @@ namespace octoon
 		if (package.find("path") != package.end())
 		{
 			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-			auto it = this->textureCache_.find(uuid);
-			if (it != this->textureCache_.end())
-				return this->textureCache_[uuid];
+			auto it = this->assetCache_.find(uuid);
+			if (it != this->assetCache_.end())
+				return this->assetCache_[uuid]->downcast_pointer<octoon::GraphicsTexture>();
 
 			bool generateMipmap = false;
 			if (package.find("mipmap") != package.end())
@@ -255,117 +200,13 @@ namespace octoon
 			if (texture)
 			{	
 				packageList_[uuid] = package;
-				textureCache_[uuid] = texture;
-				textureList_[texture] = package;
+				assetCache_[uuid] = texture;
+				assetList_[texture] = package;
 
 				return texture;
 			}
 		}
 
 		return nullptr;
-	}
-
-	void
-	TextureImporter::removePackage(std::string_view uuid, std::string_view outputPath) noexcept(false)
-	{
-		auto& indexList = indexList_;
-
-		for (auto index = indexList.begin(); index != indexList.end(); ++index)
-		{
-			if ((*index).get<nlohmann::json::string_t>() == uuid)
-			{
-				auto packagePath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
-
-				for (auto& it : std::filesystem::recursive_directory_iterator(packagePath))
-					std::filesystem::permissions(it, std::filesystem::perms::owner_write);
-
-				std::filesystem::remove_all(packagePath);
-
-				auto package = this->packageList_.find(std::string(uuid));
-				if (package != this->packageList_.end())
-					this->packageList_.erase(package);
-
-				indexList.erase(index);
-				break;
-			}
-		}
-	}
-
-	nlohmann::json&
-	TextureImporter::getIndexList() noexcept
-	{
-		return indexList_;
-	}
-
-	void
-	TextureImporter::save() noexcept(false)
-	{
-		if (!std::filesystem::exists(assertPath_))
-			std::filesystem::create_directory(assertPath_);
-
-		std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
-		if (ifs)
-		{
-			auto data = indexList_.dump();
-			ifs.write(data.c_str(), data.size());
-		}
-	}
-
-	void
-	TextureImporter::clearCache() noexcept
-	{
-		textureCache_.clear();
-		texturePackageCache_.clear();
-	}
-
-	void
-	TextureImporter::initPackageIndices() noexcept(false)
-	{
-		auto& indexList = indexList_;
-
-		std::ifstream indexStream(assertPath_ + "/index.json");
-		if (indexStream)
-			indexList = nlohmann::json::parse(indexStream);
-
-		bool needUpdateIndexFile = false;
-
-		std::set<std::string> indexSet;
-
-		for (auto& it : indexList)
-		{
-			if (!std::filesystem::exists(std::filesystem::path(assertPath_).append(it.get<nlohmann::json::string_t>())))
-				needUpdateIndexFile = true;
-			else
-				indexSet.insert(it.get<nlohmann::json::string_t>());
-		}
-
-		for (auto& it : std::filesystem::directory_iterator(assertPath_))
-		{
-			if (std::filesystem::is_directory(it))
-			{
-				auto filepath = it.path();
-				auto filename = filepath.filename();
-
-				auto index = indexSet.find(filename.string());
-				if (index == indexSet.end())
-				{
-					if (std::filesystem::exists(filepath.append("package.json")))
-					{
-						needUpdateIndexFile = true;
-						indexSet.insert(filename.string());
-					}
-				}
-			}
-		}
-
-		if (needUpdateIndexFile)
-		{
-			nlohmann::json json;
-			for (auto& it : indexSet)
-				json += it;
-
-			indexList_ = json;
-			this->save();
-		}
 	}
 }

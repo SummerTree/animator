@@ -58,7 +58,7 @@ namespace unreal
 		{
 			auto root = std::string(profilePath);
 			root = root.substr(0, root.find_last_of('/')) + "/Assets/Textures";
-			writer["texture"] = octoon::TextureImporter::instance()->createPackage(this->texture.getValue(), true, root);
+			writer["texture"] = octoon::TextureImporter::instance()->createPackage(this->texture.getValue(), root);
 		}
 	}
 
