@@ -105,7 +105,12 @@ namespace unreal
 	{
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".pmx" || ext == ".abc")
+		{
 			entitiesComponent_->importModel(path);
+
+			playerComponent_->updateTimeLength();
+			playerComponent_->reset();
+		}
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
 			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")

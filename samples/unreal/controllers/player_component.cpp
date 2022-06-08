@@ -458,7 +458,7 @@ namespace unreal
 		auto& model = this->getModel();
 		model->timeLength = timeLength;
 		model->startFrame = 0;
-		model->endFrame = model->timeLength * 30;
+		model->endFrame = static_cast<std::uint32_t>(model->timeLength * 30.0f);
 	}
 
 	void

@@ -15,9 +15,6 @@ namespace octoon
 		explicit MeshAnimationComponent(std::string_view path) noexcept(false);
 		virtual ~MeshAnimationComponent() noexcept;
 
-		void setName(std::string_view name) noexcept;
-		const std::string& getName() const noexcept;
-
 		bool setFilePath(std::string_view path) noexcept(false);
 		const std::string& getFilePath() const noexcept;
 
@@ -46,6 +43,9 @@ namespace octoon
 
 		void onAnimationUpdate() noexcept;
 
+		void onMoveBefore() noexcept(false) override;
+		void onMoveAfter() noexcept(false) override;
+
 	private:
 		void createAnimationData(const AnimationData& animationData) noexcept(false);
 
@@ -54,7 +54,6 @@ namespace octoon
 		MeshAnimationComponent& operator=(const MeshAnimationComponent&) = delete;
 
 	private:
-		std::string name_;
 		std::string path_;
 
 		float minTime_;
@@ -64,6 +63,7 @@ namespace octoon
 
 		AnimatorStateInfo<float> animationState_;
 
+		GameObjectPtr gameObject_;
 		std::shared_ptr<AnimationData> animationData_;
 	};
 }

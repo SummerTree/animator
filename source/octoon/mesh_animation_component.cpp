@@ -324,6 +324,7 @@ namespace octoon
 		: enableAnimation_(true)
 		, minTime_(0.0f)
 		, maxTime_(0.0f)
+		, gameObject_(std::make_shared<GameObject>())
 	{
 		animationState_.finish = false;
 		animationState_.time = 0;
@@ -338,18 +339,6 @@ namespace octoon
 
 	MeshAnimationComponent::~MeshAnimationComponent() noexcept
 	{
-	}
-
-	void
-	MeshAnimationComponent::setName(std::string_view name) noexcept
-	{
-		this->name_ = name;
-	}
-
-	const std::string&
-	MeshAnimationComponent::getName() const noexcept
-	{
-		return this->name_;
 	}
 
 	bool
@@ -418,7 +407,7 @@ namespace octoon
 
 		this->onAnimationUpdate();
 
-		for (auto& child : this->getGameObject()->getChildren())
+		for (auto& child : gameObject_->getChildren())
 		{
 			auto component = child->getComponent<MeshAnimationComponent>();
 			if (component)
@@ -444,7 +433,7 @@ namespace octoon
 
 		this->onAnimationUpdate();
 
-		for (auto& child : this->getGameObject()->getChildren())
+		for (auto& child : gameObject_->getChildren())
 		{
 			auto component = child->getComponent<MeshAnimationComponent>();
 			if (component)
@@ -465,6 +454,8 @@ namespace octoon
 
 		if (json.contains("path"))
 			this->setFilePath(json["path"].get<std::string>());
+		if (json.contains("time"))
+			this->setTime(json["time"].get<float>());
 	}
 
 	void
@@ -473,6 +464,7 @@ namespace octoon
 		GameComponent::save(json);
 
 		json["path"] = this->path_;
+		json["time"] = this->animationState_.time;
 	}
 
 	GameComponentPtr
@@ -489,15 +481,17 @@ namespace octoon
 	{
 		if (!path_.empty())
 		{
-			this->load(path_);
+			this->setFilePath(path_);
 			this->sample(0.0f);
 		}
+
+		this->removeComponentDispatch(GameDispatchType::MoveAfter);
 	}
 
 	void
 	MeshAnimationComponent::onDeactivate() noexcept
 	{
-		this->getGameObject()->cleanupChildren();
+		gameObject_->cleanupChildren();
 		this->removeComponentDispatch(GameDispatchType::FixedUpdate);
 	}
 
@@ -515,6 +509,21 @@ namespace octoon
 
 				this->onAnimationUpdate();
 			}
+		}
+	}
+
+	void
+	MeshAnimationComponent::onMoveBefore() noexcept(false)
+	{
+	}
+
+	void
+	MeshAnimationComponent::onMoveAfter() noexcept(false)
+	{
+		if (gameObject_)
+		{
+			auto transform = this->getComponent<octoon::TransformComponent>();
+			gameObject_->getComponent<octoon::TransformComponent>()->setTransform(transform->getTransform());
 		}
 	}
 
@@ -668,7 +677,7 @@ namespace octoon
 
 				animationState_.timeLength = std::max(animationState_.timeLength, mesh->animationState_.timeLength);
 
-				this->getGameObject()->addChild(std::move(gameObject));
+				gameObject_->addChild(std::move(gameObject));
 			}
 			else if (IXform::matches(child_header))
 			{
@@ -681,7 +690,7 @@ namespace octoon
 
 				animationState_.timeLength = std::max(animationState_.timeLength, mesh->animationState_.timeLength);
 
-				this->getGameObject()->addChild(std::move(gameObject));
+				gameObject_->addChild(std::move(gameObject));
 			}
 		}
 	}
