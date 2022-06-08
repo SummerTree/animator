@@ -7,9 +7,9 @@ namespace octoon
 	{
 		namespace singleton
 		{
-			std::map<const Rtti*, std::shared_ptr<RttiInterface>> singletons;
+			std::map<const Rtti*, std::shared_ptr<RttiObject>> singletons;
 
-			RttiInterface* instance(const Rtti* rtti) noexcept
+			RttiObject* instance(const Rtti* rtti) noexcept
 			{
 				auto& instance = singletons[rtti];
 				if (!instance)
@@ -17,7 +17,7 @@ namespace octoon
 				return instance.get();
 			}
 
-			RttiInterface* instance(const Rtti& rtti) noexcept
+			RttiObject* instance(const Rtti& rtti) noexcept
 			{
 				return instance(&rtti);
 			}

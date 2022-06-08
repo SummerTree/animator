@@ -9,7 +9,7 @@ using namespace octoon::math;
 
 namespace octoon
 {
-	OctoonImplementSubClass(Mesh, runtime::RttiInterface, "Mesh");
+	OctoonImplementSubClass(Mesh, runtime::RttiObject, "Mesh");
 
 	Mesh::Mesh() noexcept
 		: _dirty(true)

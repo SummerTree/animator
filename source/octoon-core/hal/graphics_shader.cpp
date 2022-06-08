@@ -2,8 +2,8 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GraphicsParam, runtime::RttiInterface, "GraphicsParam")
-	OctoonImplementSubInterface(GraphicsAttribute, runtime::RttiInterface, "GraphicsAttribute")
+	OctoonImplementSubInterface(GraphicsParam, runtime::RttiObject, "GraphicsParam")
+	OctoonImplementSubInterface(GraphicsAttribute, runtime::RttiObject, "GraphicsAttribute")
 	OctoonImplementSubInterface(GraphicsUniform, GraphicsParam, "GraphicsUniform")
 	OctoonImplementSubInterface(GraphicsUniformBlock, GraphicsParam, "GraphicsUniformBlock")
 	OctoonImplementSubInterface(GraphicsShader, GraphicsResource, "GraphicsShader")

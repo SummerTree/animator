@@ -25,7 +25,7 @@ namespace octoon
 	{
 		OctoonDeclareSubClass(ClothFeature, GameFeature)
 	public:
-		ClothFeature() except;
+		ClothFeature() noexcept(false);
 		virtual ~ClothFeature() noexcept;
 
 		void simulate(float delta) noexcept;
@@ -37,7 +37,7 @@ namespace octoon
 		void onReset() noexcept override;
 
 		void onFrameBegin() noexcept override;
-		void onFrame() except;
+		void onFrame() noexcept(false);
 		void onFrameEnd() noexcept override;
 
 		void onFixedUpdate(const std::any& data) noexcept;

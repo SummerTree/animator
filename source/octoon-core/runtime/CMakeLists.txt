@@ -5,14 +5,14 @@ SET(SOURCE_PATH ${OCTOON_PATH_SOURCE}/octoon-core/${LIB_OUTNAME})
 
 SET(RUNTIME_LIST
 	${HEADER_PATH}/def.h
-		${HEADER_PATH}/json.h
+	${HEADER_PATH}/json.h
 	${HEADER_PATH}/assert.h
 	${HEADER_PATH}/platform.h
 	${HEADER_PATH}/singleton.h
 	${HEADER_PATH}/rtti.h
 	${SOURCE_PATH}/rtti.cpp
-	${HEADER_PATH}/rtti_interface.h
-	${SOURCE_PATH}/rtti_interface.cpp
+	${HEADER_PATH}/rtti_object.h
+	${SOURCE_PATH}/rtti_object.cpp
 	${HEADER_PATH}/rtti_factory.h
 	${SOURCE_PATH}/rtti_factory.cpp
 	${HEADER_PATH}/rtti_macros.h

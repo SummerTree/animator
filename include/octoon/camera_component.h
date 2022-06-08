@@ -48,8 +48,8 @@ namespace octoon
 		const math::float4x4& getProjection() const noexcept;
 		const math::float4x4& getProjectionInverse() const noexcept;
 
-		void setupFramebuffers(std::uint32_t w, std::uint32_t h, std::uint8_t multisample = 0, GraphicsFormat format = GraphicsFormat::R8G8B8A8UNorm, GraphicsFormat depthStencil = GraphicsFormat::X8_D24UNormPack32) except;
-		void setupSwapFramebuffers(std::uint32_t w, std::uint32_t h, std::uint8_t multisample = 0, GraphicsFormat format = GraphicsFormat::R8G8B8A8UNorm, GraphicsFormat depthStencil = GraphicsFormat::X8_D24UNormPack32) except;
+		void setupFramebuffers(std::uint32_t w, std::uint32_t h, std::uint8_t multisample = 0, GraphicsFormat format = GraphicsFormat::R8G8B8A8UNorm, GraphicsFormat depthStencil = GraphicsFormat::X8_D24UNormPack32) noexcept(false);
+		void setupSwapFramebuffers(std::uint32_t w, std::uint32_t h, std::uint8_t multisample = 0, GraphicsFormat format = GraphicsFormat::R8G8B8A8UNorm, GraphicsFormat depthStencil = GraphicsFormat::X8_D24UNormPack32) noexcept(false);
 
 	protected:
 		void onActivate() noexcept override;

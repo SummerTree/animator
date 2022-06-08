@@ -8,7 +8,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(GameScene, runtime::RttiInterface, "GameScene")
+	OctoonImplementSubClass(GameScene, runtime::RttiObject, "GameScene")
 
 	GameScene::RootObject::RootObject(GameScene* scene) noexcept
 		: scene_(scene)
@@ -36,13 +36,13 @@ namespace octoon
 		: root_(std::make_unique<RootObject>(this))
 		, gameServer_(nullptr)
 	{
-		GameSceneManager::instance()->_instanceScene(this, instance_id_);
+		GameSceneManager::instance()->_instanceScene(this, instanceID_);
 	}
 
-	GameScene::GameScene(io::archivebuf& reader) noexcept
+	GameScene::GameScene(const nlohmann::json& json) noexcept
 		: GameScene()
 	{
-		this->load(reader);
+		this->load(json);
 	}
 
 	GameScene::GameScene(std::string&& name) noexcept
@@ -69,7 +69,7 @@ namespace octoon
 	std::size_t
 	GameScene::id() const noexcept
 	{
-		return instance_id_;
+		return instanceID_;
 	}
 
 	void
@@ -136,15 +136,15 @@ namespace octoon
 	}
 
 	void
-	GameScene::load(const io::archivebuf& reader) except
+	GameScene::load(const nlohmann::json& json) except
 	{
-		root_->load(reader);
+		root_->load(json);
 	}
 
 	void
-	GameScene::save(io::archivebuf& write) except
+	GameScene::save(nlohmann::json& json) except
 	{
-		root_->save(write);
+		root_->save(json);
 	}
 
 	const GameObjectPtr&

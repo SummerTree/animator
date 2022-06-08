@@ -201,7 +201,7 @@ namespace unreal
 	{
 		auto& size = this->getModel()->framebufferSize.getValue();
 
-		auto mainCamera = octoon::GameObject::create("MainCamera");
+		auto mainCamera = octoon::GameObject::create(std::string_view("MainCamera"));
 		mainCamera->addComponent<octoon::FirstPersonCameraComponent>();
 		mainCamera->getComponent<octoon::TransformComponent>()->setTranslate(this->getModel()->translate);
 		mainCamera->getComponent<octoon::TransformComponent>()->setEulerAngles(this->getModel()->rotation);

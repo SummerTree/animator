@@ -5,7 +5,7 @@
 #include <octoon/mesh/combine_mesh.h>
 #include <octoon/model/vertex_weight.h>
 #include <octoon/math/math.h>
-#include <octoon/runtime/rtti_interface.h>
+#include <octoon/runtime/rtti_object.h>
 
 #define TEXTURE_ARRAY_COUNT 4
 
@@ -19,9 +19,9 @@ namespace octoon
 		math::float3 point;
 	};
 
-	class OCTOON_EXPORT Mesh : public runtime::RttiInterface
+	class OCTOON_EXPORT Mesh : public runtime::RttiObject
 	{
-		OctoonDeclareSubClass(Mesh, runtime::RttiInterface)
+		OctoonDeclareSubClass(Mesh, runtime::RttiObject)
 	public:
 		Mesh() noexcept;
 		virtual ~Mesh() noexcept;

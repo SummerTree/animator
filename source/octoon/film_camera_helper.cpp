@@ -6,7 +6,7 @@ namespace octoon
 	GameObjectPtr
 	FilmCameraHelper::create(float canvasWidth, float zoom)
 	{
-		auto object = GameObject::create("MainCamera");
+		auto object = GameObject::create(std::string_view("MainCamera"));
 
 		auto camera = object->addComponent<FilmCameraComponent>();
 		camera->setCameraType(CameraType::Main);

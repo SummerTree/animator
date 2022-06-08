@@ -4,7 +4,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(Material, runtime::RttiInterface, "Material");
+	OctoonImplementSubClass(Material, runtime::RttiObject, "Material");
 	
 	Material::Material() noexcept
 		: _enableScissorTest(false)

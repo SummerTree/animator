@@ -452,6 +452,25 @@ namespace octoon
 		return allowRelativeMotion_;
 	}
 
+	void
+	TransformComponent::load(const nlohmann::json& json) noexcept(false)
+	{
+		if (json.contains("translate"))
+			this->setTranslate(math::float3(json["translate"].get<std::array<float, 3>>()));
+		if (json.contains("scale"))
+			this->setScale(math::float3(json["scale"].get<std::array<float, 3>>()));
+		if (json.contains("rotation"))
+			this->setQuaternion(math::Quaternion(json["rotation"].get<std::array<float, 4>>()));
+	}
+
+	void
+	TransformComponent::save(nlohmann::json& json) noexcept(false)
+	{
+		json["translate"] = this->getTranslate().to_array();
+		json["scale"] = this->getScale().to_array();
+		json["rotation"] = this->getQuaternion().to_array();
+	}
+
 	GameComponentPtr
 	TransformComponent::clone() const noexcept
 	{

@@ -8,7 +8,7 @@ namespace octoon
 	GameObjectPtr
 	PlaneHelper::create(float width, float height, std::uint32_t widthSegments, std::uint32_t heightSegments) noexcept(false)
 	{
-		auto object = GameObject::create("GameObject");
+		auto object = GameObject::create(std::string_view("GameObject"));
 		object->addComponent<MeshFilterComponent>(PlaneMesh::create(width, height, widthSegments, heightSegments));
 		object->addComponent<MeshRendererComponent>(std::make_shared<Material>());
 		return object;

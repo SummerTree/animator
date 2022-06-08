@@ -53,14 +53,14 @@ namespace unreal
 		auto material = std::make_shared<octoon::MeshBasicMaterial>();
 		material->setCullMode(octoon::CullMode::Off);
 
-		auto XY = octoon::GameObject::create("XY");
+		auto XY = octoon::GameObject::create(std::string_view("XY"));
 		XY->addComponent<octoon::MeshFilterComponent>(planeGeometry);
 
-		auto YZ = octoon::GameObject::create("YZ");
+		auto YZ = octoon::GameObject::create(std::string_view("YZ"));
 		YZ->addComponent<octoon::MeshFilterComponent>(planeGeometry);
 		YZ->getComponent<octoon::TransformComponent>()->setEulerAngles(octoon::math::float3(0, octoon::math::PI / 2, 0));
 
-		auto XZ = octoon::GameObject::create("XZ");
+		auto XZ = octoon::GameObject::create(std::string_view("XZ"));
 		XZ->addComponent<octoon::MeshFilterComponent>(planeGeometry);
 		XZ->getComponent<octoon::TransformComponent>()->setEulerAngles(octoon::math::float3(-octoon::math::PI / 2, 0, 0));
 		//XZ->addComponent<octoon::MeshRendererComponent>(material);
@@ -160,15 +160,15 @@ namespace unreal
 			handleLineZ->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0, 0, 0.5));
 			handleLineZ->addComponent<octoon::MeshRendererComponent>(gizmoZMaterial);
 
-			auto X = octoon::GameObject::create("X");
+			auto X = octoon::GameObject::create(std::string_view("X"));
 			X->addChild(handleX);
 			X->addChild(handleLineX);
 
-			auto Y = octoon::GameObject::create("Y");
+			auto Y = octoon::GameObject::create(std::string_view("Y"));
 			Y->addChild(handleY);
 			Y->addChild(handleLineY);
 
-			auto Z = octoon::GameObject::create("Z");
+			auto Z = octoon::GameObject::create(std::string_view("Z"));
 			Z->addChild(handleZ);
 			Z->addChild(handleLineZ);
 

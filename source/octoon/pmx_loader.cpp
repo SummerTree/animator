@@ -37,7 +37,7 @@ namespace octoon
 		bones.reserve(pmx.bones.size());
 
 		for (auto& it : pmx.bones)
-			bones.emplace_back(GameObject::create(cv.to_bytes(it.name.name)));
+			bones.emplace_back(GameObject::create((std::string_view)cv.to_bytes(it.name.name)));
 
 		for (std::size_t i = 0; i < pmx.bones.size(); i++)
 		{

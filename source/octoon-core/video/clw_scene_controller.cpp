@@ -216,13 +216,13 @@ namespace octoon
 			auto& out = (*iter).second;
 
 			bool should_update_textures = !out->texture_bundle || textureCollector.NeedsUpdate(out->texture_bundle.get(),
-				[](runtime::RttiInterface* ptr)->bool
+				[](runtime::RttiObject* ptr)->bool
 			{
 				return false;
 			});
 
 			bool should_update_materials = !out->material_bundle || materialCollector.NeedsUpdate(out->material_bundle.get(),
-				[](runtime::RttiInterface* ptr)->bool
+				[](runtime::RttiObject* ptr)->bool
 				{
 					auto mat = ptr->downcast<Material>();
 					return mat->isDirty();

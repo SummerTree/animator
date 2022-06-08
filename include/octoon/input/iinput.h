@@ -11,9 +11,9 @@ namespace octoon
 {
 	namespace input
 	{
-		class OCTOON_EXPORT IInput : public runtime::RttiInterface
+		class OCTOON_EXPORT IInput : public runtime::RttiObject
 		{
-			OctoonDeclareSubInterface(IInput, runtime::RttiInterface)
+			OctoonDeclareSubInterface(IInput, runtime::RttiObject)
 		public:
 			IInput() = default;
 			virtual ~IInput() = default;

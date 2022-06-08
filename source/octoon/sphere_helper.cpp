@@ -9,7 +9,7 @@ namespace octoon
 	GameObjectPtr
 	SphereHelper::create(float radius, std::uint32_t widthSegments, std::uint32_t heightSegments, float phiStart, float phiLength, float thetaStart, float thetaLength) noexcept(false)
 	{
-		auto object = GameObject::create("GameObject");
+		auto object = GameObject::create(std::string_view("GameObject"));
 		object->addComponent<MeshFilterComponent>(SphereMesh::create(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength));
 		object->addComponent<MeshRendererComponent>(std::make_shared<MeshBasicMaterial>());
 		return object;

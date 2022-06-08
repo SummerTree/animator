@@ -5,14 +5,14 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameComponent : public runtime::RttiInterface
+	class OCTOON_EXPORT GameComponent : public runtime::RttiObject
 	{
-		OctoonDeclareSubInterface(GameComponent, runtime::RttiInterface)
+		OctoonDeclareSubInterface(GameComponent, runtime::RttiObject)
 	public:
 		GameComponent() noexcept;
 		virtual ~GameComponent() noexcept;
 
-		virtual void setActive(bool active) except;
+		virtual void setActive(bool active) noexcept(false);
 		virtual bool getActive() const noexcept;
 
 		virtual void setName(std::string_view name) noexcept;
@@ -68,13 +68,13 @@ namespace octoon
 		bool tryAddMessageListener(std::string_view event, std::function<void(const std::any&)> listener) noexcept;
 		bool tryRemoveMessageListener(std::string_view event, std::function<void(const std::any&)> listener) noexcept;
 
-		virtual void load(const io::archivebuf& reader) except;
-		virtual void save(io::archivebuf& write) except;
-
-		static GameComponentPtr instantiate(const GameComponent* component) except;
-		static GameComponentPtr instantiate(const GameComponent& component) except;
+		virtual void load(const nlohmann::json& json) noexcept(false) override;
+		virtual void save(nlohmann::json& json) noexcept(false) override;
 
 		virtual GameComponentPtr clone() const noexcept = 0;
+
+		static GameComponentPtr instantiate(const GameComponent* component) noexcept(false);
+		static GameComponentPtr instantiate(const GameComponent& component) noexcept(false);
 
 	protected:
 		void addComponentDispatch(GameDispatchTypes type) noexcept;
@@ -86,26 +86,26 @@ namespace octoon
 		void tryRemoveComponentDispatchs() noexcept;
 
 	private:
-		virtual void onAttach() except;
+		virtual void onAttach() noexcept(false);
 		virtual void onDetach() noexcept;
 
-		virtual void onAttachComponent(const GameComponentPtr& component) except;
+		virtual void onAttachComponent(const GameComponentPtr& component) noexcept(false);
 		virtual void onDetachComponent(const GameComponentPtr& component) noexcept;
 
-		virtual void onActivate() except;
+		virtual void onActivate() noexcept(false);
 		virtual void onDeactivate() noexcept;
 
-		virtual void onFixedUpdate() except;
-		virtual void onUpdate() except;
-		virtual void onLateUpdate() except;
+		virtual void onFixedUpdate() noexcept(false);
+		virtual void onUpdate() noexcept(false);
+		virtual void onLateUpdate() noexcept(false);
 
-		virtual void onMoveBefore() except;
-		virtual void onMoveAfter() except;
+		virtual void onMoveBefore() noexcept(false);
+		virtual void onMoveAfter() noexcept(false);
 
-		virtual void onLayerChangeBefore() except;
-		virtual void onLayerChangeAfter() except;
+		virtual void onLayerChangeBefore() noexcept(false);
+		virtual void onLayerChangeAfter() noexcept(false);
 
-		virtual void onGui() except;
+		virtual void onGui() noexcept(false);
 
 	private:
 		friend GameObject;

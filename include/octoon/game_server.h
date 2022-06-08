@@ -9,14 +9,14 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameServer final : public runtime::RttiInterface
+	class OCTOON_EXPORT GameServer final : public runtime::RttiObject
 	{
-		OctoonDeclareSubClass(GameServer, runtime::RttiInterface)
+		OctoonDeclareSubClass(GameServer, runtime::RttiObject)
 	public:
 		GameServer() noexcept;
 		~GameServer() noexcept;
 
-		void setActive(bool active) except;
+		void setActive(bool active) noexcept(false);
 		bool getActive() const noexcept;
 
 		void setGameListener(GameListenerPtr&& listener) noexcept;
@@ -38,7 +38,7 @@ namespace octoon
 
 		template<typename T, typename ...Args, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		void addFeature(Args&&... args) except { this->addFeature(std::make_unique<T>(std::forward<Args>(args)...)); }
-		void addFeature(GameFeaturePtr&& component) except;
+		void addFeature(GameFeaturePtr&& component) noexcept(false);
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		T* getFeature() const noexcept { return dynamic_cast<T*>(this->getFeature(T::RTTI)); }
@@ -66,7 +66,7 @@ namespace octoon
 		void update() noexcept(false);
 
 	private:
-		void onActivate() except;
+		void onActivate() noexcept(false);
 		void onDeactivate() noexcept;
 
 	private:

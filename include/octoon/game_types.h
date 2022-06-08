@@ -3,7 +3,7 @@
 
 #include <octoon/math/math.h>
 #include <octoon/runtime/rtti.h>
-#include <octoon/runtime/rtti_interface.h>
+#include <octoon/runtime/rtti_object.h>
 
 namespace octoon
 {

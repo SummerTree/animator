@@ -10,21 +10,21 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameObject : public runtime::RttiInterface
+	class OCTOON_EXPORT GameObject : public runtime::RttiObject
 	{
-		OctoonDeclareSubClass(GameObject, runtime::RttiInterface)
+		OctoonDeclareSubClass(GameObject, runtime::RttiObject)
 	public:
 		GameObject() noexcept;
 		GameObject(std::string_view name) noexcept;
-		GameObject(io::archivebuf& reader) except;
+		explicit GameObject(const nlohmann::json& json) noexcept(false);
 		virtual ~GameObject() noexcept;
 
 		void setName(std::string_view name) noexcept;
 		const std::string& getName() const noexcept;
 
-		void setActive(bool active) except;
-		void setActiveUpwards(bool active) except;
-		void setActiveDownwards(bool active) except;
+		void setActive(bool active) noexcept(false);
+		void setActiveUpwards(bool active) noexcept(false);
+		void setActiveDownwards(bool active) noexcept(false);
 		bool getActive() const noexcept;
 
 		void setLayer(std::uint8_t layer) noexcept;
@@ -50,9 +50,9 @@ namespace octoon
 
 		template<typename T, typename ...Args, typename = std::enable_if_t<std::is_base_of<GameComponent, T>::value>>
 		std::shared_ptr<T> addComponent(Args&&... args) noexcept(false) { auto t = std::make_shared<T>(std::forward<Args>(args)...); this->addComponent(t); return t; }
-		void addComponent(const GameComponentPtr& component) except;
-		void addComponent(GameComponentPtr&& component) except;
-		void addComponent(GameComponents&& component) except;
+		void addComponent(const GameComponentPtr& component) noexcept(false);
+		void addComponent(GameComponentPtr&& component) noexcept(false);
+		void addComponent(GameComponents&& component) noexcept(false);
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameComponent, T>::value>>
 		std::shared_ptr<T> getComponent() const noexcept { return std::dynamic_pointer_cast<T>(this->getComponent(T::RTTI)); }
@@ -94,10 +94,10 @@ namespace octoon
 		virtual GameScene* getGameScene() noexcept;
 		virtual const GameScene* getGameScene() const noexcept;
 
-		virtual void load(const io::archivebuf& reader) except;
-		virtual void save(io::archivebuf& write) except;
+		virtual void load(const nlohmann::json& json) noexcept(false) override;
+		virtual void save(nlohmann::json& json) noexcept(false) override;
 
-		GameObjectPtr clone() const except;
+		GameObjectPtr clone() const noexcept(false);
 
 	public:
 		static GameObjectPtr find(std::string_view name) noexcept;
@@ -114,20 +114,20 @@ namespace octoon
 		friend class GameObjectManager;
 		friend class TransformComponent;
 
-		void onActivate() except;
+		void onActivate() noexcept(false);
 		void onDeactivate() noexcept;
 
-		void onMoveBefore() except;
-		void onMoveAfter() except;
+		void onMoveBefore() noexcept(false);
+		void onMoveAfter() noexcept(false);
 
-		void onLayerChangeBefore() except;
-		void onLayerChangeAfter() except;
+		void onLayerChangeBefore() noexcept(false);
+		void onLayerChangeAfter() noexcept(false);
 
-		void onGui() except;
+		void onGui() noexcept(false);
 
-		void onFixedUpdate() except;
-		void onUpdate() except;
-		void onLateUpdate() except;
+		void onFixedUpdate() noexcept(false);
+		void onUpdate() noexcept(false);
+		void onLateUpdate() noexcept(false);
 
 	private:
 		GameObject(const GameObject& copy) noexcept = delete;

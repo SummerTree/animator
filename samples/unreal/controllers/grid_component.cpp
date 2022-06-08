@@ -20,7 +20,7 @@ namespace unreal
 		material->setDepthEnable(false);
 		material->setDepthWriteEnable(false);
 
-		this->gizmo_ = octoon::GameObject::create("CoordinateSystem");
+		this->gizmo_ = octoon::GameObject::create(std::string_view("CoordinateSystem"));
 		this->gizmo_->addComponent<octoon::MeshFilterComponent>(octoon::PlaneMesh::create(100.0f, 100.0f, 20, 20, true));
 		this->gizmo_->addComponent<octoon::MeshRendererComponent>(material)->setRenderOrder(-1);
 

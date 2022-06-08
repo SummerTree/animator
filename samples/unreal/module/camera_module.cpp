@@ -31,7 +31,7 @@ namespace unreal
 	void 
 	CameraModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
 	{
-		if (reader["useDepthOfFiled"].is_boolean())
+		if (reader.contains("useDepthOfFiled"))
 			this->useDepthOfFiled = reader["useDepthOfFiled"].get<nlohmann::json::boolean_t>();
 		if (reader["fov"].is_number_float())
 			this->fov = reader["fov"].get<nlohmann::json::number_float_t>();
@@ -39,8 +39,8 @@ namespace unreal
 			this->aperture = reader["aperture"].get<nlohmann::json::number_float_t>();
 		if (reader["focusDistance"].is_number_float())
 			this->focusDistance = reader["focusDistance"].get<nlohmann::json::number_float_t>();
-		if (reader["width"].is_number_unsigned() && reader["height"].is_number_unsigned())
-			this->framebufferSize = octoon::math::uint2(reader["width"].get<nlohmann::json::number_unsigned_t>(), reader["height"].get<nlohmann::json::number_unsigned_t>());
+		if (reader["size"].is_array())
+			this->framebufferSize = octoon::math::uint2(reader["size"].get<std::array<std::uint32_t, 2>>());
 		if (reader["translate"].is_array())
 			this->translate = octoon::math::float3(reader["translate"].get<std::array<float, 3>>());
 		if (reader["rotation"].is_array())
@@ -63,8 +63,7 @@ namespace unreal
 		writer["fov"] = this->fov.getValue();
 		writer["aperture"] = this->aperture.getValue();
 		writer["focusDistance"] = this->focusDistance.getValue();
-		writer["width"].push_back(this->framebufferSize.getValue().x);
-		writer["height"].push_back(this->framebufferSize.getValue().y);
+		writer["size"] = this->framebufferSize.getValue().to_array();
 		writer["translate"] = this->translate.getValue().to_array();
 		writer["rotation"] = this->rotation.getValue().to_array();
 

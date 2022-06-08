@@ -1,10 +1,11 @@
-#ifndef OCTOON_RTTI_ITERFACE_H_
-#define OCTOON_RTTI_ITERFACE_H_
+#ifndef OCTOON_RTTI_OBJECT_H_
+#define OCTOON_RTTI_OBJECT_H_
 
 #include <string>
 #include <memory>
 #include <vector>
 
+#include <octoon/runtime/json.h>
 #include <octoon/runtime/rtti.h>
 #include <octoon/runtime/rtti_macros.h>
 
@@ -12,14 +13,14 @@ namespace octoon
 {
 	namespace runtime
 	{
-		typedef std::shared_ptr<class RttiInterface> RttiInterfacePtr;
+		typedef std::shared_ptr<class RttiObject> RttiObjectPtr;
 
-		class OCTOON_EXPORT RttiInterface : public std::enable_shared_from_this<RttiInterface>
+		class OCTOON_EXPORT RttiObject : public std::enable_shared_from_this<RttiObject>
 		{
-			OctoonDeclareClass(RttiInterface)
+			OctoonDeclareClass(RttiObject)
 		public:
-			RttiInterface() = default;
-			virtual ~RttiInterface() = default;
+			RttiObject() = default;
+			virtual ~RttiObject() = default;
 
 			bool isInstanceOf(const Rtti* rtti) const noexcept;
 			bool isInstanceOf(const Rtti& rtti) const noexcept;
@@ -121,6 +122,15 @@ namespace octoon
 			{
 				assert(this->isA<T>());
 				return std::dynamic_pointer_cast<const T>(this->shared_from_this());
+			}
+
+			virtual void load(const nlohmann::json& json) noexcept(false)
+			{
+			}
+
+			virtual void save(nlohmann::json& json) noexcept(false)
+			{
+				json["_type"] = this->type_name();
 			}
 		};
 	}

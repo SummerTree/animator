@@ -5,14 +5,14 @@ namespace octoon
 {
 	struct IdCompare
 	{
-		bool operator() (const runtime::RttiInterface* lhs, const runtime::RttiInterface* rhs) const
+		bool operator() (const runtime::RttiObject* lhs, const runtime::RttiObject* rhs) const
 		{
 			return (std::intptr_t)lhs < (std::intptr_t)rhs;
 		}
 	};
 
 	using ItemMap = std::unordered_map<void*, int>;
-	using ItemSet = std::set<runtime::RttiInterface*, IdCompare>;
+	using ItemSet = std::set<runtime::RttiObject*, IdCompare>;
 
 	template <typename UnderlyingIterator> class IteratorImpl : public Iterator
 	{
@@ -34,7 +34,7 @@ namespace octoon
 			++m_cur;
 		}
 
-		runtime::RttiInterface* Item() const override
+		runtime::RttiObject* Item() const override
 		{
 			return *m_cur;
 		}
@@ -104,14 +104,14 @@ namespace octoon
 	}
 
 	void
-	Collector::Collect(runtime::RttiInterface* object)
+	Collector::Collect(runtime::RttiObject* object)
 	{
 		assert(object);
 		impl->m_set.insert(object);
 	}
 
 	void
-	Collector::Collect(std::shared_ptr<runtime::RttiInterface> object)
+	Collector::Collect(std::shared_ptr<runtime::RttiObject> object)
 	{
 		assert(object);
 		impl->m_set.insert(object.get());
@@ -169,7 +169,7 @@ namespace octoon
 	}
 
 	std::uint32_t
-	Collector::GetItemIndex(runtime::RttiInterface* item) const
+	Collector::GetItemIndex(runtime::RttiObject* item) const
 	{
 		auto iter = impl->m_map.find(item);
 		if (iter == impl->m_map.end())

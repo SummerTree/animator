@@ -8,7 +8,7 @@ namespace octoon
 	GameObjectPtr
 	VolumeHelper::create(float fovy, float znear, float zfar) noexcept(false)
 	{
-		auto object = GameObject::create("GameObject");
+		auto object = GameObject::create(std::string_view("GameObject"));
 		object->addComponent<MeshFilterComponent>(VolumeMesh::create(fovy, znear, zfar));
 		object->addComponent<MeshRendererComponent>(std::make_shared<Material>());
 		return object;

@@ -10,7 +10,7 @@ namespace octoon
 	{
 		OctoonDeclareSubClass(PhysicsFeature, GameFeature)
 	public:
-		PhysicsFeature() except;
+		PhysicsFeature() noexcept(false);
 		virtual ~PhysicsFeature() noexcept;
 
 		void setEnableSimulate(bool simulate) noexcept;
@@ -39,7 +39,7 @@ namespace octoon
 		void onReset() noexcept override;
 
 		void onFrameBegin() noexcept override;
-		void onFrame() except;
+		void onFrame() noexcept(false);
 		void onFrameEnd() noexcept override;
 
 		void onFixedUpdate(const std::any& data) noexcept;

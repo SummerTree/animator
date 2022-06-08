@@ -6,7 +6,7 @@ namespace octoon
 	GameObjectPtr
 	PerspectiveCameraHelper::create(float fov, const math::float2& sensorSize, float znear, float zfar)
 	{
-		auto object = GameObject::create("MainCamera");
+		auto object = GameObject::create(std::string_view("MainCamera"));
 
 		auto camera = object->addComponent<PerspectiveCameraComponent>(fov, sensorSize, znear, zfar);
 		camera->setCameraType(CameraType::Main);

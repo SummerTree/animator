@@ -638,7 +638,7 @@ namespace octoon
 				AnimationData childData;
 				childData.object = std::make_shared<IPolyMesh>(child);
 
-				auto gameObject = GameObject::create(child.getName());
+				auto gameObject = GameObject::create(std::string_view(child.getName()));
 
 				auto mf = gameObject->addComponent<MeshFilterComponent>();
 
@@ -658,7 +658,7 @@ namespace octoon
 				AnimationData childData;
 				childData.object = std::make_shared<IXform>(child);
 
-				auto gameObject = GameObject::create(child.getName());
+				auto gameObject = GameObject::create(std::string_view(child.getName()));
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
 				mesh->createAnimationData(childData);
 

@@ -5,7 +5,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(Camera, runtime::RttiInterface, "Camera")
+	OctoonImplementSubClass(Camera, runtime::RttiObject, "Camera")
 
 	Camera::Camera() noexcept
 		: viewport_(0.0f, 0.0f, 1.0f, 1.0f)

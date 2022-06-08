@@ -6,7 +6,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(GameObject, runtime::RttiInterface, "Object")
+	OctoonImplementSubClass(GameObject, runtime::RttiObject, "GameObject")
 
 	GameObject::GameObject() noexcept
 		: active_(true)
@@ -23,10 +23,10 @@ namespace octoon
 		this->setName(name);
 	}
 
-	GameObject::GameObject(io::archivebuf& reader) except
+	GameObject::GameObject(const nlohmann::json& json) noexcept(false)
 		: GameObject()
 	{
-		this->load(reader);
+		this->load(json);
 	}
 
 	GameObject::~GameObject() noexcept
@@ -50,7 +50,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::setActive(bool active) except
+	GameObject::setActive(bool active) noexcept(false)
 	{
 		if (active_ != active)
 		{
@@ -64,7 +64,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::setActiveUpwards(bool active) except
+	GameObject::setActiveUpwards(bool active) noexcept(false)
 	{
 		if (active_ != active)
 		{
@@ -82,7 +82,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::setActiveDownwards(bool active) except
+	GameObject::setActiveDownwards(bool active) noexcept(false)
 	{
 		if (active_ != active)
 		{
@@ -303,7 +303,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::addComponent(const GameComponentPtr& gameComponent) except
+	GameObject::addComponent(const GameComponentPtr& gameComponent) noexcept(false)
 	{
 		assert(gameComponent);
 		assert(gameComponent->gameObject_ == nullptr);
@@ -329,13 +329,13 @@ namespace octoon
 	}
 
 	void
-	GameObject::addComponent(GameComponentPtr&& component) except
+	GameObject::addComponent(GameComponentPtr&& component) noexcept(false)
 	{
 		this->addComponent(component);
 	}
 
 	void
-	GameObject::addComponent(GameComponents&& components) except
+	GameObject::addComponent(GameComponents&& components) noexcept(false)
 	{
 		for (auto& it : components)
 			this->addComponent(std::move(it));
@@ -648,35 +648,55 @@ namespace octoon
 	}
 
 	void
-	GameObject::load(const io::archivebuf& reader) except
+	GameObject::load(const nlohmann::json& json) noexcept(false)
 	{
-		bool active = false;
-		GameObjects children;
-		GameComponents components;
+		RttiObject::load(json);
 
-		reader["name"] >> name_;
-		reader["active"] >> active;
-		reader["layer"] >> layer_;
-		reader["components"] >> components;
-		reader["children"] >> children;
+		this->setName(json["name"].get<std::string>());
+		this->setActive(json["active"].get<bool>());
+		this->setLayer(json["layer"].get<std::uint8_t>());
 
-		this->setActive(active);
-		this->addComponent(std::move(components));
-		this->addChild(std::move(children));
+		for (auto& it : json["components"])
+		{
+			auto component = runtime::make_shared<GameComponent>(it["_type"].get<std::string>());
+			component->load(it);
+			this->addComponent(component);
+		}
+
+		for (auto& it : json["components"])
+		{
+			auto component = runtime::make_shared<GameObject>(it["_type"].get<std::string>());
+			component->load(it);
+			this->addChild(component);
+		}
 	}
 
 	void
-	GameObject::save(io::archivebuf& write) except
+	GameObject::save(nlohmann::json& json) noexcept(false)
 	{
-		write["name"] << name_;
-		write["active"] << active_;
-		write["layer"] << layer_;
-		write["components"] << components_;
-		write["children"] << children_;
+		RttiObject::save(json);
+
+		json["name"] = name_;
+		json["active"] = active_;
+		json["layer"] = layer_;
+		
+		for (auto& it : components_)
+		{
+			nlohmann::json json_;
+			it->save(json_);
+			json["components"].push_back(std::move(json_));
+		}
+
+		for (auto& it : children_)
+		{
+			nlohmann::json json_;
+			it->save(json_);
+			json["children"].push_back(std::move(json_));
+		}
 	}
 
 	GameObjectPtr
-	GameObject::clone() const except
+	GameObject::clone() const noexcept(false)
 	{
 		auto instance = std::make_shared<GameObject>();
 		instance->setParent(parent_.lock());
@@ -705,7 +725,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::onFixedUpdate() except
+	GameObject::onFixedUpdate() noexcept(false)
 	{
 		assert(!dispatchComponents_.empty());
 
@@ -715,7 +735,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::onUpdate() except
+	GameObject::onUpdate() noexcept(false)
 	{
 		assert(!dispatchComponents_.empty());
 
@@ -725,7 +745,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::onLateUpdate() except
+	GameObject::onLateUpdate() noexcept(false)
 	{
 		assert(!dispatchComponents_.empty());
 
@@ -735,7 +755,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::onActivate() except
+	GameObject::onActivate() noexcept(false)
 	{
 		for (auto& it : components_)
 		{
@@ -777,7 +797,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::onLayerChangeBefore() except
+	GameObject::onLayerChangeBefore() noexcept(false)
 	{
 		if (this->getActive())
 		{
@@ -790,7 +810,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::onLayerChangeAfter() except
+	GameObject::onLayerChangeAfter() noexcept(false)
 	{
 		if (this->getActive())
 		{
@@ -803,7 +823,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::onMoveBefore() except
+	GameObject::onMoveBefore() noexcept(false)
 	{
 		if (!this->getActive())
 			return;
@@ -826,7 +846,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::onMoveAfter() except
+	GameObject::onMoveAfter() noexcept(false)
 	{
 		if (!this->getActive())
 			return;
@@ -849,7 +869,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::onGui() except
+	GameObject::onGui() noexcept(false)
 	{
 		assert(!dispatchComponents_.empty());
 

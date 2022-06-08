@@ -2,11 +2,11 @@
 #include <octoon/game_scene.h>
 #include <octoon/game_feature.h>
 #include <octoon/game_listener.h>
-#include <octoon/io/json_reader.h>
+#include <fstream>
 
 namespace octoon
 {
-	OctoonImplementSubClass(GameServer, runtime::RttiInterface, "GameServer")
+	OctoonImplementSubClass(GameServer, runtime::RttiObject, "GameServer")
 
 	GameServer::GameServer() noexcept
 		: isActived_(false)
@@ -91,14 +91,13 @@ namespace octoon
 
 		try
 		{
-			io::JsonReader json;
-			json.open(std::string(filename));
-			if (json)
+			std::ifstream stream((std::string)filename);
+			if (stream)
 			{
 				auto scene = std::make_shared<GameScene>();
 				scene->_setGameServer(this);
 				scene->setGameListener(listener_);
-				scene->load(*json.rdbuf());
+				scene->load(nlohmann::json::parse(stream));
 
 				return this->addScene(scene);
 			}

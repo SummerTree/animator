@@ -11,17 +11,17 @@ namespace octoon
 {
 	namespace runtime
 	{
-		class RttiInterface;
+		class RttiObject;
 
 		class OCTOON_EXPORT Rtti
 		{
 		public:
-			typedef RttiInterface*(*RttiConstruct)();
+			typedef RttiObject*(*RttiConstruct)();
 		public:
 			Rtti(std::string_view name, RttiConstruct creator, const Rtti* parent) noexcept;
 			~Rtti() = default;
 
-			std::shared_ptr<class RttiInterface> create() const except; // throw(std::bad_alloc)
+			std::shared_ptr<class RttiObject> create() const noexcept(false); // throw(std::bad_alloc)
 
 			const Rtti* getParent() const noexcept;
 

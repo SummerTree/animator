@@ -13,11 +13,11 @@ namespace octoon
 			RttiFactory::instance()->add(this);
 		}
 
-		RttiInterfacePtr
+		RttiObjectPtr
 		Rtti::create() const except //throw(std::bad_alloc)
 		{
 			assert(construct_);
-			return std::shared_ptr<RttiInterface>(construct_());
+			return std::shared_ptr<RttiObject>(construct_());
 		}
 
 		const Rtti*

@@ -74,6 +74,9 @@ namespace octoon
 		void setAllowRelativeMotion(bool enable) noexcept;
 		bool isAllowRelativeMotion() const noexcept;
 
+		void load(const nlohmann::json& json) noexcept(false) override;
+		void save(nlohmann::json& json) noexcept(false) override;
+
 		GameComponentPtr clone() const noexcept override;
 
 	private:

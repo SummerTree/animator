@@ -7,6 +7,7 @@
 #include <octoon/animator_component.h>
 #include <octoon/skinned_mesh_renderer_component.h>
 #include <octoon/mesh_animation_component.h>
+#include <octoon/transform_component.h>
 #include <octoon/runtime/uuid.h>
 #include <filesystem>
 
@@ -46,6 +47,13 @@ namespace unreal
 				auto object = ModelImporter::instance()->loadMetaData(it["model"], flags);
 				if (object)
 				{
+					if (it.contains("transform"))
+					{
+						auto transform = object->getComponent<octoon::TransformComponent>();
+						if (transform)
+							transform->load(it["transform"]);
+					}
+
 					for (auto& animationJson : it["animation"])
 					{
 						if (animationJson.find("data") == animationJson.end())
@@ -111,6 +119,10 @@ namespace unreal
 
 			if (json["model"].is_object())
 			{
+				auto transform = it->getComponent<octoon::TransformComponent>();
+				if (transform)
+					transform->save(json["transform"]);
+
 				for (auto& component : it->getComponents())
 				{
 					if (component->isA<octoon::AnimatorComponent>())

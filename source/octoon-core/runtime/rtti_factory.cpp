@@ -42,7 +42,7 @@ namespace octoon
 			return nullptr;
 		}
 
-		RttiInterfacePtr
+		RttiObjectPtr
 		RttiFactory::createInstance(const char* name, const Rtti& base) const except
 		{
 			assert(name);
@@ -57,7 +57,7 @@ namespace octoon
 			return nullptr;
 		}
 
-		RttiInterfacePtr
+		RttiObjectPtr
 		RttiFactory::createInstance(std::string_view name, const Rtti& base) const except
 		{
 			assert(!name.empty());

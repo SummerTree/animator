@@ -2,7 +2,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GraphicsUniformSet, runtime::RttiInterface, "GraphicsUniformSet")
+	OctoonImplementSubInterface(GraphicsUniformSet, runtime::RttiObject, "GraphicsUniformSet")
 	OctoonImplementSubInterface(GraphicsDescriptorPool, GraphicsResource, "GraphicsDescriptorPool")
 	OctoonImplementSubInterface(GraphicsDescriptorSet, GraphicsResource, "GraphicsDescriptorSet")
 	OctoonImplementSubInterface(GraphicsDescriptorSetLayout, GraphicsResource, "GraphicsDescriptorSetLayout")

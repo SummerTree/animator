@@ -19,11 +19,11 @@ namespace octoon
 
 		const GameObjectRaws& instances() const noexcept;
 
-		void onFixedUpdate() except;
-		void onUpdate() except;
-		void onLateUpdate() except;
+		void onFixedUpdate() noexcept(false);
+		void onUpdate() noexcept(false);
+		void onLateUpdate() noexcept(false);
 
-		void onGui() except;
+		void onGui() noexcept(false);
 
 		void sendMessage(std::string_view event, const std::any& data = std::any()) noexcept;
 		void addMessageListener(std::string_view event, std::function<void(const std::any&)> listener) noexcept;

@@ -8,14 +8,14 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameFeature : public runtime::RttiInterface
+	class OCTOON_EXPORT GameFeature : public runtime::RttiObject
 	{
-		OctoonDeclareSubInterface(GameFeature, runtime::RttiInterface)
+		OctoonDeclareSubInterface(GameFeature, runtime::RttiObject)
 	public:
 		GameFeature() noexcept;
 		virtual ~GameFeature() noexcept;
 
-		void setActive(bool active) except;
+		void setActive(bool active) noexcept(false);
 		bool getActive() noexcept;
 
 		const GameListenerPtr& getGameListener() const noexcept;
@@ -33,17 +33,17 @@ namespace octoon
 		GameServer* getGameServer() noexcept;
 
 	protected:
-		virtual void onActivate() except;
+		virtual void onActivate() noexcept(false);
 		virtual void onDeactivate() noexcept;
 
-		virtual void onOpenScene(const GameScenePtr& scene) except;
+		virtual void onOpenScene(const GameScenePtr& scene) noexcept(false);
 		virtual void onCloseScene(const GameScenePtr& scene) noexcept;
 
-		virtual void onReset() except;
+		virtual void onReset() noexcept(false);
 
-		virtual void onFrameBegin() except;
-		virtual void onFrame() except;
-		virtual void onFrameEnd() except;
+		virtual void onFrameBegin() noexcept(false);
+		virtual void onFrame() noexcept(false);
+		virtual void onFrameEnd() noexcept(false);
 
 	private:
 		friend GameServer;

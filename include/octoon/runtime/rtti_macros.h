@@ -44,14 +44,14 @@ public:\
 	template<typename ...Args>\
 	static std::shared_ptr<Base> create(Args&&... args) { return std::make_shared<Base>(std::forward<Args>(args)...); }\
 protected:\
-	static OCTOON_PROJECT runtime::RttiInterface* FactoryCreate(); \
+	static OCTOON_PROJECT runtime::RttiObject* FactoryCreate(); \
 private:
 
 #define OctoonImplementClass(Base, Name) \
     OCTOON_PROJECT runtime::Rtti Base::RTTI = OCTOON_PROJECT runtime::Rtti(Name, Base::FactoryCreate, nullptr);\
 	OCTOON_PROJECT runtime::Rtti* Base::rtti() const noexcept { return &RTTI; }\
 	OCTOON_PROJECT runtime::Rtti* Base::getRtti() noexcept { return &RTTI; }\
-	OCTOON_PROJECT runtime::RttiInterface* Base::FactoryCreate() { return new Base; }\
+	OCTOON_PROJECT runtime::RttiObject* Base::FactoryCreate() { return new Base; }\
 	const char* Base::type_name() noexcept { return Name; };
 
 #define OctoonDeclareSubClass(Derived, Base) \
@@ -63,13 +63,13 @@ public:\
 	template<typename ...Args>\
 	static std::shared_ptr<Derived> create(Args&&... args) { return std::make_shared<Derived>(std::forward<Args>(args)...); }\
 protected:\
-	static OCTOON_PROJECT runtime::RttiInterface* FactoryCreate(); \
+	static OCTOON_PROJECT runtime::RttiObject* FactoryCreate(); \
 private:
 
 #define OctoonImplementSubClass(Derived, Base, Name) \
     OCTOON_PROJECT runtime::Rtti Derived::RTTI = OCTOON_PROJECT runtime::Rtti(Name, Derived::FactoryCreate, Base::getRtti());\
 	OCTOON_PROJECT runtime::Rtti* Derived::rtti() const noexcept { return &RTTI; }\
-	OCTOON_PROJECT runtime::RttiInterface* Derived::FactoryCreate() { return new Derived; }\
+	OCTOON_PROJECT runtime::RttiObject* Derived::FactoryCreate() { return new Derived; }\
 	OCTOON_PROJECT runtime::Rtti* Derived::getRtti() noexcept { return &RTTI; }\
 	const char* Derived::type_name() noexcept { return Name; };
 	}

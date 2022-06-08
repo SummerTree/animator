@@ -6,7 +6,7 @@ namespace octoon
 	GameObjectPtr
 	OrthoCameraHelper::create(const math::float4& ortho, float znear, float zfar)
 	{
-		auto object = GameObject::create("MainCamera");
+		auto object = GameObject::create(std::string_view("MainCamera"));
 		auto camera = object->addComponent<OrthoCameraComponent>(ortho, znear, zfar);
 		camera->setCameraType(CameraType::Main);
 
@@ -16,7 +16,7 @@ namespace octoon
 	GameObjectPtr
 	OrthoCameraHelper::create(float left, float right, float bottom, float top, float znear, float zfar)
 	{
-		auto object = GameObject::create("MainCamera");
+		auto object = GameObject::create(std::string_view("MainCamera"));
 		auto camera = object->addComponent<OrthoCameraComponent>(left, right, bottom, top, znear, zfar);
 		camera->setCameraType(CameraType::Main);
 

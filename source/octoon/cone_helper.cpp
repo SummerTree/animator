@@ -8,7 +8,7 @@ namespace octoon
 	GameObjectPtr
 	ConeHelper::create(float radius, float height, std::uint32_t segments, float thetaStart, float thetaLength)
 	{
-		auto object = GameObject::create("GameObject");
+		auto object = GameObject::create(std::string_view("GameObject"));
 		object->addComponent<MeshFilterComponent>(ConeMesh::create(radius, height, segments, thetaStart, thetaLength));
 		object->addComponent<MeshRendererComponent>(std::make_shared<Material>());
 		return object;

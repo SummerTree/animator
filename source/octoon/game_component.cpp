@@ -4,7 +4,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GameComponent, runtime::RttiInterface, "Component")
+	OctoonImplementSubInterface(GameComponent, runtime::RttiObject, "GameComponent")
 
 	GameComponent::GameComponent() noexcept
 		: active_(true)
@@ -303,27 +303,26 @@ namespace octoon
 	}
 
 	void
-	GameComponent::load(const io::archivebuf& reader) except
+	GameComponent::load(const nlohmann::json& json) noexcept(false)
 	{
-		bool active = false;
-		reader["name"] >> name_;
-		reader["active"] >> active;
-
-		this->setActive(active);
+		if (json.contains("active"))
+			setActive(json["active"].get<bool>());
+		if (json.contains("name"))
+			setName(json["name"].get<std::string>());
 	}
 
 	void
-	GameComponent::save(io::archivebuf& write) except
+	GameComponent::save(nlohmann::json& json) noexcept(false)
 	{
-		write["name"] << name_;
-		write["active"] << active_;
+		json["name"] = name_;
+		json["active"] = active_;
 	}
 
 	GameComponentPtr
 	GameComponent::instantiate(const GameComponent* component) except
 	{
 		assert(component);
-		return octoon::runtime::rtti::instantiate(component);
+		return octoon::runtime::instantiate(component);
 	}
 
 	GameComponentPtr

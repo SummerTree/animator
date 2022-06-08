@@ -5,19 +5,19 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameScene final : public runtime::RttiInterface
+	class OCTOON_EXPORT GameScene final : public runtime::RttiObject
 	{
-		OctoonDeclareSubClass(GameScene, runtime::RttiInterface)
+		OctoonDeclareSubClass(GameScene, runtime::RttiObject)
 	public:
 		GameScene() noexcept;
 		GameScene(std::string&& name) noexcept;
 		GameScene(std::string_view name) noexcept;
-		GameScene(io::archivebuf& reader) noexcept;
+		GameScene(const nlohmann::json& json) noexcept;
 		~GameScene() noexcept;
 
 		std::size_t id() const noexcept;
 
-		void setActive(bool active) except;
+		void setActive(bool active) noexcept(false);
 		bool getActive() const noexcept;
 
 		void setName(std::string_view name) noexcept;
@@ -33,8 +33,8 @@ namespace octoon
 
 		void sendMessage(std::string_view event, const std::any& data = std::any()) noexcept;
 
-		void load(const io::archivebuf& reader) except;
-		void save(io::archivebuf& write) except;
+		void load(const nlohmann::json& reader) noexcept(false);
+		void save(nlohmann::json& json) noexcept(false);
 
 		const GameObjectPtr& root() const noexcept;
 
@@ -62,7 +62,7 @@ namespace octoon
 		};
 
 		std::string name_;
-		std::size_t instance_id_;
+		std::size_t instanceID_;
 
 		GameObjectPtr  root_;
 		GameListenerPtr listener_;

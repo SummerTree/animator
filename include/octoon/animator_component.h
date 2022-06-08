@@ -43,7 +43,7 @@ namespace octoon
 		GameComponentPtr clone() const noexcept;
 
 	private:
-		void onActivate() except;
+		void onActivate() noexcept(false);
 		void onDeactivate() noexcept;
 
 		void onFixedUpdate() noexcept;

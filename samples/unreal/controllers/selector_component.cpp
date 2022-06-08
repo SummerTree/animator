@@ -70,13 +70,13 @@ namespace unreal
 		this->gizmoHoverMtl_ = std::make_shared<octoon::MeshColorMaterial>(octoon::math::float3(1.0f, 0.3f, 0.5f));
 		this->gizmoSelectedMtl_ = std::make_shared<octoon::MeshColorMaterial>(octoon::math::float3(0.85f, 0.15f, 0.30f));
 
-		gizmoHover_ = octoon::GameObject::create("GizmoHover");
+		gizmoHover_ = octoon::GameObject::create(std::string_view("GizmoHover"));
 		gizmoHover_->addComponent<octoon::MeshFilterComponent>(octoon::CubeWireframeMesh::create(1.0f, 1.0f, 1.0f));
 		auto meshRenderHover = gizmoHover_->addComponent<octoon::MeshRendererComponent>(this->gizmoHoverMtl_);
 		meshRenderHover->setVisible(false);
 		meshRenderHover->setRenderOrder(1);
 
-		gizmoSelected_ = octoon::GameObject::create("GizmoSelect");
+		gizmoSelected_ = octoon::GameObject::create(std::string_view("GizmoSelect"));
 		gizmoSelected_->addComponent<octoon::MeshFilterComponent>(octoon::CubeWireframeMesh::create(1.0f, 1.0f, 1.0f));
 		auto meshRenderSelected = gizmoSelected_->addComponent<octoon::MeshRendererComponent>(this->gizmoSelectedMtl_);
 		meshRenderSelected->setVisible(false);
