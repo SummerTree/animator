@@ -109,6 +109,14 @@ namespace octoon
 		return std::string();
 	}
 
+	std::string
+	AssetImporter::getPackageGuid(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept
+	{
+		if (assetList_.contains(asset))
+			return assetList_.at(asset)["uuid"].get<std::string>();
+		return std::string();
+	}
+
 	void
 	AssetImporter::saveAssets() noexcept(false)
 	{

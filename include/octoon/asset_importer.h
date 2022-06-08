@@ -23,6 +23,7 @@ namespace octoon
 		virtual nlohmann::json& getIndexList() noexcept;
 
 		virtual std::string getPackagePath(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept;
+		virtual std::string getPackageGuid(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept;
 
 		virtual void saveAssets() noexcept(false);
 
