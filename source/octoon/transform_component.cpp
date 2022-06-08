@@ -455,6 +455,8 @@ namespace octoon
 	void
 	TransformComponent::load(const nlohmann::json& json) noexcept(false)
 	{
+		GameComponent::load(json);
+
 		if (json.contains("translate"))
 			this->setTranslate(math::float3(json["translate"].get<std::array<float, 3>>()));
 		if (json.contains("scale"))
@@ -466,6 +468,8 @@ namespace octoon
 	void
 	TransformComponent::save(nlohmann::json& json) noexcept(false)
 	{
+		GameComponent::save(json);
+
 		json["translate"] = this->getTranslate().to_array();
 		json["scale"] = this->getScale().to_array();
 		json["rotation"] = this->getQuaternion().to_array();

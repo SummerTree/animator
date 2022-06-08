@@ -353,7 +353,7 @@ namespace octoon
 	}
 
 	bool
-	MeshAnimationComponent::load(std::string_view path) noexcept(false)
+	MeshAnimationComponent::setFilePath(std::string_view path) noexcept(false)
 	{
 		this->path_ = path;
 
@@ -456,6 +456,23 @@ namespace octoon
 	MeshAnimationComponent::getCurrentAnimatorStateInfo() const noexcept
 	{
 		return animationState_;
+	}
+
+	void
+	MeshAnimationComponent::load(const nlohmann::json& json) noexcept(false)
+	{
+		GameComponent::load(json);
+
+		if (json.contains("path"))
+			this->setFilePath(json["path"].get<std::string>());
+	}
+
+	void
+	MeshAnimationComponent::save(nlohmann::json& json) noexcept(false)
+	{
+		GameComponent::save(json);
+
+		json["path"] = this->path_;
 	}
 
 	GameComponentPtr

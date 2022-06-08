@@ -658,16 +658,18 @@ namespace octoon
 
 		for (auto& it : json["components"])
 		{
-			auto component = runtime::make_shared<GameComponent>(it["_type"].get<std::string>());
-			component->load(it);
+			auto name = it.get<std::string>();
+			auto component = runtime::make_shared<GameComponent>(name);
+			component->load(it[name]);
 			this->addComponent(component);
 		}
 
 		for (auto& it : json["components"])
 		{
-			auto component = runtime::make_shared<GameObject>(it["_type"].get<std::string>());
-			component->load(it);
-			this->addChild(component);
+			auto name = it.get<std::string>();
+			auto object = runtime::make_shared<GameObject>(name);
+			object->load(it[name]);
+			this->addChild(object);
 		}
 	}
 
@@ -680,19 +682,11 @@ namespace octoon
 		json["active"] = active_;
 		json["layer"] = layer_;
 		
-		for (auto& it : components_)
-		{
-			nlohmann::json json_;
-			it->save(json_);
-			json["components"].push_back(std::move(json_));
-		}
+		for (auto& it : components_)		
+			it->save(json["components"][it->type_name()]);
 
 		for (auto& it : children_)
-		{
-			nlohmann::json json_;
-			it->save(json_);
-			json["children"].push_back(std::move(json_));
-		}
+			it->save(json["children"][it->type_name()]);
 	}
 
 	GameObjectPtr

@@ -54,6 +54,13 @@ namespace unreal
 							transform->load(it["transform"]);
 					}
 
+					if (it.contains("alembic"))
+					{
+						auto abc = object->getComponent<octoon::MeshAnimationComponent>();
+						if (abc)
+							abc->load(it["alembic"]);
+					}
+
 					for (auto& animationJson : it["animation"])
 					{
 						if (animationJson.find("data") == animationJson.end())
@@ -123,6 +130,10 @@ namespace unreal
 				if (transform)
 					transform->save(json["transform"]);
 
+				auto abc = it->getComponent<octoon::MeshAnimationComponent>();
+				if (abc)
+					transform->save(json[abc->type_name()]);
+
 				for (auto& component : it->getComponents())
 				{
 					if (component->isA<octoon::AnimatorComponent>())
@@ -156,15 +167,6 @@ namespace unreal
 
 						json["materials"].push_back(materialJson);
 					}
-				}
-
-				auto abc = it->getComponent<octoon::MeshAnimationComponent>();
-				if (abc)
-				{
-					nlohmann::json alembicJson;
-					alembicJson["path"] = abc->getFilePath();
-
-					json["alembic"].push_back(alembicJson);
 				}
 
 				sceneJson.push_back(std::move(json));

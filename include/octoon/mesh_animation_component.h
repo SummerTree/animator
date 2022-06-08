@@ -18,7 +18,7 @@ namespace octoon
 		void setName(std::string_view name) noexcept;
 		const std::string& getName() const noexcept;
 
-		bool load(std::string_view path) noexcept(false);
+		bool setFilePath(std::string_view path) noexcept(false);
 		const std::string& getFilePath() const noexcept;
 
 		bool play(std::string_view status = "default") noexcept override;
@@ -32,6 +32,9 @@ namespace octoon
 		void evaluate(float delta = 0.0f) noexcept;
 
 		const AnimatorStateInfo<float>& getCurrentAnimatorStateInfo() const noexcept override;
+
+		void load(const nlohmann::json& json) noexcept(false) override;
+		void save(nlohmann::json& json) noexcept(false) override;
 
 		GameComponentPtr clone() const noexcept override;
 
