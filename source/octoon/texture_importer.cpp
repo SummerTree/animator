@@ -40,6 +40,7 @@ namespace octoon
 	{
 		if (package.find("path") != package.end())
 		{
+			auto path = package["path"].get<nlohmann::json::string_t>();
 			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
 			auto it = this->assetCache_.find(uuid);
 			if (it != this->assetCache_.end())
@@ -49,12 +50,13 @@ namespace octoon
 			if (package.find("mipmap") != package.end())
 				generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
 
-			auto texture = octoon::TextureLoader::load(package["path"].get<nlohmann::json::string_t>(), generateMipmap);
+			auto texture = octoon::TextureLoader::load(path, generateMipmap);
 			if (texture)
 			{	
 				packageList_[uuid] = package;
 				assetCache_[uuid] = texture;
 				assetList_[texture] = package;
+				assetPathList_[texture] = path;
 
 				return texture;
 			}

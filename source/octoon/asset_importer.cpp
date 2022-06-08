@@ -101,6 +101,14 @@ namespace octoon
 		return indexList_;
 	}
 
+	std::string
+	AssetImporter::getPackagePath(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept
+	{
+		if (assetPathList_.contains(asset))
+			return assetPathList_.at(asset);
+		return std::string();
+	}
+
 	void
 	AssetImporter::saveAssets() noexcept(false)
 	{
