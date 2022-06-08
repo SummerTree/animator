@@ -1,9 +1,10 @@
 #include "model_importer.h"
-#include "unreal_behaviour.h"
 #include <octoon/texture/texture.h>
 #include <octoon/pmx_loader.h>
 #include <octoon/runtime/uuid.h>
 #include <octoon/runtime/string.h>
+#include <octoon/mesh_animation_component.h>
+#include <octoon/mesh/sphere_mesh.h>
 #include <fstream>
 #include <filesystem>
 #include <codecvt>

@@ -11,9 +11,6 @@
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
 
-#include "../unreal_component.h"
-#include "../module/resource_module.h"
-
 namespace unreal
 {
 	class ModelImporter final : public octoon::AssetImporter
