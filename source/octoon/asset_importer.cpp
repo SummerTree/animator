@@ -60,9 +60,17 @@ namespace octoon
 			if (it != assetList_.end())
 			{
 				auto& package = (*it).second;
-				auto path = package["path"].get<nlohmann::json::string_t>();
-				if (std::filesystem::exists(path))
+
+				if (package.contains("path"))
+				{
+					auto path = package["path"].get<nlohmann::json::string_t>();
+					if (std::filesystem::exists(path))
+						return package;
+				}
+				else
+				{
 					return package;
+				}				
 			}
 		}
 
