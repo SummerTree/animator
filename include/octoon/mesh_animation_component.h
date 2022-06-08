@@ -29,6 +29,9 @@ namespace octoon
 		void sample(float delta = 0.0f) noexcept;
 		void evaluate(float delta = 0.0f) noexcept;
 
+		void setMaterials(const std::unordered_map<std::string, MaterialPtr>& materials);
+		const std::unordered_map<std::string, MaterialPtr>& getMaterials() const;
+
 		const AnimatorStateInfo<float>& getCurrentAnimatorStateInfo() const noexcept override;
 
 		void load(const nlohmann::json& json) noexcept(false) override;

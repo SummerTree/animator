@@ -441,6 +441,18 @@ namespace octoon
 		}
 	}
 	
+	void
+	MeshAnimationComponent::setMaterials(const std::unordered_map<std::string, MaterialPtr>& materials)
+	{
+		materials_ = materials;
+	}
+
+	const std::unordered_map<std::string, MaterialPtr>&
+	MeshAnimationComponent::getMaterials() const
+	{
+		return materials_;
+	}
+
 	const AnimatorStateInfo<float>&
 	MeshAnimationComponent::getCurrentAnimatorStateInfo() const noexcept
 	{
@@ -678,7 +690,11 @@ namespace octoon
 				if (materials_.contains(name))
 					meshRender->setMaterial(materials_[name]);
 				else
-					meshRender->setMaterial(std::make_shared<MeshStandardMaterial>(name, math::float3(0.9f, 0.9f, 0.9f)));
+				{
+					auto material = std::make_shared<MeshStandardMaterial>(name, math::float3(0.9f, 0.9f, 0.9f));
+					materials_[name] = material;
+					meshRender->setMaterial(std::move(material));
+				}
 
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
 				mesh->createAnimationData(childData);

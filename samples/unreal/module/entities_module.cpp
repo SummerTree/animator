@@ -132,7 +132,22 @@ namespace unreal
 
 				auto abc = it->getComponent<octoon::MeshAnimationComponent>();
 				if (abc)
-					transform->save(json[abc->type_name()]);
+				{
+					auto materialPath = root + "/Materials";
+					auto texturePath = root + "/Textures";
+
+					auto alembicJson = json["alembic"];
+					abc->save(alembicJson);
+
+					for (auto& it : abc->getMaterials())
+					{
+						nlohmann::json materialJson;
+						materialJson["data"] = MaterialImporter::instance()->createPackage(it.second, materialPath, texturePath);
+						materialJson["name"] = it.first;
+
+						json["materials"].push_back(materialJson);
+					}
+				}
 
 				for (auto& component : it->getComponents())
 				{
