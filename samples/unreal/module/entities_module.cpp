@@ -150,11 +150,11 @@ namespace unreal
 
 					abc->save(json["alembic"]);
 
-					for (auto& it : abc->getMaterials())
+					for (auto& pair : abc->getMaterials())
 					{
 						nlohmann::json materialJson;
-						materialJson["data"] = MaterialImporter::instance()->createPackage(it.second, materialPath, texturePath);
-						materialJson["name"] = it.first;
+						materialJson["data"] = MaterialImporter::instance()->createPackage(pair.second, materialPath, texturePath);
+						materialJson["name"] = pair.first;
 
 						json["alembic"]["materials"].push_back(materialJson);
 					}
@@ -170,7 +170,7 @@ namespace unreal
 							auto animationPath = root + "/Animation";
 
 							nlohmann::json animationJson;
-							animationJson["data"] = MotionImporter::instance()->createPackage(animation->getAnimation(), (char8_t*)animationPath.c_str());
+							animationJson["data"] = MotionImporter::instance()->createPackage(animation->getAnimation(), animationPath.c_str());
 							animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
 
 							json["animation"].push_back(animationJson);

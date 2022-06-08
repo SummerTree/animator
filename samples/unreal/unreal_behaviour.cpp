@@ -116,7 +116,7 @@ namespace unreal
 		else if (ext == ".mdl")
 			MaterialImporter::instance()->createPackage(path);
 		else if (ext == ".vmd")
-			MotionImporter::instance()->createPackage((char8_t*)path.data());
+			MotionImporter::instance()->createPackage(path);
 		else if (ext == ".hdr")
 			octoon::TextureImporter::instance()->createPackage(path);
 	}

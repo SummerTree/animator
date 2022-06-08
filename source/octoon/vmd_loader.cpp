@@ -712,9 +712,9 @@ namespace octoon
 	}
 
 	std::shared_ptr<Animation<float>>
-	VMDLoader::loadMotion(std::u8string_view filepath) noexcept(false)
+	VMDLoader::loadMotion(std::string_view filepath) noexcept(false)
 	{
-		io::ifstream stream(std::u8string(filepath), std::ios_base::binary);
+		io::ifstream stream(std::string(filepath), std::ios_base::binary);
 		if (stream)
 			return loadMotion(stream);
 
@@ -722,9 +722,9 @@ namespace octoon
 	}
 
 	std::shared_ptr<Animation<float>>
-	VMDLoader::loadMorph(std::u8string_view filepath) noexcept(false)
+	VMDLoader::loadMorph(std::string_view filepath) noexcept(false)
 	{
-		io::ifstream stream(std::u8string(filepath), std::ios_base::binary);
+		io::ifstream stream(std::string(filepath), std::ios_base::binary);
 		if (stream)
 			return loadMorph(stream);
 
@@ -732,9 +732,9 @@ namespace octoon
 	}
 
 	std::shared_ptr<Animation<float>>
-	VMDLoader::loadCameraMotion(std::u8string_view filepath) noexcept(false)
+	VMDLoader::loadCameraMotion(std::string_view filepath) noexcept(false)
 	{
-		io::ifstream stream(std::u8string(filepath), std::ios_base::binary);
+		io::ifstream stream(std::string(filepath), std::ios_base::binary);
 		if (stream)
 			return loadCameraMotion(stream);
 

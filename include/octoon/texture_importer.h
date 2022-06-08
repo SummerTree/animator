@@ -1,5 +1,5 @@
-#ifndef UNREAL_TEXTURE_IMPORTER_H_
-#define UNREAL_TEXTURE_IMPORTER_H_
+#ifndef OCTOON_TEXTURE_IMPORTER_H_
+#define OCTOON_TEXTURE_IMPORTER_H_
 
 #include <octoon/game_object.h>
 #include <octoon/hal/graphics_texture.h>

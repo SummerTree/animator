@@ -173,6 +173,8 @@ SET(LOADER_LIST
 	${SOURCE_PATH}/audio_loader.cpp
 	${HEADER_PATH}/asset_importer.h
 	${SOURCE_PATH}/asset_importer.cpp
+	${HEADER_PATH}/motion_importer.h
+	${SOURCE_PATH}/motion_importer.cpp
 )
 SOURCE_GROUP("system\\loader" FILES ${LOADER_LIST})
 

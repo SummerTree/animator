@@ -57,16 +57,16 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		MotionImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
+		/*MotionImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
 		{
 			if (this->isVisible())
 			{
 				listWidget_->clear();
 
-				for (auto& uuid : MotionImporter::instance()->getIndexList().getValue())
+				for (auto& uuid : MotionImporter::instance()->getIndexList())
 					this->addItem(uuid.get<nlohmann::json::string_t>());
 			}
-		};
+		};*/
 
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
@@ -147,7 +147,7 @@ namespace unreal
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						MotionImporter::instance()->save();
+						MotionImporter::instance()->saveAssets();
 					}
 				}
 			}
@@ -182,23 +182,23 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = MotionImporter::instance()->createPackage((char8_t*)filepaths[i].toUtf8().data(), true);
+						auto package = MotionImporter::instance()->createPackage(filepaths[i].toUtf8().data());
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = MotionImporter::instance()->createPackage((char8_t*)filepaths[0].toUtf8().data(), true);
+					auto package = MotionImporter::instance()->createPackage(filepaths[0].toUtf8().data());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				MotionImporter::instance()->save();
+				MotionImporter::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				MotionImporter::instance()->save();
+				MotionImporter::instance()->saveAssets();
 			}
 		}
 	}
@@ -279,7 +279,7 @@ namespace unreal
 					else
 					{
 						if (vmd.NumCamera > 0)
-							profile_->cameraModule->animation = MotionImporter::instance()->importCameraMotion((char8_t*)filepath.c_str());
+							profile_->cameraModule->animation = MotionImporter::instance()->importCameraMotion(filepath.c_str());
 
 						dialog.setValue(1);
 						QCoreApplication::processEvents();
@@ -312,7 +312,7 @@ namespace unreal
 
 		listWidget_->clear();
 
-		for (auto& uuid : MotionImporter::instance()->getIndexList().getValue())
+		for (auto& uuid : MotionImporter::instance()->getIndexList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

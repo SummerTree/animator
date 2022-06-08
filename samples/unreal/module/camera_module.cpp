@@ -51,7 +51,7 @@ namespace unreal
 			if (animationJson.find("path") != animationJson.end())
 			{
 				auto filepath = animationJson["path"].get<nlohmann::json::string_t>();
-				this->animation = octoon::VMDLoader::loadCameraMotion((char8_t*)filepath.c_str());
+				this->animation = octoon::VMDLoader::loadCameraMotion(filepath.c_str());
 			}
 		}			
 	}

@@ -2,12 +2,13 @@
 #define OCTOON_ANIMATION_CLIP_H_
 
 #include <unordered_map>
+#include <octoon/runtime/rtti_object.h>
 #include <octoon/animation/animation_curve.h>
 
 namespace octoon
 {
 	template<typename _Time = float>
-	class AnimationClip final
+	class AnimationClip final : public RttiObject
 	{
 	public:
 		std::string name;

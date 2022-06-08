@@ -14,7 +14,7 @@ namespace octoon
 	};
 
 	template<typename _Time = float>
-	class Animation final
+	class Animation final : public RttiObject
 	{
 	public:			
 		std::string name;
