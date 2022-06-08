@@ -9,13 +9,14 @@
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/runtime/singleton.h>
+#include <octoon/asset_importer.h>
 
 #include "../unreal_component.h"
 #include "../module/resource_module.h"
 
 namespace unreal
 {
-	class MaterialImporter final
+	class MaterialImporter final : public octoon::AssetImporter
 	{
 		OctoonDeclareSingleton(MaterialImporter)
 	public:
@@ -30,48 +31,28 @@ namespace unreal
 		nlohmann::json createPackage(std::string_view path, std::string_view outputPath = "") noexcept(false);
 		nlohmann::json createPackage(const std::shared_ptr<octoon::Material>& material, std::string_view materialPath = "", std::string_view texturePath = "") noexcept(false);
 		
-		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
-		nlohmann::json getPackage(const std::shared_ptr<octoon::Material>& material) const noexcept(false);
-
 		std::shared_ptr<octoon::Material> loadPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
 		std::shared_ptr<octoon::Material> loadPackage(const nlohmann::json& package) noexcept(false);
-		void removePackage(std::string_view uuid) noexcept(false);
 
-		MutableLiveData<nlohmann::json>& getIndexList() noexcept;
 		MutableLiveData<nlohmann::json>& getSceneList() noexcept;
-
-		const MutableLiveData<nlohmann::json>& getIndexList() const noexcept;
 		const MutableLiveData<nlohmann::json>& getSceneList() const noexcept;
 
 		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
 
-		void save() const noexcept(false);
-
-		void clearCache() noexcept;
-
 	private:
 		void initMaterialScene() noexcept(false);
-		void initPackageIndices() noexcept(false);
 
 	private:
 		MaterialImporter(const MaterialImporter&) = delete;
 		MaterialImporter& operator=(const MaterialImporter&) = delete;
 
 	private:
-		std::string defaultPath_;
-
 		std::uint32_t previewWidth_;
 		std::uint32_t previewHeight_;
 
-		MutableLiveData<nlohmann::json> indexList_;
 		MutableLiveData<nlohmann::json> sceneList_;
 
-		std::map<std::string, std::shared_ptr<octoon::Material>> materialCache_;
-		std::map<std::weak_ptr<octoon::Material>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Material>>> materialPackageCache_;
-
-		std::map<std::string, nlohmann::json> packageList_;
 		std::map<std::string, std::shared_ptr<octoon::Material>> materials_;
-		std::map<std::weak_ptr<octoon::Material>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::Material>>> materialList_;
 
 		std::shared_ptr<octoon::PerspectiveCamera> camera_;
 		std::shared_ptr<octoon::Geometry> geometry_;

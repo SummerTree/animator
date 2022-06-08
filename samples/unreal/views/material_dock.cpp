@@ -177,11 +177,11 @@ namespace unreal
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}
 
-				MaterialImporter::instance()->save();
+				MaterialImporter::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				MaterialImporter::instance()->save();
+				MaterialImporter::instance()->saveAssets();
 			}
 		}
 	}
@@ -236,7 +236,7 @@ namespace unreal
 		{
 			mainWidget_->clear();
 
-			for (auto& uuid : MaterialImporter::instance()->getIndexList().getValue())
+			for (auto& uuid : MaterialImporter::instance()->getIndexList())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}
 	}
