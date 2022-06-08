@@ -1,11 +1,11 @@
-#ifndef OCTOON_IMAGE_HDR_H_
-#define OCTOON_IMAGE_HDR_H_
+#ifndef OCTOON_TEXTURE_HDR_H_
+#define OCTOON_TEXTURE_HDR_H_
 
-#include <octoon/image/image.h>
+#include <octoon/texture/texture.h>
 
 namespace octoon
 {
-	class HDRHandler final : public ImageLoader
+	class HDRHandler final : public TextureHandler
 	{
 	public:
 		HDRHandler() noexcept = default;
@@ -14,8 +14,8 @@ namespace octoon
 		bool doCanRead(istream& stream) const noexcept override;
 		bool doCanRead(const char* type_name) const noexcept override;
 
-		bool doLoad(istream& stream, Image& image) noexcept override;
-		bool doSave(ostream& stream, const Image& image) noexcept override;
+		bool doLoad(istream& stream, Texture& image) noexcept override;
+		bool doSave(ostream& stream, const Texture& image) noexcept override;
 
 	private:
 		HDRHandler(const HDRHandler&) noexcept = delete;

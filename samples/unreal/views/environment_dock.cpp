@@ -1,6 +1,6 @@
 #include "environment_dock.h"
 #include <octoon/environment_light_component.h>
-#include <octoon/image/image.h>
+#include <octoon/texture/texture.h>
 #include <octoon/texture_importer.h>
 #include <octoon/mesh_renderer_component.h>
 

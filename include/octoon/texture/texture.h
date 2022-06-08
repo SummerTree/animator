@@ -1,25 +1,25 @@
-#ifndef OCTOON_IMAGE_H_
-#define OCTOON_IMAGE_H_
+#ifndef OCTOON_TEXTURE_H_
+#define OCTOON_TEXTURE_H_
 
-#include <octoon/image/image_format.h>
-#include <octoon/image/image_loader.h>
+#include <octoon/texture/texture_format.h>
+#include <octoon/texture/texture_loader.h>
 
 namespace octoon
 {
-	class OCTOON_EXPORT Image final
+	class OCTOON_EXPORT Texture final
 	{
 	public:
-		Image() noexcept;
-		Image(Image&& move) noexcept;
-		Image(const Image& move) noexcept;
-		Image(Format format, std::uint32_t width, std::uint32_t height) except;
-		Image(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except;
-		Image(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except;
-		Image(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase = 0, std::uint32_t layerBase = 0) except;
-		explicit Image(istream& stream, const char* type = nullptr) noexcept;
-		explicit Image(const char* filepath, const char* type = nullptr) noexcept;
-		explicit Image(const std::string& filepath, const char* type = nullptr) noexcept;
-		~Image() noexcept;
+		Texture() noexcept;
+		Texture(Texture&& move) noexcept;
+		Texture(const Texture& move) noexcept;
+		Texture(Format format, std::uint32_t width, std::uint32_t height) except;
+		Texture(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except;
+		Texture(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except;
+		Texture(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase = 0, std::uint32_t layerBase = 0) except;
+		explicit Texture(istream& stream, const char* type = nullptr) noexcept;
+		explicit Texture(const char* filepath, const char* type = nullptr) noexcept;
+		explicit Texture(const std::string& filepath, const char* type = nullptr) noexcept;
+		~Texture() noexcept;
 
 		bool create(Format format, std::uint32_t width, std::uint32_t height) except;
 		bool create(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except;
@@ -45,9 +45,9 @@ namespace octoon
 		const std::uint8_t* data() const noexcept;
 		const std::uint8_t* data(std::size_t i) const noexcept;
 
-		Image scale(std::uint32_t width, std::uint32_t height) noexcept(false);
+		Texture scale(std::uint32_t width, std::uint32_t height) noexcept(false);
 
-		Image convert(Format format) noexcept(false);
+		Texture convert(Format format) noexcept(false);
 
 	public:
 		bool load(istream& stream, const char* type = nullptr) noexcept;

@@ -1,4 +1,4 @@
-#include <octoon/image/image_format.h>
+#include <octoon/texture/texture_format.h>
 #include <octoon/runtime/except.h>
 
 namespace octoon

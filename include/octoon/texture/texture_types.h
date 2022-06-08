@@ -1,5 +1,5 @@
-#ifndef OCTOON_IMAGE_TYPES_H_
-#define OCTOON_IMAGE_TYPES_H_
+#ifndef OCTOON_TEXTURE_TYPES_H_
+#define OCTOON_TEXTURE_TYPES_H_
 
 #include <memory>
 #include <octoon/io/iostream.h>
@@ -49,9 +49,6 @@ namespace octoon
 		EndRange = Compressed,
 		RangeSize = (EndRange - BeginRange + 1),
 	};
-
-	typedef std::shared_ptr<class Image> ImagePtr;
-	typedef std::shared_ptr<class ImageLoader> ImageLoaderPtr;
 
 	using istream = io::istream;
 	using ostream = io::ostream;

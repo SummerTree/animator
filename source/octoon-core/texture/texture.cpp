@@ -1,16 +1,16 @@
-#include <octoon/image/image.h>
-#include <octoon/image/image_util.h>
+#include <octoon/texture/texture.h>
+#include <octoon/texture/texture_util.h>
 #include <octoon/runtime/except.h>
 #include <octoon/io/vstream.h>
 #include <octoon/io/mstream.h>
 
-#include "image_all.h"
+#include "texture_all.h"
 
 #include <string.h>
 
 namespace octoon
 {
-	Image::Image() noexcept
+	Texture::Texture() noexcept
 		: format_(Format::Undefined)
 		, width_(0)
 		, height_(0)
@@ -22,7 +22,7 @@ namespace octoon
 	{
 	}
 
-	Image::Image(Image&& move) noexcept
+	Texture::Texture(Texture&& move) noexcept
 		: format_(std::move(move.format_))
 		, width_(std::move(move.width_))
 		, height_(std::move(move.height_))
@@ -35,7 +35,7 @@ namespace octoon
 	{
 	}
 
-	Image::Image(const Image& copy) noexcept
+	Texture::Texture(const Texture& copy) noexcept
 		: format_(copy.format_)
 		, width_(copy.width_)
 		, height_(copy.height_)
@@ -48,60 +48,60 @@ namespace octoon
 	{
 	}
 
-	Image::Image(Format format, std::uint32_t width, std::uint32_t height) except
-		: Image()
+	Texture::Texture(Format format, std::uint32_t width, std::uint32_t height) except
+		: Texture()
 	{
 		this->create(format, width, height);
 	}
 
-	Image::Image(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except
-		: Image()
+	Texture::Texture(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except
+		: Texture()
 	{
 		this->create(format, width, height, pixels);
 	}
 
-	Image::Image(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except
-		: Image()
+	Texture::Texture(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except
+		: Texture()
 	{
 		this->create(format, width, height, depth);
 	}
 
-	Image::Image(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase, std::uint32_t layerBase) except
-		: Image()
+	Texture::Texture(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase, std::uint32_t layerBase) except
+		: Texture()
 	{
 		this->create(format, width, height, depth, mipLevel, layerLevel, mipBase, layerBase);
 	}
 
-	Image::Image(istream& stream, const char* type) noexcept
-		: Image()
+	Texture::Texture(istream& stream, const char* type) noexcept
+		: Texture()
 	{
 		this->load(stream, type);
 	}
 
-	Image::Image(const char* filepath, const char* type) noexcept
-		: Image()
+	Texture::Texture(const char* filepath, const char* type) noexcept
+		: Texture()
 	{
 		this->load(filepath, type);
 	}
 
-	Image::Image(const std::string& filepath, const char* type) noexcept
-		: Image()
+	Texture::Texture(const std::string& filepath, const char* type) noexcept
+		: Texture()
 	{
 		this->load(filepath, type);
 	}
 
-	Image::~Image() noexcept
+	Texture::~Texture() noexcept
 	{
 	}
 
 	bool
-	Image::create(Format format, std::uint32_t width, std::uint32_t height) except
+	Texture::create(Format format, std::uint32_t width, std::uint32_t height) except
 	{
 		return this->create(format, width, height, 1);
 	}
 
 	bool
-	Image::create(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except
+	Texture::create(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except
 	{
 		if (this->create(format, width, height, 1))
 		{
@@ -113,13 +113,13 @@ namespace octoon
 	}
 
 	bool
-	Image::create(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except
+	Texture::create(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except
 	{
 		return this->create(format, width, height, depth, 1, 1, 0, 0);
 	}
 
 	bool
-	Image::create(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase, std::uint32_t layerBase) except
+	Texture::create(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase, std::uint32_t layerBase) except
 	{
 		assert(mipLevel >= 1);
 		assert(layerLevel >= 1);
@@ -212,84 +212,84 @@ namespace octoon
 	}
 
 	bool
-	Image::empty() const noexcept
+	Texture::empty() const noexcept
 	{
 		return data_.empty();
 	}
 
 	std::uint32_t
-	Image::width() const noexcept
+	Texture::width() const noexcept
 	{
 		return width_;
 	}
 
 	std::uint32_t
-	Image::height() const noexcept
+	Texture::height() const noexcept
 	{
 		return height_;
 	}
 
 	std::uint32_t
-	Image::depth() const noexcept
+	Texture::depth() const noexcept
 	{
 		return depth_;
 	}
 
 	std::size_t
-	Image::size() const noexcept
+	Texture::size() const noexcept
 	{
 		return data_.size();
 	}
 
 	const Format&
-	Image::format() const noexcept
+	Texture::format() const noexcept
 	{
 		return format_;
 	}
 
 	std::uint32_t
-	Image::mipBase() const noexcept
+	Texture::mipBase() const noexcept
 	{
 		return mipBase_;
 	}
 
 	std::uint32_t
-	Image::mipLevel() const noexcept
+	Texture::mipLevel() const noexcept
 	{
 		return mipLevel_;
 	}
 
 	std::uint32_t
-	Image::layerBase() const noexcept
+	Texture::layerBase() const noexcept
 	{
 		return layerBase_;
 	}
 
 	std::uint32_t
-	Image::layerLevel() const noexcept
+	Texture::layerLevel() const noexcept
 	{
 		return layerLevel_;
 	}
 
 	const std::uint8_t*
-	Image::data() const noexcept
+	Texture::data() const noexcept
 	{
 		return data_.data();
 	}
 
 	const std::uint8_t*
-	Image::data(std::size_t i = 0) const noexcept
+	Texture::data(std::size_t i = 0) const noexcept
 	{
 		return data_.data() + i;
 	}
 
-	Image
-	Image::scale(std::uint32_t width, std::uint32_t height) noexcept(false)
+	Texture
+	Texture::scale(std::uint32_t width, std::uint32_t height) noexcept(false)
 	{
 		if (width == 0 || height == 0 || this->width() == 0 || this->height() == 0)
-			return Image();
+			return Texture();
 
-		Image image(this->format_, width, height);
+		Texture image(this->format_, width, height);
 
 		switch (image.format())
 		{
@@ -341,15 +341,15 @@ namespace octoon
 		return image;
 	}
 
-	Image
-	Image::convert(Format format) noexcept(false)
+	Texture
+	Texture::convert(Format format) noexcept(false)
 	{
 		assert(format != Format::Undefined);
 		assert(format >= Format::BeginRange && format <= Format::EndRange);
 
 		if (format_ != format)
 		{
-			Image image(format, this->width(), this->height(), this->depth(), this->mipLevel(), this->layerLevel(), this->mipBase(), this->layerBase());
+			Texture image(format, this->width(), this->height(), this->depth(), this->mipLevel(), this->layerLevel(), this->mipBase(), this->layerBase());
 
 			switch (format_)
 			{
@@ -393,12 +393,12 @@ namespace octoon
 		}
 		else
 		{
-			return Image(*this);
+			return Texture(*this);
 		}
 	}
 
 	bool
-	Image::load(istream& stream, const char* type) noexcept
+	Texture::load(istream& stream, const char* type) noexcept
 	{
 		if (stream.good())
 		{
@@ -406,7 +406,7 @@ namespace octoon
 
 			if (membuf.good())
 			{
-				ImageLoaderPtr impl = findHandler(membuf, type);
+				std::shared_ptr<TextureHandler> impl = findHandler(membuf, type);
 				if (impl)
 				{
 					if (impl->doLoad(membuf, *this))
@@ -419,25 +419,25 @@ namespace octoon
 	}
 
 	bool
-	Image::load(const char* filepath, const char* type) noexcept
+	Texture::load(const char* filepath, const char* type) noexcept
 	{
 		io::ivstream stream(filepath);
 		return this->load(stream, type);
 	}
 
 	bool
-	Image::load(const std::string& filepath, const char* type) noexcept
+	Texture::load(const std::string& filepath, const char* type) noexcept
 	{
 		io::ivstream stream(filepath);
 		return this->load(stream, type);
 	}
 
 	bool
-	Image::save(ostream& stream, const char* type) noexcept
+	Texture::save(ostream& stream, const char* type) noexcept
 	{
 		if (stream.good())
 		{
-			ImageLoaderPtr impl = findHandler(type);
+			std::shared_ptr<TextureHandler> impl = findHandler(type);
 			if (impl)
 			{
 				if (impl->doSave(stream, *this))
@@ -449,21 +449,21 @@ namespace octoon
 	}
 
 	bool
-	Image::save(const char* filepath, const char* type) noexcept
+	Texture::save(const char* filepath, const char* type) noexcept
 	{
 		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		return this->save(stream, type);
 	}
 
 	bool
-	Image::save(const std::string& filepath, const char* type) noexcept
+	Texture::save(const std::string& filepath, const char* type) noexcept
 	{
 		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		return this->save(stream, type);
 	}
 
 	bool
-	Image::save(const std::string& filepath, const std::string& type) noexcept
+	Texture::save(const std::string& filepath, const std::string& type) noexcept
 	{
 		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		return this->save(stream, type.c_str());

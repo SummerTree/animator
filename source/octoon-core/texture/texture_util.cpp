@@ -1,4 +1,4 @@
-#include <octoon/image/image_util.h>
+#include <octoon/texture/texture_util.h>
 #include <octoon/math/math.h>
 
 namespace octoon
@@ -75,7 +75,7 @@ namespace octoon
 		}
 	}
 
-	void rgb32f_to_rgb8uint(const Image& srcImage, Image& dstImage) noexcept
+	void rgb32f_to_rgb8uint(const Texture& srcImage, Texture& dstImage) noexcept
 	{
 		assert(srcImage.format() == Format::R32G32B32SFloat);
 		assert(dstImage.format() == Format::R8G8B8UInt);
@@ -100,7 +100,7 @@ namespace octoon
 		}
 	}
 
-	void rgb64f_to_rgb8uint(const Image& srcImage, Image& dstImage) noexcept
+	void rgb64f_to_rgb8uint(const Texture& srcImage, Texture& dstImage) noexcept
 	{
 		assert(srcImage.format() == Format::R64G64B64SFloat);
 		assert(dstImage.format() == Format::R8G8B8UInt);
@@ -125,7 +125,7 @@ namespace octoon
 		}
 	}
 
-	void rgba32f_to_rgba8uint(const Image& srcImage, Image& dstImage) noexcept
+	void rgba32f_to_rgba8uint(const Texture& srcImage, Texture& dstImage) noexcept
 	{
 		assert(srcImage.format() == Format::R32G32B32A32SFloat);
 		assert(dstImage.format() == Format::R8G8B8A8UInt);
@@ -150,7 +150,7 @@ namespace octoon
 		}
 	}
 
-	void rgba64f_to_rgba8uint(const Image& srcImage, Image& dstImage) noexcept
+	void rgba64f_to_rgba8uint(const Texture& srcImage, Texture& dstImage) noexcept
 	{
 		assert(srcImage.format() == Format::R64G64B64A64SFloat);
 		assert(dstImage.format() == Format::R8G8B8A8UInt);
@@ -170,7 +170,7 @@ namespace octoon
 			dst[i] = math::clamp<std::uint8_t>(math::detail::Vector4<std::uint8_t>(src[i] * 255.0f), 0, 255);
 	}
 
-	void rgb32f_to_rgb8sint(const Image& srcImage, Image& dstImage) noexcept
+	void rgb32f_to_rgb8sint(const Texture& srcImage, Texture& dstImage) noexcept
 	{
 		assert(srcImage.format() == Format::R64G64B64A64SFloat);
 		assert(dstImage.format() == Format::R8G8B8A8SInt);
@@ -195,7 +195,7 @@ namespace octoon
 		}
 	}
 
-	void rgb64f_to_rgb8sint(const Image& srcImage, Image& dstImage) noexcept
+	void rgb64f_to_rgb8sint(const Texture& srcImage, Texture& dstImage) noexcept
 	{
 		assert(srcImage.format() == Format::R64G64B64A64SFloat);
 		assert(dstImage.format() == Format::R8G8B8A8SInt);
@@ -220,7 +220,7 @@ namespace octoon
 		}
 	}
 
-	void rgba32f_to_rgba8sint(const Image& srcImage, Image& dstImage) noexcept
+	void rgba32f_to_rgba8sint(const Texture& srcImage, Texture& dstImage) noexcept
 	{
 		assert(srcImage.format() == Format::R64G64B64A64SFloat);
 		assert(dstImage.format() == Format::R8G8B8A8SInt);
@@ -245,7 +245,7 @@ namespace octoon
 		}
 	}
 
-	void rgba64f_to_rgba8sint(const Image& srcImage, Image& dstImage) noexcept
+	void rgba64f_to_rgba8sint(const Texture& srcImage, Texture& dstImage) noexcept
 	{
 		assert(srcImage.format() == Format::R64G64B64A64SFloat);
 		assert(dstImage.format() == Format::R8G8B8A8SInt);

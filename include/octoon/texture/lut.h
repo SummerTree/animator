@@ -1,5 +1,5 @@
-﻿#ifndef OCTOON_IMAGE_LUT_H_
-#define OCTOON_IMAGE_LUT_H_
+﻿#ifndef OCTOON_TEXTURE_LUT_H_
+#define OCTOON_TEXTURE_LUT_H_
 
 #include <limits>
 #include <sstream>

@@ -1,7 +1,7 @@
-#ifndef OCTOON_IMAGE_UTIL_H_
-#define OCTOON_IMAGE_UTIL_H_
+#ifndef OCTOON_TEXTURE_UTIL_H_
+#define OCTOON_TEXTURE_UTIL_H_
 
-#include <octoon/image/image.h>
+#include <octoon/texture/texture.h>
 #include <octoon/math/mathutil.h>
 
 namespace octoon
@@ -15,15 +15,15 @@ namespace octoon
 	OCTOON_EXPORT void rgb32f_to_rgbt8(const float* src, std::uint8_t* dst, std::uint32_t w, std::uint32_t h, std::uint8_t channel) noexcept;
 	OCTOON_EXPORT void rgb64f_to_rgbt8(const double* src, std::uint8_t* dst, std::uint32_t w, std::uint32_t h, std::uint8_t channel) noexcept;
 
-	OCTOON_EXPORT void rgb32f_to_rgb8uint(const Image& src, Image& dst) noexcept;
-	OCTOON_EXPORT void rgb64f_to_rgb8uint(const Image& src, Image& dst) noexcept;
-	OCTOON_EXPORT void rgba32f_to_rgba8uint(const Image& src, Image& dst) noexcept;
-	OCTOON_EXPORT void rgba64f_to_rgba8uint(const Image& src, Image& dst) noexcept;
+	OCTOON_EXPORT void rgb32f_to_rgb8uint(const Texture& src, Texture& dst) noexcept;
+	OCTOON_EXPORT void rgb64f_to_rgb8uint(const Texture& src, Texture& dst) noexcept;
+	OCTOON_EXPORT void rgba32f_to_rgba8uint(const Texture& src, Texture& dst) noexcept;
+	OCTOON_EXPORT void rgba64f_to_rgba8uint(const Texture& src, Texture& dst) noexcept;
 
-	OCTOON_EXPORT void rgb32f_to_rgb8sint(const Image& src, Image& dst) noexcept;
-	OCTOON_EXPORT void rgb64f_to_rgb8sint(const Image& src, Image& dst) noexcept;
-	OCTOON_EXPORT void rgba32f_to_rgba8sint(const Image& src, Image& dst) noexcept;
-	OCTOON_EXPORT void rgba64f_to_rgba8sint(const Image& src, Image& dst) noexcept;
+	OCTOON_EXPORT void rgb32f_to_rgb8sint(const Texture& src, Texture& dst) noexcept;
+	OCTOON_EXPORT void rgb64f_to_rgb8sint(const Texture& src, Texture& dst) noexcept;
+	OCTOON_EXPORT void rgba32f_to_rgba8sint(const Texture& src, Texture& dst) noexcept;
+	OCTOON_EXPORT void rgba64f_to_rgba8sint(const Texture& src, Texture& dst) noexcept;
 
 	template<typename _Tx, typename size_t = std::uint32_t, typename channel_t = std::uint8_t>
 	void flipHorizontal(_Tx* data, size_t w, size_t h, channel_t channel) noexcept

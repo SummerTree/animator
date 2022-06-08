@@ -1,4 +1,4 @@
-#include "image_jpeg.h"
+#include "texture_jpeg.h"
 #include <octoon/runtime/except.h>
 
 #include <setjmp.h>
@@ -148,7 +148,7 @@ namespace octoon
 	}
 
 	bool
-	JPEGHandler::doLoad(istream& stream, Image& image) noexcept
+	JPEGHandler::doLoad(istream& stream, Texture& image) noexcept
 	{
 		jpeg_error_manager jerrmgr;
 		jerrmgr.error_exit = jpeg_error_exit;
@@ -250,7 +250,7 @@ namespace octoon
 	}
 
 	bool
-	JPEGHandler::doSave(ostream& stream, const Image& image) noexcept
+	JPEGHandler::doSave(ostream& stream, const Texture& image) noexcept
 	{
 		jpeg_error_manager jerrmgr;
 		jerrmgr.error_exit = jpeg_error_exit;

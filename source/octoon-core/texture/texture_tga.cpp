@@ -1,4 +1,4 @@
-#include "image_tga.h"
+#include "texture_tga.h"
 
 #include <cstring>
 #include <limits>
@@ -106,7 +106,7 @@ namespace octoon
 	}
 
 	bool
-	TGAHandler::doLoad(istream& stream, Image& image) noexcept
+	TGAHandler::doLoad(istream& stream, Texture& image) noexcept
 	{
 		TGAHeader hdr;
 		if (!stream.read((char*)&hdr, sizeof(hdr))) return false;
@@ -456,7 +456,7 @@ namespace octoon
 	}
 
 	bool
-	TGAHandler::doSave(ostream& stream, const Image& image) noexcept
+	TGAHandler::doSave(ostream& stream, const Texture& image) noexcept
 	{
 		std::uint8_t pixelSize = image.format().type_size() * image.format().channel() * 8;
 		if (pixelSize != TGA_BPP_8 && pixelSize != TGA_BPP_16 && pixelSize != TGA_BPP_24 && pixelSize != TGA_BPP_32)

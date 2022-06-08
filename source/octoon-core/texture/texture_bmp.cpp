@@ -1,4 +1,4 @@
-#include "image_bmp.h"
+#include "texture_bmp.h"
 
 #include <vector>
 #include <cstring>
@@ -113,7 +113,7 @@ namespace octoon
 	}
 
 	bool
-	BMPHandler::doLoad(istream& stream, Image& image) except
+	BMPHandler::doLoad(istream& stream, Texture& image) except
 	{
 		stream.seekg(0, std::ios_base::end);
 		auto size = stream.tellg();
@@ -155,25 +155,25 @@ namespace octoon
 	}
 
 	bool
-	BMPHandler::doSave(ostream&, const Image&) except
+	BMPHandler::doSave(ostream&, const Texture&) except
 	{
 		return false;
 	}
 
 	bool
-	BMPHandler::decode(istream&, Image&, const BITMAPINFO&)
+	BMPHandler::decode(istream&, Texture&, const BITMAPINFO&)
 	{
 		return false;
 	}
 
 	bool
-	BMPHandler::encode(istream&, Image&, const BITMAPINFO&)
+	BMPHandler::encode(istream&, Texture&, const BITMAPINFO&)
 	{
 		return false;
 	}
 
 	bool
-	BMPHandler::loadDIB(istream& stream, Image& image, const BITMAPINFO& info)
+	BMPHandler::loadDIB(istream& stream, Texture& image, const BITMAPINFO& info)
 	{
 		std::uint32_t columns = (std::uint32_t)info.info.width;
 		std::uint32_t rows = (std::uint32_t)(info.info.height < 0 ? -info.info.height : info.info.height);

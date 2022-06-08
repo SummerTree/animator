@@ -1,4 +1,4 @@
-#include "image_dds.h"
+#include "texture_dds.h"
 
 #include <algorithm>
 #include <cstring>
@@ -883,7 +883,7 @@ namespace octoon
 	}
 
 	bool
-	DDSHandler::doLoad(istream& stream, Image& image) noexcept
+	DDSHandler::doLoad(istream& stream, Texture& image) noexcept
 	{
 		stream.seekg(0, std::ios_base::end);
 		std::size_t size = stream.tellg();
@@ -1021,7 +1021,7 @@ namespace octoon
 	}
 
 	bool
-	DDSHandler::doSave(ostream& stream, const Image& image) noexcept
+	DDSHandler::doSave(ostream& stream, const Texture& image) noexcept
 	{
 		DDS_HEADER hdr;
 		std::memset((char*)&hdr, 0, sizeof(hdr));

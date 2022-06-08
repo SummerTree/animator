@@ -2,7 +2,7 @@
 #include "unreal_behaviour.h"
 
 #include <fstream>
-#include <octoon/image/image.h>
+#include <octoon/texture/texture.h>
 
 #include <QDir>
 #include <QFileInfo>
@@ -46,7 +46,7 @@ namespace unreal
 		std::string outname = dirpath_ + "/" + basename_ + "_" + std::to_string(count_);
 		if (extension_ == "png")
 		{
-			octoon::Image image;
+			octoon::Texture image;
 			if (image.create(octoon::Format::R8G8B8SRGB, width_, height_))
 			{
 				std::uint8_t* img_ptr = const_cast<std::uint8_t*>(image.data());

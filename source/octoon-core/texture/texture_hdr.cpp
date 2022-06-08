@@ -1,5 +1,5 @@
-#include "image_hdr.h"
-#include <octoon/image/image_util.h>
+#include "texture_hdr.h"
+#include <octoon/texture/texture_util.h>
 #include <cstdlib>
 #include <cstring>
 
@@ -418,7 +418,7 @@ namespace octoon
 	}
 
 	bool
-	HDRHandler::doLoad(istream& stream, Image& image) noexcept
+	HDRHandler::doLoad(istream& stream, Texture& image) noexcept
 	{
 		rgbe_header_info hdr;
 		if (RGBE_ReadHeader(stream, &hdr) != RGBE_RETURN_SUCCESS)
@@ -437,7 +437,7 @@ namespace octoon
 	}
 
 	bool
-	HDRHandler::doSave(ostream& stream, const Image& image) noexcept
+	HDRHandler::doSave(ostream& stream, const Texture& image) noexcept
 	{
 		rgbe_header_info hdr;
 		hdr.valid = RGBE_VALID_PROGRAMTYPE | RGBE_VALID_GAMMA | RGBE_VALID_EXPOSURE;

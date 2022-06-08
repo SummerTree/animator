@@ -8,7 +8,7 @@
 namespace octoon
 {
 	std::shared_ptr<GraphicsTexture>
-	TextureLoader::load(const Image& image, std::string_view filepath, bool generateMipmap) noexcept(false)
+	TextureLoader::load(const Texture& image, std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
 		GraphicsFormat format = GraphicsFormat::Undefined;
 		switch (image.format())
@@ -89,9 +89,9 @@ namespace octoon
 
 		std::string path = std::string(filepath);
 
-		Image image;
-		if (image.load(path))
-			return load(image, path, generateMipmap);
+		Texture texture;
+		if (texture.load(path))
+			return load(texture, path, generateMipmap);
 		else
 			throw std::runtime_error("Failed to open file :" + path);
 	}
@@ -109,7 +109,7 @@ namespace octoon
 
 		if (textureDesc.getTexFormat() == GraphicsFormat::R8G8B8A8UNorm)
 		{
-			octoon::Image image;
+			Texture image;
 			if (image.create(octoon::Format::R8G8B8A8SRGB, width, height))
 			{
 				std::memcpy((void*)image.data(), data, image.size());
@@ -121,7 +121,7 @@ namespace octoon
 		}
 		else if (textureDesc.getTexFormat() == GraphicsFormat::R8G8B8UNorm)
 		{
-			octoon::Image image;
+			Texture image;
 			if (image.create(octoon::Format::R8G8B8SRGB, width, height))
 			{
 				std::memcpy((void*)image.data(), data, image.size());
@@ -133,7 +133,7 @@ namespace octoon
 		}
 		else if (textureDesc.getTexFormat() == GraphicsFormat::R32G32B32SFloat)
 		{
-			octoon::Image image;
+			Texture image;
 			if (image.create(octoon::Format::R32G32B32SFloat, width, height))
 			{
 				std::memcpy((void*)image.data(), data, image.size());

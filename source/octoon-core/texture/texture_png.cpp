@@ -1,4 +1,4 @@
-#include "image_png.h"
+#include "texture_png.h"
 #include <octoon/runtime/except.h>
 
 #include <png.h>
@@ -68,7 +68,7 @@ namespace octoon
 	}
 
 	bool
-	PNGHandler::doLoad(istream& stream, Image& image) noexcept
+	PNGHandler::doLoad(istream& stream, Texture& image) noexcept
 	{
 		png_structp png_ptr = nullptr;
 		png_infop info_ptr = nullptr;
@@ -165,7 +165,7 @@ namespace octoon
 	}
 
 	bool
-	PNGHandler::doSave(ostream& stream, const Image& image) noexcept
+	PNGHandler::doSave(ostream& stream, const Texture& image) noexcept
 	{
 		png_infop info_ptr = nullptr;
 		png_structp png_ptr = nullptr;

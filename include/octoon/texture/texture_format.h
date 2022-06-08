@@ -1,7 +1,7 @@
-#ifndef OCTOON_IMAGE_FORMAT_H_
-#define OCTOON_IMAGE_FORMAT_H_
+#ifndef OCTOON_TEXTURE_FORMAT_H_
+#define OCTOON_TEXTURE_FORMAT_H_
 
-#include <octoon/image/image_types.h>
+#include <octoon/texture/texture_types.h>
 
 namespace octoon
 {

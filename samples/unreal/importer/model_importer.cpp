@@ -1,6 +1,6 @@
 #include "model_importer.h"
 #include "unreal_behaviour.h"
-#include <octoon/image/image.h>
+#include <octoon/texture/texture.h>
 #include <octoon/pmx_loader.h>
 #include <octoon/runtime/uuid.h>
 #include <octoon/runtime/string.h>

@@ -1,5 +1,5 @@
 #include <octoon/texture_importer.h>
-#include <octoon/image/image.h>
+#include <octoon/texture/texture.h>
 #include <octoon/texture_loader.h>
 #include <octoon/runtime/uuid.h>
 #include <fstream>
@@ -64,7 +64,7 @@ namespace octoon
 	nlohmann::json
 	TextureImporter::createPackage(std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
-		octoon::Image image;
+		octoon::Texture image;
 
 		if (image.load(std::string(filepath)))
 		{
@@ -91,7 +91,7 @@ namespace octoon
 			std::filesystem::copy(filepath, texturePath);
 			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
-			octoon::Image image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
+			octoon::Texture image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
 			if (!image.scale(260, 130).save(previewPath.string(), "png"))
 				throw std::runtime_error("Cannot generate image for preview");
 
@@ -182,7 +182,7 @@ namespace octoon
 					auto uuid2 = octoon::make_guid();
 					auto texturePath2 = std::filesystem::path(rootPath).append(uuid2 + ".png");
 
-					octoon::Image image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
+					octoon::Texture image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
 					image.scale(260, 130).save(texturePath2.string(), "png");
 
 					package["preview"] = texturePath2.string();

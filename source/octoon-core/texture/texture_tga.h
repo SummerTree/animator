@@ -1,11 +1,11 @@
-#ifndef OCTOON_IMAGE_TGA_H_
-#define OCTOON_IMAGE_TGA_H_
+#ifndef OCTOON_TEXTURE_TGA_H_
+#define OCTOON_TEXTURE_TGA_H_
 
-#include <octoon/image/image.h>
+#include <octoon/texture/texture.h>
 
 namespace octoon
 {
-	class TGAHandler final : public ImageLoader
+	class TGAHandler final : public TextureHandler
 	{
 	public:
 		TGAHandler() noexcept = default;
@@ -14,8 +14,8 @@ namespace octoon
 		bool doCanRead(istream& stream) const noexcept override;
 		bool doCanRead(const char* type_name) const noexcept override;
 
-		bool doLoad(istream& stream, Image& image) noexcept override;
-		bool doSave(ostream& stream, const Image& image) noexcept override;
+		bool doLoad(istream& stream, Texture& image) noexcept override;
+		bool doSave(ostream& stream, const Texture& image) noexcept override;
 
 	private:
 		TGAHandler(const TGAHandler&) noexcept = delete;

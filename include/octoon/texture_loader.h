@@ -2,7 +2,7 @@
 #define OCTOON_TEXTURE_LOADER_H_
 
 #include <octoon/hal/graphics_texture.h>
-#include <octoon/image/image.h>
+#include <octoon/texture/texture.h>
 
 namespace octoon
 {
@@ -10,7 +10,7 @@ namespace octoon
 	{
 	public:
 		static std::shared_ptr<GraphicsTexture> load(std::string_view path, bool generatorMipmap = false) noexcept(false);
-		static std::shared_ptr<GraphicsTexture> load(const Image& image, std::string_view filepath, bool generatorMipmap = false) noexcept(false);
+		static std::shared_ptr<GraphicsTexture> load(const Texture& texture, std::string_view filepath, bool generatorMipmap = false) noexcept(false);
 
 		static bool save(std::string_view filepath, const std::shared_ptr<GraphicsTexture>& texture) noexcept(false);
 	};

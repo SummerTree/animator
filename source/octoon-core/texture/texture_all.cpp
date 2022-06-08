@@ -1,22 +1,22 @@
-#include "image_all.h"
+#include "texture_all.h"
 
 #if OCTOON_BUILD_BMP_HANDLER
-#	include "image_bmp.h"
+#	include "texture_bmp.h"
 #endif
 #if OCTOON_BUILD_PNG_HANDLER
-#	include "image_png.h"
+#	include "texture_png.h"
 #endif
 #if OCTOON_BUILD_DDS_HANDLER
-#	include "image_dds.h"
+#	include "texture_dds.h"
 #endif
 #if OCTOON_BUILD_JPG_HANDLER
-#	include "image_jpeg.h"
+#	include "texture_jpeg.h"
 #endif
 #if OCTOON_BUILD_TGA_HANDLER
-#	include "image_tga.h"
+#	include "texture_tga.h"
 #endif
 #if OCTOON_BUILD_HDR_HANDLER
-#	include "image_hdr.h"
+#	include "texture_hdr.h"
 #endif
 
 #include <vector>
@@ -25,25 +25,25 @@
 namespace octoon
 {
 	#if OCTOON_BUILD_BMP_HANDLER
-	std::shared_ptr<ImageLoader> bmp = std::make_shared<BMPHandler>();
+	std::shared_ptr<TextureHandler> bmp = std::make_shared<BMPHandler>();
 	#endif
 	#if OCTOON_BUILD_DDS_HANDLER
-	std::shared_ptr<ImageLoader> dds = std::make_shared<DDSHandler>();
+	std::shared_ptr<TextureHandler> dds = std::make_shared<DDSHandler>();
 	#endif
 	#if OCTOON_BUILD_PNG_HANDLER
-	std::shared_ptr<ImageLoader> png = std::make_shared<PNGHandler>();
+	std::shared_ptr<TextureHandler> png = std::make_shared<PNGHandler>();
 	#endif
 	#if OCTOON_BUILD_JPG_HANDLER
-	std::shared_ptr<ImageLoader> jpeg = std::make_shared<JPEGHandler>();
+	std::shared_ptr<TextureHandler> jpeg = std::make_shared<JPEGHandler>();
 	#endif
 	#if OCTOON_BUILD_TGA_HANDLER
-	std::shared_ptr<ImageLoader> tga = std::make_shared<TGAHandler>();
+	std::shared_ptr<TextureHandler> tga = std::make_shared<TGAHandler>();
 	#endif
 	#if OCTOON_BUILD_HDR_HANDLER
-	std::shared_ptr<ImageLoader> hdr = std::make_shared<HDRHandler>();
+	std::shared_ptr<TextureHandler> hdr = std::make_shared<HDRHandler>();
 	#endif
 
-	std::vector<ImageLoaderPtr> _handlers = {
+	std::vector<std::shared_ptr<TextureHandler>> _handlers = {
 	#if OCTOON_BUILD_PNG_HANDLER
 		png,
 	#endif
@@ -69,7 +69,7 @@ namespace octoon
 		return _handlers.empty();
 	}
 
-	bool addHandler(ImageLoaderPtr&& handler) noexcept
+	bool addHandler(std::shared_ptr<TextureHandler>&& handler) noexcept
 	{
 		assert(handler);
 		auto it = std::find(_handlers.begin(), _handlers.end(), handler);
@@ -82,7 +82,7 @@ namespace octoon
 		return false;
 	}
 
-	bool addHandler(const ImageLoaderPtr& handler) noexcept
+	bool addHandler(const std::shared_ptr<TextureHandler>& handler) noexcept
 	{
 		assert(handler);
 		auto it = std::find(_handlers.begin(), _handlers.end(), handler);
@@ -95,7 +95,7 @@ namespace octoon
 		return false;
 	}
 
-	bool removeHandler(const ImageLoaderPtr& handler) noexcept
+	bool removeHandler(const std::shared_ptr<TextureHandler>& handler) noexcept
 	{
 		assert(handler);
 		auto it = std::find(_handlers.begin(), _handlers.end(), handler);
@@ -108,7 +108,7 @@ namespace octoon
 		return false;
 	}
 
-	ImageLoaderPtr findHandler(const char* type) noexcept
+	std::shared_ptr<TextureHandler> findHandler(const char* type) noexcept
 	{
 		if (type)
 		{
@@ -120,7 +120,7 @@ namespace octoon
 		return nullptr;
 	}
 
-	ImageLoaderPtr findHandler(istream& stream) noexcept
+	std::shared_ptr<TextureHandler> findHandler(istream& stream) noexcept
 	{
 		if (!stream.good())
 			return nullptr;
@@ -139,9 +139,9 @@ namespace octoon
 		return nullptr;
 	}
 
-	ImageLoaderPtr findHandler(istream& stream, const char* type) noexcept
+	std::shared_ptr<TextureHandler> findHandler(istream& stream, const char* type) noexcept
 	{
-		ImageLoaderPtr result = findHandler(type);
+		std::shared_ptr<TextureHandler> result = findHandler(type);
 		if (result)
 			return result;
 		return findHandler(stream);
