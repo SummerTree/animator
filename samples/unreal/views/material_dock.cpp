@@ -13,6 +13,7 @@
 #include <qcolordialog.h>
 #include <qtreewidget.h>
 #include <qprogressdialog.h>
+#include <octoon/texture_importer.h>
 
 namespace unreal
 {
@@ -366,7 +367,7 @@ namespace unreal
 	std::shared_ptr<octoon::GraphicsTexture>
 	MaterialEditWindow::MaterialUi::setImage(const QString& filepath)
 	{
-		auto textureData = octoon::TextureLoader::load(filepath.toStdString());
+		auto textureData = octoon::TextureImporter::instance()->importTexture(filepath.toStdString());
 		auto width = textureData->getTextureDesc().getWidth();
 		auto height = textureData->getTextureDesc().getHeight();
 
@@ -382,6 +383,7 @@ namespace unreal
 			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
 			{
 				qimage = QImage(data_, width, height, QImage::Format::Format_RGB888);
+				qimage = qimage.scaled(this->image->iconSize());
 				textureData->unmap();
 			}
 		}
@@ -394,6 +396,7 @@ namespace unreal
 			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
 			{
 				qimage = QImage(data_, width, height, QImage::Format::Format_RGBA8888);
+				qimage = qimage.scaled(this->image->iconSize());
 				textureData->unmap();
 			}
 		}
@@ -415,6 +418,7 @@ namespace unreal
 				}
 
 				qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+				qimage = qimage.scaled(this->image->iconSize());
 				textureData->unmap();
 			}
 		}
@@ -437,6 +441,7 @@ namespace unreal
 				}
 
 				qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGBA8888);
+				qimage = qimage.scaled(this->image->iconSize());
 				textureData->unmap();
 			}
 		}
@@ -451,9 +456,7 @@ namespace unreal
 		this->path->setText(name);
 		this->check->setCheckState(Qt::CheckState::Checked);
 		this->texture = textureData;
-
-		if (!qimage.isNull())
-			this->image->setIcon(QIcon(QPixmap::fromImage(qimage.scaled(this->image->iconSize()))));
+		this->image->setIcon(QIcon(QPixmap::fromImage(qimage)));
 
 		return textureData;
 	}

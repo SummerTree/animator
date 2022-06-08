@@ -21,15 +21,11 @@ namespace octoon
 	std::shared_ptr<octoon::GraphicsTexture>
 	TextureImporter::importTexture(std::string_view path, bool generatorMipmap) noexcept(false)
 	{
-		auto ext = path.substr(path.find_last_of("."));
-		if (ext == ".hdr")
+		auto texture = octoon::TextureLoader::load(path, generatorMipmap);
+		if (texture)
 		{
-			auto hdri = octoon::TextureLoader::load(path, generatorMipmap);
-			if (hdri)
-			{
-				assetPathList_[hdri] = path;
-				return hdri;
-			}
+			assetPathList_[texture] = path;
+			return texture;
 		}
 
 		return nullptr;

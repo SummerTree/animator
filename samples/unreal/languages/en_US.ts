@@ -466,13 +466,13 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialDock</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="1852"/>
-        <location filename="../views/material_dock.cpp" line="1972"/>
+        <location filename="../views/material_dock.cpp" line="1855"/>
+        <location filename="../views/material_dock.cpp" line="1975"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1986"/>
+        <location filename="../views/material_dock.cpp" line="1989"/>
         <source>Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
@@ -480,121 +480,121 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialEditWindow</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="265"/>
+        <location filename="../views/material_dock.cpp" line="266"/>
         <source> Texture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="473"/>
+        <location filename="../views/material_dock.cpp" line="476"/>
         <source>material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="475"/>
+        <location filename="../views/material_dock.cpp" line="478"/>
         <source>Base Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="476"/>
+        <location filename="../views/material_dock.cpp" line="479"/>
         <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="477"/>
+        <location filename="../views/material_dock.cpp" line="480"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="478"/>
+        <location filename="../views/material_dock.cpp" line="481"/>
         <source>Roughness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="479"/>
+        <location filename="../views/material_dock.cpp" line="482"/>
         <source>Metal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="480"/>
+        <location filename="../views/material_dock.cpp" line="483"/>
         <source>Specular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="481"/>
+        <location filename="../views/material_dock.cpp" line="484"/>
         <source>Anisotropy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="482"/>
+        <location filename="../views/material_dock.cpp" line="485"/>
         <source>Cloth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="483"/>
-        <location filename="../views/material_dock.cpp" line="531"/>
+        <location filename="../views/material_dock.cpp" line="486"/>
+        <location filename="../views/material_dock.cpp" line="534"/>
         <source>Clear Coat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="484"/>
+        <location filename="../views/material_dock.cpp" line="487"/>
         <source>Clear Coat Roughness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="485"/>
+        <location filename="../views/material_dock.cpp" line="488"/>
         <source>Subsurface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="486"/>
+        <location filename="../views/material_dock.cpp" line="489"/>
         <source>Subsurface Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="487"/>
-        <location filename="../views/material_dock.cpp" line="537"/>
+        <location filename="../views/material_dock.cpp" line="490"/>
+        <location filename="../views/material_dock.cpp" line="540"/>
         <source>Refraction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="488"/>
+        <location filename="../views/material_dock.cpp" line="491"/>
         <source>Refraction Ior</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="489"/>
+        <location filename="../views/material_dock.cpp" line="492"/>
         <source>Emissive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="534"/>
+        <location filename="../views/material_dock.cpp" line="537"/>
         <source>Subsurface Scattering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="541"/>
+        <location filename="../views/material_dock.cpp" line="544"/>
         <source>Receive Shadow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="547"/>
+        <location filename="../views/material_dock.cpp" line="550"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1061"/>
-        <location filename="../views/material_dock.cpp" line="1069"/>
-        <location filename="../views/material_dock.cpp" line="1077"/>
-        <location filename="../views/material_dock.cpp" line="1085"/>
-        <location filename="../views/material_dock.cpp" line="1093"/>
-        <location filename="../views/material_dock.cpp" line="1101"/>
-        <location filename="../views/material_dock.cpp" line="1109"/>
-        <location filename="../views/material_dock.cpp" line="1117"/>
-        <location filename="../views/material_dock.cpp" line="1125"/>
-        <location filename="../views/material_dock.cpp" line="1133"/>
-        <location filename="../views/material_dock.cpp" line="1141"/>
-        <location filename="../views/material_dock.cpp" line="1149"/>
-        <location filename="../views/material_dock.cpp" line="1157"/>
+        <location filename="../views/material_dock.cpp" line="1064"/>
+        <location filename="../views/material_dock.cpp" line="1072"/>
+        <location filename="../views/material_dock.cpp" line="1080"/>
+        <location filename="../views/material_dock.cpp" line="1088"/>
+        <location filename="../views/material_dock.cpp" line="1096"/>
+        <location filename="../views/material_dock.cpp" line="1104"/>
+        <location filename="../views/material_dock.cpp" line="1112"/>
+        <location filename="../views/material_dock.cpp" line="1120"/>
+        <location filename="../views/material_dock.cpp" line="1128"/>
+        <location filename="../views/material_dock.cpp" line="1136"/>
+        <location filename="../views/material_dock.cpp" line="1144"/>
+        <location filename="../views/material_dock.cpp" line="1152"/>
+        <location filename="../views/material_dock.cpp" line="1160"/>
         <source>Open Image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -602,43 +602,43 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialListDialog</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="52"/>
+        <location filename="../views/material_dock.cpp" line="53"/>
         <source>Material Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="57"/>
+        <location filename="../views/material_dock.cpp" line="58"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="61"/>
+        <location filename="../views/material_dock.cpp" line="62"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="65"/>
+        <location filename="../views/material_dock.cpp" line="66"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="155"/>
+        <location filename="../views/material_dock.cpp" line="156"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="155"/>
+        <location filename="../views/material_dock.cpp" line="156"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="160"/>
         <location filename="../views/material_dock.cpp" line="161"/>
+        <location filename="../views/material_dock.cpp" line="162"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="160"/>
+        <location filename="../views/material_dock.cpp" line="161"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
