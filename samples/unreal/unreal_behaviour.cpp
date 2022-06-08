@@ -3,8 +3,8 @@
 #include "../utils/ass_loader.h"
 #include "../importer/model_importer.h"
 #include "../importer/motion_importer.h"
-#include "../importer/texture_importer.h"
 #include "../importer/material_importer.h"
+#include <octoon/texture_importer.h>
 
 #include <filesystem>
 
@@ -118,7 +118,7 @@ namespace unreal
 		else if (ext == ".vmd")
 			MotionImporter::instance()->createPackage((char8_t*)path.data());
 		else if (ext == ".hdr")
-			TextureImporter::instance()->createPackage(path);
+			octoon::TextureImporter::instance()->createPackage(path);
 	}
 
 	void
@@ -269,7 +269,7 @@ namespace unreal
 
 		ModelImporter::instance()->open(profile_->resourceModule->modelPath);
 		MotionImporter::instance()->open(profile_->resourceModule->motionPath);
-		TextureImporter::instance()->open(profile_->resourceModule->hdriPath);
+		octoon::TextureImporter::instance()->open(profile_->resourceModule->hdriPath);
 		MaterialImporter::instance()->open(profile_->resourceModule->materialPath);
 
 		recordComponent_ = std::make_unique<RecordComponent>();
@@ -383,7 +383,7 @@ namespace unreal
 
 		ModelImporter::instance()->close();
 		MotionImporter::instance()->close();
-		TextureImporter::instance()->close();
+		octoon::TextureImporter::instance()->close();
 		MaterialImporter::instance()->close();
 	}
 

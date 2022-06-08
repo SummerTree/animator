@@ -1,17 +1,13 @@
 #ifndef UNREAL_TEXTURE_IMPORTER_H_
 #define UNREAL_TEXTURE_IMPORTER_H_
 
-#include <unreal_component.h>
 #include <octoon/game_object.h>
 #include <octoon/hal/graphics_texture.h>
 #include <octoon/runtime/singleton.h>
 
-#include "../unreal_component.h"
-#include "../module/resource_module.h"
-
-namespace unreal
+namespace octoon
 {
-	class TextureImporter final
+	class OCTOON_EXPORT TextureImporter final
 	{
 		OctoonDeclareSingleton(TextureImporter)
 	public:
@@ -23,7 +19,7 @@ namespace unreal
 
 		std::shared_ptr<octoon::GraphicsTexture> importTexture(std::string_view path, bool generatorMipmap = false) noexcept(false);
 
-		nlohmann::json createPackage(std::string_view path, bool generateMipmap = false, bool blockSignals = false) noexcept(false);
+		nlohmann::json createPackage(std::string_view path, bool generateMipmap = false) noexcept(false);
 		nlohmann::json createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, bool generateMipmap = false, std::string_view outputPath = "") noexcept(false);
 
 		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath = "") noexcept;
@@ -32,7 +28,7 @@ namespace unreal
 		std::shared_ptr<octoon::GraphicsTexture> loadPackage(const nlohmann::json& package, std::string_view outputPath = "") noexcept(false);
 		void removePackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
 
-		MutableLiveData<nlohmann::json>& getIndexList() noexcept;
+		nlohmann::json& getIndexList() noexcept;
 
 		void save() noexcept(false);
 
@@ -44,7 +40,7 @@ namespace unreal
 	private:
 		std::string assertPath_;
 
-		MutableLiveData<nlohmann::json> indexList_;
+		nlohmann::json indexList_;
 
 		std::map<std::string, nlohmann::json> packageList_;
 

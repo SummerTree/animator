@@ -1,9 +1,9 @@
 #include "material_importer.h"
-#include "texture_importer.h"
 
 #include <octoon/mdl_loader.h>
 #include <octoon/PMREM_loader.h>
 #include <octoon/texture_loader.h>
+#include <octoon/texture_importer.h>
 #include <octoon/video_feature.h>
 #include <octoon/environment_light_component.h>
 #include <octoon/runtime/uuid.h>
@@ -132,20 +132,20 @@ namespace unreal
 			package["name"] = mat->getName();
 			package["visible"] = true;
 			package["preview"] = writePreview(mat, outputPath);
-			package["colorMap"] = TextureImporter::instance()->createPackage(standardMaterial->getColorMap(), false, outputTexturePath.string());
-			package["opacityMap"] = TextureImporter::instance()->createPackage(standardMaterial->getOpacityMap(), false, outputTexturePath.string());
-			package["normalMap"] = TextureImporter::instance()->createPackage(standardMaterial->getNormalMap(), false, outputTexturePath.string());
-			package["roughnessMap"] = TextureImporter::instance()->createPackage(standardMaterial->getRoughnessMap(), false, outputTexturePath.string());
-			package["specularMap"] = TextureImporter::instance()->createPackage(standardMaterial->getSpecularMap(), false, outputTexturePath.string());
-			package["metalnessMap"] = TextureImporter::instance()->createPackage(standardMaterial->getMetalnessMap(), false, outputTexturePath.string());
-			package["emissiveMap"] = TextureImporter::instance()->createPackage(standardMaterial->getEmissiveMap(), false, outputTexturePath.string());
-			package["anisotropyMap"] = TextureImporter::instance()->createPackage(standardMaterial->getAnisotropyMap(), false, outputTexturePath.string());
-			package["clearCoatMap"] = TextureImporter::instance()->createPackage(standardMaterial->getClearCoatMap(), false, outputTexturePath.string());
-			package["clearCoatRoughnessMap"] = TextureImporter::instance()->createPackage(standardMaterial->getClearCoatRoughnessMap(), false, outputTexturePath.string());
-			package["subsurfaceMap"] = TextureImporter::instance()->createPackage(standardMaterial->getSubsurfaceMap(), false, outputTexturePath.string());
-			package["subsurfaceColorMap"] = TextureImporter::instance()->createPackage(standardMaterial->getSubsurfaceColorMap(), false, outputTexturePath.string());
-			package["sheenMap"] = TextureImporter::instance()->createPackage(standardMaterial->getSheenMap(), false, outputTexturePath.string());
-			package["lightMap"] = TextureImporter::instance()->createPackage(standardMaterial->getLightMap(), false, outputTexturePath.string());
+			package["colorMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getColorMap(), false, outputTexturePath.string());
+			package["opacityMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getOpacityMap(), false, outputTexturePath.string());
+			package["normalMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getNormalMap(), false, outputTexturePath.string());
+			package["roughnessMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getRoughnessMap(), false, outputTexturePath.string());
+			package["specularMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getSpecularMap(), false, outputTexturePath.string());
+			package["metalnessMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getMetalnessMap(), false, outputTexturePath.string());
+			package["emissiveMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getEmissiveMap(), false, outputTexturePath.string());
+			package["anisotropyMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getAnisotropyMap(), false, outputTexturePath.string());
+			package["clearCoatMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getClearCoatMap(), false, outputTexturePath.string());
+			package["clearCoatRoughnessMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getClearCoatRoughnessMap(), false, outputTexturePath.string());
+			package["subsurfaceMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getSubsurfaceMap(), false, outputTexturePath.string());
+			package["subsurfaceColorMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getSubsurfaceColorMap(), false, outputTexturePath.string());
+			package["sheenMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getSheenMap(), false, outputTexturePath.string());
+			package["lightMap"] = octoon::TextureImporter::instance()->createPackage(standardMaterial->getLightMap(), false, outputTexturePath.string());
 			package["emissiveIntensity"] = standardMaterial->getEmissiveIntensity();
 			package["opacity"] = standardMaterial->getOpacity();
 			package["smoothness"] = standardMaterial->getSmoothness();
@@ -295,33 +295,33 @@ namespace unreal
 		if (name != package.end() && (*name).is_string())
 			material->setName((*name).get<nlohmann::json::string_t>());
 		if (colorMap != package.end() && (*colorMap).is_object())
-			material->setColorMap(TextureImporter::instance()->loadPackage(*colorMap));
+			material->setColorMap(octoon::TextureImporter::instance()->loadPackage(*colorMap));
 		if (opacityMap != package.end() && (*opacityMap).is_object())
-			material->setOpacityMap(TextureImporter::instance()->loadPackage(*opacityMap));
+			material->setOpacityMap(octoon::TextureImporter::instance()->loadPackage(*opacityMap));
 		if (normalMap != package.end() && (*normalMap).is_object())
-			material->setNormalMap(TextureImporter::instance()->loadPackage(*normalMap));
+			material->setNormalMap(octoon::TextureImporter::instance()->loadPackage(*normalMap));
 		if (roughnessMap != package.end() && (*roughnessMap).is_object())
-			material->setRoughnessMap(TextureImporter::instance()->loadPackage(*roughnessMap));
+			material->setRoughnessMap(octoon::TextureImporter::instance()->loadPackage(*roughnessMap));
 		if (specularMap != package.end() && (*specularMap).is_object())
-			material->setSpecularMap(TextureImporter::instance()->loadPackage(*specularMap));
+			material->setSpecularMap(octoon::TextureImporter::instance()->loadPackage(*specularMap));
 		if (metalnessMap != package.end() && (*metalnessMap).is_object())
-			material->setMetalnessMap(TextureImporter::instance()->loadPackage(*metalnessMap));
+			material->setMetalnessMap(octoon::TextureImporter::instance()->loadPackage(*metalnessMap));
 		if (emissiveMap != package.end() && (*emissiveMap).is_object())
-			material->setEmissiveMap(TextureImporter::instance()->loadPackage(*emissiveMap));
+			material->setEmissiveMap(octoon::TextureImporter::instance()->loadPackage(*emissiveMap));
 		if (anisotropyMap != package.end() && (*anisotropyMap).is_object())
-			material->setAnisotropyMap(TextureImporter::instance()->loadPackage(*anisotropyMap));
+			material->setAnisotropyMap(octoon::TextureImporter::instance()->loadPackage(*anisotropyMap));
 		if (clearCoatMap != package.end() && (*clearCoatMap).is_object())
-			material->setClearCoatMap(TextureImporter::instance()->loadPackage(*clearCoatMap));
+			material->setClearCoatMap(octoon::TextureImporter::instance()->loadPackage(*clearCoatMap));
 		if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_object())
-			material->setClearCoatRoughnessMap(TextureImporter::instance()->loadPackage(*clearCoatRoughnessMap));
+			material->setClearCoatRoughnessMap(octoon::TextureImporter::instance()->loadPackage(*clearCoatRoughnessMap));
 		if (subsurfaceMap != package.end() && (*subsurfaceMap).is_object())
-			material->setSubsurfaceMap(TextureImporter::instance()->loadPackage(*subsurfaceMap));
+			material->setSubsurfaceMap(octoon::TextureImporter::instance()->loadPackage(*subsurfaceMap));
 		if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_object())
-			material->setSubsurfaceColorMap(TextureImporter::instance()->loadPackage(*subsurfaceColorMap));
+			material->setSubsurfaceColorMap(octoon::TextureImporter::instance()->loadPackage(*subsurfaceColorMap));
 		if (sheenMap != package.end() && (*sheenMap).is_object())
-			material->setSheenMap(TextureImporter::instance()->loadPackage(*sheenMap));
+			material->setSheenMap(octoon::TextureImporter::instance()->loadPackage(*sheenMap));
 		if (lightMap != package.end() && (*lightMap).is_object())
-			material->setLightMap(TextureImporter::instance()->loadPackage(*lightMap));
+			material->setLightMap(octoon::TextureImporter::instance()->loadPackage(*lightMap));
 
 		auto blendEnable = package.find("blendEnable");
 		auto blendOp = package.find("blendOp");

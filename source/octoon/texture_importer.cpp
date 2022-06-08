@@ -1,13 +1,12 @@
-#include "texture_importer.h"
-#include "unreal_behaviour.h"
+#include <octoon/texture_importer.h>
 #include <octoon/image/image.h>
+#include <octoon/texture_loader.h>
 #include <octoon/runtime/uuid.h>
 #include <fstream>
 #include <filesystem>
-#include <qpixmap.h>
-#include <qimage.h>
+#include <set>
 
-namespace unreal
+namespace octoon
 {
 	OctoonImplementSingleton(TextureImporter)
 
@@ -52,7 +51,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	TextureImporter::createPackage(std::string_view filepath, bool generateMipmap, bool blockSignals) noexcept(false)
+	TextureImporter::createPackage(std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
 		octoon::Image image;
 
@@ -81,9 +80,8 @@ namespace unreal
 			std::filesystem::copy(filepath, texturePath);
 			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
-			QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-			qimage = qimage.scaled(260, 130);
-			if (!qimage.save(QString::fromStdString(previewPath.string())))
+			octoon::Image image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
+			if (!image.scale(260, 130).save(previewPath.string(), "png"))
 				throw std::runtime_error("Cannot generate image for preview");
 
 			nlohmann::json package;
@@ -102,10 +100,7 @@ namespace unreal
 				ifs.close();
 			}
 
-			indexList_.getValue().push_back(uuid);
-
-			if (!blockSignals)
-				indexList_.submit();
+			indexList_.push_back(uuid);
 
 			return package;
 		}
@@ -128,7 +123,7 @@ namespace unreal
 			if (package.find("uuid") != package.end())
 			{
 				uuid = package["uuid"].get<nlohmann::json::string_t>();
-				for (auto& index : indexList_.getValue())
+				for (auto& index : indexList_)
 				{
 					if (index == uuid)
 						return package;
@@ -176,9 +171,8 @@ namespace unreal
 					auto uuid2 = octoon::make_guid();
 					auto texturePath2 = std::filesystem::path(rootPath).append(uuid2 + ".png");
 
-					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-					qimage = qimage.scaled(260, 130);
-					qimage.save(QString::fromStdString(texturePath2.string()), "PNG");
+					octoon::Image image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
+					image.scale(260, 130).save(texturePath2.string(), "png");
 
 					package["preview"] = texturePath2.string();
 				}
@@ -274,7 +268,7 @@ namespace unreal
 	void
 	TextureImporter::removePackage(std::string_view uuid, std::string_view outputPath) noexcept(false)
 	{
-		auto& indexList = indexList_.getValue();
+		auto& indexList = indexList_;
 
 		for (auto index = indexList.begin(); index != indexList.end(); ++index)
 		{
@@ -297,7 +291,7 @@ namespace unreal
 		}
 	}
 
-	MutableLiveData<nlohmann::json>&
+	nlohmann::json&
 	TextureImporter::getIndexList() noexcept
 	{
 		return indexList_;
@@ -312,7 +306,7 @@ namespace unreal
 		std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
 		if (ifs)
 		{
-			auto data = indexList_.getValue().dump();
+			auto data = indexList_.dump();
 			ifs.write(data.c_str(), data.size());
 		}
 	}
@@ -327,7 +321,7 @@ namespace unreal
 	void
 	TextureImporter::initPackageIndices() noexcept(false)
 	{
-		auto& indexList = indexList_.getValue();
+		auto& indexList = indexList_;
 
 		std::ifstream indexStream(assertPath_ + "/index.json");
 		if (indexStream)
@@ -370,7 +364,7 @@ namespace unreal
 			for (auto& it : indexSet)
 				json += it;
 
-			indexList_.getValue() = json;
+			indexList_ = json;
 			this->save();
 		}
 	}

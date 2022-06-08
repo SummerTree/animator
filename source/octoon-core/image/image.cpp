@@ -54,6 +54,12 @@ namespace octoon
 		this->create(format, width, height);
 	}
 
+	Image::Image(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except
+		: Image()
+	{
+		this->create(format, width, height, pixels);
+	}
+
 	Image::Image(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except
 		: Image()
 	{
@@ -92,6 +98,18 @@ namespace octoon
 	Image::create(Format format, std::uint32_t width, std::uint32_t height) except
 	{
 		return this->create(format, width, height, 1);
+	}
+
+	bool
+	Image::create(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except
+	{
+		if (this->create(format, width, height, 1))
+		{
+			std::memcpy(this->data_.data(), pixels, this->size());
+			return true;
+		}
+
+		return false;
 	}
 
 	bool

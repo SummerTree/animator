@@ -1,7 +1,7 @@
 #include "environment_dock.h"
-#include "../importer/texture_importer.h"
 #include <octoon/environment_light_component.h>
 #include <octoon/image/image.h>
+#include <octoon/texture_importer.h>
 #include <octoon/mesh_renderer_component.h>
 
 #include <qapplication.h>
@@ -67,17 +67,6 @@ namespace unreal
 		mainLayout_->addLayout(bottomLayout_);
 		mainLayout_->setContentsMargins(5, 10, 5, 10);
 
-		TextureImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
-		{
-			if (this->isVisible())
-			{
-				listWidget_->clear();
-
-				for (auto& uuid : TextureImporter::instance()->getIndexList().getValue())
-					this->addItem(uuid.get<nlohmann::json::string_t>());
-			}
-		};
-
 		connect(okButton_, SIGNAL(clicked()), this, SLOT(okClickEvent()));
 		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeClickEvent()));
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
@@ -92,7 +81,7 @@ namespace unreal
 	void
 	EnvironmentListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto package = TextureImporter::instance()->getPackage(uuid);
+		auto package = octoon::TextureImporter::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -156,16 +145,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = TextureImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString(), true);
+					auto package = octoon::TextureImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString(), true);
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				TextureImporter::instance()->save();
+				octoon::TextureImporter::instance()->save();
 			}
 			catch (...)
 			{
-				TextureImporter::instance()->save();
+				octoon::TextureImporter::instance()->save();
 			}
 		}
 	}
@@ -214,7 +203,7 @@ namespace unreal
 	{
 		listWidget_->clear();
 
-		for (auto& uuid : TextureImporter::instance()->getIndexList().getValue())
+		for (auto& uuid : octoon::TextureImporter::instance()->getIndexList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 
@@ -230,11 +219,11 @@ namespace unreal
 					if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this picture?")) == QMessageBox::Yes)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						TextureImporter::instance()->removePackage(uuid.toStdString());
+						octoon::TextureImporter::instance()->removePackage(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						TextureImporter::instance()->save();
+						octoon::TextureImporter::instance()->save();
 					}
 				}
 			}
@@ -474,7 +463,7 @@ namespace unreal
 		{
 			if (texture && this->isVisible())
 			{
-				auto package = TextureImporter::instance()->getPackage(texture);
+				auto package = octoon::TextureImporter::instance()->getPackage(texture);
 				if (package.is_object())
 				{
 					auto name = package["name"].get<nlohmann::json::string_t>();
@@ -645,7 +634,7 @@ namespace unreal
 		try
 		{
 			auto uuid = item->data(Qt::UserRole).toString();
-			auto package = TextureImporter::instance()->getPackage(uuid.toStdString());
+			auto package = octoon::TextureImporter::instance()->getPackage(uuid.toStdString());
 			if (package.is_object())
 			{
 				auto name = package["name"].get<nlohmann::json::string_t>();
@@ -660,7 +649,7 @@ namespace unreal
 				this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
 
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = TextureImporter::instance()->loadPackage(package);
+				this->profile_->environmentLightModule->texture = octoon::TextureImporter::instance()->loadPackage(package);
 			}
 		}
 		catch (const std::exception& e)
@@ -684,7 +673,7 @@ namespace unreal
 			if (!filepath.isEmpty())
 			{
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = TextureImporter::instance()->importTexture(filepath.toUtf8().toStdString(), true);
+				this->profile_->environmentLightModule->texture = octoon::TextureImporter::instance()->importTexture(filepath.toUtf8().toStdString(), true);
 
 				auto texel = this->profile_->environmentLightModule->texture.getValue();
 				if (texel)

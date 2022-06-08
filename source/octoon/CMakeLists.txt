@@ -157,6 +157,8 @@ SET(LOADER_LIST
 	${SOURCE_PATH}/pmx_loader.cpp
 	${HEADER_PATH}/texture_loader.h
 	${SOURCE_PATH}/texture_loader.cpp
+	${HEADER_PATH}/texture_importer.h
+	${SOURCE_PATH}/texture_importer.cpp
 	${HEADER_PATH}/vmd_loader.h
 	${SOURCE_PATH}/vmd_loader.cpp
 	${HEADER_PATH}/mdl_loader.h

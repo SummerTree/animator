@@ -1,9 +1,9 @@
 #include "environment_component.h"
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
-#include "../importer/texture_importer.h"
 
 #include <octoon/PMREM_loader.h>
+#include <octoon/texture_importer.h>
 #include <octoon/material/mesh_basic_material.h>
 
 namespace unreal

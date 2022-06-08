@@ -13,6 +13,7 @@ namespace octoon
 		Image(Image&& move) noexcept;
 		Image(const Image& move) noexcept;
 		Image(Format format, std::uint32_t width, std::uint32_t height) except;
+		Image(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except;
 		Image(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except;
 		Image(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase = 0, std::uint32_t layerBase = 0) except;
 		explicit Image(istream& stream, const char* type = nullptr) noexcept;
@@ -21,6 +22,7 @@ namespace octoon
 		~Image() noexcept;
 
 		bool create(Format format, std::uint32_t width, std::uint32_t height) except;
+		bool create(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) except;
 		bool create(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except;
 		bool create(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase = 0, std::uint32_t layerBase = 0) except;
 
