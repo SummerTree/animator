@@ -228,7 +228,7 @@ namespace unreal
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
 			if (!filepath.isEmpty())
 			{
-				this->profile_->cameraModule->animation = MotionImporter::instance()->importCameraMotion(filepath.toUtf8().data());
+				this->profile_->cameraModule->animation = octoon::MotionImporter::instance()->importCameraMotion(filepath.toUtf8().data());
 
 				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 				if (behaviour)
