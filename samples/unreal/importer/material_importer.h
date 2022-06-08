@@ -10,9 +10,7 @@
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
-
-#include "../unreal_component.h"
-#include "../module/resource_module.h"
+#include "../viewmodel/mutable_live_data.h"
 
 namespace unreal
 {
