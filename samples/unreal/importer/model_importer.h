@@ -2,7 +2,6 @@
 #define UNREAL_MODEL_IMPORTER_H_
 
 #include <qpixmap.h>
-#include <unreal_component.h>
 #include <octoon/game_object.h>
 #include <octoon/video/renderer.h>
 #include <octoon/pmx_loader.h>
@@ -10,53 +9,36 @@
 #include <octoon/light/environment_light.h>
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/runtime/singleton.h>
+#include <octoon/asset_importer.h>
 
 #include "../unreal_component.h"
 #include "../module/resource_module.h"
 
 namespace unreal
 {
-	class ModelImporter final
+	class ModelImporter final : public octoon::AssetImporter
 	{
 		OctoonDeclareSingleton(ModelImporter)
 	public:
 		ModelImporter() noexcept;
 		~ModelImporter() noexcept;
 
-		void open(std::string indexPath) noexcept(false);
-		void close() noexcept;
+		void close() noexcept override;
 
 		octoon::GameObjectPtr importModel(std::string_view path, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
+		octoon::GameObjectPtr loadPackage(const nlohmann::json& package, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
+		octoon::GameObjectPtr loadMetaData(const nlohmann::json& metadata, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept;
 
 		nlohmann::json createPackage(std::string_view path) noexcept(false);
 		nlohmann::json createPackage(const octoon::GameObjectPtr& gameObject) const noexcept;
 
-		nlohmann::json getPackage(std::string_view uuid) noexcept;
-		octoon::GameObjectPtr loadPackage(const nlohmann::json& package, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
-		void removePackage(std::string_view uuid) noexcept(false);
-
-		octoon::GameObjectPtr loadMetaData(const nlohmann::json& metadata, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept;
-
-		MutableLiveData<nlohmann::json>& getIndexList() noexcept;
-
-		void save() noexcept(false);
-
 	private:
 		void initRenderScene() noexcept(false);
-		void initPackageIndices() noexcept(false);
 		void createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, QPixmap& pixmap, int w, int h);
 
 	private:
-		std::string assertPath_;
-
 		std::uint32_t previewWidth_;
 		std::uint32_t previewHeight_;
-
-		MutableLiveData<nlohmann::json> modelIndexList_;
-
-		std::map<std::string, nlohmann::json> packageList_;
-		std::map<octoon::GameObjectWeakPtr, nlohmann::json, std::owner_less<octoon::GameObjectWeakPtr>> modelList_;
-		std::map<octoon::GameObjectWeakPtr, std::string, std::owner_less<octoon::GameObjectWeakPtr>> modelPathList_;
 
 		std::shared_ptr<octoon::PerspectiveCamera> camera_;
 		std::shared_ptr<octoon::Geometry> geometry_;

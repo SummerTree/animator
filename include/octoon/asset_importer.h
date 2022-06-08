@@ -10,7 +10,7 @@ namespace octoon
 	{
 	public:
 		AssetImporter() noexcept;
-		~AssetImporter() noexcept;
+		virtual ~AssetImporter() noexcept;
 
 		virtual void open(std::string indexPath) noexcept(false);
 		virtual void close() noexcept;

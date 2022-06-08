@@ -20,18 +20,7 @@ namespace unreal
 
 	ModelImporter::~ModelImporter() noexcept
 	{
-	}
-
-	void
-	ModelImporter::open(std::string indexPath) noexcept(false)
-	{
-		this->initRenderScene();
-
-		if (std::filesystem::exists(indexPath))
-		{
-			this->assertPath_ = indexPath;
-			this->initPackageIndices();
-		}
+		this->close();
 	}
 
 	void
@@ -54,7 +43,7 @@ namespace unreal
 			auto model = octoon::PMXLoader::load(path, flags);
 			if (model)
 			{
-				modelPathList_[model] = path;
+				assetPathList_[model] = path;
 				return model;
 			}
 		}
@@ -64,18 +53,12 @@ namespace unreal
 			if (model)
 			{
 				model->addComponent<octoon::MeshAnimationComponent>(path);
-				modelPathList_[model] = path;
+				assetPathList_[model] = path;
 				return model;
 			}
 		}
 
 		return nullptr;
-	}
-
-	MutableLiveData<nlohmann::json>&
-	ModelImporter::getIndexList() noexcept
-	{
-		return modelIndexList_;
 	}
 
 	nlohmann::json
@@ -157,7 +140,7 @@ namespace unreal
 					ifs.write(dump.c_str(), dump.size());
 				}
 
-				this->modelIndexList_.getValue().push_back(uuid);
+				this->indexList_.push_back(uuid);
 
 				return package;
 			}
@@ -176,8 +159,8 @@ namespace unreal
 	nlohmann::json
 	ModelImporter::createPackage(const octoon::GameObjectPtr& gameObject) const noexcept
 	{
-		auto it = modelList_.find(gameObject);
-		if (it != modelList_.end())
+		auto it = assetList_.find(gameObject);
+		if (it != assetList_.end())
 		{
 			auto& package = (*it).second;
 
@@ -186,8 +169,8 @@ namespace unreal
 
 			return json;
 		}
-		auto path = modelPathList_.find(gameObject);
-		if (path != modelPathList_.end())
+		auto path = assetPathList_.find(gameObject);
+		if (path != assetPathList_.end())
 		{
 			nlohmann::json json;
 			json["path"] = (char*)(*path).second.c_str();
@@ -196,26 +179,6 @@ namespace unreal
 		}
 
 		return std::string();
-	}
-
-	nlohmann::json
-	ModelImporter::getPackage(std::string_view uuid) noexcept
-	{
-		auto it = this->packageList_.find(std::string(uuid));
-		if (it != this->packageList_.end())
-			return this->packageList_[std::string(uuid)];
-		else
-		{
-			std::ifstream ifs(std::filesystem::path(assertPath_).append(uuid).append("package.json"));
-			if (ifs)
-			{
-				auto package = nlohmann::json::parse(ifs);
-				this->packageList_[std::string(uuid)] = package;
-				return package;
-			}
-		}
-
-		return nlohmann::json();
 	}
 
 	octoon::GameObjectPtr
@@ -227,38 +190,12 @@ namespace unreal
 			auto model = octoon::PMXLoader::load(path, flags);
 			if (model)
 			{
-				modelList_[model] = package;
+				assetList_[model] = package;
 				return model;
 			}
 		}
 
 		return nullptr;
-	}
-
-	void
-	ModelImporter::removePackage(std::string_view uuid) noexcept(false)
-	{
-		auto& indexList = this->modelIndexList_.getValue();
-
-		for (auto index = indexList.begin(); index != indexList.end(); ++index)
-		{
-			if ((*index).get<nlohmann::json::string_t>() == uuid)
-			{
-				auto packagePath = std::filesystem::path(assertPath_).append(uuid).u16string();
-
-				for (auto& it : std::filesystem::recursive_directory_iterator(packagePath))
-					std::filesystem::permissions(it, std::filesystem::perms::owner_write);
-
-				std::filesystem::remove_all(packagePath);
-
-				auto package = this->packageList_.find(std::string(uuid));
-				if (package != this->packageList_.end())
-					this->packageList_.erase(package);
-
-				indexList.erase(index);
-				break;
-			}
-		}
 	}
 
 	octoon::GameObjectPtr
@@ -279,26 +216,6 @@ namespace unreal
 		}
 
 		return nullptr;
-	}
-
-	void
-	ModelImporter::save() noexcept(false)
-	{
-		try
-		{
-			if (!std::filesystem::exists(assertPath_))
-				std::filesystem::create_directory(assertPath_);
-
-			std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
-			if (ifs)
-			{
-				auto data = this->modelIndexList_.getValue().dump();
-				ifs.write(data.c_str(), data.size());
-			}
-		}
-		catch (...)
-		{
-		}
 	}
 
 	void
@@ -425,57 +342,6 @@ namespace unreal
 			scene_->addRenderObject(camera_.get());
 			scene_->addRenderObject(environmentLight_.get());
 			scene_->addRenderObject(geometry_.get());
-		}
-	}
-
-	void
-	ModelImporter::initPackageIndices() noexcept(false)
-	{
-		auto& indexList = this->modelIndexList_.getValue();
-
-		std::ifstream indexStream(assertPath_ + "/index.json");
-		if (indexStream)
-			indexList = nlohmann::json::parse(indexStream);
-
-		bool needUpdateIndexFile = false;
-
-		std::set<std::string> indexSet;
-
-		for (auto& it : indexList)
-		{		 
-			if (!std::filesystem::exists(std::filesystem::path(assertPath_).append(it.get<nlohmann::json::string_t>())))
-				needUpdateIndexFile = true;
-			else
-				indexSet.insert(it.get<nlohmann::json::string_t>());
-		}
-
-		for (auto& it : std::filesystem::directory_iterator(assertPath_))
-		{
-			if (std::filesystem::is_directory(it))
-			{
-				auto filepath = it.path();
-				auto filename = filepath.filename();
-
-				auto index = indexSet.find(filename.string());
-				if (index == indexSet.end())
-				{
-					if (std::filesystem::exists(filepath.append("package.json")))
-					{
-						needUpdateIndexFile = true;
-						indexSet.insert(filename.string());
-					}
-				}
-			}
-		}
-
-		if (needUpdateIndexFile)
-		{
-			nlohmann::json json;
-			for (auto& it : indexSet)
-				json += it;
-
-			indexList = json;
-			this->save();
 		}
 	}
 }
