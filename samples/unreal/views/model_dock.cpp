@@ -58,7 +58,7 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		ModelImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
+		/*ModelImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
 		{
 			if (this->isVisible())
 			{
@@ -67,7 +67,7 @@ namespace unreal
 				for (auto& uuid : ModelImporter::instance()->getIndexList().getValue())
 					this->addItem(uuid.get<nlohmann::json::string_t>());
 			}
-		};
+		};*/
 
 		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
@@ -148,7 +148,7 @@ namespace unreal
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						ModelImporter::instance()->save();
+						ModelImporter::instance()->saveAssets();
 					}
 				}
 			}
@@ -186,11 +186,11 @@ namespace unreal
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				ModelImporter::instance()->save();
+				ModelImporter::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				ModelImporter::instance()->save();
+				ModelImporter::instance()->saveAssets();
 			}
 		}
 	}
@@ -248,7 +248,7 @@ namespace unreal
 		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : ModelImporter::instance()->getIndexList().getValue())
+		for (auto& uuid : ModelImporter::instance()->getIndexList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 
