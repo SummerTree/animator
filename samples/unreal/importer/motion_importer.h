@@ -40,11 +40,6 @@ namespace unreal
 
 		void clearCache() noexcept;
 
-		virtual const std::type_info& type_info() const noexcept
-		{
-			return typeid(MotionImporter);
-		}
-
 	private:
 		void initPackageIndices() noexcept(false);
 

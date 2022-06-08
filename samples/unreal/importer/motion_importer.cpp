@@ -289,20 +289,14 @@ namespace unreal
 	void
 	MotionImporter::save() noexcept(false)
 	{
-		try
-		{
-			if (!std::filesystem::exists(assertPath_))
-				std::filesystem::create_directory(assertPath_);
+		if (!std::filesystem::exists(assertPath_))
+			std::filesystem::create_directory(assertPath_);
 
-			std::ofstream ifs(assertPath_ + u8"/index.json", std::ios_base::binary);
-			if (ifs)
-			{
-				auto data = indexList_.getValue().dump();
-				ifs.write(data.c_str(), data.size());
-			}
-		}
-		catch (...)
+		std::ofstream ifs(assertPath_ + u8"/index.json", std::ios_base::binary);
+		if (ifs)
 		{
+			auto data = indexList_.getValue().dump();
+			ifs.write(data.c_str(), data.size());
 		}
 	}
 
