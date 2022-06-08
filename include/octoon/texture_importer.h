@@ -16,11 +16,10 @@ namespace octoon
 		~TextureImporter() noexcept;
 
 		std::shared_ptr<octoon::GraphicsTexture> importTexture(std::string_view path, bool generatorMipmap = false) noexcept(false);
+		std::shared_ptr<octoon::GraphicsTexture> loadPackage(const nlohmann::json& package, std::string_view outputPath = "") noexcept(false);
 
 		nlohmann::json createPackage(std::string_view path, bool generateMipmap = false) noexcept(false);
 		nlohmann::json createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, std::string_view outputPath = "") noexcept(false);
-
-		std::shared_ptr<octoon::GraphicsTexture> loadPackage(const nlohmann::json& package, std::string_view outputPath = "") noexcept(false);
 	};
 }
 

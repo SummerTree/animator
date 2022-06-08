@@ -35,6 +35,34 @@ namespace octoon
 		return nullptr;
 	}
 
+	std::shared_ptr<octoon::GraphicsTexture>
+	TextureImporter::loadPackage(const nlohmann::json& package, std::string_view outputPath) noexcept(false)
+	{
+		if (package.find("path") != package.end())
+		{
+			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
+			auto it = this->assetCache_.find(uuid);
+			if (it != this->assetCache_.end())
+				return this->assetCache_[uuid]->downcast_pointer<octoon::GraphicsTexture>();
+
+			bool generateMipmap = false;
+			if (package.find("mipmap") != package.end())
+				generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
+
+			auto texture = octoon::TextureLoader::load(package["path"].get<nlohmann::json::string_t>(), generateMipmap);
+			if (texture)
+			{	
+				packageList_[uuid] = package;
+				assetCache_[uuid] = texture;
+				assetList_[texture] = package;
+
+				return texture;
+			}
+		}
+
+		return nullptr;
+	}
+
 	nlohmann::json
 	TextureImporter::createPackage(std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
@@ -180,33 +208,5 @@ namespace octoon
 		}
 
 		return nlohmann::json();
-	}
-
-	std::shared_ptr<octoon::GraphicsTexture>
-	TextureImporter::loadPackage(const nlohmann::json& package, std::string_view outputPath) noexcept(false)
-	{
-		if (package.find("path") != package.end())
-		{
-			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-			auto it = this->assetCache_.find(uuid);
-			if (it != this->assetCache_.end())
-				return this->assetCache_[uuid]->downcast_pointer<octoon::GraphicsTexture>();
-
-			bool generateMipmap = false;
-			if (package.find("mipmap") != package.end())
-				generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
-
-			auto texture = octoon::TextureLoader::load(package["path"].get<nlohmann::json::string_t>(), generateMipmap);
-			if (texture)
-			{	
-				packageList_[uuid] = package;
-				assetCache_[uuid] = texture;
-				assetList_[texture] = package;
-
-				return texture;
-			}
-		}
-
-		return nullptr;
 	}
 }
