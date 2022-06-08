@@ -1,7 +1,7 @@
 #include "camera_module.h"
-#include "../importer/motion_importer.h"
 #include <octoon/vmd_loader.h>
 #include <octoon/io/fstream.h>
+#include <octoon/motion_importer.h>
 
 namespace unreal
 {
@@ -69,7 +69,7 @@ namespace unreal
 
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
 		{
-			nlohmann::json animationJson = MotionImporter::instance()->createMetadata(this->animation.getValue());
+			nlohmann::json animationJson = octoon::MotionImporter::instance()->createMetadata(this->animation.getValue());
 			if (!animationJson.is_object())
 			{
 				auto root = std::string(path).substr(0, path.find_last_of('/')) + "/Assets/" + this->animation.getValue()->name + ".vmd";

@@ -1,10 +1,10 @@
 #include "entities_module.h"
 #include "../importer/model_importer.h"
-#include "../importer/motion_importer.h"
 #include "../importer/material_importer.h"
 #include <octoon/pmx_loader.h>
 #include <octoon/vmd_loader.h>
 #include <octoon/animator_component.h>
+#include <octoon/motion_importer.h>
 #include <octoon/skinned_mesh_renderer_component.h>
 #include <octoon/mesh_animation_component.h>
 #include <octoon/transform_component.h>
@@ -78,7 +78,7 @@ namespace unreal
 						if (animationJson.find("data") == animationJson.end())
 							continue;
 
-						auto animation = MotionImporter::instance()->loadPackage(animationJson["data"]);
+						auto animation = octoon::MotionImporter::instance()->loadPackage(animationJson["data"]);
 						if (animation)
 						{
 							auto type = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
@@ -170,7 +170,7 @@ namespace unreal
 							auto animationPath = root + "/Animation";
 
 							nlohmann::json animationJson;
-							animationJson["data"] = MotionImporter::instance()->createPackage(animation->getAnimation(), animationPath.c_str());
+							animationJson["data"] = octoon::MotionImporter::instance()->createPackage(animation->getAnimation(), animationPath.c_str());
 							animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
 
 							json["animation"].push_back(animationJson);

@@ -2,10 +2,9 @@
 #include "../utils/pmm_loader.h"
 #include "../utils/ass_loader.h"
 #include "../importer/model_importer.h"
-#include "../importer/motion_importer.h"
 #include "../importer/material_importer.h"
 #include <octoon/texture_importer.h>
-
+#include <octoon/motion_importer.h>
 #include <filesystem>
 
 namespace unreal
@@ -116,7 +115,7 @@ namespace unreal
 		else if (ext == ".mdl")
 			MaterialImporter::instance()->createPackage(path);
 		else if (ext == ".vmd")
-			MotionImporter::instance()->createPackage(path);
+			octoon::MotionImporter::instance()->createPackage(path);
 		else if (ext == ".hdr")
 			octoon::TextureImporter::instance()->createPackage(path);
 	}
@@ -268,7 +267,7 @@ namespace unreal
 		context_->profile = profile_.get();
 
 		ModelImporter::instance()->open(profile_->resourceModule->modelPath);
-		MotionImporter::instance()->open(profile_->resourceModule->motionPath);
+		octoon::MotionImporter::instance()->open(profile_->resourceModule->motionPath);
 		octoon::TextureImporter::instance()->open(profile_->resourceModule->hdriPath);
 		MaterialImporter::instance()->open(profile_->resourceModule->materialPath);
 
@@ -382,7 +381,7 @@ namespace unreal
 		}
 
 		ModelImporter::instance()->close();
-		MotionImporter::instance()->close();
+		octoon::MotionImporter::instance()->close();
 		octoon::TextureImporter::instance()->close();
 		MaterialImporter::instance()->close();
 	}

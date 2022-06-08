@@ -1,7 +1,7 @@
 #include "camera_dock.h"
-#include "../importer/motion_importer.h"
 #include <octoon/io/fstream.h>
 #include <octoon/vmd_loader.h>
+#include <octoon/motion_importer.h>
 #include <qapplication.h>
 #include <qevent.h>
 #include <qfiledialog.h>
