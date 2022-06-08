@@ -2,6 +2,7 @@
 #include "unreal_behaviour.h"
 #include <octoon/mesh/cube_wireframe_mesh.h>
 #include <octoon/material/mesh_color_material.h>
+#include <octoon/game_object_manager.h>
 
 namespace unreal
 {
@@ -25,7 +26,7 @@ namespace unreal
 			if (cameraComponent)
 			{
 				octoon::Raycaster raycaster(cameraComponent->screenToRay(octoon::math::float2(x, y)));
-				auto& intersects = raycaster.intersectObjects(preofile->entitiesModule->objects);
+				auto& intersects = raycaster.intersectObjects(octoon::GameObjectManager::instance()->instances());
 				if (!intersects.empty())
 					return intersects[0];
 			}
@@ -71,12 +72,14 @@ namespace unreal
 		this->gizmoSelectedMtl_ = std::make_shared<octoon::MeshColorMaterial>(octoon::math::float3(0.85f, 0.15f, 0.30f));
 
 		gizmoHover_ = octoon::GameObject::create(std::string_view("GizmoHover"));
+		gizmoHover_->setRaycastEnable(false);
 		gizmoHover_->addComponent<octoon::MeshFilterComponent>(octoon::CubeWireframeMesh::create(1.0f, 1.0f, 1.0f));
 		auto meshRenderHover = gizmoHover_->addComponent<octoon::MeshRendererComponent>(this->gizmoHoverMtl_);
 		meshRenderHover->setVisible(false);
 		meshRenderHover->setRenderOrder(1);
 
 		gizmoSelected_ = octoon::GameObject::create(std::string_view("GizmoSelect"));
+		gizmoSelected_->setRaycastEnable(false);
 		gizmoSelected_->addComponent<octoon::MeshFilterComponent>(octoon::CubeWireframeMesh::create(1.0f, 1.0f, 1.0f));
 		auto meshRenderSelected = gizmoSelected_->addComponent<octoon::MeshRendererComponent>(this->gizmoSelectedMtl_);
 		meshRenderSelected->setVisible(false);

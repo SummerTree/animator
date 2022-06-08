@@ -160,6 +160,7 @@ namespace unreal
 		environmentMaterial->setDepthWriteEnable(false);
 
 		auto enviromentLight = octoon::GameObject::create(std::string_view("EnvironmentLight"));
+		enviromentLight->setRaycastEnable(false);
 		enviromentLight->addComponent<octoon::EnvironmentLightComponent>();
 		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setColor(octoon::math::srgb2linear<float>(this->getModel()->color));
 		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setIntensity(this->getModel()->intensity);

@@ -75,9 +75,12 @@ namespace octoon
 	Raycaster::intersectObject(GameObject& object) noexcept
 	{
 		this->hits.clear();
-		this->intersectSingleObject(object);
 
-		std::sort(this->hits.begin(), this->hits.end(), [](const RaycastHit& a, const RaycastHit& b) { return a.distance < b.distance; });
+		if (object.getRaycastEnable())
+		{
+			this->intersectSingleObject(object);
+			std::sort(this->hits.begin(), this->hits.end(), [](const RaycastHit& a, const RaycastHit& b) { return a.distance < b.distance; });
+		}
 
 		return this->hits;
 	}
@@ -89,7 +92,7 @@ namespace octoon
 
 		for (auto& object : entities)
 		{
-			if (object)
+			if (object && object->getRaycastEnable())
 				this->intersectSingleObject(*object);
 		}
 
@@ -105,7 +108,7 @@ namespace octoon
 
 		for (auto& object : entities)
 		{
-			if (object)
+			if (object && object->getRaycastEnable())
 				this->intersectSingleObject(*object);
 		}
 

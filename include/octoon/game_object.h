@@ -30,6 +30,9 @@ namespace octoon
 		void setLayer(std::uint8_t layer) noexcept;
 		std::uint8_t getLayer() const noexcept;
 
+		void setRaycastEnable(bool enable) noexcept;
+		bool getRaycastEnable() const noexcept;
+
 		std::size_t id() const noexcept;
 
 		void setParent(const GameObjectPtr& parent) noexcept;
@@ -135,6 +138,7 @@ namespace octoon
 
 	private:
 		bool active_;
+		bool raycastEnable_;
 
 		std::uint8_t layer_;
 		std::size_t instance_id_;

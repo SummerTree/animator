@@ -10,6 +10,7 @@ namespace octoon
 
 	GameObject::GameObject() noexcept
 		: active_(true)
+		, raycastEnable_(true)
 		, layer_(0)
 	{
 		GameObjectManager::instance()->_instanceObject(this, instance_id_);
@@ -121,6 +122,18 @@ namespace octoon
 	GameObject::getLayer() const noexcept
 	{
 		return layer_;
+	}
+
+	void
+	GameObject::setRaycastEnable(bool enable) noexcept
+	{
+		raycastEnable_ = enable;
+	}
+
+	bool
+	GameObject::getRaycastEnable() const noexcept
+	{
+		return raycastEnable_;
 	}
 
 	std::size_t
