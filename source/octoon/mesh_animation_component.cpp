@@ -465,6 +465,10 @@ namespace octoon
 
 		json["path"] = this->path_;
 		json["time"] = this->animationState_.time;
+
+		for (auto& it : materials_)
+		{
+		}
 	}
 
 	GameComponentPtr
@@ -664,13 +668,17 @@ namespace octoon
 				AnimationData childData;
 				childData.object = std::make_shared<IPolyMesh>(child);
 
-				auto gameObject = GameObject::create(std::string_view(child.getName()));
-
-				auto mf = gameObject->addComponent<MeshFilterComponent>();
+				auto name = child.getName();
+				auto gameObject = GameObject::create(std::string_view(name));
+				gameObject->addComponent<MeshFilterComponent>();
 
 				auto meshRender = gameObject->addComponent<MeshRendererComponent>();
 				meshRender->setGlobalIllumination(true);
-				meshRender->setMaterial(std::make_shared<MeshStandardMaterial>(math::float3(0.9f, 0.9f, 0.9f)));
+
+				if (materials_.contains(name))
+					meshRender->setMaterial(materials_[name]);
+				else
+					meshRender->setMaterial(std::make_shared<MeshStandardMaterial>(math::float3(0.9f, 0.9f, 0.9f)));
 
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
 				mesh->createAnimationData(childData);

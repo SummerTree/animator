@@ -2,6 +2,7 @@
 #define OCTOON_MESH_ANIMATION_COMPONENT_H_
 
 #include <octoon/mesh/mesh.h>
+#include <octoon/material/material.h>
 #include <octoon/animation_component.h>
 
 namespace octoon
@@ -64,6 +65,7 @@ namespace octoon
 		AnimatorStateInfo<float> animationState_;
 
 		GameObjectPtr gameObject_;
+		std::unordered_map<std::string, MaterialPtr> materials_;
 		std::shared_ptr<AnimationData> animationData_;
 	};
 }
