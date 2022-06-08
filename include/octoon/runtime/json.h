@@ -8,12 +8,4 @@
 
 #pragma warning(pop) 
 
-namespace octoon
-{
-	namespace runtime
-	{
-		using json = nlohmann::json;
-	}
-}
-
 #endif

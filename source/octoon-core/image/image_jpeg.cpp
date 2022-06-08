@@ -160,7 +160,7 @@ namespace octoon
 		try
 		{
 			if (::setjmp(jerrmgr.setjmp_buffer))
-				throw runtime::runtime_error::create("::setjmp() failed.");
+				throw runtime_error::create("::setjmp() failed.");
 
 			::jpeg_create_decompress(&cinfo);
 
@@ -181,7 +181,7 @@ namespace octoon
 			::jpeg_read_header(&cinfo, TRUE);
 
 			if (!image.create(Format::R8G8B8SRGB, cinfo.image_width, cinfo.image_height))
-				throw runtime::runtime_error::create("Image::create() failed.");
+				throw runtime_error::create("Image::create() failed.");
 
 			JSAMPARRAY data = (JSAMPARRAY)image.data();
 			JDIMENSION stride = cinfo.image_width * cinfo.num_components;
@@ -270,7 +270,7 @@ namespace octoon
 			::jpeg_create_compress(&cinfo);
 
 			if (::setjmp(jerrmgr.setjmp_buffer))
-				throw runtime::runtime_error::create("::setjmp() failed.");
+				throw runtime_error::create("::setjmp() failed.");
 
 			cinfo.image_width = image.width();
 			cinfo.image_height = image.height();

@@ -24,7 +24,7 @@ namespace unreal
 	}
 
 	void 
-	EnvironmentModule::load(octoon::runtime::json& reader, std::string_view profilePath) noexcept
+	EnvironmentModule::load(nlohmann::json& reader, std::string_view profilePath) noexcept
 	{
 		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
@@ -45,7 +45,7 @@ namespace unreal
 	}
 
 	void 
-	EnvironmentModule::save(octoon::runtime::json& writer, std::string_view profilePath) noexcept
+	EnvironmentModule::save(nlohmann::json& writer, std::string_view profilePath) noexcept
 	{
 		writer["enable"] = this->enable.getValue();
 		writer["intensity"] = this->intensity.getValue();

@@ -5,7 +5,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(Camera, runtime::RttiObject, "Camera")
+	OctoonImplementSubClass(Camera, RttiObject, "Camera")
 
 	Camera::Camera() noexcept
 		: viewport_(0.0f, 0.0f, 1.0f, 1.0f)
@@ -262,7 +262,7 @@ namespace octoon
 		colorTextureDesc.setTexFormat(format);
 		edgeTexture_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createTexture(colorTextureDesc);
 		if (!edgeTexture_)
-			throw runtime::runtime_error::create("createTexture() failed");
+			throw runtime_error::create("createTexture() failed");
 
 		GraphicsTextureDesc depthTextureDesc;
 		depthTextureDesc.setWidth(w);
@@ -272,7 +272,7 @@ namespace octoon
 		depthTextureDesc.setTexFormat(depthStencil);
 		depthTexture_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createTexture(depthTextureDesc);
 		if (!depthTexture_)
-			throw runtime::runtime_error::create("createTexture() failed");
+			throw runtime_error::create("createTexture() failed");
 
 		GraphicsFramebufferDesc framebufferDesc;
 		framebufferDesc.setWidth(w);
@@ -283,7 +283,7 @@ namespace octoon
 
 		colorFramebuffer_ = Renderer::instance()->getScriptableRenderContext()->getDevice()->createFramebuffer(framebufferDesc);
 		if (!colorFramebuffer_)
-			throw runtime::runtime_error::create("createFramebuffer() failed");
+			throw runtime_error::create("createFramebuffer() failed");
 
 		this->setDirty(true);
 	}

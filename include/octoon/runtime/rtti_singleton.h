@@ -6,37 +6,34 @@
 
 namespace octoon
 {
-	namespace runtime
+	template<typename T, typename = std::enable_if_t<std::is_class<T>::value>>
+	class RttiSingleton : public RttiObject
 	{
-		template<typename T, typename = std::enable_if_t<std::is_class<T>::value>>
-		class RttiSingleton : public RttiObject
+	public:
+		static T* instance() noexcept
 		{
-		public:
-			static T* instance() noexcept
-			{
-				return instance_;
-			}
-
-		protected:
-			RttiSingleton(void) = default;
-			virtual ~RttiSingleton(void) = default;
-
-		private:
-			RttiSingleton(const RttiSingleton&) = delete;
-			RttiSingleton& operator=(const RttiSingleton&) = delete;
-
-		private:
-			static T* instance_;
-		};
-
-		namespace singleton
-		{
-			OCTOON_EXPORT RttiObject* instance(const Rtti* rtti) noexcept;
-			OCTOON_EXPORT RttiObject* instance(const Rtti& rtti) noexcept;
+			return instance_;
 		}
 
-		template<typename _Tx, typename _Ty> _Tx* RttiSingleton<_Tx, _Ty>::instance_ = singleton::instance(_Tx::RTTI)->template downcast<_Tx>();
+	protected:
+		RttiSingleton(void) = default;
+		virtual ~RttiSingleton(void) = default;
+
+	private:
+		RttiSingleton(const RttiSingleton&) = delete;
+		RttiSingleton& operator=(const RttiSingleton&) = delete;
+
+	private:
+		static T* instance_;
+	};
+
+	namespace singleton
+	{
+		OCTOON_EXPORT RttiObject* instance(const Rtti* rtti) noexcept;
+		OCTOON_EXPORT RttiObject* instance(const Rtti& rtti) noexcept;
 	}
+
+	template<typename _Tx, typename _Ty> _Tx* RttiSingleton<_Tx, _Ty>::instance_ = singleton::instance(_Tx::RTTI)->template downcast<_Tx>();
 }
 
 #endif

@@ -18,8 +18,8 @@ namespace unreal
 		virtual void reset() noexcept = 0;
 		virtual void onValidate() noexcept;
 
-		virtual void load(octoon::runtime::json& reader, std::string_view path) noexcept(false) = 0;
-		virtual void save(octoon::runtime::json& reader, std::string_view path) noexcept(false) = 0;
+		virtual void load(nlohmann::json& reader, std::string_view path) noexcept(false) = 0;
+		virtual void save(nlohmann::json& reader, std::string_view path) noexcept(false) = 0;
 
 		virtual void disconnect() noexcept;
 

@@ -9,34 +9,31 @@
 
 namespace octoon
 {
-	namespace runtime
+	class RttiObject;
+
+	class OCTOON_EXPORT Rtti
 	{
-		class RttiObject;
+	public:
+		typedef RttiObject*(*RttiConstruct)();
+	public:
+		Rtti(std::string_view name, RttiConstruct creator, const Rtti* parent) noexcept;
+		~Rtti() = default;
 
-		class OCTOON_EXPORT Rtti
-		{
-		public:
-			typedef RttiObject*(*RttiConstruct)();
-		public:
-			Rtti(std::string_view name, RttiConstruct creator, const Rtti* parent) noexcept;
-			~Rtti() = default;
+		std::shared_ptr<class RttiObject> create() const noexcept(false); // throw(std::bad_alloc)
 
-			std::shared_ptr<class RttiObject> create() const noexcept(false); // throw(std::bad_alloc)
+		const Rtti* getParent() const noexcept;
 
-			const Rtti* getParent() const noexcept;
+		const std::string& type_name() const noexcept;
 
-			const std::string& type_name() const noexcept;
+		bool isDerivedFrom(const Rtti* other) const noexcept;
+		bool isDerivedFrom(const Rtti& other) const noexcept;
+		bool isDerivedFrom(std::string_view name) const noexcept;
 
-			bool isDerivedFrom(const Rtti* other) const noexcept;
-			bool isDerivedFrom(const Rtti& other) const noexcept;
-			bool isDerivedFrom(std::string_view name) const noexcept;
-
-		private:
-			std::string name_;
-			const Rtti* parent_;
-			RttiConstruct construct_;
-		};
-	}
+	private:
+		std::string name_;
+		const Rtti* parent_;
+		RttiConstruct construct_;
+	};
 }
 
 #endif

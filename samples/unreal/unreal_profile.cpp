@@ -65,7 +65,7 @@ namespace unreal
 		std::ifstream stream(path_);
 		if (stream)
 		{
-			auto json = octoon::runtime::json::parse(stream);
+			auto json = nlohmann::json::parse(stream);
 
 			this->path = path_;
 
@@ -125,7 +125,7 @@ namespace unreal
 			std::ofstream stream(path_);
 			if (stream)
 			{
-				octoon::runtime::json json;
+				nlohmann::json json;
 
 				this->path = path_;
 				this->physicsModule->save(json["physics"], path_);

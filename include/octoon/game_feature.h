@@ -8,9 +8,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameFeature : public runtime::RttiObject
+	class OCTOON_EXPORT GameFeature : public RttiObject
 	{
-		OctoonDeclareSubInterface(GameFeature, runtime::RttiObject)
+		OctoonDeclareSubInterface(GameFeature, RttiObject)
 	public:
 		GameFeature() noexcept;
 		virtual ~GameFeature() noexcept;
@@ -22,8 +22,8 @@ namespace octoon
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		T* getFeature() const noexcept { return dynamic_cast<T*>(this->getFeature(T::RTTI)); }
-		GameFeature* getFeature(const runtime::Rtti* rtti) const noexcept;
-		GameFeature* getFeature(const runtime::Rtti& rtti) const noexcept;
+		GameFeature* getFeature(const Rtti* rtti) const noexcept;
+		GameFeature* getFeature(const Rtti& rtti) const noexcept;
 		const GameFeatures& getFeaturs() const noexcept;
 
 		void sendMessage(std::string_view event, const std::any& data = std::any()) noexcept;

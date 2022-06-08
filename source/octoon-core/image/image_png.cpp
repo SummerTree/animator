@@ -79,15 +79,15 @@ namespace octoon
 			info.stream.in = &stream;
 
 			if (::setjmp(info.jmpbuf))
-				throw runtime::runtime_error::create("setjmp() failed");
+				throw runtime_error::create("setjmp() failed");
 
 			png_ptr = ::png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, &png_err, &png_warn);
 			if (!png_ptr)
-				throw runtime::runtime_error::create("png_create_read_struct() failed.");
+				throw runtime_error::create("png_create_read_struct() failed.");
 
 			info_ptr = ::png_create_info_struct(png_ptr);
 			if (!info_ptr)
-				throw runtime::runtime_error::create("png_create_info_struct() failed.");
+				throw runtime_error::create("png_create_info_struct() failed.");
 
 			::png_set_strip_16(png_ptr);
 			::png_set_packing(png_ptr);
@@ -100,7 +100,7 @@ namespace octoon
 			int bit_depth, color_type, interlace_type;
 
 			if (!::png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, 0, 0))
-				throw runtime::runtime_error::create("png_get_IHDR() failed.");
+				throw runtime_error::create("png_get_IHDR() failed.");
 
 			if (interlace_type == PNG_INTERLACE_ADAM7)
 				::png_set_interlace_handling(png_ptr);
@@ -135,7 +135,7 @@ namespace octoon
 				}
 
 				if (!image.create(format, width, height))
-					throw runtime::runtime_error::create("Image::create() failed.");
+					throw runtime_error::create("Image::create() failed.");
 
 				std::size_t columnLength = width * pixelSize;
 				std::uint8_t* pixel = (std::uint8_t*)image.data();
@@ -183,19 +183,19 @@ namespace octoon
 			info.stream.out = &stream;
 
 			if (::setjmp(info.jmpbuf))
-				throw runtime::runtime_error::create("setjmp() failed");
+				throw runtime_error::create("setjmp() failed");
 
 			png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
 			if (!png_ptr)
-				throw runtime::runtime_error::create(std::string("png_create_write_struct() failed"));
+				throw runtime_error::create(std::string("png_create_write_struct() failed"));
 
 			info_ptr = png_create_info_struct(png_ptr);
 			if (!info_ptr)
-				throw runtime::runtime_error::create(std::string("png_create_info_struct() failed"));
+				throw runtime_error::create(std::string("png_create_info_struct() failed"));
 
 			auto palette = std::make_unique<png_color[]>(PNG_MAX_PALETTE_LENGTH);
 			if (!palette)
-				throw runtime::runtime_error::create(std::string("png_malloc() failed"));
+				throw runtime_error::create(std::string("png_malloc() failed"));
 
 			::png_set_strip_16(png_ptr);
 			::png_set_packing(png_ptr);

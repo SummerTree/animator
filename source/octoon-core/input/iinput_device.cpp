@@ -4,6 +4,6 @@ namespace octoon
 {
 	namespace input
 	{
-		OctoonImplementSubInterface(IInputDevice, runtime::RttiObject, "IInputDevice")
+		OctoonImplementSubInterface(IInputDevice, RttiObject, "IInputDevice")
 	}
 }

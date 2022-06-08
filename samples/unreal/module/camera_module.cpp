@@ -29,7 +29,7 @@ namespace unreal
 	}
 
 	void 
-	CameraModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
+	CameraModule::load(nlohmann::json& reader, std::string_view path) noexcept
 	{
 		if (reader.contains("useDepthOfFiled"))
 			this->useDepthOfFiled = reader["useDepthOfFiled"].get<nlohmann::json::boolean_t>();
@@ -57,7 +57,7 @@ namespace unreal
 	}
 
 	void 
-	CameraModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
+	CameraModule::save(nlohmann::json& writer, std::string_view path) noexcept
 	{
 		writer["useDepthOfFiled"] = this->useDepthOfFiled.getValue();
 		writer["fov"] = this->fov.getValue();

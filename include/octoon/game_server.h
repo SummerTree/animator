@@ -9,9 +9,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameServer final : public runtime::RttiObject
+	class OCTOON_EXPORT GameServer final : public RttiObject
 	{
-		OctoonDeclareSubClass(GameServer, runtime::RttiObject)
+		OctoonDeclareSubClass(GameServer, RttiObject)
 	public:
 		GameServer() noexcept;
 		~GameServer() noexcept;
@@ -42,15 +42,15 @@ namespace octoon
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		T* getFeature() const noexcept { return dynamic_cast<T*>(this->getFeature(T::RTTI)); }
-		GameFeature* getFeature(const runtime::Rtti* rtti) const noexcept;
-		GameFeature* getFeature(const runtime::Rtti& rtti) const noexcept;
+		GameFeature* getFeature(const Rtti* rtti) const noexcept;
+		GameFeature* getFeature(const Rtti& rtti) const noexcept;
 
 		const GameFeatures& getFeatures() const noexcept;
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		void removeFeature() noexcept { this->removeFeature(T::RTTI); }
-		void removeFeature(const runtime::Rtti* rtti) noexcept;
-		void removeFeature(const runtime::Rtti& rtti) noexcept;
+		void removeFeature(const Rtti* rtti) noexcept;
+		void removeFeature(const Rtti& rtti) noexcept;
 		void removeFeature(const GameFeaturePtr& feature) noexcept;
 
 		void cleanupAll() noexcept;

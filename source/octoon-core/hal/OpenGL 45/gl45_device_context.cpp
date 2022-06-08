@@ -526,7 +526,7 @@ namespace octoon
 		}
 
 		void
-		GL45DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept
+		GL45DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2, SamplerFilter filter) noexcept
 		{
 			assert(src);
 			assert(src->isInstanceOf<GL45Framebuffer>());
@@ -539,7 +539,8 @@ namespace octoon
 			auto readFramebuffer = this->_readFramebuffer->getInstanceID();
 			auto drawFramebuffer = this->_drawFramebuffer ? this->_drawFramebuffer->getInstanceID() : GL_NONE;
 
-			glBlitNamedFramebuffer(readFramebuffer, drawFramebuffer, (GLint)v1.left, (GLint)v1.top, (GLint)v1.width, (GLint)v1.height, (GLint)v2.left, (GLint)v2.top, (GLint)v2.width, (GLint)v2.height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+			GLenum mode = (filter == SamplerFilter::Linear ? GL_LINEAR : GL_NEAREST);
+			glBlitNamedFramebuffer(readFramebuffer, drawFramebuffer, (GLint)v1.left, (GLint)v1.top, (GLint)v1.width, (GLint)v1.height, (GLint)v2.left, (GLint)v2.top, (GLint)v2.width, (GLint)v2.height, GL_COLOR_BUFFER_BIT, mode);
 		}
 
 		void

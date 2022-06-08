@@ -6,9 +6,9 @@
 
 namespace octoon
 {
-	class GraphicsDeviceProperty : public runtime::RttiObject
+	class GraphicsDeviceProperty : public RttiObject
 	{
-		OctoonDeclareSubInterface(GraphicsDeviceProperty, runtime::RttiObject)
+		OctoonDeclareSubInterface(GraphicsDeviceProperty, RttiObject)
 	public:
 		GraphicsDeviceProperty() noexcept;
 		virtual ~GraphicsDeviceProperty() noexcept;

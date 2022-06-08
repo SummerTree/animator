@@ -413,15 +413,15 @@ namespace octoon
 			colorTextureDesc.setTexFormat(GraphicsFormat::R32G32B32A32SFloat);
 			colorTexture_ = context.getDevice()->createTexture(colorTextureDesc);
 			if (!colorTexture_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			normalTexture_ = context.getDevice()->createTexture(colorTextureDesc);
 			if (!normalTexture_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			albedoTexture_ = context.getDevice()->createTexture(colorTextureDesc);
 			if (!albedoTexture_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setWidth(this->width_);
@@ -430,7 +430,7 @@ namespace octoon
 			depthTextureDesc.setTexFormat(GraphicsFormat::D32_SFLOAT);
 			auto depthTexture_ = context.getDevice()->createTexture(depthTextureDesc);
 			if (!depthTexture_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
 			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R32G32B32SFloat));
@@ -445,7 +445,7 @@ namespace octoon
 
 			this->framebuffer_ = context.getDevice()->createFramebuffer(framebufferDesc);
 			if (!this->framebuffer_)
-				throw runtime::runtime_error::create("createFramebuffer() failed");
+				throw runtime_error::create("createFramebuffer() failed");
 
 			this->colorImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(colorTexture_->handle()), this->width_, this->height_);
 			this->normalImage_ = config.factory->createTextureOutput(static_cast<std::uint32_t>(normalTexture_->handle()), this->width_, this->height_);
@@ -500,7 +500,8 @@ namespace octoon
 			float framebufferX = (framebufferWidth_ - framebufferWidth) / 2;
 			float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
 
-			context->blitFramebuffer(framebuffer_, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
+			auto mode = viewport.width == framebufferWidth_ && viewport.height == framebufferHeight_ ? SamplerFilter::Nearest : SamplerFilter::Linear;
+			context->blitFramebuffer(framebuffer_, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight), mode);
 			context->discardFramebuffer(framebuffer_, ClearFlagBits::AllBit);
 		}
 	}

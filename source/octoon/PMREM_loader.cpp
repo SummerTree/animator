@@ -210,7 +210,7 @@ void main()
 			textureDesc.setMipNums(8);
 			auto colorTexture = renderContext->createTexture(textureDesc);
 			if (!colorTexture)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setSize(width, height);
@@ -220,7 +220,7 @@ void main()
 			depthTextureDesc.setMipNums(8);
 			auto depthTexture = renderContext->createTexture(depthTextureDesc);
 			if (!depthTexture)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
 			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R32G32B32SFloat));
@@ -239,7 +239,7 @@ void main()
 
 				framebuffers[i] = renderContext->createFramebuffer(framebufferDesc);
 				if (!framebuffers[i])
-					throw runtime::runtime_error::create("createFramebuffer() failed");
+					throw runtime_error::create("createFramebuffer() failed");
 			}
 
 			auto irradiance = Material::create(std::make_shared<Shader>(pmrem_vert, irradiance_frag));

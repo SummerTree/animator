@@ -5,9 +5,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameListener : public runtime::RttiObject
+	class OCTOON_EXPORT GameListener : public RttiObject
 	{
-		OctoonDeclareSubInterface(GameListener, runtime::RttiObject)
+		OctoonDeclareSubInterface(GameListener, RttiObject)
 	public:
 		GameListener() noexcept = default;
 		virtual ~GameListener() = default;

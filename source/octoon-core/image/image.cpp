@@ -173,7 +173,7 @@ namespace octoon
 		case value_t::D24UNormPack32:
 		case value_t::D32_SFLOAT_S8UInt:
 		default:
-			throw runtime::not_implemented::create("Not supported yet.");
+			throw not_implemented::create("Not supported yet.");
 		}
 
 		if (destLength == 0)
@@ -368,7 +368,7 @@ namespace octoon
 			}
 			break;
 			default:
-				throw runtime::not_implemented::create("not supported yet.");
+				throw not_implemented::create();
 			}
 
 			return image;

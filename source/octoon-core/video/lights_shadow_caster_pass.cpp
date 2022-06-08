@@ -57,7 +57,7 @@ namespace octoon
 					if (camera->getRenderToScreen())
 					{
 						auto& v = camera->getPixelViewport();
-						context.blitFramebuffer(framebuffer, v, nullptr, v);
+						context.blitFramebuffer(framebuffer, v, nullptr, v, SamplerFilter::Nearest);
 					}
 
 					context.discardFramebuffer(framebuffer, ClearFlagBits::DepthStencilBit);

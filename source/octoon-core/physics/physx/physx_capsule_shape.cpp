@@ -16,7 +16,7 @@ namespace octoon
 		if (px_shape)
 			px_shape->setLocalPose(physx::PxTransform(physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1))));
 		else
-			runtime::runtime_error::create("create shape failed!");
+			runtime_error::create("create shape failed!");
 	}
 
 	PhysxCapsuleShape::~PhysxCapsuleShape() noexcept

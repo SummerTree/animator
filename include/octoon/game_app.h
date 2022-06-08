@@ -45,13 +45,13 @@ namespace octoon
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		T* getFeature() const noexcept { return dynamic_cast<T*>(this->getFeature(T::RTTI)); }
-		GameFeature* getFeature(const runtime::Rtti* type) const noexcept(false);
-		GameFeature* getFeature(const runtime::Rtti& type) const noexcept(false);
+		GameFeature* getFeature(const Rtti* type) const noexcept(false);
+		GameFeature* getFeature(const Rtti& type) const noexcept(false);
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameFeature, T>::value>>
 		void removeFeature() noexcept { this->removeFeature(T::RTTI); }
-		void removeFeature(const runtime::Rtti* type) noexcept(false);
-		void removeFeature(const runtime::Rtti& type) noexcept(false);
+		void removeFeature(const Rtti* type) noexcept(false);
+		void removeFeature(const Rtti& type) noexcept(false);
 		void removeFeature(const GameFeaturePtr& feature) noexcept(false);
 
 		void sendInputEvent(const input::InputEvent& event) noexcept(false);

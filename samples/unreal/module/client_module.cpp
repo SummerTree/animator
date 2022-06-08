@@ -44,21 +44,21 @@ namespace unreal
 	}
 
 	void 
-	ClientModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
+	ClientModule::load(nlohmann::json& reader, std::string_view path) noexcept
 	{
 		if (reader.find("autoLogin") != reader.end())
 			this->autoLogin = reader["autoLogin"];
 		if (reader.find("username") != reader.end())
-			this->username = reader["username"].get<octoon::runtime::json::string_t>();
+			this->username = reader["username"].get<nlohmann::json::string_t>();
 		if (this->autoLogin)
 		{
 			if (reader.find("token") != reader.end())
-				this->token = reader["token"].get<octoon::runtime::json::string_t>();
+				this->token = reader["token"].get<nlohmann::json::string_t>();
 		}
 	}
 
 	void 
-	ClientModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
+	ClientModule::save(nlohmann::json& writer, std::string_view path) noexcept
 	{
 		writer["autoLogin"] = this->autoLogin;
 		writer["username"] = this->username;

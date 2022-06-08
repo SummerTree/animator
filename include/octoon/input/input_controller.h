@@ -7,9 +7,9 @@ namespace octoon
 {
 	namespace input
 	{
-		class OCTOON_EXPORT IInputListener : public runtime::RttiObject
+		class OCTOON_EXPORT IInputListener : public RttiObject
 		{
-			OctoonDeclareSubInterface(IInputListener, runtime::RttiObject)
+			OctoonDeclareSubInterface(IInputListener, RttiObject)
 		public:
 			IInputListener() noexcept;
 			virtual ~IInputListener() noexcept;

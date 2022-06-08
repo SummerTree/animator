@@ -93,7 +93,7 @@ namespace octoon
 			colorTextureDesc.setTexFormat(GraphicsFormat::R32G32B32SFloat);
 			edgeTexture_ = context->createTexture(colorTextureDesc);
 			if (!edgeTexture_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setWidth(w);
@@ -103,7 +103,7 @@ namespace octoon
 			depthTextureDesc.setTexFormat(GraphicsFormat::X8_D24UNormPack32);
 			depthTexture_ = context->createTexture(depthTextureDesc);
 			if (!depthTexture_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsFramebufferDesc framebufferDesc;
 			framebufferDesc.setWidth(w);
@@ -114,7 +114,7 @@ namespace octoon
 
 			edgeFramebuffer_ = context->createFramebuffer(framebufferDesc);
 			if (!edgeFramebuffer_)
-				throw runtime::runtime_error::create("createFramebuffer() failed");
+				throw runtime_error::create("createFramebuffer() failed");
 
 			GraphicsTextureDesc colorTextureDesc2;
 			colorTextureDesc2.setWidth(w);
@@ -123,7 +123,7 @@ namespace octoon
 			colorTextureDesc2.setTexFormat(GraphicsFormat::R32G32B32SFloat);
 			colorTexture_ = context->createTexture(colorTextureDesc2);
 			if (!colorTexture_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsTextureDesc depthTextureDesc2;
 			depthTextureDesc2.setWidth(w);
@@ -132,7 +132,7 @@ namespace octoon
 			depthTextureDesc2.setTexFormat(GraphicsFormat::X8_D24UNormPack32);
 			depthTexture2_ = context->createTexture(depthTextureDesc2);
 			if (!depthTexture2_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsFramebufferDesc framebufferDesc2;
 			framebufferDesc2.setWidth(w);
@@ -143,7 +143,7 @@ namespace octoon
 
 			fbo2_ = context->createFramebuffer(framebufferDesc2);
 			if (!fbo2_)
-				throw runtime::runtime_error::create("createFramebuffer() failed");
+				throw runtime_error::create("createFramebuffer() failed");
 		}
 		catch (...)
 		{
@@ -153,7 +153,7 @@ namespace octoon
 			colorTextureDesc.setTexFormat(GraphicsFormat::R32G32B32SFloat);
 			edgeTexture_ = context->createTexture(colorTextureDesc);
 			if (!edgeTexture_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setWidth(w);
@@ -161,7 +161,7 @@ namespace octoon
 			depthTextureDesc.setTexFormat(GraphicsFormat::X8_D24UNormPack32);
 			depthTexture_ = context->createTexture(depthTextureDesc);
 			if (!depthTexture_)
-				throw runtime::runtime_error::create("createTexture() failed");
+				throw runtime_error::create("createTexture() failed");
 
 			GraphicsFramebufferDesc framebufferDesc;
 			framebufferDesc.setWidth(w);
@@ -172,7 +172,7 @@ namespace octoon
 
 			edgeFramebuffer_ = context->createFramebuffer(framebufferDesc);
 			if (!edgeFramebuffer_)
-				throw runtime::runtime_error::create("createFramebuffer() failed");
+				throw runtime_error::create("createFramebuffer() failed");
 		}
 	}
 
@@ -219,9 +219,9 @@ namespace octoon
 					{
 						if (fbo == edgeFramebuffer_)
 						{
-							c.context->blitFramebuffer(fbo, viewport, fbo2_, viewport);
+							c.context->blitFramebuffer(fbo, viewport, fbo2_, viewport, SamplerFilter::Nearest);
 							c.context->discardFramebuffer(fbo, ClearFlagBits::AllBit);
-							c.context->blitFramebuffer(fbo2_, viewport, nullptr, viewport);
+							c.context->blitFramebuffer(fbo2_, viewport, nullptr, viewport, SamplerFilter::Nearest);
 							c.context->discardFramebuffer(fbo2_, ClearFlagBits::AllBit);
 						}
 					}
@@ -235,7 +235,8 @@ namespace octoon
 						float framebufferX = (framebufferWidth_ - framebufferWidth) / 2;
 						float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
 
-						c.context->blitFramebuffer(fbo, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight));
+						auto mode = viewport.width == framebufferWidth_ && viewport.height == framebufferHeight_ ? SamplerFilter::Nearest : SamplerFilter::Linear;
+						c.context->blitFramebuffer(fbo, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight), mode);
 						c.context->discardFramebuffer(fbo, ClearFlagBits::AllBit);
 					}
 				}

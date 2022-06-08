@@ -61,7 +61,7 @@ namespace unreal
 		std::uint32_t tradeType_;
 		std::unique_ptr<QTimer> timer_;
 		std::unique_ptr<QTimer> tradeTimer_;
-		std::future<octoon::runtime::json> future_;
+		std::future<nlohmann::json> future_;
 
 		std::unique_ptr<QPropertyAnimation> closeAnimation_;
 

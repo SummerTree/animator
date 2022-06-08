@@ -151,7 +151,7 @@ namespace octoon::font
 		};
 
 		if (::FT_Set_Pixel_Sizes((FT_Face)(params.getFont()->getFont()), params.getPixelsSize(), params.getPixelsSize()))
-			throw runtime::runtime_error::create("FT_Set_Char_Size() failed (there is probably a problem with your font size", 3);
+			throw runtime_error::create("FT_Set_Char_Size() failed (there is probably a problem with your font size", 3);
 
 		FT_Face ftface = (FT_Face)params.getFont()->getFont();
 
@@ -163,14 +163,14 @@ namespace octoon::font
 		{
 			FT_UInt index = FT_Get_Char_Index(ftface, ch);
 			if (::FT_Load_Glyph(ftface, index, FT_LOAD_DEFAULT))
-				throw runtime::runtime_error::create("FT_Load_Glyph failed.");
+				throw runtime_error::create("FT_Load_Glyph failed.");
 
 			FT_Glyph glyph;
 			if (::FT_Get_Glyph(ftface->glyph, &glyph))
-				throw runtime::runtime_error::create("FT_Get_Glyph failed.");
+				throw runtime_error::create("FT_Get_Glyph failed.");
 
 			if (glyph->format != FT_GLYPH_FORMAT_OUTLINE)
-				throw runtime::runtime_error::create("Invalid Glyph Format.");
+				throw runtime_error::create("Invalid Glyph Format.");
 
 			if (ch == ' ')
 				offset += ftface->glyph->advance.x / 64;
@@ -275,7 +275,7 @@ namespace octoon::font
 		};
 
 		if (::FT_Set_Pixel_Sizes((FT_Face)(params.getFont()->getFont()), params.getPixelsSize(), params.getPixelsSize()))
-			throw runtime::runtime_error::create("FT_Set_Char_Size() failed (there is probably a problem with your font size", 3);
+			throw runtime_error::create("FT_Set_Char_Size() failed (there is probably a problem with your font size", 3);
 
 		FT_Face ftface = (FT_Face)params.getFont()->getFont();
 
@@ -287,14 +287,14 @@ namespace octoon::font
 		{
 			FT_UInt index = FT_Get_Char_Index(ftface, ch);
 			if (::FT_Load_Glyph(ftface, index, FT_LOAD_DEFAULT))
-				throw runtime::runtime_error::create("FT_Load_Glyph failed.");
+				throw runtime_error::create("FT_Load_Glyph failed.");
 
 			FT_Glyph glyph;
 			if (::FT_Get_Glyph(ftface->glyph, &glyph))
-				throw runtime::runtime_error::create("FT_Get_Glyph failed.");
+				throw runtime_error::create("FT_Get_Glyph failed.");
 
 			if (glyph->format != FT_GLYPH_FORMAT_OUTLINE)
-				throw runtime::runtime_error::create("Invalid Glyph Format.");
+				throw runtime_error::create("Invalid Glyph Format.");
 
 			if (ch == ' ')
 				offset += ftface->glyph->advance.x / 64;

@@ -249,9 +249,9 @@ namespace octoon
 	}
 
 	void
-	ScriptableRenderContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept
+	ScriptableRenderContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2, SamplerFilter filter) noexcept
 	{
-		this->context_->blitFramebuffer(src, v1, dest, v2);
+		this->context_->blitFramebuffer(src, v1, dest, v2, filter);
 	}
 
 	void

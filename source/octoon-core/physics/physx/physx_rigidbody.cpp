@@ -26,7 +26,7 @@ namespace octoon
 		}
 		else
 		{
-			throw  runtime::runtime_error::create("create body failed!");
+			throw  runtime_error::create("create body failed!");
 		}
 	}
 

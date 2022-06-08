@@ -5,9 +5,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GraphicsResource : public runtime::RttiObject
+	class OCTOON_EXPORT GraphicsResource : public RttiObject
 	{
-		OctoonDeclareSubInterface(GraphicsResource, runtime::RttiObject)
+		OctoonDeclareSubInterface(GraphicsResource, RttiObject)
 	public:
 		GraphicsResource() noexcept;
 		virtual ~GraphicsResource() noexcept;

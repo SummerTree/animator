@@ -10,9 +10,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameObject : public runtime::RttiObject
+	class OCTOON_EXPORT GameObject : public RttiObject
 	{
-		OctoonDeclareSubClass(GameObject, runtime::RttiObject)
+		OctoonDeclareSubClass(GameObject, RttiObject)
 	public:
 		GameObject() noexcept;
 		GameObject(std::string_view name) noexcept;
@@ -59,30 +59,30 @@ namespace octoon
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameComponent, T>::value>>
 		std::shared_ptr<T> getComponent() const noexcept { return std::dynamic_pointer_cast<T>(this->getComponent(T::RTTI)); }
-		GameComponentPtr getComponent(const runtime::Rtti* type) const noexcept;
-		GameComponentPtr getComponent(const runtime::Rtti& type) const noexcept;
+		GameComponentPtr getComponent(const Rtti* type) const noexcept;
+		GameComponentPtr getComponent(const Rtti& type) const noexcept;
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameComponent, T>::value>>
 		void getComponents(GameComponents& components) const noexcept { this->getComponents(T::RTTI, components); }
-		void getComponents(const runtime::Rtti* type, GameComponents& components) const noexcept;
-		void getComponents(const runtime::Rtti& type, GameComponents& components) const noexcept;
+		void getComponents(const Rtti* type, GameComponents& components) const noexcept;
+		void getComponents(const Rtti& type, GameComponents& components) const noexcept;
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameComponent, T>::value>>
 		std::shared_ptr<T> getComponentInChildren() const noexcept { return std::dynamic_pointer_cast<T>(this->getComponentInChildren(T::RTTI)); }
-		GameComponentPtr getComponentInChildren(const runtime::Rtti* type) const noexcept;
-		GameComponentPtr getComponentInChildren(const runtime::Rtti& type) const noexcept;
+		GameComponentPtr getComponentInChildren(const Rtti* type) const noexcept;
+		GameComponentPtr getComponentInChildren(const Rtti& type) const noexcept;
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameComponent, T>::value>>
 		void getComponentsInChildren(GameComponents& components) const noexcept { this->getComponentsInChildren(T::RTTI, components); }
-		void getComponentsInChildren(const runtime::Rtti* type, GameComponents& components) const noexcept;
-		void getComponentsInChildren(const runtime::Rtti& type, GameComponents& components) const noexcept;
+		void getComponentsInChildren(const Rtti* type, GameComponents& components) const noexcept;
+		void getComponentsInChildren(const Rtti& type, GameComponents& components) const noexcept;
 
 		const GameComponents& getComponents() const noexcept;
 
 		template<typename T, typename = std::enable_if_t<std::is_base_of<GameComponent, T>::value>>
 		void removeComponent() noexcept { this->removeComponent(T::RTTI); }
-		void removeComponent(const runtime::Rtti* type) noexcept;
-		void removeComponent(const runtime::Rtti& type) noexcept;
+		void removeComponent(const Rtti* type) noexcept;
+		void removeComponent(const Rtti& type) noexcept;
 		void removeComponent(const GameComponentPtr& component) noexcept;
 		void cleanupComponents() noexcept;
 

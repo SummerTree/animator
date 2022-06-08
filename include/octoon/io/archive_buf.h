@@ -214,7 +214,7 @@ namespace octoon
 			{
 				for (auto& it : *this)
 				{
-					auto obj = runtime::RttiFactory::instance()->make_shared<T>(it.first);
+					auto obj = RttiFactory::instance()->make_shared<T>(it.first);
 					obj->load(it.second.get<archivebuf::object_t>());
 
 					argv.push_back(std::move(obj));

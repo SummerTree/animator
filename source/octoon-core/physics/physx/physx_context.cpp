@@ -31,7 +31,7 @@ namespace octoon
 
 		foundation = PxCreateFoundation(PX_PHYSICS_VERSION, *defaultAllocatorCallback, *defaultErrorCallback);
 		if (!foundation)
-			throw runtime::runtime_error::create("PxCreateFoundation failed!");
+			throw runtime_error::create("PxCreateFoundation failed!");
 
 		transport_ = physx::PxDefaultPvdSocketTransportCreate("localhost", 5425, 10);
 		pvd = physx::PxCreatePvd(*foundation);
@@ -39,15 +39,15 @@ namespace octoon
 
 		physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, scale, true, pvd);
 		if (!physics)
-				throw runtime::runtime_error::create("PxCreatePhysics failed!");
+				throw runtime_error::create("PxCreatePhysics failed!");
 
 		// FIXME
 		// cooking = PxCreateCooking(PX_PHYSICS_VERSION, *foundation, physx::PxCookingParams(scale));
 		// if (!cooking)
-		// 	throw runtime::runtime_error::create("PxCreateCooking failed!");
+		// 	throw runtime_error::create("PxCreateCooking failed!");
 
 		if (!PxInitExtensions(*physics, pvd))
-			throw runtime::runtime_error::create("PxInitExtensions failed!");
+			throw runtime_error::create("PxInitExtensions failed!");
 	}
 
 	PhysxContext::~PhysxContext()

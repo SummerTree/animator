@@ -19,9 +19,9 @@ namespace octoon
 		math::float3 point;
 	};
 
-	class OCTOON_EXPORT Mesh : public runtime::RttiObject
+	class OCTOON_EXPORT Mesh : public RttiObject
 	{
-		OctoonDeclareSubClass(Mesh, runtime::RttiObject)
+		OctoonDeclareSubClass(Mesh, RttiObject)
 	public:
 		Mesh() noexcept;
 		virtual ~Mesh() noexcept;

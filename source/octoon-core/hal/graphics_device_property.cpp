@@ -2,7 +2,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GraphicsDeviceProperty, runtime::RttiObject, "GraphicsDeviceProperty")
+	OctoonImplementSubInterface(GraphicsDeviceProperty, RttiObject, "GraphicsDeviceProperty")
 
 	GraphicsDeviceProperty::GraphicsDeviceProperty() noexcept
 	{

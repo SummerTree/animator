@@ -66,11 +66,11 @@ namespace octoon
 
 		factory_ = NvClothCreateFactoryCPU();
 		if (!factory_)
-			throw runtime::runtime_error::create("NvClothCreateFactoryCPU failed!");
+			throw runtime_error::create("NvClothCreateFactoryCPU failed!");
 
 		solver_ = factory_->createSolver();
 		if (!factory_)
-			throw runtime::runtime_error::create("ClothFeature::CreateSolver failed!");
+			throw runtime_error::create("ClothFeature::CreateSolver failed!");
     }
 
     void

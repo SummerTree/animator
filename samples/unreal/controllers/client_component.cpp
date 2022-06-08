@@ -52,11 +52,11 @@ namespace unreal
 					model->username = user;
 					model->coin = json["coin"];
 					model->vip = json["vip"];
-					model->token = json["token"].get<octoon::runtime::json::string_t>();
+					model->token = json["token"].get<nlohmann::json::string_t>();
 				}
 				else
 				{
-					throw std::runtime_error(json["message"].get<octoon::runtime::json::string_t>().c_str());
+					throw std::runtime_error(json["message"].get<nlohmann::json::string_t>().c_str());
 				}
 			}
 			else
@@ -97,7 +97,7 @@ namespace unreal
 					}
 					else
 					{
-						throw std::runtime_error(json["message"].get<octoon::runtime::json::string_t>().c_str());
+						throw std::runtime_error(json["message"].get<nlohmann::json::string_t>().c_str());
 					}
 				}
 				else
@@ -139,7 +139,7 @@ namespace unreal
 			{
 				if (!(bool)json["success"])
 				{
-					throw std::runtime_error(json["message"].get<octoon::runtime::json::string_t>().c_str());
+					throw std::runtime_error(json["message"].get<nlohmann::json::string_t>().c_str());
 				}
 			}
 			else
@@ -181,7 +181,7 @@ namespace unreal
 					}
 					else
 					{
-						throw std::runtime_error(json["message"].get<octoon::runtime::json::string_t>().c_str());
+						throw std::runtime_error(json["message"].get<nlohmann::json::string_t>().c_str());
 					}
 				}
 				else
@@ -220,7 +220,7 @@ namespace unreal
 					if ((bool)json["success"])
 						model->coin = json["coin"];
 					else
-						throw std::runtime_error(json["message"].get<octoon::runtime::json::string_t>().c_str());
+						throw std::runtime_error(json["message"].get<nlohmann::json::string_t>().c_str());
 				}
 				else
 				{
@@ -253,7 +253,7 @@ namespace unreal
 					if ((bool)json["success"])
 						return (int)json["status"];
 					else
-						throw std::runtime_error(json["message"].get<octoon::runtime::json::string_t>().c_str());
+						throw std::runtime_error(json["message"].get<nlohmann::json::string_t>().c_str());
 				}
 				else
 				{
@@ -269,10 +269,10 @@ namespace unreal
 		return false;
 	}
 
-	std::future<octoon::runtime::json>
+	std::future<nlohmann::json>
 	ClientComponent::alipay(std::uint32_t type) noexcept(false)
 	{
-		return std::async(std::launch::async, [=]() -> octoon::runtime::json
+		return std::async(std::launch::async, [=]() -> nlohmann::json
 		{
 			auto& model = this->getModel();
 			if (!model->token.empty())
@@ -297,7 +297,7 @@ namespace unreal
 				}
 			}
 
-			return octoon::runtime::json();
+			return nlohmann::json();
 		});
 	}
 
@@ -312,9 +312,9 @@ namespace unreal
 		{
 			auto json = request.json();
 			if ((bool)json["success"])
-				return json["version"].get<octoon::runtime::json::string_t>();
+				return json["version"].get<nlohmann::json::string_t>();
 			else
-				throw std::runtime_error(json["message"].get<octoon::runtime::json::string_t>().c_str());
+				throw std::runtime_error(json["message"].get<nlohmann::json::string_t>().c_str());
 		}
 		else
 		{

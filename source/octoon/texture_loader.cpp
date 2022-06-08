@@ -48,7 +48,7 @@ namespace octoon
 		case Format::R32G32B32SFloat: format = GraphicsFormat::R32G32B32SFloat; break;
 		case Format::R32G32B32A32SFloat: format = GraphicsFormat::R32G32B32A32SFloat; break;
 		default:
-			throw runtime::runtime_error::create("This image type is not supported by this function:");
+			throw runtime_error::create("This image type is not supported by this function:");
 		}
 
 		GraphicsTextureDesc textureDesc;

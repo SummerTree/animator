@@ -567,7 +567,7 @@ namespace octoon
 		}
 
 		void
-		GL33DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2) noexcept
+		GL33DeviceContext::blitFramebuffer(const GraphicsFramebufferPtr& src, const math::float4& v1, const GraphicsFramebufferPtr& dest, const math::float4& v2, SamplerFilter filter) noexcept
 		{
 			assert(src);
 			assert(src->isInstanceOf<GL33Framebuffer>());
@@ -585,7 +585,8 @@ namespace octoon
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, readFramebuffer);
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, drawFramebuffer);
 
-			glBlitFramebuffer((GLint)v1.left, (GLint)v1.top, (GLint)v1.width, (GLint)v1.height, (GLint)v2.left, (GLint)v2.top, (GLint)v2.width, (GLint)v2.height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+			GLenum mode = (filter == SamplerFilter::Linear ? GL_LINEAR : GL_NEAREST);
+			glBlitFramebuffer((GLint)v1.left, (GLint)v1.top, (GLint)v1.width, (GLint)v1.height, (GLint)v2.left, (GLint)v2.top, (GLint)v2.width, (GLint)v2.height, GL_COLOR_BUFFER_BIT, mode);
 
 			_framebuffer = nullptr;
 		}

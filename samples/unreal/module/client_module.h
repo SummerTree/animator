@@ -16,8 +16,8 @@ namespace unreal
 	public:
 		virtual void reset() noexcept override;
 
-		virtual void load(octoon::runtime::json& reader, std::string_view path) noexcept override;
-		virtual void save(octoon::runtime::json& reader, std::string_view path) noexcept override;
+		virtual void load(nlohmann::json& reader, std::string_view path) noexcept override;
+		virtual void save(nlohmann::json& reader, std::string_view path) noexcept override;
 
 	private:
 		ClientModule(const ClientModule&) = delete;

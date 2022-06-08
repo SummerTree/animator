@@ -77,11 +77,11 @@ namespace octoon
 	VMD::load(io::istream& stream) noexcept(false)
 	{
 		if (!stream.read((char*)&this->Header, sizeof(this->Header))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "Header" from stream)");
+			throw runtime_error::create(R"(Cannot read property "Header" from stream)");
 		}
 
 		if (!stream.read((char*)&this->NumMotion, sizeof(this->NumMotion))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumMotion" from stream)");
+			throw runtime_error::create(R"(Cannot read property "NumMotion" from stream)");
 		}
 
 		if (this->NumMotion > 0)
@@ -89,12 +89,12 @@ namespace octoon
 			this->MotionLists.resize(this->NumMotion);
 
 			if (!stream.read((char*)this->MotionLists.data(), sizeof(VMDMotion) * this->NumMotion)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDMotion" from stream)");
+				throw runtime_error::create(R"(Cannot read property "VMDMotion" from stream)");
 			}
 		}
 
 		if (!stream.read((char*)&this->NumMorph, sizeof(this->NumMorph))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumMorph" from stream)");
+			throw runtime_error::create(R"(Cannot read property "NumMorph" from stream)");
 		}
 
 		if (this->NumMorph > 0)
@@ -102,12 +102,12 @@ namespace octoon
 			this->MorphLists.resize(this->NumMorph);
 
 			if (!stream.read((char*)this->MorphLists.data(), sizeof(VMDMorph) * this->NumMorph)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDMorph" from stream)");
+				throw runtime_error::create(R"(Cannot read property "VMDMorph" from stream)");
 			}
 		}
 
 		if (!stream.read((char*)&this->NumCamera, sizeof(this->NumCamera))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumCamera" from stream)");
+			throw runtime_error::create(R"(Cannot read property "NumCamera" from stream)");
 		}
 
 		if (this->NumCamera > 0)
@@ -115,12 +115,12 @@ namespace octoon
 			this->CameraLists.resize(this->NumCamera);
 
 			if (!stream.read((char*)this->CameraLists.data(), sizeof(VMDCamera) * this->NumCamera)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDCamera" from stream)");
+				throw runtime_error::create(R"(Cannot read property "VMDCamera" from stream)");
 			}
 		}
 
 		if (!stream.read((char*)&this->NumLight, sizeof(this->NumLight))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumLight" from stream)");
+			throw runtime_error::create(R"(Cannot read property "NumLight" from stream)");
 		}
 
 		if (this->NumLight > 0)
@@ -128,12 +128,12 @@ namespace octoon
 			this->LightLists.resize(this->NumLight);
 
 			if (!stream.read((char*)this->LightLists.data(), sizeof(VMDLight) * this->NumLight)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDLight" from stream)");
+				throw runtime_error::create(R"(Cannot read property "VMDLight" from stream)");
 			}
 		}
 
 		if (!stream.read((char*)&this->NumSelfShadow, sizeof(this->NumSelfShadow))) {
-			throw runtime::runtime_error::create(R"(Cannot read property "NumSelfShadow" from stream)");
+			throw runtime_error::create(R"(Cannot read property "NumSelfShadow" from stream)");
 		}
 
 		if (this->NumSelfShadow > 0)
@@ -141,7 +141,7 @@ namespace octoon
 			this->SelfShadowLists.resize(this->NumSelfShadow);
 
 			if (!stream.read((char*)this->SelfShadowLists.data(), sizeof(VMDSelfShadow) * this->NumSelfShadow)) {
-				throw runtime::runtime_error::create(R"(Cannot read property "VMDSelfShadow" from stream)");
+				throw runtime_error::create(R"(Cannot read property "VMDSelfShadow" from stream)");
 			}
 		}
 	}
@@ -150,61 +150,61 @@ namespace octoon
 	VMD::save(io::ostream& stream) noexcept(false)
 	{
 		if (!stream.write((char*)&this->Header, sizeof(this->Header))) {
-			throw runtime::runtime_error::create(R"(Cannot write property "Header" from stream)");
+			throw runtime_error::create(R"(Cannot write property "Header" from stream)");
 		}
 
 		if (!stream.write((char*)&this->NumMotion, sizeof(this->NumMotion))) {
-			throw runtime::runtime_error::create(R"(Cannot write property "NumMotion" from stream)");
+			throw runtime_error::create(R"(Cannot write property "NumMotion" from stream)");
 		}
 
 		if (this->NumMotion > 0 && this->MotionLists.size() > 0)
 		{
 			if (!stream.write((char*)this->MotionLists.data(), sizeof(VMDMotion) * this->NumMotion)) {
-				throw runtime::runtime_error::create(R"(Cannot write property "VMDMotion" from stream)");
+				throw runtime_error::create(R"(Cannot write property "VMDMotion" from stream)");
 			}
 		}
 
 		if (!stream.write((char*)&this->NumMorph, sizeof(this->NumMorph))) {
-			throw runtime::runtime_error::create(R"(Cannot write property "NumMorph" from stream)");
+			throw runtime_error::create(R"(Cannot write property "NumMorph" from stream)");
 		}
 
 		if (this->NumMorph > 0 && this->MorphLists.size() > 0)
 		{
 			if (!stream.write((char*)this->MorphLists.data(), sizeof(VMDMorph) * this->NumMorph)) {
-				throw runtime::runtime_error::create(R"(Cannot write property "VMDMorph" from stream)");
+				throw runtime_error::create(R"(Cannot write property "VMDMorph" from stream)");
 			}
 		}
 
 		if (!stream.write((char*)&this->NumCamera, sizeof(this->NumCamera))) {
-			throw runtime::runtime_error::create(R"(Cannot write property "NumCamera" from stream)");
+			throw runtime_error::create(R"(Cannot write property "NumCamera" from stream)");
 		}
 
 		if (this->NumCamera > 0 && this->CameraLists.size() > 0)
 		{
 			if (!stream.write((char*)this->CameraLists.data(), sizeof(VMDCamera) * this->NumCamera)) {
-				throw runtime::runtime_error::create(R"(Cannot write property "VMDCamera" from stream)");
+				throw runtime_error::create(R"(Cannot write property "VMDCamera" from stream)");
 			}
 		}
 
 		if (!stream.write((char*)&this->NumLight, sizeof(this->NumLight))) {
-			throw runtime::runtime_error::create(R"(Cannot write property "NumLight" from stream)");
+			throw runtime_error::create(R"(Cannot write property "NumLight" from stream)");
 		}
 
 		if (this->NumLight > 0 && this->LightLists.size() > 0)
 		{
 			if (!stream.write((char*)this->LightLists.data(), sizeof(VMDLight) * this->NumLight)) {
-				throw runtime::runtime_error::create(R"(Cannot write property "VMDLight" from stream)");
+				throw runtime_error::create(R"(Cannot write property "VMDLight" from stream)");
 			}
 		}
 
 		if (!stream.write((char*)&this->NumSelfShadow, sizeof(this->NumSelfShadow))) {
-			throw runtime::runtime_error::create(R"(Cannot write property "NumSelfShadow" from stream)");
+			throw runtime_error::create(R"(Cannot write property "NumSelfShadow" from stream)");
 		}
 
 		if (this->NumSelfShadow > 0 && this->SelfShadowLists.size() > 0)
 		{
 			if (!stream.write((char*)this->SelfShadowLists.data(), sizeof(VMDSelfShadow) * this->NumSelfShadow)) {
-				throw runtime::runtime_error::create(R"(Cannot write property "VMDSelfShadow" from stream)");
+				throw runtime_error::create(R"(Cannot write property "VMDSelfShadow" from stream)");
 			}
 		}
 	}

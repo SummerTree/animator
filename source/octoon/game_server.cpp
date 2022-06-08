@@ -6,7 +6,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(GameServer, runtime::RttiObject, "GameServer")
+	OctoonImplementSubClass(GameServer, RttiObject, "GameServer")
 
 	GameServer::GameServer() noexcept
 		: isActived_(false)
@@ -279,7 +279,7 @@ namespace octoon
 	}
 
 	GameFeature*
-	GameServer::getFeature(const runtime::Rtti* rtti) const noexcept
+	GameServer::getFeature(const Rtti* rtti) const noexcept
 	{
 		assert(rtti);
 
@@ -293,7 +293,7 @@ namespace octoon
 	}
 
 	GameFeature*
-	GameServer::getFeature(const runtime::Rtti& rtti) const noexcept
+	GameServer::getFeature(const Rtti& rtti) const noexcept
 	{
 		return getFeature(&rtti);
 	}
@@ -305,7 +305,7 @@ namespace octoon
 	}
 
 	void
-	GameServer::removeFeature(const runtime::Rtti* rtti) noexcept
+	GameServer::removeFeature(const Rtti* rtti) noexcept
 	{
 		auto it = std::find_if(features_.begin(), features_.end(), [rtti](const GameFeaturePtr& it) { return it->isInstanceOf(rtti); });
 		if (it != features_.end())
@@ -324,7 +324,7 @@ namespace octoon
 	}
 
 	void
-	GameServer::removeFeature(const runtime::Rtti& rtti) noexcept
+	GameServer::removeFeature(const Rtti& rtti) noexcept
 	{
 		return removeFeature(&rtti);
 	}

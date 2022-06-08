@@ -20,7 +20,7 @@ namespace octoon
 			auto pos = table_.find(id);
 			if (pos != table_.end())
 			{
-				throw runtime::runtime_error::create("Bind duplicate id: " + id);
+				throw runtime_error::create("Bind duplicate id: " + id);
 			}
 			table_.emplace_hint(pos, id, bind.second);
 		}
@@ -37,7 +37,7 @@ namespace octoon
 			auto pos = table_.find(id);
 			if (pos == table_.end())
 			{
-				throw runtime::runtime_error::create("No InputMap id: " + id);
+				throw runtime_error::create("No InputMap id: " + id);
 			}
 			auto&& ops = pos->second;
 
@@ -55,7 +55,7 @@ namespace octoon
 				}
 				else
 				{
-					throw runtime::runtime_error::create("InputMap doesn't support combined key yet.");
+					throw runtime_error::create("InputMap doesn't support combined key yet.");
 				}
 			}
 			if (ops[i].input == InputContent::Keyboard)
@@ -68,7 +68,7 @@ namespace octoon
 			}
 			else
 			{
-				throw runtime::runtime_error::create("InputMap doesn't support combined key yet.");
+				throw runtime_error::create("InputMap doesn't support combined key yet.");
 			}
 			return true;
 		}

@@ -8,7 +8,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(GameScene, runtime::RttiObject, "GameScene")
+	OctoonImplementSubClass(GameScene, RttiObject, "GameScene")
 
 	GameScene::RootObject::RootObject(GameScene* scene) noexcept
 		: scene_(scene)
@@ -115,14 +115,14 @@ namespace octoon
 	}
 
 	GameFeature*
-	GameScene::getFeature(const runtime::Rtti* rtti) const noexcept
+	GameScene::getFeature(const Rtti* rtti) const noexcept
 	{
 		assert(gameServer_);
 		return gameServer_->getFeature(rtti);
 	}
 
 	GameFeature*
-	GameScene::getFeature(const runtime::Rtti& rtti) const noexcept
+	GameScene::getFeature(const Rtti& rtti) const noexcept
 	{
 		assert(gameServer_);
 		return gameServer_->getFeature(rtti);

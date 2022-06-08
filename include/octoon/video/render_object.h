@@ -22,9 +22,9 @@ namespace octoon
 		virtual void onPostRender(const Camera& camera) noexcept = 0;
 	};
 
-	class OCTOON_EXPORT RenderObject : public runtime::RttiObject
+	class OCTOON_EXPORT RenderObject : public RttiObject
 	{
-		OctoonDeclareSubInterface(RenderObject, runtime::RttiObject)
+		OctoonDeclareSubInterface(RenderObject, RttiObject)
 	public:
 		RenderObject() noexcept;
 		virtual ~RenderObject() noexcept;

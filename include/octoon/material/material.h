@@ -32,9 +32,9 @@ namespace octoon
 		std::shared_ptr<GraphicsTexture> texture;
 	};
 
-	class OCTOON_EXPORT Material : public runtime::RttiObject
+	class OCTOON_EXPORT Material : public RttiObject
 	{
-		OctoonDeclareSubClass(Material, runtime::RttiObject);
+		OctoonDeclareSubClass(Material, RttiObject);
 	public:
 		Material() noexcept;
 		Material(std::string_view name) noexcept;

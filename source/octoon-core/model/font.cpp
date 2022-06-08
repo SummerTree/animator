@@ -41,7 +41,7 @@ namespace octoon::font
 		FT_Library library = (FT_Library)FontSystem::instance()->getLibrary();
 
 		if (::FT_New_Face(library, fontpath, 0, &face))
-			throw runtime::runtime_error::create("FT_New_Face() failed (there is probably a problem with your font file.", 2);
+			throw runtime_error::create("FT_New_Face() failed (there is probably a problem with your font file.", 2);
 
 		::FT_Select_Charmap(face, FT_ENCODING_UNICODE);
 
@@ -61,7 +61,7 @@ namespace octoon::font
 		FT_Library library = (FT_Library)FontSystem::instance()->getLibrary();
 
 		if (::FT_New_Memory_Face(library, stream, size, 0, &face))
-			throw runtime::runtime_error::create("FT_New_Memory_Face() failed (there is probably a problem with your stream.", 2);
+			throw runtime_error::create("FT_New_Memory_Face() failed (there is probably a problem with your stream.", 2);
 
 		::FT_Select_Charmap(face, FT_ENCODING_UNICODE);
 

@@ -206,7 +206,7 @@ namespace octoon
 		}
 		else
 		{
-			throw runtime::runtime_error::create("failure to get the HAL from features");
+			throw runtime_error::create("failure to get the HAL from features");
 		}
 	}
 

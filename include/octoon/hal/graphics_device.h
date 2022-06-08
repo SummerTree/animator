@@ -27,9 +27,9 @@ namespace octoon
 		GraphicsDeviceType _deviceType;
 	};
 
-	class OCTOON_EXPORT GraphicsDevice : public runtime::RttiObject
+	class OCTOON_EXPORT GraphicsDevice : public RttiObject
 	{
-		OctoonDeclareSubInterface(GraphicsDevice, runtime::RttiObject)
+		OctoonDeclareSubInterface(GraphicsDevice, RttiObject)
 	public:
 		GraphicsDevice() noexcept = default;
 		virtual ~GraphicsDevice() = default;

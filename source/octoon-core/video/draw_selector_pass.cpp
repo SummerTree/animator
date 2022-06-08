@@ -39,7 +39,7 @@ namespace octoon
 		depthTextureDesc.setTexFormat(GraphicsFormat::D32_SFLOAT);
 		depthTexture_ = context.createTexture(depthTextureDesc);
 		if (!depthTexture_)
-			throw runtime::runtime_error::create("createTexture() failed");
+			throw runtime_error::create("createTexture() failed");
 
 		GraphicsTextureDesc colorTextureDesc;
 		colorTextureDesc.setWidth(w);
@@ -48,7 +48,7 @@ namespace octoon
 		colorTextureDesc.setTexFormat(GraphicsFormat::R8G8B8A8UNorm);
 		colorTexture_ = context.createTexture(colorTextureDesc);
 		if (!colorTexture_)
-			throw runtime::runtime_error::create("createTexture() failed");
+			throw runtime_error::create("createTexture() failed");
 
 		GraphicsFramebufferDesc framebufferDesc;
 		framebufferDesc.setWidth(w);
@@ -59,7 +59,7 @@ namespace octoon
 
 		colorFramebuffer_ = context.createFramebuffer(framebufferDesc);
 		if (!colorFramebuffer_)
-			throw runtime::runtime_error::create("createFramebuffer() failed");
+			throw runtime_error::create("createFramebuffer() failed");
 
 		edgeMaterial_->setColorMap(colorTexture_);
 	}

@@ -3,24 +3,21 @@
 
 namespace octoon
 {
-	namespace runtime
+	namespace singleton
 	{
-		namespace singleton
+		std::map<const Rtti*, std::shared_ptr<RttiObject>> singletons;
+
+		RttiObject* instance(const Rtti* rtti) noexcept
 		{
-			std::map<const Rtti*, std::shared_ptr<RttiObject>> singletons;
+			auto& instance = singletons[rtti];
+			if (!instance)
+				instance = rtti->create();
+			return instance.get();
+		}
 
-			RttiObject* instance(const Rtti* rtti) noexcept
-			{
-				auto& instance = singletons[rtti];
-				if (!instance)
-					instance = rtti->create();
-				return instance.get();
-			}
-
-			RttiObject* instance(const Rtti& rtti) noexcept
-			{
-				return instance(&rtti);
-			}
+		RttiObject* instance(const Rtti& rtti) noexcept
+		{
+			return instance(&rtti);
 		}
 	}
 }

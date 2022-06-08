@@ -74,9 +74,9 @@ namespace octoon
 		GraphicsDescriptorSetLayoutPtr _layout;
 	};
 
-	class OCTOON_EXPORT GraphicsUniformSet : public runtime::RttiObject
+	class OCTOON_EXPORT GraphicsUniformSet : public RttiObject
 	{
-		OctoonDeclareSubInterface(GraphicsUniformSet, runtime::RttiObject)
+		OctoonDeclareSubInterface(GraphicsUniformSet, RttiObject)
 	public:
 		GraphicsUniformSet() noexcept = default;
 		virtual ~GraphicsUniformSet() = default;

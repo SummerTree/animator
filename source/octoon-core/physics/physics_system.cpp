@@ -23,6 +23,6 @@ namespace octoon
 		else if (device == PhysicsDevice::Bullet)
 			return std::make_shared<BulletContext>();
 		else
-			throw runtime::not_implemented::create("Not implemented yet");
+			throw not_implemented::create("Not implemented yet");
 	}
 }

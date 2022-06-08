@@ -29,7 +29,7 @@ namespace unreal
 	}
 
 	void 
-	EntitiesModule::load(octoon::runtime::json& reader, std::string_view profilePath) noexcept(false)
+	EntitiesModule::load(nlohmann::json& reader, std::string_view profilePath) noexcept(false)
 	{
 		auto root = std::string(profilePath);
 		root = root.substr(0, root.find_last_of('/')) + "/Assets/";
@@ -65,8 +65,7 @@ namespace unreal
 							{
 								auto data = material["data"].get<nlohmann::json::object_t>();
 								auto name = material["name"].get<std::string>();
-								auto material = MaterialImporter::instance()->loadPackage(data);
-								materials[name] = material;
+								materials[name] = MaterialImporter::instance()->loadPackage(data);
 							}
 
 							abc->setMaterials(materials);
@@ -123,7 +122,7 @@ namespace unreal
 	}
 
 	void 
-	EntitiesModule::save(octoon::runtime::json& writer, std::string_view profilePath) noexcept(false)
+	EntitiesModule::save(nlohmann::json& writer, std::string_view profilePath) noexcept(false)
 	{
 		auto root = std::string(profilePath);
 		root = root.substr(0, root.find_last_of('/')) + "/Assets/";

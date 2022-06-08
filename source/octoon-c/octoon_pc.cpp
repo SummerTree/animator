@@ -353,7 +353,7 @@ bool OCTOON_C_CALL OctoonOpenWindow(const char* title, int w, int h) noexcept
 			if (!gameScenePath_.empty())
 			{
 				if (!gameApp_->openScene(gameScenePath_))
-					throw octoon::runtime::runtime_error::create("GameApplication::open_scene() failed");
+					throw octoon::runtime_error::create("GameApplication::open_scene() failed");
 			}
 
 			::glfwShowWindow(window_);

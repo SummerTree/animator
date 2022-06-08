@@ -26,7 +26,7 @@ namespace octoon::font
 			FT_Library library = nullptr;
 
 			if (::FT_Init_FreeType(&library))
-				throw runtime::runtime_error::create("FT_Init_FreeType() failed", 1);
+				throw runtime_error::create("FT_Init_FreeType() failed", 1);
 
 			library_ = library;
 		}

@@ -88,7 +88,7 @@ namespace octoon
 #endif
 		device_ = GraphicsSystem::instance()->createDevice(deviceDesc);
 		if (!device_)
-			throw runtime::runtime_error::create("createDevice() failed");
+			throw runtime_error::create("createDevice() failed");
 
 		try
 		{
@@ -103,7 +103,7 @@ namespace octoon
 			swapchainDesc.setMultiSample(4);
 			swapchain_ = device_->createSwapchain(swapchainDesc);
 			if (!swapchain_)
-				throw runtime::runtime_error::create("createSwapchain() failed");
+				throw runtime_error::create("createSwapchain() failed");
 		}
 		catch (...)
 		{
@@ -117,14 +117,14 @@ namespace octoon
 			swapchainDesc.setDepthStencilFormat(GraphicsFormat::X8_D24UNormPack32);
 			swapchain_ = device_->createSwapchain(swapchainDesc);
 			if (!swapchain_)
-				throw runtime::runtime_error::create("createSwapchain() failed");
+				throw runtime_error::create("createSwapchain() failed");
 		}
 
 		GraphicsContextDesc contextDesc;
 		contextDesc.setSwapchain(swapchain_);
 		context_ = device_->createDeviceContext(contextDesc);
 		if (!context_)
-			throw runtime::runtime_error::create("createDeviceContext() failed");
+			throw runtime_error::create("createDeviceContext() failed");
 
 		this->getGameServer()->log("GraphicsFeature : Graphics Vendor: " + device_->getSystemInfo().graphicsDeviceVendor);
 		this->getGameServer()->log("GraphicsFeature : Graphics Device Name: " + device_->getSystemInfo().graphicsDeviceName);

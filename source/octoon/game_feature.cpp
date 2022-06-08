@@ -3,7 +3,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GameFeature, runtime::RttiObject, "GameFeature")
+	OctoonImplementSubInterface(GameFeature, RttiObject, "GameFeature")
 
 	GameFeature::GameFeature() noexcept
 		: isActived_(false)
@@ -44,7 +44,7 @@ namespace octoon
 	}
 
 	GameFeature*
-	GameFeature::getFeature(const runtime::Rtti* type) const noexcept
+	GameFeature::getFeature(const Rtti* type) const noexcept
 	{
 		assert(server_);
 		assert(this->rtti() != type);
@@ -52,7 +52,7 @@ namespace octoon
 	}
 
 	GameFeature*
-	GameFeature::getFeature(const runtime::Rtti& type) const noexcept
+	GameFeature::getFeature(const Rtti& type) const noexcept
 	{
 		assert(server_);
 		assert(this->rtti() != &type);

@@ -95,7 +95,7 @@ namespace octoon
 			}
 
 			bool should_update_materials = !renderingData->material_bundle || materialCollector.NeedsUpdate(renderingData->material_bundle.get(),
-				[](runtime::RttiObject* ptr)->bool
+				[](RttiObject* ptr)->bool
 			{
 				auto mat = ptr->downcast<Material>();
 				return mat->isDirty();

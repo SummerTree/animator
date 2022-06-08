@@ -21,14 +21,14 @@ namespace unreal
 	}
 
 	void 
-	RecordModule::load(octoon::runtime::json& reader, std::string_view path) noexcept
+	RecordModule::load(nlohmann::json& reader, std::string_view path) noexcept
 	{
 		if (reader["denoise"].is_boolean())
 			this->denoise = reader["denoise"].get<nlohmann::json::boolean_t>();
 	}
 
 	void 
-	RecordModule::save(octoon::runtime::json& writer, std::string_view path) noexcept
+	RecordModule::save(nlohmann::json& writer, std::string_view path) noexcept
 	{
 		writer["denoise"] = this->denoise.getValue();
 	}

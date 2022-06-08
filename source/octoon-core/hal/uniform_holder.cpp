@@ -97,7 +97,7 @@ namespace octoon
 				break;
 				default:
 				{
-					throw runtime::runtime_error::create("Unkonwn Type");
+					throw runtime_error::create("Unkonwn Type");
 				}
 			}
 

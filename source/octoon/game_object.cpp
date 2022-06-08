@@ -6,7 +6,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(GameObject, runtime::RttiObject, "GameObject")
+	OctoonImplementSubClass(GameObject, RttiObject, "GameObject")
 
 	GameObject::GameObject() noexcept
 		: active_(true)
@@ -355,7 +355,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::removeComponent(const runtime::Rtti* type) noexcept
+	GameObject::removeComponent(const Rtti* type) noexcept
 	{
 		assert(type);
 
@@ -379,7 +379,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::removeComponent(const runtime::Rtti& type) noexcept
+	GameObject::removeComponent(const Rtti& type) noexcept
 	{
 		this->removeComponent(&type);
 	}
@@ -438,7 +438,7 @@ namespace octoon
 	}
 
 	GameComponentPtr
-	GameObject::getComponent(const runtime::Rtti* type) const noexcept
+	GameObject::getComponent(const Rtti* type) const noexcept
 	{
 		assert(type);
 
@@ -452,13 +452,13 @@ namespace octoon
 	}
 
 	GameComponentPtr
-	GameObject::getComponent(const runtime::Rtti& type) const noexcept
+	GameObject::getComponent(const Rtti& type) const noexcept
 	{
 		return this->getComponent(&type);
 	}
 
 	void
-	GameObject::getComponents(const runtime::Rtti* type, GameComponents& components) const noexcept
+	GameObject::getComponents(const Rtti* type, GameComponents& components) const noexcept
 	{
 		assert(type);
 
@@ -470,13 +470,13 @@ namespace octoon
 	}
 
 	void
-	GameObject::getComponents(const runtime::Rtti& type, GameComponents& components) const noexcept
+	GameObject::getComponents(const Rtti& type, GameComponents& components) const noexcept
 	{
 		this->getComponents(&type, components);
 	}
 
 	GameComponentPtr
-	GameObject::getComponentInChildren(const runtime::Rtti* type) const noexcept
+	GameObject::getComponentInChildren(const Rtti* type) const noexcept
 	{
 		assert(type);
 
@@ -497,13 +497,13 @@ namespace octoon
 	}
 
 	GameComponentPtr
-	GameObject::getComponentInChildren(const runtime::Rtti& type) const noexcept
+	GameObject::getComponentInChildren(const Rtti& type) const noexcept
 	{
 		return this->getComponentInChildren(&type);
 	}
 
 	void
-	GameObject::getComponentsInChildren(const runtime::Rtti* type, GameComponents& components) const noexcept
+	GameObject::getComponentsInChildren(const Rtti* type, GameComponents& components) const noexcept
 	{
 		assert(type);
 
@@ -520,7 +520,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::getComponentsInChildren(const runtime::Rtti& type, GameComponents& components) const noexcept
+	GameObject::getComponentsInChildren(const Rtti& type, GameComponents& components) const noexcept
 	{
 		return this->getComponentsInChildren(&type, components);
 	}
@@ -672,7 +672,7 @@ namespace octoon
 		for (auto& it : json["components"])
 		{
 			auto name = it.get<std::string>();
-			auto component = runtime::make_shared<GameComponent>(name);
+			auto component = RttiFactory::instance()->make_shared<GameComponent>(name);
 			component->load(it[name]);
 			this->addComponent(component);
 		}
@@ -680,7 +680,7 @@ namespace octoon
 		for (auto& it : json["components"])
 		{
 			auto name = it.get<std::string>();
-			auto object = runtime::make_shared<GameObject>(name);
+			auto object = RttiFactory::instance()->make_shared<GameObject>(name);
 			object->load(it[name]);
 			this->addChild(object);
 		}

@@ -218,13 +218,13 @@ namespace octoon
 			return true;
 		}
 
-		runtime::json
+		nlohmann::json
 		httpbuf::json() const noexcept
 		{
 			if (memory_.empty())
-				return runtime::json();
+				return nlohmann::json();
 			std::string_view str = std::string_view(memory_.data(), memory_.size());
-			return runtime::json::parse(std::string(str));
+			return nlohmann::json::parse(std::string(str));
 		}
 	}
 }

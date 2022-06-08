@@ -26,7 +26,7 @@ namespace octoon
 
 			bool close() noexcept;
 
-			runtime::json json() const noexcept;
+			nlohmann::json json() const noexcept;
 
 			streamsize read(char* str, std::streamsize cnt) noexcept;
 			streamsize write(const char* str, std::streamsize cnt) noexcept;

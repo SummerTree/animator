@@ -24,7 +24,7 @@ namespace unreal
 		void coin(std::int32_t coin) noexcept(false);
 
 		std::uint32_t invoice(const std::string& tradeNo) noexcept(false);
-		std::future<octoon::runtime::json> alipay(std::uint32_t type) noexcept(false);
+		std::future<nlohmann::json> alipay(std::uint32_t type) noexcept(false);
 
 		std::optional<std::string> version() noexcept(false);
 

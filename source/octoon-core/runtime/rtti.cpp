@@ -3,67 +3,64 @@
 
 namespace octoon
 {
-	namespace runtime
+	Rtti::Rtti(std::string_view name, RttiConstruct creator, const Rtti* parent) noexcept
+		: name_(name)
+		, parent_(parent)
+		, construct_(creator)
 	{
-		Rtti::Rtti(std::string_view name, RttiConstruct creator, const Rtti* parent) noexcept
-			: name_(name)
-			, parent_(parent)
-			, construct_(creator)
-		{
-			RttiFactory::instance()->add(this);
-		}
+		RttiFactory::instance()->add(this);
+	}
 
-		RttiObjectPtr
-		Rtti::create() const except //throw(std::bad_alloc)
-		{
-			assert(construct_);
-			return std::shared_ptr<RttiObject>(construct_());
-		}
+	RttiObjectPtr
+	Rtti::create() const except //throw(std::bad_alloc)
+	{
+		assert(construct_);
+		return std::shared_ptr<RttiObject>(construct_());
+	}
 
-		const Rtti*
-		Rtti::getParent() const noexcept
-		{
-			return parent_;
-		}
+	const Rtti*
+	Rtti::getParent() const noexcept
+	{
+		return parent_;
+	}
 
-		const std::string&
-		Rtti::type_name() const noexcept
-		{
-			return name_;
-		}
+	const std::string&
+	Rtti::type_name() const noexcept
+	{
+		return name_;
+	}
 
-		bool
-		Rtti::isDerivedFrom(const Rtti* other) const noexcept
-		{
-			assert(other);
+	bool
+	Rtti::isDerivedFrom(const Rtti* other) const noexcept
+	{
+		assert(other);
 
-			for (const Rtti* cur = this; cur != 0; cur = cur->getParent())
+		for (const Rtti* cur = this; cur != 0; cur = cur->getParent())
+		{
+			if (cur == other)
 			{
-				if (cur == other)
-				{
-					return true;
-				}
+				return true;
 			}
-
-			return false;
 		}
 
-		bool
-		Rtti::isDerivedFrom(const Rtti& other) const noexcept
+		return false;
+	}
+
+	bool
+	Rtti::isDerivedFrom(const Rtti& other) const noexcept
+	{
+		return this->isDerivedFrom(&other);
+	}
+
+	bool
+	Rtti::isDerivedFrom(std::string_view name) const noexcept
+	{
+		for (const Rtti* cur = this; cur != 0; cur = cur->getParent())
 		{
-			return this->isDerivedFrom(&other);
+			if (cur->name_ == name)
+				return true;
 		}
 
-		bool
-		Rtti::isDerivedFrom(std::string_view name) const noexcept
-		{
-			for (const Rtti* cur = this; cur != 0; cur = cur->getParent())
-			{
-				if (cur->name_ == name)
-					return true;
-			}
-
-			return false;
-		}
+		return false;
 	}
 }

@@ -97,11 +97,11 @@ namespace octoon
 		this->onMessage(std::string("Initializing : Local : ") + ::setlocale(LC_ALL, ""));
 		this->onMessage("Initializing : RTTI.");
 
-		if (!runtime::RttiFactory::instance()->open())
+		if (!RttiFactory::instance()->open())
 		{
 			this->onMessage("Could not initialize with RTTI.");
 
-			throw runtime::runtime_error::create("Could not initialize with RTTI.");
+			throw runtime_error::create("Could not initialize with RTTI.");
 		}
 
 		this->onMessage("Initializing : Game Server.");
@@ -175,7 +175,7 @@ namespace octoon
 		if (server_)
 			server_->setActive(active);
 		else
-			throw runtime::runtime_error::create("please call open() before setActive()");
+			throw runtime_error::create("please call open() before setActive()");
 	}
 
 	bool
@@ -227,7 +227,7 @@ namespace octoon
 		if (server_)
 			return server_->addScene(scene);
 		else
-			throw runtime::runtime_error::create("please call open() before openScene()");
+			throw runtime_error::create("please call open() before openScene()");
 	}
 
 	bool
@@ -236,7 +236,7 @@ namespace octoon
 		if (server_)
 			return server_->openScene(name);
 		else
-			throw runtime::runtime_error::create("please call open() before openScene()");
+			throw runtime_error::create("please call open() before openScene()");
 	}
 
 	void
@@ -270,40 +270,40 @@ namespace octoon
 		if (server_)
 			server_->addFeature(std::move(feature));
 		else
-			throw runtime::runtime_error::create("please call open() before addFeature()");
+			throw runtime_error::create("please call open() before addFeature()");
 	}
 
 	GameFeature*
-	GameApp::getFeature(const runtime::Rtti* type) const noexcept(false)
+	GameApp::getFeature(const Rtti* type) const noexcept(false)
 	{
 		if (server_)
 			return server_->getFeature(type);
 		else
-			throw runtime::runtime_error::create("please call open() before getFeature()");
+			throw runtime_error::create("please call open() before getFeature()");
 	}
 
 	GameFeature*
-	GameApp::getFeature(const runtime::Rtti& type) const noexcept(false)
+	GameApp::getFeature(const Rtti& type) const noexcept(false)
 	{
 		return this->getFeature(&type);
 	}
 
 	void
-	GameApp::removeFeature(const runtime::Rtti* type) noexcept(false)
+	GameApp::removeFeature(const Rtti* type) noexcept(false)
 	{
 		if (server_)
 			server_->removeFeature(type);
 		else
-			throw runtime::runtime_error::create("please call open() before removeFeature()");
+			throw runtime_error::create("please call open() before removeFeature()");
 	}
 
 	void
-	GameApp::removeFeature(const runtime::Rtti& type) noexcept(false)
+	GameApp::removeFeature(const Rtti& type) noexcept(false)
 	{
 		if (server_)
 			server_->removeFeature(type);
 		else
-			throw runtime::runtime_error::create("please call open() before removeFeature()");
+			throw runtime_error::create("please call open() before removeFeature()");
 	}
 
 	void
@@ -312,7 +312,7 @@ namespace octoon
 		if (server_)
 			server_->removeFeature(feature);
 		else
-			throw runtime::runtime_error::create("please call open() before removeFeature()");
+			throw runtime_error::create("please call open() before removeFeature()");
 	}
 
 	void
@@ -322,7 +322,7 @@ namespace octoon
 		if (server_)
 			server_->sendMessage("feature:input:event", event);
 		else
-			throw runtime::runtime_error::create("please call open() before sendInputEvent()");
+			throw runtime_error::create("please call open() before sendInputEvent()");
 	}
 
 	void
@@ -331,7 +331,7 @@ namespace octoon
 		if (server_)
 			server_->sendMessage(event, data);
 		else
-			throw runtime::runtime_error::create("please call open() before sendMessage()");
+			throw runtime_error::create("please call open() before sendMessage()");
 	}
 
 	void
@@ -340,7 +340,7 @@ namespace octoon
 		if (server_)
 			server_->addMessageListener(event, listener);
 		else
-			throw runtime::runtime_error::create("please call open() before addMessageListener()");
+			throw runtime_error::create("please call open() before addMessageListener()");
 	}
 
 	void
@@ -349,7 +349,7 @@ namespace octoon
 		if (server_)
 			server_->removeMessageListener(event, listener);
 		else
-			throw runtime::runtime_error::create("please call open() before removeMessageListener()");
+			throw runtime_error::create("please call open() before removeMessageListener()");
 	}
 
 	void
@@ -374,7 +374,7 @@ namespace octoon
 		if (server_)
 			server_->update();
 		else
-			throw runtime::runtime_error::create("please call open() before update()");
+			throw runtime_error::create("please call open() before update()");
 	}
 
 	void

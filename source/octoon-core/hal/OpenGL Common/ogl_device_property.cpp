@@ -30,10 +30,10 @@ namespace octoon
 				this->setupGLEnvironment(params);
 
 				if (!initGLExtenstion())
-					throw runtime::runtime_error::create("initGLExtenstion fail");
+					throw runtime_error::create("initGLExtenstion fail");
 
 				if (!initDeviceProperties())
-					throw runtime::runtime_error::create("initDeviceProperties fail");
+					throw runtime_error::create("initDeviceProperties fail");
 
 				this->closeGLEnvironment(params);
 			}
@@ -74,15 +74,15 @@ namespace octoon
 			wc.lpszClassName = "OctoonWin32OpenGLWindow";
 			wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 			if (!::RegisterClassEx(&wc))
-				throw runtime::runtime_error::create("RegisterClassEx() fail");
+				throw runtime_error::create("RegisterClassEx() fail");
 
 			param.hwnd = CreateWindowEx(WS_EX_APPWINDOW, "OctoonWin32OpenGLWindow", "OGL", 0, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, wc.hInstance, NULL);
 			if (!param.hwnd)
-				throw runtime::runtime_error::create("CreateWindowEx() fail");
+				throw runtime_error::create("CreateWindowEx() fail");
 
 			param.hdc = ::GetDC(param.hwnd);
 			if (!param.hdc)
-				throw runtime::runtime_error::create("GetDC() fail");
+				throw runtime_error::create("GetDC() fail");
 
 			PIXELFORMATDESCRIPTOR pfd;
 			std::memset(&pfd, 0, sizeof(pfd));
@@ -92,20 +92,20 @@ namespace octoon
 
 			int pixelFormat = ::ChoosePixelFormat(param.hdc, &pfd);
 			if (!pixelFormat)
-				throw runtime::runtime_error::create("ChoosePixelFormat() fail");
+				throw runtime_error::create("ChoosePixelFormat() fail");
 
 			if (!::DescribePixelFormat(param.hdc, pixelFormat, sizeof(pfd), &pfd))
-				throw runtime::runtime_error::create("DescribePixelFormat() fail");
+				throw runtime_error::create("DescribePixelFormat() fail");
 
 			if (!::SetPixelFormat(param.hdc, pixelFormat, &pfd))
-				throw runtime::runtime_error::create("SetPixelFormat() fail");
+				throw runtime_error::create("SetPixelFormat() fail");
 
 			param.context = ::wglCreateContext(param.hdc);
 			if (!param.context)
-				throw runtime::runtime_error::create("wglCreateContext fail");
+				throw runtime_error::create("wglCreateContext fail");
 
 			if (!::wglMakeCurrent(param.hdc, param.context))
-				throw runtime::runtime_error::create("wglMakeCurrent fail");
+				throw runtime_error::create("wglMakeCurrent fail");
 		}
 
 		void
@@ -135,20 +135,20 @@ namespace octoon
 		{
 			param.dpy = XOpenDisplay(NULL);
 			if (!param.dpy)
-				throw runtime::runtime_error::create("XOpenDisplay() fail");
+				throw runtime_error::create("XOpenDisplay() fail");
 
 			int erb, evb;
 			if (!glXQueryExtension(param.dpy, &erb, &evb))
-				throw runtime::runtime_error::create("glXQueryExtension() fail");
+				throw runtime_error::create("glXQueryExtension() fail");
 
 			int attrib[] = { GLX_RGBA, GLX_RED_SIZE, 8, GLX_GREEN_SIZE, 8, GLX_BLUE_SIZE, 8, GL_NONE, GL_NONE };
 			param.vi = glXChooseVisual(param.dpy, DefaultScreen(param.dpy), attrib);
 			if (!param.vi)
-				throw runtime::runtime_error::create("glXChooseVisual() fail");
+				throw runtime_error::create("glXChooseVisual() fail");
 
 			param.ctx = glXCreateContext(param.dpy, param.vi, GL_NONE, true);
 			if (!param.ctx)
-				throw runtime::runtime_error::create("glXCreateContext() fail");
+				throw runtime_error::create("glXCreateContext() fail");
 
 			param.cmap = XCreateColormap(param.dpy, RootWindow(param.dpy, param.vi->screen), param.vi->visual, AllocNone);
 
@@ -160,13 +160,13 @@ namespace octoon
 			XMapWindow(param.dpy, param.wnd);
 
 			if (!glXMakeCurrent(param.dpy, param.wnd, param.ctx))
-				throw runtime::runtime_error::create("glXMakeCurrent() fail");
+				throw runtime_error::create("glXMakeCurrent() fail");
 
 			if (::glewInit() != GLEW_OK)
-				throw runtime::runtime_error::create("glewInit() fail");
+				throw runtime_error::create("glewInit() fail");
 
 			if (::glxewInit() != GLEW_OK)
-				throw runtime::runtime_error::create("glxewInit() fail");
+				throw runtime_error::create("glxewInit() fail");
 		}
 
 		void
@@ -229,16 +229,16 @@ namespace octoon
 				CGLPixelFormatObj pf;
 				CGLError error = CGLChoosePixelFormat(contextAttrs, &pf, &npix);
 				if (error)
-					throw runtime::runtime_error::create("CGLChoosePixelFormat() fail");
+					throw runtime_error::create("CGLChoosePixelFormat() fail");
 
 				error = CGLCreateContext(pf, NULL, &param.ctx);
 				if (error)
-					throw runtime::runtime_error::create("CGLCreateContext() fail");
+					throw runtime_error::create("CGLCreateContext() fail");
 
 				CGLReleasePixelFormat(pf);
 				error = CGLSetCurrentContext(param.ctx);
 				if (error)
-					throw runtime::runtime_error::create("CGLSetCurrentContext() fail");
+					throw runtime_error::create("CGLSetCurrentContext() fail");
 			}
 		}
 
@@ -284,44 +284,44 @@ namespace octoon
 
 			param.display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 			if (param.display == EGL_NO_DISPLAY)
-				throw runtime::runtime_error::create("eglGetDisplay() fail.");
+				throw runtime_error::create("eglGetDisplay() fail.");
 
 			if (::eglInitialize(param.display, nullptr, nullptr) == EGL_FALSE)
-				throw runtime::runtime_error::create("eglInitialize() fail.");
+				throw runtime_error::create("eglInitialize() fail.");
 
 #if defined(OCTOON_BUILD_PLATFORM_EMSCRIPTEN) || defined(OCTOON_BUILD_PLATFORM_ANDROID)
 			if (::eglBindAPI(EGL_OPENGL_ES_API) == EGL_FALSE)
-				throw runtime::runtime_error::create("eglBindAPI(EGL_OPENGL_ES_API) fail.");
+				throw runtime_error::create("eglBindAPI(EGL_OPENGL_ES_API) fail.");
 #else
 			if (::eglBindAPI(EGL_OPENGL_API) == EGL_FALSE)
-				throw runtime::runtime_error::create("eglBindAPI(EGL_OPENGL_API) fail.");
+				throw runtime_error::create("eglBindAPI(EGL_OPENGL_API) fail.");
 #endif
 
 			EGLint num = 0;
 			EGLConfig config = 0;
 			if (::eglChooseConfig(param.display, pixelFormat, &config, 1, &num) == EGL_FALSE)
-				throw runtime::runtime_error::create("eglChooseConfig() fail.");
+				throw runtime_error::create("eglChooseConfig() fail.");
 
 			param.context = ::eglCreateContext(param.display, config, EGL_NO_CONTEXT, attribs);
 			if (param.context == EGL_NO_CONTEXT)
-				throw runtime::runtime_error::create("eglCreateContext() fail.");
+				throw runtime_error::create("eglCreateContext() fail.");
 
 #if defined(OCTOON_BUILD_PLATFORM_EMSCRIPTEN)
 			auto dpy = XOpenDisplay(NULL);
 			if (!dpy)
-				throw runtime::runtime_error::create("XOpenDisplay() fail");
+				throw runtime_error::create("XOpenDisplay() fail");
 
 			XSetWindowAttributes swa;
 			swa.event_mask = ExposureMask | PointerMotionMask | KeyPressMask;
 			auto win = XCreateWindow(dpy, DefaultRootWindow(dpy), 0, 0, 1, 1, 0, CopyFromParent, InputOutput, CopyFromParent, CWEventMask, &swa);
 			if (!win)
-				throw runtime::runtime_error::create("XCreateWindow() fail.");
+				throw runtime_error::create("XCreateWindow() fail.");
 
 			EGLNativeWindowType hwnd = (EGLNativeWindowType)win;
 #endif
 			param.surface = ::eglCreateWindowSurface(param.display, config, hwnd, NULL);
 			if (::eglGetError() != EGL_SUCCESS)
-				throw runtime::runtime_error::create("eglCreateWindowSurface() fail.");
+				throw runtime_error::create("eglCreateWindowSurface() fail.");
 
 			::eglMakeCurrent(param.display, param.surface, param.surface, param.context);
 		}
