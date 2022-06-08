@@ -334,7 +334,7 @@ namespace octoon
 	bool
 	Mesh::raycastAll(const math::Raycast& ray, std::vector<MeshHit>& hits) noexcept
 	{
-		if (!math::intersect(ray, this->getBoundingBoxAll().box()))
+		if (!math::intersect(ray, this->getBoundingBoxAll().sphere()))
 			return false;
 
 		if (this->_indices.empty())
@@ -362,7 +362,7 @@ namespace octoon
 		{
 			for (std::size_t i = 0; i < this->getNumSubsets(); i++)
 			{
-				if (math::intersect(ray, this->getBoundingBox(i).box()))
+				if (math::intersect(ray, this->getBoundingBox(i).sphere()))
 				{
 					auto& indices = _indices[i];
 
