@@ -105,21 +105,10 @@ namespace octoon
 	OctoonImplementSubClass(MeshStandardMaterial, Material, "MeshStandardMaterial");
 
 	MeshStandardMaterial::MeshStandardMaterial() noexcept
-		: MeshStandardMaterial(math::float3::One)
-	{
-	}
-
-	MeshStandardMaterial::MeshStandardMaterial(std::string_view name) noexcept
-		: MeshStandardMaterial(math::float3::One)
-	{
-		this->setName(name);
-	}
-
-	MeshStandardMaterial::MeshStandardMaterial(const math::float3& color) noexcept
 		: lightMapIntensity_(1.0f)
 		, emissiveIntensity_(1.0f)
 	{
-		this->setColor(color);
+		this->setColor(math::float3::One);
 		this->setOpacity(1.0f);
 		this->setEmissive(math::float3::Zero);
 		this->setRoughness(1.0f);
@@ -140,6 +129,25 @@ namespace octoon
 		this->setNormalScale(math::float2::One);
 		this->setReceiveShadow(true);
 		this->setShader(std::make_shared<Shader>(standard_vert, standard_frag));
+	}
+
+	MeshStandardMaterial::MeshStandardMaterial(std::string_view name) noexcept
+		: MeshStandardMaterial()
+	{
+		this->setName(name);
+	}
+
+	MeshStandardMaterial::MeshStandardMaterial(std::string_view name, const math::float3& color) noexcept
+		: MeshStandardMaterial()
+	{
+		this->setName(name);
+		this->setColor(color);
+	}
+
+	MeshStandardMaterial::MeshStandardMaterial(const math::float3& color) noexcept
+		: MeshStandardMaterial()
+	{
+		this->setColor(color);
 	}
 
 	MeshStandardMaterial::~MeshStandardMaterial() noexcept

@@ -678,7 +678,7 @@ namespace octoon
 				if (materials_.contains(name))
 					meshRender->setMaterial(materials_[name]);
 				else
-					meshRender->setMaterial(std::make_shared<MeshStandardMaterial>(math::float3(0.9f, 0.9f, 0.9f)));
+					meshRender->setMaterial(std::make_shared<MeshStandardMaterial>(name, math::float3(0.9f, 0.9f, 0.9f)));
 
 				auto mesh = gameObject->addComponent<MeshAnimationComponent>();
 				mesh->createAnimationData(childData);

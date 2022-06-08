@@ -1794,12 +1794,13 @@ namespace unreal
 				if (material)
 				{
 					QFontMetrics metrics(nameLabel->font());
-					nameLabel->setText(metrics.elidedText(QString::fromStdString(material->getName()), Qt::ElideRight, imageLabel->width()));
+					nameLabel->setToolTip(QString::fromStdString(material->getName()));
+					nameLabel->setText(metrics.elidedText(nameLabel->toolTip(), Qt::ElideRight, imageLabel->width()));
 
 					QPixmap pixmap;
 					MaterialImporter::instance()->createMaterialPreview(material, pixmap, imageLabel->width(), imageLabel->height());
 					imageLabel->setPixmap(pixmap);
-					imageLabel->setToolTip(QString::fromStdString(material->getName()));
+					imageLabel->setToolTip(nameLabel->toolTip());
 				}
 				else
 				{
@@ -1815,6 +1816,7 @@ namespace unreal
 
 						auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
 						nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
+						nameLabel->setToolTip(name);
 						imageLabel->setToolTip(name);
 					}
 				}

@@ -11,6 +11,7 @@ namespace octoon
 	public:
 		MeshStandardMaterial() noexcept;
 		MeshStandardMaterial(std::string_view name) noexcept;
+		MeshStandardMaterial(std::string_view name, const math::float3& color) noexcept;
 		MeshStandardMaterial(const math::float3& color) noexcept;
 		virtual ~MeshStandardMaterial() noexcept;
 
