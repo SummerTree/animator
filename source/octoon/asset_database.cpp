@@ -31,11 +31,61 @@ namespace octoon
 	}
 
 	std::string
+	AssetDatabase::getAssetGuid(const std::shared_ptr<RttiObject>& asset) noexcept
+	{
+		if (assetGuidList_.contains(asset))
+			return assetGuidList_.at(asset);
+		else
+		{
+			auto guid = octoon::make_guid();
+			assetGuidList_[asset] = guid;
+			return guid;
+		}
+	}
+
+	std::string
 	AssetDatabase::getAssetGuid(const std::shared_ptr<RttiObject>& asset) const noexcept
 	{
 		if (assetGuidList_.contains(asset))
 			return assetGuidList_.at(asset);
 		return std::string();
+	}
+
+	nlohmann::json
+	AssetDatabase::createAsset(const std::shared_ptr<octoon::Animation>& animation, std::string_view outputPath) noexcept
+	{
+		if (animation)
+		{
+			auto uuid = this->getAssetGuid(animation);
+			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
+			auto motionPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
+			auto packagePath = std::filesystem::path(rootPath).append("package.json");
+
+			std::filesystem::create_directories(rootPath);
+
+			octoon::VMDLoader::save(motionPath.string(), *animation);
+			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
+
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["visible"] = true;
+			package["name"] = uuid + ".vmd";
+			package["path"] = (char*)motionPath.u8string().c_str();
+
+			std::ofstream ifs(packagePath, std::ios_base::binary);
+			if (ifs)
+			{
+				auto dump = package.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+			}
+
+			this->packageList_[std::string(uuid)] = package;
+
+			return package;
+		}
+
+		return nlohmann::json();
 	}
 
 	std::shared_ptr<RttiObject>
