@@ -57,7 +57,9 @@ namespace octoon
 
 			for (auto& mat : loader.getMaterials())
 			{
-				auto package = this->createPackage(mat, outputPath);
+				this->setMaterialPath(outputPath);
+
+				auto package = this->createPackage(mat);
 
 				items.push_back(package["uuid"]);
 				this->indexList_.push_back(package["uuid"]);
@@ -72,7 +74,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	MaterialImporter::createPackage(const std::shared_ptr<octoon::Material>& mat, std::string_view materialPath, std::string_view texturePath) noexcept(false)
+	MaterialImporter::createPackage(const std::shared_ptr<octoon::Material>& mat) noexcept(false)
 	{
 		auto it = this->assetPackageCache_.find(mat);
 		if (it != this->assetPackageCache_.end())
@@ -91,8 +93,8 @@ namespace octoon
 			}
 		}
 
-		auto outputPath = std::filesystem::path(materialPath.empty() ? assertPath_ : materialPath).append(uuid);
-		auto outputTexturePath = std::filesystem::path(texturePath.empty() ? assertPath_ : texturePath);
+		auto outputPath = std::filesystem::path(materialPath_.empty() ? assertPath_ : materialPath_).append(uuid);
+		auto outputTexturePath = std::filesystem::path(texturePath_.empty() ? assertPath_ : texturePath_);
 
 		std::filesystem::create_directories(outputPath);
 
@@ -414,6 +416,18 @@ namespace octoon
 		this->assetList_[material] = package;
 
 		return material;
+	}
+
+	void
+	MaterialImporter::setTexturePath(std::string_view path)
+	{
+		this->texturePath_ = path;
+	}
+
+	void
+	MaterialImporter::setMaterialPath(std::string_view path)
+	{
+		this->materialPath_ = path;
 	}
 
 	bool

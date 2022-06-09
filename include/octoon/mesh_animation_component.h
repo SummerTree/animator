@@ -29,6 +29,7 @@ namespace octoon
 		void sample(float delta = 0.0f) noexcept;
 		void evaluate(float delta = 0.0f) noexcept;
 
+		void setMaterials(std::unordered_map<std::string, MaterialPtr>&& materials);
 		void setMaterials(const std::unordered_map<std::string, MaterialPtr>& materials);
 		const std::unordered_map<std::string, MaterialPtr>& getMaterials() const;
 

@@ -4,6 +4,7 @@
 #include <octoon/transform_component.h>
 #include <octoon/timer_feature.h>
 #include <octoon/material/mesh_standard_material.h>
+#include <octoon/material_importer.h>
 
 #pragma warning(push)
 #pragma warning(disable:4244)
@@ -440,7 +441,13 @@ namespace octoon
 				component->evaluate(delta);
 		}
 	}
-	
+
+	void
+	MeshAnimationComponent::setMaterials(std::unordered_map<std::string, MaterialPtr>&& materials)
+	{
+		materials_ = std::move(materials);
+	}
+
 	void
 	MeshAnimationComponent::setMaterials(const std::unordered_map<std::string, MaterialPtr>& materials)
 	{
@@ -464,6 +471,17 @@ namespace octoon
 	{
 		GameComponent::load(json);
 
+		std::unordered_map<std::string, octoon::MaterialPtr> materials;
+
+		for (auto& material : json["materials"])
+		{
+			auto data = material["data"].get<nlohmann::json::object_t>();
+			auto name = material["name"].get<std::string>();
+			materials[name] = octoon::MaterialImporter::instance()->loadPackage(data);
+		}
+
+		this->setMaterials(std::move(materials));
+
 		if (json.contains("path"))
 			this->setFilePath(json["path"].get<std::string>());
 		if (json.contains("time"))
@@ -478,8 +496,13 @@ namespace octoon
 		json["path"] = this->path_;
 		json["time"] = this->animationState_.time;
 
-		for (auto& it : materials_)
+		for (auto& pair : this->materials_)
 		{
+			nlohmann::json materialJson;
+			materialJson["data"] = octoon::MaterialImporter::instance()->createPackage(pair.second);
+			materialJson["name"] = pair.first;
+
+			json["materials"].push_back(materialJson);
 		}
 	}
 

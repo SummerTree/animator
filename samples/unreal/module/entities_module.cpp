@@ -58,19 +58,7 @@ namespace unreal
 					{
 						auto abc = object->addComponent<octoon::MeshAnimationComponent>();
 						if (abc)
-						{
-							std::unordered_map<std::string, octoon::MaterialPtr> materials;
-
-							for (auto& material : it["alembic"]["materials"])
-							{
-								auto data = material["data"].get<nlohmann::json::object_t>();
-								auto name = material["name"].get<std::string>();
-								materials[name] = octoon::MaterialImporter::instance()->loadPackage(data);
-							}
-
-							abc->setMaterials(materials);
 							abc->load(it["alembic"]);
-						}
 					}
 
 					for (auto& animationJson : it["animation"])
@@ -127,6 +115,12 @@ namespace unreal
 		auto root = std::string(profilePath);
 		root = root.substr(0, root.find_last_of('/')) + "/Assets/";
 
+		auto texturePath = root + "/Textures";
+		auto materialPath = root + "/Materials";
+
+		octoon::MaterialImporter::instance()->setTexturePath(root + "/Textures");
+		octoon::MaterialImporter::instance()->setMaterialPath(root + "/Materials");
+
 		nlohmann::json sceneJson;
 
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
@@ -144,21 +138,7 @@ namespace unreal
 
 				auto abc = it->getComponent<octoon::MeshAnimationComponent>();
 				if (abc)
-				{
-					auto texturePath = root + "/Textures";
-					auto materialPath = root + "/Materials";
-
 					abc->save(json["alembic"]);
-
-					for (auto& pair : abc->getMaterials())
-					{
-						nlohmann::json materialJson;
-						materialJson["data"] = octoon::MaterialImporter::instance()->createPackage(pair.second, materialPath, texturePath);
-						materialJson["name"] = pair.first;
-
-						json["alembic"]["materials"].push_back(materialJson);
-					}
-				}
 
 				for (auto& component : it->getComponents())
 				{
@@ -182,13 +162,11 @@ namespace unreal
 				if (smr)
 				{
 					auto& materials = smr->getMaterials();
-					auto materialPath = root + "/Materials";
-					auto texturePath = root + "/Textures";
 
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
 						nlohmann::json materialJson;
-						materialJson["data"] = octoon::MaterialImporter::instance()->createPackage(materials[i], materialPath, texturePath);
+						materialJson["data"] = octoon::MaterialImporter::instance()->createPackage(materials[i]);
 						materialJson["index"] = i;
 
 						json["materials"].push_back(materialJson);
