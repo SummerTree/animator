@@ -87,13 +87,13 @@ namespace octoon
 	}
 
 	void
-	Material::setDirty(bool dirty) noexcept
+	Texture::setDirty(bool dirty) noexcept
 	{
 		this->dirty_ = dirty;
 	}
 
 	bool
-	Material::isDirty() const noexcept
+	Texture::isDirty() const noexcept
 	{
 		return this->dirty_;
 	}
