@@ -22,6 +22,7 @@ namespace octoon
 		, mipLevel_(1)
 		, layerBase_(0)
 		, layerLevel_(1)
+		, dirty_(true)
 	{
 	}
 
@@ -83,6 +84,18 @@ namespace octoon
 	Texture::getName() const noexcept
 	{
 		return name_;
+	}
+
+	void
+	Material::setDirty(bool dirty) noexcept
+	{
+		this->dirty_ = dirty;
+	}
+
+	bool
+	Material::isDirty() const noexcept
+	{
+		return this->dirty_;
 	}
 
 	bool
@@ -198,6 +211,7 @@ namespace octoon
 		layerBase_ = layerBase;
 		layerLevel_ = layerLevel;
 		data_.resize(destLength, 0);
+		this->setDirty(true);
 
 		return true;
 	}
@@ -242,6 +256,7 @@ namespace octoon
 	Texture::setMipBase(std::uint32_t base) noexcept
 	{
 		mipBase_ = base;
+		this->setDirty(true);
 	}
 
 	std::uint32_t
@@ -254,6 +269,7 @@ namespace octoon
 	Texture::setMipLevel(std::uint32_t level) noexcept
 	{
 		mipLevel_ = level;
+		this->setDirty(true);
 	}
 
 	std::uint32_t
@@ -465,6 +481,8 @@ namespace octoon
 		nativeTexture_ = Renderer::instance()->getGraphicsDevice()->createTexture(textureDesc);
 		if (!nativeTexture_)
 			throw runtime_error::create("createTexture() failed");
+
+		this->setDirty(false);
 	}
 
 	bool
@@ -480,7 +498,10 @@ namespace octoon
 				if (impl)
 				{
 					if (impl->doLoad(membuf, *this))
+					{
+						this->setDirty(true);
 						return true;
+					}
 				}
 			}
 		}

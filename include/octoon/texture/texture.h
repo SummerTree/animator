@@ -57,6 +57,9 @@ namespace octoon
 
 		Texture convert(Format format) noexcept(false);
 
+		void setDirty(bool dirty) noexcept;
+		bool isDirty() const noexcept;
+
 		void apply() noexcept(false);
 
 	public:
@@ -71,6 +74,9 @@ namespace octoon
 
 	private:
 		Format format_;
+
+		bool dirty_;
+
 		std::string name_;
 
 		std::uint32_t width_;

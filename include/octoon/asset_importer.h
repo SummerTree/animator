@@ -21,6 +21,7 @@ namespace octoon
 		virtual void removePackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
 
 		virtual nlohmann::json& getIndexList() noexcept;
+		virtual const nlohmann::json& getIndexList() const noexcept;
 
 		virtual std::string getPackagePath(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept;
 		virtual std::string getPackageGuid(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept;

@@ -109,6 +109,12 @@ namespace octoon
 		return indexList_;
 	}
 
+	const nlohmann::json&
+	AssetImporter::getIndexList() const noexcept
+	{
+		return indexList_;
+	}
+
 	std::string
 	AssetImporter::getPackagePath(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept
 	{
