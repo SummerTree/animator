@@ -155,8 +155,8 @@ SET(LOADER_LIST
 	${SOURCE_PATH}/pmx.cpp
 	${HEADER_PATH}/pmx_loader.h
 	${SOURCE_PATH}/pmx_loader.cpp
-	${HEADER_PATH}/texture_loader.h
-	${SOURCE_PATH}/texture_loader.cpp
+	${HEADER_PATH}/asset_database.h
+	${SOURCE_PATH}/asset_database.cpp
 	${HEADER_PATH}/texture_importer.h
 	${SOURCE_PATH}/texture_importer.cpp
 	${HEADER_PATH}/vmd_loader.h

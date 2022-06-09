@@ -1,7 +1,6 @@
 #include <octoon/material_importer.h>
 #include <octoon/mdl_loader.h>
 #include <octoon/PMREM_loader.h>
-#include <octoon/texture_loader.h>
 #include <octoon/texture_importer.h>
 #include <octoon/video_feature.h>
 #include <octoon/environment_light_component.h>

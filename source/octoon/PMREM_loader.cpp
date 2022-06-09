@@ -1,5 +1,4 @@
 #include <octoon/pmrem_loader.h>
-#include <octoon/texture_loader.h>
 #include <octoon/runtime/except.h>
 #include <octoon/hal/graphics_texture.h>
 #include <octoon/video/renderer.h>

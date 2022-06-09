@@ -1,6 +1,5 @@
 #include <octoon/texture_importer.h>
 #include <octoon/texture/texture.h>
-#include <octoon/texture_loader.h>
 #include <octoon/runtime/uuid.h>
 #include <fstream>
 #include <filesystem>

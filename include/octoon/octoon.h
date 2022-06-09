@@ -86,7 +86,6 @@
 
 #include <octoon/vmd_loader.h>
 #include <octoon/pmx_loader.h>
-#include <octoon/texture_loader.h>
 #include <octoon/PMREM_loader.h>
 #include <octoon/audio_loader.h>
 

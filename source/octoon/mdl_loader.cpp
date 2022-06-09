@@ -1,5 +1,4 @@
 #include <octoon/mdl_loader.h>
-#include <octoon/texture_loader.h>
 #include <mi/mdl_sdk.h>
 #include <regex>
 #include <map>
