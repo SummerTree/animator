@@ -45,7 +45,7 @@ namespace octoon
 		const std::uint8_t* data() const noexcept;
 		const std::uint8_t* data(std::size_t i) const noexcept;
 
-		Texture scale(std::uint32_t width, std::uint32_t height) noexcept(false);
+		Texture resize(std::uint32_t width, std::uint32_t height) noexcept(false);
 
 		Texture convert(Format format) noexcept(false);
 

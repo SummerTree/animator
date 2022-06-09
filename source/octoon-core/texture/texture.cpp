@@ -260,7 +260,7 @@ namespace octoon
 	}
 
 	Texture
-	Texture::scale(std::uint32_t width, std::uint32_t height) noexcept(false)
+	Texture::resize(std::uint32_t width, std::uint32_t height) noexcept(false)
 	{
 		if (width == 0 || height == 0 || this->width() == 0 || this->height() == 0)
 			return Texture();

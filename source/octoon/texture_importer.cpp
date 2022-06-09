@@ -64,21 +64,21 @@ namespace octoon
 	nlohmann::json
 	TextureImporter::createPackage(std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
-		octoon::Texture image;
+		octoon::Texture texture;
 
-		if (image.load(std::string(filepath)))
+		if (texture.load(std::string(filepath)))
 		{
-			auto width = image.width();
-			auto height = image.height();
-			auto data = (float*)image.data();
+			auto width = texture.width();
+			auto height = texture.height();
+			auto data = (float*)texture.data();
 			auto size = width * height * 3;
 			auto pixels = std::make_unique<std::uint8_t[]>(size);
 
 			for (std::size_t i = 0; i < size; i += 3)
 			{
-				pixels[i] = std::clamp<float>(std::pow(data[i], 1 / 2.2) * 255.0f, 0, 255);
-				pixels[i + 1] = std::clamp<float>(std::pow(data[i + 1], 1 / 2.2) * 255.0f, 0, 255);
-				pixels[i + 2] = std::clamp<float>(std::pow(data[i + 2], 1 / 2.2) * 255.0f, 0, 255);
+				pixels[i] = std::clamp<float>(std::pow(data[i], 1.0f / 2.2f) * 255.0f, 0, 255);
+				pixels[i + 1] = std::clamp<float>(std::pow(data[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
+				pixels[i + 2] = std::clamp<float>(std::pow(data[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
 			}
 
 			auto uuid = octoon::make_guid();
@@ -91,8 +91,8 @@ namespace octoon
 			std::filesystem::copy(filepath, texturePath);
 			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
-			octoon::Texture image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
-			if (!image.scale(260, 130).save(previewPath.string(), "png"))
+			octoon::Texture preview(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
+			if (!preview.resize(260, 130).save(previewPath.string(), "png"))
 				throw std::runtime_error("Cannot generate image for preview");
 
 			nlohmann::json package;
@@ -183,7 +183,7 @@ namespace octoon
 					auto texturePath2 = std::filesystem::path(rootPath).append(uuid2 + ".png");
 
 					octoon::Texture image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
-					image.scale(260, 130).save(texturePath2.string(), "png");
+					image.resize(260, 130).save(texturePath2.string(), "png");
 
 					package["preview"] = texturePath2.string();
 				}
