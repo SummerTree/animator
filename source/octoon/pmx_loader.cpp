@@ -23,7 +23,6 @@
 #include <octoon/cloth_component.h>
 
 #include <octoon/io/fstream.h>
-#include <octoon/texture_loader.h>
 
 #include <set>
 #include <codecvt>
