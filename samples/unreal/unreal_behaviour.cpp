@@ -1,10 +1,10 @@
 #include "unreal_behaviour.h"
 #include "../utils/pmm_loader.h"
 #include "../utils/ass_loader.h"
-#include "../importer/material_importer.h"
 #include <octoon/texture_importer.h>
 #include <octoon/motion_importer.h>
 #include <octoon/model_importer.h>
+#include <octoon/material_importer.h>
 #include <filesystem>
 
 namespace unreal
@@ -113,7 +113,7 @@ namespace unreal
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
 			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")
-			MaterialImporter::instance()->createPackage(path);
+			octoon::MaterialImporter::instance()->createPackage(path);
 		else if (ext == ".vmd")
 			octoon::MotionImporter::instance()->createPackage(path);
 		else if (ext == ".hdr")
@@ -269,7 +269,7 @@ namespace unreal
 		octoon::ModelImporter::instance()->open(profile_->resourceModule->modelPath);
 		octoon::MotionImporter::instance()->open(profile_->resourceModule->motionPath);
 		octoon::TextureImporter::instance()->open(profile_->resourceModule->hdriPath);
-		MaterialImporter::instance()->open(profile_->resourceModule->materialPath);
+		octoon::MaterialImporter::instance()->open(profile_->resourceModule->materialPath);
 
 		recordComponent_ = std::make_unique<RecordComponent>();
 		entitiesComponent_ = std::make_unique<EntitiesComponent>();
@@ -383,7 +383,7 @@ namespace unreal
 		octoon::ModelImporter::instance()->close();
 		octoon::MotionImporter::instance()->close();
 		octoon::TextureImporter::instance()->close();
-		MaterialImporter::instance()->close();
+		octoon::MaterialImporter::instance()->close();
 	}
 
 	void

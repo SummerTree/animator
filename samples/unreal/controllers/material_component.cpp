@@ -1,7 +1,4 @@
 #include "material_component.h"
-#include "../unreal_profile.h"
-#include "../unreal_behaviour.h"
-#include "../importer/material_importer.h"
 
 namespace unreal
 {
@@ -16,7 +13,6 @@ namespace unreal
 	void
 	MaterialComponent::onEnable() noexcept(false)
 	{
-
 	}
 
 	void

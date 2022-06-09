@@ -1,10 +1,10 @@
 #include "unreal_profile.h"
-#include "importer/material_importer.h"
 #include <fstream>
 #include <filesystem>
 #include <octoon/runtime/json.h>
 #include <octoon/texture_importer.h>
 #include <octoon/motion_importer.h>
+#include <octoon/material_importer.h>
 
 namespace unreal
 {
@@ -60,7 +60,7 @@ namespace unreal
 	{
 		octoon::MotionImporter::instance()->clearCache();
 		octoon::TextureImporter::instance()->clearCache();
-		MaterialImporter::instance()->clearCache();
+		octoon::MaterialImporter::instance()->clearCache();
 
 		std::ifstream stream(path_);
 		if (stream)
@@ -120,7 +120,7 @@ namespace unreal
 
 			octoon::MotionImporter::instance()->clearCache();
 			octoon::TextureImporter::instance()->clearCache();
-			MaterialImporter::instance()->clearCache();
+			octoon::MaterialImporter::instance()->clearCache();
 
 			std::ofstream stream(path_);
 			if (stream)

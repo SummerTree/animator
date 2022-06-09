@@ -1,5 +1,4 @@
-#include "material_importer.h"
-
+#include <octoon/material_importer.h>
 #include <octoon/mdl_loader.h>
 #include <octoon/PMREM_loader.h>
 #include <octoon/texture_loader.h>
@@ -13,9 +12,7 @@
 #include <filesystem>
 #include <fstream>
 
-#include <qimage.h>
-
-namespace unreal
+namespace octoon
 {
 	OctoonImplementSingleton(MaterialImporter)
 
@@ -103,11 +100,11 @@ namespace unreal
 		{
 			auto writePreview = [this](const std::shared_ptr<octoon::Material> material, std::filesystem::path path) -> nlohmann::json
 			{
-				QPixmap pixmap;
+				octoon::Texture texture;
 				auto uuid = octoon::make_guid();
 				auto previewPath = std::filesystem::path(path).append(uuid + ".png");
-				this->createMaterialPreview(material, pixmap);
-				pixmap.save(QString::fromStdString(previewPath.string()), "png");
+				this->createMaterialPreview(material, texture);
+				texture.save(previewPath.string(), "png");
 				return previewPath.string();
 			};
 
@@ -202,13 +199,13 @@ namespace unreal
 		}
 	}
 
-	MutableLiveData<nlohmann::json>&
+	nlohmann::json&
 	MaterialImporter::getSceneList() noexcept
 	{
 		return this->sceneList_;
 	}
 
-	const MutableLiveData<nlohmann::json>&
+	const nlohmann::json&
 	MaterialImporter::getSceneList() const noexcept
 	{
 		return this->sceneList_;
@@ -435,7 +432,7 @@ namespace unreal
 			package["name"] = mat->getName();
 			package["color"] = { color.x, color.y, color.z };
 
-			this->sceneList_.getValue().push_back(uuid);
+			this->sceneList_.push_back(uuid);
 			this->packageList_[uuid] = package;
 			this->materials_[uuid] = mat;
 			this->assetList_[mat] = package;
@@ -445,10 +442,9 @@ namespace unreal
 		else
 		{
 			auto uuid = (*it).second["uuid"].get<nlohmann::json::string_t>();
-			auto& sceneList = sceneList_.getValue();
 
 			bool found = false;
-			for (auto index = sceneList.begin(); index != sceneList.end(); ++index)
+			for (auto index = sceneList_.begin(); index != sceneList_.end(); ++index)
 			{
 				if ((*index).get<nlohmann::json::string_t>() == uuid)
 				{
@@ -458,7 +454,7 @@ namespace unreal
 			}
 
 			if (!found)
-				sceneList.push_back(uuid);
+				sceneList_.push_back(uuid);
 
 			this->materials_[uuid] = mat;
 
@@ -468,56 +464,60 @@ namespace unreal
 		return false;
 	}
 
+	std::shared_ptr<octoon::GraphicsTexture>
+	MaterialImporter::createMaterialPreview(const std::shared_ptr<octoon::Material>& material)
+	{
+		assert(scene_);
+		assert(material);
+
+		auto renderer = octoon::Renderer::instance();
+		if (renderer)
+		{
+			geometry_->setMaterial(material);
+			renderer->render(scene_);
+			material->setDirty(true);
+		}
+
+		auto framebufferDesc = framebuffer_->getFramebufferDesc();
+		return framebufferDesc.getColorAttachment(0).getBindingTexture();
+	}
+
 	void
-	MaterialImporter::createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap)
+	MaterialImporter::createMaterialPreview(const std::shared_ptr<octoon::Material>& material, octoon::Texture& texture)
 	{
 		assert(material);
 
-		if (scene_)
+		auto colorTexture = this->createMaterialPreview(material);
+		auto width = colorTexture->getTextureDesc().getWidth();
+		auto height = colorTexture->getTextureDesc().getHeight();
+
+		std::uint8_t* data;
+		if (colorTexture->map(0, 0, width, height, 0, (void**)&data))
 		{
-			auto renderer = octoon::Renderer::instance();
-			if (renderer)
+			texture.create(octoon::Format::R8G8B8SRGB, width, height);
+
+			auto destData = texture.data();
+
+			constexpr auto size = 16;
+
+			for (std::uint32_t y = 0; y < height; y++)
 			{
-				geometry_->setMaterial(material);
-				renderer->render(scene_);
-				material->setDirty(true);
-			}
-
-			auto framebufferDesc = framebuffer_->getFramebufferDesc();
-			auto width = framebufferDesc.getWidth();
-			auto height = framebufferDesc.getHeight();
-
-			auto colorTexture = framebufferDesc.getColorAttachment(0).getBindingTexture();
-
-			std::uint8_t* data;
-			if (colorTexture->map(0, 0, framebufferDesc.getWidth(), framebufferDesc.getHeight(), 0, (void**)&data))
-			{
-				QImage image(width, height, QImage::Format_RGB888);
-
-				constexpr auto size = 16;
-
-				for (std::uint32_t y = 0; y < height; y++)
+				for (std::uint32_t x = 0; x < width; x++)
 				{
-					for (std::uint32_t x = 0; x < width; x++)
-					{
-						auto n = (y * height + x) * 4;
+					auto src = (y * height + x) * 4;
+					auto dest = (y * height + x) * 3;
 
-						std::uint8_t u = x / size % 2;
-						std::uint8_t v = y / size % 2;
-						std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
+					std::uint8_t u = x / size % 2;
+					std::uint8_t v = y / size % 2;
+					std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
 
-						auto r = octoon::math::lerp(bg, data[n], data[n + 3] / 255.f);
-						auto g = octoon::math::lerp(bg, data[n + 1], data[n + 3] / 255.f);
-						auto b = octoon::math::lerp(bg, data[n + 2], data[n + 3] / 255.f);
-
-						image.setPixelColor((int)x, (int)y, QColor::fromRgb(r, g, b));
-					}
+					destData[dest] = octoon::math::lerp(bg, data[src], data[src + 3] / 255.f);
+					destData[dest + 1] = octoon::math::lerp(bg, data[src + 1], data[src + 3] / 255.f);
+					destData[dest + 2] = octoon::math::lerp(bg, data[src + 2], data[src + 3] / 255.f);
 				}
-
-				colorTexture->unmap();
-
-				pixmap.convertFromImage(image);
 			}
+
+			colorTexture->unmap();
 		}
 	}
 

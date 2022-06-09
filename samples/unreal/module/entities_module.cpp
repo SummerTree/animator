@@ -1,8 +1,8 @@
 #include "entities_module.h"
-#include "../importer/material_importer.h"
 #include <octoon/pmx_loader.h>
 #include <octoon/vmd_loader.h>
 #include <octoon/model_importer.h>
+#include <octoon/material_importer.h>
 #include <octoon/animator_component.h>
 #include <octoon/motion_importer.h>
 #include <octoon/skinned_mesh_renderer_component.h>
@@ -65,7 +65,7 @@ namespace unreal
 							{
 								auto data = material["data"].get<nlohmann::json::object_t>();
 								auto name = material["name"].get<std::string>();
-								materials[name] = MaterialImporter::instance()->loadPackage(data);
+								materials[name] = octoon::MaterialImporter::instance()->loadPackage(data);
 							}
 
 							abc->setMaterials(materials);
@@ -101,7 +101,7 @@ namespace unreal
 
 							auto data = materialJson["data"].get<nlohmann::json::object_t>();
 							auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-							auto material = MaterialImporter::instance()->loadPackage(data);
+							auto material = octoon::MaterialImporter::instance()->loadPackage(data);
 
 							materials[index] = std::move(material);
 						}
@@ -118,7 +118,7 @@ namespace unreal
 
 		this->objects = std::move(objects_);
 
-		MaterialImporter::instance()->getSceneList().submit();
+		// octoon::MaterialImporter::instance()->getSceneList().submit();
 	}
 
 	void 
@@ -153,7 +153,7 @@ namespace unreal
 					for (auto& pair : abc->getMaterials())
 					{
 						nlohmann::json materialJson;
-						materialJson["data"] = MaterialImporter::instance()->createPackage(pair.second, materialPath, texturePath);
+						materialJson["data"] = octoon::MaterialImporter::instance()->createPackage(pair.second, materialPath, texturePath);
 						materialJson["name"] = pair.first;
 
 						json["alembic"]["materials"].push_back(materialJson);
@@ -188,7 +188,7 @@ namespace unreal
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
 						nlohmann::json materialJson;
-						materialJson["data"] = MaterialImporter::instance()->createPackage(materials[i], materialPath, texturePath);
+						materialJson["data"] = octoon::MaterialImporter::instance()->createPackage(materials[i], materialPath, texturePath);
 						materialJson["index"] = i;
 
 						json["materials"].push_back(materialJson);

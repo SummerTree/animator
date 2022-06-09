@@ -1,5 +1,5 @@
 #include "material_dock.h"
-#include "../importer/material_importer.h"
+#include <octoon/material_importer.h>
 #include "../widgets/draggable_list_widget.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
@@ -108,7 +108,7 @@ namespace unreal
 	void 
 	MaterialListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto package = MaterialImporter::instance()->getPackage(uuid);
+		auto package = octoon::MaterialImporter::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -145,6 +145,7 @@ namespace unreal
 
 				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
 				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
+				nameLabel->setToolTip(name);
 				imageLabel->setToolTip(name);
 			}
 		}
@@ -172,16 +173,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto list = MaterialImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString());
+					auto list = octoon::MaterialImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString());
 					for (auto& it : list)
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}
 
-				MaterialImporter::instance()->saveAssets();
+				octoon::MaterialImporter::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				MaterialImporter::instance()->saveAssets();
+				octoon::MaterialImporter::instance()->saveAssets();
 			}
 		}
 	}
@@ -236,7 +237,7 @@ namespace unreal
 		{
 			mainWidget_->clear();
 
-			for (auto& uuid : MaterialImporter::instance()->getIndexList())
+			for (auto& uuid : octoon::MaterialImporter::instance()->getIndexList())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}
 	}
@@ -995,10 +996,10 @@ namespace unreal
 		if (materialComponent)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid));
+			auto material = octoon::MaterialImporter::instance()->loadPackage(std::string_view(uuid));
 			if (material)
 			{
-				MaterialImporter::instance()->addMaterial(this->material_->clone());
+				octoon::MaterialImporter::instance()->addMaterial(this->material_->clone());
 
 				this->material_->copy(*material->downcast_pointer<octoon::MeshStandardMaterial>());
 
@@ -1329,13 +1330,42 @@ namespace unreal
 	void
 	MaterialEditWindow::updatePreviewImage()
 	{
-		auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-		if (behaviour && this->material_)
+		if (this->material_)
 		{
-			QPixmap pixmap;
-			MaterialImporter::instance()->createMaterialPreview(this->material_, pixmap);
-			this->previewButton_->setIcon(pixmap.scaled(previewButton_->width(), previewButton_->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-			this->previewButton_->setIconSize(previewButton_->size());
+			auto colorTexture = octoon::MaterialImporter::instance()->createMaterialPreview(this->material_);
+			auto width = colorTexture->getTextureDesc().getWidth();
+			auto height = colorTexture->getTextureDesc().getHeight();
+
+			std::uint8_t* pixels;
+			if (colorTexture->map(0, 0, width, height, 0, (void**)&pixels))
+			{
+				QImage image(width, height, QImage::Format_RGB888);
+
+				constexpr auto size = 16;
+
+				for (std::uint32_t y = 0; y < height; y++)
+				{
+					for (std::uint32_t x = 0; x < width; x++)
+					{
+						auto n = (y * height + x) * 4;
+
+						std::uint8_t u = x / size % 2;
+						std::uint8_t v = y / size % 2;
+						std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
+
+						auto r = octoon::math::lerp(bg, pixels[n], pixels[n + 3] / 255.f);
+						auto g = octoon::math::lerp(bg, pixels[n + 1], pixels[n + 3] / 255.f);
+						auto b = octoon::math::lerp(bg, pixels[n + 2], pixels[n + 3] / 255.f);
+
+						image.setPixelColor((int)x, (int)y, QColor::fromRgb(r, g, b));
+					}
+				}
+
+				colorTexture->unmap();
+
+				this->previewButton_->setIcon(QPixmap::fromImage(image).scaled(previewButton_->width(), previewButton_->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+				this->previewButton_->setIconSize(previewButton_->size());
+			}
 		}
 	}
 
@@ -1735,7 +1765,7 @@ namespace unreal
 			{
 				auto hit = selectedItem.value();
 				auto uuid = item->data(Qt::UserRole).toString().toStdString();
-				auto material = MaterialImporter::instance()->loadPackage(std::string_view(uuid));
+				auto material = octoon::MaterialImporter::instance()->loadPackage(std::string_view(uuid));
 
 				auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
 				if (meshRenderer)
@@ -1775,17 +1805,47 @@ namespace unreal
 				mainWidget_->addItem(item);
 				mainWidget_->setItemWidget(item, widget);
 
-				auto material = MaterialImporter::instance()->loadPackage(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
+				auto material = octoon::MaterialImporter::instance()->loadPackage(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
 				if (material)
 				{
 					QFontMetrics metrics(nameLabel->font());
 					nameLabel->setToolTip(QString::fromStdString(material->getName()));
 					nameLabel->setText(metrics.elidedText(nameLabel->toolTip(), Qt::ElideRight, imageLabel->width()));
 
-					QPixmap pixmap;
-					MaterialImporter::instance()->createMaterialPreview(material, pixmap);
-					imageLabel->setPixmap(pixmap.scaled(imageLabel->width(), imageLabel->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-					imageLabel->setToolTip(nameLabel->toolTip());
+					auto colorTexture = octoon::MaterialImporter::instance()->createMaterialPreview(material);
+					auto width = colorTexture->getTextureDesc().getWidth();
+					auto height = colorTexture->getTextureDesc().getHeight();
+
+					std::uint8_t* pixels;
+					if (colorTexture->map(0, 0, width, height, 0, (void**)&pixels))
+					{
+						QImage image(width, height, QImage::Format_RGB888);
+
+						constexpr auto size = 16;
+
+						for (std::uint32_t y = 0; y < height; y++)
+						{
+							for (std::uint32_t x = 0; x < width; x++)
+							{
+								auto n = (y * height + x) * 4;
+
+								std::uint8_t u = x / size % 2;
+								std::uint8_t v = y / size % 2;
+								std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
+
+								auto r = octoon::math::lerp(bg, pixels[n], pixels[n + 3] / 255.f);
+								auto g = octoon::math::lerp(bg, pixels[n + 1], pixels[n + 3] / 255.f);
+								auto b = octoon::math::lerp(bg, pixels[n + 2], pixels[n + 3] / 255.f);
+
+								image.setPixelColor((int)x, (int)y, QColor::fromRgb(r, g, b));
+							}
+						}
+
+						colorTexture->unmap();
+
+						imageLabel->setPixmap(QPixmap::fromImage(image).scaled(imageLabel->width(), imageLabel->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+						imageLabel->setToolTip(nameLabel->toolTip());
+					}
 				}
 				else
 				{
@@ -1815,7 +1875,7 @@ namespace unreal
 	void 
 	MaterialListPanel::addItem(std::string_view uuid) noexcept
 	{
-		auto package = MaterialImporter::instance()->getPackage(uuid);
+		auto package = octoon::MaterialImporter::instance()->getPackage(uuid);
 		if (package.is_object())
 			this->addItem(package);
 	}
@@ -1825,7 +1885,7 @@ namespace unreal
 	{
 		mainWidget_->clear();
 
-		for (auto& it : MaterialImporter::instance()->getSceneList().getValue())
+		for (auto& it : octoon::MaterialImporter::instance()->getSceneList())
 			this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
 	}
 
@@ -1860,10 +1920,10 @@ namespace unreal
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(backEvent()));
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
-		MaterialImporter::instance()->getSceneList() += [this](const nlohmann::json& json) {
+		/*octoon::MaterialImporter::instance()->getSceneList() += [this](const nlohmann::json& json) {
 			if (materialList_->isVisible())
 				materialList_->updateItemList();
-		};
+		};*/
 
 		profile->selectorModule->selectedItem_ += [this](std::optional<octoon::RaycastHit> data_) {
 			if (data_.has_value() && materialList_->isVisible())
@@ -1885,14 +1945,14 @@ namespace unreal
 
 				bool dirty = false;
 				for (auto& mat : materials)
-					dirty |= MaterialImporter::instance()->addMaterial(mat);
+					dirty |= octoon::MaterialImporter::instance()->addMaterial(mat);
 
 				if (dirty)
-					MaterialImporter::instance()->getSceneList().submit();
+					materialList_->updateItemList();
 
 				if (hit.mesh < materials.size())
 				{
-					auto package = MaterialImporter::instance()->getPackage(materials[hit.mesh]);
+					auto package = octoon::MaterialImporter::instance()->getPackage(materials[hit.mesh]);
 					if (package.is_object())
 					{
 						auto uuid = QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>());
@@ -1926,7 +1986,6 @@ namespace unreal
 		materialList_->show();
 		materialList_->updateItemList();
 
-		MaterialImporter::instance()->getSceneList().submit();
 		profile_->selectorModule->selectedItem_.submit();
 	}
 
@@ -1965,7 +2024,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
 			{
-				auto material = MaterialImporter::instance()->loadPackage(std::string_view(item->data(Qt::UserRole).toString().toStdString()));
+				auto material = octoon::MaterialImporter::instance()->loadPackage(std::string_view(item->data(Qt::UserRole).toString().toStdString()));
 				if (material)
 				{
 					this->setWindowTitle(tr("Material Properties"));

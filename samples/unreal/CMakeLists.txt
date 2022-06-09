@@ -177,12 +177,6 @@ SET(CONTROLLERS_LIST
 )
 SOURCE_GROUP("launcher\\controllers" FILES ${CONTROLLERS_LIST})
 
-SET(IMPORTER_LIST
-	${SOURCE_PATH}/importer/material_importer.h
-	${SOURCE_PATH}/importer/material_importer.cpp
-)
-SOURCE_GROUP("launcher\\importer" FILES ${IMPORTER_LIST})
-
 SET(UTILS_LIST
 	${SOURCE_PATH}/utils/pmm.h
 	${SOURCE_PATH}/utils/pmm.cpp
@@ -248,7 +242,6 @@ ADD_EXECUTABLE(${LIB_OUTNAME}
 	${MODULES_LIST} 
 	${CONTROLLERS_LIST}
 	${UTILS_LIST}
-	${IMPORTER_LIST}
 	${MINIH264E_LIST}
 	${BASE64_LIST}
 	${OIDN_LIST}

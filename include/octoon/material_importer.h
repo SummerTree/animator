@@ -2,19 +2,18 @@
 #define UNREAL_MATERIAL_IMPORTER_H_
 
 #include <map>
-#include <qpixmap.h>
 #include <octoon/video/renderer.h>
 #include <octoon/light/directional_light.h>
 #include <octoon/light/environment_light.h>
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/material/mesh_standard_material.h>
+#include <octoon/texture/texture.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
-#include "../viewmodel/mutable_live_data.h"
 
-namespace unreal
+namespace octoon
 {
-	class MaterialImporter final : public octoon::AssetImporter
+	class OCTOON_EXPORT MaterialImporter final : public octoon::AssetImporter
 	{
 		OctoonDeclareSingleton(MaterialImporter)
 	public:
@@ -32,13 +31,14 @@ namespace unreal
 		std::shared_ptr<octoon::Material> loadPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
 		std::shared_ptr<octoon::Material> loadPackage(const nlohmann::json& package) noexcept(false);
 
-		MutableLiveData<nlohmann::json>& getSceneList() noexcept;
-		const MutableLiveData<nlohmann::json>& getSceneList() const noexcept;
+		nlohmann::json& getSceneList() noexcept;
+		const nlohmann::json& getSceneList() const noexcept;
 
-		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap);
+		std::shared_ptr<octoon::GraphicsTexture> createMaterialPreview(const std::shared_ptr<octoon::Material>& material);
 
 	private:
 		void initMaterialScene() noexcept(false);
+		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, octoon::Texture& texture);
 
 	private:
 		MaterialImporter(const MaterialImporter&) = delete;
@@ -48,7 +48,7 @@ namespace unreal
 		std::uint32_t previewWidth_;
 		std::uint32_t previewHeight_;
 
-		MutableLiveData<nlohmann::json> sceneList_;
+		nlohmann::json sceneList_;
 
 		std::map<std::string, std::shared_ptr<octoon::Material>> materials_;
 
