@@ -8,8 +8,8 @@ namespace octoon
 	GameObjectPtr
 	CubeHelper::create(float width, float height, float depth, std::uint32_t widthSegments, std::uint32_t heightSegments, std::uint32_t depthSegments)
 	{
-		auto object = GameObject::create(std::string_view("GameObject"));
-		object->addComponent<MeshFilterComponent>(CubeMesh::create(width, height, depth, widthSegments, heightSegments, depthSegments));
+		auto object = std::make_shared<GameObject>(std::string_view("GameObject"));
+		object->addComponent<MeshFilterComponent>(std::make_shared<CubeMesh>(width, height, depth, widthSegments, heightSegments, depthSegments));
 		object->addComponent<MeshRendererComponent>(std::make_shared<Material>());
 		return object;
 	}

@@ -48,27 +48,27 @@ namespace unreal
 
 	TransformGizmo::TransformGizmo()
 	{
-		auto planeGeometry = octoon::PlaneMesh::create(50.0f, 50.0f);
+		auto planeGeometry = std::make_shared<octoon::PlaneMesh>(50.0f, 50.0f);
 
 		auto material = std::make_shared<octoon::MeshBasicMaterial>();
 		material->setCullMode(octoon::CullMode::Off);
 
-		auto XY = octoon::GameObject::create(std::string_view("XY"));
+		auto XY = std::make_shared<octoon::GameObject>(std::string_view("XY"));
 		XY->setRaycastEnable(false);
 		XY->addComponent<octoon::MeshFilterComponent>(planeGeometry);
 
-		auto YZ = octoon::GameObject::create(std::string_view("YZ"));
+		auto YZ = std::make_shared<octoon::GameObject>(std::string_view("YZ"));
 		YZ->setRaycastEnable(false);
 		YZ->addComponent<octoon::MeshFilterComponent>(planeGeometry);
 		YZ->getComponent<octoon::TransformComponent>()->setEulerAngles(octoon::math::float3(0, octoon::math::PI / 2, 0));
 
-		auto XZ = octoon::GameObject::create(std::string_view("XZ"));
+		auto XZ = std::make_shared<octoon::GameObject>(std::string_view("XZ"));
 		XZ->setRaycastEnable(false);
 		XZ->addComponent<octoon::MeshFilterComponent>(planeGeometry);
 		XZ->getComponent<octoon::TransformComponent>()->setEulerAngles(octoon::math::float3(-octoon::math::PI / 2, 0, 0));
 		//XZ->addComponent<octoon::MeshRendererComponent>(material);
 
-		this->planes = octoon::GameObject::create();
+		this->planes = std::make_shared<octoon::GameObject>();
 		this->planes->addChild(XY);
 		this->planes->addChild(YZ);
 		this->planes->addChild(XZ);
@@ -117,20 +117,20 @@ namespace unreal
 			auto arrowGeometry = std::make_shared<octoon::Mesh>();
 			arrowGeometry->setVertexArray(arrowVertices);
 
-			auto handleX = octoon::GameObject::create();
+			auto handleX = std::make_shared<octoon::GameObject>();
 			handleX->setRaycastEnable(false);
 			handleX->addComponent<octoon::MeshFilterComponent>(arrowGeometry);
 			handleX->addComponent<octoon::MeshRendererComponent>(gizmoXMaterial);
 			handleX->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(1.0, 0, 0));
 			handleX->getComponent<octoon::TransformComponent>()->setEulerAngles(octoon::math::float3(-octoon::math::PI / 2, 0, -octoon::math::PI / 2));
 			
-			auto handleY = octoon::GameObject::create();
+			auto handleY = std::make_shared<octoon::GameObject>();
 			handleY->setRaycastEnable(false);
 			handleY->addComponent<octoon::MeshFilterComponent>(arrowGeometry);
 			handleY->addComponent<octoon::MeshRendererComponent>(gizmoYMaterial);
 			handleY->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0, 1.0, 0));
 
-			auto handleZ = octoon::GameObject::create();
+			auto handleZ = std::make_shared<octoon::GameObject>();
 			handleZ->setRaycastEnable(false);
 			handleZ->addComponent<octoon::MeshFilterComponent>(arrowGeometry);
 			handleZ->addComponent<octoon::MeshRendererComponent>(gizmoZMaterial);
@@ -147,41 +147,41 @@ namespace unreal
 				vertices *= 0.25f;
 			}
 
-			auto lineXGeometry = octoon::CubeMesh::create(1.0f, 0.0f, 0.05f);
-			auto lineYGeometry = octoon::CubeMesh::create(0.05f, 1.0f, 0.0f);
-			auto lineZGeometry = octoon::CubeMesh::create(0.05f, 0.0f, 1.0f);
+			auto lineXGeometry = std::make_shared<octoon::CubeMesh>(1.0f, 0.0f, 0.05f);
+			auto lineYGeometry = std::make_shared<octoon::CubeMesh>(0.05f, 1.0f, 0.0f);
+			auto lineZGeometry = std::make_shared<octoon::CubeMesh>(0.05f, 0.0f, 1.0f);
 
-			auto handleLineX = octoon::GameObject::create();
+			auto handleLineX = std::make_shared<octoon::GameObject>();
 			handleLineX->setRaycastEnable(false);
 			handleLineX->addComponent<octoon::MeshFilterComponent>(lineXGeometry);
 			handleLineX->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0.5, 0, 0));
 			handleLineX->addComponent<octoon::MeshRendererComponent>(gizmoXMaterial);
 
-			auto handleLineY = octoon::GameObject::create();
+			auto handleLineY = std::make_shared<octoon::GameObject>();
 			handleLineY->setRaycastEnable(false);
 			handleLineY->addComponent<octoon::MeshFilterComponent>(lineYGeometry);
 			handleLineY->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0, 0.5, 0));
 			handleLineY->addComponent<octoon::MeshRendererComponent>(gizmoYMaterial);
 
-			auto handleLineZ = octoon::GameObject::create();
+			auto handleLineZ = std::make_shared<octoon::GameObject>();
 			handleLineZ->setRaycastEnable(false);
 			handleLineZ->addComponent<octoon::MeshFilterComponent>(lineZGeometry);
 			handleLineZ->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0, 0, 0.5));
 			handleLineZ->addComponent<octoon::MeshRendererComponent>(gizmoZMaterial);
 			
-			auto X = octoon::GameObject::create(std::string_view("X"));
+			auto X = std::make_shared<octoon::GameObject>(std::string_view("X"));
 			X->addChild(handleX);
 			X->addChild(handleLineX);
 
-			auto Y = octoon::GameObject::create(std::string_view("Y"));
+			auto Y = std::make_shared<octoon::GameObject>(std::string_view("Y"));
 			Y->addChild(handleY);
 			Y->addChild(handleLineY);
 
-			auto Z = octoon::GameObject::create(std::string_view("Z"));
+			auto Z = std::make_shared<octoon::GameObject>(std::string_view("Z"));
 			Z->addChild(handleZ);
 			Z->addChild(handleLineZ);
 
-			this->handleGizmos = octoon::GameObject::create();
+			this->handleGizmos = std::make_shared<octoon::GameObject>();
 			this->handleGizmos->addChild(X);
 			this->handleGizmos->addChild(Y);
 			this->handleGizmos->addChild(Z);

@@ -448,8 +448,8 @@ namespace octoon
 
 		if (!out.screenQuad)
 		{
-			out.screenQuad = Geometry::create();
-			out.screenQuad->setMesh(PlaneMesh::create(2.0f, 2.0f));
+			out.screenQuad = std::make_shared<Geometry>();
+			out.screenQuad->setMesh(std::make_shared<PlaneMesh>(2.0f, 2.0f));
 
 			auto screenMesh = out.screenQuad->getMesh();
 			out.buffers_[screenMesh.get()] = std::make_shared<ScriptableRenderBuffer>(this->context_->getDevice(), screenMesh);

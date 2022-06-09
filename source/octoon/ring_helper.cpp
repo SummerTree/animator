@@ -8,8 +8,8 @@ namespace octoon
 	GameObjectPtr
 	RingHelper::create(float innerRadius, float outerRadius, std::uint32_t thetaSegments, std::uint32_t phiSegments, float thetaStart, float thetaLength) noexcept(false)
 	{
-		auto object = GameObject::create(std::string_view("GameObject"));
-		object->addComponent<MeshFilterComponent>(RingMesh::create(innerRadius, outerRadius, thetaSegments, phiSegments, thetaStart, thetaLength));
+		auto object = std::make_shared<GameObject>(std::string_view("GameObject"));
+		object->addComponent<MeshFilterComponent>(std::make_shared<RingMesh>(innerRadius, outerRadius, thetaSegments, phiSegments, thetaStart, thetaLength));
 		object->addComponent<MeshRendererComponent>(std::make_shared<Material>());
 		return object;
 	}

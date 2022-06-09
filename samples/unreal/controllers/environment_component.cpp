@@ -153,13 +153,13 @@ namespace unreal
 	void
 	EnvironmentComponent::onEnable() noexcept
 	{
-		auto environmentMaterial = octoon::MeshBasicMaterial::create(octoon::math::srgb2linear<float>(this->getModel()->color));
+		auto environmentMaterial = std::make_shared<octoon::MeshBasicMaterial>(octoon::math::srgb2linear<float>(this->getModel()->color));
 		environmentMaterial->setCullMode(octoon::CullMode::Off);
 		environmentMaterial->setGamma(1.0f);
 		environmentMaterial->setDepthEnable(false);
 		environmentMaterial->setDepthWriteEnable(false);
 
-		auto enviromentLight = octoon::GameObject::create(std::string_view("EnvironmentLight"));
+		auto enviromentLight = std::make_shared<octoon::GameObject>(std::string_view("EnvironmentLight"));
 		enviromentLight->setRaycastEnable(false);
 		enviromentLight->addComponent<octoon::EnvironmentLightComponent>();
 		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setColor(octoon::math::srgb2linear<float>(this->getModel()->color));

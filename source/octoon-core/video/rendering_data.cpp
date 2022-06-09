@@ -4,7 +4,7 @@
 namespace octoon
 {
 	RenderingData::RenderingData() noexcept
-		:depthMaterial(MeshDepthMaterial::create())
+		:depthMaterial(std::make_shared<MeshDepthMaterial>())
 	{
 	}
 

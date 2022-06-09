@@ -47,7 +47,7 @@ namespace unreal
 				auto source = octoon::AudioLoader::load(path);
 				if (source)
 				{
-					auto audio = octoon::GameObject::create();
+					auto audio = std::make_shared<octoon::GameObject>();
 					audio->setName(path);
 					audio->addComponent<octoon::AudioSourceComponent>()->setAudioReader(std::move(source));
 

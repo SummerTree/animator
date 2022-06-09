@@ -11,8 +11,6 @@
 
 namespace octoon
 {
-	typedef std::shared_ptr<class RttiObject> RttiObjectPtr;
-
 	class OCTOON_EXPORT RttiObject : public std::enable_shared_from_this<RttiObject>
 	{
 		OctoonDeclareClass(RttiObject)

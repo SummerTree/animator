@@ -9,8 +9,8 @@ namespace octoon
 	DrawSelectorPass::DrawSelectorPass() noexcept
 		: width_(0)
 		, height_(0)
-		, edgeMaterial_(EdgeMaterial::create())
-		, copyMaterial_(MeshCopyMaterial::create())
+		, edgeMaterial_(std::make_shared<EdgeMaterial>())
+		, copyMaterial_(std::make_shared<MeshCopyMaterial>())
 	{
 		edgeMaterial_->setColor(math::float3(1.0f, 0.0f, 1.0f));
 		edgeMaterial_->setDepthFunc(CompareFunction::Always);

@@ -23,8 +23,8 @@ namespace octoon
 
 		const Rtti* getRtti(std::string_view name) const noexcept;
 
-		RttiObjectPtr createInstance(const char*, const Rtti& base) const except;
-		RttiObjectPtr createInstance(std::string_view name, const Rtti& base) const except;
+		std::shared_ptr<RttiObject> createInstance(const char*, const Rtti& base) const noexcept(false);
+		std::shared_ptr<RttiObject> createInstance(std::string_view name, const Rtti& base) const noexcept(false);
 
 		template<typename T>
 		std::shared_ptr<T> make_shared(std::string_view name)

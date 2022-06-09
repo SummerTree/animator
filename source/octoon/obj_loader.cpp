@@ -172,7 +172,7 @@ namespace octoon
 				mesh->setIndicesArray(std::move(indices));
 				mesh->computeBoundingBox();
 
-				auto object = GameObject::create();
+				auto object = std::make_shared<GameObject>();
 				object->addComponent<MeshFilterComponent>(std::move(mesh));
 
 				if (shape.mesh.material_ids.empty())

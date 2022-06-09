@@ -37,7 +37,7 @@ namespace octoon
 		bones.reserve(pmx.bones.size());
 
 		for (auto& it : pmx.bones)
-			bones.emplace_back(GameObject::create((std::string_view)cv.to_bytes(it.name.name)));
+			bones.emplace_back(std::make_shared<GameObject>((std::string_view)cv.to_bytes(it.name.name)));
 
 		for (std::size_t i = 0; i < pmx.bones.size(); i++)
 		{
@@ -133,7 +133,7 @@ namespace octoon
 				pinVertexIndices.push_back(index);
 			}
 
-			auto cloth = ClothComponent::create();
+			auto cloth = std::make_shared<ClothComponent>();
 			cloth->setColliders(collider);
 			cloth->setTotalMass(it.totalMass);
 			cloth->setPinVertexIndices(pinVertexIndices);
@@ -507,7 +507,7 @@ namespace octoon
 		}
 		else
 		{
-			auto smr = SkinnedMeshRendererComponent::create();
+			auto smr = std::make_shared<SkinnedMeshRendererComponent>();
 			smr->setTransforms(bones);
 			smr->setMorphBlendEnable(true);
 			smr->setTextureBlendEnable(true);
@@ -620,7 +620,7 @@ namespace octoon
 			if (pmx.numMaterials > 0)
 			{
 				GameObjects bones;
-				GameObjectPtr actor = GameObject::create();
+				GameObjectPtr actor = std::make_shared<GameObject>();
 
 				if (!pmx.description.japanModelName.empty())
 				{
@@ -650,7 +650,7 @@ namespace octoon
 		if (pmx.numMaterials > 0)
 		{
 			GameObjects bones;
-			GameObjectPtr actor = GameObject::create();
+			GameObjectPtr actor = std::make_shared<GameObject>();
 
 			if (!pmx.description.japanModelName.empty())
 			{

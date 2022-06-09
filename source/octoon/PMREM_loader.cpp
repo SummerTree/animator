@@ -242,32 +242,32 @@ void main()
 					throw runtime_error::create("createFramebuffer() failed");
 			}
 
-			auto irradiance = Material::create(std::make_shared<Shader>(pmrem_vert, irradiance_frag));
+			auto irradiance = std::make_shared<Material>(std::make_shared<Shader>(pmrem_vert, irradiance_frag));
 			irradiance->set("environmentMap", environmentMap);
 			irradiance->setDepthEnable(false);
 			irradiance->setDepthWriteEnable(false);
 
-			auto radiance = Material::create(std::make_shared<Shader>(pmrem_vert, radiance_frag));
+			auto radiance = std::make_shared<Material>(std::make_shared<Shader>(pmrem_vert, radiance_frag));
 			radiance->set("environmentMap", environmentMap);
 			radiance->set("environmentSize", (float)environmentMap->getTextureDesc().getWidth() * environmentMap->getTextureDesc().getHeight());
 			radiance->setDepthEnable(false);
 			radiance->setDepthWriteEnable(false);
 
-			auto copyMaterial = Material::create(std::make_shared<Shader>(pmrem_vert, copy_frag));
+			auto copyMaterial = std::make_shared<Material>(std::make_shared<Shader>(pmrem_vert, copy_frag));
 			copyMaterial->set("environmentMap", environmentMap);
 			copyMaterial->setDepthEnable(false);
 			copyMaterial->setDepthWriteEnable(false);
 
 			Geometry irradianceGeometry;
-			irradianceGeometry.setMesh(PlaneMesh::create(2.0f, 2.0f));
+			irradianceGeometry.setMesh(std::make_shared<PlaneMesh>(2.0f, 2.0f));
 			irradianceGeometry.setMaterial(irradiance);
 
 			Geometry radianceGeometry;
-			radianceGeometry.setMesh(PlaneMesh::create(2.0f, 2.0f));
+			radianceGeometry.setMesh(std::make_shared<PlaneMesh>(2.0f, 2.0f));
 			radianceGeometry.setMaterial(radiance);
 
 			Geometry copyGeometry;
-			copyGeometry.setMesh(PlaneMesh::create(2.0f, 2.0f));
+			copyGeometry.setMesh(std::make_shared<PlaneMesh>(2.0f, 2.0f));
 			copyGeometry.setMaterial(copyMaterial);
 
 			OrthographicCamera camera(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100.f);

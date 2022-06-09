@@ -13,7 +13,7 @@ namespace unreal
 		: init_flag(false)
 		, profile_(std::make_unique<UnrealProfile>())
 		, gameApp_(std::make_shared<octoon::GameApp>())
-		, behaviour_(octoon::GameObject::create())
+		, behaviour_(std::make_shared<octoon::GameObject>())
 		, splash_(splash)
 		, timer(this)
 		, listener_(std::make_shared<SplashListener>(splash, QDir::homePath().toStdString() + "/.animator/log.txt"))

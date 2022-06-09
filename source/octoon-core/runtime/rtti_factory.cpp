@@ -40,8 +40,8 @@ namespace octoon
 		return nullptr;
 	}
 
-	RttiObjectPtr
-	RttiFactory::createInstance(const char* name, const Rtti& base) const except
+	std::shared_ptr<RttiObject>
+	RttiFactory::createInstance(const char* name, const Rtti& base) const noexcept(false)
 	{
 		assert(name);
 
@@ -55,8 +55,8 @@ namespace octoon
 		return nullptr;
 	}
 
-	RttiObjectPtr
-	RttiFactory::createInstance(std::string_view name, const Rtti& base) const except
+	std::shared_ptr<RttiObject>
+	RttiFactory::createInstance(std::string_view name, const Rtti& base) const noexcept(false)
 	{
 		assert(!name.empty());
 

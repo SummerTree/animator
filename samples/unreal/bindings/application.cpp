@@ -23,7 +23,7 @@ namespace unreal
 	}
 
 	Application::Application()
-		: behaviour_(octoon::GameObject::create())
+		: behaviour_(std::make_shared<octoon::GameObject>())
 		, profile_(std::make_unique<unreal::UnrealProfile>("./config/config.conf"))
 	{
 		timer_ = new Timer();

@@ -20,21 +20,21 @@ namespace unreal
 	{
 		if (type == LightType::Point)
 		{
-			auto light = octoon::GameObject::create(std::string_view("PointLight"));
+			auto light = std::make_shared<octoon::GameObject>(std::string_view("PointLight"));
 			light->addComponent<octoon::PointLightComponent>();
 			this->getModel()->objects.getValue().push_back(light);
 			return true;
 		}
 		else if (type == LightType::Spot)
 		{
-			auto light = octoon::GameObject::create(std::string_view("SpotLight"));
+			auto light = std::make_shared<octoon::GameObject>(std::string_view("SpotLight"));
 			light->addComponent<octoon::SpotLightComponent>();
 			this->getModel()->objects.getValue().push_back(light);
 			return true;
 		}
 		else if (type == LightType::Directional)
 		{
-			auto light = octoon::GameObject::create(std::string_view("DirectionalLight"));
+			auto light = std::make_shared<octoon::GameObject>(std::string_view("DirectionalLight"));
 			light->addComponent<octoon::DirectionalLightComponent>();
 			this->getModel()->objects.getValue().push_back(light);
 			return true;

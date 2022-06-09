@@ -10,7 +10,7 @@ namespace octoon
 	GameObjectPtr
 	TextHelper::create(const wchar_t* text, std::uint16_t fontsize, const char* fontPath) noexcept
 	{
-		auto object = GameObject::create(std::string_view("GameObject"));
+		auto object = std::make_shared<GameObject>(std::string_view("GameObject"));
 		object->addComponent<MeshFilterComponent>(makeMesh(font::makeTextContours(text, { fontPath, fontsize }), 1.0f, false));
 		object->addComponent<MeshRendererComponent>(std::make_shared<Material>());
 
@@ -20,7 +20,7 @@ namespace octoon
 	GameObjectPtr
 	TextHelper::create(const char* u8str, std::uint16_t fontsize, const char* fontPath) noexcept
 	{
-		auto object = GameObject::create(std::string_view("GameObject"));
+		auto object = std::make_shared<GameObject>(std::string_view("GameObject"));
 		object->addComponent<TextComponent>(u8str)->setTextMeshing(std::make_shared<font::TextMeshing>(fontPath, fontsize));
 		object->addComponent<MeshRendererComponent>(std::make_shared<Material>());
 

@@ -57,7 +57,7 @@ namespace unreal
 		}
 		else if (ext == ".abc")
 		{
-			auto model = octoon::GameObject::create();
+			auto model = std::make_shared<octoon::GameObject>();
 			if (model)
 			{
 				model->addComponent<octoon::MeshAnimationComponent>(path);
@@ -332,7 +332,7 @@ namespace unreal
 			camera_->setFramebuffer(framebuffer_);
 
 			geometry_ = std::make_shared<octoon::Geometry>();
-			geometry_->setMesh(octoon::SphereMesh::create(0.5));
+			geometry_->setMesh(std::make_shared<octoon::SphereMesh>(0.5));
 
 			octoon::math::Quaternion q1;
 			q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75f);

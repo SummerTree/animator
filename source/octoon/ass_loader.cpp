@@ -179,7 +179,7 @@ namespace octoon
 
 					if (light.type.empty())
 					{
-						auto object = GameObject::create();
+						auto object = std::make_shared<GameObject>();
 						object->getComponent<octoon::TransformComponent>()->setTranslate(light.position);
 						auto pointLight = object->addComponent<PointLightComponent>();
 						pointLight->setColor(light.emission);
@@ -206,7 +206,7 @@ namespace octoon
 						sscanf(line, " fov %f", &fov);
 					}
 
-					auto object = GameObject::create();
+					auto object = std::make_shared<GameObject>();
 					object->getComponent<octoon::TransformComponent>()->setTransform(math::makeLookatLH(position, lookAt, math::float3::UnitY));
 					auto filmCamera = object->addComponent<FilmCameraComponent>();
 					filmCamera->setFov(fov);

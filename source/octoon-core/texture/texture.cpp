@@ -10,6 +10,8 @@
 
 namespace octoon
 {
+	OctoonImplementSubClass(Texture, RttiObject, "Texture")
+
 	Texture::Texture() noexcept
 		: format_(Format::Undefined)
 		, width_(0)
