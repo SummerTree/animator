@@ -25,19 +25,26 @@ namespace unreal
 			auto object = octoon::ModelImporter::instance()->importModel(it.path);
 			if (object)
 			{
-				octoon::AnimationClips<float> boneClips;
-				setupBoneAnimation(it, boneClips);
+				auto boneClip = std::make_shared<octoon::AnimationClip<float>>();
+				setupBoneAnimation(it, *boneClip);
 
-				octoon::AnimationClip<float> morphClip;
-				setupMorphAnimation(it, morphClip);
-
-				auto motion = std::make_shared<octoon::Animation<float>>(std::move(boneClips));
-				auto morph = std::make_shared<octoon::Animation<float>>(std::move(morphClip));
-
+				auto morphClip = std::make_shared<octoon::AnimationClip<float>>();
+				setupMorphAnimation(it, *morphClip);
+			
 				object->setName(octoon::make_guid());
-				object->addComponent<octoon::AnimatorComponent>(std::move(morph))->setName(octoon::make_guid());
-				object->addComponent<octoon::AnimatorComponent>(std::move(motion), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms())->setName(octoon::make_guid());
 				object->getComponent<octoon::SkinnedMeshRendererComponent>()->setAutomaticUpdate(!profile.offlineModule->getEnable());
+
+				if (!morphClip->empty())
+				{
+					auto morph = std::make_shared<octoon::Animation<float>>(std::move(morphClip), "Morph");
+					object->addComponent<octoon::AnimatorComponent>(std::move(morph));
+				}
+
+				if (!boneClip->empty())
+				{
+					auto motion = std::make_shared<octoon::Animation<float>>(std::move(boneClip), "Motion");
+					object->addComponent<octoon::AnimatorComponent>(std::move(motion), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+				}
 
 				objects.emplace_back(std::move(object));
 			}
@@ -104,23 +111,21 @@ namespace unreal
 			fov.emplace_back((float)it.frame / 30.0f, (float)it.fov, interpolationAngleView);
 		}
 
-		octoon::AnimationClip clip;
-		clip.setCurve("LocalPosition.x", octoon::AnimationCurve(std::move(eyeX)));
-		clip.setCurve("LocalPosition.y", octoon::AnimationCurve(std::move(eyeY)));
-		clip.setCurve("LocalPosition.z", octoon::AnimationCurve(std::move(eyeZ)));
-		clip.setCurve("LocalEulerAnglesRaw", octoon::AnimationCurve(std::move(rotation)));
-		clip.setCurve("LocalForward", octoon::AnimationCurve(std::move(distance)));
-		clip.setCurve("Camera:fov", octoon::AnimationCurve(std::move(fov)));
+		auto clip = std::make_shared<octoon::AnimationClip<float>>();
+		clip->setCurve("", "LocalPosition.x", octoon::AnimationCurve(std::move(eyeX)));
+		clip->setCurve("", "LocalPosition.y", octoon::AnimationCurve(std::move(eyeY)));
+		clip->setCurve("", "LocalPosition.z", octoon::AnimationCurve(std::move(eyeZ)));
+		clip->setCurve("", "LocalEulerAnglesRaw", octoon::AnimationCurve(std::move(rotation)));
+		clip->setCurve("", "LocalForward", octoon::AnimationCurve(std::move(distance)));
+		clip->setCurve("", "Camera:fov", octoon::AnimationCurve(std::move(fov)));
 
-		animation.addClip(std::move(clip));
+		animation.addClip(std::move(clip), "Camera");
 	}
 
 	void
-	PMMLoader::setupBoneAnimation(const octoon::PmmModel& it, octoon::AnimationClips<float>& clips) noexcept
+	PMMLoader::setupBoneAnimation(const octoon::PmmModel& it, octoon::AnimationClip<float>& clip) noexcept
 	{
 		std::size_t numBone = it.bone_init_frame.size();
-
-		clips.resize(numBone);
 
 		for (std::size_t i = 0; i < numBone; i++)
 		{
@@ -175,12 +180,10 @@ namespace unreal
 				next = key.next_index;
 			}
 
-			auto& clip = clips[i];
-			clip.setName(it.bone_name[i]);
-			clip.setCurve("LocalPosition.x", octoon::AnimationCurve(std::move(translateX)));
-			clip.setCurve("LocalPosition.y", octoon::AnimationCurve(std::move(translateY)));
-			clip.setCurve("LocalPosition.z", octoon::AnimationCurve(std::move(translateZ)));
-			clip.setCurve("LocalRotation", octoon::AnimationCurve(std::move(rotation)));
+			clip.setCurve(it.bone_name[i], "LocalPosition.x", octoon::AnimationCurve(std::move(translateX)));
+			clip.setCurve(it.bone_name[i], "LocalPosition.y", octoon::AnimationCurve(std::move(translateY)));
+			clip.setCurve(it.bone_name[i], "LocalPosition.z", octoon::AnimationCurve(std::move(translateZ)));
+			clip.setCurve(it.bone_name[i], "LocalRotation", octoon::AnimationCurve(std::move(rotation)));
 		}
 	}
 
@@ -209,7 +212,7 @@ namespace unreal
 				next = frame.next_index;
 			}
 
-			clip.setCurve(it.morph_name[i], octoon::AnimationCurve(std::move(keyframes)));
+			clip.setCurve("", it.morph_name[i], octoon::AnimationCurve(std::move(keyframes)));
 		}
 	}
 }

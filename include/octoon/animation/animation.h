@@ -1,6 +1,7 @@
 #ifndef OCTOON_ANIMATION_H_
 #define OCTOON_ANIMATION_H_
 
+#include <unordered_map>
 #include <octoon/animation/animation_clip.h>
 
 namespace octoon
@@ -19,7 +20,8 @@ namespace octoon
 	public:			
 		std::string name;
 		AnimatorStateInfo<_Time> state;
-		AnimationClips<_Time> clips;
+		std::shared_ptr<AnimationClip<_Time>> clip;
+		std::unordered_map<std::string, std::shared_ptr<AnimationClip<_Time>>> clips;
 
 		Animation() noexcept
 			: name("Default")
@@ -29,31 +31,31 @@ namespace octoon
 			state.timeLength = 0;
 		}
 
-		Animation(AnimationClip<_Time>&& _clip) noexcept
+		Animation(std::shared_ptr<AnimationClip<_Time>>&& _clip, std::string_view _name) noexcept
 			: Animation()
 		{
-			this->setClip(std::move(_clip));
+			this->setClip(std::move(_clip), _name);
 		}
 
-		Animation(AnimationClips<_Time>&& _clips) noexcept
+		Animation(const std::shared_ptr<AnimationClip<_Time>>& _clip, std::string_view _name) noexcept
+			: Animation()
+		{
+			this->setClip(_clip, _name);
+		}
+
+		Animation(std::unordered_map<std::string, std::shared_ptr<AnimationClip<_Time>>>&& _clips) noexcept
 			: Animation()
 		{
 			this->setClips(std::move(_clips));
 		}
 
-		Animation(const AnimationClip<_Time>& _clip) noexcept
-			: Animation()
-		{
-			this->setClip(_clip);
-		}
-
-		Animation(const AnimationClips<_Time>& _clips) noexcept
+		Animation(const std::unordered_map<std::string, std::shared_ptr<AnimationClip<_Time>>>& _clips) noexcept
 			: Animation()
 		{
 			this->setClips(_clips);
 		}
 
-		Animation(std::string&& _name, AnimationClips<_Time>&& _clips) noexcept
+		Animation(std::string&& _name, std::unordered_map<std::string, std::shared_ptr<AnimationClip<_Time>>>&& _clips) noexcept
 			: name(std::move(_name))
 			, clips(std::move(_clips))
 		{
@@ -64,7 +66,7 @@ namespace octoon
 				state.timeLength = std::max(clip.timeLength, state.timeLength);
 		}
 
-		Animation(std::string_view _name, const AnimationClips<_Time>& _clips) noexcept
+		Animation(std::string_view _name, const std::unordered_map<std::string, std::shared_ptr<AnimationClip<_Time>>>& _clips) noexcept
 			: name(_name)
 			, clips(_clips)
 		{
@@ -86,90 +88,111 @@ namespace octoon
 			this->name = _name;
 		}
 
-		void addClip(AnimationClip<_Time>&& clip) noexcept
+		void addClip(std::shared_ptr<AnimationClip<_Time>>&& clip_, std::string_view key) noexcept
 		{
-			this->clips.push_back(std::move(clip));
-			this->clips.back().setTime(state.time);
-
-			state.timeLength = std::max(this->clips.back().timeLength, state.timeLength);
+			if (!clip) this->clip = clip_;
+			clip_->setTime(state.time);
+			state.timeLength = std::max(clip_->timeLength, state.timeLength);
+			this->clips[std::string(key)] = std::move(clip_);
 		}
 
-		void addClip(const AnimationClip<_Time>& clip) noexcept
+		void addClip(const std::shared_ptr<AnimationClip<_Time>>& clip_, std::string_view key) noexcept
 		{
-			this->clips.push_back(clip);
-			this->clips.back().setTime(state.time);
-
-			state.timeLength = std::max(clip.timeLength, state.timeLength);
+			if (!clip) this->clip = clip_;
+			clip_->setTime(state.time);
+			state.timeLength = std::max(clip_->timeLength, state.timeLength);
+			this->clips[std::string(key)] = clip_;
 		}
 
-		void setClip(AnimationClip<_Time>&& clip) noexcept
+		void setClip(std::shared_ptr<AnimationClip<_Time>>&& clip_, std::string_view key) noexcept
 		{
 			state.time = 0;
 			state.timeLength = 0;
 			state.finish = true;
 
+			this->clip = clip_;
 			this->clips.clear();
-			this->clips.push_back(std::move(clip));
+			this->clips[std::string(key)] = std::move(clip_);
 
 			for (auto& it : clips)
 			{
-				it.evaluate(0.0f);
+				it.second->evaluate(0.0f);
 
-				state.finish &= it.finish;
-				state.timeLength = std::max(it.timeLength, state.timeLength);
+				state.finish &= it.second->finish;
+				state.timeLength = std::max(it.second->timeLength, state.timeLength);
 			}
 		}
 
-		void setClip(const AnimationClip<_Time>& clip) noexcept
+		void setClip(const std::shared_ptr<AnimationClip<_Time>>& clip_, std::string_view key) noexcept
 		{
 			state.time = 0;
 			state.timeLength = 0;
 			state.finish = true;
 
+			this->clip = clip_;
 			this->clips.clear();
-			this->clips.push_back(clip);
+			this->clips[std::string(key)] = clip_;
 
 			for (auto& it : clips)
 			{
-				it.evaluate(0.0f);
+				it.second->evaluate(0.0f);
 
-				state.finish &= it.finish;
-				state.timeLength = std::max(it.timeLength, state.timeLength);
+				state.finish &= it.second->finish;
+				state.timeLength = std::max(it.second->timeLength, state.timeLength);
 			}
 		}
 
-		void setClips(const std::vector<AnimationClip<_Time>>& clip) noexcept
+		void setClips(const std::unordered_map<std::string, std::shared_ptr<AnimationClip<_Time>>>& clips) noexcept
 		{
 			state.time = 0;
 			state.timeLength = 0;
 			state.finish = true;
 
-			this->clips = clip;
+			this->clip = *clips.begin();
+			this->clips = clips;
 
 			for (auto& it : clips)
 			{
-				it.evaluate(0.0f);
+				it.second->evaluate(0.0f);
 
-				state.finish &= it.finish;
-				state.timeLength = std::max(it.timeLength, state.timeLength);
+				state.finish &= it.second->finish;
+				state.timeLength = std::max(it.second->timeLength, state.timeLength);
 			}
 		}
 
-		void setClips(std::vector<AnimationClip<_Time>>&& clip) noexcept
+		void setClips(std::unordered_map<std::string, std::shared_ptr<AnimationClip<_Time>>>&& clips) noexcept
 		{
 			state.time = 0;
 			state.timeLength = 0;
 			state.finish = true;
 
-			this->clips = std::move(clip);
+			this->clip = *clips.begin();
+			this->clips = std::move(clips);
 
 			for (auto& it : clips)
 			{
-				it.evaluate(0.0f);
+				it.second->evaluate(0.0f);
 
-				state.finish &= it.finish;
-				state.timeLength = std::max(it.timeLength, state.timeLength);
+				state.finish &= it.second.finish;
+				state.timeLength = std::max(it.second->timeLength, state.timeLength);
 			}
+		}
+
+		std::shared_ptr<AnimationClip<_Time>> getClip(const std::string& key)
+		{
+			if (this->clips.find(key) != this->clips.end())
+				return this->clips.at(key);
+			return nullptr;
+		}
+
+		const std::shared_ptr<AnimationClip<_Time>>& getClip(const std::string& key) const
+		{
+			return this->clips.at(key);
+		}
+
+		bool hasClip(std::string_view key) const
+		{
+			return this->clips.find((std::string)key) != this->clips.end();
 		}
 
 		float timeLength() const noexcept
@@ -177,18 +200,24 @@ namespace octoon
 			return state.timeLength;
 		}
 
+		bool setDefaultClip(std::string_view key)
+		{
+			this->clip = this->getClip((std::string)key);
+			return this->clip ? true : false;
+		}
+
 		void setTime(const _Time& time) noexcept
 		{
 			if (this->state.time != time)
 			{
 				for (auto& it : this->clips)
-					it.setTime(time);
+					it.second->setTime(time);
 
 				this->state.time = time;
 				this->state.finish = true;
 
 				for (auto& it : this->clips)
-					this->state.finish &= it.finish;
+					this->state.finish &= it.second->finish;
 			}
 		}
 
@@ -200,13 +229,8 @@ namespace octoon
 		void evaluate(const _Time& delta) noexcept
 		{
 			this->state.time += delta;
-			this->state.finish = true;
-
-			for (auto& it : this->clips)
-			{
-				it.evaluate(delta);
-				this->state.finish &= it.finish;
-			}
+			this->clip->evaluate(delta);
+			this->state.finish = this->clip->finish;
 		}
 
 		bool empty() const noexcept
@@ -217,6 +241,16 @@ namespace octoon
 		std::size_t size() const noexcept
 		{
 			return this->clips.size();
+		}
+
+		const std::shared_ptr<AnimationClip<_Time>>& operator[](const char* key) const
+		{
+			return this->clips.at(key);
+		}
+
+		const std::shared_ptr<AnimationClip<_Time>>& operator[](const std::string& key) const
+		{
+			return this->clips.at(key);
 		}
 	};
 }

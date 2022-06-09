@@ -61,8 +61,9 @@ namespace octoon
 		bool enableAnimOnVisableOnly_;
 
 		math::float3s bindpose_;
-		std::vector<std::size_t> bindmap_;
+
 		std::shared_ptr<Animation<float>> animation_;
+		std::unordered_map<std::string, std::size_t> bindmap_;
 
 		GameObjects avatar_;
 	};

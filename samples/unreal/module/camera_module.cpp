@@ -29,7 +29,7 @@ namespace unreal
 	}
 
 	void 
-	CameraModule::load(nlohmann::json& reader, std::string_view path) noexcept
+	CameraModule::load(nlohmann::json& reader, std::string_view profilePath) noexcept
 	{
 		if (reader.contains("useDepthOfFiled"))
 			this->useDepthOfFiled = reader["useDepthOfFiled"].get<nlohmann::json::boolean_t>();
@@ -46,18 +46,11 @@ namespace unreal
 		if (reader["rotation"].is_array())
 			this->rotation = octoon::math::float3(reader["rotation"].get<std::array<float, 3>>());
 		if (reader["animation"].is_object())
-		{
-			auto& animationJson = reader["animation"];
-			if (animationJson.find("path") != animationJson.end())
-			{
-				auto filepath = animationJson["path"].get<nlohmann::json::string_t>();
-				this->animation = octoon::VMDLoader::loadCameraMotion(filepath.c_str());
-			}
-		}			
+			this->animation = octoon::MotionImporter::instance()->loadPackage(reader["animation"]);
 	}
 
 	void 
-	CameraModule::save(nlohmann::json& writer, std::string_view path) noexcept
+	CameraModule::save(nlohmann::json& writer, std::string_view profilePath) noexcept
 	{
 		writer["useDepthOfFiled"] = this->useDepthOfFiled.getValue();
 		writer["fov"] = this->fov.getValue();
@@ -69,15 +62,9 @@ namespace unreal
 
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
 		{
-			nlohmann::json animationJson = octoon::MotionImporter::instance()->createMetadata(this->animation.getValue());
-			if (!animationJson.is_object())
-			{
-				auto root = std::string(path).substr(0, path.find_last_of('/')) + "/Assets/" + this->animation.getValue()->name + ".vmd";
-				octoon::VMDLoader::saveCameraMotion(root, *this->animation.getValue());
-				animationJson["path"] = root;
-			}
-
-			writer["animation"] = std::move(animationJson);
+			auto root = std::string(profilePath);
+			root = root.substr(0, root.find_last_of('/')) + "/Assets/Animation";
+			writer["animation"] = octoon::MotionImporter::instance()->createPackage(this->animation.getValue(), root);
 		}
 	}
 

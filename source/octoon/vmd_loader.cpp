@@ -269,90 +269,60 @@ namespace octoon
 		return std::strncmp(type, "vmd", 3) == 0;
 	}
 
-	Animation<float>
+	std::shared_ptr<Animation<float>>
 	VMDLoader::load(io::istream& stream) noexcept(false)
 	{
 		VMD vmd;
 		vmd.load(stream);
 
-		std::map<std::string, AnimationClip<float>> motions;
+		auto animation = std::make_shared<Animation<float>>();
+		animation->setName(sjis2utf8(vmd.Header.name));
 
-		for (auto& it : vmd.MotionLists)
+		if (vmd.NumMotion > 0)
 		{
-			if (motions.find(it.name) == motions.end())
-				motions[it.name].setName(sjis2utf8(vmd.Header.name));
+			std::unordered_map<std::string, std::vector<VMDMotion>> motionList;
+			for (auto& motion : vmd.MotionLists)
+				motionList[sjis2utf8(motion.name)].push_back(motion);
 
-			auto& clip = motions[it.name];
-			clip.getCurve("Position.X").insert(Keyframe<float>((float)it.frame, it.translate.x));
-			clip.getCurve("Position.Y").insert(Keyframe<float>((float)it.frame, it.translate.y));
-			clip.getCurve("Position.Z").insert(Keyframe<float>((float)it.frame, it.translate.z));
-			clip.getCurve("Rotation.X").insert(Keyframe<float>((float)it.frame, it.rotate.x));
-			clip.getCurve("Rotation.Y").insert(Keyframe<float>((float)it.frame, it.rotate.y));
-			clip.getCurve("Rotation.Z").insert(Keyframe<float>((float)it.frame, it.rotate.z));
-			clip.getCurve("Rotation.W").insert(Keyframe<float>((float)it.frame, it.rotate.w));
-		}
+			auto clip = std::make_shared<octoon::AnimationClip<float>>();
+			clip->setName(sjis2utf8(vmd.Header.name));
 
-		Animation animation;
-		animation.setName(sjis2utf8(vmd.Header.name));
-		for (auto& it : motions)
-			animation.addClip(it.second);
-
-		return animation;
-	}
-
-	std::shared_ptr<Animation<float>>
-	VMDLoader::loadMotion(io::istream& stream) noexcept(false)
-	{
-		VMD vmd;
-		vmd.load(stream);
-
-		Animation animation;
-		animation.setName(sjis2utf8(vmd.Header.name));
-
-		std::unordered_map<std::string, std::vector<VMDMotion>> motionList;
-		for (auto& motion : vmd.MotionLists)
-			motionList[sjis2utf8(motion.name)].push_back(motion);
-
-		octoon::AnimationClips<float> clips;
-		clips.resize(motionList.size());
-
-		std::size_t i = 0;
-
-		for (auto it = motionList.begin(); it != motionList.end(); ++it, ++i)
-		{
-			octoon::Keyframes<float> translateX;
-			octoon::Keyframes<float> translateY;
-			octoon::Keyframes<float> translateZ;
-			octoon::Keyframes<float> rotation;
-
-			auto& motionData = (*it).second;
-
-			translateX.reserve(motionData.size());
-			translateY.reserve(motionData.size());
-			translateZ.reserve(motionData.size());
-			rotation.reserve(motionData.size());
-			rotation.reserve(motionData.size());
-			rotation.reserve(motionData.size());
-
-			for (auto& data : motionData)
+			for (auto it = motionList.begin(); it != motionList.end(); ++it)
 			{
-				auto interpolationX = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_x[0] / 127.0f, data.interpolation_x[2] / 127.0f, data.interpolation_x[1] / 127.0f, data.interpolation_x[3] / 127.0f);
-				auto interpolationY = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_y[0] / 127.0f, data.interpolation_y[2] / 127.0f, data.interpolation_y[1] / 127.0f, data.interpolation_y[3] / 127.0f);
-				auto interpolationZ = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_z[0] / 127.0f, data.interpolation_z[2] / 127.0f, data.interpolation_z[1] / 127.0f, data.interpolation_z[3] / 127.0f);
-				auto interpolationRotation = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_rotation[0] / 127.0f, data.interpolation_rotation[2] / 127.0f, data.interpolation_rotation[1] / 127.0f, data.interpolation_rotation[3] / 127.0f);
+				octoon::Keyframes<float> translateX;
+				octoon::Keyframes<float> translateY;
+				octoon::Keyframes<float> translateZ;
+				octoon::Keyframes<float> rotation;
 
-				translateX.emplace_back((float)data.frame / 30.0f, data.translate.x, interpolationX);
-				translateY.emplace_back((float)data.frame / 30.0f, data.translate.y, interpolationY);
-				translateZ.emplace_back((float)data.frame / 30.0f, data.translate.z, interpolationZ);
-				rotation.emplace_back((float)data.frame / 30.0f, octoon::math::Quaternion(data.rotate.x, data.rotate.y, data.rotate.z, data.rotate.w), interpolationRotation);
+				auto& motionData = (*it).second;
+
+				translateX.reserve(motionData.size());
+				translateY.reserve(motionData.size());
+				translateZ.reserve(motionData.size());
+				rotation.reserve(motionData.size());
+				rotation.reserve(motionData.size());
+				rotation.reserve(motionData.size());
+
+				for (auto& data : motionData)
+				{
+					auto interpolationX = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_x[0] / 127.0f, data.interpolation_x[2] / 127.0f, data.interpolation_x[1] / 127.0f, data.interpolation_x[3] / 127.0f);
+					auto interpolationY = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_y[0] / 127.0f, data.interpolation_y[2] / 127.0f, data.interpolation_y[1] / 127.0f, data.interpolation_y[3] / 127.0f);
+					auto interpolationZ = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_z[0] / 127.0f, data.interpolation_z[2] / 127.0f, data.interpolation_z[1] / 127.0f, data.interpolation_z[3] / 127.0f);
+					auto interpolationRotation = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_rotation[0] / 127.0f, data.interpolation_rotation[2] / 127.0f, data.interpolation_rotation[1] / 127.0f, data.interpolation_rotation[3] / 127.0f);
+
+					translateX.emplace_back((float)data.frame / 30.0f, data.translate.x, interpolationX);
+					translateY.emplace_back((float)data.frame / 30.0f, data.translate.y, interpolationY);
+					translateZ.emplace_back((float)data.frame / 30.0f, data.translate.z, interpolationZ);
+					rotation.emplace_back((float)data.frame / 30.0f, octoon::math::Quaternion(data.rotate.x, data.rotate.y, data.rotate.z, data.rotate.w), interpolationRotation);
+				}
+
+				clip->setCurve((*it).first, "LocalPosition.x", octoon::AnimationCurve(std::move(translateX)));
+				clip->setCurve((*it).first, "LocalPosition.y", octoon::AnimationCurve(std::move(translateY)));
+				clip->setCurve((*it).first, "LocalPosition.z", octoon::AnimationCurve(std::move(translateZ)));
+				clip->setCurve((*it).first, "LocalRotation", octoon::AnimationCurve(std::move(rotation)));
 			}
 
-			auto& clip = clips[i];
-			clip.setName((*it).first);
-			clip.setCurve("LocalPosition.x", octoon::AnimationCurve(std::move(translateX)));
-			clip.setCurve("LocalPosition.y", octoon::AnimationCurve(std::move(translateY)));
-			clip.setCurve("LocalPosition.z", octoon::AnimationCurve(std::move(translateZ)));
-			clip.setCurve("LocalRotation", octoon::AnimationCurve(std::move(rotation)));
+			animation->addClip(std::move(clip), "Motion");
 		}
 
 		if (vmd.NumMorph > 0)
@@ -361,7 +331,7 @@ namespace octoon
 			for (auto& motion : vmd.MorphLists)
 				morphList[sjis2utf8(motion.name)].push_back(motion);
 
-			octoon::AnimationClip<float> clip;
+			auto clip = std::make_shared<octoon::AnimationClip<float>>();
 
 			for (auto it = morphList.begin(); it != morphList.end(); ++it)
 			{
@@ -373,54 +343,11 @@ namespace octoon
 				for (auto& morph : morphData)
 					keyframe.emplace_back((float)morph.frame / 30.0f, morph.weight);
 
-				clip.setCurve((*it).first, octoon::AnimationCurve(std::move(keyframe)));
+				clip->setCurve("", (*it).first, octoon::AnimationCurve(std::move(keyframe)));
 			}
 
-			clips.push_back(std::move(clip));
+			animation->addClip(std::move(clip), "Morph");
 		}
-
-		return std::make_shared<Animation<float>>(std::move(clips));
-	}
-
-	std::shared_ptr<Animation<float>>
-	VMDLoader::loadMorph(io::istream& stream) noexcept(false)
-	{
-		VMD vmd;
-		vmd.load(stream);
-
-		Animation animation;
-		animation.setName(sjis2utf8(vmd.Header.name));
-
-		std::unordered_map<std::string, std::vector<VMDMorph>> morphList;
-		for (auto& motion : vmd.MorphLists)
-			morphList[sjis2utf8(motion.name)].push_back(motion);
-
-		octoon::AnimationClip<float> clip;
-
-		for (auto it = morphList.begin(); it != morphList.end(); ++it)
-		{
-			auto& morphData = (*it).second;
-
-			octoon::Keyframes<float> keyframe;
-			keyframe.reserve(morphData.size());
-
-			for (auto& morph : morphData)
-				keyframe.emplace_back((float)morph.frame / 30.0f, morph.weight);
-
-			clip.setCurve((*it).first, octoon::AnimationCurve(std::move(keyframe)));
-		}
-
-		return std::make_shared<Animation<float>>(std::move(clip));
-	}
-
-	std::shared_ptr<Animation<float>>
-	VMDLoader::loadCameraMotion(io::istream& stream) noexcept(false)
-	{
-		VMD vmd;
-		vmd.load(stream);
-
-		auto animation = std::make_shared<Animation<float>>();
-		animation->setName(sjis2utf8(vmd.Header.name));
 
 		if (vmd.NumCamera > 0)
 		{
@@ -455,22 +382,22 @@ namespace octoon
 				fov.emplace_back((float)it.frame / 30.0f, (float)it.viewingAngle, interpolationAngleView);
 			}
 
-			AnimationClip clip;
-			clip.setCurve("LocalPosition.x", AnimationCurve(std::move(eyeX)));
-			clip.setCurve("LocalPosition.y", AnimationCurve(std::move(eyeY)));
-			clip.setCurve("LocalPosition.z", AnimationCurve(std::move(eyeZ)));
-			clip.setCurve("LocalEulerAnglesRaw", AnimationCurve(std::move(rotation)));
-			clip.setCurve("LocalForward", AnimationCurve(std::move(distance)));
-			clip.setCurve("Camera:fov", AnimationCurve(std::move(fov)));
+			auto clip = std::make_shared<octoon::AnimationClip<float>>();
+			clip->setCurve("", "LocalPosition.x", AnimationCurve(std::move(eyeX)));
+			clip->setCurve("", "LocalPosition.y", AnimationCurve(std::move(eyeY)));
+			clip->setCurve("", "LocalPosition.z", AnimationCurve(std::move(eyeZ)));
+			clip->setCurve("", "LocalEulerAnglesRaw", AnimationCurve(std::move(rotation)));
+			clip->setCurve("", "LocalForward", AnimationCurve(std::move(distance)));
+			clip->setCurve("", "Camera:fov", AnimationCurve(std::move(fov)));
 
-			animation->setClip(std::move(clip));
+			animation->addClip(std::move(clip), "Camera");
 		}
 
 		return animation;
 	}
 
 	void
-	VMDLoader::saveMorph(io::ostream& stream, const Animation<float>& animation) noexcept(false)
+	VMDLoader::save(io::ostream& stream, const Animation<float>& animation) noexcept(false)
 	{
 		auto sjis = utf82sjis(animation.name);
 
@@ -485,224 +412,153 @@ namespace octoon
 		vmd.NumMotion = 0;
 		vmd.NumSelfShadow = 0;
 
-		for (auto& clip : animation.clips)
+		if (animation.hasClip("Motion"))
 		{
-			for (auto& curve : clip.curves)
+			auto& clip = animation.getClip("Motion");
+
+			for (auto& binding : clip->bindings)
 			{
-				if (curve.first == "LocalPosition.x" ||
-					curve.first == "LocalPosition.y" ||
-					curve.first == "LocalPosition.z" ||
-					curve.first == "LocalRotation")
+				auto name = utf82sjis(binding.first);
+				auto& eyeX = binding.second.at("LocalPosition.x");
+				auto& eyeY = binding.second.at("LocalPosition.y");
+				auto& eyeZ = binding.second.at("LocalPosition.z");
+				auto& rotation = binding.second.at("LocalRotation");
+
+				for (std::size_t i = 0; i < eyeX.frames.size(); i++)
 				{
-					continue;
+					auto interpolatorEyeX = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeX.frames[i].interpolator);
+					auto interpolatorEyeY = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeY.frames[i].interpolator);
+					auto interpolatorEyeZ = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeZ.frames[i].interpolator);
+					auto interpolatorRotation = std::dynamic_pointer_cast<PathInterpolator<float>>(rotation.frames[i].interpolator);
+
+					VMDMotion motion;
+					std::memset(&motion, 0, sizeof(VMDMotion));
+					std::memcpy(&motion.name, name.data(), name.size());
+					motion.frame = (VMD_uint32_t)(eyeX.frames[i].time * 30.0f);
+					motion.translate.x = eyeX.frames[i].value.getFloat();
+					motion.translate.y = eyeY.frames[i].value.getFloat();
+					motion.translate.z = eyeZ.frames[i].value.getFloat();
+					motion.rotate = rotation.frames[i].value.getQuaternion();
+
+					motion.interpolation_x[0] = static_cast<std::int8_t>(interpolatorEyeX->xa * 127);
+					motion.interpolation_x[2] = static_cast<std::int8_t>(interpolatorEyeX->xb * 127);
+					motion.interpolation_x[1] = static_cast<std::int8_t>(interpolatorEyeX->ya * 127);
+					motion.interpolation_x[3] = static_cast<std::int8_t>(interpolatorEyeX->yb * 127);
+
+					motion.interpolation_y[0] = static_cast<std::int8_t>(interpolatorEyeY->xa * 127);
+					motion.interpolation_y[2] = static_cast<std::int8_t>(interpolatorEyeY->xb * 127);
+					motion.interpolation_y[1] = static_cast<std::int8_t>(interpolatorEyeY->ya * 127);
+					motion.interpolation_y[3] = static_cast<std::int8_t>(interpolatorEyeY->yb * 127);
+
+					motion.interpolation_z[0] = static_cast<std::int8_t>(interpolatorEyeZ->xa * 127);
+					motion.interpolation_z[2] = static_cast<std::int8_t>(interpolatorEyeZ->xb * 127);
+					motion.interpolation_z[1] = static_cast<std::int8_t>(interpolatorEyeZ->ya * 127);
+					motion.interpolation_z[3] = static_cast<std::int8_t>(interpolatorEyeZ->yb * 127);
+
+					motion.interpolation_rotation[0] = static_cast<std::int8_t>(interpolatorRotation->xa * 127);
+					motion.interpolation_rotation[2] = static_cast<std::int8_t>(interpolatorRotation->xb * 127);
+					motion.interpolation_rotation[1] = static_cast<std::int8_t>(interpolatorRotation->ya * 127);
+					motion.interpolation_rotation[3] = static_cast<std::int8_t>(interpolatorRotation->yb * 127);
+
+					vmd.MotionLists.push_back(std::move(motion));
 				}
-
-				std::vector<VMDMorph> morphData;
-
-				auto name = utf82sjis(curve.first);
-
-				for (auto& keyframe : curve.second.frames)
-				{
-					VMDMorph morph;
-					std::memset(&morph, 0, sizeof(VMDMorph));
-					std::memcpy(&morph.name, name.data(), name.size());
-					morph.frame = (VMD_uint32_t)(keyframe.time * 30.0f);
-					morph.weight = keyframe.value.getFloat();
-
-					vmd.MorphLists.push_back(std::move(morph));
-				}
-			}
-		}
-
-		vmd.NumMorph = (VMD_uint32_t)vmd.MorphLists.size();
-		vmd.save(stream);
-	}
-
-	void
-	VMDLoader::saveMotion(io::ostream& stream, const Animation<float>& animation) noexcept(false)
-	{
-		auto sjis = utf82sjis(animation.name);
-
-		VMD vmd;
-		std::memset(&vmd.Header, 0, sizeof(vmd.Header));
-		std::memcpy(&vmd.Header.magic, "Vocaloid Motion Data 0002", 15);
-		std::memcpy(&vmd.Header.name, sjis.data(), sjis.size());
-
-		vmd.NumLight = 0;
-		vmd.NumCamera = 0;
-		vmd.NumMorph = 0;
-		vmd.NumMotion = 0;
-		vmd.NumSelfShadow = 0;
-
-		for (auto& clip : animation.clips)
-		{
-			if (!clip.hasCurve("LocalPosition.x") ||
-				!clip.hasCurve("LocalPosition.y") ||
-				!clip.hasCurve("LocalPosition.z") ||
-				!clip.hasCurve("LocalRotation"))
-			{
-				continue;
-			}
-
-			auto name = utf82sjis(clip.name);
-			auto& eyeX = clip.getCurve("LocalPosition.x");
-			auto& eyeY = clip.getCurve("LocalPosition.y");
-			auto& eyeZ = clip.getCurve("LocalPosition.z");
-			auto& rotation = clip.getCurve("LocalRotation");
-
-			for (std::size_t i = 0; i < eyeX.frames.size(); i++)
-			{
-				auto interpolatorEyeX = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeX.frames[i].interpolator);
-				auto interpolatorEyeY = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeY.frames[i].interpolator);
-				auto interpolatorEyeZ = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeZ.frames[i].interpolator);
-				auto interpolatorRotation = std::dynamic_pointer_cast<PathInterpolator<float>>(rotation.frames[i].interpolator);
-
-				VMDMotion motion;
-				std::memset(&motion, 0, sizeof(VMDMotion));
-				std::memcpy(&motion.name, name.data(), name.size());
-				motion.frame = (VMD_uint32_t)(eyeX.frames[i].time * 30.0f);
-				motion.translate.x = eyeX.frames[i].value.getFloat();
-				motion.translate.y = eyeY.frames[i].value.getFloat();
-				motion.translate.z = eyeZ.frames[i].value.getFloat();
-				motion.rotate = rotation.frames[i].value.getQuaternion();
-
-				motion.interpolation_x[0] = static_cast<std::int8_t>(interpolatorEyeX->xa * 127);
-				motion.interpolation_x[2] = static_cast<std::int8_t>(interpolatorEyeX->xb * 127);
-				motion.interpolation_x[1] = static_cast<std::int8_t>(interpolatorEyeX->ya * 127);
-				motion.interpolation_x[3] = static_cast<std::int8_t>(interpolatorEyeX->yb * 127);
-
-				motion.interpolation_y[0] = static_cast<std::int8_t>(interpolatorEyeY->xa * 127);
-				motion.interpolation_y[2] = static_cast<std::int8_t>(interpolatorEyeY->xb * 127);
-				motion.interpolation_y[1] = static_cast<std::int8_t>(interpolatorEyeY->ya * 127);
-				motion.interpolation_y[3] = static_cast<std::int8_t>(interpolatorEyeY->yb * 127);
-
-				motion.interpolation_z[0] = static_cast<std::int8_t>(interpolatorEyeZ->xa * 127);
-				motion.interpolation_z[2] = static_cast<std::int8_t>(interpolatorEyeZ->xb * 127);
-				motion.interpolation_z[1] = static_cast<std::int8_t>(interpolatorEyeZ->ya * 127);
-				motion.interpolation_z[3] = static_cast<std::int8_t>(interpolatorEyeZ->yb * 127);
-
-				motion.interpolation_rotation[0] = static_cast<std::int8_t>(interpolatorRotation->xa * 127);
-				motion.interpolation_rotation[2] = static_cast<std::int8_t>(interpolatorRotation->xb * 127);
-				motion.interpolation_rotation[1] = static_cast<std::int8_t>(interpolatorRotation->ya * 127);
-				motion.interpolation_rotation[3] = static_cast<std::int8_t>(interpolatorRotation->yb * 127);
-
-				vmd.MotionLists.push_back(std::move(motion));
 			}
 
 			vmd.NumMotion = (VMD_uint32_t)vmd.MotionLists.size();
 		}
 
-		for (auto& clip : animation.clips)
+		if (animation.hasClip("Morph"))
 		{
-			for (auto& curve : clip.curves)
+			auto& clip = animation.getClip("Morph");
+
+			for (auto& binding : clip->bindings)
 			{
-				if (curve.first == "LocalPosition.x" ||
-					curve.first == "LocalPosition.y" ||
-					curve.first == "LocalPosition.z" ||
-					curve.first == "LocalRotation")
+				for (auto& curve : binding.second)
 				{
-					continue;
-				}
+					std::vector<VMDMorph> morphData;
 
-				std::vector<VMDMorph> morphData;
+					auto name = utf82sjis(curve.first);
 
-				auto name = utf82sjis(curve.first);
+					for (auto& keyframe : curve.second.frames)
+					{
+						VMDMorph morph;
+						std::memset(&morph, 0, sizeof(VMDMorph));
+						std::memcpy(&morph.name, name.data(), name.size());
+						morph.frame = (VMD_uint32_t)(keyframe.time * 30.0f);
+						morph.weight = keyframe.value.getFloat();
 
-				for (auto& keyframe : curve.second.frames)
-				{
-					VMDMorph morph;
-					std::memset(&morph, 0, sizeof(VMDMorph));
-					std::memcpy(&morph.name, name.data(), name.size());
-					morph.frame = (VMD_uint32_t)(keyframe.time * 30.0f);
-					morph.weight = keyframe.value.getFloat();
-
-					vmd.MorphLists.push_back(std::move(morph));
+						vmd.MorphLists.push_back(std::move(morph));
+					}
 				}
 			}
+
+			vmd.NumMorph = (VMD_uint32_t)vmd.MorphLists.size();
 		}
 
-		vmd.NumMorph = (VMD_uint32_t)vmd.MorphLists.size();
-
-		vmd.save(stream);
-	}
-
-	void
-	VMDLoader::saveCameraMotion(io::ostream& stream, const Animation<float>& animation) noexcept(false)
-	{
-		auto sjis = utf82sjis(animation.name);
-
-		VMD vmd;
-		std::memset(&vmd.Header, 0, sizeof(vmd.Header));
-		std::memcpy(&vmd.Header.magic, "Vocaloid Motion Data 0002", 15);
-		std::memcpy(&vmd.Header.name, sjis.data(), sjis.size());
-
-		vmd.NumLight = 0;
-		vmd.NumCamera = 0;
-		vmd.NumMorph = 0;
-		vmd.NumMotion = 0;
-		vmd.NumSelfShadow = 0;
-
-		if (!animation.clips.empty())
+		if (animation.hasClip("Camera"))
 		{
-			auto& clip = animation.clips.front();
+			auto& clip = animation.getClip("Camera");
 
-			auto& eyeX = clip.getCurve("LocalPosition.x");
-			auto& eyeY = clip.getCurve("LocalPosition.y");
-			auto& eyeZ = clip.getCurve("LocalPosition.z");
-			auto& rotation = clip.getCurve("LocalEulerAnglesRaw");
-			auto& distance = clip.getCurve("LocalForward");
-			auto& fov = clip.getCurve("Camera:fov");
-
-			for (std::size_t i = 0; i < eyeX.frames.size(); i++)
+			for (auto& binding : clip->bindings)
 			{
-				auto interpolatorEyeX = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeX.frames[i].interpolator);
-				auto interpolatorEyeY = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeY.frames[i].interpolator);
-				auto interpolatorEyeZ = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeZ.frames[i].interpolator);
-				auto interpolatorRotation = std::dynamic_pointer_cast<PathInterpolator<float>>(rotation.frames[i].interpolator);
-				auto interpolatorDistance = std::dynamic_pointer_cast<PathInterpolator<float>>(distance.frames[i].interpolator);
-				auto interpolatorViewingAngle = std::dynamic_pointer_cast<PathInterpolator<float>>(fov.frames[i].interpolator);
+				auto& eyeX = binding.second.at("LocalPosition.x");
+				auto& eyeY = binding.second.at("LocalPosition.y");
+				auto& eyeZ = binding.second.at("LocalPosition.z");
+				auto& rotation = binding.second.at("LocalEulerAnglesRaw");
+				auto& distance = binding.second.at("LocalForward");
+				auto& fov = binding.second.at("Camera:fov");
 
-				VMDCamera motion;
-				motion.frame = (VMD_uint32_t)(eyeX.frames[i].time * 30.0f);
-				motion.location.x = eyeX.frames[i].value.getFloat();
-				motion.location.y = eyeY.frames[i].value.getFloat();
-				motion.location.z = eyeZ.frames[i].value.getFloat();
-				motion.distance = distance.frames[i].value.getFloat();
-				motion.rotation = -rotation.frames[i].value.getFloat3();
-				motion.viewingAngle = (VMD_uint32_t)(fov.frames[i].value.getFloat());
-				motion.perspective = 1;
+				for (std::size_t i = 0; i < eyeX.frames.size(); i++)
+				{
+					auto interpolatorEyeX = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeX.frames[i].interpolator);
+					auto interpolatorEyeY = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeY.frames[i].interpolator);
+					auto interpolatorEyeZ = std::dynamic_pointer_cast<PathInterpolator<float>>(eyeZ.frames[i].interpolator);
+					auto interpolatorRotation = std::dynamic_pointer_cast<PathInterpolator<float>>(rotation.frames[i].interpolator);
+					auto interpolatorDistance = std::dynamic_pointer_cast<PathInterpolator<float>>(distance.frames[i].interpolator);
+					auto interpolatorViewingAngle = std::dynamic_pointer_cast<PathInterpolator<float>>(fov.frames[i].interpolator);
 
-				motion.interpolation_x[0] = static_cast<std::int8_t>(interpolatorEyeX->xa * 127);
-				motion.interpolation_x[2] = static_cast<std::int8_t>(interpolatorEyeX->xb * 127);
-				motion.interpolation_x[1] = static_cast<std::int8_t>(interpolatorEyeX->ya * 127);
-				motion.interpolation_x[3] = static_cast<std::int8_t>(interpolatorEyeX->yb * 127);
+					VMDCamera motion;
+					motion.frame = (VMD_uint32_t)(eyeX.frames[i].time * 30.0f);
+					motion.location.x = eyeX.frames[i].value.getFloat();
+					motion.location.y = eyeY.frames[i].value.getFloat();
+					motion.location.z = eyeZ.frames[i].value.getFloat();
+					motion.distance = distance.frames[i].value.getFloat();
+					motion.rotation = -rotation.frames[i].value.getFloat3();
+					motion.viewingAngle = (VMD_uint32_t)(fov.frames[i].value.getFloat());
+					motion.perspective = 1;
 
-				motion.interpolation_y[0] = static_cast<std::int8_t>(interpolatorEyeY->xa * 127);
-				motion.interpolation_y[2] = static_cast<std::int8_t>(interpolatorEyeY->xb * 127);
-				motion.interpolation_y[1] = static_cast<std::int8_t>(interpolatorEyeY->ya * 127);
-				motion.interpolation_y[3] = static_cast<std::int8_t>(interpolatorEyeY->yb * 127);
+					motion.interpolation_x[0] = static_cast<std::int8_t>(interpolatorEyeX->xa * 127);
+					motion.interpolation_x[2] = static_cast<std::int8_t>(interpolatorEyeX->xb * 127);
+					motion.interpolation_x[1] = static_cast<std::int8_t>(interpolatorEyeX->ya * 127);
+					motion.interpolation_x[3] = static_cast<std::int8_t>(interpolatorEyeX->yb * 127);
 
-				motion.interpolation_z[0] = static_cast<std::int8_t>(interpolatorEyeZ->xa * 127);
-				motion.interpolation_z[2] = static_cast<std::int8_t>(interpolatorEyeZ->xb * 127);
-				motion.interpolation_z[1] = static_cast<std::int8_t>(interpolatorEyeZ->ya * 127);
-				motion.interpolation_z[3] = static_cast<std::int8_t>(interpolatorEyeZ->yb * 127);
+					motion.interpolation_y[0] = static_cast<std::int8_t>(interpolatorEyeY->xa * 127);
+					motion.interpolation_y[2] = static_cast<std::int8_t>(interpolatorEyeY->xb * 127);
+					motion.interpolation_y[1] = static_cast<std::int8_t>(interpolatorEyeY->ya * 127);
+					motion.interpolation_y[3] = static_cast<std::int8_t>(interpolatorEyeY->yb * 127);
 
-				motion.interpolation_rotation[0] = static_cast<std::int8_t>(interpolatorRotation->xa * 127);
-				motion.interpolation_rotation[2] = static_cast<std::int8_t>(interpolatorRotation->xb * 127);
-				motion.interpolation_rotation[1] = static_cast<std::int8_t>(interpolatorRotation->ya * 127);
-				motion.interpolation_rotation[3] = static_cast<std::int8_t>(interpolatorRotation->yb * 127);
+					motion.interpolation_z[0] = static_cast<std::int8_t>(interpolatorEyeZ->xa * 127);
+					motion.interpolation_z[2] = static_cast<std::int8_t>(interpolatorEyeZ->xb * 127);
+					motion.interpolation_z[1] = static_cast<std::int8_t>(interpolatorEyeZ->ya * 127);
+					motion.interpolation_z[3] = static_cast<std::int8_t>(interpolatorEyeZ->yb * 127);
 
-				motion.interpolation_distance[0] = static_cast<std::int8_t>(interpolatorDistance->xa * 127);
-				motion.interpolation_distance[2] = static_cast<std::int8_t>(interpolatorDistance->xb * 127);
-				motion.interpolation_distance[1] = static_cast<std::int8_t>(interpolatorDistance->ya * 127);
-				motion.interpolation_distance[3] = static_cast<std::int8_t>(interpolatorDistance->yb * 127);
+					motion.interpolation_rotation[0] = static_cast<std::int8_t>(interpolatorRotation->xa * 127);
+					motion.interpolation_rotation[2] = static_cast<std::int8_t>(interpolatorRotation->xb * 127);
+					motion.interpolation_rotation[1] = static_cast<std::int8_t>(interpolatorRotation->ya * 127);
+					motion.interpolation_rotation[3] = static_cast<std::int8_t>(interpolatorRotation->yb * 127);
 
-				motion.interpolation_angleview[0] = static_cast<std::int8_t>(interpolatorViewingAngle->xa * 127);
-				motion.interpolation_angleview[2] = static_cast<std::int8_t>(interpolatorViewingAngle->xb * 127);
-				motion.interpolation_angleview[1] = static_cast<std::int8_t>(interpolatorViewingAngle->ya * 127);
-				motion.interpolation_angleview[3] = static_cast<std::int8_t>(interpolatorViewingAngle->yb * 127);
+					motion.interpolation_distance[0] = static_cast<std::int8_t>(interpolatorDistance->xa * 127);
+					motion.interpolation_distance[2] = static_cast<std::int8_t>(interpolatorDistance->xb * 127);
+					motion.interpolation_distance[1] = static_cast<std::int8_t>(interpolatorDistance->ya * 127);
+					motion.interpolation_distance[3] = static_cast<std::int8_t>(interpolatorDistance->yb * 127);
 
-				vmd.CameraLists.push_back(motion);
+					motion.interpolation_angleview[0] = static_cast<std::int8_t>(interpolatorViewingAngle->xa * 127);
+					motion.interpolation_angleview[2] = static_cast<std::int8_t>(interpolatorViewingAngle->xb * 127);
+					motion.interpolation_angleview[1] = static_cast<std::int8_t>(interpolatorViewingAngle->ya * 127);
+					motion.interpolation_angleview[3] = static_cast<std::int8_t>(interpolatorViewingAngle->yb * 127);
+
+					vmd.CameraLists.push_back(motion);
+				}
 			}
 
 			vmd.NumCamera = (VMD_uint32_t)vmd.CameraLists.size();
@@ -712,62 +568,22 @@ namespace octoon
 	}
 
 	std::shared_ptr<Animation<float>>
-	VMDLoader::loadMotion(std::string_view filepath) noexcept(false)
+	VMDLoader::load(std::string_view filepath) noexcept(false)
 	{
 		io::ifstream stream(std::string(filepath), std::ios_base::binary);
 		if (stream)
-			return loadMotion(stream);
-
-		return nullptr;
-	}
-
-	std::shared_ptr<Animation<float>>
-	VMDLoader::loadMorph(std::string_view filepath) noexcept(false)
-	{
-		io::ifstream stream(std::string(filepath), std::ios_base::binary);
-		if (stream)
-			return loadMorph(stream);
-
-		return nullptr;
-	}
-
-	std::shared_ptr<Animation<float>>
-	VMDLoader::loadCameraMotion(std::string_view filepath) noexcept(false)
-	{
-		io::ifstream stream(std::string(filepath), std::ios_base::binary);
-		if (stream)
-			return loadCameraMotion(stream);
+			return load(stream);
 
 		return nullptr;
 	}
 
 	void
-	VMDLoader::saveMorph(std::string_view filepath, const Animation<float>& animation) noexcept(false)
+	VMDLoader::save(std::string_view filepath, const Animation<float>& animation) noexcept(false)
 	{
 		std::filesystem::create_directories(runtime::string::directory(std::string(filepath)));
 
 		io::ofstream stream(std::string(filepath), io::ios_base::in | io::ios_base::out);
 		if (stream)
-			saveMorph(stream, animation);
-	}
-
-	void
-	VMDLoader::saveMotion(std::string_view filepath, const Animation<float>& animation) noexcept(false)
-	{
-		std::filesystem::create_directories(runtime::string::directory(std::string(filepath)));
-
-		io::ofstream stream(std::string(filepath), io::ios_base::in | io::ios_base::out);
-		if (stream)
-			saveMotion(stream, animation);
-	}
-
-	void
-	VMDLoader::saveCameraMotion(std::string_view filepath, const Animation<float>& animation) noexcept(false)
-	{
-		std::filesystem::create_directories(runtime::string::directory(std::string(filepath)));
-
-		io::ofstream stream(std::string(filepath), io::ios_base::in | io::ios_base::out);
-		if (stream)
-			saveCameraMotion(stream, animation);
+			save(stream, animation);
 	}
 }

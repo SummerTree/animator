@@ -113,7 +113,7 @@ namespace unreal
 	EntitiesModule::save(nlohmann::json& writer, std::string_view profilePath) noexcept(false)
 	{
 		auto root = std::string(profilePath);
-		root = root.substr(0, root.find_last_of('/')) + "/Assets/";
+		root = root.substr(0, root.find_last_of('/')) + "/Assets";
 
 		auto texturePath = root + "/Textures";
 		auto materialPath = root + "/Materials";

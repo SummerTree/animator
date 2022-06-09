@@ -38,10 +38,7 @@ namespace unreal
 		octoon::io::ifstream stream;
 
 		if (stream.open(std::string(filepath)))
-		{
-			octoon::VMDLoader loader;
-			return this->loadAnimation(loader.loadCameraMotion(stream));
-		}
+			return this->loadAnimation(octoon::VMDLoader::load(stream));
 
 		return false;
 	}

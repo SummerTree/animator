@@ -23,24 +23,7 @@ namespace octoon
 		auto ext = path.substr(path.find_last_of('.'));
 		if (ext == ".vmd")
 		{
-			auto motion = octoon::VMDLoader::loadMotion(path);
-			if (motion)
-			{
-				assetPathList_[motion] = path;
-				return motion;
-			}
-		}
-
-		return nullptr;
-	}
-
-	std::shared_ptr<octoon::Animation<float>>
-	MotionImporter::importCameraMotion(std::string_view path) noexcept(false)
-	{
-		auto ext = path.substr(path.find_last_of('.'));
-		if (ext == ".vmd")
-		{
-			auto motion = octoon::VMDLoader::loadCameraMotion(path);
+			auto motion = octoon::VMDLoader::load(path);
 			if (motion)
 			{
 				assetPathList_[motion] = path;
@@ -120,7 +103,7 @@ namespace octoon
 
 			std::filesystem::create_directories(rootPath);
 
-			octoon::VMDLoader::saveMotion(motionPath.string(), *animation);
+			octoon::VMDLoader::save(motionPath.string(), *animation);
 			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
 
 			package["uuid"] = uuid;
@@ -156,7 +139,7 @@ namespace octoon
 				return this->assetCache_[uuid]->downcast_pointer<octoon::Animation<float>>();
 
 			auto path = package["path"].get<nlohmann::json::string_t>();
-			auto motion = octoon::VMDLoader::loadMotion(path.c_str());
+			auto motion = octoon::VMDLoader::load(path.c_str());
 			if (motion)
 			{
 				packageList_[uuid] = package;
@@ -167,30 +150,5 @@ namespace octoon
 		}
 
 		return nullptr;
-	}
-
-	nlohmann::json
-	MotionImporter::createMetadata(const std::shared_ptr<octoon::Animation<float>>& animation) const noexcept
-	{
-		auto it = assetList_.find(animation);
-		if (it != assetList_.end())
-		{
-			auto& package = (*it).second;
-
-			nlohmann::json json;
-			json["uuid"] = package["uuid"].get<nlohmann::json::string_t>();
-
-			return json;
-		}
-		auto path = assetPathList_.find(animation);
-		if (path != assetPathList_.end())
-		{
-			nlohmann::json json;
-			json["path"] = (char*)(*path).second.c_str();
-
-			return json;
-		}
-
-		return nlohmann::json();
 	}
 }

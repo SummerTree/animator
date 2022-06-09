@@ -20,8 +20,8 @@ namespace unreal
 		static void load(UnrealProfile& profile, std::string_view path) noexcept(false);
 
 	private:
-		static void setupBoneAnimation(const octoon::PmmModel& model, octoon::AnimationClips<float>& clips) noexcept;
-		static void setupMorphAnimation(const octoon::PmmModel& model, octoon::AnimationClip<float>& clips) noexcept;
+		static void setupBoneAnimation(const octoon::PmmModel& model, octoon::AnimationClip<float>& clip) noexcept;
+		static void setupMorphAnimation(const octoon::PmmModel& model, octoon::AnimationClip<float>& clip) noexcept;
 		static void setupCameraAnimation(const std::vector<octoon::PmmKeyframeCamera>& camera, octoon::Animation<float>& animtion) noexcept;
 	};
 }

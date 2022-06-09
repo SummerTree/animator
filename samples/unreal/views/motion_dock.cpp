@@ -279,7 +279,7 @@ namespace unreal
 					else
 					{
 						if (vmd.NumCamera > 0)
-							profile_->cameraModule->animation = octoon::MotionImporter::instance()->importCameraMotion(filepath.c_str());
+							profile_->cameraModule->animation = octoon::MotionImporter::instance()->importMotion(filepath.c_str());
 
 						dialog.setValue(1);
 						QCoreApplication::processEvents();

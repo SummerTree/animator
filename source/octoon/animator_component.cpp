@@ -75,11 +75,16 @@ namespace octoon
 	bool
 	AnimatorComponent::play(std::string_view status) noexcept
 	{
-		this->setName(status);
-		this->addComponentDispatch(GameDispatchType::FixedUpdate);
+		if (animation_ && animation_->hasClip(status))
+		{
+			this->animation_->setDefaultClip(status);
+			this->addComponentDispatch(GameDispatchType::FixedUpdate);
 
-		enableAnimation_ = true;
-		return enableAnimation_;
+			enableAnimation_ = true;
+			return enableAnimation_;
+		}
+
+		return false;
 	}
 
 	void
@@ -113,41 +118,44 @@ namespace octoon
 	void
 	AnimatorComponent::sample(float delta) noexcept
 	{
-		if (animation_ && delta != 0.0f)
-			animation_->evaluate(delta);
-
-		if (!avatar_.empty())
+		if (animation_ && !animation_->empty())
 		{
-			this->updateAvatar();
+			if (delta != 0.0f)
+				animation_->evaluate(delta);
 
-			for (auto& bone : avatar_)
+			if (!avatar_.empty())
 			{
-				for (auto& child : bone->getChildren())
+				this->updateAvatar();
+
+				for (auto& bone : avatar_)
 				{
-					auto rigidbody = child->getComponent<RigidbodyComponent>();
-					if (rigidbody)
+					for (auto& child : bone->getChildren())
 					{
-						auto transform = child->getComponent<TransformComponent>();
-						rigidbody->setPositionAndRotation(transform->getTranslate(), transform->getQuaternion());
-						rigidbody->setLinearVelocity(math::float3::Zero);
-						rigidbody->setAngularVelocity(math::float3::Zero);
-						rigidbody->setInterpolationLinearVelocity(math::float3::Zero);
-						rigidbody->setInterpolationAngularVelocity(math::float3::Zero);
-						rigidbody->clearForce();
+						auto rigidbody = child->getComponent<RigidbodyComponent>();
+						if (rigidbody)
+						{
+							auto transform = child->getComponent<TransformComponent>();
+							rigidbody->setPositionAndRotation(transform->getTranslate(), transform->getQuaternion());
+							rigidbody->setLinearVelocity(math::float3::Zero);
+							rigidbody->setAngularVelocity(math::float3::Zero);
+							rigidbody->setInterpolationLinearVelocity(math::float3::Zero);
+							rigidbody->setInterpolationAngularVelocity(math::float3::Zero);
+							rigidbody->clearForce();
+						}
 					}
 				}
 			}
-		}
-		else
-		{
-			this->updateAnimation();
+			else
+			{
+				this->updateAnimation();
+			}
 		}
 	}
 
 	void
 	AnimatorComponent::evaluate(float delta) noexcept
 	{
-		if (animation_)
+		if (animation_ && !animation_->empty())
 		{
 			if (delta != 0.0f)
 				animation_->evaluate(delta);
@@ -264,25 +272,21 @@ namespace octoon
 	{
 		bindmap_.clear();
 
-		if (animation_)
+		if (animation_ && animation_->clip && !avatar_.empty())
 		{
-			if (!animation_->empty() && !avatar_.empty())
+			std::unordered_map<std::string, std::size_t> boneMap;
+
+			for (std::size_t i = 0; i < avatar_.size(); i++)
+				boneMap[avatar_[i]->getName()] = i;
+
+			auto& clip = animation_->clip;
+			bindmap_.reserve(clip->bindings.size());
+
+			for (auto& binding : clip->bindings)
 			{
-				std::map<std::string, std::size_t> boneMap;
-
-				for (std::size_t i = 0; i < avatar_.size(); i++)
-					boneMap[avatar_[i]->getName()] = i;
-
-				bindmap_.resize(animation_->clips.size());
-
-				for (std::size_t i = 0; i < animation_->clips.size(); i++)
-				{
-					auto it = boneMap.find(animation_->clips[i].name);
-					if (it != boneMap.end())
-						bindmap_[i] = (*it).second;
-					else
-						bindmap_[i] = std::string::npos;
-				}
+				auto it = boneMap.find(binding.first);
+				if (it != boneMap.end())
+					bindmap_[binding.first] = (*it).second;
 			}
 		}
 	}
@@ -293,28 +297,30 @@ namespace octoon
 		if (this->getCurrentAnimatorStateInfo().finish)
 			return;
 
-		for (std::size_t i = 0; i < animation_->clips.size(); i++)
+		for (auto& binding : animation_->clip->bindings)
 		{
-			if (bindmap_[i] == std::string::npos)
+			if (!bindmap_.contains(binding.first))
 				continue;
 
-			auto transform = avatar_[bindmap_[i]]->getComponent<TransformComponent>();
+			auto& index = bindmap_[binding.first];
+
+			auto transform = avatar_[index]->getComponent<TransformComponent>();
 			auto scale = transform->getLocalScale();
 			auto quat = transform->getLocalQuaternion();
 			auto translate = transform->getLocalTranslate();
 			auto euler = transform->getLocalEulerAngles();
 			auto move = 0.0f;
 
-			for (auto& curve : animation_->clips[i].curves)
+			for (auto& curve : binding.second)
 			{
 				if (curve.first == "LocalPosition")
-					translate = curve.second.value.getFloat3() + bindpose_[bindmap_[i]];
+					translate = curve.second.value.getFloat3() + bindpose_[index];
 				if (curve.first == "LocalPosition.x")
-					translate.x = curve.second.value.getFloat() + bindpose_[bindmap_[i]].x;
+					translate.x = curve.second.value.getFloat() + bindpose_[index].x;
 				else if (curve.first == "LocalPosition.y")
-					translate.y = curve.second.value.getFloat() + bindpose_[bindmap_[i]].y;
+					translate.y = curve.second.value.getFloat() + bindpose_[index].y;
 				else if (curve.first == "LocalPosition.z")
-					translate.z = curve.second.value.getFloat() + bindpose_[bindmap_[i]].z;
+					translate.z = curve.second.value.getFloat() + bindpose_[index].z;
 				else if (curve.first == "LocalScale")
 					scale = curve.second.value.getFloat3();
 				else if (curve.first == "LocalScale.x")
@@ -381,11 +387,11 @@ namespace octoon
 	void
 	AnimatorComponent::updateAnimation(float delta) noexcept
 	{
-		for (auto& clip : animation_->clips)
-		{
-			if (clip.finish)
-				continue;
+		if (this->getCurrentAnimatorStateInfo().finish)
+			return;
 
+		for (auto& binging : animation_->clip->bindings)
+		{
 			auto transform = this->getComponent<TransformComponent>();
 			auto scale = transform->getLocalScale();
 			auto quat = transform->getLocalQuaternion();
@@ -393,7 +399,7 @@ namespace octoon
 			auto euler = transform->getLocalEulerAngles();
 			auto move = 0.0f;
 
-			for (auto& curve : clip.curves)
+			for (auto& curve : binging.second)
 			{
 				if (curve.first == "LocalPosition")
 					translate = curve.second.value.getFloat3();

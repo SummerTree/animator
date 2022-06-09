@@ -16,13 +16,10 @@ namespace octoon
 		~MotionImporter() noexcept;
 
 		std::shared_ptr<octoon::Animation<float>> importMotion(std::string_view path) noexcept(false);
-		std::shared_ptr<octoon::Animation<float>> importCameraMotion(std::string_view path) noexcept(false);
 		std::shared_ptr<octoon::Animation<float>> loadPackage(const nlohmann::json& package) noexcept(false);
 
 		nlohmann::json createPackage(std::string_view path) noexcept(false);
 		nlohmann::json createPackage(const std::shared_ptr<octoon::Animation<float>>& animation, std::string_view outputPath = "") noexcept;
-
-		nlohmann::json createMetadata(const std::shared_ptr<octoon::Animation<float>>& animation) const noexcept;
 	};
 }
 

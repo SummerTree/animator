@@ -12,7 +12,7 @@ namespace octoon
 	{
 	public:
 		std::string name;
-		std::unordered_map<std::string, AnimationCurve<_Time>> curves;
+		std::unordered_map<std::string, std::unordered_map<std::string, AnimationCurve<_Time>>> bindings;
 		bool finish;
 		_Time timeLength;
 
@@ -34,93 +34,92 @@ namespace octoon
 			this->name = _name;
 		}
 
-		void setCurve(const char* _name, AnimationCurve<_Time>&& curve) noexcept
+		void setCurve(std::string_view relativePath, std::string_view propertyName, AnimationCurve<_Time>&& curve) noexcept
 		{
-			this->curves[_name] = std::move(curve);
-			timeLength = 0;
-			for (auto& it : this->curves)
-				timeLength = std::max(it.second.timeLength, timeLength);
+			this->bindings[std::string(relativePath)][std::string(propertyName)] = std::move(curve);
+
+			this->timeLength = 0;
+
+			for (auto& binding : this->bindings)
+			{
+				for (auto& it : binding.second)
+					timeLength = std::max(it.second.timeLength, timeLength);
+			}
 		}
 
-		void setCurve(const char* _name, const AnimationCurve<_Time>& curve) noexcept
+		void setCurve(std::string_view relativePath, std::string_view propertyName, const AnimationCurve<_Time>& curve) noexcept
 		{
-			this->curves[_name] = curve;
-			timeLength = 0;
-			for (auto& it : this->curves)
-				timeLength = std::max(it.second.timeLength, timeLength);
+			this->bindings[std::string(relativePath)][std::string(propertyName)] = curve;
+
+			this->timeLength = 0;
+
+			for (auto& binding : this->bindings)
+			{
+				for (auto& it : binding.second)
+					timeLength = std::max(it.second.timeLength, timeLength);
+			}
 		}
 
-		void setCurve(const std::string& _name, AnimationCurve<_Time>&& curve) noexcept
+		bool hasCurve(std::string_view relativePath) const noexcept
 		{
-			this->curves[_name] = std::move(curve);
-			timeLength = 0;
-			for (auto& it : this->curves)
-				timeLength = std::max(it.second.timeLength, timeLength);
+			return this->bindings.find(relativePath) != this->bindings.end();
 		}
 
-		void setCurve(const std::string& _name, const AnimationCurve<_Time>& curve) noexcept
+		AnimationCurve<_Time>& getCurve(std::string_view relativePath, std::string_view propertyName) noexcept
 		{
-			this->curves[_name] = curve;
-			timeLength = 0;
-			for (auto& it : this->curves)
-				timeLength = std::max(it.second.timeLength, timeLength);
+			return this->bindings.at(relativePath).at(propertyName);
 		}
 
-		bool hasCurve(const char* _name) const noexcept
+		const AnimationCurve<_Time>& getCurve(std::string_view relativePath, std::string_view propertyName) const noexcept
 		{
-			return this->curves.find(_name) != this->curves.end();
+			return this->bindings.at(relativePath).at(propertyName);
 		}
 
-		AnimationCurve<_Time>& getCurve(const char* _name) noexcept
+		void clearCurve() noexcept
 		{
-			return this->curves.at(_name);
-		}
-
-		const AnimationCurve<_Time>& getCurve(const char* _name) const noexcept
-		{
-			return this->curves.at(_name);
-		}
-
-		AnimationCurve<_Time>& getCurve(const std::string& _name) noexcept
-		{
-			return this->curves.at(_name);
-		}
-
-		const AnimationCurve<_Time>& getCurve(const std::string& _name) const noexcept
-		{
-			return this->curves.at(_name);
+			this->timeLength = 0;
+			this->bindings.clear();
 		}
 
 		bool empty() const noexcept
 		{
-			return this->curves.empty();
+			return this->bindings.empty();
 		}
 
 		std::size_t size() const noexcept
 		{
-			return this->curves.size();
+			return this->bindings.size();
 		}
 
 		void evaluate(const _Time& delta) noexcept
 		{
 			this->finish = true;
 
-			for (auto& it : this->curves)
+			for (auto& binding : this->bindings)
 			{
-				it.second.evaluate(delta);
-				this->finish &= it.second.finish;
+				for (auto& curve : binding.second)
+				{
+					curve.second.evaluate(delta);
+					this->finish &= curve.second.finish;
+				}
 			}
 		}
 
 		void setTime(const _Time& time) noexcept
 		{
-			for (auto& it : this->curves)
-				it.second.setTime(time);
+			for (auto& binding : this->bindings)
+			{
+				for (auto& curve : binding.second)
+					curve.second.setTime(time);
+			}				
 
 			this->finish = true;
 
-			for (auto& it : this->curves)
-				this->finish &= it.second.finish;
+			for (auto& binding : this->bindings)
+			{
+				for (auto& curve : binding.second)
+					this->finish &= curve.second.finish;
+			}
 		}
 	};
 
