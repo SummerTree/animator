@@ -12,8 +12,6 @@ namespace octoon
 		OctoonDeclareSubClass(Texture, RttiObject)
 	public:
 		Texture() noexcept;
-		Texture(Texture&& move) noexcept;
-		Texture(const Texture& move) noexcept;
 		Texture(Format format, std::uint32_t width, std::uint32_t height) noexcept(false);
 		Texture(Format format, std::uint32_t width, std::uint32_t height, std::uint8_t pixels[]) noexcept(false);
 		Texture(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) noexcept(false);

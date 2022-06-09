@@ -24,32 +24,6 @@ namespace octoon
 	{
 	}
 
-	Texture::Texture(Texture&& move) noexcept
-		: format_(std::move(move.format_))
-		, width_(std::move(move.width_))
-		, height_(std::move(move.height_))
-		, depth_(std::move(move.depth_))
-		, mipLevel_(std::move(move.mipLevel_))
-		, mipBase_(std::move(move.mipBase_))
-		, layerBase_(std::move(move.layerBase_))
-		, layerLevel_(std::move(move.layerLevel_))
-		, data_(std::move(move.data_))
-	{
-	}
-
-	Texture::Texture(const Texture& copy) noexcept
-		: format_(copy.format_)
-		, width_(copy.width_)
-		, height_(copy.height_)
-		, depth_(copy.depth_)
-		, mipLevel_(copy.mipLevel_)
-		, mipBase_(copy.mipBase_)
-		, layerBase_(copy.layerBase_)
-		, layerLevel_(copy.layerLevel_)
-		, data_(copy.data_)
-	{
-	}
-
 	Texture::Texture(Format format, std::uint32_t width, std::uint32_t height) except
 		: Texture()
 	{
