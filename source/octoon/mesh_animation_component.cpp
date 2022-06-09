@@ -460,7 +460,7 @@ namespace octoon
 		return materials_;
 	}
 
-	const AnimatorStateInfo<float>&
+	const AnimatorStateInfo&
 	MeshAnimationComponent::getCurrentAnimatorStateInfo() const noexcept
 	{
 		return animationState_;

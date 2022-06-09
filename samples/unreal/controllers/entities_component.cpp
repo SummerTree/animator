@@ -1,7 +1,7 @@
 #include "entities_component.h"
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
-#include <octoon/model_importer.h>
+#include <octoon/asset_database.h>
 
 namespace unreal
 {
@@ -16,7 +16,7 @@ namespace unreal
 	octoon::GameObjectPtr
 	EntitiesComponent::importModel(std::string_view path) noexcept(false)
 	{
-		auto model = octoon::ModelImporter::instance()->importModel(path);
+		auto model = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(path);
 		if (model)
 		{
 			auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();

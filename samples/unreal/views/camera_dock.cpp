@@ -1,6 +1,6 @@
 #include "camera_dock.h"
 #include <octoon/io/fstream.h>
-#include <octoon/vmd_loader.h>
+#include <octoon/asset_database.h>
 #include <octoon/motion_importer.h>
 #include <qapplication.h>
 #include <qevent.h>
@@ -122,7 +122,7 @@ namespace unreal
 			this->focalLengthSpinbox_->blockSignals(false);
 		};
 
-		profile_->cameraModule->animation += [this](const std::shared_ptr<octoon::Animation<float>>& animation) {
+		profile_->cameraModule->animation += [this](const std::shared_ptr<octoon::Animation>& animation) {
 			if (animation)
 				unloadButton_->setEnabled(true);
 			else
@@ -228,7 +228,7 @@ namespace unreal
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
 			if (!filepath.isEmpty())
 			{
-				this->profile_->cameraModule->animation = octoon::MotionImporter::instance()->importMotion(filepath.toUtf8().data());
+				this->profile_->cameraModule->animation = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Animation>(filepath.toUtf8().data());
 
 				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 				if (behaviour)

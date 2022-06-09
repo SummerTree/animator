@@ -13,7 +13,7 @@ namespace unreal
 	}
 
 	bool
-	CameraComponent::loadAnimation(const std::shared_ptr<octoon::Animation<float>>& animation) noexcept(false)
+	CameraComponent::loadAnimation(const std::shared_ptr<octoon::Animation>& animation) noexcept(false)
 	{
 		if (animation)
 		{
@@ -137,7 +137,7 @@ namespace unreal
 			}
 		};
 
-		this->getModel()->animation += [this](const std::shared_ptr<octoon::Animation<float>>& value)
+		this->getModel()->animation += [this](const std::shared_ptr<octoon::Animation>& value)
 		{
 			auto mainCamera = this->getModel()->camera.getValue();
 			if (mainCamera)

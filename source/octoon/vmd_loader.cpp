@@ -269,13 +269,13 @@ namespace octoon
 		return std::strncmp(type, "vmd", 3) == 0;
 	}
 
-	std::shared_ptr<Animation<float>>
+	std::shared_ptr<Animation>
 	VMDLoader::load(io::istream& stream) noexcept(false)
 	{
 		VMD vmd;
 		vmd.load(stream);
 
-		auto animation = std::make_shared<Animation<float>>();
+		auto animation = std::make_shared<Animation>();
 		animation->setName(sjis2utf8(vmd.Header.name));
 
 		if (vmd.NumMotion > 0)
@@ -284,7 +284,7 @@ namespace octoon
 			for (auto& motion : vmd.MotionLists)
 				motionList[sjis2utf8(motion.name)].push_back(motion);
 
-			auto clip = std::make_shared<octoon::AnimationClip<float>>();
+			auto clip = std::make_shared<octoon::AnimationClip>();
 			clip->setName(sjis2utf8(vmd.Header.name));
 
 			for (auto it = motionList.begin(); it != motionList.end(); ++it)
@@ -331,7 +331,7 @@ namespace octoon
 			for (auto& motion : vmd.MorphLists)
 				morphList[sjis2utf8(motion.name)].push_back(motion);
 
-			auto clip = std::make_shared<octoon::AnimationClip<float>>();
+			auto clip = std::make_shared<octoon::AnimationClip>();
 
 			for (auto it = morphList.begin(); it != morphList.end(); ++it)
 			{
@@ -382,7 +382,7 @@ namespace octoon
 				fov.emplace_back((float)it.frame / 30.0f, (float)it.viewingAngle, interpolationAngleView);
 			}
 
-			auto clip = std::make_shared<octoon::AnimationClip<float>>();
+			auto clip = std::make_shared<octoon::AnimationClip>();
 			clip->setCurve("", "LocalPosition.x", AnimationCurve(std::move(eyeX)));
 			clip->setCurve("", "LocalPosition.y", AnimationCurve(std::move(eyeY)));
 			clip->setCurve("", "LocalPosition.z", AnimationCurve(std::move(eyeZ)));
@@ -397,7 +397,7 @@ namespace octoon
 	}
 
 	void
-	VMDLoader::save(io::ostream& stream, const Animation<float>& animation) noexcept(false)
+	VMDLoader::save(io::ostream& stream, const Animation& animation) noexcept(false)
 	{
 		auto sjis = utf82sjis(animation.name);
 
@@ -567,7 +567,7 @@ namespace octoon
 		vmd.save(stream);
 	}
 
-	std::shared_ptr<Animation<float>>
+	std::shared_ptr<Animation>
 	VMDLoader::load(std::string_view filepath) noexcept(false)
 	{
 		io::ifstream stream(std::string(filepath), std::ios_base::binary);
@@ -578,7 +578,7 @@ namespace octoon
 	}
 
 	void
-	VMDLoader::save(std::string_view filepath, const Animation<float>& animation) noexcept(false)
+	VMDLoader::save(std::string_view filepath, const Animation& animation) noexcept(false)
 	{
 		std::filesystem::create_directories(runtime::string::directory(std::string(filepath)));
 

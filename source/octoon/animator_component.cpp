@@ -16,41 +16,41 @@ namespace octoon
 	{
 	}
 
-	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation<float>>&& animation, GameObjects&& avatar) noexcept
+	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation>&& animation, GameObjects&& avatar) noexcept
 		: AnimatorComponent()
 	{
 		this->setAvatar(std::move(avatar));
 		this->setAnimation(std::move(animation));
 	}
 
-	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation<float>>&& animation, const GameObjects& avatar) noexcept
+	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation>&& animation, const GameObjects& avatar) noexcept
 		: AnimatorComponent()
 	{
 		this->setAvatar(avatar);
 		this->setAnimation(std::move(animation));
 	}
 
-	AnimatorComponent::AnimatorComponent(const std::shared_ptr<Animation<float>>& animation, GameObjects&& avatar) noexcept
+	AnimatorComponent::AnimatorComponent(const std::shared_ptr<Animation>& animation, GameObjects&& avatar) noexcept
 		: AnimatorComponent()
 	{
 		this->setAvatar(std::move(avatar));
 		this->setAnimation(animation);
 	}
 
-	AnimatorComponent::AnimatorComponent(const std::shared_ptr<Animation<float>>& animation, const GameObjects& avatar) noexcept
+	AnimatorComponent::AnimatorComponent(const std::shared_ptr<Animation>& animation, const GameObjects& avatar) noexcept
 		: AnimatorComponent()
 	{
 		this->setAvatar(avatar);
 		this->setAnimation(animation);
 	}
 
-	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation<float>>&& animation) noexcept
+	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation>&& animation) noexcept
 		: AnimatorComponent()
 	{
 		animation_ = std::move(animation);
 	}
 
-	AnimatorComponent::AnimatorComponent(const std::shared_ptr<Animation<float>>& animation) noexcept
+	AnimatorComponent::AnimatorComponent(const std::shared_ptr<Animation>& animation) noexcept
 		: AnimatorComponent()
 	{
 		animation_ = animation;
@@ -168,20 +168,20 @@ namespace octoon
 	}
 
 	void
-	AnimatorComponent::setAnimation(std::shared_ptr<Animation<float>>&& animtion) noexcept
+	AnimatorComponent::setAnimation(std::shared_ptr<Animation>&& animtion) noexcept
 	{
 		animation_ = std::move(animtion);
 		this->updateBindmap();
 	}
 
 	void
-	AnimatorComponent::setAnimation(const std::shared_ptr<Animation<float>>& animtion) noexcept
+	AnimatorComponent::setAnimation(const std::shared_ptr<Animation>& animtion) noexcept
 	{
 		animation_ = animtion;
 		this->updateBindmap();
 	}
 
-	const std::shared_ptr<Animation<float>>&
+	const std::shared_ptr<Animation>&
 	AnimatorComponent::getAnimation() const noexcept
 	{
 		return animation_;
@@ -209,7 +209,7 @@ namespace octoon
 		return avatar_;
 	}
 
-	const AnimatorStateInfo<float>&
+	const AnimatorStateInfo&
 	AnimatorComponent::getCurrentAnimatorStateInfo() const noexcept
 	{
 		assert(animation_);

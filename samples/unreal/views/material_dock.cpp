@@ -13,6 +13,7 @@
 #include <qcolordialog.h>
 #include <qtreewidget.h>
 #include <qprogressdialog.h>
+#include <octoon/asset_database.h>
 #include <octoon/texture_importer.h>
 
 namespace unreal
@@ -368,7 +369,7 @@ namespace unreal
 	std::shared_ptr<octoon::Texture>
 	MaterialEditWindow::MaterialUi::setImage(const QString& filepath)
 	{
-		auto textureData = octoon::TextureImporter::instance()->importTexture(filepath.toStdString());
+		auto textureData = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdString());
 		auto width = textureData->width();
 		auto height = textureData->height();
 

@@ -152,11 +152,11 @@ namespace octoon
 		static bool doCanRead(io::istream& stream) noexcept;
 		static bool doCanRead(const char* type) noexcept;
 
-		static std::shared_ptr<Animation<float>> load(io::istream& stream) noexcept(false);
-		static std::shared_ptr<Animation<float>> load(std::string_view filepath) noexcept(false);
+		static std::shared_ptr<Animation> load(io::istream& stream) noexcept(false);
+		static std::shared_ptr<Animation> load(std::string_view filepath) noexcept(false);
 
-		static void save(io::ostream& stream, const Animation<float>& animation) noexcept(false);
-		static void save(std::string_view filepath, const Animation<float>& animation) noexcept(false);
+		static void save(io::ostream& stream, const Animation& animation) noexcept(false);
+		static void save(std::string_view filepath, const Animation& animation) noexcept(false);
 
 	private:
 		VMDLoader(const VMDLoader&) = delete;

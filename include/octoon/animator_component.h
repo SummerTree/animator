@@ -10,12 +10,12 @@ namespace octoon
 		OctoonDeclareSubClass(AnimatorComponent, AnimationComponent)
 	public:
 		AnimatorComponent() noexcept;
-		AnimatorComponent(std::shared_ptr<Animation<float>>&& animation, GameObjects&& avatar) noexcept;
-		AnimatorComponent(std::shared_ptr<Animation<float>>&& animation, const GameObjects& avatar) noexcept;
-		AnimatorComponent(const std::shared_ptr<Animation<float>>& animation, GameObjects&& avatar) noexcept;
-		AnimatorComponent(const std::shared_ptr<Animation<float>>& animation, const GameObjects& avatar) noexcept;
-		explicit AnimatorComponent(std::shared_ptr<Animation<float>>&& animation) noexcept;
-		explicit AnimatorComponent(const std::shared_ptr<Animation<float>>& animation) noexcept;
+		AnimatorComponent(std::shared_ptr<Animation>&& animation, GameObjects&& avatar) noexcept;
+		AnimatorComponent(std::shared_ptr<Animation>&& animation, const GameObjects& avatar) noexcept;
+		AnimatorComponent(const std::shared_ptr<Animation>& animation, GameObjects&& avatar) noexcept;
+		AnimatorComponent(const std::shared_ptr<Animation>& animation, const GameObjects& avatar) noexcept;
+		explicit AnimatorComponent(std::shared_ptr<Animation>&& animation) noexcept;
+		explicit AnimatorComponent(const std::shared_ptr<Animation>& animation) noexcept;
 		explicit AnimatorComponent(GameObjects&& avatar) noexcept;
 		explicit AnimatorComponent(const GameObjects& avatar) noexcept;
 		~AnimatorComponent() noexcept;
@@ -34,11 +34,11 @@ namespace octoon
 		void setAvatar(const GameObjects& avatar) noexcept;
 		const GameObjects& getAvatar() const noexcept;
 
-		void setAnimation(std::shared_ptr<Animation<float>>&& animation) noexcept;
-		void setAnimation(const std::shared_ptr<Animation<float>>& animation) noexcept;
+		void setAnimation(std::shared_ptr<Animation>&& animation) noexcept;
+		void setAnimation(const std::shared_ptr<Animation>& animation) noexcept;
 		
-		const std::shared_ptr<Animation<float>>& getAnimation() const noexcept;
-		const AnimatorStateInfo<float>& getCurrentAnimatorStateInfo() const noexcept override;
+		const std::shared_ptr<Animation>& getAnimation() const noexcept;
+		const AnimatorStateInfo& getCurrentAnimatorStateInfo() const noexcept override;
 
 		GameComponentPtr clone() const noexcept;
 
@@ -62,7 +62,7 @@ namespace octoon
 
 		math::float3s bindpose_;
 
-		std::shared_ptr<Animation<float>> animation_;
+		std::shared_ptr<Animation> animation_;
 		std::unordered_map<std::string, std::size_t> bindmap_;
 
 		GameObjects avatar_;

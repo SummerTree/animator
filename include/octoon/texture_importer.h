@@ -15,7 +15,6 @@ namespace octoon
 		TextureImporter() noexcept;
 		~TextureImporter() noexcept;
 
-		std::shared_ptr<octoon::Texture> importTexture(std::string_view path, bool generatorMipmap = false) noexcept(false);
 		std::shared_ptr<octoon::Texture> loadPackage(const nlohmann::json& package, std::string_view outputPath = "") noexcept(false);
 
 		nlohmann::json createPackage(std::string_view path, bool generateMipmap = false) noexcept(false);

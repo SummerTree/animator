@@ -2,6 +2,7 @@
 #include <octoon/environment_light_component.h>
 #include <octoon/texture/texture.h>
 #include <octoon/texture_importer.h>
+#include <octoon/asset_database.h>
 #include <octoon/mesh_renderer_component.h>
 
 #include <qapplication.h>
@@ -485,7 +486,7 @@ namespace unreal
 					auto size = width * height * 3;
 					auto pixels = std::make_unique<std::uint8_t[]>(size);
 					
-					float* data_ = nullptr;
+					float* data_ = (float*)texture->data();
 
 					for (std::size_t i = 0; i < size; i += 3)
 					{
@@ -667,8 +668,15 @@ namespace unreal
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
 			if (!filepath.isEmpty())
 			{
+				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(filepath.toUtf8().toStdString());
+				if (texture)
+				{
+					texture->setMipLevel(8);
+					texture->apply();
+				}
+
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = octoon::TextureImporter::instance()->importTexture(filepath.toUtf8().toStdString(), true);
+				this->profile_->environmentLightModule->texture = texture;
 
 				auto texel = this->profile_->environmentLightModule->texture.getValue();
 				if (texel)

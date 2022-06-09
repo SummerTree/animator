@@ -1,6 +1,6 @@
 #include "pmm_loader.h"
 #include <octoon/runtime/uuid.h>
-#include <octoon/model_importer.h>
+#include <octoon/asset_database.h>
 
 namespace unreal
 {
@@ -22,13 +22,13 @@ namespace unreal
 
 		for (auto& it : pmm.model)
 		{
-			auto object = octoon::ModelImporter::instance()->importModel(it.path);
+			auto object = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(it.path);
 			if (object)
 			{
-				auto boneClip = std::make_shared<octoon::AnimationClip<float>>();
+				auto boneClip = std::make_shared<octoon::AnimationClip>();
 				setupBoneAnimation(it, *boneClip);
 
-				auto morphClip = std::make_shared<octoon::AnimationClip<float>>();
+				auto morphClip = std::make_shared<octoon::AnimationClip>();
 				setupMorphAnimation(it, *morphClip);
 			
 				object->setName(octoon::make_guid());
@@ -36,13 +36,13 @@ namespace unreal
 
 				if (!morphClip->empty())
 				{
-					auto morph = std::make_shared<octoon::Animation<float>>(std::move(morphClip), "Morph");
+					auto morph = std::make_shared<octoon::Animation>(std::move(morphClip), "Morph");
 					object->addComponent<octoon::AnimatorComponent>(std::move(morph));
 				}
 
 				if (!boneClip->empty())
 				{
-					auto motion = std::make_shared<octoon::Animation<float>>(std::move(boneClip), "Motion");
+					auto motion = std::make_shared<octoon::Animation>(std::move(boneClip), "Motion");
 					object->addComponent<octoon::AnimatorComponent>(std::move(motion), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
 				}
 
@@ -62,7 +62,7 @@ namespace unreal
 		profile.mainLightModule->rotation = octoon::math::degrees(octoon::math::eulerAngles(octoon::math::Quaternion(octoon::math::float3(-0.1, octoon::math::PI + 0.5f, 0.0f))));
 		profile.entitiesModule->objects = objects;
 
-		auto animtion = std::make_shared<octoon::Animation<float>>();
+		auto animtion = std::make_shared<octoon::Animation>();
 		setupCameraAnimation(pmm.camera_keyframes, *animtion);
 
 		auto eye = octoon::math::float3(pmm.camera.eye.x, pmm.camera.eye.y, pmm.camera.eye.z);
@@ -76,7 +76,7 @@ namespace unreal
 	}
 
 	void
-	PMMLoader::setupCameraAnimation(const std::vector<octoon::PmmKeyframeCamera>& keyframes, octoon::Animation<float>& animation) noexcept
+	PMMLoader::setupCameraAnimation(const std::vector<octoon::PmmKeyframeCamera>& keyframes, octoon::Animation& animation) noexcept
 	{
 		octoon::Keyframes<float> distance;
 		octoon::Keyframes<float> eyeX;
@@ -111,7 +111,7 @@ namespace unreal
 			fov.emplace_back((float)it.frame / 30.0f, (float)it.fov, interpolationAngleView);
 		}
 
-		auto clip = std::make_shared<octoon::AnimationClip<float>>();
+		auto clip = std::make_shared<octoon::AnimationClip>();
 		clip->setCurve("", "LocalPosition.x", octoon::AnimationCurve(std::move(eyeX)));
 		clip->setCurve("", "LocalPosition.y", octoon::AnimationCurve(std::move(eyeY)));
 		clip->setCurve("", "LocalPosition.z", octoon::AnimationCurve(std::move(eyeZ)));
@@ -123,7 +123,7 @@ namespace unreal
 	}
 
 	void
-	PMMLoader::setupBoneAnimation(const octoon::PmmModel& it, octoon::AnimationClip<float>& clip) noexcept
+	PMMLoader::setupBoneAnimation(const octoon::PmmModel& it, octoon::AnimationClip& clip) noexcept
 	{
 		std::size_t numBone = it.bone_init_frame.size();
 
@@ -188,7 +188,7 @@ namespace unreal
 	}
 
 	void
-	PMMLoader::setupMorphAnimation(const octoon::PmmModel& it, octoon::AnimationClip<float>& clip) noexcept
+	PMMLoader::setupMorphAnimation(const octoon::PmmModel& it, octoon::AnimationClip& clip) noexcept
 	{
 		for (std::size_t i = 0, keyframeCount = 1; i < it.morph_init_frame.size(); i++)
 		{

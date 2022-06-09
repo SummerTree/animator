@@ -18,24 +18,6 @@ namespace octoon
 	}
 
 	std::shared_ptr<octoon::Texture>
-	TextureImporter::importTexture(std::string_view path, bool generatorMipmap) noexcept(false)
-	{
-		auto texture = std::make_shared<octoon::Texture>((std::string)path);
-		if (texture)
-		{
-			if (generatorMipmap)
-				texture->setMipLevel(8);
-
-			texture->apply();
-
-			assetPathList_[texture] = path;
-			return texture;
-		}
-
-		return nullptr;
-	}
-
-	std::shared_ptr<octoon::Texture>
 	TextureImporter::loadPackage(const nlohmann::json& package, std::string_view outputPath) noexcept(false)
 	{
 		if (package.find("path") != package.end())

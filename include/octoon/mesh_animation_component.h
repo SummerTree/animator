@@ -33,7 +33,7 @@ namespace octoon
 		void setMaterials(const std::unordered_map<std::string, MaterialPtr>& materials);
 		const std::unordered_map<std::string, MaterialPtr>& getMaterials() const;
 
-		const AnimatorStateInfo<float>& getCurrentAnimatorStateInfo() const noexcept override;
+		const AnimatorStateInfo& getCurrentAnimatorStateInfo() const noexcept override;
 
 		void load(const nlohmann::json& json) noexcept(false) override;
 		void save(nlohmann::json& json) noexcept(false) override;
@@ -66,7 +66,7 @@ namespace octoon
 
 		bool enableAnimation_;
 
-		AnimatorStateInfo<float> animationState_;
+		AnimatorStateInfo animationState_;
 
 		GameObjectPtr gameObject_;
 		std::unordered_map<std::string, MaterialPtr> materials_;

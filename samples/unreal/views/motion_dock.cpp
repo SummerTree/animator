@@ -1,7 +1,6 @@
 #include "motion_dock.h"
 #include "../widgets/draggable_list_widget.h"
 #include <octoon/motion_importer.h>
-
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qfiledialog.h>
@@ -227,54 +226,55 @@ namespace unreal
 			QCoreApplication::processEvents();
 
 			auto package = octoon::MotionImporter::instance()->getPackage(item->data(Qt::UserRole).toString().toStdString());
-			if (package["path"].is_string())
+			if (package.is_object())
 			{
-				auto filepath = package["path"].get<nlohmann::json::string_t>();
-				auto animation = octoon::MotionImporter::instance()->importMotion(filepath.c_str());
-
-				dialog.setValue(1);
-				QCoreApplication::processEvents();
-
-				if (animation->hasClip("Camera"))
-					profile_->cameraModule->animation = animation;
-				else
+				auto animation = octoon::MotionImporter::instance()->loadPackage(package);
+				if (animation)
 				{
-					auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
-					if (selectedItem.has_value())
+					dialog.setValue(1);
+					QCoreApplication::processEvents();
+
+					if (animation->hasClip("Camera"))
+						profile_->cameraModule->animation = animation;
+					else
 					{
-						if (animation && !animation->clips.empty())
+						auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
+						if (selectedItem.has_value())
 						{
-							auto model = selectedItem->object.lock();
-							auto animator = model->getComponent<octoon::AnimatorComponent>();
-							auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
-
-							if (animator)
-								animator->setAnimation(std::move(animation));
-							else
+							if (animation && !animation->clips.empty())
 							{
-								if (smr)
-									animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getTransforms());
+								auto model = selectedItem->object.lock();
+								auto animator = model->getComponent<octoon::AnimatorComponent>();
+								auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
+
+								if (animator)
+									animator->setAnimation(std::move(animation));
 								else
-									animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
-							}
-
-							animator->setName(filepath);
-							animator->sample();
-
-							if (smr)
-							{
-								for (auto& transform : smr->getTransforms())
 								{
-									auto solver = transform->getComponent<octoon::CCDSolverComponent>();
-									if (solver)
-										solver->solve();
+									if (smr)
+										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getTransforms());
+									else
+										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
+								}
+
+								animator->setName(package["path"].get<nlohmann::json::string_t>());
+								animator->sample();
+
+								if (smr)
+								{
+									for (auto& transform : smr->getTransforms())
+									{
+										auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+										if (solver)
+											solver->solve();
+									}
 								}
 							}
 						}
 					}
-				}
 
-				behaviour->getComponent<PlayerComponent>()->updateTimeLength();
+					behaviour->getComponent<PlayerComponent>()->updateTimeLength();
+				}
 
 				dialog.setValue(2);
 			}
