@@ -290,6 +290,12 @@ namespace octoon
 		return layerLevel_;
 	}
 
+	std::uint8_t*
+	Texture::data() noexcept
+	{
+		return data_.data();
+	}
+
 	const std::uint8_t*
 	Texture::data() const noexcept
 	{

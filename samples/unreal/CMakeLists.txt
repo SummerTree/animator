@@ -180,8 +180,6 @@ SOURCE_GROUP("launcher\\controllers" FILES ${CONTROLLERS_LIST})
 SET(IMPORTER_LIST
 	${SOURCE_PATH}/importer/material_importer.h
 	${SOURCE_PATH}/importer/material_importer.cpp
-	${SOURCE_PATH}/importer/model_importer.h
-	${SOURCE_PATH}/importer/model_importer.cpp
 )
 SOURCE_GROUP("launcher\\importer" FILES ${IMPORTER_LIST})
 

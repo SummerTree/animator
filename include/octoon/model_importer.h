@@ -1,19 +1,19 @@
-#ifndef UNREAL_MODEL_IMPORTER_H_
-#define UNREAL_MODEL_IMPORTER_H_
+#ifndef OCTOON_MODEL_IMPORTER_H_
+#define OCTOON_MODEL_IMPORTER_H_
 
-#include <qpixmap.h>
 #include <octoon/game_object.h>
-#include <octoon/video/renderer.h>
 #include <octoon/pmx_loader.h>
+#include <octoon/video/renderer.h>
+#include <octoon/texture/texture.h>
 #include <octoon/light/directional_light.h>
 #include <octoon/light/environment_light.h>
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
 
-namespace unreal
+namespace octoon
 {
-	class ModelImporter final : public octoon::AssetImporter
+	class OCTOON_EXPORT ModelImporter final : public AssetImporter
 	{
 		OctoonDeclareSingleton(ModelImporter)
 	public:
@@ -32,7 +32,7 @@ namespace unreal
 
 	private:
 		void initRenderScene() noexcept(false);
-		void createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, QPixmap& pixmap, int w, int h);
+		void createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, octoon::Texture& texture);
 
 	private:
 		std::uint32_t previewWidth_;

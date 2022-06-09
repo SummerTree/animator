@@ -48,6 +48,7 @@ namespace octoon
 		std::uint32_t getLayerBase() const noexcept;
 		std::uint32_t getLayerLevel() const noexcept;
 
+		std::uint8_t* data() noexcept;
 		const std::uint8_t* data() const noexcept;
 		const std::uint8_t* data(std::size_t i) const noexcept;
 

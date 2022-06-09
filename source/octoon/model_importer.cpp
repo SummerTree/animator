@@ -1,4 +1,4 @@
-#include "model_importer.h"
+#include <octoon/model_importer.h>
 #include <octoon/texture/texture.h>
 #include <octoon/pmx_loader.h>
 #include <octoon/runtime/uuid.h>
@@ -9,13 +9,13 @@
 #include <filesystem>
 #include <codecvt>
 
-namespace unreal
+namespace octoon
 {
 	OctoonImplementSingleton(ModelImporter)
 
 	ModelImporter::ModelImporter() noexcept
-		: previewWidth_(128)
-		, previewHeight_(128)
+		: previewWidth_(256)
+		, previewHeight_(256)
 	{
 	}
 
@@ -114,10 +114,10 @@ namespace unreal
 
 				auto writePreview = [this](const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, std::filesystem::path outputPath) -> nlohmann::json
 				{
-					QPixmap pixmap;
+					octoon::Texture texture;
 					auto previewPath = std::filesystem::path(outputPath).append(octoon::make_guid() + ".png");
-					this->createModelPreview(geometry, boundingBox, pixmap, previewWidth_, previewHeight_);
-					pixmap.save(QString::fromStdString(previewPath.string()), "png");
+					this->createModelPreview(geometry, boundingBox, texture);
+					texture.save(previewPath.string(), "png");
 					return previewPath.string();
 				};
 
@@ -227,7 +227,7 @@ namespace unreal
 	}
 
 	void
-	ModelImporter::createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, QPixmap& pixmap, int w, int h)
+	ModelImporter::createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, octoon::Texture& texture)
 	{
 		assert(geometry);
 
@@ -256,7 +256,9 @@ namespace unreal
 			std::uint8_t* data;
 			if (colorTexture->map(0, 0, framebufferDesc.getWidth(), framebufferDesc.getHeight(), 0, (void**)&data))
 			{
-				QImage image(width, height, QImage::Format_RGB888);
+				texture.create(octoon::Format::R8G8B8SRGB, width, height);
+
+				auto destData = texture.data();
 
 				constexpr auto size = 16;
 
@@ -264,24 +266,20 @@ namespace unreal
 				{
 					for (std::uint32_t x = 0; x < width; x++)
 					{
-						auto n = (y * height + x) * 4;
+						auto src = (y * height + x) * 4;
+						auto dest = (y * height + x) * 3;
 
 						std::uint8_t u = x / size % 2;
 						std::uint8_t v = y / size % 2;
 						std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
 
-						auto r = octoon::math::lerp(bg, data[n], data[n + 3] / 255.f);
-						auto g = octoon::math::lerp(bg, data[n + 1], data[n + 3] / 255.f);
-						auto b = octoon::math::lerp(bg, data[n + 2], data[n + 3] / 255.f);
-
-						image.setPixelColor((int)x, (int)y, QColor::fromRgb(r, g, b));
+						destData[dest] = octoon::math::lerp(bg, data[src], data[src + 3] / 255.f);
+						destData[dest + 1] = octoon::math::lerp(bg, data[src + 1], data[src + 3] / 255.f);
+						destData[dest + 2] = octoon::math::lerp(bg, data[src + 2], data[src + 3] / 255.f);
 					}
 				}
 
 				colorTexture->unmap();
-
-				pixmap.convertFromImage(image);
-				pixmap = pixmap.scaled(w, h, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 			}
 		}
 	}
@@ -292,8 +290,8 @@ namespace unreal
 		auto renderer = octoon::Renderer::instance();
 		if (renderer)
 		{
-			std::uint32_t width = previewWidth_ * 2;
-			std::uint32_t height = previewHeight_ * 2;
+			std::uint32_t width = previewWidth_;
+			std::uint32_t height = previewHeight_;
 
 			octoon::GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);

@@ -1,8 +1,8 @@
 #include "entities_module.h"
-#include "../importer/model_importer.h"
 #include "../importer/material_importer.h"
 #include <octoon/pmx_loader.h>
 #include <octoon/vmd_loader.h>
+#include <octoon/model_importer.h>
 #include <octoon/animator_component.h>
 #include <octoon/motion_importer.h>
 #include <octoon/skinned_mesh_renderer_component.h>
@@ -44,7 +44,7 @@ namespace unreal
 				if (it.find("materials") != it.end())
 					flags = flags & ~octoon::PMXLoadFlagBits::MaterialBit;
 
-				auto object = ModelImporter::instance()->loadMetaData(it["model"], flags);
+				auto object = octoon::ModelImporter::instance()->loadMetaData(it["model"], flags);
 				if (object)
 				{
 					if (it.contains("transform"))
@@ -134,7 +134,7 @@ namespace unreal
 		for (auto& it : this->objects.getValue())
 		{
 			nlohmann::json json;
-			json["model"] = ModelImporter::instance()->createPackage(it);
+			json["model"] = octoon::ModelImporter::instance()->createPackage(it);
 
 			if (json["model"].is_object())
 			{

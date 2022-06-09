@@ -1,5 +1,5 @@
 #include "model_dock.h"
-#include "../importer/model_importer.h"
+#include "../widgets/upushbutton.h"
 #include "../widgets/draggable_list_widget.h"
 
 #include <qpainter.h>
@@ -13,7 +13,7 @@
 #include <qprogressdialog.h>
 #include <QToolButton>
 
-#include "../widgets/upushbutton.h"
+#include <octoon/model_importer.h>
 
 namespace unreal
 {
@@ -81,7 +81,7 @@ namespace unreal
 	void 
 	ModelDock::addItem(std::string_view uuid) noexcept
 	{
-		auto package = ModelImporter::instance()->getPackage(uuid);
+		auto package = octoon::ModelImporter::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -112,12 +112,12 @@ namespace unreal
 
 			if (package.find("preview") != package.end())
 			{
-				auto filepath = package["preview"].get<nlohmann::json::string_t>();
-				imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+				imageLabel->setPixmap(QPixmap(filepath).scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 			}
 			else
 			{
-				imageLabel->setPixmap(QPixmap(":res/icons/model.png").scaled(100, 100));
+				imageLabel->setPixmap(QPixmap(":res/icons/model.png").scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 			}
 
 			if (package.find("name") != package.end())
@@ -144,11 +144,11 @@ namespace unreal
 					if (clickedItem_)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						ModelImporter::instance()->removePackage(uuid.toStdString());
+						octoon::ModelImporter::instance()->removePackage(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						ModelImporter::instance()->saveAssets();
+						octoon::ModelImporter::instance()->saveAssets();
 					}
 				}
 			}
@@ -181,16 +181,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = ModelImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString());
+					auto package = octoon::ModelImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				ModelImporter::instance()->saveAssets();
+				octoon::ModelImporter::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				ModelImporter::instance()->saveAssets();
+				octoon::ModelImporter::instance()->saveAssets();
 			}
 		}
 	}
@@ -211,7 +211,7 @@ namespace unreal
 		if (behaviour)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto package = ModelImporter::instance()->getPackage(uuid);
+			auto package = octoon::ModelImporter::instance()->getPackage(uuid);
 			if (package.is_object())
 			{
 				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
@@ -223,7 +223,7 @@ namespace unreal
 
 				QCoreApplication::processEvents();
 
-				auto model = ModelImporter::instance()->loadPackage(package);
+				auto model = octoon::ModelImporter::instance()->loadPackage(package);
 				if (model)
 					this->profile_->entitiesModule->objects.getValue().push_back(model);
 
@@ -248,7 +248,7 @@ namespace unreal
 		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : ModelImporter::instance()->getIndexList())
+		for (auto& uuid : octoon::ModelImporter::instance()->getIndexList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 
