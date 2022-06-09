@@ -106,7 +106,7 @@ namespace unreal
 				QPixmap pixmap;
 				auto uuid = octoon::make_guid();
 				auto previewPath = std::filesystem::path(path).append(uuid + ".png");
-				this->createMaterialPreview(material, pixmap, previewWidth_, previewHeight_);
+				this->createMaterialPreview(material, pixmap);
 				pixmap.save(QString::fromStdString(previewPath.string()), "png");
 				return previewPath.string();
 			};
@@ -469,7 +469,7 @@ namespace unreal
 	}
 
 	void
-	MaterialImporter::createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h)
+	MaterialImporter::createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap)
 	{
 		assert(material);
 
@@ -517,7 +517,6 @@ namespace unreal
 				colorTexture->unmap();
 
 				pixmap.convertFromImage(image);
-				pixmap = pixmap.scaled(w, h, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 			}
 		}
 	}
@@ -528,8 +527,8 @@ namespace unreal
 		auto renderer = octoon::Renderer::instance();
 		if (renderer)
 		{
-			std::uint32_t width = previewWidth_ * 2;
-			std::uint32_t height = previewHeight_ * 2;
+			std::uint32_t width = previewWidth_;
+			std::uint32_t height = previewHeight_;
 
 			octoon::GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);

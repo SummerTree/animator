@@ -35,7 +35,7 @@ namespace unreal
 		MutableLiveData<nlohmann::json>& getSceneList() noexcept;
 		const MutableLiveData<nlohmann::json>& getSceneList() const noexcept;
 
-		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap, int w, int h);
+		void createMaterialPreview(const std::shared_ptr<octoon::Material>& material, QPixmap& pixmap);
 
 	private:
 		void initMaterialScene() noexcept(false);

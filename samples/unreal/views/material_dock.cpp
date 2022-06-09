@@ -135,8 +135,8 @@ namespace unreal
 
 			if (package.find("preview") != package.end())
 			{
-				auto filepath = package["preview"].get<nlohmann::json::string_t>();
-				imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+				imageLabel->setPixmap(QPixmap(filepath).scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 			}
 
 			if (package.find("name") != package.end())
@@ -1333,8 +1333,8 @@ namespace unreal
 		if (behaviour && this->material_)
 		{
 			QPixmap pixmap;
-			MaterialImporter::instance()->createMaterialPreview(this->material_, pixmap, previewButton_->width(), previewButton_->height());
-			this->previewButton_->setIcon(pixmap);
+			MaterialImporter::instance()->createMaterialPreview(this->material_, pixmap);
+			this->previewButton_->setIcon(pixmap.scaled(previewButton_->width(), previewButton_->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 			this->previewButton_->setIconSize(previewButton_->size());
 		}
 	}
@@ -1783,16 +1783,16 @@ namespace unreal
 					nameLabel->setText(metrics.elidedText(nameLabel->toolTip(), Qt::ElideRight, imageLabel->width()));
 
 					QPixmap pixmap;
-					MaterialImporter::instance()->createMaterialPreview(material, pixmap, imageLabel->width(), imageLabel->height());
-					imageLabel->setPixmap(pixmap);
+					MaterialImporter::instance()->createMaterialPreview(material, pixmap);
+					imageLabel->setPixmap(pixmap.scaled(imageLabel->width(), imageLabel->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 					imageLabel->setToolTip(nameLabel->toolTip());
 				}
 				else
 				{
 					if (package.find("preview") != package.end())
 					{
-						auto filepath = package["preview"].get<nlohmann::json::string_t>();
-						imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+						auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+						imageLabel->setPixmap(QPixmap(filepath).scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 					}
 
 					if (package.find("name") != package.end())
