@@ -38,59 +38,59 @@ namespace octoon
 		return CameraType::kPerspective;
 	}
 
-	static std::size_t GetTextureSize(const GraphicsTextureDesc& desc)
+	static std::size_t GetTextureSize(const Texture& texture)
 	{
-		switch (desc.getTexFormat())
+		switch (texture.format())
 		{
-		case GraphicsFormat::B8G8R8SRGB:
-		case GraphicsFormat::B8G8R8SNorm:
-		case GraphicsFormat::B8G8R8UNorm:
-		case GraphicsFormat::R8G8B8SRGB:
-		case GraphicsFormat::R8G8B8SNorm:
-		case GraphicsFormat::R8G8B8UNorm:
-			return align16(desc.getWidth() * desc.getHeight() * sizeof(math::uchar4));
-		case GraphicsFormat::B8G8R8A8SRGB:
-		case GraphicsFormat::B8G8R8A8SNorm:
-		case GraphicsFormat::B8G8R8A8UNorm:
-		case GraphicsFormat::R8G8B8A8SRGB:
-		case GraphicsFormat::R8G8B8A8SNorm:
-		case GraphicsFormat::R8G8B8A8UNorm:
-			return align16(desc.getStreamSize());
-		case GraphicsFormat::R16G16B16A16SFloat:
-			return align16(desc.getStreamSize());
-		case GraphicsFormat::R32G32B32A32SFloat:
-			return align16(desc.getStreamSize());
-		case GraphicsFormat::R32G32B32SFloat:
-			return align16(desc.getWidth() * desc.getHeight() * sizeof(math::float4));
+		case Format::B8G8R8SRGB:
+		case Format::B8G8R8SNorm:
+		case Format::B8G8R8UNorm:
+		case Format::R8G8B8SRGB:
+		case Format::R8G8B8SNorm:
+		case Format::R8G8B8UNorm:
+			return align16(texture.width() * texture.height() * sizeof(math::uchar4));
+		case Format::B8G8R8A8SRGB:
+		case Format::B8G8R8A8SNorm:
+		case Format::B8G8R8A8UNorm:
+		case Format::R8G8B8A8SRGB:
+		case Format::R8G8B8A8SNorm:
+		case Format::R8G8B8A8UNorm:
+			return align16(texture.size());
+		case Format::R16G16B16A16SFloat:
+			return align16(texture.size());
+		case Format::R32G32B32A32SFloat:
+			return align16(texture.size());
+		case Format::R32G32B32SFloat:
+			return align16(texture.width() * texture.height() * sizeof(math::float4));
 		default:
 			assert(false);
 			return 0;
 		}
 	}
 
-	static ClwScene::TextureFormat GetTextureFormat(GraphicsFormat texture)
+	static ClwScene::TextureFormat GetTextureFormat(Format texture)
 	{
 		switch (texture)
 		{
-		case GraphicsFormat::B8G8R8SRGB:
-		case GraphicsFormat::B8G8R8SNorm:
-		case GraphicsFormat::B8G8R8UNorm:
-		case GraphicsFormat::B8G8R8A8SRGB:
-		case GraphicsFormat::B8G8R8A8SNorm:
-		case GraphicsFormat::B8G8R8A8UNorm:
+		case Format::B8G8R8SRGB:
+		case Format::B8G8R8SNorm:
+		case Format::B8G8R8UNorm:
+		case Format::B8G8R8A8SRGB:
+		case Format::B8G8R8A8SNorm:
+		case Format::B8G8R8A8UNorm:
 			return ClwScene::TextureFormat::BGRA8;
-		case GraphicsFormat::R8G8B8SRGB:
-		case GraphicsFormat::R8G8B8SNorm:
-		case GraphicsFormat::R8G8B8UNorm:
-		case GraphicsFormat::R8G8B8A8SRGB:
-		case GraphicsFormat::R8G8B8A8SNorm:
-		case GraphicsFormat::R8G8B8A8UNorm:
+		case Format::R8G8B8SRGB:
+		case Format::R8G8B8SNorm:
+		case Format::R8G8B8UNorm:
+		case Format::R8G8B8A8SRGB:
+		case Format::R8G8B8A8SNorm:
+		case Format::R8G8B8A8UNorm:
 			return ClwScene::TextureFormat::RGBA8;
-		case GraphicsFormat::R16G16B16A16SFloat:
+		case Format::R16G16B16A16SFloat:
 			return ClwScene::TextureFormat::RGBA16;
-		case GraphicsFormat::R32G32B32SFloat:
+		case Format::R32G32B32SFloat:
 			return ClwScene::TextureFormat::RGBA32;
-		case GraphicsFormat::R32G32B32A32SFloat:
+		case Format::R32G32B32A32SFloat:
 			return ClwScene::TextureFormat::RGBA32;
 		default:
 			assert(false);
@@ -100,7 +100,7 @@ namespace octoon
 
 	int GetTextureIndex(Collector const& collector, const std::shared_ptr<Texture>& texture)
 	{
-		return texture ? collector.GetItemIndex(texture->getNativeTexture().get()) : (-1);
+		return texture ? collector.GetItemIndex(texture.get()) : (-1);
 	}
 
 	ClwSceneController::ClwSceneController(const CLWContext& context, const std::shared_ptr<RadeonRays::IntersectionApi>& api, const CLProgramManager* program_manager)
@@ -143,9 +143,9 @@ namespace octoon
 			if (light->isA<EnvironmentLight>()) {
 				auto env = light->downcast<EnvironmentLight>();
 				if (env->getEnvironmentMap())
-					textureCollector.Collect(env->getEnvironmentMap()->getNativeTexture());
+					textureCollector.Collect(env->getEnvironmentMap());
 				if (env->getBackgroundMap())
-					textureCollector.Collect(env->getBackgroundMap()->getNativeTexture());
+					textureCollector.Collect(env->getBackgroundMap());
 			}
 		}
 
@@ -164,31 +164,31 @@ namespace octoon
 					if (standard->getOpacity() > 0)
 					{
 						if (standard->getColorMap())
-							textureCollector.Collect(standard->getColorMap()->getNativeTexture());
+							textureCollector.Collect(standard->getColorMap());
 						if (standard->getOpacityMap())
-							textureCollector.Collect(standard->getOpacityMap()->getNativeTexture());
+							textureCollector.Collect(standard->getOpacityMap());
 						if (standard->getNormalMap())
-							textureCollector.Collect(standard->getNormalMap()->getNativeTexture());
+							textureCollector.Collect(standard->getNormalMap());
 						if (standard->getRoughnessMap())
-							textureCollector.Collect(standard->getRoughnessMap()->getNativeTexture());
+							textureCollector.Collect(standard->getRoughnessMap());
 						if (standard->getMetalnessMap())
-							textureCollector.Collect(standard->getMetalnessMap()->getNativeTexture());
+							textureCollector.Collect(standard->getMetalnessMap());
 						if (standard->getAnisotropyMap())
-							textureCollector.Collect(standard->getAnisotropyMap()->getNativeTexture());
+							textureCollector.Collect(standard->getAnisotropyMap());
 						if (standard->getSpecularMap())
-							textureCollector.Collect(standard->getSpecularMap()->getNativeTexture());
+							textureCollector.Collect(standard->getSpecularMap());
 						if (standard->getSheenMap())
-							textureCollector.Collect(standard->getSheenMap()->getNativeTexture());
+							textureCollector.Collect(standard->getSheenMap());
 						if (standard->getClearCoatMap())
-							textureCollector.Collect(standard->getClearCoatMap()->getNativeTexture());
+							textureCollector.Collect(standard->getClearCoatMap());
 						if (standard->getClearCoatRoughnessMap())
-							textureCollector.Collect(standard->getClearCoatRoughnessMap()->getNativeTexture());
+							textureCollector.Collect(standard->getClearCoatRoughnessMap());
 						if (standard->getSubsurfaceMap())
-							textureCollector.Collect(standard->getSubsurfaceMap()->getNativeTexture());
+							textureCollector.Collect(standard->getSubsurfaceMap());
 						if (standard->getSubsurfaceColorMap())
-							textureCollector.Collect(standard->getSubsurfaceColorMap()->getNativeTexture());
+							textureCollector.Collect(standard->getSubsurfaceColorMap());
 						if (standard->getEmissiveMap())
-							textureCollector.Collect(standard->getEmissiveMap()->getNativeTexture());
+							textureCollector.Collect(standard->getEmissiveMap());
 
 						materialCollector.Collect(mat);
 					}
@@ -351,67 +351,50 @@ namespace octoon
 	}
 
 	void
-	ClwSceneController::WriteTexture(const GraphicsTexture& texture, std::size_t data_offset, void* data) const
+	ClwSceneController::WriteTexture(const Texture& texture, std::size_t data_offset, void* data) const
 	{
-		auto& desc = texture.getTextureDesc();
-
 		auto clw_texture = reinterpret_cast<ClwScene::Texture*>(data);
-		clw_texture->w = desc.getWidth();
-		clw_texture->h = desc.getHeight();;
-		clw_texture->d = desc.getDepth();;
-		clw_texture->fmt = GetTextureFormat(desc.getTexFormat());
+		clw_texture->w = texture.width();
+		clw_texture->h = texture.height();
+		clw_texture->d = texture.depth();
+		clw_texture->fmt = GetTextureFormat(texture.format());
 		clw_texture->dataoffset = static_cast<int>(data_offset);
 	}
 
 	void
-	ClwSceneController::WriteTextureData(GraphicsTexture& texture, void* dest) const
+	ClwSceneController::WriteTextureData(Texture& texture, void* dest) const
 	{
-		auto& desc = texture.getTextureDesc();
-		
-		switch (desc.getTexFormat())
+		switch (texture.format())
 		{
-		case GraphicsFormat::B8G8R8A8SRGB:
-		case GraphicsFormat::B8G8R8A8UNorm:
-		case GraphicsFormat::R8G8B8A8SRGB:
-		case GraphicsFormat::R8G8B8A8UNorm:
-		case GraphicsFormat::R16G16B16A16SFloat:
-		case GraphicsFormat::R32G32B32A32SFloat:
+		case Format::B8G8R8A8SRGB:
+		case Format::B8G8R8A8SNorm:
+		case Format::B8G8R8A8UNorm:
+		case Format::R8G8B8A8SRGB:
+		case Format::R8G8B8A8SNorm:
+		case Format::R8G8B8A8UNorm:
+		case Format::R16G16B16A16SFloat:
+		case Format::R32G32B32A32SFloat:
 		{
-			char* data = nullptr;
-			if (texture.map(0, 0, desc.getWidth(), desc.getHeight(), 0, (void**)&data))
-			{
-				std::copy(data, data + desc.getStreamSize(), static_cast<char*>(dest));
-				texture.unmap();
-			}
+			std::copy(texture.data(), texture.data() + texture.size(), static_cast<char*>(dest));
 		}
 		break;
-		case GraphicsFormat::B8G8R8SRGB:
-		case GraphicsFormat::B8G8R8SNorm:
-		case GraphicsFormat::B8G8R8UNorm:
-		case GraphicsFormat::R8G8B8SRGB:
-		case GraphicsFormat::R8G8B8SNorm:
-		case GraphicsFormat::R8G8B8UNorm:
+		case Format::B8G8R8SRGB:
+		case Format::B8G8R8SNorm:
+		case Format::B8G8R8UNorm:
+		case Format::R8G8B8SRGB:
+		case Format::R8G8B8SNorm:
+		case Format::R8G8B8UNorm:
 		{
-			math::uchar3* data = nullptr;
-			if (texture.map(0, 0, desc.getWidth(), desc.getHeight(), 0, (void**)&data))
-			{
-				for (std::size_t i = 0; i < desc.getWidth() * desc.getHeight(); i++)
-					((math::uchar4*)dest)[i].set(data[i].x, data[i].y, data[i].z, 255);
-
-				texture.unmap();
-			}
+			auto data = (math::uchar3*)texture.data();
+			for (std::size_t i = 0; i < texture.width() * texture.height(); i++)
+				((math::uchar4*)dest)[i].set(data[i].x, data[i].y, data[i].z, 255);
 		}
 		break;
-		case GraphicsFormat::R32G32B32SFloat:
+		case Format::R32G32B32SFloat:
 		{
-			math::float3* data = nullptr;
-			if (texture.map(0, 0, desc.getWidth(), desc.getHeight(), 0, (void**)&data))
-			{
-				for (std::size_t i = 0; i < desc.getWidth() * desc.getHeight(); i++)
-					((math::float4*)dest)[i].set(data[i]);
-
-				texture.unmap();
-			}
+			auto data = (math::float3*)texture.data();
+			for (std::size_t i = 0; i < texture.width() * texture.height(); i++)
+				((math::float4*)dest)[i].set(data[i]);
 		}
 		break;
 		default:
@@ -439,11 +422,11 @@ namespace octoon
 			std::unique_ptr<Iterator> tex_iter(textureCollector.CreateIterator());
 			for (; tex_iter->IsValid(); tex_iter->Next())
 			{
-				auto tex = tex_iter->ItemAs<GraphicsTexture>();
+				auto tex = tex_iter->ItemAs<Texture>();
 				this->WriteTexture(*tex, numTexDataBufferSize, textures + numTexturesWritten);
 
 				numTexturesWritten++;
-				numTexDataBufferSize += GetTextureSize(tex->getTextureDesc());
+				numTexDataBufferSize += GetTextureSize(*tex);
 			}
 
 			context_.UnmapBuffer(0, out.textures, textures);
@@ -457,9 +440,9 @@ namespace octoon
 			std::size_t numBytesWritten = 0;
 			for (tex_iter->Reset(); tex_iter->IsValid(); tex_iter->Next())
 			{
-				auto tex = tex_iter->ItemAs<GraphicsTexture>();
+				auto tex = tex_iter->ItemAs<Texture>();
 				this->WriteTextureData(*tex, data + numBytesWritten);
-				numBytesWritten += GetTextureSize(tex->getTextureDesc());
+				numBytesWritten += GetTextureSize(*tex);
 			}
 
 			context_.UnmapBuffer(0, out.texturedata, data);
