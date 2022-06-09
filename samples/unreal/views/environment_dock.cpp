@@ -146,7 +146,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = octoon::TextureImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString(), true);
+					auto package = octoon::TextureImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString(), true);
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -645,7 +645,7 @@ namespace unreal
 				this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
 
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = octoon::TextureImporter::instance()->loadPackage(package);
+				this->profile_->environmentLightModule->texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Texture>(package);
 			}
 		}
 		catch (const std::exception& e)
@@ -668,7 +668,7 @@ namespace unreal
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
 			if (!filepath.isEmpty())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(filepath.toUtf8().toStdString());
+				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(std::string_view(filepath.toUtf8().toStdString()));
 				if (texture)
 				{
 					texture->setMipLevel(8);

@@ -1,6 +1,7 @@
 #include <octoon/material_importer.h>
 #include <octoon/mdl_loader.h>
 #include <octoon/PMREM_loader.h>
+#include <octoon/asset_database.h>
 #include <octoon/texture_importer.h>
 #include <octoon/video_feature.h>
 #include <octoon/environment_light_component.h>
@@ -254,33 +255,33 @@ namespace octoon
 		if (name != package.end() && (*name).is_string())
 			material->setName((*name).get<nlohmann::json::string_t>());
 		if (colorMap != package.end() && (*colorMap).is_object())
-			material->setColorMap(octoon::TextureImporter::instance()->loadPackage(*colorMap));
+			material->setColorMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*colorMap));
 		if (opacityMap != package.end() && (*opacityMap).is_object())
-			material->setOpacityMap(octoon::TextureImporter::instance()->loadPackage(*opacityMap));
+			material->setOpacityMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*opacityMap));
 		if (normalMap != package.end() && (*normalMap).is_object())
-			material->setNormalMap(octoon::TextureImporter::instance()->loadPackage(*normalMap));
+			material->setNormalMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*normalMap));
 		if (roughnessMap != package.end() && (*roughnessMap).is_object())
-			material->setRoughnessMap(octoon::TextureImporter::instance()->loadPackage(*roughnessMap));
+			material->setRoughnessMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*roughnessMap));
 		if (specularMap != package.end() && (*specularMap).is_object())
-			material->setSpecularMap(octoon::TextureImporter::instance()->loadPackage(*specularMap));
+			material->setSpecularMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*specularMap));
 		if (metalnessMap != package.end() && (*metalnessMap).is_object())
-			material->setMetalnessMap(octoon::TextureImporter::instance()->loadPackage(*metalnessMap));
+			material->setMetalnessMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*metalnessMap));
 		if (emissiveMap != package.end() && (*emissiveMap).is_object())
-			material->setEmissiveMap(octoon::TextureImporter::instance()->loadPackage(*emissiveMap));
+			material->setEmissiveMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*emissiveMap));
 		if (anisotropyMap != package.end() && (*anisotropyMap).is_object())
-			material->setAnisotropyMap(octoon::TextureImporter::instance()->loadPackage(*anisotropyMap));
+			material->setAnisotropyMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*anisotropyMap));
 		if (clearCoatMap != package.end() && (*clearCoatMap).is_object())
-			material->setClearCoatMap(octoon::TextureImporter::instance()->loadPackage(*clearCoatMap));
+			material->setClearCoatMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatMap));
 		if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_object())
-			material->setClearCoatRoughnessMap(octoon::TextureImporter::instance()->loadPackage(*clearCoatRoughnessMap));
+			material->setClearCoatRoughnessMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatRoughnessMap));
 		if (subsurfaceMap != package.end() && (*subsurfaceMap).is_object())
-			material->setSubsurfaceMap(octoon::TextureImporter::instance()->loadPackage(*subsurfaceMap));
+			material->setSubsurfaceMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceMap));
 		if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_object())
-			material->setSubsurfaceColorMap(octoon::TextureImporter::instance()->loadPackage(*subsurfaceColorMap));
+			material->setSubsurfaceColorMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceColorMap));
 		if (sheenMap != package.end() && (*sheenMap).is_object())
-			material->setSheenMap(octoon::TextureImporter::instance()->loadPackage(*sheenMap));
+			material->setSheenMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*sheenMap));
 		if (lightMap != package.end() && (*lightMap).is_object())
-			material->setLightMap(octoon::TextureImporter::instance()->loadPackage(*lightMap));
+			material->setLightMap(octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*lightMap));
 
 		auto blendEnable = package.find("blendEnable");
 		auto blendOp = package.find("blendOp");

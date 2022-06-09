@@ -1,5 +1,6 @@
 #include "environment_module.h"
 #include <octoon/texture_importer.h>
+#include <octoon/asset_database.h>
 
 namespace unreal
 {
@@ -37,11 +38,7 @@ namespace unreal
 		if (reader["offset"].is_array())
 			this->offset = octoon::math::float2(reader["offset"].get<std::array<float, 2>>());
 		if (reader["texture"].is_object())
-		{
-			auto root = std::string(profilePath);
-			root = root.substr(0, root.find_last_of('/')) + "/Assets/Textures";
-			this->texture = octoon::TextureImporter::instance()->loadPackage(reader["texture"], root);
-		}
+			this->texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Texture>(reader["texture"]);
 	}
 
 	void 

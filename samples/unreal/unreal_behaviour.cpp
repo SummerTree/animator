@@ -117,7 +117,7 @@ namespace unreal
 		else if (ext == ".vmd")
 			octoon::MotionImporter::instance()->createPackage(path);
 		else if (ext == ".hdr")
-			octoon::TextureImporter::instance()->createPackage(path);
+			octoon::TextureImporter::instance()->importPackage(path);
 	}
 
 	void

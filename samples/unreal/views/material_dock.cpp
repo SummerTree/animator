@@ -369,7 +369,7 @@ namespace unreal
 	std::shared_ptr<octoon::Texture>
 	MaterialEditWindow::MaterialUi::setImage(const QString& filepath)
 	{
-		auto textureData = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdString());
+		auto textureData = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(std::string_view(filepath.toStdString()));
 		auto width = textureData->width();
 		auto height = textureData->height();
 

@@ -1,5 +1,6 @@
 #include <octoon/texture_importer.h>
 #include <octoon/texture/texture.h>
+#include <octoon/asset_database.h>
 #include <octoon/runtime/uuid.h>
 #include <fstream>
 #include <filesystem>
@@ -17,43 +18,8 @@ namespace octoon
 	{
 	}
 
-	std::shared_ptr<octoon::Texture>
-	TextureImporter::loadPackage(const nlohmann::json& package, std::string_view outputPath) noexcept(false)
-	{
-		if (package.find("path") != package.end())
-		{
-			auto path = package["path"].get<nlohmann::json::string_t>();
-			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-			auto it = this->assetCache_.find(uuid);
-			if (it != this->assetCache_.end())
-				return this->assetCache_[uuid]->downcast_pointer<octoon::Texture>();
-
-			bool generateMipmap = false;
-			if (package.find("mipmap") != package.end())
-				generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
-
-			auto texture = std::make_shared<octoon::Texture>(path);
-			if (texture)
-			{
-				if (generateMipmap)
-					texture->setMipLevel(8);
-
-				texture->apply();
-
-				packageList_[uuid] = package;
-				assetCache_[uuid] = texture;
-				assetList_[texture] = package;
-				assetPathList_[texture] = path;
-
-				return texture;
-			}
-		}
-
-		return nullptr;
-	}
-
 	nlohmann::json
-	TextureImporter::createPackage(std::string_view filepath, bool generateMipmap) noexcept(false)
+	TextureImporter::importPackage(std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
 		octoon::Texture texture;
 
@@ -119,12 +85,11 @@ namespace octoon
 			if (it != this->assetPackageCache_.end())
 				return this->assetPackageCache_[texture];
 
-			auto uuid = octoon::make_guid();
+			auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
 
-			nlohmann::json package = this->getPackage(texture);
+			nlohmann::json package = AssetDatabase::instance()->getPackage(texture);
 			if (package.find("uuid") != package.end())
 			{
-				uuid = package["uuid"].get<nlohmann::json::string_t>();
 				for (auto& index : indexList_)
 				{
 					if (index == uuid)
@@ -132,61 +97,8 @@ namespace octoon
 				}
 			}
 
-			auto filename = texture->getName();
-			filename = filename.substr(filename.find_last_of("."));
-			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
-			auto texturePath = std::filesystem::path(rootPath).append(uuid + filename);
-			auto packagePath = std::filesystem::path(rootPath).append("package.json");
-
-			std::filesystem::create_directories(rootPath);
-
-			auto outputPath = texturePath.string();
-			auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
-			texture->save(outputPath, extension.c_str());
-			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
-
-			package["uuid"] = uuid;
-			package["visible"] = true;
-			package["name"] = uuid + filename;
-			package["path"] = (char*)texturePath.u8string().c_str();
-			package["mipmap"] = texture->getMipLevel() > 1;
-
-			if (filename == ".hdr")
-			{
-				auto name = texture->getName();
-				auto width = texture->width();
-				auto height = texture->height();
-				float* data_ = (float*)texture->data();
-
-				auto size = width * height * 3;
-				auto pixels = std::make_unique<std::uint8_t[]>(size);
-
-				for (std::size_t i = 0; i < size; i += 3)
-				{
-					pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
-					pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
-					pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
-				}
-
-				auto uuid2 = octoon::make_guid();
-				auto texturePath2 = std::filesystem::path(rootPath).append(uuid2 + ".png");
-
-				octoon::Texture image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
-				image.resize(260, 130).save(texturePath2.string(), "png");
-
-				package["preview"] = texturePath2.string();
-			}
-
-			std::ofstream ifs(packagePath, std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->assetPackageCache_[texture] = package;
-			this->packageList_[std::string(uuid)] = package;
+			package = AssetDatabase::instance()->createAsset(texture, outputPath);
+			assetPackageCache_[texture] = package;
 
 			return package;
 		}
