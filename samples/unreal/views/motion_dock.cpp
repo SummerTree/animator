@@ -230,22 +230,18 @@ namespace unreal
 			if (package["path"].is_string())
 			{
 				auto filepath = package["path"].get<nlohmann::json::string_t>();
+				auto animation = octoon::MotionImporter::instance()->importMotion(filepath.c_str());
 
-				octoon::io::ifstream stream;
+				dialog.setValue(1);
+				QCoreApplication::processEvents();
 
-				if (stream.open(filepath))
+				if (animation->hasClip("Camera"))
+					profile_->cameraModule->animation = animation;
+				else
 				{
-					octoon::VMD vmd;
-					vmd.load(stream);
-
 					auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
 					if (selectedItem.has_value())
 					{
-						auto animation = octoon::MotionImporter::instance()->loadPackage(package);
-
-						dialog.setValue(1);
-						QCoreApplication::processEvents();
-
 						if (animation && !animation->clips.empty())
 						{
 							auto model = selectedItem->object.lock();
@@ -276,19 +272,11 @@ namespace unreal
 							}
 						}
 					}
-					else
-					{
-						if (vmd.NumCamera > 0)
-							profile_->cameraModule->animation = octoon::MotionImporter::instance()->importMotion(filepath.c_str());
-
-						dialog.setValue(1);
-						QCoreApplication::processEvents();
-					}
-
-					behaviour->getComponent<PlayerComponent>()->updateTimeLength();
-
-					dialog.setValue(2);
 				}
+
+				behaviour->getComponent<PlayerComponent>()->updateTimeLength();
+
+				dialog.setValue(2);
 			}
 		}
 	}
