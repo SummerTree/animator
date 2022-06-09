@@ -795,7 +795,8 @@ namespace octoon
 						auto name = texture->getName();
 						auto filename = make_guid() + name.substr(name.find_last_of("."));
 						auto outputPath = std::string(path) + filename;
-						TextureLoader::save(outputPath, texture);
+						auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
+						texture->save(outputPath, extension);
 						pmx.textures[it.second] = PmxName(filename);
 					}
 

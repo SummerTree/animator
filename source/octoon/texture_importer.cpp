@@ -159,7 +159,9 @@ namespace octoon
 
 			std::filesystem::create_directories(rootPath);
 
-			octoon::TextureLoader::save(texturePath.string(), texture);
+			auto outputPath = texturePath.string();
+			auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
+			texture->save(outputPath, extension.c_str());
 			std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
 			package["uuid"] = uuid;
