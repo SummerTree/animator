@@ -70,22 +70,40 @@ namespace octoon
 				standard->setRefractionRatio(material.ior);
 
 				if (!material.diffuse_texname.empty())
-					standard->setColorMap(TextureLoader::load(material.diffuse_texname));
+				{
+					standard->setColorMap(std::make_shared<Texture>(material.diffuse_texname));
+					standard->getColorMap()->apply();
+				}
 
 				if (!material.normal_texname.empty())
-					standard->setNormalMap(TextureLoader::load(material.normal_texname));
+				{
+					standard->setNormalMap(std::make_shared<Texture>(material.normal_texname));
+					standard->getNormalMap()->apply();
+				}
 
 				if (!material.roughness_texname.empty())
-					standard->setRoughnessMap(TextureLoader::load(material.roughness_texname));
+				{
+					standard->setRoughnessMap(std::make_shared<Texture>(material.roughness_texname));
+					standard->getRoughnessMap()->apply();
+				}
 
 				if (!material.metallic_texname.empty())
-					standard->setMetalnessMap(TextureLoader::load(material.metallic_texname));
+				{
+					standard->setMetalnessMap(std::make_shared<Texture>(material.metallic_texname));
+					standard->getMetalnessMap()->apply();
+				}
 
 				if (!material.sheen_texname.empty())
-					standard->setSheenMap(TextureLoader::load(material.sheen_texname));
+				{
+					standard->setSheenMap(std::make_shared<Texture>(material.sheen_texname));
+					standard->getSheenMap()->apply();
+				}
 
 				if (!material.emissive_texname.empty())
-					standard->setEmissiveMap(TextureLoader::load(material.emissive_texname));
+				{
+					standard->setEmissiveMap(std::make_shared<Texture>(material.emissive_texname));
+					standard->getEmissiveMap()->apply();
+				}
 			}
 
 			for (auto& shape : shapes)

@@ -2,7 +2,7 @@
 #define OCTOON_ENVIRONMENT_LIGHT_H_
 
 #include <octoon/light/light.h>
-#include <octoon/hal/graphics_texture.h>
+#include <octoon/texture/texture.h>
 
 namespace octoon
 {
@@ -19,11 +19,11 @@ namespace octoon
 		void setShowBackground(bool show) noexcept;
 		bool getShowBackground() const noexcept;
 
-		void setBackgroundMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
-		const std::shared_ptr<GraphicsTexture>& getBackgroundMap() const noexcept;
+		void setBackgroundMap(const std::shared_ptr<Texture>& texture) noexcept;
+		const std::shared_ptr<Texture>& getBackgroundMap() const noexcept;
 
-		void setEnvironmentMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
-		const std::shared_ptr<GraphicsTexture>& getEnvironmentMap() const noexcept;
+		void setEnvironmentMap(const std::shared_ptr<Texture>& texture) noexcept;
+		const std::shared_ptr<Texture>& getEnvironmentMap() const noexcept;
 
 		std::shared_ptr<RenderObject> clone() const noexcept;
 
@@ -34,9 +34,9 @@ namespace octoon
 	private:
 		bool showBackground_;
 		math::float2 offset_;
-		std::shared_ptr<GraphicsTexture> radiance_;
-		std::shared_ptr<GraphicsTexture> backgroundMap_;
-		std::shared_ptr<GraphicsTexture> environmentMap_;
+		std::shared_ptr<Texture> radiance_;
+		std::shared_ptr<Texture> backgroundMap_;
+		std::shared_ptr<Texture> environmentMap_;
 	};
 }
 

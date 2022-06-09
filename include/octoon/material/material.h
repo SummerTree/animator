@@ -3,6 +3,7 @@
 
 #include <octoon/math/math.h>
 #include <octoon/material/shader.h>
+#include <octoon/texture/texture.h>
 #include <octoon/hal/render_state.h>
 #include <octoon/hal/graphics_texture.h>
 
@@ -19,6 +20,7 @@ namespace octoon
 		PropertyTypeInfoInt = 1 << 6,
 		PropertyTypeInfoBuffer = 1 << 7,
 		PropertyTypeInfoTexture = 1 << 8,
+		PropertyTypeInfoRenderTexture = 1 << 9,
 	};
 
 	struct MaterialParam
@@ -29,7 +31,8 @@ namespace octoon
 		std::size_t type;
 
 		char* data;
-		std::shared_ptr<GraphicsTexture> texture;
+		std::shared_ptr<Texture> texture;
+		std::shared_ptr<GraphicsTexture> renderTexture;
 	};
 
 	class OCTOON_EXPORT Material : public RttiObject
@@ -148,6 +151,7 @@ namespace octoon
 		bool set(std::string_view key, const math::Vector3& value) noexcept;
 		bool set(std::string_view key, const math::Vector4& value) noexcept;
 		bool set(std::string_view key, std::string_view value) noexcept;
+		bool set(std::string_view key, const std::shared_ptr<Texture>& value) noexcept;
 		bool set(std::string_view key, const std::shared_ptr<GraphicsTexture>& value) noexcept;
 		bool set(const MaterialParam& value) noexcept;
 
@@ -157,6 +161,7 @@ namespace octoon
 		bool get(std::string_view key, math::Vector3& value) const noexcept;
 		bool get(std::string_view key, math::Vector4& value) const noexcept;
 		bool get(std::string_view key, std::string& value) const noexcept;
+		bool get(std::string_view key, std::shared_ptr<Texture>& value) const noexcept;
 		bool get(std::string_view key, std::shared_ptr<GraphicsTexture>& value) const noexcept;
 		bool get(std::string_view key, MaterialParam& out) const noexcept;
 

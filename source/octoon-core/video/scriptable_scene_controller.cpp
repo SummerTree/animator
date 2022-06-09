@@ -171,8 +171,10 @@ namespace octoon
 				RenderingData::EnvironmentLight environmentLight;
 				environmentLight.intensity = it->getIntensity();
 				environmentLight.offset = it->getOffset();
-				environmentLight.radiance = it->getEnvironmentMap();
-				if (!it->getEnvironmentMap())
+				environmentLight.radiance.reset();
+				if (it->getEnvironmentMap())
+					environmentLight.radiance = it->getEnvironmentMap()->getNativeTexture();
+				else
 					out.ambientLightColors += light->getColor() * light->getIntensity();
 				out.environmentLights.emplace_back(environmentLight);
 				out.numEnvironment++;

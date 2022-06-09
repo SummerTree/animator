@@ -364,86 +364,68 @@ namespace unreal
 		if (this->image) this->image->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
 	}
 
-	std::shared_ptr<octoon::GraphicsTexture>
+	std::shared_ptr<octoon::Texture>
 	MaterialEditWindow::MaterialUi::setImage(const QString& filepath)
 	{
 		auto textureData = octoon::TextureImporter::instance()->importTexture(filepath.toStdString());
-		auto width = textureData->getTextureDesc().getWidth();
-		auto height = textureData->getTextureDesc().getHeight();
+		auto width = textureData->width();
+		auto height = textureData->height();
 
 		QImage qimage;
 
-		switch (textureData->getTextureDesc().getTexFormat())
+		switch (textureData->format())
 		{
-		case octoon::GraphicsFormat::R8G8B8SNorm:
-		case octoon::GraphicsFormat::R8G8B8UNorm:
-		case octoon::GraphicsFormat::R8G8B8SRGB:
+		case octoon::Format::R8G8B8SNorm:
+		case octoon::Format::R8G8B8UNorm:
+		case octoon::Format::R8G8B8SRGB:
 		{
-			std::uint8_t* data_ = nullptr;
-			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
-			{
-				qimage = QImage(data_, width, height, QImage::Format::Format_RGB888);
-				qimage = qimage.scaled(this->image->iconSize());
-				textureData->unmap();
-			}
+			qimage = QImage(textureData->data(), width, height, QImage::Format::Format_RGB888);
+			qimage = qimage.scaled(this->image->iconSize());
 		}
 		break;
-		case octoon::GraphicsFormat::R8G8B8A8SNorm:
-		case octoon::GraphicsFormat::R8G8B8A8UNorm:
-		case octoon::GraphicsFormat::R8G8B8A8SRGB:
+		case octoon::Format::R8G8B8A8SNorm:
+		case octoon::Format::R8G8B8A8UNorm:
+		case octoon::Format::R8G8B8A8SRGB:
 		{
-			std::uint8_t* data_ = nullptr;
-			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
-			{
-				qimage = QImage(data_, width, height, QImage::Format::Format_RGBA8888);
-				qimage = qimage.scaled(this->image->iconSize());
-				textureData->unmap();
-			}
+			qimage = QImage(textureData->data(), width, height, QImage::Format::Format_RGBA8888);
+			qimage = qimage.scaled(this->image->iconSize());
 		}
 		break;
-		case octoon::GraphicsFormat::B8G8R8SNorm:
-		case octoon::GraphicsFormat::B8G8R8UNorm:
-		case octoon::GraphicsFormat::B8G8R8SRGB:
+		case octoon::Format::B8G8R8SNorm:
+		case octoon::Format::B8G8R8UNorm:
+		case octoon::Format::B8G8R8SRGB:
 		{
-			std::uint8_t* data_ = nullptr;
-			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
-			{
-				auto size = width * height * 3;
-				auto pixels = std::make_unique<std::uint8_t[]>(size);
+			auto data_ = textureData->data();
+			auto size = width * height * 3;
+			auto pixels = std::make_unique<std::uint8_t[]>(size);
 
-				for (std::size_t i = 0; i < size; i += 3) {
-					pixels[i] = data_[i + 2];
-					pixels[i + 1] = data_[i + 1];
-					pixels[i + 2] = data_[i];
-				}
-
-				qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-				qimage = qimage.scaled(this->image->iconSize());
-				textureData->unmap();
+			for (std::size_t i = 0; i < size; i += 3) {
+				pixels[i] = data_[i + 2];
+				pixels[i + 1] = data_[i + 1];
+				pixels[i + 2] = data_[i];
 			}
+
+			qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+			qimage = qimage.scaled(this->image->iconSize());
 		}
 		break;
-		case octoon::GraphicsFormat::B8G8R8A8SNorm:
-		case octoon::GraphicsFormat::B8G8R8A8UNorm:
-		case octoon::GraphicsFormat::B8G8R8A8SRGB:
+		case octoon::Format::B8G8R8A8SNorm:
+		case octoon::Format::B8G8R8A8UNorm:
+		case octoon::Format::B8G8R8A8SRGB:
 		{
-			std::uint8_t* data_ = nullptr;
-			if (textureData->map(0, 0, width, height, 0, (void**)&data_))
-			{
-				auto size = width * height * 4;
-				auto pixels = std::make_unique<std::uint8_t[]>(size);
+			auto data_ = textureData->data();
+			auto size = width * height * 4;
+			auto pixels = std::make_unique<std::uint8_t[]>(size);
 
-				for (std::size_t i = 0; i < size; i += 4) {
-					pixels[i] = data_[i + 2];
-					pixels[i + 1] = data_[i + 1];
-					pixels[i + 2] = data_[i];
-					pixels[i + 3] = data_[i + 3];
-				}
-
-				qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGBA8888);
-				qimage = qimage.scaled(this->image->iconSize());
-				textureData->unmap();
+			for (std::size_t i = 0; i < size; i += 4) {
+				pixels[i] = data_[i + 2];
+				pixels[i + 1] = data_[i + 1];
+				pixels[i + 2] = data_[i];
+				pixels[i + 3] = data_[i + 3];
 			}
+
+			qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGBA8888);
+			qimage = qimage.scaled(this->image->iconSize());
 		}
 		break;
 		default:
@@ -1399,47 +1381,47 @@ namespace unreal
 
 		auto colorMap = material_->getColorMap();
 		if (colorMap)
-			this->setAlbedoMap(QString::fromStdString(colorMap->getTextureDesc().getName()));
+			this->setAlbedoMap(QString::fromStdString(colorMap->getName()));
 
 		auto opacityMap = material_->getOpacityMap();
 		if (opacityMap)
-			this->setOpacityMap(QString::fromStdString(opacityMap->getTextureDesc().getName()));
+			this->setOpacityMap(QString::fromStdString(opacityMap->getName()));
 
 		auto normalMap = material_->getNormalMap();
 		if (normalMap)
-			this->setNormalMap(QString::fromStdString(normalMap->getTextureDesc().getName()));
+			this->setNormalMap(QString::fromStdString(normalMap->getName()));
 
 		auto roughnessMap = material_->getRoughnessMap();
 		if (roughnessMap)
-			this->setRoughnessMap(QString::fromStdString(roughnessMap->getTextureDesc().getName()));
+			this->setRoughnessMap(QString::fromStdString(roughnessMap->getName()));
 
 		auto metalnessMap = material_->getMetalnessMap();
 		if (metalnessMap)
-			this->setMetalnessMap(QString::fromStdString(metalnessMap->getTextureDesc().getName()));
+			this->setMetalnessMap(QString::fromStdString(metalnessMap->getName()));
 
 		auto sheenMap = material_->getSheenMap();
 		if (sheenMap)
-			this->setSheenMap(QString::fromStdString(sheenMap->getTextureDesc().getName()));
+			this->setSheenMap(QString::fromStdString(sheenMap->getName()));
 
 		auto clearcoatMap = material_->getClearCoatMap();
 		if (clearcoatMap)
-			this->setClearCoatMap(QString::fromStdString(clearcoatMap->getTextureDesc().getName()));
+			this->setClearCoatMap(QString::fromStdString(clearcoatMap->getName()));
 
 		auto clearcoatRoughnessMap = material_->getClearCoatRoughnessMap();
 		if (clearcoatRoughnessMap)
-			this->setClearCoatRoughnessMap(QString::fromStdString(clearcoatRoughnessMap->getTextureDesc().getName()));
+			this->setClearCoatRoughnessMap(QString::fromStdString(clearcoatRoughnessMap->getName()));
 
 		auto subsurfaceMap = material_->getSubsurfaceMap();
 		if (subsurfaceMap)
-			this->setSubsurfaceMap(QString::fromStdString(subsurfaceMap->getTextureDesc().getName()));
+			this->setSubsurfaceMap(QString::fromStdString(subsurfaceMap->getName()));
 
 		auto subsurfaceColorMap = material_->getSubsurfaceColorMap();
 		if (subsurfaceColorMap)
-			this->setSubsurfaceColorMap(QString::fromStdString(subsurfaceColorMap->getTextureDesc().getName()));
+			this->setSubsurfaceColorMap(QString::fromStdString(subsurfaceColorMap->getName()));
 
 		auto emissiveColorMap = material_->getEmissiveMap();
 		if (emissiveColorMap)
-			this->setEmissiveMap(QString::fromStdString(emissiveColorMap->getTextureDesc().getName()));
+			this->setEmissiveMap(QString::fromStdString(emissiveColorMap->getName()));
 	}
 
 	void

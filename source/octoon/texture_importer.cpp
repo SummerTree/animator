@@ -18,12 +18,17 @@ namespace octoon
 	{
 	}
 
-	std::shared_ptr<octoon::GraphicsTexture>
+	std::shared_ptr<octoon::Texture>
 	TextureImporter::importTexture(std::string_view path, bool generatorMipmap) noexcept(false)
 	{
-		auto texture = octoon::TextureLoader::load(path, generatorMipmap);
+		auto texture = std::make_shared<octoon::Texture>((std::string)path);
 		if (texture)
 		{
+			if (generatorMipmap)
+				texture->setMipLevel(8);
+
+			texture->apply();
+
 			assetPathList_[texture] = path;
 			return texture;
 		}
@@ -31,7 +36,7 @@ namespace octoon
 		return nullptr;
 	}
 
-	std::shared_ptr<octoon::GraphicsTexture>
+	std::shared_ptr<octoon::Texture>
 	TextureImporter::loadPackage(const nlohmann::json& package, std::string_view outputPath) noexcept(false)
 	{
 		if (package.find("path") != package.end())
@@ -40,15 +45,20 @@ namespace octoon
 			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
 			auto it = this->assetCache_.find(uuid);
 			if (it != this->assetCache_.end())
-				return this->assetCache_[uuid]->downcast_pointer<octoon::GraphicsTexture>();
+				return this->assetCache_[uuid]->downcast_pointer<octoon::Texture>();
 
 			bool generateMipmap = false;
 			if (package.find("mipmap") != package.end())
 				generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
 
-			auto texture = octoon::TextureLoader::load(path, generateMipmap);
+			auto texture = std::make_shared<octoon::Texture>(path);
 			if (texture)
-			{	
+			{
+				if (generateMipmap)
+					texture->setMipLevel(8);
+
+				texture->apply();
+
 				packageList_[uuid] = package;
 				assetCache_[uuid] = texture;
 				assetList_[texture] = package;
@@ -120,7 +130,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	TextureImporter::createPackage(const std::shared_ptr<octoon::GraphicsTexture>& texture, std::string_view outputPath) noexcept(false)
+	TextureImporter::createPackage(const std::shared_ptr<octoon::Texture>& texture, std::string_view outputPath) noexcept(false)
 	{
 		if (texture)
 		{
@@ -141,7 +151,7 @@ namespace octoon
 				}
 			}
 
-			auto filename = texture->getTextureDesc().getName();
+			auto filename = texture->getName();
 			filename = filename.substr(filename.find_last_of("."));
 			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
 			auto texturePath = std::filesystem::path(rootPath).append(uuid + filename);
@@ -156,39 +166,32 @@ namespace octoon
 			package["visible"] = true;
 			package["name"] = uuid + filename;
 			package["path"] = (char*)texturePath.u8string().c_str();
-			package["mipmap"] = texture->getTextureDesc().getMipNums() > 1;
+			package["mipmap"] = texture->getMipLevel() > 1;
 
 			if (filename == ".hdr")
 			{
-				auto name = texture->getTextureDesc().getName();
-				auto width = texture->getTextureDesc().getWidth();
-				auto height = texture->getTextureDesc().getHeight();
-				float* data_ = nullptr;
+				auto name = texture->getName();
+				auto width = texture->width();
+				auto height = texture->height();
+				float* data_ = (float*)texture->data();
 
-				if (texture->map(0, 0, width, height, 0, (void**)&data_))
+				auto size = width * height * 3;
+				auto pixels = std::make_unique<std::uint8_t[]>(size);
+
+				for (std::size_t i = 0; i < size; i += 3)
 				{
-					auto size = width * height * 3;
-					auto pixels = std::make_unique<std::uint8_t[]>(size);
-
-					for (std::size_t i = 0; i < size; i += 3)
-					{
-						pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
-						pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
-						pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
-					}
-
-					texture->unmap();
-
-					auto uuid2 = octoon::make_guid();
-					auto texturePath2 = std::filesystem::path(rootPath).append(uuid2 + ".png");
-
-					octoon::Texture image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
-					image.resize(260, 130).save(texturePath2.string(), "png");
-
-					package["preview"] = texturePath2.string();
+					pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
+					pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
+					pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
 				}
 
-				texture->unmap();
+				auto uuid2 = octoon::make_guid();
+				auto texturePath2 = std::filesystem::path(rootPath).append(uuid2 + ".png");
+
+				octoon::Texture image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
+				image.resize(260, 130).save(texturePath2.string(), "png");
+
+				package["preview"] = texturePath2.string();
 			}
 
 			std::ofstream ifs(packagePath, std::ios_base::binary);

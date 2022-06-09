@@ -5,7 +5,7 @@
 #include <octoon/math/vector2.h>
 #include <octoon/math/vector3.h>
 #include <octoon/game_object.h>
-#include <octoon/hal/graphics_texture.h>
+#include <octoon/texture/texture.h>
 
 namespace unreal
 {
@@ -32,7 +32,7 @@ namespace unreal
 		MutableLiveData<float> intensity;
 		MutableLiveData<octoon::math::float2> offset;
 		MutableLiveData<octoon::math::float3> color;
-		MutableLiveData<std::shared_ptr<octoon::GraphicsTexture>> texture;
+		MutableLiveData<std::shared_ptr<octoon::Texture>> texture;
 		MutableLiveData<octoon::GameObjectPtr> environmentLight;
 	};
 }

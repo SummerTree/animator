@@ -12,8 +12,8 @@ namespace octoon
 		MeshCopyMaterial() noexcept;
 		virtual ~MeshCopyMaterial() noexcept;
 
-		void setColorMap(const std::shared_ptr<GraphicsTexture>& map) noexcept;
-		const std::shared_ptr<GraphicsTexture>& getColorMap() const noexcept;
+		void setColorMap(const std::shared_ptr<Texture>& map) noexcept;
+		const std::shared_ptr<Texture>& getColorMap() const noexcept;
 
 		std::shared_ptr<Material> clone() const noexcept override;
 
@@ -22,7 +22,7 @@ namespace octoon
 		MeshCopyMaterial& operator=(const MeshCopyMaterial&) = delete;
 
 	private:
-		std::shared_ptr<GraphicsTexture> colorMap_;
+		std::shared_ptr<Texture> colorMap_;
 	};
 }
 

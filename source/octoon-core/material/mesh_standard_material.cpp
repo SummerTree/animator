@@ -323,7 +323,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setColorMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setColorMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->colorMap_ = map;
 		this->set("map", map);
@@ -331,7 +331,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setOpacityMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setOpacityMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->alphaMap_ = map;
 		this->set("alphaMap", map);
@@ -339,7 +339,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setSubsurfaceMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setSubsurfaceMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->subsurfaceMap_ = map;
 		this->set("subsurfaceMap", map);
@@ -347,7 +347,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setSubsurfaceColorMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setSubsurfaceColorMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->subsurfaceMap_ = map;
 		this->set("subsurfaceColorMap", map);
@@ -355,7 +355,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setEmissiveMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setEmissiveMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->emissiveMap_ = map;
 		this->set("emissiveMap", map);
@@ -363,7 +363,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setNormalMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setNormalMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->normalMap_ = map;
 		this->set("normalMap", map);
@@ -371,7 +371,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setLightMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setLightMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->lightMap_ = map;
 		this->set("lightMap", map);
@@ -380,7 +380,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setSpecularMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setSpecularMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->specularMap_ = map;
 		this->set("specularMap", map);
@@ -388,7 +388,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setRoughnessMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setRoughnessMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->roughnessMap_ = map;
 		this->set("roughnessMap", map);
@@ -404,7 +404,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setMetalnessMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setMetalnessMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->metalnessMap_ = map;
 		this->set("metalnessMap", map);
@@ -412,7 +412,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setAnisotropyMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setAnisotropyMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->anisotropyMap_ = map;
 		this->set("anisotropyMap", map);
@@ -420,7 +420,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setSheenMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setSheenMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->sheenMap_ = map;
 		this->set("sheenMap", map);
@@ -428,7 +428,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setClearCoatMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setClearCoatMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->clearcoatMap_ = map;
 		this->set("clearCoatMap", map);
@@ -436,7 +436,7 @@ namespace octoon
 	}
 
 	void
-	MeshStandardMaterial::setClearCoatRoughnessMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshStandardMaterial::setClearCoatRoughnessMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->clearcoatRoughnessMap_ = map;
 		this->set("clearCoatRoughnessMap", map);
@@ -528,85 +528,85 @@ namespace octoon
 		return this->normalScale_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getColorMap() const noexcept
 	{
 		return this->colorMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getOpacityMap() const noexcept
 	{
 		return this->alphaMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getSpecularMap() const noexcept
 	{
 		return this->specularMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getRoughnessMap() const noexcept
 	{
 		return this->roughnessMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getNormalMap() const noexcept
 	{
 		return this->normalMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getMetalnessMap() const noexcept
 	{
 		return this->metalnessMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getAnisotropyMap() const noexcept
 	{
 		return this->anisotropyMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getSheenMap() const noexcept
 	{
 		return this->sheenMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getClearCoatMap() const noexcept
 	{
 		return this->clearcoatMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getClearCoatRoughnessMap() const noexcept
 	{
 		return this->clearcoatRoughnessMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getLightMap() const noexcept
 	{
 		return this->lightMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getSubsurfaceMap() const noexcept
 	{
 		return this->subsurfaceMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getSubsurfaceColorMap() const noexcept
 	{
 		return this->subsurfaceColorMap_;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshStandardMaterial::getEmissiveMap() const noexcept
 	{
 		return this->emissiveMap_;

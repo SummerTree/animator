@@ -105,14 +105,14 @@ namespace octoon
 	}
 
 	void
-	MeshBasicMaterial::setColorMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshBasicMaterial::setColorMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->edgeTexture_ = map;
 		this->set("map", map);
 		this->set("mapEnable", map ? true : false);
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshBasicMaterial::getColorMap() const noexcept
 	{
 		return this->edgeTexture_;

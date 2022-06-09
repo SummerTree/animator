@@ -4,6 +4,7 @@
 #include <octoon/texture/texture_format.h>
 #include <octoon/texture/texture_loader.h>
 #include <octoon/runtime/rtti_object.h>
+#include <octoon/hal/graphics_texture.h>
 
 namespace octoon
 {
@@ -26,6 +27,12 @@ namespace octoon
 		bool create(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) noexcept(false);
 		bool create(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase = 0, std::uint32_t layerBase = 0) noexcept(false);
 
+		void setName(std::string_view name) noexcept;
+		const std::string& getName() const noexcept;
+
+		void setMipBase(std::uint32_t base) noexcept;
+		void setMipLevel(std::uint32_t level) noexcept;
+
 		bool empty() const noexcept;
 
 		const Format& format() const noexcept;
@@ -36,18 +43,21 @@ namespace octoon
 		std::uint32_t height() const noexcept;
 		std::uint32_t depth() const noexcept;
 
-		std::uint32_t mipBase() const noexcept;
-		std::uint32_t mipLevel() const noexcept;
-
-		std::uint32_t layerBase() const noexcept;
-		std::uint32_t layerLevel() const noexcept;
+		std::uint32_t getMipBase() const noexcept;
+		std::uint32_t getMipLevel() const noexcept;
+		std::uint32_t getLayerBase() const noexcept;
+		std::uint32_t getLayerLevel() const noexcept;
 
 		const std::uint8_t* data() const noexcept;
 		const std::uint8_t* data(std::size_t i) const noexcept;
 
+		std::shared_ptr<GraphicsTexture> getNativeTexture() const noexcept;
+
 		Texture resize(std::uint32_t width, std::uint32_t height) noexcept(false);
 
 		Texture convert(Format format) noexcept(false);
+
+		void apply() noexcept(false);
 
 	public:
 		bool load(istream& stream, const char* type = nullptr) noexcept;
@@ -61,6 +71,7 @@ namespace octoon
 
 	private:
 		Format format_;
+		std::string name_;
 
 		std::uint32_t width_;
 		std::uint32_t height_;
@@ -73,6 +84,8 @@ namespace octoon
 		std::uint32_t layerLevel_;
 
 		std::vector<std::uint8_t> data_;
+
+		std::shared_ptr<GraphicsTexture> nativeTexture_;
 	};
 }
 

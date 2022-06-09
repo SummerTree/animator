@@ -47,9 +47,9 @@ namespace octoon
 	}
 
 	void
-	EnvironmentLight::setBackgroundMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
+	EnvironmentLight::setBackgroundMap(const std::shared_ptr<Texture>& texture) noexcept
 	{
-		assert(!texture || texture->getTextureDesc().getTexDim() == TextureDimension::Cube || texture->getTextureDesc().getTexDim() == TextureDimension::Texture2D);
+		assert(!texture || (texture->width() > 0 && texture->height() > 0));
 		if (backgroundMap_ != texture)
 		{
 			backgroundMap_ = texture;
@@ -57,16 +57,16 @@ namespace octoon
 		}
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	EnvironmentLight::getBackgroundMap() const noexcept
 	{
 		return this->backgroundMap_;
 	}
 
 	void
-	EnvironmentLight::setEnvironmentMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
+	EnvironmentLight::setEnvironmentMap(const std::shared_ptr<Texture>& texture) noexcept
 	{
-		assert(!texture || texture->getTextureDesc().getTexDim() == TextureDimension::Cube || texture->getTextureDesc().getTexDim() == TextureDimension::Texture2D);
+		assert(!texture || (texture->width() > 0 && texture->height() > 0));
 		if (environmentMap_ != texture)
 		{
 			environmentMap_ = texture;
@@ -74,7 +74,7 @@ namespace octoon
 		}
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	EnvironmentLight::getEnvironmentMap() const noexcept
 	{
 		return environmentMap_;

@@ -1034,7 +1034,7 @@ namespace octoon
 		hdr.flags = 0x100f;
 		hdr.width = image.width();
 		hdr.height = image.height();
-		hdr.mip_level = image.mipLevel();
+		hdr.mip_level = image.getMipLevel();
 		hdr.pitch = 0x3200;
 
 		hdr.format.size = sizeof(DDPixelFormat);

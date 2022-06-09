@@ -352,7 +352,7 @@ namespace octoon
 	void createMaterials(const PMX& pmx, Materials& materials) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-		std::unordered_map<std::string, std::shared_ptr<GraphicsTexture>> textureMap;
+		std::unordered_map<std::string, std::shared_ptr<Texture>> textureMap;
 
 		materials.reserve(pmx.materials.size());
 
@@ -361,7 +361,10 @@ namespace octoon
 			try
 			{
 				if (textureMap.find(it.fullpath) == textureMap.end())
-					textureMap[it.fullpath] = TextureLoader::load(it.fullpath);
+				{
+					textureMap[it.fullpath] = std::make_shared<Texture>(it.fullpath);
+					textureMap[it.fullpath]->apply();
+				}
 			}
 			catch (...)
 			{
@@ -395,11 +398,11 @@ namespace octoon
 			auto colorMap = material->getColorMap();
 			if (colorMap)
 			{
-				auto textureFormat = material->getColorMap()->getTextureDesc().getTexFormat();
-				if (textureFormat == GraphicsFormat::B8G8R8A8SRGB ||
-					textureFormat == GraphicsFormat::B8G8R8A8UNorm ||
-					textureFormat == GraphicsFormat::R8G8B8A8SRGB ||
-					textureFormat == GraphicsFormat::R8G8B8A8UNorm)
+				auto textureFormat = material->getColorMap()->format();
+				if (textureFormat == Format::B8G8R8A8SRGB ||
+					textureFormat == Format::B8G8R8A8UNorm ||
+					textureFormat == Format::R8G8B8A8SRGB ||
+					textureFormat == Format::R8G8B8A8UNorm)
 				{
 					hasAlphaTexture = true;
 				}
@@ -758,7 +761,7 @@ namespace octoon
 				auto smr = gameObject.getComponent<SkinnedMeshRendererComponent>();
 				if (smr)
 				{
-					std::map<std::shared_ptr<GraphicsTexture>, std::size_t> textureMap;
+					std::map<std::shared_ptr<Texture>, std::size_t> textureMap;
 
 					pmx.numMaterials = smr->getMaterials().size();
 					pmx.materials.resize(pmx.numMaterials);
@@ -789,7 +792,7 @@ namespace octoon
 					for (auto& it : textureMap)
 					{
 						auto texture = it.first;
-						auto name = texture->getTextureDesc().getName();
+						auto name = texture->getName();
 						auto filename = make_guid() + name.substr(name.find_last_of("."));
 						auto outputPath = std::string(path) + filename;
 						TextureLoader::save(outputPath, texture);

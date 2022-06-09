@@ -192,8 +192,8 @@ void main()
 }
 )";
 
-	std::shared_ptr<GraphicsTexture>
-	PMREMLoader::load(const std::shared_ptr<GraphicsTexture>& environmentMap, std::uint8_t mipNums) noexcept(false)
+	std::shared_ptr<Texture>
+	PMREMLoader::load(const std::shared_ptr<Texture>& environmentMap, std::uint8_t mipNums) noexcept(false)
 	{
 		if (environmentMap)
 		{
@@ -202,15 +202,10 @@ void main()
 
 			auto renderContext = Renderer::instance()->getGraphicsDevice();
 
-			GraphicsTextureDesc textureDesc;
-			textureDesc.setSize(width, height);
-			textureDesc.setTexDim(TextureDimension::Texture2D);
-			textureDesc.setTexFormat(GraphicsFormat::R32G32B32SFloat);
-			textureDesc.setMipBase(0);
-			textureDesc.setMipNums(8);
-			auto colorTexture = renderContext->createTexture(textureDesc);
-			if (!colorTexture)
-				throw runtime_error::create("createTexture() failed");
+			auto colorTexture = std::make_shared<Texture>(Format::R32G32B32SFloat, width, height);
+			colorTexture->setMipBase(0);
+			colorTexture->setMipLevel(8);
+			colorTexture->apply();
 
 			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setSize(width, height);
@@ -235,7 +230,7 @@ void main()
 				framebufferDesc.setHeight(height >> i);
 				framebufferDesc.setFramebufferLayout(renderContext->createFramebufferLayout(framebufferLayoutDesc));
 				framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture, i, 0));
-				framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture, i, 0));
+				framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture->getNativeTexture(), i, 0));
 
 				framebuffers[i] = renderContext->createFramebuffer(framebufferDesc);
 				if (!framebuffers[i])
@@ -249,7 +244,7 @@ void main()
 
 			auto radiance = std::make_shared<Material>(std::make_shared<Shader>(pmrem_vert, radiance_frag));
 			radiance->set("environmentMap", environmentMap);
-			radiance->set("environmentSize", (float)environmentMap->getTextureDesc().getWidth() * environmentMap->getTextureDesc().getHeight());
+			radiance->set("environmentSize", (float)environmentMap->width() * environmentMap->height());
 			radiance->setDepthEnable(false);
 			radiance->setDepthWriteEnable(false);
 
@@ -296,9 +291,12 @@ void main()
 		}
 	}
 
-	std::shared_ptr<GraphicsTexture>
+	std::shared_ptr<Texture>
 	PMREMLoader::load(std::string_view filepath, std::uint8_t mipNums) noexcept(false)
 	{
-		return load(TextureLoader::load(filepath, true), mipNums);
+		auto texture = std::make_shared<Texture>((std::string)filepath);
+		texture->setMipLevel(8);
+		texture->apply();
+		return load(texture, mipNums);
 	}
 }

@@ -22,11 +22,11 @@ namespace octoon
 		void setShowBackground(bool show) noexcept;
 		bool getShowBackground() const noexcept;
 
-		void setBackgroundMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
-		const std::shared_ptr<GraphicsTexture>& getBackgroundMap() const noexcept;
+		void setBackgroundMap(const std::shared_ptr<Texture>& texture) noexcept;
+		const std::shared_ptr<Texture>& getBackgroundMap() const noexcept;
 
-		void setRadianceMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept;
-		const std::shared_ptr<GraphicsTexture>& getRadianceMap() const noexcept;
+		void setRadianceMap(const std::shared_ptr<Texture>& texture) noexcept;
+		const std::shared_ptr<Texture>& getRadianceMap() const noexcept;
 
 		GameComponentPtr clone() const noexcept override;
 
@@ -45,9 +45,9 @@ namespace octoon
 	private:
 		bool showBackground_;
 		math::float2 offset_;
-		std::shared_ptr<GraphicsTexture> radiance_;
-		std::shared_ptr<GraphicsTexture> backgroundMap_;
-		std::shared_ptr<GraphicsTexture> environmentMap_;
+		std::shared_ptr<Texture> radiance_;
+		std::shared_ptr<Texture> backgroundMap_;
+		std::shared_ptr<Texture> environmentMap_;
 		std::shared_ptr<EnvironmentLight> environmentLight_;
 	};
 }

@@ -123,7 +123,7 @@ namespace unreal
 			}
 		};
 
-		this->getModel()->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
+		this->getModel()->texture += [this](const std::shared_ptr<octoon::Texture>& texture)
 		{
 			auto& model = this->getModel();
 

@@ -129,15 +129,22 @@ namespace octoon
 						standard->setTransmission(material.materialType);
 
 						if (!material.albedoTex.empty())
-							standard->setColorMap(TextureLoader::load(material.albedoTex));
+						{
+							standard->setColorMap(std::make_shared<Texture>(material.albedoTex));
+							standard->getColorMap()->apply();
+						}
 
 						if (!material.normalmapTex.empty())
-							standard->setNormalMap(TextureLoader::load(material.normalmapTex));
+						{
+							standard->setNormalMap(std::make_shared<Texture>(material.normalmapTex));
+							standard->getNormalMap()->apply();
+						}
 
 						if (!material.metallicRoughnessTex.empty())
 						{
 							standard->setMetalness(1.0f);
-							standard->setMetalnessMap(TextureLoader::load(material.metallicRoughnessTex));
+							standard->setMetalnessMap(std::make_shared<Texture>(material.metallicRoughnessTex));
+							standard->getMetalnessMap()->apply();
 						}
 
 						materialMap[name] = standard;

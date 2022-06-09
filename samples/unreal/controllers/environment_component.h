@@ -28,8 +28,8 @@ namespace unreal
 		EnvironmentComponent& operator=(const EnvironmentComponent&) = delete;
 
 	private:
-		std::shared_ptr<octoon::GraphicsTexture> texture_;
-		std::shared_ptr<octoon::GraphicsTexture> radianceTexture_;
+		std::shared_ptr<octoon::Texture> texture_;
+		std::shared_ptr<octoon::Texture> radianceTexture_;
 	};
 }
 

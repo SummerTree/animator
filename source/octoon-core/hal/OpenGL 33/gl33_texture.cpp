@@ -74,7 +74,9 @@ namespace octoon
 					return false;
 			}
 
-			const char* stream = (const char*)textureDesc.getStream();
+			auto stream = (const char*)textureDesc.getStream();
+			auto streamSize = textureDesc.getStreamSize();
+
 			if (GL33Types::isCompressedTexture(textureDesc.getTexFormat()))
 			{
 				std::size_t offset = 0;
@@ -142,7 +144,17 @@ namespace octoon
 				}
 				else
 				{
+					GLsizei totalMemory = 0;
+
 					for (GLsizei mip = mipBase; mip < mipBase + mipLevel; mip++)
+					{
+						GLsizei w = std::max(width / (1 << mip), 1);
+						GLsizei h = std::max(height / (1 << mip), 1);
+						GLsizei mipSize = w * h * pixelSize;
+						totalMemory += mipSize;
+					}
+
+					for (GLsizei mip = mipBase; mip < (mipBase + mipLevel) && (offset < streamSize || !stream); mip++)
 					{
 						GLsizei w = std::max(width / (1 << mip), 1);
 						GLsizei h = std::max(height / (1 << mip), 1);
@@ -155,6 +167,7 @@ namespace octoon
 							if (target == GL_TEXTURE_2D)
 							{
 								glTexImage2D(target, mip, internalFormat, w, h, 0, format, type, stream ? stream + offset : nullptr);
+								offset += mipSize;
 							}
 							else
 							{
@@ -190,6 +203,9 @@ namespace octoon
 							}
 						}
 					}
+
+					if (stream && totalMemory > streamSize && mipLevel > 1)
+						glGenerateMipmap(target);
 				}
 			}
 

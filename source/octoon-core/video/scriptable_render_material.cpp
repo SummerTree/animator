@@ -2381,7 +2381,7 @@ namespace octoon
 		}
 		else
 		{
-			std::shared_ptr<GraphicsTexture> texture;
+			std::shared_ptr<Texture> texture;
 			if (material->get("map", texture) && texture)
 				fragmentShader += "#define USE_MAP\n";
 			if (material->get("opacityMap", texture) && texture)
@@ -2663,7 +2663,12 @@ namespace octoon
 					break;
 					case PropertyTypeInfo::PropertyTypeInfoTexture:
 					{
-						uniform->uniformTexture(prop.texture);
+						uniform->uniformTexture(prop.texture->getNativeTexture());
+					}
+					break;
+					case PropertyTypeInfo::PropertyTypeInfoRenderTexture:
+					{
+						uniform->uniformTexture(prop.renderTexture);
 					}
 					break;
 					default:

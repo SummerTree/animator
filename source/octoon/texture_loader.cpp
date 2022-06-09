@@ -7,7 +7,7 @@
 
 namespace octoon
 {
-	std::shared_ptr<GraphicsTexture>
+	/*std::shared_ptr<GraphicsTexture>
 	TextureLoader::load(const Texture& image, std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
 		GraphicsFormat format = GraphicsFormat::Undefined;
@@ -94,57 +94,14 @@ namespace octoon
 			return load(texture, path, generateMipmap);
 		else
 			throw std::runtime_error("Failed to open file :" + path);
-	}
+	}*/
 
 	bool
-	TextureLoader::save(std::string_view filepath, const std::shared_ptr<GraphicsTexture>& texture) noexcept(false)
+	TextureLoader::save(std::string_view filepath, const std::shared_ptr<Texture>& texture) noexcept(false)
 	{
-		auto& textureDesc = texture->getTextureDesc();
-		auto width = textureDesc.getWidth();
-		auto height = textureDesc.getHeight();
-		void* data;
-
-		if (!texture->map(0, 0, width, height, 0, &data))
-			return false;
-
-		if (textureDesc.getTexFormat() == GraphicsFormat::R8G8B8A8UNorm)
-		{
-			Texture image;
-			if (image.create(octoon::Format::R8G8B8A8SRGB, width, height))
-			{
-				std::memcpy((void*)image.data(), data, image.size());
-
-				auto outputPath = std::string(filepath);
-				auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
-				image.save(outputPath, extension.c_str());
-			}
-		}
-		else if (textureDesc.getTexFormat() == GraphicsFormat::R8G8B8UNorm)
-		{
-			Texture image;
-			if (image.create(octoon::Format::R8G8B8SRGB, width, height))
-			{
-				std::memcpy((void*)image.data(), data, image.size());
-
-				auto outputPath = std::string(filepath);
-				auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
-				image.save(outputPath, extension.c_str());
-			}
-		}
-		else if (textureDesc.getTexFormat() == GraphicsFormat::R32G32B32SFloat)
-		{
-			Texture image;
-			if (image.create(octoon::Format::R32G32B32SFloat, width, height))
-			{
-				std::memcpy((void*)image.data(), data, image.size());
-
-				auto outputPath = std::string(filepath);
-				auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
-				image.save(outputPath, extension.c_str());
-			}
-		}
-
-		texture->unmap();
+		auto outputPath = std::string(filepath);
+		auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
+		texture->save(outputPath, extension.c_str());
 
 		return true;
 	}

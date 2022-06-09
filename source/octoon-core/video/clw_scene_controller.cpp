@@ -98,9 +98,9 @@ namespace octoon
 		}
 	}
 
-	int GetTextureIndex(Collector const& collector, const std::shared_ptr<GraphicsTexture>& texture)
+	int GetTextureIndex(Collector const& collector, const std::shared_ptr<Texture>& texture)
 	{
-		return texture ? collector.GetItemIndex(texture.get()) : (-1);
+		return texture ? collector.GetItemIndex(texture->getNativeTexture().get()) : (-1);
 	}
 
 	ClwSceneController::ClwSceneController(const CLWContext& context, const std::shared_ptr<RadeonRays::IntersectionApi>& api, const CLProgramManager* program_manager)
@@ -143,9 +143,9 @@ namespace octoon
 			if (light->isA<EnvironmentLight>()) {
 				auto env = light->downcast<EnvironmentLight>();
 				if (env->getEnvironmentMap())
-					textureCollector.Collect(env->getEnvironmentMap());
+					textureCollector.Collect(env->getEnvironmentMap()->getNativeTexture());
 				if (env->getBackgroundMap())
-					textureCollector.Collect(env->getBackgroundMap());
+					textureCollector.Collect(env->getBackgroundMap()->getNativeTexture());
 			}
 		}
 
@@ -164,31 +164,31 @@ namespace octoon
 					if (standard->getOpacity() > 0)
 					{
 						if (standard->getColorMap())
-							textureCollector.Collect(standard->getColorMap());
+							textureCollector.Collect(standard->getColorMap()->getNativeTexture());
 						if (standard->getOpacityMap())
-							textureCollector.Collect(standard->getOpacityMap());
+							textureCollector.Collect(standard->getOpacityMap()->getNativeTexture());
 						if (standard->getNormalMap())
-							textureCollector.Collect(standard->getNormalMap());
+							textureCollector.Collect(standard->getNormalMap()->getNativeTexture());
 						if (standard->getRoughnessMap())
-							textureCollector.Collect(standard->getRoughnessMap());
+							textureCollector.Collect(standard->getRoughnessMap()->getNativeTexture());
 						if (standard->getMetalnessMap())
-							textureCollector.Collect(standard->getMetalnessMap());
+							textureCollector.Collect(standard->getMetalnessMap()->getNativeTexture());
 						if (standard->getAnisotropyMap())
-							textureCollector.Collect(standard->getAnisotropyMap());
+							textureCollector.Collect(standard->getAnisotropyMap()->getNativeTexture());
 						if (standard->getSpecularMap())
-							textureCollector.Collect(standard->getSpecularMap());
+							textureCollector.Collect(standard->getSpecularMap()->getNativeTexture());
 						if (standard->getSheenMap())
-							textureCollector.Collect(standard->getSheenMap());
+							textureCollector.Collect(standard->getSheenMap()->getNativeTexture());
 						if (standard->getClearCoatMap())
-							textureCollector.Collect(standard->getClearCoatMap());
+							textureCollector.Collect(standard->getClearCoatMap()->getNativeTexture());
 						if (standard->getClearCoatRoughnessMap())
-							textureCollector.Collect(standard->getClearCoatRoughnessMap());
+							textureCollector.Collect(standard->getClearCoatRoughnessMap()->getNativeTexture());
 						if (standard->getSubsurfaceMap())
-							textureCollector.Collect(standard->getSubsurfaceMap());
+							textureCollector.Collect(standard->getSubsurfaceMap()->getNativeTexture());
 						if (standard->getSubsurfaceColorMap())
-							textureCollector.Collect(standard->getSubsurfaceColorMap());
+							textureCollector.Collect(standard->getSubsurfaceColorMap()->getNativeTexture());
 						if (standard->getEmissiveMap())
-							textureCollector.Collect(standard->getEmissiveMap());
+							textureCollector.Collect(standard->getEmissiveMap()->getNativeTexture());
 
 						materialCollector.Collect(mat);
 					}

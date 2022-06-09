@@ -32,14 +32,14 @@ namespace octoon
 	}
 
 	void
-	MeshCopyMaterial::setColorMap(const std::shared_ptr<GraphicsTexture>& map) noexcept
+	MeshCopyMaterial::setColorMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->colorMap_ = map;
 		this->set("map", map);
 		this->set("mapEnable", map ? true : false);
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	MeshCopyMaterial::getColorMap() const noexcept
 	{
 		return this->colorMap_;

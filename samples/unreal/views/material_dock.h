@@ -192,11 +192,11 @@ namespace unreal
 
 			Spoiler* spoiler;
 
-			std::shared_ptr<octoon::GraphicsTexture> texture;
+			std::shared_ptr<octoon::Texture> texture;
 
 			void init(const QString& name, std::uint32_t flags);
 			void resetState();
-			std::shared_ptr<octoon::GraphicsTexture> setImage(const QString& path);
+			std::shared_ptr<octoon::Texture> setImage(const QString& path);
 		};
 
 		MaterialUi albedo_;

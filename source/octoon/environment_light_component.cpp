@@ -1,6 +1,6 @@
 #include <octoon/environment_light_component.h>
-#include <octoon/video_feature.h>
 #include <octoon/transform_component.h>
+#include <octoon/video_feature.h>
 
 namespace octoon
 {
@@ -47,15 +47,15 @@ namespace octoon
 	}
 
 	void
-	EnvironmentLightComponent::setRadianceMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
+	EnvironmentLightComponent::setRadianceMap(const std::shared_ptr<Texture>& texture) noexcept
 	{
-		assert(!texture || texture->getTextureDesc().getTexDim() == TextureDimension::Cube || texture->getTextureDesc().getTexDim() == TextureDimension::Texture2D);
+		assert(!texture || (texture->width() > 0 && texture->height() > 0));
 		if (environmentLight_)
 			environmentLight_->setEnvironmentMap(texture);
 		environmentMap_ = texture;
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	EnvironmentLightComponent::getRadianceMap() const noexcept
 	{
 		return environmentMap_;
@@ -76,16 +76,16 @@ namespace octoon
 	}
 
 	void
-	EnvironmentLightComponent::setBackgroundMap(const std::shared_ptr<GraphicsTexture>& texture) noexcept
+	EnvironmentLightComponent::setBackgroundMap(const std::shared_ptr<Texture>& texture) noexcept
 	{
-		assert(!texture || texture->getTextureDesc().getTexDim() == TextureDimension::Cube || texture->getTextureDesc().getTexDim() == TextureDimension::Texture2D);
+		assert(!texture || (texture->width() > 0 && texture->height() > 0));
 		if (environmentLight_)
 			environmentLight_->setBackgroundMap(texture);
 		this->backgroundMap_ = texture;
 		
 	}
 
-	const std::shared_ptr<GraphicsTexture>&
+	const std::shared_ptr<Texture>&
 	EnvironmentLightComponent::getBackgroundMap() const noexcept
 	{
 		return this->backgroundMap_;

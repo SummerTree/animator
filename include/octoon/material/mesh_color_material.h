@@ -19,8 +19,8 @@ namespace octoon
 		void setOpacity(float opacity) noexcept;
 		float getOpacity() const noexcept;
 
-		void setColorMap(const std::shared_ptr<GraphicsTexture>& map) noexcept;
-		const std::shared_ptr<GraphicsTexture>& getColorMap() const noexcept;
+		void setColorMap(const std::shared_ptr<Texture>& map) noexcept;
+		const std::shared_ptr<Texture>& getColorMap() const noexcept;
 
 		std::shared_ptr<Material> clone() const noexcept override;
 
@@ -31,7 +31,7 @@ namespace octoon
 	private:
 		float opacity_;
 		math::float3 color_;
-		std::shared_ptr<GraphicsTexture> edgeTexture_;
+		std::shared_ptr<Texture> edgeTexture_;
 	};
 }
 

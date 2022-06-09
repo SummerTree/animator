@@ -459,7 +459,7 @@ namespace unreal
 			updatePreviewImage();
 		};
 
-		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::GraphicsTexture>& texture)
+		this->profile_->environmentLightModule->texture += [this](const std::shared_ptr<octoon::Texture>& texture)
 		{
 			if (texture && this->isVisible())
 			{
@@ -479,31 +479,26 @@ namespace unreal
 				}
 				else
 				{
-					auto name = texture->getTextureDesc().getName();
-					auto width = texture->getTextureDesc().getWidth();
-					auto height = texture->getTextureDesc().getHeight();
+					auto name = texture->getName();
+					auto width = texture->width();
+					auto height = texture->height();
+					auto size = width * height * 3;
+					auto pixels = std::make_unique<std::uint8_t[]>(size);
+					
 					float* data_ = nullptr;
 
-					if (texture->map(0, 0, width, height, 0, (void**)&data_))
+					for (std::size_t i = 0; i < size; i += 3)
 					{
-						auto size = width * height * 3;
-						auto pixels = std::make_unique<std::uint8_t[]>(size);
-
-						for (std::size_t i = 0; i < size; i += 3)
-						{
-							pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
-							pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
-							pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
-						}
-
-						texture->unmap();
-
-						QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-						auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
-
-						this->setPreviewImage(QFileInfo(QString::fromStdString(name)).fileName(), previewImage);
-						this->setThumbnailImage(QString::fromStdString(name), *previewImage);
+						pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
+						pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
+						pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
 					}
+
+					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+					auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
+
+					this->setPreviewImage(QFileInfo(QString::fromStdString(name)).fileName(), previewImage);
+					this->setThumbnailImage(QString::fromStdString(name), *previewImage);
 				}
 			}
 			else
@@ -678,31 +673,25 @@ namespace unreal
 				auto texel = this->profile_->environmentLightModule->texture.getValue();
 				if (texel)
 				{
-					auto width = texel->getTextureDesc().getWidth();
-					auto height = texel->getTextureDesc().getHeight();
-					float* data_ = nullptr;
+					auto width = texel->width();
+					auto height = texel->height();
+					auto size = width * height * 3;
+					auto pixels = std::make_unique<std::uint8_t[]>(size);
+					float* data_ = (float*)texel->data();
 
-					if (texel->map(0, 0, width, height, 0, (void**)&data_))
+					for (std::size_t i = 0; i < size; i += 3)
 					{
-						auto size = width * height * 3;
-						auto pixels = std::make_unique<std::uint8_t[]>(size);
-
-						for (std::size_t i = 0; i < size; i += 3)
-						{
-							pixels[i] = std::clamp<float>(std::pow(data_[i], 1 / 2.2) * 255.0f, 0, 255);
-							pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1 / 2.2) * 255.0f, 0, 255);
-							pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1 / 2.2) * 255.0f, 0, 255);
-						}
-
-						texel->unmap();
-
-						QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-						auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
-
-						this->setPreviewImage(QFileInfo(filepath).fileName(), previewImage);
-						this->setThumbnailImage(filepath, *previewImage);
-						this->updatePreviewImage();
+						pixels[i] = std::clamp<float>(std::pow(data_[i], 1 / 2.2) * 255.0f, 0, 255);
+						pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1 / 2.2) * 255.0f, 0, 255);
+						pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1 / 2.2) * 255.0f, 0, 255);
 					}
+
+					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
+					auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
+
+					this->setPreviewImage(QFileInfo(filepath).fileName(), previewImage);
+					this->setThumbnailImage(filepath, *previewImage);
+					this->updatePreviewImage();
 				}
 			}
 		}

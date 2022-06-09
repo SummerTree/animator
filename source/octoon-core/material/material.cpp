@@ -326,7 +326,7 @@ namespace octoon
 	}
 
 	bool
-	Material::set(std::string_view key, const std::shared_ptr<GraphicsTexture>& value) noexcept
+	Material::set(std::string_view key, const std::shared_ptr<Texture>& value) noexcept
 	{
 		assert(key.size());
 
@@ -346,6 +346,36 @@ namespace octoon
 		prop.key = key;
 		prop.type = PropertyTypeInfoTexture;
 		prop.texture = value;
+		prop.data = nullptr;
+
+		_properties.push_back(prop);
+
+		this->setDirty(true);
+
+		return true;
+	}
+
+	bool
+	Material::set(std::string_view key, const std::shared_ptr<GraphicsTexture>& value) noexcept
+	{
+		assert(key.size());
+
+		auto it = _properties.begin();
+		auto end = _properties.end();
+
+		for (; it != end; ++it)
+		{
+			if ((*it).key == key)
+			{
+				_properties.erase(it);
+				break;
+			}
+		}
+
+		MaterialParam prop;
+		prop.key = key;
+		prop.type = PropertyTypeInfoRenderTexture;
+		prop.renderTexture = value;
 		prop.data = nullptr;
 
 		_properties.push_back(prop);
@@ -487,7 +517,7 @@ namespace octoon
 	}
 
 	bool
-	Material::get(std::string_view key, std::shared_ptr<GraphicsTexture>& value) const noexcept
+	Material::get(std::string_view key, std::shared_ptr<Texture>& value) const noexcept
 	{
 		assert(key.size());
 
@@ -497,6 +527,24 @@ namespace octoon
 			if (prop.type == PropertyTypeInfoTexture)
 			{
 				value = prop.texture;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	bool
+	Material::get(std::string_view key, std::shared_ptr<GraphicsTexture>& value) const noexcept
+	{
+		assert(key.size());
+
+		MaterialParam prop;
+		if (this->get(key, prop))
+		{
+			if (prop.type == PropertyTypeInfoRenderTexture)
+			{
+				value = prop.renderTexture;
 				return true;
 			}
 		}
@@ -1118,7 +1166,7 @@ namespace octoon
 			case PropertyTypeInfoTexture:
 			{
 				if (it.texture)
-					hash_string += it.texture->getTextureDesc().getName();
+					hash_string += it.texture->getName();
 			}
 			break;
 			default:

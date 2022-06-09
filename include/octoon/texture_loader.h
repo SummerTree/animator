@@ -9,10 +9,10 @@ namespace octoon
 	class OCTOON_EXPORT TextureLoader final
 	{
 	public:
-		static std::shared_ptr<GraphicsTexture> load(std::string_view path, bool generatorMipmap = false) noexcept(false);
-		static std::shared_ptr<GraphicsTexture> load(const Texture& texture, std::string_view filepath, bool generatorMipmap = false) noexcept(false);
+		//static std::shared_ptr<GraphicsTexture> load(std::string_view path, bool generatorMipmap = false) noexcept(false);
+		//static std::shared_ptr<GraphicsTexture> load(const Texture& texture, std::string_view filepath, bool generatorMipmap = false) noexcept(false);
 
-		static bool save(std::string_view filepath, const std::shared_ptr<GraphicsTexture>& texture) noexcept(false);
+		static bool save(std::string_view filepath, const std::shared_ptr<Texture>& texture) noexcept(false);
 	};
 }
 
