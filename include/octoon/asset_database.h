@@ -5,14 +5,17 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT AssetDatabase final : public octoon::AssetImporter
+	class OCTOON_EXPORT AssetDatabase final
 	{
 		OctoonDeclareSingleton(AssetDatabase)
 	public:
 		AssetDatabase() noexcept;
 		virtual ~AssetDatabase() noexcept;
 
-		std::shared_ptr<octoon::RttiObject> loadAssetAtPath(std::string_view path) noexcept(false);
+		std::string getAssetPath(const std::shared_ptr<RttiObject>& asset) const noexcept;
+		std::string getAssetGuid(const std::shared_ptr<RttiObject>& asset) const noexcept;
+
+		std::shared_ptr<RttiObject> loadAssetAtPath(std::string_view path) noexcept(false);
 
 		template<typename T>
 		std::shared_ptr<T> loadAssetAtPath(std::string_view path) noexcept(false)
@@ -22,6 +25,10 @@ namespace octoon
 				return asset->downcast_pointer<T>();
 			return nullptr;
 		}
+
+	private:
+		std::map<std::weak_ptr<octoon::RttiObject>, std::string, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetPathList_;
+		std::map<std::weak_ptr<octoon::RttiObject>, std::string, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetGuidList_;
 	};
 }
 

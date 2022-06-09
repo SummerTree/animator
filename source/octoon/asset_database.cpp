@@ -22,7 +22,23 @@ namespace octoon
 	{
 	}
 
-	std::shared_ptr<octoon::RttiObject>
+	std::string
+	AssetDatabase::getAssetPath(const std::shared_ptr<RttiObject>& asset) const noexcept
+	{
+		if (assetPathList_.contains(asset))
+			return assetPathList_.at(asset);
+		return std::string();
+	}
+
+	std::string
+	AssetDatabase::getAssetGuid(const std::shared_ptr<RttiObject>& asset) const noexcept
+	{
+		if (assetGuidList_.contains(asset))
+			return assetGuidList_.at(asset);
+		return std::string();
+	}
+
+	std::shared_ptr<RttiObject>
 	AssetDatabase::loadAssetAtPath(std::string_view path) noexcept(false)
 	{
 		auto ext = std::string(path.substr(path.find_last_of('.')));
@@ -35,6 +51,7 @@ namespace octoon
 			if (motion)
 			{
 				assetPathList_[motion] = path;
+				assetGuidList_[motion] = make_guid();
 				return motion;
 			}
 		}
@@ -44,6 +61,7 @@ namespace octoon
 			if (texture)
 			{
 				assetPathList_[texture] = path;
+				assetGuidList_[texture] = make_guid();
 				return texture;
 			}
 		}
@@ -53,6 +71,7 @@ namespace octoon
 			if (model)
 			{
 				assetPathList_[model] = path;
+				assetGuidList_[model] = make_guid();
 				return model;
 			}
 		}
@@ -63,6 +82,7 @@ namespace octoon
 			{
 				model->addComponent<MeshAnimationComponent>(path);
 				assetPathList_[model] = path;
+				assetGuidList_[model] = make_guid();
 				return model;
 			}
 		}
