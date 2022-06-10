@@ -14,6 +14,7 @@
 #include <qtreewidget.h>
 #include <qprogressdialog.h>
 #include <octoon/asset_database.h>
+#include <octoon/asset_bundle.h>
 
 namespace unreal
 {
@@ -997,7 +998,7 @@ namespace unreal
 		if (materialComponent)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto material = octoon::MaterialImporter::instance()->loadPackage(std::string_view(uuid));
+			auto material = octoon::AssetBundle::instance()->loadAssetAtPath(uuid);
 			if (material)
 			{
 				octoon::MaterialImporter::instance()->addMaterial(this->material_->clone());
@@ -1764,13 +1765,15 @@ namespace unreal
 			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
 			if (selectedItem)
 			{
-				auto hit = selectedItem.value();
 				auto uuid = item->data(Qt::UserRole).toString().toStdString();
-				auto material = octoon::MaterialImporter::instance()->loadPackage(std::string_view(uuid));
-
-				auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
-				if (meshRenderer)
-					meshRenderer->setMaterial(material, hit.mesh);
+				auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(uuid));
+				if (material)
+				{
+					auto hit = selectedItem.value();
+					auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
+					if (meshRenderer)
+						meshRenderer->setMaterial(material, hit.mesh);
+				}
 			}
 		}
 	}
@@ -1806,7 +1809,7 @@ namespace unreal
 				mainWidget_->addItem(item);
 				mainWidget_->setItemWidget(item, widget);
 
-				auto material = octoon::MaterialImporter::instance()->loadPackage(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
+				auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
 				if (material)
 				{
 					QFontMetrics metrics(nameLabel->font());
@@ -2025,7 +2028,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
 			{
-				auto material = octoon::MaterialImporter::instance()->loadPackage(std::string_view(item->data(Qt::UserRole).toString().toStdString()));
+				auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(item->data(Qt::UserRole).toString().toStdString()));
 				if (material)
 				{
 					this->setWindowTitle(tr("Material Properties"));

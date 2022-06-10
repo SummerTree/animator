@@ -16,10 +16,10 @@ namespace octoon
 		AssetBundle() noexcept;
 		~AssetBundle() noexcept;
 
-		std::shared_ptr<octoon::Material> loadAssetAtPath(std::string_view uuid) noexcept(false);
-
-		nlohmann::json importPackage(std::string_view path, bool generateMipmap = false) noexcept(false);
 		nlohmann::json createPackage(const std::shared_ptr<octoon::Texture>& texture, std::string_view outputPath) noexcept(false);
+		nlohmann::json importPackage(std::string_view path, bool generateMipmap = false) noexcept(false);
+
+		std::shared_ptr<octoon::Material> loadAssetAtPath(std::string_view uuid) noexcept(false);
 	};
 }
 

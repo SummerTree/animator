@@ -505,13 +505,13 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialDock</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="1898"/>
-        <location filename="../views/material_dock.cpp" line="2017"/>
+        <location filename="../views/material_dock.cpp" line="1899"/>
+        <location filename="../views/material_dock.cpp" line="2018"/>
         <source>Material</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2031"/>
+        <location filename="../views/material_dock.cpp" line="2032"/>
         <source>Material Properties</source>
         <translation>材质属性</translation>
     </message>
@@ -519,121 +519,121 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialEditWindow</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="267"/>
+        <location filename="../views/material_dock.cpp" line="268"/>
         <source> Texture</source>
         <translation> 纹理</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="460"/>
+        <location filename="../views/material_dock.cpp" line="461"/>
         <source>material</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="462"/>
+        <location filename="../views/material_dock.cpp" line="463"/>
         <source>Base Color</source>
         <translation>基本颜色</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="463"/>
+        <location filename="../views/material_dock.cpp" line="464"/>
         <source>Opacity</source>
         <translation>透明度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="464"/>
+        <location filename="../views/material_dock.cpp" line="465"/>
         <source>Normal</source>
         <translation>法线</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="465"/>
+        <location filename="../views/material_dock.cpp" line="466"/>
         <source>Roughness</source>
         <translation>粗糙度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="466"/>
+        <location filename="../views/material_dock.cpp" line="467"/>
         <source>Metal</source>
         <translation>金属程度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="467"/>
+        <location filename="../views/material_dock.cpp" line="468"/>
         <source>Specular</source>
         <translation>反射率</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="468"/>
+        <location filename="../views/material_dock.cpp" line="469"/>
         <source>Anisotropy</source>
         <translation>各向异性</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="469"/>
+        <location filename="../views/material_dock.cpp" line="470"/>
         <source>Cloth</source>
         <translation>布料程度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="470"/>
-        <location filename="../views/material_dock.cpp" line="518"/>
+        <location filename="../views/material_dock.cpp" line="471"/>
+        <location filename="../views/material_dock.cpp" line="519"/>
         <source>Clear Coat</source>
         <translation>清漆</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="471"/>
+        <location filename="../views/material_dock.cpp" line="472"/>
         <source>Clear Coat Roughness</source>
         <translation>清漆粗超度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="472"/>
+        <location filename="../views/material_dock.cpp" line="473"/>
         <source>Subsurface</source>
         <translation>次表面</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="473"/>
+        <location filename="../views/material_dock.cpp" line="474"/>
         <source>Subsurface Color</source>
         <translation>次表面散射颜色</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="474"/>
-        <location filename="../views/material_dock.cpp" line="524"/>
+        <location filename="../views/material_dock.cpp" line="475"/>
+        <location filename="../views/material_dock.cpp" line="525"/>
         <source>Refraction</source>
         <translation>折射程度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="475"/>
+        <location filename="../views/material_dock.cpp" line="476"/>
         <source>Refraction Ior</source>
         <translation>折射率</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="476"/>
+        <location filename="../views/material_dock.cpp" line="477"/>
         <source>Emissive</source>
         <translation>自发光</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="521"/>
+        <location filename="../views/material_dock.cpp" line="522"/>
         <source>Subsurface Scattering</source>
         <translation>次表面散射</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="528"/>
+        <location filename="../views/material_dock.cpp" line="529"/>
         <source>Receive Shadow</source>
         <translation>接受阴影</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="534"/>
+        <location filename="../views/material_dock.cpp" line="535"/>
         <source>Other</source>
         <translation>其它</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1048"/>
-        <location filename="../views/material_dock.cpp" line="1056"/>
-        <location filename="../views/material_dock.cpp" line="1064"/>
-        <location filename="../views/material_dock.cpp" line="1072"/>
-        <location filename="../views/material_dock.cpp" line="1080"/>
-        <location filename="../views/material_dock.cpp" line="1088"/>
-        <location filename="../views/material_dock.cpp" line="1096"/>
-        <location filename="../views/material_dock.cpp" line="1104"/>
-        <location filename="../views/material_dock.cpp" line="1112"/>
-        <location filename="../views/material_dock.cpp" line="1120"/>
-        <location filename="../views/material_dock.cpp" line="1128"/>
-        <location filename="../views/material_dock.cpp" line="1136"/>
-        <location filename="../views/material_dock.cpp" line="1144"/>
+        <location filename="../views/material_dock.cpp" line="1049"/>
+        <location filename="../views/material_dock.cpp" line="1057"/>
+        <location filename="../views/material_dock.cpp" line="1065"/>
+        <location filename="../views/material_dock.cpp" line="1073"/>
+        <location filename="../views/material_dock.cpp" line="1081"/>
+        <location filename="../views/material_dock.cpp" line="1089"/>
+        <location filename="../views/material_dock.cpp" line="1097"/>
+        <location filename="../views/material_dock.cpp" line="1105"/>
+        <location filename="../views/material_dock.cpp" line="1113"/>
+        <location filename="../views/material_dock.cpp" line="1121"/>
+        <location filename="../views/material_dock.cpp" line="1129"/>
+        <location filename="../views/material_dock.cpp" line="1137"/>
+        <location filename="../views/material_dock.cpp" line="1145"/>
         <source>Open Image</source>
         <translation>打开图像</translation>
     </message>
@@ -641,43 +641,43 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialListDialog</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="53"/>
+        <location filename="../views/material_dock.cpp" line="54"/>
         <source>Material Resource</source>
         <translation>材质资源</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="58"/>
+        <location filename="../views/material_dock.cpp" line="59"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="62"/>
+        <location filename="../views/material_dock.cpp" line="63"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="66"/>
+        <location filename="../views/material_dock.cpp" line="67"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="157"/>
+        <location filename="../views/material_dock.cpp" line="158"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="157"/>
+        <location filename="../views/material_dock.cpp" line="158"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation>NVIDIA MDL Files (*.mdl)</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="162"/>
         <location filename="../views/material_dock.cpp" line="163"/>
+        <location filename="../views/material_dock.cpp" line="164"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="162"/>
+        <location filename="../views/material_dock.cpp" line="163"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
