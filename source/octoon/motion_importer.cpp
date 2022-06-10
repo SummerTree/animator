@@ -21,38 +21,10 @@ namespace octoon
 	nlohmann::json
 	MotionImporter::importPackage(std::string_view filepath) noexcept(false)
 	{
-		std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes((char*)std::string(filepath).data());
-
-		if (std::filesystem::exists(u16_conv))
+		auto package = AssetDatabase::instance()->createAsset(filepath, assertPath_);
+		if (package.is_object())
 		{
-			auto uuid = octoon::make_guid();
-			auto rootPath = std::filesystem::path(assertPath_).append(uuid);
-			auto motionPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
-			auto packagePath = std::filesystem::path(rootPath).append("package.json");
-
-			std::filesystem::create_directory(assertPath_);
-			std::filesystem::create_directory(rootPath);
-			std::filesystem::copy(u16_conv, motionPath);
-			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
-
-			auto filename = std::filesystem::path(u16_conv).filename().u8string();
-
-			nlohmann::json package;
-			package["uuid"] = uuid;
-			package["visible"] = true;
-			package["name"] = (char*)filename.substr(0, filename.find_last_of('.')).c_str();
-			package["path"] = (char*)motionPath.u8string().c_str();
-
-			std::ofstream ifs(packagePath, std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			indexList_.push_back(uuid);
-
+			indexList_.push_back(package["uuid"].get<std::string>());
 			return package;
 		}
 

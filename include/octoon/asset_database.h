@@ -14,6 +14,7 @@ namespace octoon
 		AssetDatabase() noexcept;
 		virtual ~AssetDatabase() noexcept;
 
+		nlohmann::json createAsset(std::string_view filepath, std::string_view path) noexcept(false);
 		nlohmann::json createAsset(const octoon::Texture& texture, std::string_view outputPath) noexcept(false);
 		nlohmann::json createAsset(const octoon::Animation& animation, std::string_view outputPath) noexcept(false);
 

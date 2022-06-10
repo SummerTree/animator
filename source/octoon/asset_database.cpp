@@ -23,6 +23,46 @@ namespace octoon
 	}
 
 	nlohmann::json
+	AssetDatabase::createAsset(std::string_view filepath, std::string_view path) noexcept(false)
+	{
+		std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes((char*)std::string(filepath).data());
+
+		if (std::filesystem::exists(u16_conv))
+		{
+			auto uuid = octoon::make_guid();
+			auto extension = filepath.substr(filepath.find_last_of("."));
+			auto rootPath = std::filesystem::path(path).append(uuid);
+			auto motionPath = std::filesystem::path(rootPath).append(uuid + std::string(extension));
+			auto packagePath = std::filesystem::path(rootPath).append("package.json");
+
+			std::filesystem::create_directory(path);
+			std::filesystem::create_directory(rootPath);
+			std::filesystem::copy(u16_conv, motionPath);
+			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
+
+			auto filename = std::filesystem::path(u16_conv).filename().u8string();
+
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["visible"] = true;
+			package["name"] = (char*)filename.substr(0, filename.find_last_of('.')).c_str();
+			package["path"] = (char*)motionPath.u8string().c_str();
+
+			std::ofstream ifs(packagePath, std::ios_base::binary);
+			if (ifs)
+			{
+				auto dump = package.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+			}
+
+			return package;
+		}
+
+		return nlohmann::json();
+	}
+
+	nlohmann::json
 	AssetDatabase::createAsset(const octoon::Texture& texture, std::string_view path) noexcept(false)
 	{
 		assert(!path.empty());
