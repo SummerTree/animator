@@ -27,6 +27,7 @@ namespace octoon
 		nlohmann::json createAsset(const Texture& texture, std::string_view outputPath) noexcept(false);
 		nlohmann::json createAsset(const Animation& animation, std::string_view outputPath) noexcept(false);
 		nlohmann::json createAsset(const std::shared_ptr<Material>& material, std::string_view outputPath) noexcept(false);
+		nlohmann::json createAsset(const PMX& pmx, std::string_view outputPath) noexcept(false);
 
 		std::string getAssetPath(const std::shared_ptr<RttiObject>& asset) noexcept;
 		std::string getAssetPath(const std::shared_ptr<RttiObject>& asset) const noexcept;
@@ -62,8 +63,11 @@ namespace octoon
 		std::shared_ptr<octoon::GraphicsTexture> createMaterialPreview(const std::shared_ptr<Material>& material);
 
 	private:
+		void initRenderScene() noexcept(false);
 		void initMaterialScene() noexcept(false);
+
 		void createMaterialPreview(const std::shared_ptr<Material>& material, octoon::Texture& texture);
+		void createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, octoon::Texture& texture);
 
 	private:
 		std::uint32_t previewWidth_;
@@ -76,12 +80,19 @@ namespace octoon
 		std::map<std::weak_ptr<octoon::RttiObject>, std::string, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetPathList_;
 		std::map<std::weak_ptr<octoon::RttiObject>, std::string, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetGuidList_;
 
-		std::shared_ptr<PerspectiveCamera> camera_;
-		std::shared_ptr<Geometry> geometry_;
-		std::shared_ptr<DirectionalLight> directionalLight_;
-		std::shared_ptr<EnvironmentLight> environmentLight_;
-		std::shared_ptr<RenderScene> scene_;
-		std::shared_ptr<GraphicsFramebuffer> framebuffer_;
+		std::shared_ptr<octoon::PerspectiveCamera> camera_;
+		std::shared_ptr<octoon::Geometry> geometry_;
+		std::shared_ptr<octoon::DirectionalLight> directionalLight_;
+		std::shared_ptr<octoon::EnvironmentLight> environmentLight_;
+		std::shared_ptr<octoon::RenderScene> scene_;
+		std::shared_ptr<octoon::GraphicsFramebuffer> framebuffer_;
+
+		std::shared_ptr<PerspectiveCamera> materialCamera_;
+		std::shared_ptr<Geometry> materialGeometry_;
+		std::shared_ptr<DirectionalLight> materialDirectionalLight_;
+		std::shared_ptr<EnvironmentLight> materialEnvironmentLight_;
+		std::shared_ptr<RenderScene> materialScene_;
+		std::shared_ptr<GraphicsFramebuffer> materialFramebuffer_;
 	};
 }
 

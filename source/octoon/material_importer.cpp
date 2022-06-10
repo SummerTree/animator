@@ -22,7 +22,6 @@ namespace octoon
 
 	MaterialImporter::~MaterialImporter() noexcept
 	{
-		this->close();
 	}
 
 	nlohmann::json
