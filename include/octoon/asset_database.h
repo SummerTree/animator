@@ -2,6 +2,7 @@
 #define OCTOON_ASSET_DATABASE_H_
 
 #include <octoon/asset_importer.h>
+#include <octoon/pmx_loader.h>
 #include <octoon/texture/texture.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/animation/animation.h>
@@ -37,6 +38,7 @@ namespace octoon
 		nlohmann::json getPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept(false);
 
 		std::shared_ptr<RttiObject> loadAssetAtPath(std::string_view path) noexcept(false);
+		std::shared_ptr<RttiObject> loadAssetAtPath(std::string_view path, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
 		std::shared_ptr<RttiObject> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
 
 		template<typename T>

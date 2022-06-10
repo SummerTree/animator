@@ -43,33 +43,6 @@ namespace octoon
 		framebuffer_.reset();
 	}
 
-	octoon::GameObjectPtr
-	ModelImporter::importModel(std::string_view path, octoon::PMXLoadFlags flags) noexcept(false)
-	{
-		auto ext = path.substr(path.find_last_of("."));
-		if (ext == ".pmx")
-		{
-			auto model = octoon::PMXLoader::load(path, flags);
-			if (model)
-			{
-				assetPathList_[model] = path;
-				return model;
-			}
-		}
-		else if (ext == ".abc")
-		{
-			auto model = std::make_shared<octoon::GameObject>();
-			if (model)
-			{
-				model->addComponent<octoon::MeshAnimationComponent>(path);
-				assetPathList_[model] = path;
-				return model;
-			}
-		}
-
-		return nullptr;
-	}
-
 	nlohmann::json
 	ModelImporter::createPackage(std::string_view filepath) noexcept(false)
 	{
@@ -229,7 +202,8 @@ namespace octoon
 		if (metadata.find("path") != metadata.end())
 		{
 			auto path = metadata["path"].get<nlohmann::json::string_t>();
-			return this->importModel(path, flags);
+			auto texture = AssetDatabase::instance()->loadAssetAtPath(path, flags);
+			if (texture) return texture->downcast_pointer<octoon::GameObject>();
 		}
 
 		return nullptr;

@@ -23,7 +23,6 @@ namespace octoon
 		void open(std::string indexPath) noexcept(false) override;
 		void close() noexcept override;
 
-		octoon::GameObjectPtr importModel(std::string_view path, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
 		octoon::GameObjectPtr loadPackage(const nlohmann::json& package, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept(false);
 		octoon::GameObjectPtr loadMetaData(const nlohmann::json& metadata, octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit) noexcept;
 

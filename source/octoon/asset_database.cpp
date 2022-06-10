@@ -452,6 +452,35 @@ namespace octoon
 	}
 
 	std::shared_ptr<RttiObject>
+	AssetDatabase::loadAssetAtPath(std::string_view path, octoon::PMXLoadFlags flags) noexcept(false)
+	{
+		auto ext = path.substr(path.find_last_of("."));
+		if (ext == ".pmx")
+		{
+			auto model = octoon::PMXLoader::load(path, flags);
+			if (model)
+			{
+				assetPathList_[model] = path;
+				assetGuidList_[model] = make_guid();
+				return model;
+			}
+		}
+		else if (ext == ".abc")
+		{
+			auto model = std::make_shared<octoon::GameObject>();
+			if (model)
+			{
+				model->addComponent<octoon::MeshAnimationComponent>(path);
+				assetPathList_[model] = path;
+				assetGuidList_[model] = make_guid();
+				return model;
+			}
+		}
+
+		return nullptr;
+	}
+
+	std::shared_ptr<RttiObject>
 	AssetDatabase::loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false)
 	{
 		if (type.isDerivedFrom(Texture::getRtti()))
