@@ -91,6 +91,8 @@ namespace octoon
 	{
 		assert(!path.empty());
 
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
 		auto uuid = make_guid();
 		auto filename = texture.getName().substr(texture.getName().find_last_of("."));
 		auto rootPath = std::filesystem::path(path).append(uuid);
@@ -107,7 +109,7 @@ namespace octoon
 		nlohmann::json package;
 		package["uuid"] = uuid;
 		package["visible"] = true;
-		package["name"] = (char*)std::filesystem::path(texture.getName()).filename().u8string().c_str();
+		package["name"] = (char*)std::filesystem::path(cv.from_bytes(texture.getName())).filename().u8string().c_str();
 		package["path"] = (char*)texturePath.u8string().c_str();
 		package["mipmap"] = texture.getMipLevel() > 1;
 
