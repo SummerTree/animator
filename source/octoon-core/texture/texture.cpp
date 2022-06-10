@@ -530,7 +530,7 @@ namespace octoon
 	}
 
 	bool
-	Texture::save(ostream& stream, const char* type) noexcept
+	Texture::save(ostream& stream, const char* type) const noexcept
 	{
 		if (stream.good())
 		{
@@ -546,21 +546,21 @@ namespace octoon
 	}
 
 	bool
-	Texture::save(const char* filepath, const char* type) noexcept
+	Texture::save(const char* filepath, const char* type) const noexcept
 	{
 		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		return this->save(stream, type);
 	}
 
 	bool
-	Texture::save(const std::string& filepath, const char* type) noexcept
+	Texture::save(const std::string& filepath, const char* type) const noexcept
 	{
 		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		return this->save(stream, type);
 	}
 
 	bool
-	Texture::save(const std::string& filepath, const std::string& type) noexcept
+	Texture::save(const std::string& filepath, const std::string& type) const noexcept
 	{
 		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		return this->save(stream, type.c_str());

@@ -80,7 +80,7 @@ namespace octoon
 				}
 			}
 
-			package = AssetDatabase::instance()->createAsset(animation, outputPath);
+			package = AssetDatabase::instance()->createAsset(*animation, outputPath);
 			assetPackageCache_[animation] = package;
 
 			return package;

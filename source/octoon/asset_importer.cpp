@@ -20,7 +20,7 @@ namespace octoon
 		if (std::filesystem::exists(indexPath))
 		{
 			this->assertPath_ = indexPath;
-			this->initPackageIndices();
+			this->indexList_ = this->getPackageIndices(this->assertPath_);
 		}
 	}
 
@@ -152,12 +152,13 @@ namespace octoon
 		assetPackageCache_.clear();
 	}
 
-	void
-	AssetImporter::initPackageIndices() noexcept(false)
+	nlohmann::json
+	AssetImporter::getPackageIndices(std::string_view indexPath_) noexcept(false)
 	{
-		auto& indexList = indexList_;
+		nlohmann::json indexList;
 
-		std::ifstream indexStream(assertPath_ + "/index.json");
+		auto indexPath = std::string(indexPath_);
+		std::ifstream indexStream(indexPath + "/index.json");
 		if (indexStream)
 			indexList = nlohmann::json::parse(indexStream);
 
@@ -167,13 +168,13 @@ namespace octoon
 
 		for (auto& it : indexList)
 		{
-			if (!std::filesystem::exists(std::filesystem::path(assertPath_).append(it.get<nlohmann::json::string_t>())))
+			if (!std::filesystem::exists(std::filesystem::path(indexPath).append(it.get<nlohmann::json::string_t>())))
 				needUpdateIndexFile = true;
 			else
 				indexSet.insert(it.get<nlohmann::json::string_t>());
 		}
 
-		for (auto& it : std::filesystem::directory_iterator(assertPath_))
+		for (auto& it : std::filesystem::directory_iterator(indexPath))
 		{
 			if (std::filesystem::is_directory(it))
 			{
@@ -201,5 +202,7 @@ namespace octoon
 			indexList_ = json;
 			this->saveAssets();
 		}
+
+		return indexList;
 	}
 }

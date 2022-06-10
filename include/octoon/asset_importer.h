@@ -31,7 +31,7 @@ namespace octoon
 		virtual void clearCache() noexcept;
 
 	private:
-		void initPackageIndices() noexcept(false);
+		nlohmann::json getPackageIndices(std::string_view indexPath) noexcept(false);
 
 	protected:
 		std::string assertPath_;

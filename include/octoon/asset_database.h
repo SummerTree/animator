@@ -14,13 +14,13 @@ namespace octoon
 		AssetDatabase() noexcept;
 		virtual ~AssetDatabase() noexcept;
 
+		nlohmann::json createAsset(const octoon::Texture& texture, std::string_view outputPath) noexcept(false);
+		nlohmann::json createAsset(const octoon::Animation& animation, std::string_view outputPath) noexcept(false);
+
 		std::string getAssetPath(const std::shared_ptr<RttiObject>& asset) const noexcept;
 
 		std::string getAssetGuid(const std::shared_ptr<RttiObject>& asset) noexcept;
 		std::string getAssetGuid(const std::shared_ptr<RttiObject>& asset) const noexcept;
-
-		nlohmann::json createAsset(const std::shared_ptr<octoon::Texture>& texture, std::string_view outputPath) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<octoon::Animation>& animation, std::string_view outputPath) noexcept;
 
 		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath = "") noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept(false);

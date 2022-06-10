@@ -186,7 +186,6 @@ namespace octoon
 
 			return json;
 		}
-
 		auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
 		if (!assetPath.empty())
 		{
