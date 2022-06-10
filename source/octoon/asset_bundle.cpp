@@ -1,6 +1,7 @@
 #include <octoon/asset_bundle.h>
-#include <octoon/texture/texture.h>
 #include <octoon/asset_database.h>
+#include <octoon/material_importer.h>
+#include <octoon/texture/texture.h>
 #include <octoon/runtime/uuid.h>
 #include <fstream>
 #include <filesystem>
@@ -16,6 +17,16 @@ namespace octoon
 
 	AssetBundle::~AssetBundle() noexcept
 	{
+	}
+
+	std::shared_ptr<octoon::Material>
+	AssetBundle::loadAssetAtPath(std::string_view uuid) noexcept(false)
+	{
+		auto package = MaterialImporter::instance()->getPackage(uuid);
+		if (package.is_object())
+			return AssetDatabase::instance()->loadAssetAtPackage<Material>(package);
+
+		return nullptr;
 	}
 
 	nlohmann::json

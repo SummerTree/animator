@@ -95,12 +95,12 @@ namespace octoon
 	}
 
 	std::shared_ptr<octoon::Material>
-	MaterialImporter::loadPackage(std::string_view uuid, std::string_view rootPath) noexcept(false)
+	MaterialImporter::loadPackage(std::string_view uuid) noexcept(false)
 	{
 		if (materials_.find(std::string(uuid)) != materials_.end())
 			return materials_[std::string(uuid)];
 
-		auto package = MaterialImporter::instance()->getPackage(uuid, rootPath);
+		auto package = MaterialImporter::instance()->getPackage(uuid);
 		if (package.is_object())
 			return AssetDatabase::instance()->loadAssetAtPackage<Material>(package);
 

@@ -25,7 +25,7 @@ namespace octoon
 		nlohmann::json createPackage(std::string_view path) noexcept(false);
 		nlohmann::json createPackage(const std::shared_ptr<octoon::Material>& material) noexcept(false);
 		
-		std::shared_ptr<octoon::Material> loadPackage(std::string_view uuid, std::string_view outputPath = "") noexcept(false);
+		std::shared_ptr<octoon::Material> loadPackage(std::string_view uuid) noexcept(false);
 
 		nlohmann::json& getSceneList() noexcept;
 		const nlohmann::json& getSceneList() const noexcept;
