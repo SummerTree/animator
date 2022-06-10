@@ -3,7 +3,12 @@
 
 #include <octoon/asset_importer.h>
 #include <octoon/texture/texture.h>
+#include <octoon/material/mesh_standard_material.h>
 #include <octoon/animation/animation.h>
+#include <octoon/light/directional_light.h>
+#include <octoon/light/environment_light.h>
+#include <octoon/camera/perspective_camera.h>
+#include <octoon/video/renderer.h>
 
 namespace octoon
 {
@@ -14,16 +19,21 @@ namespace octoon
 		AssetDatabase() noexcept;
 		virtual ~AssetDatabase() noexcept;
 
-		nlohmann::json createAsset(std::string_view filepath, std::string_view outputPath) noexcept(false);
-		nlohmann::json createAsset(const octoon::Texture& texture, std::string_view outputPath) noexcept(false);
-		nlohmann::json createAsset(const octoon::Animation& animation, std::string_view outputPath) noexcept(false);
+		void open() noexcept(false);
+		void close() noexcept;
 
+		nlohmann::json createAsset(std::string_view filepath, std::string_view outputPath) noexcept(false);
+		nlohmann::json createAsset(const Texture& texture, std::string_view outputPath) noexcept(false);
+		nlohmann::json createAsset(const Animation& animation, std::string_view outputPath) noexcept(false);
+		nlohmann::json createAsset(const std::shared_ptr<Material>& material, std::string_view outputPath) noexcept(false);
+
+		std::string getAssetPath(const std::shared_ptr<RttiObject>& asset) noexcept;
 		std::string getAssetPath(const std::shared_ptr<RttiObject>& asset) const noexcept;
 
 		std::string getAssetGuid(const std::shared_ptr<RttiObject>& asset) noexcept;
 		std::string getAssetGuid(const std::shared_ptr<RttiObject>& asset) const noexcept;
 
-		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath = "") noexcept;
+		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath) noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept(false);
 
 		std::shared_ptr<RttiObject> loadAssetAtPath(std::string_view path) noexcept(false);
@@ -47,13 +57,29 @@ namespace octoon
 			return nullptr;
 		}
 
+		std::shared_ptr<octoon::GraphicsTexture> createMaterialPreview(const std::shared_ptr<Material>& material);
+
 	private:
+		void initMaterialScene() noexcept(false);
+		void createMaterialPreview(const std::shared_ptr<Material>& material, octoon::Texture& texture);
+
+	private:
+		std::uint32_t previewWidth_;
+		std::uint32_t previewHeight_;
+
 		std::map<std::string, nlohmann::json> packageList_;
 
 		std::map<std::string, std::shared_ptr<octoon::RttiObject>> assetCache_;
 		std::map<std::weak_ptr<octoon::RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetList_;
 		std::map<std::weak_ptr<octoon::RttiObject>, std::string, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetPathList_;
 		std::map<std::weak_ptr<octoon::RttiObject>, std::string, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetGuidList_;
+
+		std::shared_ptr<PerspectiveCamera> camera_;
+		std::shared_ptr<Geometry> geometry_;
+		std::shared_ptr<DirectionalLight> directionalLight_;
+		std::shared_ptr<EnvironmentLight> environmentLight_;
+		std::shared_ptr<RenderScene> scene_;
+		std::shared_ptr<GraphicsFramebuffer> framebuffer_;
 	};
 }
 

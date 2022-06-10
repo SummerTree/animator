@@ -1,7 +1,8 @@
 #include "unreal_behaviour.h"
 #include "../utils/pmm_loader.h"
 #include "../utils/ass_loader.h"
-#include <octoon/texture_importer.h>
+#include <octoon/asset_bundle.h>
+#include <octoon/asset_database.h>
 #include <octoon/motion_importer.h>
 #include <octoon/model_importer.h>
 #include <octoon/material_importer.h>
@@ -117,7 +118,7 @@ namespace unreal
 		else if (ext == ".vmd")
 			octoon::MotionImporter::instance()->importPackage(path);
 		else if (ext == ".hdr")
-			octoon::TextureImporter::instance()->importPackage(path);
+			octoon::AssetBundle::instance()->importPackage(path);
 	}
 
 	void
@@ -266,9 +267,10 @@ namespace unreal
 		context_->behaviour = this;
 		context_->profile = profile_.get();
 
+		octoon::AssetDatabase::instance()->open();
 		octoon::ModelImporter::instance()->open(profile_->resourceModule->modelPath);
 		octoon::MotionImporter::instance()->open(profile_->resourceModule->motionPath);
-		octoon::TextureImporter::instance()->open(profile_->resourceModule->hdriPath);
+		octoon::AssetBundle::instance()->open(profile_->resourceModule->hdriPath);
 		octoon::MaterialImporter::instance()->open(profile_->resourceModule->materialPath);
 
 		recordComponent_ = std::make_unique<RecordComponent>();
@@ -380,9 +382,10 @@ namespace unreal
 			}
 		}
 
+		octoon::AssetDatabase::instance()->close();
+		octoon::AssetBundle::instance()->close();
 		octoon::ModelImporter::instance()->close();
 		octoon::MotionImporter::instance()->close();
-		octoon::TextureImporter::instance()->close();
 		octoon::MaterialImporter::instance()->close();
 	}
 

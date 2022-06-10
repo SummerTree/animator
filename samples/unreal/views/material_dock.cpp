@@ -14,7 +14,6 @@
 #include <qtreewidget.h>
 #include <qprogressdialog.h>
 #include <octoon/asset_database.h>
-#include <octoon/texture_importer.h>
 
 namespace unreal
 {
@@ -439,8 +438,9 @@ namespace unreal
 
 		this->path->setText(name);
 		this->check->setCheckState(Qt::CheckState::Checked);
-		this->texture = textureData;
 		this->image->setIcon(QIcon(QPixmap::fromImage(qimage)));
+		this->texture = textureData;
+		this->texture->apply();
 
 		return textureData;
 	}
@@ -1333,7 +1333,7 @@ namespace unreal
 	{
 		if (this->material_)
 		{
-			auto colorTexture = octoon::MaterialImporter::instance()->createMaterialPreview(this->material_);
+			auto colorTexture = octoon::AssetDatabase::instance()->createMaterialPreview(this->material_);
 			auto width = colorTexture->getTextureDesc().getWidth();
 			auto height = colorTexture->getTextureDesc().getHeight();
 
@@ -1813,7 +1813,7 @@ namespace unreal
 					nameLabel->setToolTip(QString::fromStdString(material->getName()));
 					nameLabel->setText(metrics.elidedText(nameLabel->toolTip(), Qt::ElideRight, imageLabel->width()));
 
-					auto colorTexture = octoon::MaterialImporter::instance()->createMaterialPreview(material);
+					auto colorTexture = octoon::AssetDatabase::instance()->createMaterialPreview(material);
 					auto width = colorTexture->getTextureDesc().getWidth();
 					auto height = colorTexture->getTextureDesc().getHeight();
 

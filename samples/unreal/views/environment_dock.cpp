@@ -1,7 +1,7 @@
 #include "environment_dock.h"
 #include <octoon/environment_light_component.h>
 #include <octoon/texture/texture.h>
-#include <octoon/texture_importer.h>
+#include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
 #include <octoon/mesh_renderer_component.h>
 
@@ -82,7 +82,7 @@ namespace unreal
 	void
 	EnvironmentListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::TextureImporter::instance()->getPackage(uuid);
+		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -146,16 +146,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = octoon::TextureImporter::instance()->importPackage(filepaths[i].toUtf8().toStdString(), true);
+					auto package = octoon::AssetBundle::instance()->importPackage(filepaths[i].toUtf8().toStdString(), true);
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				octoon::TextureImporter::instance()->saveAssets();
+				octoon::AssetBundle::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::TextureImporter::instance()->saveAssets();
+				octoon::AssetBundle::instance()->saveAssets();
 			}
 		}
 	}
@@ -204,7 +204,7 @@ namespace unreal
 	{
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::TextureImporter::instance()->getIndexList())
+		for (auto& uuid : octoon::AssetBundle::instance()->getIndexList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 
@@ -220,11 +220,11 @@ namespace unreal
 					if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this picture?")) == QMessageBox::Yes)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						octoon::TextureImporter::instance()->removePackage(uuid.toStdString());
+						octoon::AssetBundle::instance()->removePackage(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						octoon::TextureImporter::instance()->saveAssets();
+						octoon::AssetBundle::instance()->saveAssets();
 					}
 				}
 			}
@@ -464,7 +464,7 @@ namespace unreal
 		{
 			if (texture && this->isVisible())
 			{
-				auto package = octoon::TextureImporter::instance()->getPackage(texture);
+				auto package = octoon::AssetBundle::instance()->getPackage(texture);
 				if (package.is_object())
 				{
 					auto name = package["name"].get<nlohmann::json::string_t>();
@@ -630,7 +630,7 @@ namespace unreal
 		try
 		{
 			auto uuid = item->data(Qt::UserRole).toString();
-			auto package = octoon::TextureImporter::instance()->getPackage(uuid.toStdString());
+			auto package = octoon::AssetBundle::instance()->getPackage(uuid.toStdString());
 			if (package.is_object())
 			{
 				auto name = package["name"].get<nlohmann::json::string_t>();

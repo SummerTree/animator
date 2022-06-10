@@ -90,7 +90,7 @@ namespace unreal
 
 							auto data = materialJson["data"].get<nlohmann::json::object_t>();
 							auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-							auto material = octoon::MaterialImporter::instance()->loadPackage(data);
+							auto material = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Material>(data);
 
 							materials[index] = std::move(material);
 						}
@@ -119,8 +119,8 @@ namespace unreal
 		auto texturePath = root + "/Textures";
 		auto materialPath = root + "/Materials";
 
-		octoon::MaterialImporter::instance()->setTexturePath(root + "/Textures");
-		octoon::MaterialImporter::instance()->setMaterialPath(root + "/Materials");
+		//octoon::MaterialImporter::instance()->setTexturePath(root + "/Textures");
+		//octoon::MaterialImporter::instance()->setMaterialPath(root + "/Materials");
 
 		nlohmann::json sceneJson;
 

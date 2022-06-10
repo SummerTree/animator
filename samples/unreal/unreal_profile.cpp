@@ -2,7 +2,7 @@
 #include <fstream>
 #include <filesystem>
 #include <octoon/runtime/json.h>
-#include <octoon/texture_importer.h>
+#include <octoon/asset_bundle.h>
 #include <octoon/motion_importer.h>
 #include <octoon/material_importer.h>
 
@@ -59,7 +59,7 @@ namespace unreal
 	UnrealProfile::load(std::string_view path_) noexcept(false)
 	{
 		octoon::MotionImporter::instance()->clearCache();
-		octoon::TextureImporter::instance()->clearCache();
+		octoon::AssetBundle::instance()->clearCache();
 		octoon::MaterialImporter::instance()->clearCache();
 
 		std::ifstream stream(path_);
@@ -119,7 +119,7 @@ namespace unreal
 			}
 
 			octoon::MotionImporter::instance()->clearCache();
-			octoon::TextureImporter::instance()->clearCache();
+			octoon::AssetBundle::instance()->clearCache();
 			octoon::MaterialImporter::instance()->clearCache();
 
 			std::ofstream stream(path_);

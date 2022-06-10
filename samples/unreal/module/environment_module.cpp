@@ -1,5 +1,5 @@
 #include "environment_module.h"
-#include <octoon/texture_importer.h>
+#include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
 
 namespace unreal
@@ -55,7 +55,7 @@ namespace unreal
 		{
 			auto root = std::string(profilePath);
 			root = root.substr(0, root.find_last_of('/')) + "/Assets/Textures";
-			writer["texture"] = octoon::TextureImporter::instance()->createPackage(this->texture.getValue(), root);
+			writer["texture"] = octoon::AssetBundle::instance()->createPackage(this->texture.getValue(), root);
 		}
 	}
 

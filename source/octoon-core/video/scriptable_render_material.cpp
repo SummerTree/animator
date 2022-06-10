@@ -2663,7 +2663,7 @@ namespace octoon
 					break;
 					case PropertyTypeInfo::PropertyTypeInfoTexture:
 					{
-						uniform->uniformTexture(prop.texture->getNativeTexture());
+						uniform->uniformTexture(prop.texture ? prop.texture->getNativeTexture() : nullptr);
 					}
 					break;
 					case PropertyTypeInfo::PropertyTypeInfoRenderTexture:

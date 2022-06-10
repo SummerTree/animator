@@ -1,4 +1,4 @@
-#include <octoon/texture_importer.h>
+#include <octoon/asset_bundle.h>
 #include <octoon/texture/texture.h>
 #include <octoon/asset_database.h>
 #include <octoon/runtime/uuid.h>
@@ -8,18 +8,18 @@
 
 namespace octoon
 {
-	OctoonImplementSingleton(TextureImporter)
+	OctoonImplementSingleton(AssetBundle)
 
-	TextureImporter::TextureImporter() noexcept
+	AssetBundle::AssetBundle() noexcept
 	{
 	}
 
-	TextureImporter::~TextureImporter() noexcept
+	AssetBundle::~AssetBundle() noexcept
 	{
 	}
 
 	nlohmann::json
-	TextureImporter::importPackage(std::string_view filepath, bool generateMipmap) noexcept(false)
+	AssetBundle::importPackage(std::string_view filepath, bool generateMipmap) noexcept(false)
 	{
 		octoon::Texture texture;
 
@@ -35,7 +35,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	TextureImporter::createPackage(const std::shared_ptr<octoon::Texture>& texture, std::string_view outputPath) noexcept(false)
+	AssetBundle::createPackage(const std::shared_ptr<octoon::Texture>& texture, std::string_view outputPath) noexcept(false)
 	{
 		if (texture)
 		{

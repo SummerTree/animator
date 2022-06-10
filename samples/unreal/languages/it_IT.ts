@@ -480,7 +480,7 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialEditWindow</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="268"/>
+        <location filename="../views/material_dock.cpp" line="267"/>
         <source> Texture</source>
         <translation type="unfinished"></translation>
     </message>
@@ -602,43 +602,43 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialListDialog</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="54"/>
+        <location filename="../views/material_dock.cpp" line="53"/>
         <source>Material Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="59"/>
+        <location filename="../views/material_dock.cpp" line="58"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="63"/>
+        <location filename="../views/material_dock.cpp" line="62"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="67"/>
+        <location filename="../views/material_dock.cpp" line="66"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="158"/>
+        <location filename="../views/material_dock.cpp" line="157"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="158"/>
+        <location filename="../views/material_dock.cpp" line="157"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/material_dock.cpp" line="162"/>
         <location filename="../views/material_dock.cpp" line="163"/>
-        <location filename="../views/material_dock.cpp" line="164"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="163"/>
+        <location filename="../views/material_dock.cpp" line="162"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

@@ -5,6 +5,7 @@
 #include <octoon/timer_feature.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/material_importer.h>
+#include <octoon/asset_database.h>
 
 #pragma warning(push)
 #pragma warning(disable:4244)
@@ -477,7 +478,7 @@ namespace octoon
 		{
 			auto data = material["data"].get<nlohmann::json::object_t>();
 			auto name = material["name"].get<std::string>();
-			materials[name] = octoon::MaterialImporter::instance()->loadPackage(data);
+			materials[name] = octoon::AssetDatabase::instance()->loadAssetAtPackage<Material>(data);
 		}
 
 		this->setMaterials(std::move(materials));
