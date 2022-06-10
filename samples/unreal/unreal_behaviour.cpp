@@ -114,9 +114,9 @@ namespace unreal
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
 			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")
-			octoon::MaterialImporter::instance()->createPackage(path);
+			octoon::AssetBundle::instance()->importPackage(path);
 		else if (ext == ".vmd")
-			octoon::MotionImporter::instance()->importPackage(path);
+			octoon::AssetBundle::instance()->importPackage(path);
 		else if (ext == ".hdr")
 			octoon::AssetBundle::instance()->importPackage(path);
 	}
@@ -268,10 +268,7 @@ namespace unreal
 		context_->profile = profile_.get();
 
 		octoon::AssetDatabase::instance()->open();
-		octoon::ModelImporter::instance()->open(profile_->resourceModule->modelPath);
-		octoon::MotionImporter::instance()->open(profile_->resourceModule->motionPath);
-		octoon::AssetBundle::instance()->open(profile_->resourceModule->hdriPath);
-		octoon::MaterialImporter::instance()->open(profile_->resourceModule->materialPath);
+		octoon::AssetBundle::instance()->open(profile_->resourceModule->rootPath);
 
 		recordComponent_ = std::make_unique<RecordComponent>();
 		entitiesComponent_ = std::make_unique<EntitiesComponent>();
@@ -382,11 +379,8 @@ namespace unreal
 			}
 		}
 
-		octoon::AssetDatabase::instance()->close();
 		octoon::AssetBundle::instance()->close();
-		octoon::ModelImporter::instance()->close();
-		octoon::MotionImporter::instance()->close();
-		octoon::MaterialImporter::instance()->close();
+		octoon::AssetDatabase::instance()->close();
 	}
 
 	void

@@ -2,18 +2,12 @@
 #define UNREAL_MATERIAL_IMPORTER_H_
 
 #include <map>
-#include <octoon/video/renderer.h>
-#include <octoon/light/directional_light.h>
-#include <octoon/light/environment_light.h>
-#include <octoon/camera/perspective_camera.h>
 #include <octoon/material/mesh_standard_material.h>
-#include <octoon/texture/texture.h>
 #include <octoon/runtime/singleton.h>
-#include <octoon/asset_importer.h>
 
 namespace octoon
 {
-	class OCTOON_EXPORT MaterialImporter final : public octoon::AssetImporter
+	class OCTOON_EXPORT MaterialImporter final
 	{
 		OctoonDeclareSingleton(MaterialImporter)
 	public:
@@ -22,9 +16,6 @@ namespace octoon
 
 		bool addMaterial(const std::shared_ptr<octoon::Material>& material);
 		std::shared_ptr<octoon::Material> getMaterial(std::string_view uuid) noexcept(false);
-
-		nlohmann::json createPackage(std::string_view path) noexcept(false);
-		nlohmann::json createPackage(const std::shared_ptr<octoon::Material>& material) noexcept(false);
 
 		nlohmann::json& getSceneList() noexcept;
 		const nlohmann::json& getSceneList() const noexcept;
@@ -40,6 +31,7 @@ namespace octoon
 		nlohmann::json sceneList_;
 
 		std::map<std::string, std::shared_ptr<octoon::Material>> materials_;
+		std::map<std::shared_ptr<octoon::Material>, std::string> materialUUIDs_;
 	};
 }
 

@@ -1,7 +1,7 @@
 #include "motion_dock.h"
 #include "../widgets/draggable_list_widget.h"
-#include <octoon/motion_importer.h>
 #include <octoon/asset_database.h>
+#include <octoon/asset_bundle.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qfiledialog.h>
@@ -80,7 +80,7 @@ namespace unreal
 	void 
 	MotionDock::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::MotionImporter::instance()->getPackage(uuid);
+		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -143,11 +143,11 @@ namespace unreal
 					if (clickedItem_)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						octoon::MotionImporter::instance()->removePackage(uuid.toStdString());
+						octoon::AssetBundle::instance()->removePackage(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						octoon::MotionImporter::instance()->saveAssets();
+						octoon::AssetBundle::instance()->saveAssets();
 					}
 				}
 			}
@@ -182,23 +182,23 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = octoon::MotionImporter::instance()->importPackage(filepaths[i].toUtf8().data());
+						auto package = octoon::AssetBundle::instance()->importPackage(filepaths[i].toUtf8().data());
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = octoon::MotionImporter::instance()->importPackage(filepaths[0].toUtf8().data());
+					auto package = octoon::AssetBundle::instance()->importPackage(filepaths[0].toUtf8().data());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				octoon::MotionImporter::instance()->saveAssets();
+				octoon::AssetBundle::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::MotionImporter::instance()->saveAssets();
+				octoon::AssetBundle::instance()->saveAssets();
 			}
 		}
 	}
@@ -226,10 +226,11 @@ namespace unreal
 
 			QCoreApplication::processEvents();
 
-			auto package = octoon::MotionImporter::instance()->getPackage(item->data(Qt::UserRole).toString().toStdString());
+			auto uuid = item->data(Qt::UserRole).toString().toStdString();
+			auto package = octoon::AssetBundle::instance()->getPackage(uuid);
 			if (package.is_object())
 			{
-				auto animation = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Animation>(package);
+				auto animation = octoon::AssetBundle::instance()->loadAssetAtPath<octoon::Animation>(uuid);
 				if (animation)
 				{
 					dialog.setValue(1);
@@ -301,7 +302,7 @@ namespace unreal
 
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::MotionImporter::instance()->getIndexList())
+		for (auto& uuid : octoon::AssetBundle::instance()->getMotionList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

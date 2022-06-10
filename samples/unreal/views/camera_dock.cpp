@@ -1,7 +1,7 @@
 #include "camera_dock.h"
 #include <octoon/io/fstream.h>
 #include <octoon/asset_database.h>
-#include <octoon/motion_importer.h>
+#include <octoon/asset_bundle.h>
 #include <qapplication.h>
 #include <qevent.h>
 #include <qfiledialog.h>

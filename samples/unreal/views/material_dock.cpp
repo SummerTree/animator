@@ -109,7 +109,7 @@ namespace unreal
 	void 
 	MaterialListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::MaterialImporter::instance()->getPackage(uuid);
+		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -174,16 +174,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto list = octoon::MaterialImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString());
+					auto list = octoon::AssetBundle::instance()->importPackage(filepaths[i].toUtf8().toStdString());
 					for (auto& it : list)
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}
 
-				octoon::MaterialImporter::instance()->saveAssets();
+				octoon::AssetBundle::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::MaterialImporter::instance()->saveAssets();
+				octoon::AssetBundle::instance()->saveAssets();
 			}
 		}
 	}
@@ -238,7 +238,7 @@ namespace unreal
 		{
 			mainWidget_->clear();
 
-			for (auto& uuid : octoon::MaterialImporter::instance()->getIndexList())
+			for (auto& uuid : octoon::AssetBundle::instance()->getMaterialList())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}
 	}
@@ -998,7 +998,7 @@ namespace unreal
 		if (materialComponent)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto material = octoon::AssetBundle::instance()->loadAssetAtPath(uuid);
+			auto material = octoon::AssetBundle::instance()->loadAssetAtPath<octoon::Material>(uuid);
 			if (material)
 			{
 				octoon::MaterialImporter::instance()->addMaterial(this->material_->clone());
@@ -1879,7 +1879,7 @@ namespace unreal
 	void 
 	MaterialListPanel::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::MaterialImporter::instance()->getPackage(uuid);
+		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
 		if (package.is_object())
 			this->addItem(package);
 	}
@@ -1956,15 +1956,14 @@ namespace unreal
 
 				if (hit.mesh < materials.size())
 				{
-					auto package = octoon::MaterialImporter::instance()->getPackage(materials[hit.mesh]);
-					if (package.is_object())
+					auto uuid = octoon::AssetDatabase::instance()->getAssetGuid(materials[hit.mesh]);
+					if (uuid.empty())
 					{
-						auto uuid = QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>());
 						auto count = this->materialList_->mainWidget_->count();
 						for (int i = 0; i < count; i++)
 						{
 							auto item = this->materialList_->mainWidget_->item(i);
-							if (item->data(Qt::UserRole).toString() == uuid)
+							if (item->data(Qt::UserRole).toString().toStdString() == uuid)
 							{
 								this->materialList_->mainWidget_->setCurrentItem(item);
 								break;

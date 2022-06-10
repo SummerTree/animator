@@ -2,7 +2,7 @@
 #include <octoon/vmd_loader.h>
 #include <octoon/io/fstream.h>
 #include <octoon/motion_importer.h>
-#include <octoon/asset_database.h>
+#include <octoon/asset_bundle.h>
 
 namespace unreal
 {
@@ -47,7 +47,7 @@ namespace unreal
 		if (reader["rotation"].is_array())
 			this->rotation = octoon::math::float3(reader["rotation"].get<std::array<float, 3>>());
 		if (reader["animation"].is_object())
-			this->animation = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Animation>(reader["animation"]);
+			this->animation = octoon::AssetBundle::instance()->loadAssetAtPath<octoon::Animation>(reader["animation"]["uuid"].get<std::string>());
 	}
 
 	void 
@@ -65,7 +65,7 @@ namespace unreal
 		{
 			auto root = std::string(profilePath);
 			root = root.substr(0, root.find_last_of('/')) + "/Assets/Animation";
-			writer["animation"] = octoon::MotionImporter::instance()->createPackage(this->animation.getValue(), root);
+			writer["animation"] = octoon::AssetBundle::instance()->createPackage(this->animation.getValue(), root);
 		}
 	}
 

@@ -29,13 +29,34 @@ namespace octoon
 	{
 	}
 
+	bool
+	AssetImporter::hasPackage(std::string_view uuid_) const noexcept
+	{
+		std::string uuid(uuid_);
+
+		for (auto& it : this->indexList_)
+		{
+			if (it == uuid)
+				return true;
+		}
+
+		return false;
+	}
+
+	bool
+	AssetImporter::hasPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept
+	{
+		auto it = assetList_.find(asset);
+		return it != assetList_.end();
+	}
+
 	nlohmann::json
-	AssetImporter::getPackage(std::string_view uuid, std::string_view outputPath) noexcept
+	AssetImporter::getPackage(std::string_view uuid) noexcept
 	{
 		auto it = this->packageList_.find(std::string(uuid));
 		if (it == this->packageList_.end())
 		{
-			std::ifstream ifs(std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid).append("package.json"));
+			std::ifstream ifs(std::filesystem::path(assertPath_).append(uuid).append("package.json"));
 			if (ifs)
 			{
 				auto package = nlohmann::json::parse(ifs);
@@ -149,7 +170,6 @@ namespace octoon
 	AssetImporter::clearCache() noexcept
 	{
 		assetCache_.clear();
-		assetPackageCache_.clear();
 	}
 
 	nlohmann::json

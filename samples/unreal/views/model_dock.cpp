@@ -13,7 +13,7 @@
 #include <qprogressdialog.h>
 #include <QToolButton>
 
-#include <octoon/model_importer.h>
+#include <octoon/asset_bundle.h>
 
 namespace unreal
 {
@@ -58,13 +58,13 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		/*ModelImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
+		/*AssetBundle::instance()->getIndexList() += [this](const nlohmann::json& json)
 		{
 			if (this->isVisible())
 			{
 				listWidget_->clear();
 
-				for (auto& uuid : ModelImporter::instance()->getIndexList().getValue())
+				for (auto& uuid : AssetBundle::instance()->getIndexList().getValue())
 					this->addItem(uuid.get<nlohmann::json::string_t>());
 			}
 		};*/
@@ -81,7 +81,7 @@ namespace unreal
 	void 
 	ModelDock::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::ModelImporter::instance()->getPackage(uuid);
+		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
@@ -144,11 +144,11 @@ namespace unreal
 					if (clickedItem_)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						octoon::ModelImporter::instance()->removePackage(uuid.toStdString());
+						octoon::AssetBundle::instance()->removePackage(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						octoon::ModelImporter::instance()->saveAssets();
+						octoon::AssetBundle::instance()->saveAssets();
 					}
 				}
 			}
@@ -181,16 +181,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = octoon::ModelImporter::instance()->createPackage(filepaths[i].toUtf8().toStdString());
+					auto package = octoon::AssetBundle::instance()->importPackage(filepaths[i].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				octoon::ModelImporter::instance()->saveAssets();
+				octoon::AssetBundle::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::ModelImporter::instance()->saveAssets();
+				octoon::AssetBundle::instance()->saveAssets();
 			}
 		}
 	}
@@ -211,7 +211,7 @@ namespace unreal
 		if (behaviour)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto package = octoon::ModelImporter::instance()->getPackage(uuid);
+			auto package = octoon::AssetBundle::instance()->getPackage(uuid);
 			if (package.is_object())
 			{
 				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
@@ -223,7 +223,7 @@ namespace unreal
 
 				QCoreApplication::processEvents();
 
-				auto model = octoon::ModelImporter::instance()->loadPackage(package);
+				auto model = octoon::AssetBundle::instance()->loadAssetAtPath<octoon::GameObject>(uuid);
 				if (model)
 					this->profile_->entitiesModule->objects.getValue().push_back(model);
 
@@ -248,7 +248,7 @@ namespace unreal
 		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::ModelImporter::instance()->getIndexList())
+		for (auto& uuid : octoon::AssetBundle::instance()->getModelList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

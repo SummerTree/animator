@@ -506,12 +506,12 @@ $20 (Original cost $40)</source>
     <name>unreal::MaterialDock</name>
     <message>
         <location filename="../views/material_dock.cpp" line="1901"/>
-        <location filename="../views/material_dock.cpp" line="2020"/>
+        <location filename="../views/material_dock.cpp" line="2019"/>
         <source>Material</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2034"/>
+        <location filename="../views/material_dock.cpp" line="2033"/>
         <source>Material Properties</source>
         <translation>材质属性</translation>
     </message>

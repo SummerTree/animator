@@ -29,6 +29,7 @@ namespace octoon
 
 	AssetDatabase::~AssetDatabase() noexcept
 	{
+		this->close();
 	}
 
 	void
@@ -41,6 +42,11 @@ namespace octoon
 	void
 	AssetDatabase::close() noexcept
 	{
+		assetCache_.clear();
+		assetList_.clear();
+		assetPathList_.clear();
+		assetGuidList_.clear();
+
 		camera_.reset();
 		geometry_.reset();
 		directionalLight_.reset();
@@ -341,15 +347,14 @@ namespace octoon
 
 			for (auto& texture : pmx.textures)
 			{
-				std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-				auto path = cv.from_bytes(std::string(texture.fullpath));
+				auto fullpath = cv.from_bytes(std::string(texture.fullpath));
 				auto texturePath = std::filesystem::path(rootPath).append(texture.name);
 
-				if (std::filesystem::exists(path) && !std::filesystem::exists(texturePath))
+				if (std::filesystem::exists(fullpath) && !std::filesystem::exists(texturePath))
 				{
 					auto textureRootPath = octoon::runtime::string::directory(texturePath.string());
 					std::filesystem::create_directories(textureRootPath);
-					std::filesystem::copy(path, texturePath);
+					std::filesystem::copy(fullpath, texturePath);
 					std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 				}
 			}
@@ -608,6 +613,29 @@ namespace octoon
 					assetGuidList_[texture] = uuid;
 
 					return texture;
+				}
+			}
+		}
+		else if (type.isDerivedFrom(GameObject::getRtti()))
+		{
+			if (package["path"].is_string())
+			{
+				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
+				auto it = this->assetCache_.find(uuid);
+				if (it != this->assetCache_.end())
+					return this->assetCache_[uuid]->downcast_pointer<octoon::GameObject>();
+
+				auto path = package["path"].get<nlohmann::json::string_t>();
+				auto gameObject = octoon::PMXLoader::load(path, PMXLoadFlagBits::AllBit);
+				if (gameObject)
+				{
+					packageList_[uuid] = package;
+					assetCache_[uuid] = gameObject;
+					assetList_[gameObject] = package;
+					assetPathList_[gameObject] = path;
+					assetGuidList_[gameObject] = uuid;
+
+					return gameObject;
 				}
 			}
 		}
@@ -989,12 +1017,12 @@ namespace octoon
 			materialCamera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, 0, 1), octoon::math::float3::Zero, octoon::math::float3::UnitY));
 
 			materialGeometry_ = std::make_shared<octoon::Geometry>();
-			materialGeometry_->setMesh(std::make_shared<octoon::SphereMesh>(0.5));
+			materialGeometry_->setMesh(std::make_shared<octoon::SphereMesh>(0.5f));
 
 			octoon::math::Quaternion q1;
-			q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75);
+			q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75f);
 			octoon::math::Quaternion q2;
-			q2.makeRotation(octoon::math::float3::UnitY, octoon::math::PI / 4.6);
+			q2.makeRotation(octoon::math::float3::UnitY, octoon::math::PI / 4.6f);
 
 			materialDirectionalLight_ = std::make_shared<octoon::DirectionalLight>();
 			materialDirectionalLight_->setColor(octoon::math::float3(1, 1, 1));

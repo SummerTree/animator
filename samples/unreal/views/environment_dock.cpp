@@ -204,7 +204,7 @@ namespace unreal
 	{
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::AssetBundle::instance()->getIndexList())
+		for (auto& uuid : octoon::AssetBundle::instance()->getTextureList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

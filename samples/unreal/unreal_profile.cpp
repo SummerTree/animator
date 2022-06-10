@@ -3,8 +3,6 @@
 #include <filesystem>
 #include <octoon/runtime/json.h>
 #include <octoon/asset_bundle.h>
-#include <octoon/motion_importer.h>
-#include <octoon/material_importer.h>
 
 namespace unreal
 {
@@ -58,9 +56,7 @@ namespace unreal
 	void
 	UnrealProfile::load(std::string_view path_) noexcept(false)
 	{
-		octoon::MotionImporter::instance()->clearCache();
 		octoon::AssetBundle::instance()->clearCache();
-		octoon::MaterialImporter::instance()->clearCache();
 
 		std::ifstream stream(path_);
 		if (stream)
@@ -118,9 +114,7 @@ namespace unreal
 #endif
 			}
 
-			octoon::MotionImporter::instance()->clearCache();
 			octoon::AssetBundle::instance()->clearCache();
-			octoon::MaterialImporter::instance()->clearCache();
 
 			std::ofstream stream(path_);
 			if (stream)

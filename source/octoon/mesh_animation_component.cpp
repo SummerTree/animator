@@ -6,6 +6,7 @@
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/material_importer.h>
 #include <octoon/asset_database.h>
+#include <octoon/asset_bundle.h>
 
 #pragma warning(push)
 #pragma warning(disable:4244)
@@ -500,7 +501,7 @@ namespace octoon
 		for (auto& pair : this->materials_)
 		{
 			nlohmann::json materialJson;
-			materialJson["data"] = octoon::MaterialImporter::instance()->createPackage(pair.second);
+			materialJson["data"] = octoon::AssetBundle::instance()->createPackage(pair.second);
 			materialJson["name"] = pair.first;
 
 			json["materials"].push_back(materialJson);
