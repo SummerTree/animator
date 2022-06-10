@@ -1,4 +1,5 @@
 #include <octoon/model_importer.h>
+#include <octoon/asset_database.h>
 #include <octoon/texture/texture.h>
 #include <octoon/pmx_loader.h>
 #include <octoon/runtime/uuid.h>
@@ -182,6 +183,15 @@ namespace octoon
 		{
 			nlohmann::json json;
 			json["path"] = (char*)(*path).second.c_str();
+
+			return json;
+		}
+
+		auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
+		if (!assetPath.empty())
+		{
+			nlohmann::json json;
+			json["path"] = assetPath;
 
 			return json;
 		}
