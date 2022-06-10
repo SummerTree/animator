@@ -296,6 +296,29 @@ namespace octoon
 				}
 			}
 		}
+		else if (type.isDerivedFrom(Animation::getRtti()))
+		{
+			if (package["path"].is_string())
+			{
+				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
+				auto it = this->assetCache_.find(uuid);
+				if (it != this->assetCache_.end())
+					return this->assetCache_[uuid]->downcast_pointer<octoon::Animation>();
+
+				auto path = package["path"].get<nlohmann::json::string_t>();
+				auto motion = octoon::VMDLoader::load(path.c_str());
+				if (motion)
+				{
+					packageList_[uuid] = package;
+					assetCache_[uuid] = motion;
+					assetList_[motion] = package;
+					assetPathList_[motion] = path;
+					assetGuidList_[motion] = uuid;
+
+					return motion;
+				}
+			}
+		}
 
 		return nullptr;
 	}

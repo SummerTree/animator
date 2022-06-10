@@ -2,6 +2,7 @@
 #include <octoon/vmd_loader.h>
 #include <octoon/io/fstream.h>
 #include <octoon/motion_importer.h>
+#include <octoon/asset_database.h>
 
 namespace unreal
 {
@@ -46,7 +47,7 @@ namespace unreal
 		if (reader["rotation"].is_array())
 			this->rotation = octoon::math::float3(reader["rotation"].get<std::array<float, 3>>());
 		if (reader["animation"].is_object())
-			this->animation = octoon::MotionImporter::instance()->loadPackage(reader["animation"]);
+			this->animation = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Animation>(reader["animation"]);
 	}
 
 	void 

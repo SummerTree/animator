@@ -1,6 +1,7 @@
 #include "entities_module.h"
 #include <octoon/pmx_loader.h>
 #include <octoon/vmd_loader.h>
+#include <octoon/asset_database.h>
 #include <octoon/model_importer.h>
 #include <octoon/material_importer.h>
 #include <octoon/animator_component.h>
@@ -66,7 +67,7 @@ namespace unreal
 						if (animationJson.find("data") == animationJson.end())
 							continue;
 
-						auto animation = octoon::MotionImporter::instance()->loadPackage(animationJson["data"]);
+						auto animation = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Animation>(animationJson["data"]);
 						if (animation)
 						{
 							auto type = animationJson["type"].get<nlohmann::json::number_unsigned_t>();

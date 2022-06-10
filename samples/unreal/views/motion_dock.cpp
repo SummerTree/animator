@@ -1,6 +1,7 @@
 #include "motion_dock.h"
 #include "../widgets/draggable_list_widget.h"
 #include <octoon/motion_importer.h>
+#include <octoon/asset_database.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qfiledialog.h>
@@ -181,14 +182,14 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = octoon::MotionImporter::instance()->createPackage(filepaths[i].toUtf8().data());
+						auto package = octoon::MotionImporter::instance()->importPackage(filepaths[i].toUtf8().data());
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = octoon::MotionImporter::instance()->createPackage(filepaths[0].toUtf8().data());
+					auto package = octoon::MotionImporter::instance()->importPackage(filepaths[0].toUtf8().data());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -228,7 +229,7 @@ namespace unreal
 			auto package = octoon::MotionImporter::instance()->getPackage(item->data(Qt::UserRole).toString().toStdString());
 			if (package.is_object())
 			{
-				auto animation = octoon::MotionImporter::instance()->loadPackage(package);
+				auto animation = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Animation>(package);
 				if (animation)
 				{
 					dialog.setValue(1);

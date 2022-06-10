@@ -1,6 +1,7 @@
 #include <octoon/motion_importer.h>
 #include <octoon/runtime/uuid.h>
 #include <octoon/vmd_loader.h>
+#include <octoon/asset_database.h>
 #include <fstream>
 #include <filesystem>
 #include <codecvt>
@@ -18,7 +19,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	MotionImporter::createPackage(std::string_view filepath) noexcept(false)
+	MotionImporter::importPackage(std::string_view filepath) noexcept(false)
 	{
 		std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes((char*)std::string(filepath).data());
 
@@ -67,12 +68,11 @@ namespace octoon
 			if (it != this->assetPackageCache_.end())
 				return this->assetPackageCache_[animation];
 
-			auto uuid = octoon::make_guid();
+			auto uuid = AssetDatabase::instance()->getAssetGuid(animation);
 
-			nlohmann::json package = this->getPackage(animation);
+			nlohmann::json package = AssetDatabase::instance()->getPackage(animation);
 			if (package.find("uuid") != package.end())
 			{
-				uuid = package["uuid"].get<nlohmann::json::string_t>();
 				for (auto& index : indexList_)
 				{
 					if (index == uuid)
@@ -80,58 +80,12 @@ namespace octoon
 				}
 			}
 
-			auto rootPath = std::filesystem::path(outputPath.empty() ? assertPath_ : outputPath).append(uuid);
-			auto motionPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
-			auto packagePath = std::filesystem::path(rootPath).append("package.json");
-
-			std::filesystem::create_directories(rootPath);
-
-			octoon::VMDLoader::save(motionPath.string(), *animation);
-			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
-
-			package["uuid"] = uuid;
-			package["visible"] = true;
-			package["name"] = uuid + ".vmd";
-			package["path"] = (char*)motionPath.u8string().c_str();
-
-			std::ofstream ifs(packagePath, std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->assetPackageCache_[animation] = package;
-			this->packageList_[std::string(uuid)] = package;
+			package = AssetDatabase::instance()->createAsset(animation, outputPath);
+			assetPackageCache_[animation] = package;
 
 			return package;
 		}
 
 		return nlohmann::json();
-	}
-
-	std::shared_ptr<octoon::Animation>
-	MotionImporter::loadPackage(const nlohmann::json& package) noexcept(false)
-	{
-		if (package["path"].is_string())
-		{
-			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-			auto it = this->assetCache_.find(uuid);
-			if (it != this->assetCache_.end())
-				return this->assetCache_[uuid]->downcast_pointer<octoon::Animation>();
-
-			auto path = package["path"].get<nlohmann::json::string_t>();
-			auto motion = octoon::VMDLoader::load(path.c_str());
-			if (motion)
-			{
-				packageList_[uuid] = package;
-				assetCache_[uuid] = motion;
-				assetList_[motion] = package;
-				return motion;
-			}
-		}
-
-		return nullptr;
 	}
 }

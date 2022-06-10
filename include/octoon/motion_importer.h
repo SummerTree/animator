@@ -15,9 +15,7 @@ namespace octoon
 		MotionImporter() noexcept;
 		~MotionImporter() noexcept;
 
-		std::shared_ptr<octoon::Animation> loadPackage(const nlohmann::json& package) noexcept(false);
-
-		nlohmann::json createPackage(std::string_view path) noexcept(false);
+		nlohmann::json importPackage(std::string_view path) noexcept(false);
 		nlohmann::json createPackage(const std::shared_ptr<octoon::Animation>& animation, std::string_view outputPath = "") noexcept;
 	};
 }
