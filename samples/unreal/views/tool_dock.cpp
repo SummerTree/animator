@@ -370,7 +370,17 @@ namespace unreal
 
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
-				behaviour->reset();
+			{
+				if (!octoon::AssetBundle::instance()->getUpdateList().empty() || !profile_->path.empty())
+				{
+					if (QMessageBox::question(this, tr("Info"), tr("Do you want to discard your local changes?")) == QMessageBox::Yes)
+						behaviour->reset();
+				}
+				else
+				{
+					behaviour->reset();
+				}
+			}
 
 			spdlog::debug("Exited cleanupEvent");
 		}

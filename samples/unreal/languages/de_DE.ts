@@ -1301,6 +1301,16 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/tool_dock.cpp" line="376"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="376"/>
+        <source>Do you want to discard your local changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/tool_dock.cpp" line="145"/>
         <location filename="../views/tool_dock.cpp" line="164"/>
         <location filename="../views/tool_dock.cpp" line="251"/>
@@ -1319,7 +1329,7 @@ $20 (Original cost $40)</source>
         <location filename="../views/tool_dock.cpp" line="307"/>
         <location filename="../views/tool_dock.cpp" line="334"/>
         <location filename="../views/tool_dock.cpp" line="360"/>
-        <location filename="../views/tool_dock.cpp" line="379"/>
+        <location filename="../views/tool_dock.cpp" line="389"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>

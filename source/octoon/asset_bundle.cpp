@@ -588,6 +588,12 @@ namespace octoon
 			AssetBundle::instance()->updateList_.erase(it);
 	}
 
+	const std::set<std::string>&
+	AssetBundle::getUpdateList() const noexcept
+	{
+		return AssetBundle::instance()->updateList_;
+	}
+
 	std::shared_ptr<AssetBundle>
 	AssetBundle::loadFromFile(std::string_view path) noexcept(false)
 	{

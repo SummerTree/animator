@@ -55,6 +55,7 @@ namespace octoon
 		bool needUpdate(std::string_view uuid) const noexcept;
 		void addUpdateList(std::string_view uuid) noexcept(false);
 		void removeUpdateList(std::string_view uuid) noexcept(false);
+		const std::set<std::string>& getUpdateList() const noexcept;
 
 		std::shared_ptr<AssetBundle> loadFromFile(std::string_view path) noexcept(false);
 		std::vector<std::shared_ptr<AssetBundle>> getAllLoadedAssetBundles() const noexcept;

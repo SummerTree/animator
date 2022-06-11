@@ -1380,6 +1380,16 @@ $20 (Original cost $40)</source>
         <translation>打开项目</translation>
     </message>
     <message>
+        <location filename="../views/tool_dock.cpp" line="376"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="376"/>
+        <source>Do you want to discard your local changes?</source>
+        <translation>是否要清空当前的场景?</translation>
+    </message>
+    <message>
         <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
         <translation type="vanished">所有文件(*.pmm *.pmx *.abc *.mdl);; PMM 文件 (*.pmm);; PMX 文件 (*.pmx);; Abc 文件 (*.abc);;材质文件 (*.mdl)</translation>
     </message>
@@ -1412,7 +1422,7 @@ $20 (Original cost $40)</source>
         <location filename="../views/tool_dock.cpp" line="307"/>
         <location filename="../views/tool_dock.cpp" line="334"/>
         <location filename="../views/tool_dock.cpp" line="360"/>
-        <location filename="../views/tool_dock.cpp" line="379"/>
+        <location filename="../views/tool_dock.cpp" line="389"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
