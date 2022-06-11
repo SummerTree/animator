@@ -299,12 +299,6 @@ namespace octoon
 							return AssetBundle::instance()->getPackage(uuid);
 					}
 				}
-
-				for (auto& index : textureAsset_->getIndexList())
-				{
-					if (index == uuid)
-						return textureAsset_->getPackage(uuid);
-				}
 			}
 
 			auto package = AssetDatabase::instance()->createAsset(*texture, textureAsset_->getAssertPath());
@@ -340,12 +334,6 @@ namespace octoon
 							return AssetBundle::instance()->getPackage(uuid);
 					}
 				}
-
-				for (auto& index : motionAsset_->getIndexList())
-				{
-					if (index == uuid)
-						return motionAsset_->getPackage(uuid);
-				}
 			}
 
 			auto package = AssetDatabase::instance()->createAsset(*animation, motionAsset_->getAssertPath());
@@ -380,12 +368,6 @@ namespace octoon
 						if (index == uuid)
 							return AssetBundle::instance()->getPackage(uuid);
 					}
-				}
-
-				for (auto& index : materialAsset_->getIndexList())
-				{
-					if (index == uuid)
-						return materialAsset_->getPackage(uuid);
 				}
 			}
 
@@ -450,12 +432,6 @@ namespace octoon
 						if (index == uuid)
 							return AssetBundle::instance()->getPackage(uuid);
 					}
-				}
-
-				for (auto& index : modelAsset_->getIndexList())
-				{
-					if (index == uuid)
-						return modelAsset_->getPackage(uuid);
 				}
 			}
 
