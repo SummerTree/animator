@@ -54,8 +54,21 @@ namespace octoon
 		materialAsset_->close();
 		textureAsset_->close();
 
-		for (auto& ab : assetBundles_)
-			ab->close();
+		if (this != AssetBundle::instance())
+		{
+			for (auto it = AssetBundle::instance()->assetBundles_.begin(); it != AssetBundle::instance()->assetBundles_.end(); ++it)
+			{
+				if ((*it).get() == this)
+				{
+					AssetBundle::instance()->assetBundles_.erase(it);
+					break;
+				}
+			}
+		}
+		else
+		{
+			assetBundles_.clear();
+		}
 	}
 
 	void
@@ -63,14 +76,12 @@ namespace octoon
 	{
 		this->assetCache_.clear();
 		this->assetPackageCache_.clear();
+		this->assetBundles_.clear();
 
 		this->modelAsset_->clearCache();
 		this->motionAsset_->clearCache();
 		this->materialAsset_->clearCache();
 		this->textureAsset_->clearCache();
-
-		for (auto& ab : assetBundles_)
-			ab->unload();
 	}
 
 	void
@@ -304,8 +315,7 @@ namespace octoon
 			auto package = AssetDatabase::instance()->createAsset(*texture, textureAsset_->getAssertPath());
 			if (package.is_object())
 			{
-				auto uuid = package["uuid"].get<std::string>();
-				textureAsset_->addIndex(uuid);
+				textureAsset_->addIndex(package["uuid"].get<std::string>());
 				assetPackageCache_[texture] = package;
 				return package;
 			}
@@ -441,8 +451,7 @@ namespace octoon
 				auto package = this->importAsset(assetPath);
 				if (package.is_object())
 				{
-					auto uuid = package["uuid"].get<std::string>();
-					modelAsset_->addIndex(uuid);
+					modelAsset_->addIndex(package["uuid"].get<std::string>());
 					assetPackageCache_[gameObject] = package;
 					return package;
 				}
