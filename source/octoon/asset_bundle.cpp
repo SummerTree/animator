@@ -162,6 +162,9 @@ namespace octoon
 		else if (type.isDerivedFrom(Texture::getRtti()))
 		{
 			auto package = textureAsset_->getPackage(uuid_);
+			if (package.is_null())
+				package = hdriAsset_->getPackage(uuid_);
+
 			if (package.is_object())
 			{
 				auto uuid = std::string(uuid_);
