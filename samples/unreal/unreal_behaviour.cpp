@@ -30,43 +30,12 @@ namespace unreal
 	UnrealBehaviour::open(std::string_view path) noexcept(false)
 	{
 		this->reset();
+		this->profile_->load(path);
+		this->playerComponent_->updateTimeLength();
+		this->playerComponent_->reset();
+		this->sendMessage("editor:project:open");
 
-		auto ext = path.substr(path.find_last_of("."));
-		if (ext == ".pmm")
-		{
-			PMMLoader::load(*profile_, path);
-
-			playerComponent_->updateTimeLength();
-			playerComponent_->reset();
-
-			this->sendMessage("editor:project:open");
-
-			return true;
-		}
-		else if (ext == ".scene")
-		{
-			AssLoader::load(*profile_, path);
-
-			playerComponent_->updateTimeLength();
-			playerComponent_->reset();
-
-			this->sendMessage("editor:project:open");
-
-			return true;
-		}
-		else if (ext == ".agp")
-		{
-			profile_->load(path);
-
-			playerComponent_->updateTimeLength();
-			playerComponent_->reset();
-
-			this->sendMessage("editor:project:open");
-
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	void
@@ -107,7 +76,25 @@ namespace unreal
 	UnrealBehaviour::load(std::string_view path) noexcept(false)
 	{
 		auto ext = path.substr(path.find_last_of("."));
-		if (ext == ".pmx" || ext == ".abc")
+		if (ext == ".pmm")
+		{
+			PMMLoader::load(*profile_, path);
+
+			playerComponent_->updateTimeLength();
+			playerComponent_->reset();
+
+			this->sendMessage("editor:project:open");
+		}
+		else if (ext == ".scene")
+		{
+			AssLoader::load(*profile_, path);
+
+			playerComponent_->updateTimeLength();
+			playerComponent_->reset();
+
+			this->sendMessage("editor:project:open");
+		}
+		else if (ext == ".pmx" || ext == ".abc")
 		{
 			entitiesComponent_->importModel(path);
 

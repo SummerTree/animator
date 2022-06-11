@@ -1235,7 +1235,6 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="44"/>
-        <location filename="../views/tool_dock.cpp" line="253"/>
         <source>Export Project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1281,117 +1280,113 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="149"/>
-        <location filename="../views/tool_dock.cpp" line="294"/>
+        <location filename="../views/tool_dock.cpp" line="303"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="149"/>
-        <source>All Files(*.pmm *.agp);; PMM Files (*.pmm);; APG Files (*.apg)</source>
+        <location filename="../views/tool_dock.cpp" line="171"/>
+        <source>Can&apos;t find manifest.json in %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="154"/>
-        <source>Load Project...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="172"/>
+        <location filename="../views/tool_dock.cpp" line="181"/>
         <source>Opening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="138"/>
-        <location filename="../views/tool_dock.cpp" line="384"/>
+        <location filename="../views/tool_dock.cpp" line="393"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="138"/>
-        <location filename="../views/tool_dock.cpp" line="384"/>
+        <location filename="../views/tool_dock.cpp" line="393"/>
         <source>Do you want to discard your local changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="153"/>
-        <location filename="../views/tool_dock.cpp" line="172"/>
-        <location filename="../views/tool_dock.cpp" line="259"/>
+        <location filename="../views/tool_dock.cpp" line="156"/>
+        <location filename="../views/tool_dock.cpp" line="181"/>
+        <location filename="../views/tool_dock.cpp" line="268"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="173"/>
+        <location filename="../views/tool_dock.cpp" line="157"/>
+        <source>Open Project...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="182"/>
         <source>Open Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="206"/>
-        <location filename="../views/tool_dock.cpp" line="235"/>
-        <location filename="../views/tool_dock.cpp" line="279"/>
-        <location filename="../views/tool_dock.cpp" line="315"/>
-        <location filename="../views/tool_dock.cpp" line="342"/>
-        <location filename="../views/tool_dock.cpp" line="368"/>
-        <location filename="../views/tool_dock.cpp" line="397"/>
+        <location filename="../views/tool_dock.cpp" line="171"/>
+        <location filename="../views/tool_dock.cpp" line="215"/>
+        <location filename="../views/tool_dock.cpp" line="244"/>
+        <location filename="../views/tool_dock.cpp" line="288"/>
+        <location filename="../views/tool_dock.cpp" line="324"/>
+        <location filename="../views/tool_dock.cpp" line="351"/>
+        <location filename="../views/tool_dock.cpp" line="377"/>
+        <location filename="../views/tool_dock.cpp" line="406"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="206"/>
+        <location filename="../views/tool_dock.cpp" line="215"/>
         <source>Failed to open project: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="222"/>
+        <location filename="../views/tool_dock.cpp" line="231"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="222"/>
-        <source>All Files(*.pmx *.abc *.mdl *.vmd);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="235"/>
+        <location filename="../views/tool_dock.cpp" line="244"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="253"/>
-        <source>APG Files (*.agp)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/tool_dock.cpp" line="253"/>
+        <location filename="../views/tool_dock.cpp" line="262"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="153"/>
+        <location filename="../views/tool_dock.cpp" line="156"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="259"/>
+        <location filename="../views/tool_dock.cpp" line="231"/>
+        <source>All Files(*.pmm *.pmx *.abc *.mdl *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="268"/>
         <source>Save...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="260"/>
+        <location filename="../views/tool_dock.cpp" line="269"/>
         <source>Save Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="294"/>
+        <location filename="../views/tool_dock.cpp" line="303"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="330"/>
+        <location filename="../views/tool_dock.cpp" line="339"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="330"/>
+        <location filename="../views/tool_dock.cpp" line="339"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>

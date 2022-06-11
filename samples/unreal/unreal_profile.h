@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include <filesystem>
 
 #include "module/encode_module.h"
 #include "module/physics_module.h"
@@ -30,8 +31,8 @@ namespace unreal
 
 		void disconnect() noexcept;
 		
-		void load(std::string_view path_) noexcept(false);
-		void save(std::string_view path_) noexcept(false);
+		void load(std::filesystem::path path_) noexcept(false);
+		void save(std::filesystem::path path_) noexcept(false);
 
 	private:
 		UnrealProfile(const UnrealProfile&) = delete;

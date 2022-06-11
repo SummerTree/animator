@@ -54,15 +54,15 @@ namespace unreal
 	}
 
 	void
-	UnrealProfile::load(std::string_view path_) noexcept(false)
+	UnrealProfile::load(std::filesystem::path path_) noexcept(false)
 	{
-		std::ifstream stream(path_);
+		std::ifstream stream(std::filesystem::path(path_).append("manifest.json"));
 		if (stream)
 		{
 			auto json = nlohmann::json::parse(stream);
-			auto ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).parent_path().append("Assets").string());
+			auto ab = octoon::AssetBundle::instance()->loadFromFile(path_.append("Assets").string());
 
-			this->path = path_;
+			this->path = path_.string();
 
 			if (json["physics"].is_object())
 				this->physicsModule->load(json["physics"], ab);
@@ -95,19 +95,26 @@ namespace unreal
 
 			ab->unload();
 		}
+		else
+		{
+			throw std::runtime_error("Can't find manifest.json in " + path_.string());
+		}
 	}
 
 	void
-	UnrealProfile::save(std::string_view path_) noexcept(false)
+	UnrealProfile::save(std::filesystem::path path_) noexcept(false)
 	{
-		auto backupFile = std::string(path_) + "!";
+		auto backupFile = path_.string() + "!";
 
 		try
 		{
 			if (std::filesystem::exists(backupFile))
 				std::filesystem::remove(backupFile);
 
-			if (std::filesystem::exists(path_))
+			if (!std::filesystem::exists(path_))
+				std::filesystem::create_directories(path_);
+
+			if (std::filesystem::exists(path_) && !std::filesystem::is_empty(path_))
 			{
 				std::filesystem::rename(path_, backupFile);
 #ifdef _WINDOWS_
@@ -115,15 +122,15 @@ namespace unreal
 #endif
 			}
 
-			std::ofstream stream(path_);
+			std::ofstream stream(std::filesystem::path(path_).append("manifest.json"));
 			if (stream)
 			{
 				nlohmann::json json;
 
 				auto ab = std::make_shared<octoon::AssetBundle>();
-				ab->open(std::filesystem::path(path_).parent_path().append("Assets").string());
+				ab->open(std::filesystem::path(path_).append("Assets").string());
 
-				this->path = path_;
+				this->path = path_.string();
 				this->physicsModule->save(json["physics"], ab);
 				this->encodeModule->save(json["encode"], ab);
 				this->playerModule->save(json["time"], ab);
@@ -149,7 +156,7 @@ namespace unreal
 			}
 			else
 			{
-				throw std::runtime_error("Failed to create file: " + std::string(path_));
+				throw std::runtime_error("Failed to create file: " + path_.string());
 			}
 		}
 		catch (std::exception& e)
@@ -161,7 +168,7 @@ namespace unreal
 			{
 				std::filesystem::rename(backupFile, backupFile.substr(0, backupFile.size() - 1));
 #ifdef _WINDOWS_
-				SetFileAttributes(std::string(path_).c_str(), FILE_ATTRIBUTE_NORMAL);
+				SetFileAttributes(path_.string().c_str(), FILE_ATTRIBUTE_NORMAL);
 #endif
 			}
 

@@ -146,21 +146,30 @@ namespace unreal
 				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 				if (behaviour)
 				{
-					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.pmm *.agp);; PMM Files (*.pmm);; APG Files (*.apg)"));
+					QString fileName = QFileDialog::getExistingDirectory(this, tr("Open Project"));
 					if (!fileName.isEmpty())
 					{
 #if 1
-						QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
-						dialog.setWindowTitle(tr("Load Project..."));
-						dialog.setWindowModality(Qt::WindowModal);
-						dialog.setValue(0);
-						dialog.show();
+						auto path = fileName.toUtf8().toStdString();
+						if (std::filesystem::exists(std::filesystem::path(path).append("manifest.json")))
+						{
+							QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
+							dialog.setWindowTitle(tr("Open Project..."));
+							dialog.setWindowModality(Qt::WindowModal);
+							dialog.setValue(0);
+							dialog.show();
 
-						QCoreApplication::processEvents();
+							QCoreApplication::processEvents();
 
-						behaviour->open(fileName.toUtf8().toStdString());
+							behaviour->open(path);
 
-						dialog.setValue(1);
+							dialog.setValue(1);
+						}
+						else
+						{
+							QCoreApplication::processEvents();
+							QMessageBox::critical(this, tr("Error"), tr("Can't find manifest.json in %1").arg(fileName));
+						}
 #else
 						// load task
 						auto fn = [&]() {
@@ -219,7 +228,7 @@ namespace unreal
 				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 				if (behaviour)
 				{
-					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmx *.abc *.mdl *.vmd);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)"));
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)"));
 					if (!fileName.isEmpty())
 					{
 						behaviour->load(fileName.toUtf8().toStdString());
@@ -250,7 +259,7 @@ namespace unreal
 				auto filepath = this->profile_->path;
 				if (filepath.empty())
 				{
-					QString fileName = QFileDialog::getSaveFileName(this, tr("Export Project"), tr("New Project"), tr("APG Files (*.agp)"));
+					QString fileName = QFileDialog::getExistingDirectory(this, tr("New Project"));
 					if (fileName.isEmpty())
 						return;
 					filepath = fileName.toUtf8().toStdString();
