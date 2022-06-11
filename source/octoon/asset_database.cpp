@@ -1,4 +1,5 @@
 #include <octoon/asset_database.h>
+#include <octoon/asset_bundle.h>
 #include <octoon/runtime/uuid.h>
 #include <octoon/runtime/string.h>
 #include <octoon/vmd_loader.h>
@@ -108,7 +109,7 @@ namespace octoon
 
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
-		auto uuid = make_guid();
+		auto uuid = this->getAssetGuid(texture.shared_from_this());
 		auto filename = texture.getName().substr(texture.getName().find_last_of("."));
 		auto rootPath = std::filesystem::path(path).append(uuid);
 		auto texturePath = std::filesystem::path(rootPath).append(uuid + filename);
@@ -172,7 +173,7 @@ namespace octoon
 	{
 		assert(!path.empty());
 
-		auto uuid = make_guid();
+		auto uuid = this->getAssetGuid(animation.shared_from_this());
 		auto rootPath = std::filesystem::path(path).append(uuid);
 		auto motionPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
 		auto packagePath = std::filesystem::path(rootPath).append("package.json");
@@ -196,6 +197,7 @@ namespace octoon
 			ifs.close();
 		}
 
+		this->assetGuidList_[animation.shared_from_this()] = std::string(uuid);
 		this->packageList_[std::string(uuid)] = package;
 
 		return package;
@@ -204,7 +206,7 @@ namespace octoon
 	nlohmann::json
 	AssetDatabase::createAsset(const std::shared_ptr<Material>& material, std::string_view path) noexcept(false)
 	{
-		auto uuid = make_guid();
+		auto uuid = this->getAssetGuid(material);
 		auto outputPath = std::filesystem::path(path).append(uuid);
 		auto outputTexturePath = std::filesystem::path(path);
 
@@ -253,6 +255,7 @@ namespace octoon
 			package["reflectionRatio"] = standardMaterial->getReflectionRatio();
 			package["transmission"] = standardMaterial->getTransmission();
 			package["lightMapIntensity"] = standardMaterial->getLightMapIntensity();
+			package["emissiveIntensity"] = standardMaterial->getEmissiveIntensity();
 			package["gamma"] = standardMaterial->getGamma();
 			package["offset"] = writeFloat2(standardMaterial->getOffset());
 			package["repeat"] = writeFloat2(standardMaterial->getRepeat());
@@ -278,38 +281,36 @@ namespace octoon
 			package["depthBias"] = standardMaterial->getDepthBias();
 			package["depthSlopeScaleBias"] = standardMaterial->getDepthSlopeScaleBias();
 			package["stencilEnable"] = standardMaterial->getStencilEnable();
-			package["scissorTestEnable"] = standardMaterial->getScissorTestEnable();
+			package["scissorTestEnable"] = standardMaterial->getScissorTestEnable();			
 
 			if (standardMaterial->getColorMap())
-				package["colorMap"] = this->createAsset(*standardMaterial->getColorMap(), outputPath.string());
+				package["colorMap"] = this->getAssetGuid(standardMaterial->getColorMap());
 			if (standardMaterial->getOpacityMap())
-				package["opacityMap"] = this->createAsset(*standardMaterial->getOpacityMap(), outputPath.string());
+				package["opacityMap"] = this->getAssetGuid(standardMaterial->getOpacityMap());
 			if (standardMaterial->getNormalMap())
-				package["normalMap"] = this->createAsset(*standardMaterial->getNormalMap(), outputPath.string());
+				package["normalMap"] = this->getAssetGuid(standardMaterial->getNormalMap());
 			if (standardMaterial->getRoughnessMap())
-				package["roughnessMap"] = this->createAsset(*standardMaterial->getRoughnessMap(), outputPath.string());
+				package["roughnessMap"] = this->getAssetGuid(standardMaterial->getRoughnessMap());
 			if (standardMaterial->getSpecularMap())
-				package["specularMap"] = this->createAsset(*standardMaterial->getSpecularMap(), outputPath.string());
+				package["specularMap"] = this->getAssetGuid(standardMaterial->getSpecularMap());
 			if (standardMaterial->getMetalnessMap())
-				package["metalnessMap"] = this->createAsset(*standardMaterial->getMetalnessMap(), outputPath.string());
+				package["metalnessMap"] = this->getAssetGuid(standardMaterial->getMetalnessMap());
 			if (standardMaterial->getEmissiveMap())
-				package["emissiveMap"] = this->createAsset(*standardMaterial->getEmissiveMap(), outputPath.string());
+				package["emissiveMap"] = this->getAssetGuid(standardMaterial->getEmissiveMap());
 			if (standardMaterial->getAnisotropyMap())
-				package["anisotropyMap"] = this->createAsset(*standardMaterial->getAnisotropyMap(), outputPath.string());
+				package["anisotropyMap"] = this->getAssetGuid(standardMaterial->getAnisotropyMap());
 			if (standardMaterial->getClearCoatMap())
-				package["clearCoatMap"] = this->createAsset(*standardMaterial->getClearCoatMap(), outputPath.string());
+				package["clearCoatMap"] = this->getAssetGuid(standardMaterial->getClearCoatMap());
 			if (standardMaterial->getClearCoatRoughnessMap())
-				package["clearCoatRoughnessMap"] = this->createAsset(*standardMaterial->getClearCoatRoughnessMap(), outputPath.string());
+				package["clearCoatRoughnessMap"] = this->getAssetGuid(standardMaterial->getClearCoatRoughnessMap());
 			if (standardMaterial->getSubsurfaceMap())
-				package["subsurfaceMap"] = this->createAsset(*standardMaterial->getSubsurfaceMap(), outputPath.string());
+				package["subsurfaceMap"] = this->getAssetGuid(standardMaterial->getSubsurfaceMap());
 			if (standardMaterial->getSubsurfaceColorMap())
-				package["subsurfaceColorMap"] = this->createAsset(*standardMaterial->getSubsurfaceColorMap(), outputPath.string());
+				package["subsurfaceColorMap"] = this->getAssetGuid(standardMaterial->getSubsurfaceColorMap());
 			if (standardMaterial->getSheenMap())
-				package["sheenMap"] = this->createAsset(*standardMaterial->getSheenMap(), outputPath.string());
+				package["sheenMap"] = this->getAssetGuid(standardMaterial->getSheenMap());
 			if (standardMaterial->getLightMap())
-				package["lightMap"] = this->createAsset(*standardMaterial->getLightMap(), outputPath.string());
-			if (standardMaterial->getEmissiveIntensity())
-				package["emissiveIntensity"] = standardMaterial->getEmissiveIntensity();
+				package["lightMap"] = this->getAssetGuid(standardMaterial->getLightMap());
 
 			std::ofstream ifs(std::filesystem::path(outputPath).append("package.json"), std::ios_base::binary);
 			if (ifs)
@@ -318,6 +319,7 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 			}
 
+			this->assetGuidList_[material] = std::string(uuid);
 			this->packageList_[std::string(uuid)] = package;
 
 			return package;
@@ -413,6 +415,8 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 			}
 
+			this->packageList_[std::string(uuid)] = package;
+
 			return package;
 		}
 		catch (std::exception& e)
@@ -425,7 +429,7 @@ namespace octoon
 	}
 
 	std::string
-	AssetDatabase::getAssetPath(const std::shared_ptr<RttiObject>& asset) noexcept
+	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) noexcept
 	{
 		if (assetPathList_.contains(asset))
 			return assetPathList_.at(asset);
@@ -433,7 +437,7 @@ namespace octoon
 	}
 
 	std::string
-	AssetDatabase::getAssetPath(const std::shared_ptr<RttiObject>& asset) const noexcept
+	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept
 	{
 		if (assetPathList_.contains(asset))
 			return assetPathList_.at(asset);
@@ -441,7 +445,7 @@ namespace octoon
 	}
 
 	std::string
-	AssetDatabase::getAssetGuid(const std::shared_ptr<RttiObject>& asset) noexcept
+	AssetDatabase::getAssetGuid(const std::shared_ptr<const RttiObject>& asset) noexcept
 	{
 		if (assetGuidList_.contains(asset))
 			return assetGuidList_.at(asset);
@@ -454,7 +458,7 @@ namespace octoon
 	}
 
 	std::string
-	AssetDatabase::getAssetGuid(const std::shared_ptr<RttiObject>& asset) const noexcept
+	AssetDatabase::getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept
 	{
 		if (assetGuidList_.contains(asset))
 			return assetGuidList_.at(asset);
@@ -684,87 +688,87 @@ namespace octoon
 
 				if (name != package.end() && (*name).is_string())
 					material->setName((*name).get<std::string>());
-				if (colorMap != package.end() && (*colorMap).is_object())
+				if (colorMap != package.end() && (*colorMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*colorMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*colorMap);
 					if (texture) texture->apply();
 					material->setColorMap(texture);
 				}
-				if (opacityMap != package.end() && (*opacityMap).is_object())
+				if (opacityMap != package.end() && (*opacityMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*opacityMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*opacityMap);
 					if (texture) texture->apply();
 					material->setOpacityMap(texture);
 				}
-				if (normalMap != package.end() && (*normalMap).is_object())
+				if (normalMap != package.end() && (*normalMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*normalMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*normalMap);
 					if (texture) texture->apply();
 					material->setNormalMap(texture);
 				}
-				if (roughnessMap != package.end() && (*roughnessMap).is_object())
+				if (roughnessMap != package.end() && (*roughnessMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*roughnessMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*roughnessMap);
 					if (texture) texture->apply();
 					material->setRoughnessMap(texture);
 				}
-				if (specularMap != package.end() && (*specularMap).is_object())
+				if (specularMap != package.end() && (*specularMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*specularMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*specularMap);
 					if (texture) texture->apply();
 					material->setSpecularMap(texture);
 				}
-				if (metalnessMap != package.end() && (*metalnessMap).is_object())
+				if (metalnessMap != package.end() && (*metalnessMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*metalnessMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*metalnessMap);
 					if (texture) texture->apply();
 					material->setMetalnessMap(texture);
 				}
-				if (emissiveMap != package.end() && (*emissiveMap).is_object())
+				if (emissiveMap != package.end() && (*emissiveMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*emissiveMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*emissiveMap);
 					if (texture) texture->apply();
 					material->setEmissiveMap(texture);
 				}
-				if (anisotropyMap != package.end() && (*anisotropyMap).is_object())
+				if (anisotropyMap != package.end() && (*anisotropyMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*anisotropyMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*anisotropyMap);
 					if (texture) texture->apply();
 					material->setAnisotropyMap(texture);
 				}
-				if (clearCoatMap != package.end() && (*clearCoatMap).is_object())
+				if (clearCoatMap != package.end() && (*clearCoatMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*clearCoatMap);
 					if (texture) texture->apply();
 					material->setClearCoatMap(texture);
 				}
-				if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_object())
+				if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatRoughnessMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*clearCoatRoughnessMap);
 					if (texture) texture->apply();
 					material->setClearCoatRoughnessMap(texture);
 				}
-				if (subsurfaceMap != package.end() && (*subsurfaceMap).is_object())
+				if (subsurfaceMap != package.end() && (*subsurfaceMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*subsurfaceMap);
 					if (texture) texture->apply();
 					material->setSubsurfaceMap(texture);
 				}
-				if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_object())
+				if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceColorMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*subsurfaceColorMap);
 					if (texture) texture->apply();
 					material->setSubsurfaceColorMap(texture);
 				}
-				if (sheenMap != package.end() && (*sheenMap).is_object())
+				if (sheenMap != package.end() && (*sheenMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*sheenMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*sheenMap);
 					if (texture) texture->apply();
 					material->setSheenMap(texture);
 				}
-				if (lightMap != package.end() && (*lightMap).is_object())
+				if (lightMap != package.end() && (*lightMap).is_string())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*lightMap);
+					auto texture = AssetBundle::instance()->loadAsset<Texture>(*lightMap);
 					if (texture) texture->apply();
 					material->setLightMap(texture);
 				}

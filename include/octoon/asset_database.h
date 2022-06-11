@@ -29,11 +29,11 @@ namespace octoon
 		nlohmann::json createAsset(const std::shared_ptr<Material>& material, std::string_view outputPath) noexcept(false);
 		nlohmann::json createAsset(const PMX& pmx, std::string_view outputPath) noexcept(false);
 
-		std::string getAssetPath(const std::shared_ptr<RttiObject>& asset) noexcept;
-		std::string getAssetPath(const std::shared_ptr<RttiObject>& asset) const noexcept;
+		std::string getAssetPath(const std::shared_ptr<const RttiObject>& asset) noexcept;
+		std::string getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
-		std::string getAssetGuid(const std::shared_ptr<RttiObject>& asset) noexcept;
-		std::string getAssetGuid(const std::shared_ptr<RttiObject>& asset) const noexcept;
+		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) noexcept;
+		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
 		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath) noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) const noexcept(false);
@@ -79,9 +79,9 @@ namespace octoon
 
 		std::map<std::string, nlohmann::json> packageList_;
 
-		std::map<std::weak_ptr<RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<RttiObject>>> assetList_;
-		std::map<std::weak_ptr<RttiObject>, std::string, std::owner_less<std::weak_ptr<RttiObject>>> assetPathList_;
-		std::map<std::weak_ptr<RttiObject>, std::string, std::owner_less<std::weak_ptr<RttiObject>>> assetGuidList_;
+		std::map<std::weak_ptr<const RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<const RttiObject>>> assetList_;
+		std::map<std::weak_ptr<const RttiObject>, std::string, std::owner_less<std::weak_ptr<const RttiObject>>> assetPathList_;
+		std::map<std::weak_ptr<const RttiObject>, std::string, std::owner_less<std::weak_ptr<const RttiObject>>> assetGuidList_;
 
 		std::shared_ptr<PerspectiveCamera> camera_;
 		std::shared_ptr<Geometry> geometry_;
