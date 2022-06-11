@@ -92,6 +92,8 @@ namespace unreal
 				this->selectorModule->load(json["drag"], ab);
 			if (json["grid"].is_object())
 				this->gridModule->load(json["grid"], ab);
+
+			ab->unload();
 		}
 	}
 

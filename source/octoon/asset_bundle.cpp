@@ -24,6 +24,8 @@ namespace octoon
 	void
 	AssetBundle::open(std::string assetPath) noexcept(false)
 	{
+		assetPath_ = assetPath;
+
 		auto modelPath = std::filesystem::path(assetPath).append("model").string();
 		auto motionPath = std::filesystem::path(assetPath).append("motion").string();
 		auto materialPath = std::filesystem::path(assetPath).append("material").string();
@@ -74,10 +76,13 @@ namespace octoon
 	void
 	AssetBundle::saveAssets() noexcept(false)
 	{
-		this->modelAsset_->saveAssets();
-		this->motionAsset_->saveAssets();
-		this->materialAsset_->saveAssets();
-		this->textureAsset_->saveAssets();
+		if (std::filesystem::exists(assetPath_))
+		{
+			this->modelAsset_->saveAssets();
+			this->motionAsset_->saveAssets();
+			this->materialAsset_->saveAssets();
+			this->textureAsset_->saveAssets();
+		}
 
 		for (auto& ab : assetBundles_)
 			ab->saveAssets();
@@ -253,27 +258,26 @@ namespace octoon
 			if (it != this->assetPackageCache_.end())
 				return this->assetPackageCache_[texture];
 
-			nlohmann::json package = AssetDatabase::instance()->getPackage(texture);
-			if (package.find("uuid") != package.end())
+			auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
+			if (!uuid.empty())
 			{
-				auto uuid = package["uuid"].get<std::string>();
 				if (this != AssetBundle::instance())
 				{
 					for (auto& index : AssetBundle::instance()->getTextureList())
 					{
 						if (index == uuid)
-							return package;
+							return AssetBundle::instance()->getPackage(uuid);
 					}
 				}
 
 				for (auto& index : textureAsset_->getIndexList())
 				{
 					if (index == uuid)
-						return package;
+						return textureAsset_->getPackage(uuid);
 				}
 			}
 
-			package = AssetDatabase::instance()->createAsset(*texture, textureAsset_->getAssertPath());
+			auto package = AssetDatabase::instance()->createAsset(*texture, textureAsset_->getAssertPath());
 			if (package.is_object())
 			{
 				auto uuid = package["uuid"].get<std::string>();

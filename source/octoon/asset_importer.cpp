@@ -158,7 +158,7 @@ namespace octoon
 	AssetImporter::saveAssets() noexcept(false)
 	{
 		if (!std::filesystem::exists(assertPath_))
-			std::filesystem::create_directory(assertPath_);
+			std::filesystem::create_directories(assertPath_);
 
 		std::ofstream ifs(assertPath_ + "/index.json", std::ios_base::binary);
 		if (ifs)
@@ -171,7 +171,6 @@ namespace octoon
 	void
 	AssetImporter::clearCache() noexcept
 	{
-		assetCache_.clear();
 	}
 
 	nlohmann::json
