@@ -137,6 +137,8 @@ namespace unreal
 			{
 				if (QMessageBox::question(this, tr("Info"), tr("Do you want to discard your local changes?")) == QMessageBox::No)
 					return;
+
+				QCoreApplication::processEvents();
 			}
 			
 			if (behaviour_ && !profile_->playerModule->isPlaying)
