@@ -42,7 +42,6 @@ namespace octoon
 	void
 	AssetDatabase::close() noexcept
 	{
-		assetCache_.clear();
 		assetList_.clear();
 		assetPathList_.clear();
 		assetGuidList_.clear();
@@ -68,7 +67,7 @@ namespace octoon
 
 		if (std::filesystem::exists(u16_conv))
 		{
-			auto uuid = octoon::make_guid();
+			auto uuid = make_guid();
 			auto extension = filepath.substr(filepath.find_last_of("."));
 			auto rootPath = std::filesystem::path(path).append(uuid);
 			auto motionPath = std::filesystem::path(rootPath).append(uuid + std::string(extension));
@@ -102,7 +101,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(const octoon::Texture& texture, std::string_view path) noexcept(false)
+	AssetDatabase::createAsset(const Texture& texture, std::string_view path) noexcept(false)
 	{
 		assert(!path.empty());
 
@@ -145,10 +144,10 @@ namespace octoon
 				pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
 			}
 
-			auto uuid2 = octoon::make_guid();
+			auto uuid2 = make_guid();
 			auto texturePath2 = std::filesystem::path(rootPath).append(uuid2 + ".png");
 
-			octoon::Texture image(octoon::Format::R8G8B8SRGB, width, height, pixels.get());
+			Texture image(Format::R8G8B8SRGB, width, height, pixels.get());
 			image.resize(260, 130).save(texturePath2.string(), "png");
 
 			package["preview"] = texturePath2.string();
@@ -168,7 +167,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(const octoon::Animation& animation, std::string_view path) noexcept(false)
+	AssetDatabase::createAsset(const Animation& animation, std::string_view path) noexcept(false)
 	{
 		assert(!path.empty());
 
@@ -179,7 +178,7 @@ namespace octoon
 
 		std::filesystem::create_directories(rootPath);
 
-		octoon::VMDLoader::save(motionPath.string(), animation);
+		VMDLoader::save(motionPath.string(), animation);
 		std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
 
 		nlohmann::json package;
@@ -222,17 +221,17 @@ namespace octoon
 				return previewPath.string();
 			};
 
-			auto writeFloat2 = [](const octoon::math::float2& v)
+			auto writeFloat2 = [](const math::float2& v)
 			{
 				return nlohmann::json({ v.x, v.y });
 			};
 
-			auto writeFloat3 = [](const octoon::math::float3& v)
+			auto writeFloat3 = [](const math::float3& v)
 			{
 				return nlohmann::json({ v.x, v.y, v.z });
 			};
 
-			auto standardMaterial = material->downcast<octoon::MeshStandardMaterial>();
+			auto standardMaterial = material->downcast<MeshStandardMaterial>();
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
@@ -334,7 +333,7 @@ namespace octoon
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
-		auto uuid = octoon::make_guid();
+		auto uuid = make_guid();
 		auto rootPath = std::filesystem::path(path).append(uuid);
 		auto modelPath = std::filesystem::path(rootPath).append(uuid + ".pmx");
 		auto packagePath = std::filesystem::path(rootPath).append("package.json");
@@ -352,37 +351,37 @@ namespace octoon
 
 				if (std::filesystem::exists(fullpath) && !std::filesystem::exists(texturePath))
 				{
-					auto textureRootPath = octoon::runtime::string::directory(texturePath.string());
+					auto textureRootPath = runtime::string::directory(texturePath.string());
 					std::filesystem::create_directories(textureRootPath);
 					std::filesystem::copy(fullpath, texturePath);
 					std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 				}
 			}
 
-			octoon::math::BoundingBox bound;
+			math::BoundingBox bound;
 			for (auto& v : pmx.vertices)
-				bound.encapsulate(octoon::math::float3(v.position.x, v.position.y, v.position.z));
+				bound.encapsulate(math::float3(v.position.x, v.position.y, v.position.z));
 
 			auto minBounding = bound.box().min;
 			auto maxBounding = bound.box().max;
 
-			auto writePreview = [this](const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, std::filesystem::path outputPath) -> nlohmann::json
+			auto writePreview = [this](const std::shared_ptr<Geometry>& geometry, const math::BoundingBox& boundingBox, std::filesystem::path outputPath) -> nlohmann::json
 			{
-				octoon::Texture texture;
-				auto previewPath = std::filesystem::path(outputPath).append(octoon::make_guid() + ".png");
+				Texture texture;
+				auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
 				this->createModelPreview(geometry, boundingBox, texture);
 				texture.save(previewPath.string(), "png");
 				return previewPath.string();
 			};
 
-			auto geometry = octoon::PMXLoader::loadGeometry(pmx);
+			auto geometry = PMXLoader::loadGeometry(pmx);
 
 			for (auto& v : pmx.bones)
 			{
 				if (std::wcscmp(v.name.name, L"×óÄ¿") == 0 || std::wcscmp(v.name.name, L"ÓÒÄ¿") == 0)
 				{
 					auto position = v.position.y;
-					camera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, position, 10), octoon::math::float3(0, position, 0), -octoon::math::float3::UnitY));
+					camera_->setTransform(math::makeLookatRH(math::float3(0, position, 10), math::float3(0, position, 0), -math::float3::UnitY));
 				}
 			}
 
@@ -436,7 +435,7 @@ namespace octoon
 			return assetGuidList_.at(asset);
 		else
 		{
-			auto guid = octoon::make_guid();
+			auto guid = make_guid();
 			assetGuidList_[asset] = guid;
 			return guid;
 		}
@@ -509,7 +508,7 @@ namespace octoon
 
 		if (ext == ".vmd")
 		{
-			auto motion = octoon::VMDLoader::load(path);
+			auto motion = VMDLoader::load(path);
 			if (motion)
 			{
 				assetPathList_[motion] = path;
@@ -519,7 +518,7 @@ namespace octoon
 		}
 		else if (ext == ".hdr" || ext == ".bmp" || ext == ".tga" || ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".dds")
 		{
-			auto texture = std::make_shared<octoon::Texture>((std::string)path);
+			auto texture = std::make_shared<Texture>((std::string)path);
 			if (texture)
 			{
 				assetPathList_[texture] = path;
@@ -553,12 +552,12 @@ namespace octoon
 	}
 
 	std::shared_ptr<RttiObject>
-	AssetDatabase::loadAssetAtPath(std::string_view path, octoon::PMXLoadFlags flags) noexcept(false)
+	AssetDatabase::loadAssetAtPath(std::string_view path, PMXLoadFlags flags) noexcept(false)
 	{
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".pmx")
 		{
-			auto model = octoon::PMXLoader::load(path, flags);
+			auto model = PMXLoader::load(path, flags);
 			if (model)
 			{
 				assetPathList_[model] = path;
@@ -568,10 +567,10 @@ namespace octoon
 		}
 		else if (ext == ".abc")
 		{
-			auto model = std::make_shared<octoon::GameObject>();
+			auto model = std::make_shared<GameObject>();
 			if (model)
 			{
-				model->addComponent<octoon::MeshAnimationComponent>(path);
+				model->addComponent<MeshAnimationComponent>(path);
 				assetPathList_[model] = path;
 				assetGuidList_[model] = make_guid();
 				return model;
@@ -590,15 +589,12 @@ namespace octoon
 			{
 				auto path = package["path"].get<nlohmann::json::string_t>();
 				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-				auto it = this->assetCache_.find(uuid);
-				if (it != this->assetCache_.end())
-					return this->assetCache_[uuid]->downcast_pointer<octoon::Texture>();
 
 				bool generateMipmap = false;
 				if (package.find("mipmap") != package.end())
 					generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
 
-				auto texture = std::make_shared<octoon::Texture>(path);
+				auto texture = std::make_shared<Texture>(path);
 				if (texture)
 				{
 					if (generateMipmap)
@@ -607,7 +603,6 @@ namespace octoon
 					texture->apply();
 
 					packageList_[uuid] = package;
-					assetCache_[uuid] = texture;
 					assetList_[texture] = package;
 					assetPathList_[texture] = path;
 					assetGuidList_[texture] = uuid;
@@ -621,16 +616,11 @@ namespace octoon
 			if (package["path"].is_string())
 			{
 				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-				auto it = this->assetCache_.find(uuid);
-				if (it != this->assetCache_.end())
-					return this->assetCache_[uuid]->downcast_pointer<octoon::GameObject>();
-
 				auto path = package["path"].get<nlohmann::json::string_t>();
-				auto gameObject = octoon::PMXLoader::load(path, PMXLoadFlagBits::AllBit);
+				auto gameObject = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
 				if (gameObject)
 				{
 					packageList_[uuid] = package;
-					assetCache_[uuid] = gameObject;
 					assetList_[gameObject] = package;
 					assetPathList_[gameObject] = path;
 					assetGuidList_[gameObject] = uuid;
@@ -644,16 +634,11 @@ namespace octoon
 			if (package["path"].is_string())
 			{
 				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-				auto it = this->assetCache_.find(uuid);
-				if (it != this->assetCache_.end())
-					return this->assetCache_[uuid]->downcast_pointer<octoon::Animation>();
-
 				auto path = package["path"].get<nlohmann::json::string_t>();
-				auto motion = octoon::VMDLoader::load(path.c_str());
+				auto motion = VMDLoader::load(path.c_str());
 				if (motion)
 				{
 					packageList_[uuid] = package;
-					assetCache_[uuid] = motion;
 					assetList_[motion] = package;
 					assetPathList_[motion] = path;
 					assetGuidList_[motion] = uuid;
@@ -665,11 +650,7 @@ namespace octoon
 		else if (type.isDerivedFrom(Material::getRtti()))
 		{
 			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-			auto it = this->assetCache_.find(uuid);
-			if (it != this->assetCache_.end())
-				return this->assetCache_[uuid]->downcast_pointer<octoon::Material>();
-
-			auto material = std::make_shared<octoon::MeshStandardMaterial>();
+			auto material = std::make_shared<MeshStandardMaterial>();
 
 			auto name = package.find("name");
 			auto colorMap = package.find("colorMap");
@@ -691,85 +672,85 @@ namespace octoon
 				material->setName((*name).get<nlohmann::json::string_t>());
 			if (colorMap != package.end() && (*colorMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*colorMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*colorMap);
 				if (texture) texture->apply();
 				material->setColorMap(texture);
 			}
 			if (opacityMap != package.end() && (*opacityMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*opacityMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*opacityMap);
 				if (texture) texture->apply();
 				material->setOpacityMap(texture);
 			}
 			if (normalMap != package.end() && (*normalMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*normalMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*normalMap);
 				if (texture) texture->apply();
 				material->setNormalMap(texture);
 			}
 			if (roughnessMap != package.end() && (*roughnessMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*roughnessMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*roughnessMap);
 				if (texture) texture->apply();
 				material->setRoughnessMap(texture);
 			}
 			if (specularMap != package.end() && (*specularMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*specularMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*specularMap);
 				if (texture) texture->apply();
 				material->setSpecularMap(texture);
 			}
 			if (metalnessMap != package.end() && (*metalnessMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*metalnessMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*metalnessMap);
 				if (texture) texture->apply();
 				material->setMetalnessMap(texture);
 			}
 			if (emissiveMap != package.end() && (*emissiveMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*emissiveMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*emissiveMap);
 				if (texture) texture->apply();
 				material->setEmissiveMap(texture);
 			}
 			if (anisotropyMap != package.end() && (*anisotropyMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*anisotropyMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*anisotropyMap);
 				if (texture) texture->apply();
 				material->setAnisotropyMap(texture);
 			}
 			if (clearCoatMap != package.end() && (*clearCoatMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatMap);
 				if (texture) texture->apply();
 				material->setClearCoatMap(texture);
 			}
 			if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatRoughnessMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatRoughnessMap);
 				if (texture) texture->apply();
 				material->setClearCoatRoughnessMap(texture);
 			}
 			if (subsurfaceMap != package.end() && (*subsurfaceMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceMap);
 				if (texture) texture->apply();
 				material->setSubsurfaceMap(texture);
 			}
 			if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceColorMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceColorMap);
 				if (texture) texture->apply();
 				material->setSubsurfaceColorMap(texture);
 			}
 			if (sheenMap != package.end() && (*sheenMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*sheenMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*sheenMap);
 				if (texture) texture->apply();
 				material->setSheenMap(texture);
 			}
 			if (lightMap != package.end() && (*lightMap).is_object())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<Texture>(*lightMap);
+				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*lightMap);
 				if (texture) texture->apply();
 				material->setLightMap(texture);
 			}
@@ -785,17 +766,17 @@ namespace octoon
 			if (blendEnable != package.end() && (*blendEnable).is_boolean())
 				material->setBlendEnable((*blendEnable).get<nlohmann::json::boolean_t>());
 			if (blendOp != package.end() && (*blendOp).is_number_unsigned())
-				material->setBlendOp((octoon::BlendOp)(*blendOp).get<nlohmann::json::number_unsigned_t>());
+				material->setBlendOp((BlendOp)(*blendOp).get<nlohmann::json::number_unsigned_t>());
 			if (blendSrc != package.end() && (*blendSrc).is_number_unsigned())
-				material->setBlendSrc((octoon::BlendMode)(*blendSrc).get<nlohmann::json::number_unsigned_t>());
+				material->setBlendSrc((BlendMode)(*blendSrc).get<nlohmann::json::number_unsigned_t>());
 			if (blendDest != package.end() && (*blendDest).is_number_unsigned())
-				material->setBlendDest((octoon::BlendMode)(*blendDest).get<nlohmann::json::number_unsigned_t>());
+				material->setBlendDest((BlendMode)(*blendDest).get<nlohmann::json::number_unsigned_t>());
 			if (blendAlphaOp != package.end() && (*blendAlphaOp).is_number_unsigned())
-				material->setBlendAlphaOp((octoon::BlendOp)(*blendAlphaOp).get<nlohmann::json::number_unsigned_t>());
+				material->setBlendAlphaOp((BlendOp)(*blendAlphaOp).get<nlohmann::json::number_unsigned_t>());
 			if (blendAlphaSrc != package.end() && (*blendAlphaSrc).is_number_unsigned())
-				material->setBlendAlphaSrc((octoon::BlendMode)(*blendAlphaSrc).get<nlohmann::json::number_unsigned_t>());
+				material->setBlendAlphaSrc((BlendMode)(*blendAlphaSrc).get<nlohmann::json::number_unsigned_t>());
 			if (blendAlphaDest != package.end() && (*blendAlphaDest).is_number_unsigned())
-				material->setBlendAlphaDest((octoon::BlendMode)(*blendAlphaDest).get<nlohmann::json::number_unsigned_t>());
+				material->setBlendAlphaDest((BlendMode)(*blendAlphaDest).get<nlohmann::json::number_unsigned_t>());
 
 			auto depthEnable = package.find("depthEnable");
 			auto depthBiasEnable = package.find("depthBiasEnable");
@@ -890,25 +871,21 @@ namespace octoon
 			auto subsurfaceColor = package.find("subsurfaceColor");
 
 			if (offset != package.end() && (*offset).is_array())
-				material->setOffset(octoon::math::float2((*offset)[0].get<nlohmann::json::number_float_t>(), (*offset)[1].get<nlohmann::json::number_float_t>()));
+				material->setOffset(math::float2((*offset)[0].get<nlohmann::json::number_float_t>(), (*offset)[1].get<nlohmann::json::number_float_t>()));
 			if (repeat != package.end() && (*repeat).is_array())
-				material->setRepeat(octoon::math::float2((*repeat)[0].get<nlohmann::json::number_float_t>(), (*repeat)[1].get<nlohmann::json::number_float_t>()));
+				material->setRepeat(math::float2((*repeat)[0].get<nlohmann::json::number_float_t>(), (*repeat)[1].get<nlohmann::json::number_float_t>()));
 			if (normalScale != package.end() && (*normalScale).is_array())
-				material->setNormalScale(octoon::math::float2((*normalScale)[0].get<nlohmann::json::number_float_t>(), (*normalScale)[1].get<nlohmann::json::number_float_t>()));
+				material->setNormalScale(math::float2((*normalScale)[0].get<nlohmann::json::number_float_t>(), (*normalScale)[1].get<nlohmann::json::number_float_t>()));
 			if (color != package.end() && (*color).is_array())
-				material->setColor(octoon::math::float3((*color)[0].get<nlohmann::json::number_float_t>(), (*color)[1].get<nlohmann::json::number_float_t>(), (*color)[2].get<nlohmann::json::number_float_t>()));
+				material->setColor(math::float3((*color)[0].get<nlohmann::json::number_float_t>(), (*color)[1].get<nlohmann::json::number_float_t>(), (*color)[2].get<nlohmann::json::number_float_t>()));
 			if (emissive != package.end() && (*emissive).is_array())
-				material->setEmissive(octoon::math::float3((*emissive)[0].get<nlohmann::json::number_float_t>(), (*emissive)[1].get<nlohmann::json::number_float_t>(), (*emissive)[2].get<nlohmann::json::number_float_t>()));
+				material->setEmissive(math::float3((*emissive)[0].get<nlohmann::json::number_float_t>(), (*emissive)[1].get<nlohmann::json::number_float_t>(), (*emissive)[2].get<nlohmann::json::number_float_t>()));
 			if (subsurfaceColor != package.end() && (*subsurfaceColor).is_array())
-				material->setSubsurfaceColor(octoon::math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
+				material->setSubsurfaceColor(math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
 
-			packageList_[uuid] = package;
-			assetCache_[uuid] = material;
-			assetList_[material] = package;
-			assetGuidList_[material] = uuid;
-			this->packageList_[uuid] = package;
-			this->assetCache_[uuid] = material;
 			this->assetList_[material] = package;
+			this->assetGuidList_[material] = uuid;
+			this->packageList_[uuid] = package;
 
 			return material;
 		}
@@ -916,12 +893,12 @@ namespace octoon
 		return nullptr;
 	}
 
-	std::shared_ptr<octoon::GraphicsTexture>
+	std::shared_ptr<GraphicsTexture>
 	AssetDatabase::createMaterialPreview(const std::shared_ptr<Material>& material)
 	{
 		assert(materialScene_);
 
-		auto renderer = octoon::Renderer::instance();
+		auto renderer = Renderer::instance();
 		if (renderer)
 		{
 			materialGeometry_->setMaterial(material);
@@ -934,7 +911,7 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createMaterialPreview(const std::shared_ptr<Material>& material, octoon::Texture& texture)
+	AssetDatabase::createMaterialPreview(const std::shared_ptr<Material>& material, Texture& texture)
 	{
 		auto colorTexture = this->createMaterialPreview(material);
 		auto width = colorTexture->getTextureDesc().getWidth();
@@ -943,7 +920,7 @@ namespace octoon
 		std::uint8_t* data;
 		if (colorTexture->map(0, 0, width, height, 0, (void**)&data))
 		{
-			texture.create(octoon::Format::R8G8B8SRGB, width, height);
+			texture.create(Format::R8G8B8SRGB, width, height);
 
 			auto destData = texture.data();
 
@@ -960,9 +937,9 @@ namespace octoon
 					std::uint8_t v = y / size % 2;
 					std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
 
-					destData[dest] = octoon::math::lerp(bg, data[src], data[src + 3] / 255.f);
-					destData[dest + 1] = octoon::math::lerp(bg, data[src + 1], data[src + 3] / 255.f);
-					destData[dest + 2] = octoon::math::lerp(bg, data[src + 2], data[src + 3] / 255.f);
+					destData[dest] = math::lerp(bg, data[src], data[src + 3] / 255.f);
+					destData[dest + 1] = math::lerp(bg, data[src + 1], data[src + 3] / 255.f);
+					destData[dest + 2] = math::lerp(bg, data[src + 2], data[src + 3] / 255.f);
 				}
 			}
 
@@ -973,65 +950,65 @@ namespace octoon
 	void
 	AssetDatabase::initMaterialScene() noexcept(false)
 	{
-		auto renderer = octoon::Renderer::instance();
+		auto renderer = Renderer::instance();
 		if (renderer)
 		{
 			std::uint32_t width = previewWidth_;
 			std::uint32_t height = previewHeight_;
 
-			octoon::GraphicsTextureDesc textureDesc;
+			GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);
-			textureDesc.setTexDim(octoon::TextureDimension::Texture2D);
-			textureDesc.setTexFormat(octoon::GraphicsFormat::R8G8B8A8UNorm);
+			textureDesc.setTexDim(TextureDimension::Texture2D);
+			textureDesc.setTexFormat(GraphicsFormat::R8G8B8A8UNorm);
 			auto colorTexture = renderer->getGraphicsDevice()->createTexture(textureDesc);
 			if (!colorTexture)
 				throw std::runtime_error("createTexture() failed");
 
-			octoon::GraphicsTextureDesc depthTextureDesc;
+			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setSize(width, height);
-			depthTextureDesc.setTexDim(octoon::TextureDimension::Texture2D);
-			depthTextureDesc.setTexFormat(octoon::GraphicsFormat::D16UNorm);
+			depthTextureDesc.setTexDim(TextureDimension::Texture2D);
+			depthTextureDesc.setTexFormat(GraphicsFormat::D16UNorm);
 			auto depthTexture = renderer->getGraphicsDevice()->createTexture(depthTextureDesc);
 			if (!depthTexture)
 				throw std::runtime_error("createTexture() failed");
 
-			octoon::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-			framebufferLayoutDesc.addComponent(octoon::GraphicsAttachmentLayout(0, octoon::GraphicsImageLayout::ColorAttachmentOptimal, octoon::GraphicsFormat::R8G8B8A8UNorm));
-			framebufferLayoutDesc.addComponent(octoon::GraphicsAttachmentLayout(1, octoon::GraphicsImageLayout::DepthStencilAttachmentOptimal, octoon::GraphicsFormat::D16UNorm));
+			GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R8G8B8A8UNorm));
+			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(1, GraphicsImageLayout::DepthStencilAttachmentOptimal, GraphicsFormat::D16UNorm));
 
-			octoon::GraphicsFramebufferDesc framebufferDesc;
+			GraphicsFramebufferDesc framebufferDesc;
 			framebufferDesc.setWidth(width);
 			framebufferDesc.setHeight(height);
 			framebufferDesc.setFramebufferLayout(renderer->getGraphicsDevice()->createFramebufferLayout(framebufferLayoutDesc));
-			framebufferDesc.setDepthStencilAttachment(octoon::GraphicsAttachmentBinding(depthTexture, 0, 0));
-			framebufferDesc.addColorAttachment(octoon::GraphicsAttachmentBinding(colorTexture, 0, 0));
+			framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture, 0, 0));
+			framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture, 0, 0));
 
 			materialFramebuffer_ = renderer->getGraphicsDevice()->createFramebuffer(framebufferDesc);
 			if (!materialFramebuffer_)
 				throw std::runtime_error("createFramebuffer() failed");
 
-			materialCamera_ = std::make_shared<octoon::PerspectiveCamera>(60, 1, 100);
-			materialCamera_->setClearColor(octoon::math::float4::Zero);
-			materialCamera_->setClearFlags(octoon::ClearFlagBits::AllBit);
+			materialCamera_ = std::make_shared<PerspectiveCamera>(60, 1, 100);
+			materialCamera_->setClearColor(math::float4::Zero);
+			materialCamera_->setClearFlags(ClearFlagBits::AllBit);
 			materialCamera_->setFramebuffer(materialFramebuffer_);
-			materialCamera_->setTransform(octoon::math::makeLookatRH(octoon::math::float3(0, 0, 1), octoon::math::float3::Zero, octoon::math::float3::UnitY));
+			materialCamera_->setTransform(math::makeLookatRH(math::float3(0, 0, 1), math::float3::Zero, math::float3::UnitY));
 
-			materialGeometry_ = std::make_shared<octoon::Geometry>();
-			materialGeometry_->setMesh(std::make_shared<octoon::SphereMesh>(0.5f));
+			materialGeometry_ = std::make_shared<Geometry>();
+			materialGeometry_->setMesh(std::make_shared<SphereMesh>(0.5f));
 
-			octoon::math::Quaternion q1;
-			q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75f);
-			octoon::math::Quaternion q2;
-			q2.makeRotation(octoon::math::float3::UnitY, octoon::math::PI / 4.6f);
+			math::Quaternion q1;
+			q1.makeRotation(math::float3::UnitX, math::PI / 2.75f);
+			math::Quaternion q2;
+			q2.makeRotation(math::float3::UnitY, math::PI / 4.6f);
 
-			materialDirectionalLight_ = std::make_shared<octoon::DirectionalLight>();
-			materialDirectionalLight_->setColor(octoon::math::float3(1, 1, 1));
-			materialDirectionalLight_->setTransform(octoon::math::float4x4(q1 * q2));
+			materialDirectionalLight_ = std::make_shared<DirectionalLight>();
+			materialDirectionalLight_->setColor(math::float3(1, 1, 1));
+			materialDirectionalLight_->setTransform(math::float4x4(q1 * q2));
 
-			materialEnvironmentLight_ = std::make_shared<octoon::EnvironmentLight>();
-			materialEnvironmentLight_->setEnvironmentMap(octoon::PMREMLoader::load("../../system/hdri/Ditch-River_1k.hdr"));
+			materialEnvironmentLight_ = std::make_shared<EnvironmentLight>();
+			materialEnvironmentLight_->setEnvironmentMap(PMREMLoader::load("../../system/hdri/Ditch-River_1k.hdr"));
 
-			materialScene_ = std::make_unique<octoon::RenderScene>();
+			materialScene_ = std::make_unique<RenderScene>();
 			materialScene_->addRenderObject(materialCamera_.get());
 			materialScene_->addRenderObject(materialDirectionalLight_.get());
 			materialScene_->addRenderObject(materialEnvironmentLight_.get());
@@ -1040,7 +1017,7 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createModelPreview(const std::shared_ptr<octoon::Geometry>& geometry, const octoon::math::BoundingBox& boundingBox, octoon::Texture& texture)
+	AssetDatabase::createModelPreview(const std::shared_ptr<Geometry>& geometry, const math::BoundingBox& boundingBox, Texture& texture)
 	{
 		assert(geometry);
 
@@ -1049,13 +1026,13 @@ namespace octoon
 			auto min = boundingBox.box().min;
 			auto max = boundingBox.box().max;
 
-			auto renderer = octoon::Renderer::instance();
+			auto renderer = Renderer::instance();
 			if (renderer)
 			{
 				geometry_->setMesh(geometry->getMesh());
 				geometry_->setMaterials(geometry->getMaterials());
 
-				octoon::Renderer::instance()->render(scene_);
+				Renderer::instance()->render(scene_);
 
 				geometry_->setDirty(true);
 			}
@@ -1069,7 +1046,7 @@ namespace octoon
 			std::uint8_t* data;
 			if (colorTexture->map(0, 0, framebufferDesc.getWidth(), framebufferDesc.getHeight(), 0, (void**)&data))
 			{
-				texture.create(octoon::Format::R8G8B8SRGB, width, height);
+				texture.create(Format::R8G8B8SRGB, width, height);
 
 				auto destData = texture.data();
 
@@ -1086,9 +1063,9 @@ namespace octoon
 						std::uint8_t v = y / size % 2;
 						std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
 
-						destData[dest] = octoon::math::lerp(bg, data[src], data[src + 3] / 255.f);
-						destData[dest + 1] = octoon::math::lerp(bg, data[src + 1], data[src + 3] / 255.f);
-						destData[dest + 2] = octoon::math::lerp(bg, data[src + 2], data[src + 3] / 255.f);
+						destData[dest] = math::lerp(bg, data[src], data[src + 3] / 255.f);
+						destData[dest + 1] = math::lerp(bg, data[src + 1], data[src + 3] / 255.f);
+						destData[dest + 2] = math::lerp(bg, data[src + 2], data[src + 3] / 255.f);
 					}
 				}
 
@@ -1100,64 +1077,64 @@ namespace octoon
 	void
 	AssetDatabase::initRenderScene() noexcept(false)
 	{
-		auto renderer = octoon::Renderer::instance();
+		auto renderer = Renderer::instance();
 		if (renderer)
 		{
 			std::uint32_t width = previewWidth_;
 			std::uint32_t height = previewHeight_;
 
-			octoon::GraphicsTextureDesc textureDesc;
+			GraphicsTextureDesc textureDesc;
 			textureDesc.setSize(width, height);
-			textureDesc.setTexDim(octoon::TextureDimension::Texture2D);
-			textureDesc.setTexFormat(octoon::GraphicsFormat::R8G8B8A8UNorm);
+			textureDesc.setTexDim(TextureDimension::Texture2D);
+			textureDesc.setTexFormat(GraphicsFormat::R8G8B8A8UNorm);
 			auto colorTexture = renderer->getGraphicsDevice()->createTexture(textureDesc);
 			if (!colorTexture)
 				throw std::runtime_error("createTexture() failed");
 
-			octoon::GraphicsTextureDesc depthTextureDesc;
+			GraphicsTextureDesc depthTextureDesc;
 			depthTextureDesc.setSize(width, height);
-			depthTextureDesc.setTexDim(octoon::TextureDimension::Texture2D);
-			depthTextureDesc.setTexFormat(octoon::GraphicsFormat::D16UNorm);
+			depthTextureDesc.setTexDim(TextureDimension::Texture2D);
+			depthTextureDesc.setTexFormat(GraphicsFormat::D16UNorm);
 			auto depthTexture = renderer->getGraphicsDevice()->createTexture(depthTextureDesc);
 			if (!depthTexture)
 				throw std::runtime_error("createTexture() failed");
 
-			octoon::GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-			framebufferLayoutDesc.addComponent(octoon::GraphicsAttachmentLayout(0, octoon::GraphicsImageLayout::ColorAttachmentOptimal, octoon::GraphicsFormat::R8G8B8A8UNorm));
-			framebufferLayoutDesc.addComponent(octoon::GraphicsAttachmentLayout(1, octoon::GraphicsImageLayout::DepthStencilAttachmentOptimal, octoon::GraphicsFormat::D16UNorm));
+			GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
+			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R8G8B8A8UNorm));
+			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(1, GraphicsImageLayout::DepthStencilAttachmentOptimal, GraphicsFormat::D16UNorm));
 
-			octoon::GraphicsFramebufferDesc framebufferDesc;
+			GraphicsFramebufferDesc framebufferDesc;
 			framebufferDesc.setWidth(width);
 			framebufferDesc.setHeight(height);
 			framebufferDesc.setFramebufferLayout(renderer->getGraphicsDevice()->createFramebufferLayout(framebufferLayoutDesc));
-			framebufferDesc.setDepthStencilAttachment(octoon::GraphicsAttachmentBinding(depthTexture, 0, 0));
-			framebufferDesc.addColorAttachment(octoon::GraphicsAttachmentBinding(colorTexture, 0, 0));
+			framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture, 0, 0));
+			framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture, 0, 0));
 
 			framebuffer_ = renderer->getGraphicsDevice()->createFramebuffer(framebufferDesc);
 			if (!framebuffer_)
 				throw std::runtime_error("createFramebuffer() failed");
 
-			camera_ = std::make_shared<octoon::PerspectiveCamera>(23.9f, 1, 100);
-			camera_->setClearColor(octoon::math::float4::Zero);
-			camera_->setClearFlags(octoon::ClearFlagBits::AllBit);
+			camera_ = std::make_shared<PerspectiveCamera>(23.9f, 1.0f, 100.0f);
+			camera_->setClearColor(math::float4::Zero);
+			camera_->setClearFlags(ClearFlagBits::AllBit);
 			camera_->setFramebuffer(framebuffer_);
 
-			geometry_ = std::make_shared<octoon::Geometry>();
-			geometry_->setMesh(std::make_shared<octoon::SphereMesh>(0.5));
+			geometry_ = std::make_shared<Geometry>();
+			geometry_->setMesh(std::make_shared<SphereMesh>(0.5f));
 
-			octoon::math::Quaternion q1;
-			q1.makeRotation(octoon::math::float3::UnitX, octoon::math::PI / 2.75f);
-			octoon::math::Quaternion q2;
-			q2.makeRotation(octoon::math::float3::UnitY, octoon::math::PI / 4.6f);
+			math::Quaternion q1;
+			q1.makeRotation(math::float3::UnitX, math::PI / 2.75f);
+			math::Quaternion q2;
+			q2.makeRotation(math::float3::UnitY, math::PI / 4.6f);
 
-			directionalLight_ = std::make_shared<octoon::DirectionalLight>();
-			directionalLight_->setColor(octoon::math::float3(1, 1, 1));
-			directionalLight_->setTransform(octoon::math::float4x4(q1 * q2));
+			directionalLight_ = std::make_shared<DirectionalLight>();
+			directionalLight_->setColor(math::float3(1, 1, 1));
+			directionalLight_->setTransform(math::float4x4(q1 * q2));
 
-			environmentLight_ = std::make_shared<octoon::EnvironmentLight>();
-			environmentLight_->setColor(octoon::math::float3::One * 0.9f);
+			environmentLight_ = std::make_shared<EnvironmentLight>();
+			environmentLight_->setColor(math::float3::One * 0.9f);
 
-			scene_ = std::make_unique<octoon::RenderScene>();
+			scene_ = std::make_unique<RenderScene>();
 			scene_->addRenderObject(camera_.get());
 			scene_->addRenderObject(environmentLight_.get());
 			scene_->addRenderObject(geometry_.get());

@@ -388,7 +388,7 @@ namespace octoon
 	GameApp::doWindowResize(WindHandle window, std::uint32_t w, std::uint32_t h) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowResize(window, w, h, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -397,7 +397,7 @@ namespace octoon
 	GameApp::doWindowFramebufferResize(WindHandle window, std::uint32_t w, std::uint32_t h) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowFramebufferResize(window, w, h, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -406,7 +406,7 @@ namespace octoon
 	GameApp::doWindowClose(WindHandle window) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowClose(window, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -415,7 +415,7 @@ namespace octoon
 	GameApp::doWindowFocus(WindHandle window, bool focus) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowFocus(window, focus, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -424,7 +424,7 @@ namespace octoon
 	GameApp::doWindowKeyDown(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowKeyDown(window, key, scancode, mods, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -433,7 +433,7 @@ namespace octoon
 	GameApp::doWindowKeyUp(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowKeyUp(window, key, scancode, mods, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -442,7 +442,7 @@ namespace octoon
 	GameApp::doWindowKeyPress(WindHandle window, input::InputKey::Code key, std::uint16_t scancode, std::uint16_t mods) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowKeyPress(window, key, scancode, mods, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -451,7 +451,7 @@ namespace octoon
 	GameApp::doWindowKeyChar(WindHandle window, std::uint16_t unicode, std::uint16_t mods) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowKeyChar(window, unicode, mods, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -460,7 +460,7 @@ namespace octoon
 	GameApp::doWindowMouseButtonDown(WindHandle window, input::InputButton::Code button, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowMouseButtonDown(window, button, x, y, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -469,7 +469,7 @@ namespace octoon
 	GameApp::doWindowMouseButtonUp(WindHandle window, input::InputButton::Code button, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowMouseButtonUp(window, button, x, y, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -478,7 +478,7 @@ namespace octoon
 	GameApp::doWindowMouseButtonDoubleClick(WindHandle window, input::InputButton::Code button, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowMouseButtonDoubleClick(window, button, x, y, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -487,7 +487,7 @@ namespace octoon
 	GameApp::doWindowMouseMotion(WindHandle window, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowMouseMotion(window, x, y, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -496,7 +496,7 @@ namespace octoon
 	GameApp::doWindowScrool(WindHandle window, float x, float y) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowScrool(window, x, y, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}
@@ -505,7 +505,7 @@ namespace octoon
 	GameApp::doWindowDrop(WindHandle window, std::uint32_t count, const char** file_utf8) noexcept(false)
 	{
 		assert(this->isOpen());
-		octoon::input::InputEvent event;
+		input::InputEvent event;
 		event.makeWindowDrop(window, count, file_utf8, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startTime_).count());
 		this->sendInputEvent(event);
 	}

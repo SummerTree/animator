@@ -20,7 +20,7 @@ namespace octoon
 		void open(std::string assetPath) noexcept(false);
 		void close() noexcept;
 
-		void clearCache() noexcept;
+		void unload() noexcept;
 		void saveAssets() noexcept(false);
 
 		nlohmann::json importPackage(std::string_view path, bool generateMipmap = false) noexcept(false);
@@ -31,7 +31,7 @@ namespace octoon
 		nlohmann::json createPackage(const std::shared_ptr<GameObject>& gameObject) noexcept(false);
 
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
-		nlohmann::json getPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept(false);
+		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) const noexcept(false);
 
 		nlohmann::json& getModelList() const noexcept;
 		nlohmann::json& getMotionList() const noexcept;
@@ -40,7 +40,7 @@ namespace octoon
 
 		void removePackage(std::string_view uuid) noexcept(false);
 
-		std::shared_ptr<octoon::RttiObject> loadAssetAtPath(std::string_view uuid, const Rtti& rtti) noexcept(false);
+		std::shared_ptr<RttiObject> loadAssetAtPath(std::string_view uuid, const Rtti& rtti) noexcept(false);
 		
 		template<typename T, typename = std::enable_if_t<std::is_base_of<RttiObject, T>::value>>
 		std::shared_ptr<T> loadAssetAtPath(std::string_view uuid) noexcept(false)
@@ -52,6 +52,10 @@ namespace octoon
 		}
 
 	private:
+		AssetBundle(const AssetBundle&) = delete;
+		AssetBundle& operator=(const AssetBundle&) = delete;
+
+	private:
 		std::string assetPath_;
 
 		std::unique_ptr<AssetImporter> modelAsset_;
@@ -59,7 +63,8 @@ namespace octoon
 		std::unique_ptr<AssetImporter> textureAsset_;
 		std::unique_ptr<AssetImporter> materialAsset_;
 
-		std::map<std::weak_ptr<octoon::RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetPackageCache_;
+		std::map<std::string, std::shared_ptr<RttiObject>> assetCache_;
+		std::map<std::weak_ptr<RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<RttiObject>>> assetPackageCache_;
 	};
 }
 

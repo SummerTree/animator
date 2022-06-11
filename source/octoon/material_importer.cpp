@@ -25,7 +25,7 @@ namespace octoon
 		return this->sceneList_;
 	}
 
-	std::shared_ptr<octoon::Material>
+	std::shared_ptr<Material>
 	MaterialImporter::getMaterial(std::string_view uuid) noexcept(false)
 	{
 		if (materials_.contains(std::string(uuid)))
@@ -35,12 +35,12 @@ namespace octoon
 	}
 
 	bool
-	MaterialImporter::addMaterial(const std::shared_ptr<octoon::Material>& mat)
+	MaterialImporter::addMaterial(const std::shared_ptr<Material>& mat)
 	{
 		if (!materialUUIDs_.contains(mat))
 		{
-			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
-			auto uuid = octoon::make_guid();
+			auto standard = mat->downcast_pointer<MeshStandardMaterial>();
+			auto uuid = make_guid();
 
 			nlohmann::json package;
 			package["uuid"] = uuid;

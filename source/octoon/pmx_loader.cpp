@@ -163,7 +163,7 @@ namespace octoon
 
 			auto bone = bones[it.bone];
 			auto baseTransformInverse = bone->getComponent<TransformComponent>()->getTransformInverse();
-			auto localTransform = math::transformMultiply(baseTransformInverse, math::makeRotation(math::Quaternion(octoon::math::float3(it.rotate.x, it.rotate.y, it.rotate.z)), octoon::math::float3(it.position.x, it.position.y, it.position.z)));
+			auto localTransform = math::transformMultiply(baseTransformInverse, math::makeRotation(math::Quaternion(math::float3(it.rotate.x, it.rotate.y, it.rotate.z)), math::float3(it.position.x, it.position.y, it.position.z)));
 
 			math::float3 translate;
 			math::float3 scale;
@@ -1040,7 +1040,7 @@ namespace octoon
 	bool
 	PMXLoader::save(const GameObject& gameObject, std::string_view path) noexcept(false)
 	{
-		auto stream = octoon::io::ofstream(std::string(path), std::ios_base::in | std::ios_base::out);
+		auto stream = io::ofstream(std::string(path), std::ios_base::in | std::ios_base::out);
 		if (stream)
 		{
 			auto pmx = std::make_unique<PMX>();
@@ -1059,7 +1059,7 @@ namespace octoon
 	bool
 	PMXLoader::save(const GameObject& gameObject, std::wstring_view path) noexcept(false)
 	{
-		auto stream = octoon::io::ofstream(std::wstring(path), std::ios_base::in | std::ios_base::out);
+		auto stream = io::ofstream(std::wstring(path), std::ios_base::in | std::ios_base::out);
 		if (stream)
 		{
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;

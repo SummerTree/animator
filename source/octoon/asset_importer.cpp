@@ -44,7 +44,7 @@ namespace octoon
 	}
 
 	bool
-	AssetImporter::hasPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept
+	AssetImporter::hasPackage(const std::shared_ptr<RttiObject>& asset) const noexcept
 	{
 		auto it = assetList_.find(asset);
 		return it != assetList_.end();
@@ -137,7 +137,7 @@ namespace octoon
 	}
 
 	std::string
-	AssetImporter::getPackagePath(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept
+	AssetImporter::getPackagePath(const std::shared_ptr<RttiObject>& asset) const noexcept
 	{
 		if (assetPathList_.contains(asset))
 			return assetPathList_.at(asset);
@@ -145,7 +145,7 @@ namespace octoon
 	}
 
 	std::string
-	AssetImporter::getPackageGuid(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept
+	AssetImporter::getPackageGuid(const std::shared_ptr<RttiObject>& asset) const noexcept
 	{
 		if (assetList_.contains(asset))
 			return assetList_.at(asset)["uuid"].get<std::string>();

@@ -284,15 +284,15 @@ namespace octoon
 			for (auto& motion : vmd.MotionLists)
 				motionList[sjis2utf8(motion.name)].push_back(motion);
 
-			auto clip = std::make_shared<octoon::AnimationClip>();
+			auto clip = std::make_shared<AnimationClip>();
 			clip->setName(sjis2utf8(vmd.Header.name));
 
 			for (auto it = motionList.begin(); it != motionList.end(); ++it)
 			{
-				octoon::Keyframes<float> translateX;
-				octoon::Keyframes<float> translateY;
-				octoon::Keyframes<float> translateZ;
-				octoon::Keyframes<float> rotation;
+				Keyframes<float> translateX;
+				Keyframes<float> translateY;
+				Keyframes<float> translateZ;
+				Keyframes<float> rotation;
 
 				auto& motionData = (*it).second;
 
@@ -305,21 +305,21 @@ namespace octoon
 
 				for (auto& data : motionData)
 				{
-					auto interpolationX = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_x[0] / 127.0f, data.interpolation_x[2] / 127.0f, data.interpolation_x[1] / 127.0f, data.interpolation_x[3] / 127.0f);
-					auto interpolationY = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_y[0] / 127.0f, data.interpolation_y[2] / 127.0f, data.interpolation_y[1] / 127.0f, data.interpolation_y[3] / 127.0f);
-					auto interpolationZ = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_z[0] / 127.0f, data.interpolation_z[2] / 127.0f, data.interpolation_z[1] / 127.0f, data.interpolation_z[3] / 127.0f);
-					auto interpolationRotation = std::make_shared<octoon::PathInterpolator<float>>(data.interpolation_rotation[0] / 127.0f, data.interpolation_rotation[2] / 127.0f, data.interpolation_rotation[1] / 127.0f, data.interpolation_rotation[3] / 127.0f);
+					auto interpolationX = std::make_shared<PathInterpolator<float>>(data.interpolation_x[0] / 127.0f, data.interpolation_x[2] / 127.0f, data.interpolation_x[1] / 127.0f, data.interpolation_x[3] / 127.0f);
+					auto interpolationY = std::make_shared<PathInterpolator<float>>(data.interpolation_y[0] / 127.0f, data.interpolation_y[2] / 127.0f, data.interpolation_y[1] / 127.0f, data.interpolation_y[3] / 127.0f);
+					auto interpolationZ = std::make_shared<PathInterpolator<float>>(data.interpolation_z[0] / 127.0f, data.interpolation_z[2] / 127.0f, data.interpolation_z[1] / 127.0f, data.interpolation_z[3] / 127.0f);
+					auto interpolationRotation = std::make_shared<PathInterpolator<float>>(data.interpolation_rotation[0] / 127.0f, data.interpolation_rotation[2] / 127.0f, data.interpolation_rotation[1] / 127.0f, data.interpolation_rotation[3] / 127.0f);
 
 					translateX.emplace_back((float)data.frame / 30.0f, data.translate.x, interpolationX);
 					translateY.emplace_back((float)data.frame / 30.0f, data.translate.y, interpolationY);
 					translateZ.emplace_back((float)data.frame / 30.0f, data.translate.z, interpolationZ);
-					rotation.emplace_back((float)data.frame / 30.0f, octoon::math::Quaternion(data.rotate.x, data.rotate.y, data.rotate.z, data.rotate.w), interpolationRotation);
+					rotation.emplace_back((float)data.frame / 30.0f, math::Quaternion(data.rotate.x, data.rotate.y, data.rotate.z, data.rotate.w), interpolationRotation);
 				}
 
-				clip->setCurve((*it).first, "LocalPosition.x", octoon::AnimationCurve(std::move(translateX)));
-				clip->setCurve((*it).first, "LocalPosition.y", octoon::AnimationCurve(std::move(translateY)));
-				clip->setCurve((*it).first, "LocalPosition.z", octoon::AnimationCurve(std::move(translateZ)));
-				clip->setCurve((*it).first, "LocalRotation", octoon::AnimationCurve(std::move(rotation)));
+				clip->setCurve((*it).first, "LocalPosition.x", AnimationCurve(std::move(translateX)));
+				clip->setCurve((*it).first, "LocalPosition.y", AnimationCurve(std::move(translateY)));
+				clip->setCurve((*it).first, "LocalPosition.z", AnimationCurve(std::move(translateZ)));
+				clip->setCurve((*it).first, "LocalRotation", AnimationCurve(std::move(rotation)));
 			}
 
 			animation->addClip(std::move(clip), "Motion");
@@ -331,19 +331,19 @@ namespace octoon
 			for (auto& motion : vmd.MorphLists)
 				morphList[sjis2utf8(motion.name)].push_back(motion);
 
-			auto clip = std::make_shared<octoon::AnimationClip>();
+			auto clip = std::make_shared<AnimationClip>();
 
 			for (auto it = morphList.begin(); it != morphList.end(); ++it)
 			{
 				auto& morphData = (*it).second;
 
-				octoon::Keyframes<float> keyframe;
+				Keyframes<float> keyframe;
 				keyframe.reserve(morphData.size());
 
 				for (auto& morph : morphData)
 					keyframe.emplace_back((float)morph.frame / 30.0f, morph.weight);
 
-				clip->setCurve("", (*it).first, octoon::AnimationCurve(std::move(keyframe)));
+				clip->setCurve("", (*it).first, AnimationCurve(std::move(keyframe)));
 			}
 
 			animation->addClip(std::move(clip), "Morph");
@@ -382,7 +382,7 @@ namespace octoon
 				fov.emplace_back((float)it.frame / 30.0f, (float)it.viewingAngle, interpolationAngleView);
 			}
 
-			auto clip = std::make_shared<octoon::AnimationClip>();
+			auto clip = std::make_shared<AnimationClip>();
 			clip->setCurve("", "LocalPosition.x", AnimationCurve(std::move(eyeX)));
 			clip->setCurve("", "LocalPosition.y", AnimationCurve(std::move(eyeY)));
 			clip->setCurve("", "LocalPosition.z", AnimationCurve(std::move(eyeZ)));

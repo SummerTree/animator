@@ -56,7 +56,7 @@ namespace unreal
 	void
 	UnrealProfile::load(std::string_view path_) noexcept(false)
 	{
-		octoon::AssetBundle::instance()->clearCache();
+		octoon::AssetBundle::instance()->unload();
 
 		std::ifstream stream(path_);
 		if (stream)
@@ -114,7 +114,7 @@ namespace unreal
 #endif
 			}
 
-			octoon::AssetBundle::instance()->clearCache();
+			octoon::AssetBundle::instance()->unload();
 
 			std::ofstream stream(path_);
 			if (stream)

@@ -473,13 +473,13 @@ namespace octoon
 	{
 		GameComponent::load(json);
 
-		std::unordered_map<std::string, octoon::MaterialPtr> materials;
+		std::unordered_map<std::string, MaterialPtr> materials;
 
 		for (auto& material : json["materials"])
 		{
 			auto data = material["data"].get<nlohmann::json::object_t>();
 			auto name = material["name"].get<std::string>();
-			materials[name] = octoon::AssetDatabase::instance()->loadAssetAtPackage<Material>(data);
+			materials[name] = AssetDatabase::instance()->loadAssetAtPackage<Material>(data);
 		}
 
 		this->setMaterials(std::move(materials));
@@ -501,7 +501,7 @@ namespace octoon
 		for (auto& pair : this->materials_)
 		{
 			nlohmann::json materialJson;
-			materialJson["data"] = octoon::AssetBundle::instance()->createPackage(pair.second);
+			materialJson["data"] = AssetBundle::instance()->createPackage(pair.second);
 			materialJson["name"] = pair.first;
 
 			json["materials"].push_back(materialJson);
@@ -563,8 +563,8 @@ namespace octoon
 	{
 		if (gameObject_)
 		{
-			auto transform = this->getComponent<octoon::TransformComponent>();
-			gameObject_->getComponent<octoon::TransformComponent>()->setTransform(transform->getTransform());
+			auto transform = this->getComponent<TransformComponent>();
+			gameObject_->getComponent<TransformComponent>()->setTransform(transform->getTransform());
 		}
 	}
 
