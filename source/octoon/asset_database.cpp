@@ -590,6 +590,7 @@ namespace octoon
 				model->addComponent<MeshAnimationComponent>(path);
 				assetPathList_[model] = path;
 				assetGuidList_[model] = make_guid();
+
 				return model;
 			}
 		}

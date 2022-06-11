@@ -260,6 +260,8 @@ namespace unreal
 				behaviour->save(filepath);
 
 				dialog.setValue(1);
+
+				QApplication::beep();
 			}
 
 			spdlog::debug("Exited saveEvent");

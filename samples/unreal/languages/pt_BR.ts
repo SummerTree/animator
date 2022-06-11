@@ -1281,7 +1281,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="141"/>
-        <location filename="../views/tool_dock.cpp" line="284"/>
+        <location filename="../views/tool_dock.cpp" line="286"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1315,11 +1315,11 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/tool_dock.cpp" line="198"/>
         <location filename="../views/tool_dock.cpp" line="227"/>
-        <location filename="../views/tool_dock.cpp" line="269"/>
-        <location filename="../views/tool_dock.cpp" line="305"/>
-        <location filename="../views/tool_dock.cpp" line="332"/>
-        <location filename="../views/tool_dock.cpp" line="358"/>
-        <location filename="../views/tool_dock.cpp" line="377"/>
+        <location filename="../views/tool_dock.cpp" line="271"/>
+        <location filename="../views/tool_dock.cpp" line="307"/>
+        <location filename="../views/tool_dock.cpp" line="334"/>
+        <location filename="../views/tool_dock.cpp" line="360"/>
+        <location filename="../views/tool_dock.cpp" line="379"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1369,17 +1369,17 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="284"/>
+        <location filename="../views/tool_dock.cpp" line="286"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="320"/>
+        <location filename="../views/tool_dock.cpp" line="322"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="320"/>
+        <location filename="../views/tool_dock.cpp" line="322"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
