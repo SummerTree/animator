@@ -239,22 +239,27 @@ namespace unreal
 
 			if (behaviour_)
 			{
-				QString fileName = QFileDialog::getSaveFileName(this, tr("Export Project"), tr("New Project"), tr("APG Files (*.agp)"));
-				if (!fileName.isEmpty())
+				auto filepath = this->profile_->path;
+				if (filepath.empty())
 				{
-					QProgressDialog dialog(tr("Save..."), tr("Cancel"), 0, 1, this);
-					dialog.setWindowTitle(tr("Save Project"));
-					dialog.setWindowModality(Qt::WindowModal);
-					dialog.setValue(0);
-					dialog.show();
-
-					QCoreApplication::processEvents();
-					
-					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-					behaviour->save(fileName.toUtf8().toStdString());
-
-					dialog.setValue(1);
+					QString fileName = QFileDialog::getSaveFileName(this, tr("Export Project"), tr("New Project"), tr("APG Files (*.agp)"));
+					if (fileName.isEmpty())
+						return;
+					filepath = fileName.toUtf8().toStdString();
 				}
+				
+				QProgressDialog dialog(tr("Save..."), tr("Cancel"), 0, 1, this);
+				dialog.setWindowTitle(tr("Save Project"));
+				dialog.setWindowModality(Qt::WindowModal);
+				dialog.setValue(0);
+				dialog.show();
+
+				QCoreApplication::processEvents();
+
+				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
+				behaviour->save(filepath);
+
+				dialog.setValue(1);
 			}
 
 			spdlog::debug("Exited saveEvent");

@@ -78,6 +78,7 @@ namespace unreal
 	void
 	UnrealBehaviour::reset() noexcept
 	{
+		this->profile_->path.clear();
 		this->profile_->soundModule->reset();
 		this->profile_->cameraModule->reset();
 		this->profile_->entitiesModule->reset();

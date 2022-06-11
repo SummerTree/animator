@@ -1329,7 +1329,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="44"/>
-        <location filename="../views/tool_dock.cpp" line="242"/>
+        <location filename="../views/tool_dock.cpp" line="245"/>
         <source>Export Project</source>
         <translation></translation>
     </message>
@@ -1375,7 +1375,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="141"/>
-        <location filename="../views/tool_dock.cpp" line="279"/>
+        <location filename="../views/tool_dock.cpp" line="284"/>
         <source>Open Project</source>
         <translation>打开项目</translation>
     </message>
@@ -1391,7 +1391,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/tool_dock.cpp" line="145"/>
         <location filename="../views/tool_dock.cpp" line="164"/>
-        <location filename="../views/tool_dock.cpp" line="245"/>
+        <location filename="../views/tool_dock.cpp" line="251"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -1408,11 +1408,11 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/tool_dock.cpp" line="198"/>
         <location filename="../views/tool_dock.cpp" line="227"/>
-        <location filename="../views/tool_dock.cpp" line="264"/>
-        <location filename="../views/tool_dock.cpp" line="300"/>
-        <location filename="../views/tool_dock.cpp" line="327"/>
-        <location filename="../views/tool_dock.cpp" line="353"/>
-        <location filename="../views/tool_dock.cpp" line="372"/>
+        <location filename="../views/tool_dock.cpp" line="269"/>
+        <location filename="../views/tool_dock.cpp" line="305"/>
+        <location filename="../views/tool_dock.cpp" line="332"/>
+        <location filename="../views/tool_dock.cpp" line="358"/>
+        <location filename="../views/tool_dock.cpp" line="377"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -1437,12 +1437,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="242"/>
+        <location filename="../views/tool_dock.cpp" line="245"/>
         <source>APG Files (*.agp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="242"/>
+        <location filename="../views/tool_dock.cpp" line="245"/>
         <source>New Project</source>
         <translation type="unfinished">New Project</translation>
     </message>
@@ -1452,12 +1452,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="279"/>
+        <location filename="../views/tool_dock.cpp" line="284"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="315"/>
+        <location filename="../views/tool_dock.cpp" line="320"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1486,17 +1486,17 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="245"/>
+        <location filename="../views/tool_dock.cpp" line="251"/>
         <source>Save...</source>
         <translation type="unfinished">保存中...</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="246"/>
+        <location filename="../views/tool_dock.cpp" line="252"/>
         <source>Save Project</source>
         <translation type="unfinished">保存项目</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="315"/>
+        <location filename="../views/tool_dock.cpp" line="320"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
