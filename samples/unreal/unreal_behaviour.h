@@ -36,20 +36,20 @@ namespace unreal
 
 		const std::shared_ptr<UnrealProfile>& getProfile() const noexcept;
 
-		bool open(std::string_view filepath) noexcept(false);
-		void save(std::string_view path) noexcept(false);
+		bool open(const std::filesystem::path& path) noexcept(false);
+		void save(const std::filesystem::path& path) noexcept(false);
 		void reset() noexcept;
 		bool isOpen() const noexcept;
 
-		void load(std::string_view filepath) noexcept(false);
+		void load(const std::filesystem::path& path) noexcept(false);
 
 		void play() noexcept;
 		void pause() noexcept;
 
-		bool startRecord(std::string_view path) noexcept;
+		bool startRecord(const std::filesystem::path& path) noexcept;
 		void stopRecord() noexcept;
 
-		void renderPicture(std::string_view path) noexcept(false);
+		void renderPicture(const std::filesystem::path& path) noexcept(false);
 
 		std::optional<octoon::RaycastHit> raycastHit(const octoon::math::float2& pos) noexcept;
 

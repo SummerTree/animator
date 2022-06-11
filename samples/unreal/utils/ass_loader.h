@@ -16,7 +16,7 @@ namespace unreal
 		AssLoader() noexcept;
 		virtual ~AssLoader() noexcept;
 
-		static void load(UnrealProfile& profile, std::string_view path) noexcept(false);
+		static void load(UnrealProfile& profile, const std::filesystem::path& path) noexcept(false);
 	};
 }
 

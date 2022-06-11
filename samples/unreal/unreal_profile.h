@@ -26,20 +26,20 @@ namespace unreal
 	{
 	public:
 		UnrealProfile() noexcept;
-		UnrealProfile(std::string_view path_) noexcept(false);
+		UnrealProfile(const std::filesystem::path& path_) noexcept(false);
 		virtual ~UnrealProfile() noexcept;
 
 		void disconnect() noexcept;
 		
-		void load(std::filesystem::path path_) noexcept(false);
-		void save(std::filesystem::path path_) noexcept(false);
+		void load(const std::filesystem::path& path_) noexcept(false);
+		void save(const std::filesystem::path& path_) noexcept(false);
 
 	private:
 		UnrealProfile(const UnrealProfile&) = delete;
 		UnrealProfile& operator=(const UnrealProfile&) = delete;
 
 	public:
-		std::string path;
+		std::filesystem::path path;
 		std::shared_ptr<RecordModule> recordModule;
 		std::shared_ptr<SoundModule> soundModule;
 		std::shared_ptr<EntitiesModule> entitiesModule;

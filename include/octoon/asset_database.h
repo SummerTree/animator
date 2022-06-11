@@ -10,6 +10,7 @@
 #include <octoon/light/environment_light.h>
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/video/renderer.h>
+#include <filesystem>
 
 namespace octoon
 {
@@ -23,11 +24,11 @@ namespace octoon
 		void open() noexcept(false);
 		void close() noexcept;
 
-		nlohmann::json createAsset(std::string_view filepath, std::string_view outputPath) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<Texture>& texture, std::string_view outputPath) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<Animation>& animation, std::string_view outputPath) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<Material>& material, std::string_view outputPath) noexcept(false);
-		nlohmann::json createAsset(const PMX& pmx, std::string_view outputPath) noexcept(false);
+		nlohmann::json createAsset(const std::filesystem::path& filepath, const std::filesystem::path& outputPath) noexcept(false);
+		nlohmann::json createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& outputPath) noexcept(false);
+		nlohmann::json createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& outputPath) noexcept(false);
+		nlohmann::json createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& outputPath) noexcept(false);
+		nlohmann::json createAsset(const PMX& pmx, const std::filesystem::path& outputPath) noexcept(false);
 
 		std::string getAssetPath(const std::shared_ptr<const RttiObject>& asset) noexcept;
 		std::string getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept;
@@ -35,15 +36,15 @@ namespace octoon
 		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) noexcept;
 		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
-		nlohmann::json getPackage(std::string_view uuid, std::string_view outputPath) noexcept;
+		nlohmann::json getPackage(std::string_view uuid, const std::filesystem::path& outputPath) noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) const noexcept(false);
 
-		std::shared_ptr<RttiObject> loadAssetAtPath(std::string_view path) noexcept(false);
-		std::shared_ptr<RttiObject> loadAssetAtPath(std::string_view path, PMXLoadFlags flags) noexcept(false);
+		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path) noexcept(false);
+		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false);
 		std::shared_ptr<RttiObject> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
 
 		template<typename T>
-		std::shared_ptr<T> loadAssetAtPath(std::string_view path) noexcept(false)
+		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
 		{
 			auto asset = loadAssetAtPath(path);
 			if (asset)

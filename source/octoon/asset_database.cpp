@@ -63,24 +63,22 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(std::string_view filepath, std::string_view path) noexcept(false)
+	AssetDatabase::createAsset(const std::filesystem::path& filepath, const std::filesystem::path& path) noexcept(false)
 	{
-		std::wstring u16_conv = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes((char*)std::string(filepath).data());
-
-		if (std::filesystem::exists(u16_conv))
+		if (std::filesystem::exists(filepath))
 		{
 			auto uuid = make_guid();
-			auto extension = filepath.substr(filepath.find_last_of("."));
+			auto extension = filepath.extension();
 			auto rootPath = std::filesystem::path(path).append(uuid);
-			auto motionPath = std::filesystem::path(rootPath).append(uuid + std::string(extension));
+			auto motionPath = std::filesystem::path(rootPath).append(uuid + extension.string());
 			auto packagePath = std::filesystem::path(rootPath).append("package.json");
 
 			std::filesystem::create_directory(path);
 			std::filesystem::create_directory(rootPath);
-			std::filesystem::copy(u16_conv, motionPath);
+			std::filesystem::copy(filepath, motionPath);
 			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
 
-			auto filename = std::filesystem::path(u16_conv).filename().u8string();
+			auto filename = std::filesystem::path(filepath).filename().u8string();
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
@@ -103,7 +101,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(const std::shared_ptr<Texture>& texture, std::string_view path) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& path) noexcept(false)
 	{
 		assert(!path.empty());
 
@@ -170,7 +168,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(const std::shared_ptr<Animation>& animation, std::string_view path) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& path) noexcept(false)
 	{
 		assert(!path.empty());
 
@@ -205,7 +203,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(const std::shared_ptr<Material>& material, std::string_view path) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& path) noexcept(false)
 	{
 		auto uuid = this->getAssetGuid(material);
 		auto outputPath = std::filesystem::path(path).append(uuid);
@@ -333,7 +331,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(const PMX& pmx, std::string_view path) noexcept(false)
+	AssetDatabase::createAsset(const PMX& pmx, const std::filesystem::path& path) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
@@ -467,14 +465,14 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::getPackage(std::string_view uuid, std::string_view outputPath) noexcept
+	AssetDatabase::getPackage(std::string_view uuid, const std::filesystem::path& path) noexcept
 	{
-		assert(!outputPath.empty());
+		assert(!path.empty());
 
 		auto it = this->packageList_.find(std::string(uuid));
 		if (it == this->packageList_.end())
 		{
-			std::ifstream ifs(std::filesystem::path(outputPath).append(uuid).append("package.json"));
+			std::ifstream ifs(std::filesystem::path(path).append(uuid).append("package.json"));
 			if (ifs)
 			{
 				auto package = nlohmann::json::parse(ifs);
@@ -517,38 +515,38 @@ namespace octoon
 	}
 
 	std::shared_ptr<RttiObject>
-	AssetDatabase::loadAssetAtPath(std::string_view path) noexcept(false)
+	AssetDatabase::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
 	{
-		auto ext = std::string(path.substr(path.find_last_of('.')));
+		auto ext = path.extension().string();
 		for (auto& it : ext)
 			it = (char)std::tolower(it);
 
 		if (ext == ".vmd")
 		{
-			auto motion = VMDLoader::load(path);
+			auto motion = VMDLoader::load(path.string());
 			if (motion)
 			{
-				assetPathList_[motion] = path;
+				assetPathList_[motion] = path.string();
 				assetGuidList_[motion] = make_guid();
 				return motion;
 			}
 		}
 		else if (ext == ".hdr" || ext == ".bmp" || ext == ".tga" || ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".dds")
 		{
-			auto texture = std::make_shared<Texture>((std::string)path);
+			auto texture = std::make_shared<Texture>((std::string)path.string());
 			if (texture)
 			{
-				assetPathList_[texture] = path;
+				assetPathList_[texture] = path.string();
 				assetGuidList_[texture] = make_guid();
 				return texture;
 			}
 		}
 		else if (ext == ".pmx")
 		{
-			auto model = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
+			auto model = PMXLoader::load(path.string(), PMXLoadFlagBits::AllBit);
 			if (model)
 			{
-				assetPathList_[model] = path;
+				assetPathList_[model] = path.string();
 				assetGuidList_[model] = make_guid();
 				return model;
 			}
@@ -558,8 +556,8 @@ namespace octoon
 			auto model = std::make_shared<GameObject>();
 			if (model)
 			{
-				model->addComponent<MeshAnimationComponent>(path);
-				assetPathList_[model] = path;
+				model->addComponent<MeshAnimationComponent>(path.string());
+				assetPathList_[model] = path.string();
 				assetGuidList_[model] = make_guid();
 				return model;
 			}
@@ -569,15 +567,15 @@ namespace octoon
 	}
 
 	std::shared_ptr<RttiObject>
-	AssetDatabase::loadAssetAtPath(std::string_view path, PMXLoadFlags flags) noexcept(false)
+	AssetDatabase::loadAssetAtPath(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false)
 	{
-		auto ext = path.substr(path.find_last_of("."));
+		auto ext = path.extension().string();
 		if (ext == ".pmx")
 		{
-			auto model = PMXLoader::load(path, flags);
+			auto model = PMXLoader::load(path.string(), flags);
 			if (model)
 			{
-				assetPathList_[model] = path;
+				assetPathList_[model] = path.string();
 				assetGuidList_[model] = make_guid();
 				return model;
 			}
@@ -587,8 +585,8 @@ namespace octoon
 			auto model = std::make_shared<GameObject>();
 			if (model)
 			{
-				model->addComponent<MeshAnimationComponent>(path);
-				assetPathList_[model] = path;
+				model->addComponent<MeshAnimationComponent>(path.string());
+				assetPathList_[model] = path.string();
 				assetGuidList_[model] = make_guid();
 
 				return model;

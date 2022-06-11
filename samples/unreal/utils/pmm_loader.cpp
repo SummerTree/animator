@@ -13,11 +13,11 @@ namespace unreal
 	}
 	
 	void
-	PMMLoader::load(UnrealProfile& profile, std::string_view path) noexcept(false)
+	PMMLoader::load(UnrealProfile& profile, const std::filesystem::path& path) noexcept(false)
 	{
 		octoon::GameObjects objects;
 
-		auto stream = octoon::io::ifstream(std::string(path));
+		auto stream = octoon::io::ifstream(path.u8string());
 		auto pmm = octoon::PMMFile::load(stream).value();
 
 		for (auto& it : pmm.model)

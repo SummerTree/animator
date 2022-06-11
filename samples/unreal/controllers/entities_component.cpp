@@ -14,7 +14,7 @@ namespace unreal
 	}
 
 	octoon::GameObjectPtr
-	EntitiesComponent::importModel(std::string_view path) noexcept(false)
+	EntitiesComponent::importModel(const std::filesystem::path& path) noexcept(false)
 	{
 		auto model = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(path);
 		if (model)

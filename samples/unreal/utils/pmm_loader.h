@@ -17,7 +17,7 @@ namespace unreal
 		PMMLoader() noexcept;
 		virtual ~PMMLoader() noexcept;
 
-		static void load(UnrealProfile& profile, std::string_view path) noexcept(false);
+		static void load(UnrealProfile& profile, const std::filesystem::path& path) noexcept(false);
 
 	private:
 		static void setupBoneAnimation(const octoon::PmmModel& model, octoon::AnimationClip& clip) noexcept;

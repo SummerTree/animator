@@ -24,7 +24,7 @@ namespace unreal
 	{
 	}
 
-	UnrealProfile::UnrealProfile(std::string_view path_) noexcept(false)
+	UnrealProfile::UnrealProfile(const std::filesystem::path& path_) noexcept(false)
 		: UnrealProfile()
 	{
 		this->load(path_);
@@ -54,13 +54,13 @@ namespace unreal
 	}
 
 	void
-	UnrealProfile::load(std::filesystem::path path_) noexcept(false)
+	UnrealProfile::load(const std::filesystem::path& path_) noexcept(false)
 	{
 		std::ifstream stream(std::filesystem::path(path_).append("manifest.json"));
 		if (stream)
 		{
 			auto json = nlohmann::json::parse(stream);
-			auto ab = octoon::AssetBundle::instance()->loadFromFile(path_.append("Assets").string());
+			auto ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).append("Assets").string());
 
 			this->path = path_.string();
 
@@ -102,27 +102,28 @@ namespace unreal
 	}
 
 	void
-	UnrealProfile::save(std::filesystem::path path_) noexcept(false)
+	UnrealProfile::save(const std::filesystem::path& path_) noexcept(false)
 	{
-		auto backupFile = path_.string() + "!";
+		auto backupFile = std::filesystem::path(path_).append("manifest.json!");
+		auto manifestFile = std::filesystem::path(path_).append("manifest.json");
 
 		try
 		{
-			if (std::filesystem::exists(backupFile))
-				std::filesystem::remove(backupFile);
-
 			if (!std::filesystem::exists(path_))
 				std::filesystem::create_directories(path_);
 
-			if (std::filesystem::exists(path_) && !std::filesystem::is_empty(path_))
+			if (std::filesystem::exists(backupFile))
+				std::filesystem::remove(backupFile);
+
+			if (std::filesystem::exists(manifestFile))
 			{
-				std::filesystem::rename(path_, backupFile);
+				std::filesystem::rename(manifestFile, backupFile);
 #ifdef _WINDOWS_
-				SetFileAttributes(backupFile.c_str(), FILE_ATTRIBUTE_HIDDEN);
+				SetFileAttributesW(backupFile.c_str(), FILE_ATTRIBUTE_HIDDEN);
 #endif
 			}
 
-			std::ofstream stream(std::filesystem::path(path_).append("manifest.json"));
+			std::ofstream stream(manifestFile);
 			if (stream)
 			{
 				nlohmann::json json;
@@ -166,9 +167,9 @@ namespace unreal
 
 			if (std::filesystem::exists(backupFile))
 			{
-				std::filesystem::rename(backupFile, backupFile.substr(0, backupFile.size() - 1));
+				std::filesystem::rename(backupFile, manifestFile);
 #ifdef _WINDOWS_
-				SetFileAttributes(path_.string().c_str(), FILE_ATTRIBUTE_NORMAL);
+				SetFileAttributesW(manifestFile.c_str(), FILE_ATTRIBUTE_NORMAL);
 #endif
 			}
 

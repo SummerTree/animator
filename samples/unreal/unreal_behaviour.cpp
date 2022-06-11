@@ -27,7 +27,7 @@ namespace unreal
 	}
 
 	bool
-	UnrealBehaviour::open(std::string_view path) noexcept(false)
+	UnrealBehaviour::open(const std::filesystem::path& path) noexcept(false)
 	{
 		this->reset();
 		this->profile_->load(path);
@@ -39,7 +39,7 @@ namespace unreal
 	}
 
 	void
-	UnrealBehaviour::save(std::string_view path) noexcept(false)
+	UnrealBehaviour::save(const std::filesystem::path& path) noexcept(false)
 	{
 		profile_->save(path);
 	}
@@ -73,9 +73,12 @@ namespace unreal
 	}
 
 	void
-	UnrealBehaviour::load(std::string_view path) noexcept(false)
+	UnrealBehaviour::load(const std::filesystem::path& path) noexcept(false)
 	{
-		auto ext = path.substr(path.find_last_of("."));
+		auto ext = path.extension().string();
+		for (auto& it : ext)
+			it = (char)std::tolower(it);
+
 		if (ext == ".pmm")
 		{
 			PMMLoader::load(*profile_, path);
@@ -102,13 +105,13 @@ namespace unreal
 			playerComponent_->reset();
 		}
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
-			profile_->soundModule->filepath = std::string(path);
+			profile_->soundModule->filepath = path.string();
 		else if (ext == ".mdl")
-			octoon::AssetBundle::instance()->importAsset(path);
+			octoon::AssetBundle::instance()->importAsset(path.string());
 		else if (ext == ".vmd")
-			octoon::AssetBundle::instance()->importAsset(path);
+			octoon::AssetBundle::instance()->importAsset(path.string());
 		else if (ext == ".hdr")
-			octoon::AssetBundle::instance()->importAsset(path);
+			octoon::AssetBundle::instance()->importAsset(path.string());
 	}
 
 	void
@@ -124,14 +127,14 @@ namespace unreal
 	}
 
 	bool
-	UnrealBehaviour::startRecord(std::string_view filepath) noexcept
+	UnrealBehaviour::startRecord(const std::filesystem::path& filepath) noexcept
 	{
 		try
 		{
 			this->offlineComponent_->setActive(profile_->encodeModule->quality == VideoQuality::High);
 			this->playerComponent_->render();
 
-			this->recordComponent_->startRecord(filepath);
+			this->recordComponent_->startRecord(filepath.string());
 
 			return true;
 		}
@@ -150,10 +153,10 @@ namespace unreal
 	}
 
 	void
-	UnrealBehaviour::renderPicture(std::string_view filepath) noexcept(false)
+	UnrealBehaviour::renderPicture(const std::filesystem::path& filepath) noexcept(false)
 	{
 		recordComponent_->setActive(true);
-		recordComponent_->captureImage(filepath);
+		recordComponent_->captureImage(filepath.string());
 	}
 
 	std::optional<octoon::RaycastHit>

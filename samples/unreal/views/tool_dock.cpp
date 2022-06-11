@@ -44,6 +44,7 @@ namespace unreal
 		saveButton_->setToolTip(tr("Export Project"));
 		saveButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		saveButton_->installEventFilter(this);
+		saveButton_->setShortcut(tr("Ctrl+S"));
 
 		audioButton_ = new QToolButton;
 		audioButton_->setObjectName("audio");
