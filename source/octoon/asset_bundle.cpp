@@ -541,6 +541,23 @@ namespace octoon
 					assetPackageCache_[gameObject] = package;
 					return package;
 				}
+				else
+				{
+					auto ext = std::string(assetPath.substr(assetPath.find_last_of('.')));
+					for (auto& it : ext)
+						it = (char)std::tolower(it);
+
+					if (ext == ".abc")
+					{
+						package["uuid"] = AssetDatabase::instance()->getAssetGuid(gameObject);
+						package["path"] = assetPath;
+
+						AssetBundle::instance()->removeUpdateList(uuid);
+						modelAsset_->addIndex(package["uuid"].get<std::string>());
+						assetPackageCache_[gameObject] = package;
+						return package;
+					}
+				}
 			}
 		}
 
