@@ -103,14 +103,14 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(const Texture& texture, std::string_view path) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<Texture>& texture, std::string_view path) noexcept(false)
 	{
 		assert(!path.empty());
 
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
-		auto uuid = this->getAssetGuid(texture.shared_from_this());
-		auto filename = texture.getName().substr(texture.getName().find_last_of(".") + 1);
+		auto uuid = this->getAssetGuid(texture);
+		auto filename = texture->getName().substr(texture->getName().find_last_of(".") + 1);
 		auto rootPath = std::filesystem::path(path).append(uuid);
 		auto texturePath = std::filesystem::path(rootPath).append(uuid + "." + filename);
 		auto packagePath = std::filesystem::path(rootPath).append("package.json");
@@ -119,23 +119,23 @@ namespace octoon
 
 		auto outputPath = texturePath.string();
 		auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
-		texture.save(outputPath, extension.c_str());
+		texture->save(outputPath, extension.c_str());
 		std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
 		nlohmann::json package;
 		package["uuid"] = uuid;
 		package["visible"] = true;
-		package["name"] = (char*)std::filesystem::path(cv.from_bytes(texture.getName())).filename().u8string().c_str();
+		package["name"] = (char*)std::filesystem::path(cv.from_bytes(texture->getName())).filename().u8string().c_str();
 		package["suffix"] = filename;
 		package["path"] = (char*)texturePath.u8string().c_str();
-		package["mipmap"] = texture.getMipLevel() > 1;
+		package["mipmap"] = texture->getMipLevel() > 1;
 
 		if (filename == "hdr")
 		{
-			auto name = texture.getName();
-			auto width = texture.width();
-			auto height = texture.height();
-			float* data_ = (float*)texture.data();
+			auto name = texture->getName();
+			auto width = texture->width();
+			auto height = texture->height();
+			float* data_ = (float*)texture->data();
 
 			auto size = width * height * 3;
 			auto pixels = std::make_unique<std::uint8_t[]>(size);
@@ -170,18 +170,18 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(const Animation& animation, std::string_view path) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<Animation>& animation, std::string_view path) noexcept(false)
 	{
 		assert(!path.empty());
 
-		auto uuid = this->getAssetGuid(animation.shared_from_this());
+		auto uuid = this->getAssetGuid(animation);
 		auto rootPath = std::filesystem::path(path).append(uuid);
 		auto motionPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
 		auto packagePath = std::filesystem::path(rootPath).append("package.json");
 
 		std::filesystem::create_directories(rootPath);
 
-		VMDLoader::save(motionPath.string(), animation);
+		VMDLoader::save(motionPath.string(), *animation);
 		std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
 
 		nlohmann::json package;
@@ -198,7 +198,7 @@ namespace octoon
 			ifs.close();
 		}
 
-		this->assetGuidList_[animation.shared_from_this()] = std::string(uuid);
+		this->assetGuidList_[animation] = std::string(uuid);
 		this->packageList_[std::string(uuid)] = package;
 
 		return package;

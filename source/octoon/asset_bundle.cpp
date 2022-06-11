@@ -223,11 +223,11 @@ namespace octoon
 		}
 		else if (ext == ".hdr" || ext == ".bmp" || ext == ".tga" || ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".dds")
 		{
-			Texture texture;
+			auto texture = std::make_shared<Texture>();
 
-			if (texture.load(std::string(path)))
+			if (texture->load(std::string(path)))
 			{
-				texture.setName(path);
+				texture->setName(path);
 				auto package = AssetDatabase::instance()->createAsset(texture, textureAsset_->getAssertPath());
 				textureAsset_->addIndex(package["uuid"].get<std::string>());
 				return package;
@@ -321,7 +321,7 @@ namespace octoon
 				}
 			}
 
-			auto package = AssetDatabase::instance()->createAsset(*texture, textureAsset_->getAssertPath());
+			auto package = AssetDatabase::instance()->createAsset(texture, textureAsset_->getAssertPath());
 			if (package.is_object())
 			{
 				AssetBundle::instance()->removeUpdateList(uuid);
@@ -365,7 +365,7 @@ namespace octoon
 				}
 			}
 
-			auto package = AssetDatabase::instance()->createAsset(*animation, motionAsset_->getAssertPath());
+			auto package = AssetDatabase::instance()->createAsset(animation, motionAsset_->getAssertPath());
 			if (package.is_object())
 			{
 				AssetBundle::instance()->removeUpdateList(uuid);
