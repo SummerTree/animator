@@ -30,6 +30,7 @@ namespace octoon
 		auto motionPath = std::filesystem::path(assetPath).append("motion").string();
 		auto materialPath = std::filesystem::path(assetPath).append("material").string();
 		auto texturePath = std::filesystem::path(assetPath).append("texture").string();
+		auto hdriPath = std::filesystem::path(assetPath).append("hdri").string();
 
 		this->modelAsset_ = std::make_unique<AssetImporter>();
 		this->modelAsset_->open(modelPath);
@@ -42,6 +43,9 @@ namespace octoon
 
 		this->textureAsset_ = std::make_unique<AssetImporter>();
 		this->textureAsset_->open(texturePath);
+
+		this->hdriAsset_ = std::make_unique<AssetImporter>();
+		this->hdriAsset_->open(hdriPath);
 	}
 
 	void
@@ -53,6 +57,7 @@ namespace octoon
 		motionAsset_->close();
 		materialAsset_->close();
 		textureAsset_->close();
+		hdriAsset_->close();
 
 		if (this != AssetBundle::instance())
 		{
@@ -82,6 +87,7 @@ namespace octoon
 		this->motionAsset_->clearCache();
 		this->materialAsset_->clearCache();
 		this->textureAsset_->clearCache();
+		this->hdriAsset_->clearCache();
 	}
 
 	void
@@ -221,7 +227,19 @@ namespace octoon
 				}
 			}
 		}
-		else if (ext == ".hdr" || ext == ".bmp" || ext == ".tga" || ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".dds")
+		else if (ext == ".hdr")
+		{
+			auto texture = std::make_shared<Texture>();
+
+			if (texture->load(std::string(path)))
+			{
+				texture->setName(path);
+				auto package = AssetDatabase::instance()->createAsset(texture, hdriAsset_->getAssertPath());
+				hdriAsset_->addIndex(package["uuid"].get<std::string>());
+				return package;
+			}
+		}
+		else if (ext == ".bmp" || ext == ".tga" || ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".dds")
 		{
 			auto texture = std::make_shared<Texture>();
 
@@ -319,15 +337,38 @@ namespace octoon
 							return textureAsset_->getPackage(uuid);
 					}
 				}
+
+				for (auto& index : hdriAsset_->getIndexList())
+				{
+					if (index == uuid)
+					{
+						if (!AssetBundle::instance()->needUpdate(uuid))
+							return hdriAsset_->getPackage(uuid);
+					}
+				}
 			}
 
-			auto package = AssetDatabase::instance()->createAsset(texture, textureAsset_->getAssertPath());
-			if (package.is_object())
+			if (texture->format() == Format::R32G32B32A32SFloat || texture->format() == Format::R32G32B32SFloat)
 			{
-				AssetBundle::instance()->removeUpdateList(uuid);
-				textureAsset_->addIndex(package["uuid"].get<std::string>());
-				assetPackageCache_[texture] = package;
-				return package;
+				auto package = AssetDatabase::instance()->createAsset(texture, hdriAsset_->getAssertPath());
+				if (package.is_object())
+				{
+					AssetBundle::instance()->removeUpdateList(uuid);
+					hdriAsset_->addIndex(package["uuid"].get<std::string>());
+					assetPackageCache_[texture] = package;
+					return package;
+				}
+			}
+			else
+			{
+				auto package = AssetDatabase::instance()->createAsset(texture, textureAsset_->getAssertPath());
+				if (package.is_object())
+				{
+					AssetBundle::instance()->removeUpdateList(uuid);
+					textureAsset_->addIndex(package["uuid"].get<std::string>());
+					assetPackageCache_[texture] = package;
+					return package;
+				}
 			}
 		}
 
@@ -512,6 +553,8 @@ namespace octoon
 			return this->materialAsset_->getPackage(uuid);
 		if (this->textureAsset_->hasPackage(uuid))
 			return this->textureAsset_->getPackage(uuid);
+		if (this->hdriAsset_->hasPackage(uuid))
+			return this->hdriAsset_->getPackage(uuid);
 
 		return nlohmann::json();
 	}
@@ -527,6 +570,8 @@ namespace octoon
 			return this->materialAsset_->getPackage(asset);
 		if (this->textureAsset_->hasPackage(asset))
 			return this->textureAsset_->getPackage(asset);
+		if (this->hdriAsset_->hasPackage(asset))
+			return this->hdriAsset_->getPackage(asset);
 
 		return nlohmann::json();
 	}
@@ -548,7 +593,13 @@ namespace octoon
 	{
 		return textureAsset_->getIndexList();
 	}
-	
+
+	nlohmann::json&
+	AssetBundle::getHDRiList() const noexcept
+	{
+		return hdriAsset_->getIndexList();
+	}
+
 	nlohmann::json&
 	AssetBundle::getMaterialList() const noexcept
 	{
@@ -566,6 +617,8 @@ namespace octoon
 			this->materialAsset_->removeAsset(uuid);
 		if (this->textureAsset_->hasPackage(uuid))
 			this->textureAsset_->removeAsset(uuid);
+		if (this->hdriAsset_->hasPackage(uuid))
+			this->hdriAsset_->removeAsset(uuid);
 	}
 
 	void

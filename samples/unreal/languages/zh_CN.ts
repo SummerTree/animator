@@ -134,74 +134,74 @@
 <context>
     <name>unreal::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="249"/>
+        <location filename="../views/environment_dock.cpp" line="243"/>
         <source>Environment Light</source>
         <translation>环境光</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="256"/>
+        <location filename="../views/environment_dock.cpp" line="250"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation>单击预览按钮以显示所有可替换的HDR图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="261"/>
-        <location filename="../views/environment_dock.cpp" line="513"/>
+        <location filename="../views/environment_dock.cpp" line="255"/>
+        <location filename="../views/environment_dock.cpp" line="507"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="274"/>
+        <location filename="../views/environment_dock.cpp" line="268"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="278"/>
+        <location filename="../views/environment_dock.cpp" line="272"/>
         <source>Thumbnail</source>
         <translation>环境贴图</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="282"/>
+        <location filename="../views/environment_dock.cpp" line="276"/>
         <source>Toggle Background</source>
         <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="290"/>
+        <location filename="../views/environment_dock.cpp" line="284"/>
         <source>Intensity</source>
         <translation>亮度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="310"/>
+        <location filename="../views/environment_dock.cpp" line="304"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="330"/>
+        <location filename="../views/environment_dock.cpp" line="324"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="350"/>
+        <location filename="../views/environment_dock.cpp" line="344"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="403"/>
+        <location filename="../views/environment_dock.cpp" line="397"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="652"/>
-        <location filename="../views/environment_dock.cpp" line="709"/>
+        <location filename="../views/environment_dock.cpp" line="646"/>
+        <location filename="../views/environment_dock.cpp" line="703"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="666"/>
+        <location filename="../views/environment_dock.cpp" line="660"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="666"/>
+        <location filename="../views/environment_dock.cpp" line="660"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
@@ -233,38 +233,38 @@
         <translation type="vanished">加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="136"/>
+        <location filename="../views/environment_dock.cpp" line="130"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="136"/>
+        <location filename="../views/environment_dock.cpp" line="130"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="141"/>
-        <location filename="../views/environment_dock.cpp" line="142"/>
+        <location filename="../views/environment_dock.cpp" line="135"/>
+        <location filename="../views/environment_dock.cpp" line="136"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="141"/>
+        <location filename="../views/environment_dock.cpp" line="135"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="226"/>
+        <location filename="../views/environment_dock.cpp" line="220"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation>确定要删除此图像吗?</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="226"/>
+        <location filename="../views/environment_dock.cpp" line="220"/>
         <source>Info</source>
         <translation type="unfinished">提示</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="240"/>
+        <location filename="../views/environment_dock.cpp" line="234"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>

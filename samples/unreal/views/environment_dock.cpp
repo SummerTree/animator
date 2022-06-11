@@ -85,12 +85,6 @@ namespace unreal
 		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
 		if (!package.is_null())
 		{
-			if (package.contains("suffix"))
-			{
-				if (package["suffix"].get<std::string>() != "hdr")
-					return;
-			}
-
 			QLabel* imageLabel = new QLabel;
 			imageLabel->setFixedSize(QSize(200, 100));
 
@@ -210,7 +204,7 @@ namespace unreal
 	{
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::AssetBundle::instance()->getTextureList())
+		for (auto& uuid : octoon::AssetBundle::instance()->getHDRiList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

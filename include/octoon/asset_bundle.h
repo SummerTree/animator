@@ -37,6 +37,7 @@ namespace octoon
 		nlohmann::json& getModelList() const noexcept;
 		nlohmann::json& getMotionList() const noexcept;
 		nlohmann::json& getTextureList() const noexcept;
+		nlohmann::json& getHDRiList() const noexcept;
 		nlohmann::json& getMaterialList() const noexcept;
 
 		void removeAsset(std::string_view uuid) noexcept(false);
@@ -72,6 +73,7 @@ namespace octoon
 		std::unique_ptr<AssetImporter> motionAsset_;
 		std::unique_ptr<AssetImporter> textureAsset_;
 		std::unique_ptr<AssetImporter> materialAsset_;
+		std::unique_ptr<AssetImporter> hdriAsset_;
 
 		std::map<std::string, std::shared_ptr<RttiObject>> assetCache_;
 		std::map<std::weak_ptr<RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<RttiObject>>> assetPackageCache_;
