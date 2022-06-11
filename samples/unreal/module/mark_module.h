@@ -13,8 +13,8 @@ namespace unreal
 
 		virtual void reset() noexcept override;
 
-		virtual void load(nlohmann::json& reader, std::string_view path) noexcept override;
-		virtual void save(nlohmann::json& writer, std::string_view path) noexcept override;
+		virtual void load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept override;
+		virtual void save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept override;
 
 	private:
 		MarkModule(const MarkModule&) = delete;

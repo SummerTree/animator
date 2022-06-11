@@ -363,7 +363,7 @@ namespace unreal
 
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
-				behaviour->close();
+				behaviour->reset();
 
 			spdlog::debug("Exited cleanupEvent");
 		}

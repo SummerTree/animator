@@ -25,7 +25,7 @@ namespace unreal
 	}
 
 	void 
-	EnvironmentModule::load(nlohmann::json& reader, std::string_view profilePath) noexcept
+	EnvironmentModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
 	{
 		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
@@ -37,12 +37,12 @@ namespace unreal
 			this->color = octoon::math::float3(reader["color"].get<std::array<float, 3>>());
 		if (reader["offset"].is_array())
 			this->offset = octoon::math::float2(reader["offset"].get<std::array<float, 2>>());
-		if (reader["texture"].is_object())
-			this->texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Texture>(reader["texture"]);
+		if (reader["texture"].is_string())
+			this->texture = octoon::AssetBundle::instance()->loadAsset<octoon::Texture>(reader["texture"].get<std::string>());
 	}
 
 	void 
-	EnvironmentModule::save(nlohmann::json& writer, std::string_view profilePath) noexcept
+	EnvironmentModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
 	{
 		writer["enable"] = this->enable.getValue();
 		writer["intensity"] = this->intensity.getValue();
@@ -52,7 +52,11 @@ namespace unreal
 		writer["color"] = this->color.getValue().to_array();
 
 		if (this->texture.getValue())
-			writer["texture"] = octoon::AssetBundle::instance()->createAsset(this->texture.getValue());
+		{
+			auto package = ab->createAsset(this->texture.getValue());
+			if (package.is_object())
+				writer["texture"] = package["uuid"].get<std::string>();
+		}
 	}
 
 	void

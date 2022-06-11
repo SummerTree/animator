@@ -38,7 +38,7 @@ namespace unreal
 
 		bool open(std::string_view filepath) noexcept(false);
 		void save(std::string_view path) noexcept(false);
-		void close() noexcept;
+		void reset() noexcept;
 		bool isOpen() const noexcept;
 
 		void load(std::string_view filepath) noexcept(false);

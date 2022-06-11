@@ -2,6 +2,7 @@
 #define UNREAL_MODEL_H_
 
 #include <octoon/runtime/json.h>
+#include <octoon/asset_bundle.h>
 #include "viewmodel/mutable_live_data.h"
 
 namespace unreal
@@ -18,8 +19,8 @@ namespace unreal
 		virtual void reset() noexcept = 0;
 		virtual void onValidate() noexcept;
 
-		virtual void load(nlohmann::json& reader, std::string_view path) noexcept(false) = 0;
-		virtual void save(nlohmann::json& reader, std::string_view path) noexcept(false) = 0;
+		virtual void load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false) = 0;
+		virtual void save(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false) = 0;
 
 		virtual void disconnect() noexcept;
 

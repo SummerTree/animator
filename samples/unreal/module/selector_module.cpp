@@ -19,12 +19,12 @@ namespace unreal
 	}
 
 	void 
-	SelectorModule::load(nlohmann::json& reader, std::string_view path) noexcept
+	SelectorModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
 	{
 	}
 
 	void 
-	SelectorModule::save(nlohmann::json& writer, std::string_view path) noexcept
+	SelectorModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
 	{
 	}
 }

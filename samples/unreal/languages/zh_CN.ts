@@ -190,18 +190,18 @@
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="654"/>
-        <location filename="../views/environment_dock.cpp" line="711"/>
+        <location filename="../views/environment_dock.cpp" line="646"/>
+        <location filename="../views/environment_dock.cpp" line="703"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="668"/>
+        <location filename="../views/environment_dock.cpp" line="660"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="668"/>
+        <location filename="../views/environment_dock.cpp" line="660"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>

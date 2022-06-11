@@ -29,7 +29,7 @@ namespace unreal
 	UnrealBehaviour::open(std::string_view path) noexcept(false)
 	{
 		if (this->isOpen())
-			this->close();
+			this->reset();
 
 		auto ext = path.substr(path.find_last_of("."));
 		if (ext == ".pmm")
@@ -76,7 +76,7 @@ namespace unreal
 	}
 
 	void
-	UnrealBehaviour::close() noexcept
+	UnrealBehaviour::reset() noexcept
 	{
 		this->profile_->soundModule->reset();
 		this->profile_->cameraModule->reset();
@@ -89,6 +89,8 @@ namespace unreal
 		this->profile_->physicsModule->reset();
 		this->profile_->recordModule->reset();
 		this->profile_->playerModule->reset();
+
+		octoon::AssetBundle::instance()->unload();
 	}
 
 	bool

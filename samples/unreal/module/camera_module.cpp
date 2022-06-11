@@ -30,7 +30,7 @@ namespace unreal
 	}
 
 	void 
-	CameraModule::load(nlohmann::json& reader, std::string_view profilePath) noexcept
+	CameraModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
 	{
 		if (reader.contains("useDepthOfFiled"))
 			this->useDepthOfFiled = reader["useDepthOfFiled"].get<nlohmann::json::boolean_t>();
@@ -46,12 +46,12 @@ namespace unreal
 			this->translate = octoon::math::float3(reader["translate"].get<std::array<float, 3>>());
 		if (reader["rotation"].is_array())
 			this->rotation = octoon::math::float3(reader["rotation"].get<std::array<float, 3>>());
-		if (reader["animation"].is_object())
-			this->animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(reader["animation"]["uuid"].get<std::string>());
+		if (reader["animation"].is_string())
+			this->animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(reader["animation"].get<std::string>());
 	}
 
 	void 
-	CameraModule::save(nlohmann::json& writer, std::string_view profilePath) noexcept
+	CameraModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
 	{
 		writer["useDepthOfFiled"] = this->useDepthOfFiled.getValue();
 		writer["fov"] = this->fov.getValue();
@@ -62,7 +62,11 @@ namespace unreal
 		writer["rotation"] = this->rotation.getValue().to_array();
 
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
-			writer["animation"] = octoon::AssetBundle::instance()->createAsset(this->animation.getValue());
+		{
+			auto package = ab->createAsset(this->animation.getValue());
+			if (package.is_object())
+				writer["animation"] = package["uuid"].get<std::string>();
+		}
 	}
 
 	void

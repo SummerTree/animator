@@ -464,7 +464,7 @@ namespace unreal
 		{
 			if (texture && this->isVisible())
 			{
-				auto package = octoon::AssetBundle::instance()->getPackage(texture);
+				auto package = octoon::AssetDatabase::instance()->getPackage(texture);
 				if (package.is_object())
 				{
 					auto name = package["name"].get<nlohmann::json::string_t>();
@@ -629,23 +629,15 @@ namespace unreal
 	{
 		try
 		{
-			auto uuid = item->data(Qt::UserRole).toString();
-			auto package = octoon::AssetBundle::instance()->getPackage(uuid.toStdString());
-			if (package.is_object())
+			auto uuid = item->data(Qt::UserRole).toString().toStdString();
+			if (!uuid.empty())
 			{
-				auto name = package["name"].get<nlohmann::json::string_t>();
-				auto hdrPath = package["path"].get<nlohmann::json::string_t>();
-				auto previewPath = package["preview"].get<nlohmann::json::string_t>();
-
-				auto previewImage = std::make_shared<QImage>();
-				if (!previewImage->load(QString::fromStdString(previewPath)))
-					throw std::runtime_error("Cannot generate image for preview");
-
-				this->setPreviewImage(QString::fromStdString(name), previewImage);
-				this->setThumbnailImage(QString::fromStdString(hdrPath), *previewImage);
-
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Texture>(package);
+				this->profile_->environmentLightModule->texture = octoon::AssetBundle::instance()->loadAsset<octoon::Texture>(uuid);
+			}
+			else
+			{
+				this->profile_->environmentLightModule->texture = nullptr;
 			}
 		}
 		catch (const std::exception& e)

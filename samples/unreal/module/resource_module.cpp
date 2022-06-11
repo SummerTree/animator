@@ -31,12 +31,12 @@ namespace unreal
 	}
 
 	void 
-	ResourceModule::load(nlohmann::json& reader, std::string_view path) noexcept
+	ResourceModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
 	{
 	}
 
 	void 
-	ResourceModule::save(nlohmann::json& writer, std::string_view path) noexcept
+	ResourceModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
 	{
 	}
 }

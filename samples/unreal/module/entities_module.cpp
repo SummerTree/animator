@@ -31,11 +31,8 @@ namespace unreal
 	}
 
 	void 
-	EntitiesModule::load(nlohmann::json& reader, std::string_view profilePath) noexcept(false)
+	EntitiesModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false)
 	{
-		auto root = std::string(profilePath);
-		root = root.substr(0, root.find_last_of('/')) + "/Assets/";
-
 		octoon::GameObjects objects_;
 
 		if (reader["scene"].is_array())
@@ -112,11 +109,8 @@ namespace unreal
 	}
 
 	void 
-	EntitiesModule::save(nlohmann::json& writer, std::string_view profilePath) noexcept(false)
+	EntitiesModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false)
 	{
-		auto root = std::string(profilePath);
-		root = root.substr(0, root.find_last_of('/')) + "/Assets";
-
 		nlohmann::json sceneJson;
 
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;

@@ -55,7 +55,10 @@ namespace octoon
 		this->modelAsset_->clearCache();
 		this->motionAsset_->clearCache();
 		this->materialAsset_->clearCache();
-		this->motionAsset_->clearCache();
+		this->textureAsset_->clearCache();
+
+		for (auto& ab : assetBundles_)
+			ab->unload();
 	}
 
 	void
@@ -64,7 +67,10 @@ namespace octoon
 		this->modelAsset_->saveAssets();
 		this->motionAsset_->saveAssets();
 		this->materialAsset_->saveAssets();
-		this->motionAsset_->saveAssets();
+		this->textureAsset_->saveAssets();
+
+		for (auto& ab : assetBundles_)
+			ab->saveAssets();
 	}
 
 	std::shared_ptr<RttiObject>
@@ -137,6 +143,13 @@ namespace octoon
 
 				return asset;
 			}
+		}
+
+		for (auto& ab : assetBundles_)
+		{
+			auto asset = ab->loadAsset(uuid_, type);
+			if (asset)
+				return asset;
 		}
 
 		return nullptr;
@@ -235,6 +248,15 @@ namespace octoon
 			nlohmann::json package = AssetDatabase::instance()->getPackage(texture);
 			if (package.find("uuid") != package.end())
 			{
+				if (this != AssetBundle::instance())
+				{
+					for (auto& index : AssetBundle::instance()->getTextureList())
+					{
+						if (index == uuid)
+							return package;
+					}
+				}
+
 				for (auto& index : textureAsset_->getIndexList())
 				{
 					if (index == uuid)
@@ -265,6 +287,15 @@ namespace octoon
 			nlohmann::json package = AssetDatabase::instance()->getPackage(animation);
 			if (package.find("uuid") != package.end())
 			{
+				if (this != AssetBundle::instance())
+				{
+					for (auto& index : AssetBundle::instance()->getMotionList())
+					{
+						if (index == uuid)
+							return package;
+					}
+				}
+
 				for (auto& index : motionAsset_->getIndexList())
 				{
 					if (index == uuid)
@@ -295,6 +326,15 @@ namespace octoon
 			nlohmann::json package = AssetDatabase::instance()->getPackage(material);
 			if (package.find("uuid") != package.end())
 			{
+				if (this != AssetBundle::instance())
+				{
+					for (auto& index : AssetBundle::instance()->getMaterialList())
+					{
+						if (index == uuid)
+							return package;
+					}
+				}
+
 				for (auto& index : materialAsset_->getIndexList())
 				{
 					if (index == uuid)
@@ -320,6 +360,27 @@ namespace octoon
 			if (it != this->assetPackageCache_.end())
 				return this->assetPackageCache_.at(gameObject);
 
+			auto uuid = AssetDatabase::instance()->getAssetGuid(gameObject);
+
+			nlohmann::json package = AssetDatabase::instance()->getPackage(gameObject);
+			if (package.find("uuid") != package.end())
+			{
+				if (this != AssetBundle::instance())
+				{
+					for (auto& index : AssetBundle::instance()->getModelList())
+					{
+						if (index == uuid)
+							return package;
+					}
+				}
+
+				for (auto& index : modelAsset_->getIndexList())
+				{
+					if (index == uuid)
+						return package;
+				}
+			}
+
 			auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
 			if (!assetPath.empty())
 			{
@@ -328,6 +389,8 @@ namespace octoon
 
 				return json;
 			}
+
+			assetPackageCache_[gameObject] = package;
 		}
 
 		return nlohmann::json();
