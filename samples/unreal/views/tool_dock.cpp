@@ -133,6 +133,12 @@ namespace unreal
 		spdlog::debug("Entered openEvent");
 		try
 		{
+			if (!octoon::AssetBundle::instance()->getUpdateList().empty() || !profile_->path.empty())
+			{
+				if (QMessageBox::question(this, tr("Info"), tr("Do you want to discard your local changes?")) == QMessageBox::No)
+					return;
+			}
+			
 			if (behaviour_ && !profile_->playerModule->isPlaying)
 			{
 				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
