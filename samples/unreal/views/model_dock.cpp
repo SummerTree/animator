@@ -144,7 +144,7 @@ namespace unreal
 					if (clickedItem_)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						octoon::AssetBundle::instance()->removePackage(uuid.toStdString());
+						octoon::AssetBundle::instance()->removeAsset(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
@@ -181,7 +181,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = octoon::AssetBundle::instance()->importPackage(filepaths[i].toUtf8().toStdString());
+					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toUtf8().toStdString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -223,7 +223,7 @@ namespace unreal
 
 				QCoreApplication::processEvents();
 
-				auto model = octoon::AssetBundle::instance()->loadAssetAtPath<octoon::GameObject>(uuid);
+				auto model = octoon::AssetBundle::instance()->loadAsset<octoon::GameObject>(uuid);
 				if (model)
 					this->profile_->entitiesModule->objects.getValue().push_back(model);
 

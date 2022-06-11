@@ -114,11 +114,11 @@ namespace unreal
 		else if (ext == ".ogg" || ext == ".mp3" || ext == ".wav" || ext == ".flac")
 			profile_->soundModule->filepath = std::string(path);
 		else if (ext == ".mdl")
-			octoon::AssetBundle::instance()->importPackage(path);
+			octoon::AssetBundle::instance()->importAsset(path);
 		else if (ext == ".vmd")
-			octoon::AssetBundle::instance()->importPackage(path);
+			octoon::AssetBundle::instance()->importAsset(path);
 		else if (ext == ".hdr")
-			octoon::AssetBundle::instance()->importPackage(path);
+			octoon::AssetBundle::instance()->importAsset(path);
 	}
 
 	void

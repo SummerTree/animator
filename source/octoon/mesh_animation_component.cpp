@@ -501,7 +501,7 @@ namespace octoon
 		for (auto& pair : this->materials_)
 		{
 			nlohmann::json materialJson;
-			materialJson["data"] = AssetBundle::instance()->createPackage(pair.second);
+			materialJson["data"] = AssetBundle::instance()->createAsset(pair.second);
 			materialJson["name"] = pair.first;
 
 			json["materials"].push_back(materialJson);

@@ -174,7 +174,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto list = octoon::AssetBundle::instance()->importPackage(filepaths[i].toUtf8().toStdString());
+					auto list = octoon::AssetBundle::instance()->importAsset(filepaths[i].toUtf8().toStdString());
 					for (auto& it : list)
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}
@@ -998,7 +998,7 @@ namespace unreal
 		if (materialComponent)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto material = octoon::AssetBundle::instance()->loadAssetAtPath<octoon::Material>(uuid);
+			auto material = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(uuid);
 			if (material)
 			{
 				octoon::MaterialImporter::instance()->addMaterial(this->material_->clone());

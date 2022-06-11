@@ -47,7 +47,7 @@ namespace unreal
 		if (reader["rotation"].is_array())
 			this->rotation = octoon::math::float3(reader["rotation"].get<std::array<float, 3>>());
 		if (reader["animation"].is_object())
-			this->animation = octoon::AssetBundle::instance()->loadAssetAtPath<octoon::Animation>(reader["animation"]["uuid"].get<std::string>());
+			this->animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(reader["animation"]["uuid"].get<std::string>());
 	}
 
 	void 
@@ -62,11 +62,7 @@ namespace unreal
 		writer["rotation"] = this->rotation.getValue().to_array();
 
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
-		{
-			auto root = std::string(profilePath);
-			root = root.substr(0, root.find_last_of('/')) + "/Assets/Animation";
-			writer["animation"] = octoon::AssetBundle::instance()->createPackage(this->animation.getValue(), root);
-		}
+			writer["animation"] = octoon::AssetBundle::instance()->createAsset(this->animation.getValue());
 	}
 
 	void

@@ -23,12 +23,12 @@ namespace octoon
 		void unload() noexcept;
 		void saveAssets() noexcept(false);
 
-		nlohmann::json importPackage(std::string_view path, bool generateMipmap = false) noexcept(false);
+		nlohmann::json importAsset(std::string_view path, bool generateMipmap = false) noexcept(false);
 
-		nlohmann::json createPackage(const std::shared_ptr<Texture>& texture, std::string_view outputPath) noexcept(false);
-		nlohmann::json createPackage(const std::shared_ptr<Animation>& animation, std::string_view outputPath) noexcept(false);
-		nlohmann::json createPackage(const std::shared_ptr<Material>& material) noexcept(false);
-		nlohmann::json createPackage(const std::shared_ptr<GameObject>& gameObject) noexcept(false);
+		nlohmann::json createAsset(const std::shared_ptr<Texture>& texture) noexcept(false);
+		nlohmann::json createAsset(const std::shared_ptr<Animation>& animation) noexcept(false);
+		nlohmann::json createAsset(const std::shared_ptr<Material>& material) noexcept(false);
+		nlohmann::json createAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false);
 
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) const noexcept(false);
@@ -38,18 +38,21 @@ namespace octoon
 		nlohmann::json& getTextureList() const noexcept;
 		nlohmann::json& getMaterialList() const noexcept;
 
-		void removePackage(std::string_view uuid) noexcept(false);
+		void removeAsset(std::string_view uuid) noexcept(false);
 
-		std::shared_ptr<RttiObject> loadAssetAtPath(std::string_view uuid, const Rtti& rtti) noexcept(false);
+		std::shared_ptr<RttiObject> loadAsset(std::string_view uuid, const Rtti& rtti) noexcept(false);
 		
 		template<typename T, typename = std::enable_if_t<std::is_base_of<RttiObject, T>::value>>
-		std::shared_ptr<T> loadAssetAtPath(std::string_view uuid) noexcept(false)
+		std::shared_ptr<T> loadAsset(std::string_view uuid) noexcept(false)
 		{
-			auto asset = loadAssetAtPath(uuid, *T::getRtti());
+			auto asset = loadAsset(uuid, *T::getRtti());
 			if (asset)
 				return asset->downcast_pointer<T>();
 			return nullptr;
 		}
+
+		std::shared_ptr<AssetBundle> loadFromFile(std::string_view path) noexcept(false);
+		std::vector<std::shared_ptr<AssetBundle>> getAllLoadedAssetBundles() const noexcept;
 
 	private:
 		AssetBundle(const AssetBundle&) = delete;
@@ -65,6 +68,8 @@ namespace octoon
 
 		std::map<std::string, std::shared_ptr<RttiObject>> assetCache_;
 		std::map<std::weak_ptr<RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<RttiObject>>> assetPackageCache_;
+
+		std::vector<std::shared_ptr<AssetBundle>> assetBundles_;
 	};
 }
 

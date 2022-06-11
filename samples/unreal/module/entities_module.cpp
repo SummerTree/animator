@@ -46,7 +46,7 @@ namespace unreal
 				if (it.find("materials") != it.end())
 					flags = flags & ~octoon::PMXLoadFlagBits::MaterialBit;
 
-				auto object = octoon::AssetBundle::instance()->loadAssetAtPath<octoon::GameObject>(it["model"]["uuid"].get<std::string>());
+				auto object = octoon::AssetBundle::instance()->loadAsset<octoon::GameObject>(it["model"]["uuid"].get<std::string>());
 				if (object)
 				{
 					if (it.contains("transform"))
@@ -117,12 +117,6 @@ namespace unreal
 		auto root = std::string(profilePath);
 		root = root.substr(0, root.find_last_of('/')) + "/Assets";
 
-		auto texturePath = root + "/Textures";
-		auto materialPath = root + "/Materials";
-
-		//octoon::MaterialImporter::instance()->setTexturePath(root + "/Textures");
-		//octoon::MaterialImporter::instance()->setMaterialPath(root + "/Materials");
-
 		nlohmann::json sceneJson;
 
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
@@ -130,7 +124,7 @@ namespace unreal
 		for (auto& it : this->objects.getValue())
 		{
 			nlohmann::json json;
-			json["model"] = octoon::AssetBundle::instance()->createPackage(it);
+			json["model"] = octoon::AssetBundle::instance()->createAsset(it);
 
 			if (json["model"].is_object())
 			{
@@ -149,10 +143,8 @@ namespace unreal
 						auto animation = component->downcast<octoon::AnimatorComponent>();
 						if (animation->getAnimation())
 						{
-							auto animationPath = root + "/Animation";
-
 							nlohmann::json animationJson;
-							animationJson["data"] = octoon::AssetBundle::instance()->createPackage(animation->getAnimation(), animationPath.c_str());
+							animationJson["data"] = octoon::AssetBundle::instance()->createAsset(animation->getAnimation());
 							animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
 
 							json["animation"].push_back(animationJson);
@@ -168,7 +160,7 @@ namespace unreal
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
 						nlohmann::json materialJson;
-						materialJson["data"] = octoon::AssetBundle::instance()->createPackage(materials[i]);
+						materialJson["data"] = octoon::AssetBundle::instance()->createAsset(materials[i]);
 						materialJson["index"] = i;
 
 						json["materials"].push_back(materialJson);

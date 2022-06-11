@@ -52,11 +52,7 @@ namespace unreal
 		writer["color"] = this->color.getValue().to_array();
 
 		if (this->texture.getValue())
-		{
-			auto root = std::string(profilePath);
-			root = root.substr(0, root.find_last_of('/')) + "/Assets/Textures";
-			writer["texture"] = octoon::AssetBundle::instance()->createPackage(this->texture.getValue(), root);
-		}
+			writer["texture"] = octoon::AssetBundle::instance()->createAsset(this->texture.getValue());
 	}
 
 	void

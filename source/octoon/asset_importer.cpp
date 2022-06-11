@@ -99,7 +99,7 @@ namespace octoon
 	}
 
 	void
-	AssetImporter::removePackage(std::string_view uuid, std::string_view outputPath) noexcept(false)
+	AssetImporter::removeAsset(std::string_view uuid, std::string_view outputPath) noexcept(false)
 	{
 		auto& indexList = indexList_;
 
