@@ -12,6 +12,7 @@
 #include <octoon/video/renderer.h>
 #include <octoon/mesh/sphere_mesh.h>
 #include <octoon/environment_light_component.h>
+#include <octoon/io/fstream.h>
 
 #include <fstream>
 #include <filesystem>
@@ -341,7 +342,18 @@ namespace octoon
 		try
 		{
 			std::filesystem::create_directories(rootPath);
-			std::filesystem::copy(cv.from_bytes((std::string)path), modelPath);
+
+			io::ofstream stream(modelPath.u8string(), std::ios_base::in | std::ios_base::out);
+			if (stream)
+			{
+				if (!PMX::save(stream, pmx))
+					throw std::runtime_error("Failed to create model");
+			}
+			else
+			{
+				throw std::runtime_error("Failed to create file");
+			}
+
 			std::filesystem::permissions(modelPath, std::filesystem::perms::owner_write);
 
 			for (auto& texture : pmx.textures)
@@ -485,7 +497,7 @@ namespace octoon
 
 				if (package.contains("path"))
 				{
-					auto path = package["path"].get<nlohmann::json::string_t>();
+					auto path = package["path"].get<std::string>();
 					if (std::filesystem::exists(path))
 						return package;
 				}
@@ -585,10 +597,10 @@ namespace octoon
 	{
 		if (type.isDerivedFrom(Texture::getRtti()))
 		{
-			if (package.find("path") != package.end())
+			if (package.contains("path") && package.contains("uuid"))
 			{
-				auto path = package["path"].get<nlohmann::json::string_t>();
-				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
+				auto path = package["path"].get<std::string>();
+				auto uuid = package["uuid"].get<std::string>();
 
 				bool generateMipmap = false;
 				if (package.find("mipmap") != package.end())
@@ -613,10 +625,10 @@ namespace octoon
 		}
 		else if (type.isDerivedFrom(GameObject::getRtti()))
 		{
-			if (package["path"].is_string())
+			if (package.contains("path") && package.contains("uuid"))
 			{
-				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-				auto path = package["path"].get<nlohmann::json::string_t>();
+				auto uuid = package["uuid"].get<std::string>();
+				auto path = package["path"].get<std::string>();
 				auto gameObject = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
 				if (gameObject)
 				{
@@ -631,10 +643,10 @@ namespace octoon
 		}
 		else if (type.isDerivedFrom(Animation::getRtti()))
 		{
-			if (package["path"].is_string())
+			if (package.contains("path") && package.contains("uuid"))
 			{
-				auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-				auto path = package["path"].get<nlohmann::json::string_t>();
+				auto uuid = package["uuid"].get<std::string>();
+				auto path = package["path"].get<std::string>();
 				auto motion = VMDLoader::load(path.c_str());
 				if (motion)
 				{
@@ -649,245 +661,248 @@ namespace octoon
 		}
 		else if (type.isDerivedFrom(Material::getRtti()))
 		{
-			auto uuid = package["uuid"].get<nlohmann::json::string_t>();
-			auto material = std::make_shared<MeshStandardMaterial>();
+			if (package.contains("uuid"))
+			{
+				auto uuid = package["uuid"].get<std::string>();
+				auto material = std::make_shared<MeshStandardMaterial>();
 
-			auto name = package.find("name");
-			auto colorMap = package.find("colorMap");
-			auto opacityMap = package.find("opacityMap");
-			auto normalMap = package.find("normalMap");
-			auto roughnessMap = package.find("roughnessMap");
-			auto specularMap = package.find("specularMap");
-			auto metalnessMap = package.find("metalnessMap");
-			auto emissiveMap = package.find("emissiveMap");
-			auto anisotropyMap = package.find("anisotropyMap");
-			auto clearCoatMap = package.find("clearCoatMap");
-			auto clearCoatRoughnessMap = package.find("clearCoatRoughnessMap");
-			auto subsurfaceMap = package.find("subsurfaceMap");
-			auto subsurfaceColorMap = package.find("subsurfaceColorMap");
-			auto sheenMap = package.find("sheenMap");
-			auto lightMap = package.find("lightMap");
+				auto name = package.find("name");
+				auto colorMap = package.find("colorMap");
+				auto opacityMap = package.find("opacityMap");
+				auto normalMap = package.find("normalMap");
+				auto roughnessMap = package.find("roughnessMap");
+				auto specularMap = package.find("specularMap");
+				auto metalnessMap = package.find("metalnessMap");
+				auto emissiveMap = package.find("emissiveMap");
+				auto anisotropyMap = package.find("anisotropyMap");
+				auto clearCoatMap = package.find("clearCoatMap");
+				auto clearCoatRoughnessMap = package.find("clearCoatRoughnessMap");
+				auto subsurfaceMap = package.find("subsurfaceMap");
+				auto subsurfaceColorMap = package.find("subsurfaceColorMap");
+				auto sheenMap = package.find("sheenMap");
+				auto lightMap = package.find("lightMap");
 
-			if (name != package.end() && (*name).is_string())
-				material->setName((*name).get<nlohmann::json::string_t>());
-			if (colorMap != package.end() && (*colorMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*colorMap);
-				if (texture) texture->apply();
-				material->setColorMap(texture);
-			}
-			if (opacityMap != package.end() && (*opacityMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*opacityMap);
-				if (texture) texture->apply();
-				material->setOpacityMap(texture);
-			}
-			if (normalMap != package.end() && (*normalMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*normalMap);
-				if (texture) texture->apply();
-				material->setNormalMap(texture);
-			}
-			if (roughnessMap != package.end() && (*roughnessMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*roughnessMap);
-				if (texture) texture->apply();
-				material->setRoughnessMap(texture);
-			}
-			if (specularMap != package.end() && (*specularMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*specularMap);
-				if (texture) texture->apply();
-				material->setSpecularMap(texture);
-			}
-			if (metalnessMap != package.end() && (*metalnessMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*metalnessMap);
-				if (texture) texture->apply();
-				material->setMetalnessMap(texture);
-			}
-			if (emissiveMap != package.end() && (*emissiveMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*emissiveMap);
-				if (texture) texture->apply();
-				material->setEmissiveMap(texture);
-			}
-			if (anisotropyMap != package.end() && (*anisotropyMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*anisotropyMap);
-				if (texture) texture->apply();
-				material->setAnisotropyMap(texture);
-			}
-			if (clearCoatMap != package.end() && (*clearCoatMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatMap);
-				if (texture) texture->apply();
-				material->setClearCoatMap(texture);
-			}
-			if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatRoughnessMap);
-				if (texture) texture->apply();
-				material->setClearCoatRoughnessMap(texture);
-			}
-			if (subsurfaceMap != package.end() && (*subsurfaceMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceMap);
-				if (texture) texture->apply();
-				material->setSubsurfaceMap(texture);
-			}
-			if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceColorMap);
-				if (texture) texture->apply();
-				material->setSubsurfaceColorMap(texture);
-			}
-			if (sheenMap != package.end() && (*sheenMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*sheenMap);
-				if (texture) texture->apply();
-				material->setSheenMap(texture);
-			}
-			if (lightMap != package.end() && (*lightMap).is_object())
-			{
-				auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*lightMap);
-				if (texture) texture->apply();
-				material->setLightMap(texture);
-			}
+				if (name != package.end() && (*name).is_string())
+					material->setName((*name).get<std::string>());
+				if (colorMap != package.end() && (*colorMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*colorMap);
+					if (texture) texture->apply();
+					material->setColorMap(texture);
+				}
+				if (opacityMap != package.end() && (*opacityMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*opacityMap);
+					if (texture) texture->apply();
+					material->setOpacityMap(texture);
+				}
+				if (normalMap != package.end() && (*normalMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*normalMap);
+					if (texture) texture->apply();
+					material->setNormalMap(texture);
+				}
+				if (roughnessMap != package.end() && (*roughnessMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*roughnessMap);
+					if (texture) texture->apply();
+					material->setRoughnessMap(texture);
+				}
+				if (specularMap != package.end() && (*specularMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*specularMap);
+					if (texture) texture->apply();
+					material->setSpecularMap(texture);
+				}
+				if (metalnessMap != package.end() && (*metalnessMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*metalnessMap);
+					if (texture) texture->apply();
+					material->setMetalnessMap(texture);
+				}
+				if (emissiveMap != package.end() && (*emissiveMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*emissiveMap);
+					if (texture) texture->apply();
+					material->setEmissiveMap(texture);
+				}
+				if (anisotropyMap != package.end() && (*anisotropyMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*anisotropyMap);
+					if (texture) texture->apply();
+					material->setAnisotropyMap(texture);
+				}
+				if (clearCoatMap != package.end() && (*clearCoatMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatMap);
+					if (texture) texture->apply();
+					material->setClearCoatMap(texture);
+				}
+				if (clearCoatRoughnessMap != package.end() && (*clearCoatRoughnessMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*clearCoatRoughnessMap);
+					if (texture) texture->apply();
+					material->setClearCoatRoughnessMap(texture);
+				}
+				if (subsurfaceMap != package.end() && (*subsurfaceMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceMap);
+					if (texture) texture->apply();
+					material->setSubsurfaceMap(texture);
+				}
+				if (subsurfaceColorMap != package.end() && (*subsurfaceColorMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*subsurfaceColorMap);
+					if (texture) texture->apply();
+					material->setSubsurfaceColorMap(texture);
+				}
+				if (sheenMap != package.end() && (*sheenMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*sheenMap);
+					if (texture) texture->apply();
+					material->setSheenMap(texture);
+				}
+				if (lightMap != package.end() && (*lightMap).is_object())
+				{
+					auto texture = AssetDatabase::instance()->loadAssetAtPackage<Texture>(*lightMap);
+					if (texture) texture->apply();
+					material->setLightMap(texture);
+				}
 
-			auto blendEnable = package.find("blendEnable");
-			auto blendOp = package.find("blendOp");
-			auto blendSrc = package.find("blendSrc");
-			auto blendDest = package.find("blendDest");
-			auto blendAlphaOp = package.find("blendAlphaOp");
-			auto blendAlphaSrc = package.find("blendAlphaSrc");
-			auto blendAlphaDest = package.find("blendAlphaDest");
+				auto blendEnable = package.find("blendEnable");
+				auto blendOp = package.find("blendOp");
+				auto blendSrc = package.find("blendSrc");
+				auto blendDest = package.find("blendDest");
+				auto blendAlphaOp = package.find("blendAlphaOp");
+				auto blendAlphaSrc = package.find("blendAlphaSrc");
+				auto blendAlphaDest = package.find("blendAlphaDest");
 
-			if (blendEnable != package.end() && (*blendEnable).is_boolean())
-				material->setBlendEnable((*blendEnable).get<nlohmann::json::boolean_t>());
-			if (blendOp != package.end() && (*blendOp).is_number_unsigned())
-				material->setBlendOp((BlendOp)(*blendOp).get<nlohmann::json::number_unsigned_t>());
-			if (blendSrc != package.end() && (*blendSrc).is_number_unsigned())
-				material->setBlendSrc((BlendMode)(*blendSrc).get<nlohmann::json::number_unsigned_t>());
-			if (blendDest != package.end() && (*blendDest).is_number_unsigned())
-				material->setBlendDest((BlendMode)(*blendDest).get<nlohmann::json::number_unsigned_t>());
-			if (blendAlphaOp != package.end() && (*blendAlphaOp).is_number_unsigned())
-				material->setBlendAlphaOp((BlendOp)(*blendAlphaOp).get<nlohmann::json::number_unsigned_t>());
-			if (blendAlphaSrc != package.end() && (*blendAlphaSrc).is_number_unsigned())
-				material->setBlendAlphaSrc((BlendMode)(*blendAlphaSrc).get<nlohmann::json::number_unsigned_t>());
-			if (blendAlphaDest != package.end() && (*blendAlphaDest).is_number_unsigned())
-				material->setBlendAlphaDest((BlendMode)(*blendAlphaDest).get<nlohmann::json::number_unsigned_t>());
+				if (blendEnable != package.end() && (*blendEnable).is_boolean())
+					material->setBlendEnable((*blendEnable).get<nlohmann::json::boolean_t>());
+				if (blendOp != package.end() && (*blendOp).is_number_unsigned())
+					material->setBlendOp((BlendOp)(*blendOp).get<nlohmann::json::number_unsigned_t>());
+				if (blendSrc != package.end() && (*blendSrc).is_number_unsigned())
+					material->setBlendSrc((BlendMode)(*blendSrc).get<nlohmann::json::number_unsigned_t>());
+				if (blendDest != package.end() && (*blendDest).is_number_unsigned())
+					material->setBlendDest((BlendMode)(*blendDest).get<nlohmann::json::number_unsigned_t>());
+				if (blendAlphaOp != package.end() && (*blendAlphaOp).is_number_unsigned())
+					material->setBlendAlphaOp((BlendOp)(*blendAlphaOp).get<nlohmann::json::number_unsigned_t>());
+				if (blendAlphaSrc != package.end() && (*blendAlphaSrc).is_number_unsigned())
+					material->setBlendAlphaSrc((BlendMode)(*blendAlphaSrc).get<nlohmann::json::number_unsigned_t>());
+				if (blendAlphaDest != package.end() && (*blendAlphaDest).is_number_unsigned())
+					material->setBlendAlphaDest((BlendMode)(*blendAlphaDest).get<nlohmann::json::number_unsigned_t>());
 
-			auto depthEnable = package.find("depthEnable");
-			auto depthBiasEnable = package.find("depthBiasEnable");
-			auto depthBoundsEnable = package.find("depthBoundsEnable");
-			auto depthClampEnable = package.find("depthClampEnable");
-			auto depthWriteEnable = package.find("depthWriteEnable");
-			auto stencilEnable = package.find("stencilEnable");
-			auto scissorTestEnable = package.find("scissorTestEnable");
+				auto depthEnable = package.find("depthEnable");
+				auto depthBiasEnable = package.find("depthBiasEnable");
+				auto depthBoundsEnable = package.find("depthBoundsEnable");
+				auto depthClampEnable = package.find("depthClampEnable");
+				auto depthWriteEnable = package.find("depthWriteEnable");
+				auto stencilEnable = package.find("stencilEnable");
+				auto scissorTestEnable = package.find("scissorTestEnable");
 
-			if (depthEnable != package.end() && (*depthEnable).is_boolean())
-				material->setDepthEnable((*depthEnable).get<nlohmann::json::boolean_t>());
-			if (depthBiasEnable != package.end() && (*depthBiasEnable).is_boolean())
-				material->setDepthBiasEnable((*depthBiasEnable).get<nlohmann::json::boolean_t>());
-			if (depthBoundsEnable != package.end() && (*depthBoundsEnable).is_boolean())
-				material->setDepthBoundsEnable((*depthBoundsEnable).get<nlohmann::json::boolean_t>());
-			if (depthClampEnable != package.end() && (*depthClampEnable).is_boolean())
-				material->setDepthClampEnable((*depthClampEnable).get<nlohmann::json::boolean_t>());
-			if (depthWriteEnable != package.end() && (*depthWriteEnable).is_boolean())
-				material->setDepthWriteEnable((*depthWriteEnable).get<nlohmann::json::boolean_t>());
-			if (stencilEnable != package.end() && (*stencilEnable).is_boolean())
-				material->setStencilEnable((*stencilEnable).get<nlohmann::json::boolean_t>());
-			if (scissorTestEnable != package.end() && (*scissorTestEnable).is_boolean())
-				material->setScissorTestEnable((*scissorTestEnable).get<nlohmann::json::boolean_t>());
+				if (depthEnable != package.end() && (*depthEnable).is_boolean())
+					material->setDepthEnable((*depthEnable).get<nlohmann::json::boolean_t>());
+				if (depthBiasEnable != package.end() && (*depthBiasEnable).is_boolean())
+					material->setDepthBiasEnable((*depthBiasEnable).get<nlohmann::json::boolean_t>());
+				if (depthBoundsEnable != package.end() && (*depthBoundsEnable).is_boolean())
+					material->setDepthBoundsEnable((*depthBoundsEnable).get<nlohmann::json::boolean_t>());
+				if (depthClampEnable != package.end() && (*depthClampEnable).is_boolean())
+					material->setDepthClampEnable((*depthClampEnable).get<nlohmann::json::boolean_t>());
+				if (depthWriteEnable != package.end() && (*depthWriteEnable).is_boolean())
+					material->setDepthWriteEnable((*depthWriteEnable).get<nlohmann::json::boolean_t>());
+				if (stencilEnable != package.end() && (*stencilEnable).is_boolean())
+					material->setStencilEnable((*stencilEnable).get<nlohmann::json::boolean_t>());
+				if (scissorTestEnable != package.end() && (*scissorTestEnable).is_boolean())
+					material->setScissorTestEnable((*scissorTestEnable).get<nlohmann::json::boolean_t>());
 
-			auto emissiveIntensity = package.find("emissiveIntensity");
-			auto opacity = package.find("opacity");
-			auto smoothness = package.find("smoothness");
-			auto roughness = package.find("roughness");
-			auto metalness = package.find("metalness");
-			auto anisotropy = package.find("anisotropy");
-			auto sheen = package.find("sheen");
-			auto specular = package.find("specular");
-			auto refractionRatio = package.find("refractionRatio");
-			auto clearCoat = package.find("clearCoat");
-			auto clearCoatRoughness = package.find("clearCoatRoughness");
-			auto subsurface = package.find("subsurface");
-			auto reflectionRatio = package.find("reflectionRatio");
-			auto transmission = package.find("transmission");
-			auto lightMapIntensity = package.find("lightMapIntensity");
-			auto gamma = package.find("gamma");
-			auto depthMin = package.find("depthMin");
-			auto depthMax = package.find("depthMax");
-			auto depthBias = package.find("depthBias");
-			auto depthSlopeScaleBias = package.find("depthSlopeScaleBias");
+				auto emissiveIntensity = package.find("emissiveIntensity");
+				auto opacity = package.find("opacity");
+				auto smoothness = package.find("smoothness");
+				auto roughness = package.find("roughness");
+				auto metalness = package.find("metalness");
+				auto anisotropy = package.find("anisotropy");
+				auto sheen = package.find("sheen");
+				auto specular = package.find("specular");
+				auto refractionRatio = package.find("refractionRatio");
+				auto clearCoat = package.find("clearCoat");
+				auto clearCoatRoughness = package.find("clearCoatRoughness");
+				auto subsurface = package.find("subsurface");
+				auto reflectionRatio = package.find("reflectionRatio");
+				auto transmission = package.find("transmission");
+				auto lightMapIntensity = package.find("lightMapIntensity");
+				auto gamma = package.find("gamma");
+				auto depthMin = package.find("depthMin");
+				auto depthMax = package.find("depthMax");
+				auto depthBias = package.find("depthBias");
+				auto depthSlopeScaleBias = package.find("depthSlopeScaleBias");
 
-			if (emissiveIntensity != package.end() && (*emissiveIntensity).is_number_float())
-				material->setEmissiveIntensity((*emissiveIntensity).get<nlohmann::json::number_float_t>());
-			if (opacity != package.end() && (*opacity).is_number_float())
-				material->setOpacity((*opacity).get<nlohmann::json::number_float_t>());
-			if (smoothness != package.end() && (*smoothness).is_number_float())
-				material->setSmoothness((*smoothness).get<nlohmann::json::number_float_t>());
-			if (roughness != package.end() && (*roughness).is_number_float())
-				material->setRoughness((*roughness).get<nlohmann::json::number_float_t>());
-			if (metalness != package.end() && (*metalness).is_number_float())
-				material->setMetalness((*metalness).get<nlohmann::json::number_float_t>());
-			if (anisotropy != package.end() && (*anisotropy).is_number_float())
-				material->setAnisotropy((*anisotropy).get<nlohmann::json::number_float_t>());
-			if (sheen != package.end() && (*sheen).is_number_float())
-				material->setSheen((*sheen).get<nlohmann::json::number_float_t>());
-			if (specular != package.end() && (*specular).is_number_float())
-				material->setSpecular((*specular).get<nlohmann::json::number_float_t>());
-			if (refractionRatio != package.end() && (*refractionRatio).is_number_float())
-				material->setRefractionRatio((*refractionRatio).get<nlohmann::json::number_float_t>());
-			if (clearCoat != package.end() && (*clearCoat).is_number_float())
-				material->setClearCoat((*clearCoat).get<nlohmann::json::number_float_t>());
-			if (clearCoatRoughness != package.end() && (*clearCoatRoughness).is_number_float())
-				material->setClearCoatRoughness((*clearCoatRoughness).get<nlohmann::json::number_float_t>());
-			if (subsurface != package.end() && (*subsurface).is_number_float())
-				material->setSubsurface((*subsurface).get<nlohmann::json::number_float_t>());
-			if (reflectionRatio != package.end() && (*reflectionRatio).is_number_float())
-				material->setReflectionRatio((*reflectionRatio).get<nlohmann::json::number_float_t>());
-			if (transmission != package.end() && (*transmission).is_number_float())
-				material->setTransmission((*transmission).get<nlohmann::json::number_float_t>());
-			if (lightMapIntensity != package.end() && (*lightMapIntensity).is_number_float())
-				material->setLightMapIntensity((*lightMapIntensity).get<nlohmann::json::number_float_t>());
-			if (gamma != package.end() && (*gamma).is_number_float())
-				material->setGamma((*gamma).get<nlohmann::json::number_float_t>());
-			if (depthMin != package.end() && (*depthMin).is_number_float())
-				material->setDepthMin((*depthMin).get<nlohmann::json::number_float_t>());
-			if (depthMax != package.end() && (*depthMax).is_number_float())
-				material->setDepthMax((*depthMax).get<nlohmann::json::number_float_t>());
-			if (depthBias != package.end() && (*depthBias).is_number_float())
-				material->setDepthBias((*depthBias).get<nlohmann::json::number_float_t>());
-			if (depthSlopeScaleBias != package.end() && (*depthSlopeScaleBias).is_number_float())
-				material->setDepthSlopeScaleBias((*depthSlopeScaleBias).get<nlohmann::json::number_float_t>());
+				if (emissiveIntensity != package.end() && (*emissiveIntensity).is_number_float())
+					material->setEmissiveIntensity((*emissiveIntensity).get<nlohmann::json::number_float_t>());
+				if (opacity != package.end() && (*opacity).is_number_float())
+					material->setOpacity((*opacity).get<nlohmann::json::number_float_t>());
+				if (smoothness != package.end() && (*smoothness).is_number_float())
+					material->setSmoothness((*smoothness).get<nlohmann::json::number_float_t>());
+				if (roughness != package.end() && (*roughness).is_number_float())
+					material->setRoughness((*roughness).get<nlohmann::json::number_float_t>());
+				if (metalness != package.end() && (*metalness).is_number_float())
+					material->setMetalness((*metalness).get<nlohmann::json::number_float_t>());
+				if (anisotropy != package.end() && (*anisotropy).is_number_float())
+					material->setAnisotropy((*anisotropy).get<nlohmann::json::number_float_t>());
+				if (sheen != package.end() && (*sheen).is_number_float())
+					material->setSheen((*sheen).get<nlohmann::json::number_float_t>());
+				if (specular != package.end() && (*specular).is_number_float())
+					material->setSpecular((*specular).get<nlohmann::json::number_float_t>());
+				if (refractionRatio != package.end() && (*refractionRatio).is_number_float())
+					material->setRefractionRatio((*refractionRatio).get<nlohmann::json::number_float_t>());
+				if (clearCoat != package.end() && (*clearCoat).is_number_float())
+					material->setClearCoat((*clearCoat).get<nlohmann::json::number_float_t>());
+				if (clearCoatRoughness != package.end() && (*clearCoatRoughness).is_number_float())
+					material->setClearCoatRoughness((*clearCoatRoughness).get<nlohmann::json::number_float_t>());
+				if (subsurface != package.end() && (*subsurface).is_number_float())
+					material->setSubsurface((*subsurface).get<nlohmann::json::number_float_t>());
+				if (reflectionRatio != package.end() && (*reflectionRatio).is_number_float())
+					material->setReflectionRatio((*reflectionRatio).get<nlohmann::json::number_float_t>());
+				if (transmission != package.end() && (*transmission).is_number_float())
+					material->setTransmission((*transmission).get<nlohmann::json::number_float_t>());
+				if (lightMapIntensity != package.end() && (*lightMapIntensity).is_number_float())
+					material->setLightMapIntensity((*lightMapIntensity).get<nlohmann::json::number_float_t>());
+				if (gamma != package.end() && (*gamma).is_number_float())
+					material->setGamma((*gamma).get<nlohmann::json::number_float_t>());
+				if (depthMin != package.end() && (*depthMin).is_number_float())
+					material->setDepthMin((*depthMin).get<nlohmann::json::number_float_t>());
+				if (depthMax != package.end() && (*depthMax).is_number_float())
+					material->setDepthMax((*depthMax).get<nlohmann::json::number_float_t>());
+				if (depthBias != package.end() && (*depthBias).is_number_float())
+					material->setDepthBias((*depthBias).get<nlohmann::json::number_float_t>());
+				if (depthSlopeScaleBias != package.end() && (*depthSlopeScaleBias).is_number_float())
+					material->setDepthSlopeScaleBias((*depthSlopeScaleBias).get<nlohmann::json::number_float_t>());
 
-			auto offset = package.find("offset");
-			auto repeat = package.find("repeat");
-			auto normalScale = package.find("normalScale");
-			auto color = package.find("color");
-			auto emissive = package.find("emissive");
-			auto subsurfaceColor = package.find("subsurfaceColor");
+				auto offset = package.find("offset");
+				auto repeat = package.find("repeat");
+				auto normalScale = package.find("normalScale");
+				auto color = package.find("color");
+				auto emissive = package.find("emissive");
+				auto subsurfaceColor = package.find("subsurfaceColor");
 
-			if (offset != package.end() && (*offset).is_array())
-				material->setOffset(math::float2((*offset)[0].get<nlohmann::json::number_float_t>(), (*offset)[1].get<nlohmann::json::number_float_t>()));
-			if (repeat != package.end() && (*repeat).is_array())
-				material->setRepeat(math::float2((*repeat)[0].get<nlohmann::json::number_float_t>(), (*repeat)[1].get<nlohmann::json::number_float_t>()));
-			if (normalScale != package.end() && (*normalScale).is_array())
-				material->setNormalScale(math::float2((*normalScale)[0].get<nlohmann::json::number_float_t>(), (*normalScale)[1].get<nlohmann::json::number_float_t>()));
-			if (color != package.end() && (*color).is_array())
-				material->setColor(math::float3((*color)[0].get<nlohmann::json::number_float_t>(), (*color)[1].get<nlohmann::json::number_float_t>(), (*color)[2].get<nlohmann::json::number_float_t>()));
-			if (emissive != package.end() && (*emissive).is_array())
-				material->setEmissive(math::float3((*emissive)[0].get<nlohmann::json::number_float_t>(), (*emissive)[1].get<nlohmann::json::number_float_t>(), (*emissive)[2].get<nlohmann::json::number_float_t>()));
-			if (subsurfaceColor != package.end() && (*subsurfaceColor).is_array())
-				material->setSubsurfaceColor(math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
+				if (offset != package.end() && (*offset).is_array())
+					material->setOffset(math::float2((*offset)[0].get<nlohmann::json::number_float_t>(), (*offset)[1].get<nlohmann::json::number_float_t>()));
+				if (repeat != package.end() && (*repeat).is_array())
+					material->setRepeat(math::float2((*repeat)[0].get<nlohmann::json::number_float_t>(), (*repeat)[1].get<nlohmann::json::number_float_t>()));
+				if (normalScale != package.end() && (*normalScale).is_array())
+					material->setNormalScale(math::float2((*normalScale)[0].get<nlohmann::json::number_float_t>(), (*normalScale)[1].get<nlohmann::json::number_float_t>()));
+				if (color != package.end() && (*color).is_array())
+					material->setColor(math::float3((*color)[0].get<nlohmann::json::number_float_t>(), (*color)[1].get<nlohmann::json::number_float_t>(), (*color)[2].get<nlohmann::json::number_float_t>()));
+				if (emissive != package.end() && (*emissive).is_array())
+					material->setEmissive(math::float3((*emissive)[0].get<nlohmann::json::number_float_t>(), (*emissive)[1].get<nlohmann::json::number_float_t>(), (*emissive)[2].get<nlohmann::json::number_float_t>()));
+				if (subsurfaceColor != package.end() && (*subsurfaceColor).is_array())
+					material->setSubsurfaceColor(math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
 
-			this->assetList_[material] = package;
-			this->assetGuidList_[material] = uuid;
-			this->packageList_[uuid] = package;
+				this->assetList_[material] = package;
+				this->assetGuidList_[material] = uuid;
+				this->packageList_[uuid] = package;
 
-			return material;
+				return material;
+			}
 		}
 
 		return nullptr;

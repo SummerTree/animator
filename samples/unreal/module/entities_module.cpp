@@ -43,7 +43,7 @@ namespace unreal
 				if (it.find("materials") != it.end())
 					flags = flags & ~octoon::PMXLoadFlagBits::MaterialBit;
 
-				auto object = octoon::AssetBundle::instance()->loadAsset<octoon::GameObject>(it["model"]["uuid"].get<std::string>());
+				auto object = octoon::AssetBundle::instance()->loadAsset<octoon::GameObject>(it["model"].get<std::string>());
 				if (object)
 				{
 					if (it.contains("transform"))
@@ -65,7 +65,7 @@ namespace unreal
 						if (animationJson.find("data") == animationJson.end())
 							continue;
 
-						auto animation = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Animation>(animationJson["data"]);
+						auto animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(animationJson["data"].get<std::string>());
 						if (animation)
 						{
 							auto type = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
@@ -86,9 +86,9 @@ namespace unreal
 							if (materialJson.find("data") == materialJson.end())
 								continue;
 
-							auto data = materialJson["data"].get<nlohmann::json::object_t>();
+							auto data = materialJson["data"].get<nlohmann::json::string_t>();
 							auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-							auto material = octoon::AssetDatabase::instance()->loadAssetAtPackage<octoon::Material>(data);
+							auto material = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(data);
 
 							materials[index] = std::move(material);
 						}
@@ -104,8 +104,6 @@ namespace unreal
 		}
 
 		this->objects = std::move(objects_);
-
-		// octoon::MaterialImporter::instance()->getSceneList().submit();
 	}
 
 	void 
@@ -117,11 +115,12 @@ namespace unreal
 
 		for (auto& it : this->objects.getValue())
 		{
-			nlohmann::json json;
-			json["model"] = octoon::AssetBundle::instance()->createAsset(it);
-
-			if (json["model"].is_object())
+			auto modelPackage = ab->createAsset(it);
+			if (modelPackage.is_object())
 			{
+				nlohmann::json json;
+				json["model"] = modelPackage["uuid"];
+
 				auto transform = it->getComponent<octoon::TransformComponent>();
 				if (transform)
 					transform->save(json["transform"]);
@@ -137,11 +136,15 @@ namespace unreal
 						auto animation = component->downcast<octoon::AnimatorComponent>();
 						if (animation->getAnimation())
 						{
-							nlohmann::json animationJson;
-							animationJson["data"] = octoon::AssetBundle::instance()->createAsset(animation->getAnimation());
-							animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
+							auto package = ab->createAsset(animation->getAnimation());
+							if (package.is_object())
+							{
+								nlohmann::json animationJson;
+								animationJson["data"] = package["uuid"].get<std::string>();
+								animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
 
-							json["animation"].push_back(animationJson);
+								json["animation"].push_back(animationJson);
+							}
 						}
 					}
 				}
@@ -153,11 +156,15 @@ namespace unreal
 
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
-						nlohmann::json materialJson;
-						materialJson["data"] = octoon::AssetBundle::instance()->createAsset(materials[i]);
-						materialJson["index"] = i;
+						auto package = ab->createAsset(materials[i]);
+						if (package.is_object())
+						{
+							nlohmann::json materialJson;
+							materialJson["data"] = package["uuid"].get<std::string>();
+							materialJson["index"] = i;
 
-						json["materials"].push_back(materialJson);
+							json["materials"].push_back(materialJson);
+						}
 					}
 				}
 

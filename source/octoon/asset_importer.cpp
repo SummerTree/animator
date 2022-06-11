@@ -12,6 +12,7 @@ namespace octoon
 
 	AssetImporter::~AssetImporter() noexcept
 	{
+		this->close();
 	}
 
 	void
@@ -26,6 +27,8 @@ namespace octoon
 	void
 	AssetImporter::close() noexcept
 	{
+		assetList_.clear();
+		assetPathList_.clear();
 	}
 
 	bool

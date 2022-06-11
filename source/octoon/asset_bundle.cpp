@@ -18,6 +18,7 @@ namespace octoon
 
 	AssetBundle::~AssetBundle() noexcept
 	{
+		this->close();
 	}
 
 	void
@@ -44,6 +45,15 @@ namespace octoon
 	void
 	AssetBundle::close() noexcept
 	{
+		this->unload();
+
+		modelAsset_->close();
+		motionAsset_->close();
+		materialAsset_->close();
+		textureAsset_->close();
+
+		for (auto& ab : assetBundles_)
+			ab->close();
 	}
 
 	void
@@ -182,9 +192,9 @@ namespace octoon
 					std::wstring wfilepath = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(std::string(path));
 					auto filename = std::filesystem::path(wfilepath).filename().wstring();
 
-					pmx.description.japanCommentName.resize(filename.size() + 1);
-					pmx.description.japanModelLength = static_cast<PmxUInt32>(pmx.description.japanCommentName.size() * 2);
-					std::memcpy(pmx.description.japanCommentName.data(), filename.data(), pmx.description.japanModelLength);
+					pmx.description.japanModelName.resize(filename.size() + 1);
+					pmx.description.japanModelLength = static_cast<PmxUInt32>(pmx.description.japanModelName.size() * 2);
+					std::memcpy(pmx.description.japanModelName.data(), filename.data(), pmx.description.japanModelLength);
 				}
 
 				auto package = AssetDatabase::instance()->createAsset(pmx, modelAsset_->getAssertPath());
@@ -265,6 +275,7 @@ namespace octoon
 			}
 
 			package = AssetDatabase::instance()->createAsset(*texture, textureAsset_->getAssertPath());
+			textureAsset_->addIndex(uuid);
 			assetPackageCache_[texture] = package;
 
 			return package;
@@ -304,6 +315,7 @@ namespace octoon
 			}
 
 			package = AssetDatabase::instance()->createAsset(*animation, motionAsset_->getAssertPath());
+			motionAsset_->addIndex(uuid);
 			assetPackageCache_[animation] = package;
 
 			return package;
@@ -343,6 +355,7 @@ namespace octoon
 			}
 
 			package = AssetDatabase::instance()->createAsset(material, materialAsset_->getAssertPath());
+			materialAsset_->addIndex(uuid);
 			this->assetPackageCache_[material] = package;
 
 			return package;
@@ -384,13 +397,13 @@ namespace octoon
 			auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
 			if (!assetPath.empty())
 			{
-				nlohmann::json json;
-				json["path"] = assetPath;
-
-				return json;
+				package = this->importAsset(assetPath);
+				if (package.is_object())
+				{
+					assetPackageCache_[gameObject] = package;
+					return package;
+				}
 			}
-
-			assetPackageCache_[gameObject] = package;
 		}
 
 		return nlohmann::json();

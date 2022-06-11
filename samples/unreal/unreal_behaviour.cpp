@@ -23,6 +23,7 @@ namespace unreal
 
 	UnrealBehaviour::~UnrealBehaviour() noexcept
 	{
+		octoon::AssetBundle::instance()->close();
 	}
 
 	bool
