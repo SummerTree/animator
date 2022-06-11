@@ -477,9 +477,9 @@ namespace octoon
 
 		for (auto& material : json["materials"])
 		{
-			auto data = material["data"].get<nlohmann::json::object_t>();
+			auto data = material["data"].get<nlohmann::json::string_t>();
 			auto name = material["name"].get<std::string>();
-			materials[name] = AssetDatabase::instance()->loadAssetAtPackage<Material>(data);
+			materials[name] = AssetBundle::instance()->loadAsset<Material>(data);
 		}
 
 		this->setMaterials(std::move(materials));
@@ -500,11 +500,15 @@ namespace octoon
 
 		for (auto& pair : this->materials_)
 		{
-			nlohmann::json materialJson;
-			materialJson["data"] = AssetBundle::instance()->createAsset(pair.second);
-			materialJson["name"] = pair.first;
+			auto package = AssetBundle::instance()->createAsset(pair.second);
+			if (package.is_object())
+			{
+				nlohmann::json materialJson;
+				materialJson["data"] = package["uuid"];
+				materialJson["name"] = pair.first;
 
-			json["materials"].push_back(materialJson);
+				json["materials"].push_back(materialJson);
+			}
 		}
 	}
 
