@@ -299,31 +299,29 @@ namespace octoon
 			if (it != this->assetPackageCache_.end())
 				return this->assetPackageCache_[animation];
 
-			nlohmann::json package = AssetDatabase::instance()->getPackage(animation);
-			if (package.find("uuid") != package.end())
+			auto uuid = AssetDatabase::instance()->getAssetGuid(animation);
+			if (!uuid.empty())
 			{
-				auto uuid = package["uuid"].get<std::string>();
 				if (this != AssetBundle::instance())
 				{
 					for (auto& index : AssetBundle::instance()->getMotionList())
 					{
 						if (index == uuid)
-							return package;
+							return AssetBundle::instance()->getPackage(uuid);
 					}
 				}
 
 				for (auto& index : motionAsset_->getIndexList())
 				{
 					if (index == uuid)
-						return package;
+						return motionAsset_->getPackage(uuid);
 				}
 			}
 
-			package = AssetDatabase::instance()->createAsset(*animation, motionAsset_->getAssertPath());
+			auto package = AssetDatabase::instance()->createAsset(*animation, motionAsset_->getAssertPath());
 			if (package.is_object())
 			{
-				auto uuid = package["uuid"].get<std::string>();
-				motionAsset_->addIndex(uuid);
+				motionAsset_->addIndex(package["uuid"].get<std::string>());
 				assetPackageCache_[animation] = package;
 
 				return package;
@@ -342,23 +340,22 @@ namespace octoon
 			if (it != this->assetPackageCache_.end())
 				return this->assetPackageCache_[material];
 
-			nlohmann::json package = AssetDatabase::instance()->getPackage(material);
-			if (package.find("uuid") != package.end())
+			auto uuid = AssetDatabase::instance()->getAssetGuid(material);
+			if (!uuid.empty())
 			{
-				auto uuid = package["uuid"].get<std::string>();
 				if (this != AssetBundle::instance())
 				{
 					for (auto& index : AssetBundle::instance()->getMaterialList())
 					{
 						if (index == uuid)
-							return package;
+							return AssetBundle::instance()->getPackage(uuid);
 					}
 				}
 
 				for (auto& index : materialAsset_->getIndexList())
 				{
 					if (index == uuid)
-						return package;
+						return materialAsset_->getPackage(uuid);
 				}
 			}
 
@@ -392,11 +389,10 @@ namespace octoon
 			if (standardMaterial->getLightMap())
 				this->createAsset(standardMaterial->getLightMap());
 
-			package = AssetDatabase::instance()->createAsset(material, materialAsset_->getAssertPath());
+			auto package = AssetDatabase::instance()->createAsset(material, materialAsset_->getAssertPath());
 			if (package.is_object())
 			{
-				auto uuid = package["uuid"].get<std::string>();
-				materialAsset_->addIndex(uuid);
+				materialAsset_->addIndex(package["uuid"].get<std::string>());
 				this->assetPackageCache_[material] = package;
 				return package;
 			}
@@ -414,30 +410,29 @@ namespace octoon
 			if (it != this->assetPackageCache_.end())
 				return this->assetPackageCache_.at(gameObject);
 
-			nlohmann::json package = AssetDatabase::instance()->getPackage(gameObject);
-			if (package.find("uuid") != package.end())
+			auto uuid = AssetDatabase::instance()->getAssetGuid(gameObject);
+			if (!uuid.empty())
 			{
-				auto uuid = package["uuid"].get<std::string>();
 				if (this != AssetBundle::instance())
 				{
 					for (auto& index : AssetBundle::instance()->getModelList())
 					{
 						if (index == uuid)
-							return package;
+							return AssetBundle::instance()->getPackage(uuid);
 					}
 				}
 
 				for (auto& index : modelAsset_->getIndexList())
 				{
 					if (index == uuid)
-						return package;
+						return modelAsset_->getPackage(uuid);
 				}
 			}
 
 			auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
 			if (!assetPath.empty())
 			{
-				package = this->importAsset(assetPath);
+				auto package = this->importAsset(assetPath);
 				if (package.is_object())
 				{
 					auto uuid = package["uuid"].get<std::string>();
