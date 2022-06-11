@@ -205,6 +205,33 @@ namespace unreal
 	}
 
 	void
+	MaterialListDialog::keyPressEvent(QKeyEvent * event) noexcept
+	{
+		try
+		{
+			if (event->key() == Qt::Key_Delete)
+			{
+				if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this material?")) == QMessageBox::Yes)
+				{
+					if (clickedItem_)
+					{
+						auto uuid = clickedItem_->data(Qt::UserRole).toString();
+						octoon::AssetBundle::instance()->removeAsset(uuid.toStdString());
+						mainWidget_->takeItem(mainWidget_->row(clickedItem_));
+						delete clickedItem_;
+						clickedItem_ = mainWidget_->currentItem();
+						octoon::AssetBundle::instance()->saveAssets();
+					}
+				}
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::critical(this, tr("Error"), e.what());
+		}
+	}
+
+	void
 	MaterialListDialog::okClickEvent()
 	{
 		if (clickedItem_)
@@ -1879,7 +1906,7 @@ namespace unreal
 	void 
 	MaterialListPanel::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
+		auto package = octoon::MaterialImporter::instance()->getPackage(uuid);
 		if (package.is_object())
 			this->addItem(package);
 	}
@@ -1956,8 +1983,8 @@ namespace unreal
 
 				if (hit.mesh < materials.size())
 				{
-					auto uuid = octoon::AssetDatabase::instance()->getAssetGuid(materials[hit.mesh]);
-					if (uuid.empty())
+					auto uuid = octoon::MaterialImporter::instance()->getAssetGuid(materials[hit.mesh]);
+					if (!uuid.empty())
 					{
 						auto count = this->materialList_->mainWidget_->count();
 						for (int i = 0; i < count; i++)

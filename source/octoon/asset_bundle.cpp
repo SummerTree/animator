@@ -232,9 +232,39 @@ namespace octoon
 
 				nlohmann::json items;
 
-				for (auto& mat : loader.getMaterials())
+				for (auto& material : loader.getMaterials())
 				{
-					auto package = AssetDatabase::instance()->createAsset(mat, materialAsset_->getAssertPath());
+					auto standardMaterial = material->downcast<MeshStandardMaterial>();
+					if (standardMaterial->getColorMap())
+						this->createAsset(standardMaterial->getColorMap());
+					if (standardMaterial->getOpacityMap())
+						this->createAsset(standardMaterial->getOpacityMap());
+					if (standardMaterial->getNormalMap())
+						this->createAsset(standardMaterial->getNormalMap());
+					if (standardMaterial->getRoughnessMap())
+						this->createAsset(standardMaterial->getRoughnessMap());
+					if (standardMaterial->getSpecularMap())
+						this->createAsset(standardMaterial->getSpecularMap());
+					if (standardMaterial->getMetalnessMap())
+						this->createAsset(standardMaterial->getMetalnessMap());
+					if (standardMaterial->getEmissiveMap())
+						this->createAsset(standardMaterial->getEmissiveMap());
+					if (standardMaterial->getAnisotropyMap())
+						this->createAsset(standardMaterial->getAnisotropyMap());
+					if (standardMaterial->getClearCoatMap())
+						this->createAsset(standardMaterial->getClearCoatMap());
+					if (standardMaterial->getClearCoatRoughnessMap())
+						this->createAsset(standardMaterial->getClearCoatRoughnessMap());
+					if (standardMaterial->getSubsurfaceMap())
+						this->createAsset(standardMaterial->getSubsurfaceMap());
+					if (standardMaterial->getSubsurfaceColorMap())
+						this->createAsset(standardMaterial->getSubsurfaceColorMap());
+					if (standardMaterial->getSheenMap())
+						this->createAsset(standardMaterial->getSheenMap());
+					if (standardMaterial->getLightMap())
+						this->createAsset(standardMaterial->getLightMap());
+
+					auto package = AssetDatabase::instance()->createAsset(material, materialAsset_->getAssertPath());
 
 					items.push_back(package["uuid"]);
 					materialAsset_->addIndex(package["uuid"]);

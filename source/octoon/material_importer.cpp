@@ -25,6 +25,22 @@ namespace octoon
 		return this->sceneList_;
 	}
 
+	std::string
+	MaterialImporter::getAssetGuid(const std::shared_ptr<const octoon::Material>& asset) noexcept
+	{
+		if (assetGuidList_.contains(asset))
+			return assetGuidList_.at(asset);
+		return std::string();
+	}
+
+	std::string
+	MaterialImporter::getAssetGuid(const std::shared_ptr<const octoon::Material>& asset) const noexcept
+	{
+		if (assetGuidList_.contains(asset))
+			return assetGuidList_.at(asset);
+		return std::string();
+	}
+
 	std::shared_ptr<Material>
 	MaterialImporter::getMaterial(std::string_view uuid) noexcept(false)
 	{
@@ -34,10 +50,19 @@ namespace octoon
 		return nullptr;
 	}
 
+	nlohmann::json
+	MaterialImporter::getPackage(std::string_view uuid) noexcept
+	{
+		if (packageList_.contains((std::string)uuid))
+			return packageList_[(std::string)uuid];
+
+		return nlohmann::json();
+	}
+
 	bool
 	MaterialImporter::addMaterial(const std::shared_ptr<Material>& mat)
 	{
-		if (!materialUUIDs_.contains(mat))
+		if (!assetGuidList_.contains(mat))
 		{
 			auto standard = mat->downcast_pointer<MeshStandardMaterial>();
 			auto uuid = make_guid();
@@ -49,7 +74,8 @@ namespace octoon
 
 			this->sceneList_.push_back(uuid);
 			this->materials_[uuid] = mat;
-			this->materialUUIDs_[mat] = uuid;
+			this->assetGuidList_[mat] = uuid;
+			this->packageList_[uuid] = package;
 
 			return true;
 		}

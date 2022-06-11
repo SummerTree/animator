@@ -110,9 +110,9 @@ namespace octoon
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
 		auto uuid = this->getAssetGuid(texture.shared_from_this());
-		auto filename = texture.getName().substr(texture.getName().find_last_of("."));
+		auto filename = texture.getName().substr(texture.getName().find_last_of(".") + 1);
 		auto rootPath = std::filesystem::path(path).append(uuid);
-		auto texturePath = std::filesystem::path(rootPath).append(uuid + filename);
+		auto texturePath = std::filesystem::path(rootPath).append(uuid + "." + filename);
 		auto packagePath = std::filesystem::path(rootPath).append("package.json");
 
 		std::filesystem::create_directories(rootPath);
@@ -126,10 +126,11 @@ namespace octoon
 		package["uuid"] = uuid;
 		package["visible"] = true;
 		package["name"] = (char*)std::filesystem::path(cv.from_bytes(texture.getName())).filename().u8string().c_str();
+		package["suffix"] = filename;
 		package["path"] = (char*)texturePath.u8string().c_str();
 		package["mipmap"] = texture.getMipLevel() > 1;
 
-		if (filename == ".hdr")
+		if (filename == "hdr")
 		{
 			auto name = texture.getName();
 			auto width = texture.width();
