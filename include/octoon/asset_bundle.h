@@ -7,6 +7,7 @@
 #include <octoon/animation/animation.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
+#include <set>
 
 namespace octoon
 {
@@ -51,6 +52,10 @@ namespace octoon
 			return nullptr;
 		}
 
+		bool needUpdate(std::string_view uuid) const noexcept;
+		void addUpdateList(std::string_view uuid) noexcept(false);
+		void removeUpdateList(std::string_view uuid) noexcept(false);
+
 		std::shared_ptr<AssetBundle> loadFromFile(std::string_view path) noexcept(false);
 		std::vector<std::shared_ptr<AssetBundle>> getAllLoadedAssetBundles() const noexcept;
 
@@ -60,6 +65,7 @@ namespace octoon
 
 	private:
 		std::string assetPath_;
+		std::set<std::string> updateList_;
 
 		std::unique_ptr<AssetImporter> modelAsset_;
 		std::unique_ptr<AssetImporter> motionAsset_;

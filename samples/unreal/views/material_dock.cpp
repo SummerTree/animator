@@ -2054,10 +2054,13 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
 			{
-				auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(item->data(Qt::UserRole).toString().toStdString()));
+				auto uuid = item->data(Qt::UserRole).toString().toStdString();
+				auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(uuid));
 				if (material)
 				{
 					this->setWindowTitle(tr("Material Properties"));
+
+					octoon::AssetBundle::instance()->addUpdateList(uuid);
 
 					selectedItem_ = item;
 					materialList_->hide();

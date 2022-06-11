@@ -511,7 +511,7 @@ $20 (Original cost $40)</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2060"/>
+        <location filename="../views/material_dock.cpp" line="2061"/>
         <source>Material Properties</source>
         <translation>材质属性</translation>
     </message>

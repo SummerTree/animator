@@ -1,5 +1,5 @@
 #include <octoon/material_importer.h>
-#include <octoon/runtime/uuid.h>
+#include <octoon/asset_database.h>
 
 namespace octoon
 {
@@ -65,7 +65,7 @@ namespace octoon
 		if (!assetGuidList_.contains(mat))
 		{
 			auto standard = mat->downcast_pointer<MeshStandardMaterial>();
-			auto uuid = make_guid();
+			auto uuid = AssetDatabase::instance()->getAssetGuid(mat);
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
