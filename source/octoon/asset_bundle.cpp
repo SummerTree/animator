@@ -237,6 +237,8 @@ namespace octoon
 			if (texture->load(std::string(path)))
 			{
 				texture->setName(path);
+				texture->setMipLevel(8);
+
 				auto package = AssetDatabase::instance()->createAsset(texture, hdriAsset_->getAssertPath());
 				hdriAsset_->addIndex(package["uuid"].get<std::string>());
 				return package;
