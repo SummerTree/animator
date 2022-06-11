@@ -23,17 +23,22 @@ namespace octoon
 	void
 	AssetBundle::open(std::string assetPath) noexcept(false)
 	{
+		auto modelPath = std::filesystem::path(assetPath).append("model").string();
+		auto motionPath = std::filesystem::path(assetPath).append("motion").string();
+		auto materialPath = std::filesystem::path(assetPath).append("material").string();
+		auto texturePath = std::filesystem::path(assetPath).append("texture").string();
+
 		this->modelAsset_ = std::make_unique<AssetImporter>();
-		this->modelAsset_->open(assetPath + "/model");
+		this->modelAsset_->open(modelPath);
 
 		this->motionAsset_ = std::make_unique<AssetImporter>();
-		this->motionAsset_->open(assetPath + "/motion");
+		this->motionAsset_->open(motionPath);
 
 		this->materialAsset_ = std::make_unique<AssetImporter>();
-		this->materialAsset_->open(assetPath + "/material");
+		this->materialAsset_->open(materialPath);
 
 		this->textureAsset_ = std::make_unique<AssetImporter>();
-		this->textureAsset_->open(assetPath + "/texture");
+		this->textureAsset_->open(texturePath);
 	}
 
 	void

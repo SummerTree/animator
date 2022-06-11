@@ -254,15 +254,6 @@ namespace unreal
 		if (!std::filesystem::exists(profile_->resourceModule->rootPath))
 			std::filesystem::create_directory(profile_->resourceModule->rootPath);
 
-		if (!std::filesystem::exists(profile_->resourceModule->hdriPath))
-			std::filesystem::create_directory(profile_->resourceModule->hdriPath);
-
-		if (!std::filesystem::exists(profile_->resourceModule->materialPath))
-			std::filesystem::create_directory(profile_->resourceModule->materialPath);
-
-		if (!std::filesystem::exists(profile_->resourceModule->modelPath))
-			std::filesystem::create_directory(profile_->resourceModule->modelPath);
-
 		context_ = std::make_shared<UnrealContext>();
 		context_->behaviour = this;
 		context_->profile = profile_.get();

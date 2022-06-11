@@ -17,11 +17,10 @@ namespace octoon
 	void
 	AssetImporter::open(std::string indexPath) noexcept(false)
 	{
+		this->assertPath_ = indexPath;
+
 		if (std::filesystem::exists(indexPath))
-		{
-			this->assertPath_ = indexPath;
 			this->indexList_ = this->getPackageIndices(this->assertPath_);
-		}
 	}
 
 	void

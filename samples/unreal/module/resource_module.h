@@ -22,11 +22,7 @@ namespace unreal
 
 	public:
 		std::string rootPath;
-		std::string modelPath;
-		std::string motionPath;
-		std::string materialPath;
 		std::string cachePath;
-		std::string hdriPath;
 	};
 }
 
