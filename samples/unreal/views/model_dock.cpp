@@ -124,7 +124,7 @@ namespace unreal
 			{
 				QFontMetrics metrics(nameLabel->font());
 
-				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
 				imageLabel->setToolTip(name);
 				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
 			}
@@ -216,7 +216,7 @@ namespace unreal
 				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
 				dialog.setWindowTitle(tr("Loading..."));
 				dialog.setWindowModality(Qt::WindowModal);
-				dialog.setLabelText(package["name"].is_string() ? QString::fromStdString(package["name"].get<nlohmann::json::string_t>()) : tr("Unknown-name"));
+				dialog.setLabelText(package["name"].is_string() ? QString::fromUtf8(package["name"].get<nlohmann::json::string_t>()) : tr("Unknown-name"));
 				dialog.setValue(0);
 				dialog.show();
 

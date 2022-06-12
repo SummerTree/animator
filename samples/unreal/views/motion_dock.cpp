@@ -122,7 +122,7 @@ namespace unreal
 			{
 				QFontMetrics metrics(nameLabel->font());
 
-				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
 				item->setWhatsThis(name);
 				imageLabel->setToolTip(name);
 				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));

@@ -117,7 +117,7 @@ namespace unreal
 			{
 				QFontMetrics metrics(nameLabel->font());
 
-				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
+				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
 				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
 				imageLabel->setToolTip(name);
 			}
@@ -467,15 +467,15 @@ namespace unreal
 				auto package = octoon::AssetDatabase::instance()->getPackage(texture);
 				if (package.is_object())
 				{
-					auto name = package["name"].get<nlohmann::json::string_t>();
-					if (thumbnailPath->toolTip() != QString::fromStdString(name))
+					auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
+					if (thumbnailPath->toolTip() != name)
 					{
 						auto previewImage = std::make_shared<QImage>();
 						if (!previewImage->load(QString::fromStdString(package["preview"].get<nlohmann::json::string_t>())))
 							throw std::runtime_error("Cannot generate image for preview");
 
-						this->setPreviewImage(QFileInfo(QString::fromStdString(name)).fileName(), previewImage);
-						this->setThumbnailImage(QString::fromStdString(name), *previewImage);
+						this->setPreviewImage(QFileInfo(name).fileName(), previewImage);
+						this->setThumbnailImage(name, *previewImage);
 					}
 				}
 				else
