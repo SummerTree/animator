@@ -1119,7 +1119,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="29"/>
-        <source>2022 RenderToolbox-Softwares (R). All Rights Reserved.</source>
+        <source>2022 AnimatorGo-Softwares (R). All Rights Reserved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

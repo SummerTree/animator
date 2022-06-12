@@ -430,15 +430,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/main_dock.cpp" line="22"/>
         <source>AnimatorGo Lite</source>
-        <translation>AnimatorGo Lite (Alpha Version)</translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation type="vanished">警告</translation>
-    </message>
-    <message>
-        <source>Please load a project with pmm extension.</source>
-        <translation type="vanished">请加载后缀为.pmm的文件.</translation>
+        <translation>动映（测试版）</translation>
     </message>
     <message>
         <location filename="../views/main_dock.cpp" line="230"/>
@@ -1206,18 +1198,14 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SplashScreen</name>
     <message>
-        <source>Render Toolbox 2022</source>
-        <translation type="obsolete">小碎花渲染器 2022</translation>
-    </message>
-    <message>
         <location filename="../views/splash_screen.cpp" line="24"/>
         <source>AnimatorGo Lite 2022</source>
-        <translation type="unfinished"></translation>
+        <translation>动映 Lite 2022</translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="29"/>
-        <source>2022 RenderToolbox-Softwares (R). All Rights Reserved.</source>
-        <translation type="unfinished">2022 AnimatorGo ©. 保留所有权利.</translation>
+        <source>2022 AnimatorGo-Softwares (R). All Rights Reserved.</source>
+        <translation>2022 AnimatorGo ©. 保留所有权利.</translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="45"/>
@@ -1266,47 +1254,47 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="21"/>
         <source>Record</source>
-        <translation type="unfinished">录制</translation>
+        <translation>录制</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="22"/>
         <source>Open Record Panel</source>
-        <translation type="unfinished">显示录制面板</translation>
+        <translation>显示录制面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="28"/>
         <source>Material</source>
-        <translation type="unfinished">材质</translation>
+        <translation>材质</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="29"/>
         <source>Open Material Panel</source>
-        <translation type="unfinished">打开材质库</translation>
+        <translation>打开材质库</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="35"/>
         <source>Model</source>
-        <translation type="unfinished">模型</translation>
+        <translation>模型</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="36"/>
         <source>Open Model Panel</source>
-        <translation type="unfinished">打开模型库</translation>
+        <translation>打开模型库</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="42"/>
         <source>Light</source>
-        <translation type="unfinished">光源</translation>
+        <translation>光源</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="43"/>
         <source>Open Light Panel</source>
-        <translation type="unfinished">显示光源面板</translation>
+        <translation>显示光源面板</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="49"/>
         <source>Main Light</source>
-        <translation type="unfinished">主光源</translation>
+        <translation>主光源</translation>
     </message>
     <message>
         <location filename="../views/thumbnail_dock.cpp" line="50"/>

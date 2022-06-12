@@ -26,7 +26,7 @@ namespace unreal
 
 		copyrightInfo = new QLabel(widget);
 		copyrightInfo->setObjectName("copyright");
-		copyrightInfo->setText(tr("2022 RenderToolbox-Softwares (R). All Rights Reserved."));
+		copyrightInfo->setText(tr("2022 AnimatorGo-Softwares (R). All Rights Reserved."));
 		copyrightInfo->setAlignment(Qt::AlignLeft);
 
 		vlayout = new QVBoxLayout(widget);
