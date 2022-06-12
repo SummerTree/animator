@@ -1,6 +1,7 @@
 #include "material_dock.h"
 #include <octoon/material_importer.h>
 #include "../widgets/draggable_list_widget.h"
+#include "../widgets/upushbutton.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qevent.h>
@@ -1920,6 +1921,201 @@ namespace unreal
 			this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
 	}
 
+	MaterialAssetPanel::MaterialAssetPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
+		: behaviour_(behaviour)
+		, profile_(profile)
+		, clickedItem_(nullptr)
+	{
+		this->setObjectName("MaterialAssetPanel");
+
+		importButton_ = new UPushButton;
+		importButton_->setObjectName("Import");
+		importButton_->setText(tr("Import"));
+		importButton_->setFixedSize(190, 35);
+		importButton_->installEventFilter(this);
+		
+		auto topLayout_ = new QHBoxLayout();
+		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
+		topLayout_->addStretch();
+		topLayout_->setContentsMargins(5, 0, 0, 0);
+
+		mainWidget_ = new DraggableListWindow;
+		mainWidget_->setStyleSheet("background:transparent;");
+		mainWidget_->setSpacing(0);
+
+		mainLayout_ = new QVBoxLayout(this);
+		mainLayout_->addLayout(topLayout_);
+		mainLayout_->addWidget(mainWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
+		mainLayout_->addStretch();
+		mainLayout_->setContentsMargins(0, 10, 0, 5);
+
+		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
+		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
+		connect(mainWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
+	}
+
+	MaterialAssetPanel::~MaterialAssetPanel() noexcept
+	{
+	}
+
+	void
+	MaterialAssetPanel::resizeEvent(QResizeEvent* e) noexcept
+	{
+		QMargins margins = mainLayout_->contentsMargins();
+		mainWidget_->resize(this->width(), this->height() - margins.top() - margins.bottom() - importButton_->height());
+	}
+
+	void
+	MaterialAssetPanel::itemClicked(QListWidgetItem* item)
+	{
+		clickedItem_ = item;
+	}
+
+	void
+	MaterialAssetPanel::itemSelected(QListWidgetItem* item)
+	{
+		if (item)
+		{
+			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+			if (!behaviour)
+				return;
+
+			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
+			if (selectedItem)
+			{
+				auto uuid = item->data(Qt::UserRole).toString().toStdString();
+				auto material = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(uuid);
+				if (material)
+				{
+					auto hit = selectedItem.value();
+					auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
+					if (meshRenderer)
+						meshRenderer->setMaterial(material, hit.mesh);
+				}
+			}
+		}
+	}
+
+	void
+	MaterialAssetPanel::addItem(std::string_view uuid) noexcept
+	{
+		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
+		if (!package.is_null())
+		{
+			QLabel* imageLabel = new QLabel;
+			imageLabel->setObjectName("preview");
+			imageLabel->setFixedSize(QSize(100, 100));
+
+			QLabel* nameLabel = new QLabel();
+			nameLabel->setObjectName("name");
+			nameLabel->setFixedHeight(30);
+
+			QVBoxLayout* widgetLayout = new QVBoxLayout;
+			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
+			widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
+			widgetLayout->setSpacing(0);
+			widgetLayout->setContentsMargins(0, 0, 0, 0);
+
+			QWidget* widget = new QWidget;
+			widget->setLayout(widgetLayout);
+
+			QListWidgetItem* item = new QListWidgetItem;
+			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
+			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
+
+			mainWidget_->addItem(item);
+			mainWidget_->setItemWidget(item, widget);
+
+			if (package.find("preview") != package.end())
+			{
+				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+				imageLabel->setPixmap(QPixmap(filepath).scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+			}
+
+			if (package.find("name") != package.end())
+			{
+				QFontMetrics metrics(nameLabel->font());
+
+				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
+				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
+				nameLabel->setToolTip(name);
+				imageLabel->setToolTip(name);
+			}
+		}
+	}
+
+	void
+	MaterialAssetPanel::updateItemList()
+	{
+		mainWidget_->clear();
+
+		for (auto& it : octoon::AssetBundle::instance()->getMaterialList())
+			this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
+	}
+
+	void
+	MaterialAssetPanel::importClickEvent()
+	{
+		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("NVIDIA MDL Files (*.mdl)"));
+		if (!filepaths.isEmpty())
+		{
+			try
+			{
+				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
+				dialog.setWindowTitle(tr("Loading..."));
+				dialog.setWindowModality(Qt::WindowModal);
+				dialog.show();
+
+				for (qsizetype i = 0; i < filepaths.size(); i++)
+				{
+					dialog.setValue(i);
+					dialog.setLabelText(QFileInfo(filepaths[i]).fileName());
+
+					QCoreApplication::processEvents();
+					if (dialog.wasCanceled())
+						break;
+
+					auto list = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
+					for (auto& it : list)
+						this->addItem(it.get<nlohmann::json::string_t>());
+				}
+
+				octoon::AssetBundle::instance()->saveAssets();
+			}
+			catch (...)
+			{
+				octoon::AssetBundle::instance()->saveAssets();
+			}
+		}
+	}
+
+	void
+	MaterialAssetPanel::keyPressEvent(QKeyEvent * event) noexcept
+	{
+		try
+		{
+			if (event->key() == Qt::Key_Delete)
+			{
+				if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this material?")) == QMessageBox::Yes)
+				{
+					if (clickedItem_)
+					{
+						auto uuid = clickedItem_->data(Qt::UserRole).toString();
+						octoon::AssetBundle::instance()->removeAsset(uuid.toStdString());
+						mainWidget_->takeItem(mainWidget_->row(clickedItem_));
+						delete clickedItem_;
+						clickedItem_ = mainWidget_->currentItem();
+						octoon::AssetBundle::instance()->saveAssets();
+					}
+				}
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::critical(this, tr("Error"), e.what());
+		}
+	}
+
 	MaterialDock::MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false)
 		: behaviour_(behaviour)
 		, profile_(profile)
@@ -1927,24 +2123,28 @@ namespace unreal
 		this->setObjectName("MaterialDock");
 		this->setWindowTitle(tr("Material"));
 		this->setMouseTracking(true);
-
+		
 		materialList_ = new MaterialListPanel(behaviour, profile);
 		materialList_->mainWidget_->setFixedWidth(340);
 
 		modifyWidget_ = new MaterialEditWindow(behaviour);
 		modifyWidget_->hide();
 
-		//QTabWidget* tabWidget = new QTabWidget;
-		//tabWidget->addTab(materialList_, "Scene");
+		auto sceneLayout_ = new QVBoxLayout();
+		sceneLayout_->addWidget(materialList_, 0, Qt::AlignTop | Qt::AlignCenter);
+		sceneLayout_->addWidget(modifyWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
+		sceneLayout_->addStretch();
+		sceneLayout_->setContentsMargins(0, 0, 0, 0);
 
-		mainLayout_ = new QVBoxLayout();
-		mainLayout_->addWidget(materialList_, 0, Qt::AlignTop | Qt::AlignCenter);
-		mainLayout_->addWidget(modifyWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
-		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(0, 0, 0, 0);
+		auto sceneWidget_ = new QWidget;
+		sceneWidget_->setLayout(sceneLayout_);
 
-		widget_ = new QWidget;
-		widget_->setLayout(mainLayout_);
+		materialAssetList_ = new MaterialAssetPanel(behaviour, profile);
+		materialAssetList_->mainWidget_->setFixedWidth(340);
+
+		widget_ = new QTabWidget;
+		widget_->addTab(materialAssetList_, tr("Library"));
+		widget_->addTab(sceneWidget_, tr("Scene"));
 
 		this->setWidget(widget_);
 
@@ -2007,14 +2207,26 @@ namespace unreal
 	}
 
 	void
+	MaterialDock::resizeEvent(QResizeEvent* e) noexcept
+	{
+		modifyWidget_->resize(widget_->size());
+		materialList_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
+		materialAssetList_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
+	}
+
+	void
 	MaterialDock::showEvent(QShowEvent* event) noexcept
 	{
-		QMargins margins = mainLayout_->contentsMargins();
 		modifyWidget_->hide();
 		modifyWidget_->resize(widget_->size());
-		materialList_->resize(widget_->size());
+
+		materialList_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
 		materialList_->show();
 		materialList_->updateItemList();
+
+		materialAssetList_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
+		materialAssetList_->show();
+		materialAssetList_->updateItemList();
 
 		profile_->selectorModule->selectedItem_.submit();
 	}
@@ -2026,15 +2238,6 @@ namespace unreal
 			event->ignore();
 		else
 			event->accept();
-	}
-
-	void
-	MaterialDock::paintEvent(QPaintEvent* e) noexcept
-	{
-		modifyWidget_->resize(widget_->size());
-		materialList_->resize(widget_->size());
-
-		QDockWidget::paintEvent(e);
 	}
 
 	void

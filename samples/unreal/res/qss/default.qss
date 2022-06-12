@@ -16,6 +16,22 @@ QToolButton#back{
 QToolButton#close{
 	qproperty-icon: url(":res/icons/close.png");
 }
+QTabWidget{
+	color:rgb(200,200,200);
+	border:none;
+	background:transparent;
+}
+QTabWidget::pane { 
+   border: none;
+}
+QTabBar::tab {
+	color:rgb(200,200,200);
+  	background: rgb(45, 45, 45); 
+}
+QTabBar::tab:selected {
+	color:rgb(200,200,200);
+ 	background: rgb(75, 75, 75); 
+}
 QSlider{
 	border-radius:10px;
 }
@@ -536,7 +552,7 @@ QWidget#EnvironmentDialog > QToolButton#Ok, QWidget#EnvironmentDialog > QToolBut
 	width:50;
 	height:30;
 }
-QWidget#ModelWidget > QToolButton#Import, QWidget#MotionWidget > QToolButton#Import{
+QWidget#ModelWidget > QToolButton#Import, QWidget#MotionWidget > QToolButton#Import, QWidget#MaterialAssetPanel > QToolButton#Import{
 	width:60;
 	height:30;
 }

@@ -260,6 +260,34 @@ namespace unreal
 		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 
+	class MaterialAssetPanel final : public QWidget
+	{
+		Q_OBJECT
+	public:
+		MaterialAssetPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
+		~MaterialAssetPanel() noexcept;
+
+		void addItem(std::string_view uuid) noexcept;
+
+		void updateItemList();
+
+		void resizeEvent(QResizeEvent* e) noexcept override;
+		void keyPressEvent(QKeyEvent* event) noexcept;
+
+	public Q_SLOTS:
+		void itemClicked(QListWidgetItem* item);
+		void itemSelected(QListWidgetItem* item);
+		void importClickEvent();
+
+	public:
+		QPushButton* importButton_;
+		QListWidget* mainWidget_;
+		QVBoxLayout* mainLayout_;
+		QListWidgetItem* clickedItem_;
+		octoon::GameObjectPtr behaviour_;
+		std::shared_ptr<unreal::UnrealProfile> profile_;
+	};
+
 	class MaterialDock final : public QDockWidget
 	{
 		Q_OBJECT
@@ -267,9 +295,9 @@ namespace unreal
 		MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~MaterialDock() noexcept;
 
-		void showEvent(QShowEvent* event) noexcept override;
-		void paintEvent(QPaintEvent* e) noexcept override;
-		void closeEvent(QCloseEvent* event) override;
+		void showEvent(QShowEvent* e) noexcept override;
+		void resizeEvent(QResizeEvent* e) noexcept override;
+		void closeEvent(QCloseEvent* e) override;
 
 	private Q_SLOTS:
 		void backEvent();
@@ -279,9 +307,10 @@ namespace unreal
 		QVBoxLayout* materialLayout_;
 		QVBoxLayout* mainLayout_;
 		MaterialListPanel* materialList_;
+		MaterialAssetPanel* materialAssetList_;
 		MaterialEditWindow* modifyWidget_;
 		QScrollArea* modifyMaterialArea_;
-		QWidget* widget_;
+		QTabWidget* widget_;
 		QListWidgetItem* selectedItem_;
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<UnrealProfile> profile_;
