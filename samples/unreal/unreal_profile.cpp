@@ -1,4 +1,5 @@
 #include "unreal_profile.h"
+#include "unreal_version.h"
 #include <fstream>
 #include <filesystem>
 #include <octoon/runtime/json.h>
@@ -59,9 +60,10 @@ namespace unreal
 		std::ifstream stream(std::filesystem::path(path_).append("manifest.json"));
 		if (stream)
 		{
-			auto json = nlohmann::json::parse(stream);
 			auto ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).append("Assets"));
 
+			auto json = nlohmann::json::parse(stream);
+			json["version"] = UNREAL_VERSION;
 			this->path = path_.string();
 
 			if (json["physics"].is_object())
