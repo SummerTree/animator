@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 	QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
 #endif
 
-	QFile styleSheet(":res/qss/default.qss");
+	QFile styleSheet(":res/qss/black.qss");
 
 	if (styleSheet.open(QIODevice::ReadOnly))
 	{
