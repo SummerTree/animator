@@ -121,14 +121,14 @@ namespace octoon
 	}
 
 	void
-	Renderer::setCachePath(std::string_view path)
+	Renderer::setCachePath(const std::filesystem::path& path)
 	{
 		if (pathRenderer_)
 			return pathRenderer_->setCachePath(path);
 		cachePath_ = path;
 	}
 
-	const std::string&
+	const std::filesystem::path&
 	Renderer::getCachePath() const
 	{
 		return cachePath_;

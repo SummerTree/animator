@@ -21,8 +21,8 @@ namespace unreal
 		ResourceModule& operator=(const ResourceModule&) = delete;
 
 	public:
-		std::string rootPath;
-		std::string cachePath;
+		std::filesystem::path rootPath;
+		std::filesystem::path cachePath;
 	};
 }
 

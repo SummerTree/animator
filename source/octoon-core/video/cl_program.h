@@ -5,6 +5,7 @@
 #include <CLWContext.h>
 
 #include <set>
+#include <filesystem>
 #include <unordered_set>
 #include <unordered_map>
 
@@ -15,7 +16,7 @@ namespace octoon
     {
     public:
         CLProgram() = default;
-        CLProgram(const CLProgramManager *program_manager, uint32_t id, CLWContext context, std::string_view program_name, std::string_view cache_path);
+        CLProgram(const CLProgramManager *program_manager, uint32_t id, CLWContext context, std::string_view program_name, const std::filesystem::path& cache_path);
 
         bool isDirty() const { return isDirty_; }
         void setDirty() { isDirty_ = true; }
@@ -39,9 +40,9 @@ namespace octoon
         const CLProgramManager* programManager_;
 
         std::string programName_;
-        std::string cachePath_;
         std::string compiledSource_;
         std::string programSource_;
+        std::filesystem::path cachePath_;
         std::unordered_set<std::string> requiredHeaders_;
         std::unordered_map<std::string, CLWProgram> programs_;
 

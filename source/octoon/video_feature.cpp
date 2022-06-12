@@ -105,12 +105,12 @@ namespace octoon
 	}
 
 	void
-	VideoFeature::setCachePath(std::string_view path)
+	VideoFeature::setCachePath(const std::filesystem::path& path)
 	{
 		Renderer::instance()->setCachePath(path);
 	}
 
-	const std::string&
+	const std::filesystem::path&
 	VideoFeature::getCachePath() const
 	{
 		return Renderer::instance()->getCachePath();

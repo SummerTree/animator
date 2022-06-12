@@ -35,8 +35,8 @@ namespace octoon
 		void setMaxBounces(std::uint32_t num_bounces);
 		std::uint32_t getMaxBounces() const;
 
-		void setCachePath(std::string_view path);
-		const std::string& getCachePath() const;
+		void setCachePath(const std::filesystem::path& path);
+		const std::filesystem::path& getCachePath() const;
 
 		std::uint32_t getSampleCounter() const noexcept;
 

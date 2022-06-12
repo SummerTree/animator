@@ -35,14 +35,14 @@
 
 namespace octoon
 {
-	ConfigManager::ConfigManager(std::string_view deviceName, std::string_view path) noexcept(false)
+	ConfigManager::ConfigManager(std::string_view deviceName, const std::filesystem::path& cachePath) noexcept(false)
 		: width_(0)
 		, height_(0)
 		, framebufferWidth_(0)
 		, framebufferHeight_(0)
 		, dirty_(true)
 		, currentRenderDeviceName(deviceName)
-		, cachePath_(path)
+		, cachePath_(cachePath)
 	{
 		this->init();
 	}
@@ -293,12 +293,12 @@ namespace octoon
 	}
 
 	void
-	ConfigManager::setCachePath(std::string_view path)
+	ConfigManager::setCachePath(const std::filesystem::path& path)
 	{
 		cachePath_ = path;
 	}
 
-	const std::string&
+	const std::filesystem::path&
 	ConfigManager::getCachePath() const
 	{
 		return cachePath_;

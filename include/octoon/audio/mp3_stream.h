@@ -2,6 +2,7 @@
 #define OCTOON_MP3_AUDIO_BUFFER_H_
 
 #include <octoon/audio/audio_reader.h>
+#include <filesystem>
 
 namespace octoon
 {
@@ -11,7 +12,7 @@ namespace octoon
 		Mp3StreamBuffer() noexcept;
 		~Mp3StreamBuffer() noexcept;
 
-		virtual bool open(std::string_view filepath) noexcept(false);
+		virtual bool open(const std::filesystem::path& filepath) noexcept(false);
 		virtual bool access(io::istream& stream) const noexcept;
 
 		virtual io::streamsize read(char* str, io::streamsize cnt) noexcept;
@@ -45,10 +46,10 @@ namespace octoon
 	{
 	public:
 		Mp3AudioReader() noexcept;
-		Mp3AudioReader(std::string_view path) noexcept;
+		Mp3AudioReader(const std::filesystem::path& path) noexcept;
 		virtual ~Mp3AudioReader() noexcept;
 
-		bool open(std::string_view path) noexcept(false);
+		bool open(const std::filesystem::path& path) noexcept(false);
 		bool is_open() const noexcept(false);
 
 		std::shared_ptr<AudioReader> clone() const noexcept override;

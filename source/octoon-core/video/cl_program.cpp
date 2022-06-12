@@ -42,7 +42,7 @@ namespace octoon
 		return check_sum;
 	}
 
-	inline bool LoadBinaries(std::string const& name, std::vector<std::uint8_t>& data)
+	inline bool LoadBinaries(const std::filesystem::path& name, std::vector<std::uint8_t>& data)
 	{
 		std::ifstream in(name, std::ios::in | std::ios::binary);
 		if (in)
@@ -63,14 +63,14 @@ namespace octoon
 	}
 
 
-	inline void SaveBinaries(std::string const& name, std::vector<std::uint8_t>& data)
+	inline void SaveBinaries(const std::filesystem::path& name, std::vector<std::uint8_t>& data)
 	{
 		std::ofstream out(name, std::ios::out | std::ios::binary);
 		if (out)
 			out.write((char*)&data[0], data.size());
 	}
 
-	CLProgram::CLProgram(const CLProgramManager* program_manager, uint32_t id, CLWContext context, std::string_view program_name, std::string_view cache_path)
+	CLProgram::CLProgram(const CLProgramManager* program_manager, uint32_t id, CLWContext context, std::string_view program_name, const std::filesystem::path& cache_path)
 		: programManager_(program_manager)
 		, programName_(program_name)
 		, cachePath_(cache_path)

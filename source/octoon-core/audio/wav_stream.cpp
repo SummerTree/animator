@@ -22,9 +22,9 @@ namespace octoon
 	}
 
 	bool
-	WavStreamBuffer::open(std::string_view filepath) noexcept(false)
+	WavStreamBuffer::open(const std::filesystem::path& filepath) noexcept(false)
 	{
-		io::ifstream stream((std::string)filepath);
+		io::ifstream stream(filepath);
 		if (stream)
 		{
 			auto size = stream.size();
@@ -174,7 +174,7 @@ namespace octoon
 	{
 	}
 
-	WavAudioReader::WavAudioReader(std::string_view path) noexcept
+	WavAudioReader::WavAudioReader(const std::filesystem::path& path) noexcept
 		: AudioReader(&buf_)
 	{
 		this->open(path);
@@ -185,7 +185,7 @@ namespace octoon
 	}
 
 	bool
-	WavAudioReader::open(std::string_view path) noexcept(false)
+	WavAudioReader::open(const std::filesystem::path& path) noexcept(false)
 	{
 		return this->buf_.open(path);
 	}

@@ -40,7 +40,7 @@ namespace unreal
 			}
 		};
 
-		this->getModel()->filepath += [this](const std::string& path)
+		this->getModel()->filepath += [this](const std::filesystem::path& path)
 		{
 			if (!path.empty())
 			{
@@ -48,7 +48,7 @@ namespace unreal
 				if (source)
 				{
 					auto audio = std::make_shared<octoon::GameObject>();
-					audio->setName(path);
+					audio->setName((char*)path.u8string().c_str());
 					audio->addComponent<octoon::AudioSourceComponent>()->setAudioReader(std::move(source));
 
 					this->getContext()->profile->soundModule->sound = audio;

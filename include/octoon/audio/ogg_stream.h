@@ -3,6 +3,7 @@
 
 #include <octoon/audio/audio_buffer.h>
 #include <octoon/audio/audio_reader.h>
+#include <filesystem>
 
 struct OggVorbis_File;
 
@@ -14,7 +15,7 @@ namespace octoon
 		OggStreamBuffer() noexcept;
 		~OggStreamBuffer() noexcept;
 
-		virtual bool open(std::string_view filepath) noexcept(false);
+		virtual bool open(const std::filesystem::path& filepath) noexcept(false);
 		virtual bool access(io::istream& stream) const noexcept;
 
 		virtual io::streamsize read(char* str, io::streamsize cnt) noexcept;
@@ -47,10 +48,10 @@ namespace octoon
 	{
 	public:
 		OggAudioReader() noexcept;
-		OggAudioReader(std::string_view filepath) noexcept;
+		OggAudioReader(const std::filesystem::path& filepath) noexcept;
 		virtual ~OggAudioReader() noexcept;
 
-		bool open(std::string_view filepath) noexcept(false);
+		bool open(const std::filesystem::path& filepath) noexcept(false);
 		bool is_open() const noexcept(false);
 
 		std::shared_ptr<AudioReader> clone() const noexcept override;

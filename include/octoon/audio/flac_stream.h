@@ -2,6 +2,7 @@
 #define OCTOON_FLAC_AUDIO_BUFFER_H_
 
 #include <octoon/audio/audio_reader.h>
+#include <filesystem>
 
 namespace octoon
 {
@@ -11,7 +12,7 @@ namespace octoon
 		FlacStreamBuffer() noexcept;
 		~FlacStreamBuffer() noexcept;
 
-		virtual void open(std::string_view filepath) noexcept(false);
+		virtual void open(const std::filesystem::path& filepath) noexcept(false);
 		virtual bool access(io::istream& stream) const noexcept;
 
 		virtual io::streamsize read(char* str, io::streamsize cnt) noexcept;
@@ -45,10 +46,10 @@ namespace octoon
 	{
 	public:
 		FlacAudioReader() noexcept;
-		FlacAudioReader(std::string_view path) noexcept;
+		FlacAudioReader(const std::filesystem::path& path) noexcept;
 		virtual ~FlacAudioReader() noexcept;
 
-		void open(std::string_view path) noexcept(false);
+		void open(const std::filesystem::path& path) noexcept(false);
 		bool is_open() const noexcept(false);
 
 		std::shared_ptr<AudioReader> clone() const noexcept override;

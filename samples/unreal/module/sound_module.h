@@ -23,7 +23,7 @@ namespace unreal
 
 	public:
 		MutableLiveData<float> volume;
-		MutableLiveData<std::string> filepath;
+		MutableLiveData<std::filesystem::path> filepath;
 		MutableLiveData<octoon::GameObjectPtr> sound;
 	};
 }

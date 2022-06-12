@@ -79,7 +79,7 @@ namespace octoon
 	}
 
 	bool
-	OggStreamBuffer::open(std::string_view filepath) noexcept(false)
+	OggStreamBuffer::open(const std::filesystem::path& filepath) noexcept(false)
 	{
 		assert(!oggVorbisFile_);
 
@@ -92,7 +92,7 @@ namespace octoon
 		callbacks.close_func = &ogg_stream_close;
 
 		pos_ = 0;
-		stream_ = std::make_shared<io::ifstream>((std::string)filepath);
+		stream_ = std::make_shared<io::ifstream>(filepath);
 
 		auto err = ::ov_open_callbacks(stream_.get(), &ogg, nullptr, 0, callbacks);
 		if (err < 0)
@@ -256,7 +256,7 @@ namespace octoon
 	{
 	}
 
-	OggAudioReader::OggAudioReader(std::string_view filepath) noexcept
+	OggAudioReader::OggAudioReader(const std::filesystem::path& filepath) noexcept
 		: AudioReader(&buf_)
 	{
 		this->open(filepath);
@@ -267,7 +267,7 @@ namespace octoon
 	}
 
 	bool
-	OggAudioReader::open(std::string_view filepath) noexcept(false)
+	OggAudioReader::open(const std::filesystem::path& filepath) noexcept(false)
 	{
 		return buf_.open(filepath);
 	}

@@ -16,7 +16,7 @@ namespace unreal
 	{
 		this->enable = true;
 		this->volume = 0.5f;
-		this->filepath = std::string();
+		this->filepath = std::filesystem::path();
 	}
 
 	void 
@@ -27,7 +27,7 @@ namespace unreal
 		if (reader["volume"].is_number_float())
 			this->volume = reader["volume"].get<nlohmann::json::number_float_t>();
 		if (reader["filepath"].is_string())
-			this->filepath = reader["filepath"].get<nlohmann::json::string_t>();
+			this->filepath = (char8_t*)reader["filepath"].get<nlohmann::json::string_t>().c_str();
 	}
 
 	void 
@@ -35,6 +35,6 @@ namespace unreal
 	{
 		writer["enable"] = this->enable.getValue();
 		writer["volume"] = this->volume.getValue();
-		writer["filepath"] = this->filepath.getValue();
+		writer["filepath"] = (char*)this->filepath.getValue().u8string().c_str();
 	}
 }

@@ -16,7 +16,7 @@ namespace octoon
 	class ClwRenderFactory : public RenderFactory
 	{
 	public:
-		ClwRenderFactory(CLWContext context, std::string_view cache_path = "") noexcept;
+		ClwRenderFactory(CLWContext context, const std::filesystem::path& cache_path) noexcept;
 		virtual ~ClwRenderFactory() noexcept;
 
 		virtual std::unique_ptr<Output> createOutput(std::uint32_t w, std::uint32_t h) const override;

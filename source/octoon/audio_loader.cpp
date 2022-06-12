@@ -34,29 +34,33 @@ namespace octoon
 	}
 
 	std::shared_ptr<AudioReader>
-	AudioLoader::load(std::string_view filepath) noexcept(false)
+	AudioLoader::load(const std::filesystem::path& path) noexcept(false)
 	{
-		if (filepath.find(".ogg") != std::string::npos)
+		auto ext = path.extension().u8string();
+		for (auto& it : ext)
+			it = (char)std::tolower(it);
+
+		if (ext == u8".ogg")
 		{
-			auto reader = std::make_shared<OggAudioReader>(filepath);
+			auto reader = std::make_shared<OggAudioReader>(path);
 			if (reader->is_open())
 				return reader;
 		}
-		else if (filepath.find(".mp3") != std::string::npos)
+		else if (ext == u8".mp3")
 		{
-			auto reader = std::make_shared<Mp3AudioReader>(filepath);
+			auto reader = std::make_shared<Mp3AudioReader>(path);
 			if (reader->is_open())
 				return reader;
 		}
-		else if (filepath.find(".wav") != std::string::npos)
+		else if (ext == u8".wav")
 		{
-			auto reader = std::make_shared<WavAudioReader>(filepath);
+			auto reader = std::make_shared<WavAudioReader>(path);
 			if (reader->is_open())
 				return reader;
 		}
-		else if (filepath.find(".flac") != std::string::npos)
+		else if (ext == u8".flac")
 		{
-			auto reader = std::make_shared<FlacAudioReader>(filepath);
+			auto reader = std::make_shared<FlacAudioReader>(path);
 			if (reader->is_open())
 				return reader;
 		}

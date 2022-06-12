@@ -11,7 +11,7 @@
 
 namespace octoon
 {
-	ClwRenderFactory::ClwRenderFactory(CLWContext context, std::string_view cache_path) noexcept
+	ClwRenderFactory::ClwRenderFactory(CLWContext context, const std::filesystem::path& cache_path) noexcept
 		: context_(context)
 		, programManager_(cache_path)
 		, intersector_(RadeonRays::CreateFromOpenClContext(context, context.GetDevice(0).GetID(), context.GetCommandQueue(0)), RadeonRays::IntersectionApi::Delete)

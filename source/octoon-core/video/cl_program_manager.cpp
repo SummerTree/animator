@@ -27,7 +27,7 @@ namespace octoon
 		}
 	}
 
-	CLProgramManager::CLProgramManager(std::string_view cache_path)
+	CLProgramManager::CLProgramManager(const std::filesystem::path& cache_path)
 		: cachePath_(cache_path)
 	{
 	}

@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <CLW.h>
+#include <filesystem>
 
 #include "cl_program.h"
 
@@ -14,7 +15,7 @@ namespace octoon
     class CLProgramManager final
     {
     public:
-        explicit CLProgramManager(std::string_view cache_path);
+        explicit CLProgramManager(const std::filesystem::path& cache_path);
 
         std::uint32_t CreateProgramFromFile(CLWContext context, std::string_view fname) const;
         std::uint32_t CreateProgramFromSource(CLWContext context, std::string_view name, std::string_view source) const;
@@ -27,7 +28,7 @@ namespace octoon
         void CompileProgram(std::uint32_t id, const std::string &opts) const;
 
     private:
-        mutable std::string cachePath_;
+        mutable std::filesystem::path cachePath_;
         mutable std::map<uint32_t, CLProgram> programs_;
         mutable std::map<std::string, std::string> headers_;
         static std::uint32_t nextProgramId_;

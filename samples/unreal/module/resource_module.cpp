@@ -17,16 +17,16 @@ namespace unreal
 	ResourceModule::reset() noexcept
 	{
 #ifdef _WINDOWS_
-		char path[MAX_PATH];
-		if (SHGetFolderPathA(NULL, CSIDL_PROFILE, NULL, 0, path) == S_OK)
-			this->rootPath = std::filesystem::path(path).append(".animator").string();
+		wchar_t path[MAX_PATH];
+		if (SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, path) == S_OK)
+			this->rootPath = std::filesystem::path(path).append(L".animator");
 		else
-			this->rootPath = "../../system";
+			this->rootPath = L"../../system";
 
-		this->cachePath = std::filesystem::path(this->rootPath).append("cache").string();
+		this->cachePath = std::filesystem::path(this->rootPath).append(L"cache");
 #else
-		this->rootPath = "../../system";
-		this->cachePath = "../../system/cache";
+		this->rootPath = L"../../system";
+		this->cachePath = L"../../system/cache";
 #endif
 	}
 
