@@ -13,11 +13,11 @@ namespace octoon
 		OctoonDeclareSubClass(MeshAnimationComponent, AnimationComponent)
 	public:
 		MeshAnimationComponent() noexcept;
-		explicit MeshAnimationComponent(std::string_view path) noexcept(false);
+		explicit MeshAnimationComponent(const std::filesystem::path& path) noexcept(false);
 		virtual ~MeshAnimationComponent() noexcept;
 
-		bool setFilePath(std::string_view path) noexcept(false);
-		const std::string& getFilePath() const noexcept;
+		bool setFilePath(const std::filesystem::path& path) noexcept(false);
+		const std::filesystem::path& getFilePath() const noexcept;
 
 		bool play(std::string_view status = "default") noexcept override;
 		void pause() noexcept override;
@@ -59,7 +59,7 @@ namespace octoon
 		MeshAnimationComponent& operator=(const MeshAnimationComponent&) = delete;
 
 	private:
-		std::string path_;
+		std::filesystem::path path_;
 
 		float minTime_;
 		float maxTime_;

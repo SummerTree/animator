@@ -29,13 +29,18 @@ namespace unreal
 	bool
 	UnrealBehaviour::open(const std::filesystem::path& path) noexcept(false)
 	{
-		this->reset();
-		this->profile_->load(path);
-		this->playerComponent_->updateTimeLength();
-		this->playerComponent_->reset();
-		this->sendMessage("editor:project:open");
+		if (std::filesystem::is_directory(path))
+		{
+			this->reset();
+			this->profile_->load(path);
+			this->playerComponent_->updateTimeLength();
+			this->playerComponent_->reset();
+			this->sendMessage("editor:project:open");
 
-		return true;
+			return true;
+		}
+
+		return false;
 	}
 
 	void

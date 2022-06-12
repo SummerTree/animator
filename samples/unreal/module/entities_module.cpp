@@ -69,20 +69,6 @@ namespace unreal
 						}
 					}
 
-					if (it.contains("alembic"))
-					{
-						std::unordered_map<std::string, octoon::MaterialPtr> materials;
-
-						for (auto& material : it["alembic"]["materials"])
-						{
-							auto data = material["data"].get<nlohmann::json::string_t>();
-							auto name = material["name"].get<std::string>();
-							materials[name] = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(data);
-						}
-
-						object->getComponent<octoon::MeshAnimationComponent>()->setMaterials(std::move(materials));
-					}
-
 					if (it.find("materials") != it.end())
 					{
 						std::vector<std::shared_ptr<octoon::Material>> materials;
@@ -118,8 +104,6 @@ namespace unreal
 	{
 		nlohmann::json sceneJson;
 
-		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-
 		for (auto& it : this->objects.getValue())
 		{
 			auto modelPackage = ab->createAsset(it);
@@ -148,25 +132,6 @@ namespace unreal
 
 								json["animation"].push_back(animationJson);
 							}
-						}
-					}
-				}
-
-				auto abc = it->getComponent<octoon::MeshAnimationComponent>();
-				if (abc)
-				{
-					auto& materials = abc->getMaterials();
-
-					for (auto& pair : materials)
-					{
-						auto package = ab->createAsset(pair.second);
-						if (package.is_object())
-						{
-							nlohmann::json materialJson;
-							materialJson["data"] = package["uuid"];
-							materialJson["name"] = pair.first;
-
-							json["alembic"]["materials"].push_back(materialJson);
 						}
 					}
 				}

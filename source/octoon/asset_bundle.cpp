@@ -4,6 +4,7 @@
 #include <octoon/io/fstream.h>
 #include <octoon/texture/texture.h>
 #include <octoon/runtime/uuid.h>
+#include <octoon/mesh_animation_component.h>
 #include <fstream>
 #include <filesystem>
 #include <set>
@@ -518,15 +519,6 @@ namespace octoon
 							return AssetBundle::instance()->getPackage(uuid);
 					}
 				}
-
-				for (auto& index : modelAsset_->getIndexList())
-				{
-					if (index == uuid)
-					{
-						if (!AssetDatabase::instance()->needUpdate(uuid))
-							return modelAsset_->getPackage(uuid);
-					}
-				}
 			}
 
 			auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
@@ -539,19 +531,59 @@ namespace octoon
 				if (ext == ".abc")
 				{
 					nlohmann::json package;
-					package["uuid"] = AssetDatabase::instance()->getAssetGuid(gameObject);
+					package["uuid"] = uuid;
 					package["path"] = assetPath;
+
+					auto abc = gameObject->getComponent<MeshAnimationComponent>();
+					if (abc)
+					{
+						auto& materials = abc->getMaterials();
+
+						for (auto& pair : materials)
+						{
+							auto materialPackage = this->createAsset(pair.second);
+							if (materialPackage.is_object())
+							{
+								nlohmann::json materialJson;
+								materialJson["data"] = materialPackage["uuid"];
+								materialJson["name"] = pair.first;
+
+								package["materials"].push_back(materialJson);
+							}
+						}
+					}
 
 					if (package.is_object())
 					{
+						auto modelPath = this->modelAsset_->getAssertPath();
+						auto packagePath = std::filesystem::path(modelPath).append(uuid).append("package.json");
+
+						std::filesystem::create_directories(packagePath.parent_path());
+
+						std::ofstream ifs(packagePath, std::ios_base::binary);
+						if (ifs)
+						{
+							auto dump = package.dump();
+							ifs.write(dump.c_str(), dump.size());
+						}
+
 						AssetDatabase::instance()->removeUpdateList(uuid);
-						modelAsset_->addIndex(package["uuid"].get<std::string>());
+						modelAsset_->addIndex(uuid);
 						assetPackageCache_[gameObject] = package;
 						return package;
 					}
 				}
 				else
 				{
+					for (auto& index : modelAsset_->getIndexList())
+					{
+						if (index == uuid)
+						{
+							if (!AssetDatabase::instance()->needUpdate(uuid))
+								return modelAsset_->getPackage(uuid);
+						}
+					}
+
 					auto package = this->importAsset(assetPath);
 					if (package.is_object())
 					{

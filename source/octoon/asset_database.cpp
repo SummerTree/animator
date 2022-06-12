@@ -541,7 +541,7 @@ namespace octoon
 		}
 		else if (ext == ".pmx")
 		{
-			auto model = PMXLoader::load(path.string(), PMXLoadFlagBits::AllBit);
+			auto model = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
 			if (model)
 			{
 				assetPathList_[model] = path.string();
@@ -554,7 +554,7 @@ namespace octoon
 			auto model = std::make_shared<GameObject>();
 			if (model)
 			{
-				model->addComponent<MeshAnimationComponent>(path.string());
+				model->addComponent<MeshAnimationComponent>(path);
 				assetPathList_[model] = path.string();
 				assetGuidList_[model] = make_guid();
 				return model;
@@ -631,15 +631,52 @@ namespace octoon
 			{
 				auto uuid = package["uuid"].get<std::string>();
 				auto path = package["path"].get<std::string>();
-				auto gameObject = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
-				if (gameObject)
-				{
-					packageList_[uuid] = package;
-					assetList_[gameObject] = package;
-					assetPathList_[gameObject] = path;
-					assetGuidList_[gameObject] = uuid;
+				auto filepath = std::filesystem::path((char8_t*)path.c_str());
 
-					return gameObject;
+				auto ext = filepath.extension().u8string();
+				for (auto& it : ext)
+					it = (char)std::tolower(it);
+
+				if (ext == u8".pmx")
+				{
+					auto gameObject = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
+					if (gameObject)
+					{
+						packageList_[uuid] = package;
+						assetList_[gameObject] = package;
+						assetPathList_[gameObject] = path;
+						assetGuidList_[gameObject] = uuid;
+
+						return gameObject;
+					}
+				}
+				else if (ext == u8".abc")
+				{
+					std::unordered_map<std::string, octoon::MaterialPtr> materials;
+
+					if (package.contains("materials"))
+					{
+						for (auto& material : package["materials"])
+						{
+							auto data = material["data"].get<nlohmann::json::string_t>();
+							auto name = material["name"].get<std::string>();
+							materials[name] = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(data);
+						}
+					}
+
+					auto gameObject = std::make_shared<GameObject>();
+					if (gameObject)
+					{
+						auto alembic = gameObject->addComponent<MeshAnimationComponent>();
+						alembic->setMaterials(std::move(materials));
+						alembic->setFilePath(filepath);
+
+						packageList_[uuid] = package;
+						assetList_[gameObject] = package;
+						assetPathList_[gameObject] = path;
+						assetGuidList_[gameObject] = uuid;
+						return gameObject;
+					}
 				}
 			}
 		}

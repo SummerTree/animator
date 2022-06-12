@@ -334,7 +334,7 @@ namespace octoon
 		animationState_.timeLength = 0;
 	}
 
-	MeshAnimationComponent::MeshAnimationComponent(std::string_view path) noexcept(false)
+	MeshAnimationComponent::MeshAnimationComponent(const std::filesystem::path& path) noexcept(false)
 		: MeshAnimationComponent()
 	{
 		path_ = path;
@@ -345,12 +345,12 @@ namespace octoon
 	}
 
 	bool
-	MeshAnimationComponent::setFilePath(std::string_view path) noexcept(false)
+	MeshAnimationComponent::setFilePath(const std::filesystem::path& path) noexcept(false)
 	{
 		this->path_ = path;
 
 		Alembic::AbcCoreFactory::IFactory factor;
-		auto archive = factor.getArchive(utf8_to_gb2312(path));
+		auto archive = factor.getArchive(utf8_to_gb2312((char*)path.u8string().c_str()));
 		if (archive.valid())
 		{
 			auto object = archive.getTop();
@@ -373,7 +373,7 @@ namespace octoon
 		}
 	}
 
-	const std::string&
+	const std::filesystem::path&
 	MeshAnimationComponent::getFilePath() const noexcept
 	{
 		return path_;
@@ -495,7 +495,7 @@ namespace octoon
 	{
 		GameComponent::save(json);
 
-		json["path"] = this->path_;
+		json["path"] = (char*)this->path_.u8string().c_str();
 		json["time"] = this->animationState_.time;
 
 		for (auto& pair : this->materials_)
