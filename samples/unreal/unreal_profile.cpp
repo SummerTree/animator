@@ -162,8 +162,8 @@ namespace unreal
 		}
 		catch (std::exception& e)
 		{
-			if (std::filesystem::exists(path_))
-				std::filesystem::remove(path_);
+			if (std::filesystem::exists(manifestFile))
+				std::filesystem::remove(manifestFile);
 
 			if (std::filesystem::exists(backupFile))
 			{

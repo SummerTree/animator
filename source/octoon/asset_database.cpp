@@ -212,14 +212,14 @@ namespace octoon
 
 		try
 		{
-			auto writePreview = [this](const std::shared_ptr<Material>& material, std::filesystem::path path) -> nlohmann::json
+			auto writePreview = [this](const std::shared_ptr<Material>& material, std::filesystem::path path)
 			{
 				Texture texture;
 				auto uuid = make_guid();
 				auto previewPath = std::filesystem::path(path).append(uuid + ".png");
 				this->createMaterialPreview(material, texture);
 				texture.save(previewPath, "png");
-				return previewPath.string();
+				return previewPath;
 			};
 
 			auto writeFloat2 = [](const math::float2& v)
@@ -238,7 +238,7 @@ namespace octoon
 			package["uuid"] = uuid;
 			package["name"] = standardMaterial->getName();
 			package["visible"] = true;
-			package["preview"] = writePreview(material, outputPath);
+			package["preview"] = (char*)writePreview(material, outputPath).u8string().c_str();
 			package["opacity"] = standardMaterial->getOpacity();
 			package["smoothness"] = standardMaterial->getSmoothness();
 			package["roughness"] = standardMaterial->getRoughness();
@@ -376,13 +376,13 @@ namespace octoon
 			auto minBounding = bound.box().min;
 			auto maxBounding = bound.box().max;
 
-			auto writePreview = [this](const std::shared_ptr<Geometry>& geometry, const math::BoundingBox& boundingBox, std::filesystem::path outputPath) -> nlohmann::json
+			auto writePreview = [this](const std::shared_ptr<Geometry>& geometry, const math::BoundingBox& boundingBox, std::filesystem::path outputPath)
 			{
 				Texture texture;
 				auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
 				this->createModelPreview(geometry, boundingBox, texture);
 				texture.save(previewPath, "png");
-				return previewPath.string();
+				return previewPath;
 			};
 
 			auto geometry = PMXLoader::loadGeometry(pmx);
@@ -401,7 +401,7 @@ namespace octoon
 			package["visible"] = true;
 			package["name"] = cv.to_bytes(pmx.description.japanModelName.data());
 			package["path"] = (char*)modelPath.u8string().c_str();
-			package["preview"] = writePreview(geometry, bound, rootPath);
+			package["preview"] = (char*)writePreview(geometry, bound, rootPath).u8string().c_str();
 			package["bound"][0] = { minBounding.x, minBounding.y, minBounding.z };
 			package["bound"][1] = { maxBounding.x, maxBounding.y, maxBounding.z };
 
@@ -603,12 +603,13 @@ namespace octoon
 			{
 				auto path = package["path"].get<std::string>();
 				auto uuid = package["uuid"].get<std::string>();
+				auto filepath = std::filesystem::path((char8_t*)path.c_str());
 
 				bool generateMipmap = false;
 				if (package.find("mipmap") != package.end())
 					generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
 
-				auto texture = std::make_shared<Texture>(path);
+				auto texture = std::make_shared<Texture>(filepath);
 				if (texture)
 				{
 					if (generateMipmap)
@@ -639,7 +640,7 @@ namespace octoon
 
 				if (ext == u8".pmx")
 				{
-					auto gameObject = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
+					auto gameObject = PMXLoader::load(filepath, PMXLoadFlagBits::AllBit);
 					if (gameObject)
 					{
 						packageList_[uuid] = package;
@@ -686,7 +687,9 @@ namespace octoon
 			{
 				auto uuid = package["uuid"].get<std::string>();
 				auto path = package["path"].get<std::string>();
-				auto motion = VMDLoader::load(path);
+				auto filepath = std::filesystem::path((char8_t*)path.c_str());
+
+				auto motion = VMDLoader::load(filepath);
 				if (motion)
 				{
 					packageList_[uuid] = package;
