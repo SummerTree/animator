@@ -55,6 +55,7 @@ ShowUnInstDetails show
 
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
+  StrCpy $INSTDIR $PROGRAMFILES\${PRODUCT_NAME}
 FunctionEnd
 
 Section "MainSection" SEC01
