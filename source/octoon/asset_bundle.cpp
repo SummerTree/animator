@@ -22,7 +22,7 @@ namespace octoon
 	}
 
 	void
-	AssetBundle::open(std::string assetPath) noexcept(false)
+	AssetBundle::open(const std::filesystem::path& assetPath) noexcept(false)
 	{
 		assetPath_ = assetPath;
 
@@ -191,13 +191,13 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::importAsset(std::string_view path, bool generateMipmap) noexcept(false)
+	AssetBundle::importAsset(const std::filesystem::path& path, bool generateMipmap) noexcept(false)
 	{
-		auto ext = std::string(path.substr(path.find_last_of('.')));
+		auto ext = path.extension().u8string();
 		for (auto& it : ext)
 			it = (char)std::tolower(it);
 
-		if (ext == ".vmd")
+		if (ext == u8".vmd")
 		{
 			auto package = AssetDatabase::instance()->createAsset(path, motionAsset_->getAssertPath());
 			if (package.is_object())
@@ -206,7 +206,7 @@ namespace octoon
 				return package;
 			}
 		}
-		else if (ext == ".pmx")
+		else if (ext == u8".pmx")
 		{
 			PMX pmx;
 
@@ -214,8 +214,7 @@ namespace octoon
 			{
 				if (pmx.description.japanModelLength == 0)
 				{
-					std::wstring wfilepath = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.from_bytes(std::string(path));
-					auto filename = std::filesystem::path(wfilepath).filename().wstring();
+					auto filename = std::filesystem::path(path).filename().wstring();
 
 					pmx.description.japanModelName.resize(filename.size() + 1);
 					pmx.description.japanModelLength = static_cast<PmxUInt32>(pmx.description.japanModelName.size() * 2);
@@ -230,13 +229,13 @@ namespace octoon
 				}
 			}
 		}
-		else if (ext == ".hdr")
+		else if (ext == u8".hdr")
 		{
 			auto texture = std::make_shared<Texture>();
 
-			if (texture->load(std::string(path)))
+			if (texture->load(path))
 			{
-				texture->setName(path);
+				texture->setName((char*)path.u8string().c_str());
 				texture->setMipLevel(8);
 
 				auto package = AssetDatabase::instance()->createAsset(texture, hdriAsset_->getAssertPath());
@@ -244,21 +243,21 @@ namespace octoon
 				return package;
 			}
 		}
-		else if (ext == ".bmp" || ext == ".tga" || ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".dds")
+		else if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
 			auto texture = std::make_shared<Texture>();
 
-			if (texture->load(std::string(path)))
+			if (texture->load(path))
 			{
-				texture->setName(path);
+				texture->setName((char*)path.u8string().c_str());
 				auto package = AssetDatabase::instance()->createAsset(texture, textureAsset_->getAssertPath());
 				textureAsset_->addIndex(package["uuid"].get<std::string>());
 				return package;
 			}
 		}
-		else if (ext == ".mdl")
+		else if (ext == u8".mdl")
 		{
-			io::ifstream stream((std::string)path);
+			io::ifstream stream(path.u8string());
 			if (stream)
 			{
 				MDLLoader loader;
@@ -338,7 +337,7 @@ namespace octoon
 				{
 					if (index == uuid)
 					{
-						if (!AssetBundle::instance()->needUpdate(uuid))
+						if (!AssetDatabase::instance()->needUpdate(uuid))
 							return textureAsset_->getPackage(uuid);
 					}
 				}
@@ -347,7 +346,7 @@ namespace octoon
 				{
 					if (index == uuid)
 					{
-						if (!AssetBundle::instance()->needUpdate(uuid))
+						if (!AssetDatabase::instance()->needUpdate(uuid))
 							return hdriAsset_->getPackage(uuid);
 					}
 				}
@@ -358,7 +357,7 @@ namespace octoon
 				auto package = AssetDatabase::instance()->createAsset(texture, hdriAsset_->getAssertPath());
 				if (package.is_object())
 				{
-					AssetBundle::instance()->removeUpdateList(uuid);
+					AssetDatabase::instance()->removeUpdateList(uuid);
 					hdriAsset_->addIndex(package["uuid"].get<std::string>());
 					assetPackageCache_[texture] = package;
 					return package;
@@ -369,7 +368,7 @@ namespace octoon
 				auto package = AssetDatabase::instance()->createAsset(texture, textureAsset_->getAssertPath());
 				if (package.is_object())
 				{
-					AssetBundle::instance()->removeUpdateList(uuid);
+					AssetDatabase::instance()->removeUpdateList(uuid);
 					textureAsset_->addIndex(package["uuid"].get<std::string>());
 					assetPackageCache_[texture] = package;
 					return package;
@@ -405,7 +404,7 @@ namespace octoon
 				{
 					if (index == uuid)
 					{
-						if (!AssetBundle::instance()->needUpdate(uuid))
+						if (!AssetDatabase::instance()->needUpdate(uuid))
 							return motionAsset_->getPackage(uuid);
 					}
 				}
@@ -414,7 +413,7 @@ namespace octoon
 			auto package = AssetDatabase::instance()->createAsset(animation, motionAsset_->getAssertPath());
 			if (package.is_object())
 			{
-				AssetBundle::instance()->removeUpdateList(uuid);
+				AssetDatabase::instance()->removeUpdateList(uuid);
 				motionAsset_->addIndex(package["uuid"].get<std::string>());
 				assetPackageCache_[animation] = package;
 
@@ -450,7 +449,7 @@ namespace octoon
 				{
 					if (index == uuid)
 					{
-						if (!AssetBundle::instance()->needUpdate(uuid))
+						if (!AssetDatabase::instance()->needUpdate(uuid))
 							return materialAsset_->getPackage(uuid);
 					}
 				}
@@ -489,7 +488,7 @@ namespace octoon
 			auto package = AssetDatabase::instance()->createAsset(material, materialAsset_->getAssertPath());
 			if (package.is_object())
 			{
-				AssetBundle::instance()->removeUpdateList(uuid);
+				AssetDatabase::instance()->removeUpdateList(uuid);
 				materialAsset_->addIndex(package["uuid"].get<std::string>());
 				this->assetPackageCache_[material] = package;
 				return package;
@@ -504,9 +503,9 @@ namespace octoon
 	{
 		if (gameObject)
 		{
-			auto it = this->assetPackageCache_.find(gameObject);
-			if (it != this->assetPackageCache_.end())
-				return this->assetPackageCache_.at(gameObject);
+			auto packageCache = this->assetPackageCache_.find(gameObject);
+			if (packageCache != this->assetPackageCache_.end())
+				return (*packageCache).second;
 
 			auto uuid = AssetDatabase::instance()->getAssetGuid(gameObject);
 			if (!uuid.empty())
@@ -524,7 +523,7 @@ namespace octoon
 				{
 					if (index == uuid)
 					{
-						if (!AssetBundle::instance()->needUpdate(uuid))
+						if (!AssetDatabase::instance()->needUpdate(uuid))
 							return modelAsset_->getPackage(uuid);
 					}
 				}
@@ -533,26 +532,30 @@ namespace octoon
 			auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
 			if (!assetPath.empty())
 			{
-				auto package = this->importAsset(assetPath);
-				if (package.is_object())
+				auto ext = std::string(assetPath.substr(assetPath.find_last_of('.')));
+				for (auto& it : ext)
+					it = (char)std::tolower(it);
+
+				if (ext == ".abc")
 				{
-					AssetBundle::instance()->removeUpdateList(uuid);
-					modelAsset_->addIndex(package["uuid"].get<std::string>());
-					assetPackageCache_[gameObject] = package;
-					return package;
+					nlohmann::json package;
+					package["uuid"] = AssetDatabase::instance()->getAssetGuid(gameObject);
+					package["path"] = assetPath;
+
+					if (package.is_object())
+					{
+						AssetDatabase::instance()->removeUpdateList(uuid);
+						modelAsset_->addIndex(package["uuid"].get<std::string>());
+						assetPackageCache_[gameObject] = package;
+						return package;
+					}
 				}
 				else
 				{
-					auto ext = std::string(assetPath.substr(assetPath.find_last_of('.')));
-					for (auto& it : ext)
-						it = (char)std::tolower(it);
-
-					if (ext == ".abc")
+					auto package = this->importAsset(assetPath);
+					if (package.is_object())
 					{
-						package["uuid"] = AssetDatabase::instance()->getAssetGuid(gameObject);
-						package["path"] = assetPath;
-
-						AssetBundle::instance()->removeUpdateList(uuid);
+						AssetDatabase::instance()->removeUpdateList(uuid);
 						modelAsset_->addIndex(package["uuid"].get<std::string>());
 						assetPackageCache_[gameObject] = package;
 						return package;
@@ -643,37 +646,11 @@ namespace octoon
 			this->hdriAsset_->removeAsset(uuid);
 	}
 
-	void
-	AssetBundle::addUpdateList(std::string_view uuid) noexcept(false)
-	{
-		AssetBundle::instance()->updateList_.insert(std::string(uuid));
-	}
-
-	bool
-	AssetBundle::needUpdate(std::string_view uuid) const noexcept
-	{
-		return AssetBundle::instance()->updateList_.find(std::string(uuid)) != AssetBundle::instance()->updateList_.end();
-	}
-
-	void
-	AssetBundle::removeUpdateList(std::string_view uuid) noexcept(false)
-	{
-		auto it = AssetBundle::instance()->updateList_.find(std::string(uuid));
-		if (it != AssetBundle::instance()->updateList_.end())
-			AssetBundle::instance()->updateList_.erase(it);
-	}
-
-	const std::set<std::string>&
-	AssetBundle::getUpdateList() const noexcept
-	{
-		return AssetBundle::instance()->updateList_;
-	}
-
 	std::shared_ptr<AssetBundle>
-	AssetBundle::loadFromFile(std::string_view path) noexcept(false)
+	AssetBundle::loadFromFile(const std::filesystem::path& path) noexcept(false)
 	{
 		auto ab = std::make_shared<AssetBundle>();
-		ab->open((std::string)path);
+		ab->open(path);
 		assetBundles_.push_back(ab);
 
 		return ab;

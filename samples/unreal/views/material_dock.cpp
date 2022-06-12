@@ -174,7 +174,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto list = octoon::AssetBundle::instance()->importAsset(filepaths[i].toUtf8().toStdString());
+					auto list = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
 					for (auto& it : list)
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}
@@ -396,7 +396,7 @@ namespace unreal
 	std::shared_ptr<octoon::Texture>
 	MaterialEditWindow::MaterialUi::setImage(const QString& filepath)
 	{
-		auto textureData = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(std::string_view(filepath.toStdString()));
+		auto textureData = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdWString());
 		auto width = textureData->width();
 		auto height = textureData->height();
 
@@ -1075,7 +1075,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setAlbedoMap(path.toUtf8());
+			this->setAlbedoMap(path);
 	}
 
 	void
@@ -1083,7 +1083,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setOpacityMap(path.toUtf8());
+			this->setOpacityMap(path);
 	}
 
 	void
@@ -1091,7 +1091,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setNormalMap(path.toUtf8());
+			this->setNormalMap(path);
 	}
 
 	void
@@ -1099,7 +1099,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setSpecularMap(path.toUtf8());
+			this->setSpecularMap(path);
 	}
 
 	void
@@ -1107,7 +1107,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setRoughnessMap(path.toUtf8());
+			this->setRoughnessMap(path);
 	}
 
 	void
@@ -1115,7 +1115,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setMetalnessMap(path.toUtf8());
+			this->setMetalnessMap(path);
 	}
 
 	void
@@ -1123,7 +1123,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setAnisotropyMap(path.toUtf8());
+			this->setAnisotropyMap(path);
 	}
 
 	void
@@ -1131,7 +1131,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setSheenMap(path.toUtf8());
+			this->setSheenMap(path);
 	}
 
 	void
@@ -1139,7 +1139,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setClearCoatMap(path.toUtf8());
+			this->setClearCoatMap(path);
 	}
 
 	void
@@ -1147,7 +1147,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setClearCoatRoughnessMap(path.toUtf8());
+			this->setClearCoatRoughnessMap(path);
 	}
 
 	void
@@ -1155,7 +1155,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setSubsurfaceMap(path.toUtf8());
+			this->setSubsurfaceMap(path);
 	}
 
 	void
@@ -1163,7 +1163,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setSubsurfaceColorMap(path.toUtf8());
+			this->setSubsurfaceColorMap(path);
 	}
 
 	void
@@ -1171,7 +1171,7 @@ namespace unreal
 	{
 		QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(imageFormat));
 		if (!path.isEmpty())
-			this->setEmissiveMap(path.toUtf8());
+			this->setEmissiveMap(path);
 	}
 
 	void
@@ -2060,7 +2060,7 @@ namespace unreal
 				{
 					this->setWindowTitle(tr("Material Properties"));
 
-					octoon::AssetBundle::instance()->addUpdateList(uuid);
+					octoon::AssetDatabase::instance()->addUpdateList(uuid);
 
 					selectedItem_ = item;
 					materialList_->hide();

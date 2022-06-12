@@ -182,14 +182,14 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toUtf8().data());
+						auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[0].toUtf8().data());
+					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[0].toStdWString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}

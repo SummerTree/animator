@@ -210,7 +210,7 @@ namespace unreal
 	}
 
 	void
-	RecordComponent::captureImage(std::string_view filepath) noexcept
+	RecordComponent::captureImage(const std::filesystem::path& filepath) noexcept
 	{
 		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
 
@@ -249,7 +249,7 @@ namespace unreal
 					}
 				}
 
-				image.save(std::string(filepath), "png");
+				image.save(filepath, "png");
 			}
 		}
 		catch (...)
@@ -259,7 +259,7 @@ namespace unreal
 	}
 
 	bool
-	RecordComponent::startRecord(std::string_view filepath) noexcept
+	RecordComponent::startRecord(const std::filesystem::path& filepath) noexcept
 	{
 		auto& profile = this->getContext()->profile;
 		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();

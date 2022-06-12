@@ -351,7 +351,7 @@ namespace octoon
 	void createMaterials(const PMX& pmx, Materials& materials) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-		std::unordered_map<std::string, std::shared_ptr<Texture>> textureMap;
+		std::unordered_map<std::u8string, std::shared_ptr<Texture>> textureMap;
 
 		materials.reserve(pmx.materials.size());
 
@@ -359,10 +359,12 @@ namespace octoon
 		{
 			try
 			{
-				if (textureMap.find(it.fullpath) == textureMap.end())
+				auto fullpath = it.fullpath.u8string();
+
+				if (textureMap.find(fullpath) == textureMap.end())
 				{
-					textureMap[it.fullpath] = std::make_shared<Texture>(it.fullpath);
-					textureMap[it.fullpath]->apply();
+					textureMap[fullpath] = std::make_shared<Texture>(it.fullpath);
+					textureMap[fullpath]->apply();
 				}
 			}
 			catch (...)
@@ -387,7 +389,7 @@ namespace octoon
 
 			if (it.TextureIndex < limits)
 			{
-				auto& fullpath = pmx.textures[it.TextureIndex].fullpath;
+				auto fullpath = pmx.textures[it.TextureIndex].fullpath.u8string();
 				if (textureMap.find(fullpath) != textureMap.end())
 					material->setColorMap(textureMap.at(fullpath));
 			}
@@ -607,14 +609,14 @@ namespace octoon
 		mesh->computeBoundingBox();
 
 		auto geometry = std::make_shared<Geometry>();
-		geometry->setMesh(mesh);
-		geometry->setMaterials(materials);
+		geometry->setMesh(std::move(mesh));
+		geometry->setMaterials(std::move(materials));
 
 		return geometry;
 	}
 
 	std::shared_ptr<GameObject>
-	PMXLoader::load(std::string_view filepath, PMXLoadFlags flags) noexcept(false)
+	PMXLoader::load(const std::filesystem::path& filepath, PMXLoadFlags flags) noexcept(false)
 	{
 		PMX pmx;
 		if (PMX::load(filepath, pmx))
@@ -676,7 +678,7 @@ namespace octoon
 	}
 
 	bool
-	PMXLoader::save(const GameObject& gameObject, PMX& pmx, std::string_view path) noexcept(false)
+	PMXLoader::save(const GameObject& gameObject, PMX& pmx, const std::filesystem::path& path) noexcept(false)
 	{
 		if (!gameObject.getName().empty())
 		{
@@ -793,7 +795,7 @@ namespace octoon
 						auto texture = it.first;
 						auto name = texture->getName();
 						auto filename = make_guid() + name.substr(name.find_last_of("."));
-						auto outputPath = std::string(path) + filename;
+						auto outputPath = std::filesystem::path(path).append(filename).string();
 						auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
 						texture->save(outputPath, extension);
 						pmx.textures[it.second] = PmxName(filename);
@@ -1038,36 +1040,15 @@ namespace octoon
 	}
 
 	bool
-	PMXLoader::save(const GameObject& gameObject, std::string_view path) noexcept(false)
+	PMXLoader::save(const GameObject& gameObject, const std::filesystem::path& path) noexcept(false)
 	{
-		auto stream = io::ofstream(std::string(path), std::ios_base::in | std::ios_base::out);
+		auto stream = io::ofstream(path, std::ios_base::in | std::ios_base::out);
 		if (stream)
 		{
 			auto pmx = std::make_unique<PMX>();
-			auto root = runtime::string::directory(std::string(path));
+			auto root = path.parent_path();
 
 			save(gameObject, *pmx, root);
-
-			PMX::save(stream, *pmx);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	bool
-	PMXLoader::save(const GameObject& gameObject, std::wstring_view path) noexcept(false)
-	{
-		auto stream = io::ofstream(std::wstring(path), std::ios_base::in | std::ios_base::out);
-		if (stream)
-		{
-			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-
-			auto pmx = std::make_unique<PMX>();
-			auto root = runtime::string::directory(std::wstring(path));
-
-			save(gameObject, *pmx, cv.to_bytes(root));
 
 			PMX::save(stream, *pmx);
 

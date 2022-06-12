@@ -714,46 +714,46 @@ $20 (Original cost $40)</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="142"/>
+        <location filename="../views/model_dock.cpp" line="141"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="142"/>
+        <location filename="../views/model_dock.cpp" line="141"/>
         <source>Are you sure you want to delete this model?</source>
         <translation>确定要删除此模型吗?</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="158"/>
+        <location filename="../views/model_dock.cpp" line="157"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="165"/>
+        <location filename="../views/model_dock.cpp" line="164"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="165"/>
+        <location filename="../views/model_dock.cpp" line="164"/>
         <source>PMX Files (*.pmx)</source>
         <translation>PMX 文件 (*.pmx)</translation>
     </message>
     <message>
+        <location filename="../views/model_dock.cpp" line="169"/>
         <location filename="../views/model_dock.cpp" line="170"/>
-        <location filename="../views/model_dock.cpp" line="171"/>
+        <location filename="../views/model_dock.cpp" line="216"/>
         <location filename="../views/model_dock.cpp" line="217"/>
-        <location filename="../views/model_dock.cpp" line="218"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="170"/>
-        <location filename="../views/model_dock.cpp" line="217"/>
+        <location filename="../views/model_dock.cpp" line="169"/>
+        <location filename="../views/model_dock.cpp" line="216"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="220"/>
+        <location filename="../views/model_dock.cpp" line="219"/>
         <source>Unknown-name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1314,7 +1314,7 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ToolDock</name>
     <message>
-        <location filename="../views/tool_dock.cpp" line="36"/>
+        <location filename="../views/tool_dock.cpp" line="37"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
@@ -1323,75 +1323,75 @@ $20 (Original cost $40)</source>
         <translation type="vanished">加载资源(.pmm, .mdl)</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="43"/>
+        <location filename="../views/tool_dock.cpp" line="44"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="44"/>
+        <location filename="../views/tool_dock.cpp" line="45"/>
         <source>Export Project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="47"/>
+        <location filename="../views/tool_dock.cpp" line="48"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="51"/>
+        <location filename="../views/tool_dock.cpp" line="52"/>
         <source>Music</source>
         <translation>音乐</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="52"/>
+        <location filename="../views/tool_dock.cpp" line="53"/>
         <source>Set Background Audio File</source>
         <translation>设置背景音乐</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="58"/>
+        <location filename="../views/tool_dock.cpp" line="59"/>
         <source>Screenshot</source>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="59"/>
+        <location filename="../views/tool_dock.cpp" line="60"/>
         <source>Denoising Screenshot</source>
         <translation>降噪截屏</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="65"/>
+        <location filename="../views/tool_dock.cpp" line="66"/>
         <source>Render</source>
         <translation>渲染</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="66"/>
+        <location filename="../views/tool_dock.cpp" line="67"/>
         <source>Enable High Quality Rendering</source>
         <translation>启用高质量渲染</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="72"/>
+        <location filename="../views/tool_dock.cpp" line="73"/>
         <source>Cleanup</source>
         <translation>清空</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="73"/>
+        <location filename="../views/tool_dock.cpp" line="74"/>
         <source>Cleanup Scene</source>
         <translation>清空场景</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="150"/>
-        <location filename="../views/tool_dock.cpp" line="304"/>
+        <location filename="../views/tool_dock.cpp" line="151"/>
+        <location filename="../views/tool_dock.cpp" line="305"/>
         <source>Open Project</source>
         <translation>打开项目</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="139"/>
-        <location filename="../views/tool_dock.cpp" line="394"/>
+        <location filename="../views/tool_dock.cpp" line="140"/>
+        <location filename="../views/tool_dock.cpp" line="395"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="139"/>
-        <location filename="../views/tool_dock.cpp" line="394"/>
+        <location filename="../views/tool_dock.cpp" line="140"/>
+        <location filename="../views/tool_dock.cpp" line="395"/>
         <source>Do you want to discard your local changes?</source>
         <translation>是否要丢弃当前的场景?</translation>
     </message>
@@ -1400,14 +1400,14 @@ $20 (Original cost $40)</source>
         <translation type="vanished">所有文件(*.pmm *.pmx *.abc *.mdl);; PMM 文件 (*.pmm);; PMX 文件 (*.pmx);; Abc 文件 (*.abc);;材质文件 (*.mdl)</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="182"/>
+        <location filename="../views/tool_dock.cpp" line="183"/>
         <source>Opening</source>
         <translation>打开中</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="157"/>
-        <location filename="../views/tool_dock.cpp" line="182"/>
-        <location filename="../views/tool_dock.cpp" line="269"/>
+        <location filename="../views/tool_dock.cpp" line="158"/>
+        <location filename="../views/tool_dock.cpp" line="183"/>
+        <location filename="../views/tool_dock.cpp" line="270"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -1416,99 +1416,99 @@ $20 (Original cost $40)</source>
         <translation type="vanished">加载项目</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="183"/>
+        <location filename="../views/tool_dock.cpp" line="184"/>
         <source>Open Progress</source>
         <translation>打开进度</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="172"/>
-        <location filename="../views/tool_dock.cpp" line="216"/>
-        <location filename="../views/tool_dock.cpp" line="245"/>
-        <location filename="../views/tool_dock.cpp" line="289"/>
-        <location filename="../views/tool_dock.cpp" line="325"/>
-        <location filename="../views/tool_dock.cpp" line="352"/>
-        <location filename="../views/tool_dock.cpp" line="378"/>
-        <location filename="../views/tool_dock.cpp" line="407"/>
+        <location filename="../views/tool_dock.cpp" line="173"/>
+        <location filename="../views/tool_dock.cpp" line="217"/>
+        <location filename="../views/tool_dock.cpp" line="246"/>
+        <location filename="../views/tool_dock.cpp" line="290"/>
+        <location filename="../views/tool_dock.cpp" line="326"/>
+        <location filename="../views/tool_dock.cpp" line="353"/>
+        <location filename="../views/tool_dock.cpp" line="379"/>
+        <location filename="../views/tool_dock.cpp" line="408"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="216"/>
+        <location filename="../views/tool_dock.cpp" line="217"/>
         <source>Failed to open project: </source>
         <translation>打开项目失败： </translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="232"/>
+        <location filename="../views/tool_dock.cpp" line="233"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="245"/>
+        <location filename="../views/tool_dock.cpp" line="246"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="263"/>
+        <location filename="../views/tool_dock.cpp" line="264"/>
         <source>New Project</source>
         <translation type="unfinished">New Project</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="157"/>
+        <location filename="../views/tool_dock.cpp" line="158"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="304"/>
+        <location filename="../views/tool_dock.cpp" line="305"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="340"/>
+        <location filename="../views/tool_dock.cpp" line="341"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="29"/>
+        <location filename="../views/tool_dock.cpp" line="30"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="30"/>
+        <location filename="../views/tool_dock.cpp" line="31"/>
         <source>Open Project(.pmm, .apg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="37"/>
+        <location filename="../views/tool_dock.cpp" line="38"/>
         <source>Import Resource File(.pmm, .apg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="158"/>
+        <location filename="../views/tool_dock.cpp" line="159"/>
         <source>Open Project...</source>
         <translation>打开项目</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="172"/>
+        <location filename="../views/tool_dock.cpp" line="173"/>
         <source>Can&apos;t find manifest.json in %1</source>
         <translation>无法在%1目录中找到manifest.json文件</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="232"/>
+        <location filename="../views/tool_dock.cpp" line="233"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="269"/>
+        <location filename="../views/tool_dock.cpp" line="270"/>
         <source>Save...</source>
         <translation>保存中...</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="270"/>
+        <location filename="../views/tool_dock.cpp" line="271"/>
         <source>Save Project</source>
         <translation>保存项目</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="340"/>
+        <location filename="../views/tool_dock.cpp" line="341"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>

@@ -7,7 +7,6 @@
 #include <octoon/animation/animation.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
-#include <set>
 
 namespace octoon
 {
@@ -18,13 +17,13 @@ namespace octoon
 		AssetBundle() noexcept;
 		~AssetBundle() noexcept;
 
-		void open(std::string assetPath) noexcept(false);
+		void open(const std::filesystem::path& assetPath) noexcept(false);
 		void close() noexcept;
 
 		void unload() noexcept;
 		void saveAssets() noexcept(false);
 
-		nlohmann::json importAsset(std::string_view path, bool generateMipmap = false) noexcept(false);
+		nlohmann::json importAsset(const std::filesystem::path& path, bool generateMipmap = false) noexcept(false);
 
 		nlohmann::json createAsset(const std::shared_ptr<Texture>& texture) noexcept(false);
 		nlohmann::json createAsset(const std::shared_ptr<Animation>& animation) noexcept(false);
@@ -53,12 +52,7 @@ namespace octoon
 			return nullptr;
 		}
 
-		bool needUpdate(std::string_view uuid) const noexcept;
-		void addUpdateList(std::string_view uuid) noexcept(false);
-		void removeUpdateList(std::string_view uuid) noexcept(false);
-		const std::set<std::string>& getUpdateList() const noexcept;
-
-		std::shared_ptr<AssetBundle> loadFromFile(std::string_view path) noexcept(false);
+		std::shared_ptr<AssetBundle> loadFromFile(const std::filesystem::path& path) noexcept(false);
 		std::vector<std::shared_ptr<AssetBundle>> getAllLoadedAssetBundles() const noexcept;
 
 	private:
@@ -66,8 +60,7 @@ namespace octoon
 		AssetBundle& operator=(const AssetBundle&) = delete;
 
 	private:
-		std::string assetPath_;
-		std::set<std::string> updateList_;
+		std::filesystem::path assetPath_;
 
 		std::unique_ptr<AssetImporter> modelAsset_;
 		std::unique_ptr<AssetImporter> motionAsset_;

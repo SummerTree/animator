@@ -23,13 +23,12 @@ namespace octoon
 	{
 	public:
 		static std::shared_ptr<GameObject> load(const PMX& pmx, PMXLoadFlags flags) noexcept(false);
-		static std::shared_ptr<GameObject> load(std::string_view path, PMXLoadFlags flags) noexcept(false);
+		static std::shared_ptr<GameObject> load(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false);
 
 		static std::shared_ptr<Geometry> loadGeometry(const PMX& pmx) noexcept(false);
 
-		static bool save(const GameObject& gameObject, PMX& pmx, std::string_view path) noexcept(false);
-		static bool save(const GameObject& gameObject, std::string_view path) noexcept(false);
-		static bool save(const GameObject& gameObject, std::wstring_view path) noexcept(false);
+		static bool save(const GameObject& gameObject, PMX& pmx, const std::filesystem::path& path) noexcept(false);
+		static bool save(const GameObject& gameObject, const std::filesystem::path& path) noexcept(false);
 	};
 }
 

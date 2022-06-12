@@ -6,10 +6,7 @@
 #include <octoon/math/mathutil.h>
 #include <octoon/runtime/string.h>
 #include <octoon/hal/graphics_texture.h>
-
 #include <map>
-#include <cstring>
-#include <codecvt>
 
 namespace octoon
 {
@@ -43,10 +40,10 @@ namespace octoon
 	}
 
 	bool
-	PMX::load(std::string_view filepath, PMX& pmx) noexcept
+	PMX::load(const std::filesystem::path& filepath, PMX& pmx) noexcept
 	{
 		io::ifstream stream;
-		if (!stream.open(std::string(filepath))) return false;
+		if (!stream.open(filepath)) return false;
 
 		if (!stream.read((char*)&pmx.header, sizeof(pmx.header))) return false;
 		if (!stream.read((char*)&pmx.description.japanModelLength, sizeof(pmx.description.japanModelLength))) return false;
@@ -176,8 +173,7 @@ namespace octoon
 
 		if (pmx.numTextures > 0)
 		{
-			auto rootPath = runtime::string::directory(std::string(filepath));
-			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+			auto rootPath = filepath.parent_path();
 
 			pmx.textures.resize(pmx.numTextures);
 
@@ -186,10 +182,7 @@ namespace octoon
 				if (!stream.read((char*)&texture.length, sizeof(texture.length))) return false;
 				if (!stream.read((char*)&texture.name, texture.length)) return false;
 
-				std::string u8_conv = cv.to_bytes(texture.name);
-
-				std::strncpy((char*)texture.fullpath, rootPath.data(), rootPath.length());
-				std::strcat((char*)texture.fullpath, u8_conv.data());
+				texture.fullpath = std::filesystem::path(rootPath).append(texture.name);
 			}
 		}
 

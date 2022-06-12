@@ -210,9 +210,9 @@ namespace octoon
 	}
 
 	bool
-	VMD::load(std::string_view& filepath) noexcept(false)
+	VMD::load(const std::filesystem::path& filepath) noexcept(false)
 	{
-		io::ifstream stream(std::string(filepath), std::ios_base::binary);
+		io::ifstream stream(filepath, std::ios_base::binary);
 		if (stream)
 		{
 			load(stream);
@@ -223,9 +223,9 @@ namespace octoon
 	}
 
 	bool
-	VMD::save(std::string_view& filepath) noexcept(false)
+	VMD::save(const std::filesystem::path& filepath) noexcept(false)
 	{
-		io::ofstream stream(std::string(filepath), std::ios_base::binary);
+		io::ofstream stream(filepath, std::ios_base::binary);
 		if (stream)
 		{
 			save(stream);
@@ -568,9 +568,9 @@ namespace octoon
 	}
 
 	std::shared_ptr<Animation>
-	VMDLoader::load(std::string_view filepath) noexcept(false)
+	VMDLoader::load(const std::filesystem::path& filepath) noexcept(false)
 	{
-		io::ifstream stream(std::string(filepath), std::ios_base::binary);
+		io::ifstream stream(filepath, std::ios_base::binary);
 		if (stream)
 			return load(stream);
 
@@ -578,11 +578,9 @@ namespace octoon
 	}
 
 	void
-	VMDLoader::save(std::string_view filepath, const Animation& animation) noexcept(false)
+	VMDLoader::save(const std::filesystem::path& filepath, const Animation& animation) noexcept(false)
 	{
-		std::filesystem::create_directories(runtime::string::directory(std::string(filepath)));
-
-		io::ofstream stream(std::string(filepath), io::ios_base::in | io::ios_base::out);
+		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		if (stream)
 			save(stream, animation);
 	}

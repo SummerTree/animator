@@ -11,6 +11,7 @@
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/video/renderer.h>
 #include <filesystem>
+#include <set>
 
 namespace octoon
 {
@@ -61,6 +62,11 @@ namespace octoon
 			return nullptr;
 		}
 
+		bool needUpdate(std::string_view uuid) const noexcept;
+		void addUpdateList(std::string_view uuid) noexcept(false);
+		void removeUpdateList(std::string_view uuid) noexcept(false);
+		const std::set<std::string>& getUpdateList() const noexcept;
+
 		std::shared_ptr<GraphicsTexture> createMaterialPreview(const std::shared_ptr<Material>& material);
 
 	private:
@@ -78,6 +84,7 @@ namespace octoon
 		std::uint32_t previewWidth_;
 		std::uint32_t previewHeight_;
 
+		std::set<std::string> updateList_;
 		std::map<std::string, nlohmann::json> packageList_;
 
 		std::map<std::weak_ptr<const RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<const RttiObject>>> assetList_;

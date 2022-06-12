@@ -16,9 +16,9 @@ namespace unreal
 		RecordComponent() noexcept;
 		~RecordComponent() noexcept;
 
-		void captureImage(std::string_view filepath) noexcept;
+		void captureImage(const std::filesystem::path& filepath) noexcept;
 
-		bool startRecord(std::string_view filepath) noexcept;
+		bool startRecord(const std::filesystem::path& filepath) noexcept;
 		void stopRecord() noexcept(false);
 
 		virtual const std::type_info& type_info() const noexcept

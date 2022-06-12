@@ -4,6 +4,7 @@
 #include <octoon/math/math.h>
 #include <octoon/io/iostream.h>
 #include <codecvt>
+#include <filesystem>
 
 #ifndef MAX_PATH
 #	define MAX_PATH 256
@@ -170,13 +171,12 @@ namespace octoon
 	{
 		PmxUInt32 length;
 		PmxChar name[MAX_PATH];
-		char fullpath[MAX_PATH];
+		std::filesystem::path fullpath;
 
 		PmxName()
 		{
 			this->length = 0;
 			std::memset(name, 0, MAX_PATH);
-			std::memset(fullpath, 0, MAX_PATH);
 		}
 
 		PmxName(const std::string& name)
@@ -187,7 +187,6 @@ namespace octoon
 			this->length = (PmxUInt32)(utf16.size() * 2);
 			std::memset(this->name, 0, MAX_PATH);
 			std::memcpy(this->name, utf16.data(), this->length);
-			std::memset(this->fullpath, 0, MAX_PATH);
 		}
 	};
 
@@ -492,7 +491,7 @@ namespace octoon
 		static bool canRead(std::string_view type) noexcept;
 		static bool canRead(const char* type) noexcept;
 
-		static bool load(std::string_view filepath, PMX& pmx) noexcept;
+		static bool load(const std::filesystem::path& filepath, PMX& pmx) noexcept;
 		static bool save(io::ostream& stream, const PMX& pmx) noexcept;
 	};
 }

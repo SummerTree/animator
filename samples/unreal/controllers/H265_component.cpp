@@ -32,7 +32,7 @@ namespace unreal
 	}
 
 	bool
-	H265Component::create(std::string_view filepath) noexcept(false)
+	H265Component::create(const std::filesystem::path& filepath) noexcept(false)
 	{
 		auto& context = this->getContext();
 		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
@@ -40,7 +40,7 @@ namespace unreal
 		this->height_ = framebufferSize.y;
 		this->buf_ = std::make_unique<std::uint8_t[]>(this->width_ * this->height_ * 3);
 		this->filepath_ = filepath;
-		this->ostream_ = std::make_shared<std::ofstream>(this->filepath_ + ".h265", std::ios_base::binary);
+		this->ostream_ = std::make_shared<std::ofstream>(std::filesystem::path(this->filepath_).append(".h265"), std::ios_base::binary);
 		if (!this->ostream_->good())
 			throw std::runtime_error("ofstream() failed");
 
@@ -127,8 +127,8 @@ namespace unreal
 
 			AVPacket* packet = av_packet_alloc();
 
-			auto outFilename = filepath_;
-			auto inFilename = filepath_ + ".h265";
+			auto outFilename = filepath_.string();
+			auto inFilename = filepath_.string() + ".h265";
 
 			try
 			{

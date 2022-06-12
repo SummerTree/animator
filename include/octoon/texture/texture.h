@@ -5,6 +5,7 @@
 #include <octoon/texture/texture_loader.h>
 #include <octoon/runtime/rtti_object.h>
 #include <octoon/hal/graphics_texture.h>
+#include <filesystem>
 
 namespace octoon
 {
@@ -20,6 +21,7 @@ namespace octoon
 		explicit Texture(istream& stream, const char* type = nullptr) noexcept;
 		explicit Texture(const char* filepath, const char* type = nullptr) noexcept;
 		explicit Texture(const std::string& filepath, const char* type = nullptr) noexcept;
+		explicit Texture(const std::filesystem::path& filepath, const char* type = nullptr) noexcept;
 		virtual ~Texture() noexcept;
 
 		bool create(Format format, std::uint32_t width, std::uint32_t height) noexcept(false);
@@ -67,11 +69,13 @@ namespace octoon
 		bool load(istream& stream, const char* type = nullptr) noexcept;
 		bool load(const char* filepath, const char* type = nullptr) noexcept;
 		bool load(const std::string& filepath, const char* type = nullptr) noexcept;
+		bool load(const std::filesystem::path& filepath, const char* type = nullptr) noexcept;
 
 		bool save(ostream& stream, const char* type = "tga") const noexcept;
 		bool save(const char* filepath, const char* type = "tga") const noexcept;
 		bool save(const std::string& filepath, const char* type = "tga") const noexcept;
 		bool save(const std::string& filepath, const std::string& type = "tga") const noexcept;
+		bool save(const std::filesystem::path& filepath, const std::string& type = "tga") const noexcept;
 
 	private:
 		Format format_;

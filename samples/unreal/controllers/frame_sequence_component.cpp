@@ -23,14 +23,14 @@ namespace unreal
 	}
 
 	bool
-	FrameSequenceComponent::create(std::string_view filepath) noexcept(false)
+	FrameSequenceComponent::create(const std::filesystem::path& filepath) noexcept(false)
 	{
 		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
 		this->width_ = framebufferSize.x;
 		this->height_ = framebufferSize.y;
 
 		filepath_ = filepath;
-		QFileInfo file(QString::fromStdString(filepath_));
+		QFileInfo file(QString::fromStdString(filepath_.string()));
 		dirpath_ = file.absoluteDir().absolutePath().toStdString();
 		filename_ = file.fileName().toStdString();
 		basename_ = file.baseName().toStdString();

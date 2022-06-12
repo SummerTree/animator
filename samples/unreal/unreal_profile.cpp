@@ -60,7 +60,7 @@ namespace unreal
 		if (stream)
 		{
 			auto json = nlohmann::json::parse(stream);
-			auto ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).append("Assets").string());
+			auto ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).append("Assets"));
 
 			this->path = path_.string();
 
@@ -129,7 +129,7 @@ namespace unreal
 				nlohmann::json json;
 
 				auto ab = std::make_shared<octoon::AssetBundle>();
-				ab->open(std::filesystem::path(path_).append("Assets").string());
+				ab->open(std::filesystem::path(path_).append("Assets"));
 
 				this->path = path_.string();
 				this->physicsModule->save(json["physics"], ab);

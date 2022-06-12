@@ -70,6 +70,13 @@ namespace octoon
 		this->load(filepath, type);
 	}
 
+	Texture::Texture(const std::filesystem::path& filepath, const char* type) noexcept
+		: Texture()
+	{
+		this->setName((char*)filepath.u8string().c_str());
+		this->load(filepath, type);
+	}
+
 	Texture::~Texture() noexcept
 	{
 	}
@@ -530,6 +537,13 @@ namespace octoon
 	}
 
 	bool
+	Texture::load(const std::filesystem::path& filepath, const char* type) noexcept
+	{
+		io::ifstream stream(filepath);
+		return this->load(stream, type);
+	}
+
+	bool
 	Texture::save(ostream& stream, const char* type) const noexcept
 	{
 		if (stream.good())
@@ -561,6 +575,13 @@ namespace octoon
 
 	bool
 	Texture::save(const std::string& filepath, const std::string& type) const noexcept
+	{
+		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
+		return this->save(stream, type.c_str());
+	}
+
+	bool
+	Texture::save(const std::filesystem::path& filepath, const std::string& type) const noexcept
 	{
 		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		return this->save(stream, type.c_str());

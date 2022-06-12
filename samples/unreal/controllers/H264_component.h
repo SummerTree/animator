@@ -15,7 +15,7 @@ namespace unreal
 	public:
 		H264Component() noexcept;
 
-		bool create(std::string_view filepath) noexcept(false);
+		bool create(const std::filesystem::path& filepath) noexcept(false);
 		void write(const octoon::math::Vector3* data) noexcept(false);
 		void close() noexcept;
 
@@ -47,7 +47,7 @@ namespace unreal
 		std::unique_ptr<char[]> scratch_;
 		std::unique_ptr<std::uint8_t[]> buf_;
 
-		std::string filepath_;
+		std::filesystem::path filepath_;
 		std::shared_ptr<std::ostream> ostream_;
 	};
 }

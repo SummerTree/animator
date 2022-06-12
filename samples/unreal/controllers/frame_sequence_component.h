@@ -4,6 +4,7 @@
 #include "unreal_component.h"
 #include "module/encode_module.h"
 
+#include <filesystem>
 #include <octoon/math/vector3.h>
 
 namespace unreal
@@ -13,7 +14,7 @@ namespace unreal
 	  public:
 		FrameSequenceComponent() noexcept;
 
-		bool create(std::string_view filepath) noexcept(false);
+		bool create(const std::filesystem::path& filepath) noexcept(false);
 		void write(const octoon::math::Vector3* data) noexcept(false);
 		void close() noexcept;
 
@@ -35,12 +36,12 @@ namespace unreal
 		std::uint32_t width_;
 		std::uint32_t height_;
 
-		std::string filepath_;
 		std::string dirpath_;
 		std::string filename_;
 		std::string basename_;
 		std::string extension_;
 		std::int32_t count_;
+		std::filesystem::path filepath_;
 	};
 
 }

@@ -31,7 +31,7 @@ namespace unreal
 	}
 
 	bool
-	H264Component::create(std::string_view filepath) noexcept(false)
+	H264Component::create(const std::filesystem::path& filepath) noexcept(false)
 	{
 		auto& context = this->getContext();
 		auto& framebufferSize = this->getContext()->profile->cameraModule->framebufferSize.getValue();
@@ -39,7 +39,7 @@ namespace unreal
 		this->height_ = framebufferSize.y;
 		this->buf_ = std::make_unique<std::uint8_t[]>(this->width_ * this->height_ * 3);
 		this->filepath_ = filepath;
-		this->ostream_ = std::make_shared<std::ofstream>(this->filepath_ + ".tmp", std::ios_base::binary);
+		this->ostream_ = std::make_shared<std::ofstream>(std::filesystem::path(filepath).append(".tmp"), std::ios_base::binary);
 		if (!this->ostream_->good())
 			throw std::runtime_error("ofstream() failed");
 
@@ -191,8 +191,8 @@ namespace unreal
 			{
 				auto& playerModule = this->getContext()->profile->playerModule;
 
-				auto inFilename = filepath_ + ".tmp";
-				auto outFilename = filepath_;
+				auto inFilename = std::filesystem::path(filepath_).append(".tmp").string();
+				auto outFilename = filepath_.string();
 
 				if (avformat_open_input(&iformat, inFilename.c_str(), 0, 0) < 0)
 					throw std::runtime_error("Could not open input file.");

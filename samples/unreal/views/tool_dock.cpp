@@ -6,6 +6,7 @@
 #include <qmimedata.h>
 #include <qprogressdialog.h>
 #include <qscrollarea.h>
+#include <octoon/asset_database.h>
 
 namespace unreal
 {
@@ -134,7 +135,7 @@ namespace unreal
 		spdlog::debug("Entered openEvent");
 		try
 		{
-			if (!octoon::AssetBundle::instance()->getUpdateList().empty() || !profile_->path.empty())
+			if (!octoon::AssetDatabase::instance()->getUpdateList().empty() || !profile_->path.empty())
 			{
 				if (QMessageBox::question(this, tr("Info"), tr("Do you want to discard your local changes?")) == QMessageBox::No)
 					return;
@@ -151,7 +152,7 @@ namespace unreal
 					if (!fileName.isEmpty())
 					{
 #if 1
-						auto path = fileName.toUtf8().toStdString();
+						auto path = fileName.toStdWString();
 						if (std::filesystem::exists(std::filesystem::path(path).append("manifest.json")))
 						{
 							QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
@@ -174,7 +175,7 @@ namespace unreal
 #else
 						// load task
 						auto fn = [&]() {
-							behaviour->open(fileName.toUtf8().toStdString());
+							behaviour->open(fileName.toStdWString());
 						};
 						QFuture<void> fu = QtConcurrent::run(fn);
 
@@ -232,7 +233,7 @@ namespace unreal
 					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)"));
 					if (!fileName.isEmpty())
 					{
-						behaviour->load(fileName.toUtf8().toStdString());
+						behaviour->load(fileName.toStdWString());
 					}
 				}
 			}
@@ -263,7 +264,7 @@ namespace unreal
 					QString fileName = QFileDialog::getExistingDirectory(this, tr("New Project"));
 					if (fileName.isEmpty())
 						return;
-					filepath = fileName.toUtf8().toStdString();
+					filepath = fileName.toStdWString();
 				}
 				
 				QProgressDialog dialog(tr("Save..."), tr("Cancel"), 0, 1, this);
@@ -341,7 +342,7 @@ namespace unreal
 				if (!fileName.isEmpty())
 				{
 					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-					behaviour->renderPicture(fileName.toUtf8().toStdString());
+					behaviour->renderPicture(fileName.toStdWString());
 				}
 			}
 
@@ -389,7 +390,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (!octoon::AssetBundle::instance()->getUpdateList().empty() || !profile_->path.empty())
+				if (!octoon::AssetDatabase::instance()->getUpdateList().empty() || !profile_->path.empty())
 				{
 					if (QMessageBox::question(this, tr("Info"), tr("Do you want to discard your local changes?")) == QMessageBox::Yes)
 						behaviour->reset();

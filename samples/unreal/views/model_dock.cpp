@@ -126,7 +126,6 @@ namespace unreal
 
 				auto name = QString::fromStdString(package["name"].get<nlohmann::json::string_t>());
 				imageLabel->setToolTip(name);
-				name.truncate(name.lastIndexOf('.'));
 				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
 			}
 		}
@@ -181,7 +180,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toUtf8().toStdString());
+					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}

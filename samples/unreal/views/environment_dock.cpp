@@ -146,7 +146,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toUtf8().toStdString(), true);
+					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString(), true);
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
@@ -660,7 +660,7 @@ namespace unreal
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
 			if (!filepath.isEmpty())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(std::string_view(filepath.toUtf8().toStdString()));
+				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdWString());
 				if (texture)
 				{
 					texture->setMipLevel(8);

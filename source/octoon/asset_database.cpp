@@ -115,9 +115,8 @@ namespace octoon
 
 		std::filesystem::create_directories(rootPath);
 
-		auto outputPath = texturePath.string();
-		auto extension = outputPath.substr(outputPath.find_last_of(".") + 1);
-		texture->save(outputPath, extension.c_str());
+		auto extension = texturePath.string().substr(texturePath.string().find_last_of(".") + 1);
+		texture->save(texturePath, extension.c_str());
 		std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 
 		nlohmann::json package;
@@ -133,16 +132,16 @@ namespace octoon
 			auto name = texture->getName();
 			auto width = texture->width();
 			auto height = texture->height();
-			float* data_ = (float*)texture->data();
+			auto data_ = (float*)texture->data();
 
 			auto size = width * height * 3;
 			auto pixels = std::make_unique<std::uint8_t[]>(size);
 
 			for (std::size_t i = 0; i < size; i += 3)
 			{
-				pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
-				pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
-				pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
+				pixels[i] = static_cast<std::uint8_t>(std::clamp(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0.0f, 255.0f));
+				pixels[i + 1] = static_cast<std::uint8_t>(std::clamp(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0.0f, 255.0f));
+				pixels[i + 2] = static_cast<std::uint8_t>(std::clamp(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0.0f, 255.0f));
 			}
 
 			auto uuid2 = make_guid();
@@ -179,7 +178,7 @@ namespace octoon
 
 		std::filesystem::create_directories(rootPath);
 
-		VMDLoader::save(motionPath.string(), *animation);
+		VMDLoader::save(motionPath, *animation);
 		std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
 
 		nlohmann::json package;
@@ -219,7 +218,7 @@ namespace octoon
 				auto uuid = make_guid();
 				auto previewPath = std::filesystem::path(path).append(uuid + ".png");
 				this->createMaterialPreview(material, texture);
-				texture.save(previewPath.string(), "png");
+				texture.save(previewPath, "png");
 				return previewPath.string();
 			};
 
@@ -359,14 +358,13 @@ namespace octoon
 
 			for (auto& texture : pmx.textures)
 			{
-				auto fullpath = cv.from_bytes(std::string(texture.fullpath));
 				auto texturePath = std::filesystem::path(rootPath).append(texture.name);
 
-				if (std::filesystem::exists(fullpath) && !std::filesystem::exists(texturePath))
+				if (std::filesystem::exists(texture.fullpath) && !std::filesystem::exists(texturePath))
 				{
 					auto textureRootPath = runtime::string::directory(texturePath.string());
 					std::filesystem::create_directories(textureRootPath);
-					std::filesystem::copy(fullpath, texturePath);
+					std::filesystem::copy(texture.fullpath, texturePath);
 					std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
 				}
 			}
@@ -383,7 +381,7 @@ namespace octoon
 				Texture texture;
 				auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
 				this->createModelPreview(geometry, boundingBox, texture);
-				texture.save(previewPath.string(), "png");
+				texture.save(previewPath, "png");
 				return previewPath.string();
 			};
 
@@ -523,7 +521,7 @@ namespace octoon
 
 		if (ext == ".vmd")
 		{
-			auto motion = VMDLoader::load(path.string());
+			auto motion = VMDLoader::load(path);
 			if (motion)
 			{
 				assetPathList_[motion] = path.string();
@@ -533,7 +531,7 @@ namespace octoon
 		}
 		else if (ext == ".hdr" || ext == ".bmp" || ext == ".tga" || ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".dds")
 		{
-			auto texture = std::make_shared<Texture>((std::string)path.string());
+			auto texture = std::make_shared<Texture>(path);
 			if (texture)
 			{
 				assetPathList_[texture] = path.string();
@@ -651,7 +649,7 @@ namespace octoon
 			{
 				auto uuid = package["uuid"].get<std::string>();
 				auto path = package["path"].get<std::string>();
-				auto motion = VMDLoader::load(path.c_str());
+				auto motion = VMDLoader::load(path);
 				if (motion)
 				{
 					packageList_[uuid] = package;
@@ -967,6 +965,32 @@ namespace octoon
 	}
 
 	void
+	AssetDatabase::addUpdateList(std::string_view uuid) noexcept(false)
+	{
+		this->updateList_.insert(std::string(uuid));
+	}
+
+	bool
+	AssetDatabase::needUpdate(std::string_view uuid) const noexcept
+	{
+		return this->updateList_.find(std::string(uuid)) != this->updateList_.end();
+	}
+
+	void
+	AssetDatabase::removeUpdateList(std::string_view uuid) noexcept(false)
+	{
+		auto it = this->updateList_.find(std::string(uuid));
+		if (it != this->updateList_.end())
+			this->updateList_.erase(it);
+	}
+
+	const std::set<std::string>&
+	AssetDatabase::getUpdateList() const noexcept
+	{
+		return this->updateList_;
+	}
+
+	void
 	AssetDatabase::initMaterialScene() noexcept(false)
 	{
 		auto renderer = Renderer::instance();
@@ -1006,7 +1030,7 @@ namespace octoon
 			if (!materialFramebuffer_)
 				throw std::runtime_error("createFramebuffer() failed");
 
-			materialCamera_ = std::make_shared<PerspectiveCamera>(60, 1, 100);
+			materialCamera_ = std::make_shared<PerspectiveCamera>(60.0f, 1.0f, 100.0f);
 			materialCamera_->setClearColor(math::float4::Zero);
 			materialCamera_->setClearFlags(ClearFlagBits::AllBit);
 			materialCamera_->setFramebuffer(materialFramebuffer_);
