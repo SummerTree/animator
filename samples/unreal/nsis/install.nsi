@@ -665,6 +665,14 @@ Section "MainSection" SEC01
   File "..\..\..\lib\system\ui\imgui_dock.layout"
   SetOutPath "$INSTDIR\system\web"
   File "..\..\..\lib\system\web\runner.html.in"
+  SetOutPath "$INSTDIR"
+  File "..\..\..\lib\LICENSE.baikal.txt"
+  File "..\..\..\lib\LICENSE.curl.txt"
+  File "..\..\..\lib\LICENSE.freetype.txt"
+  File "..\..\..\lib\LICENSE.glfw.txt"
+  File "..\..\..\lib\LICENSE.imgui.txt"
+  File "..\..\..\lib\LICENSE.json.txt"
+  File "..\..\..\lib\LICENSE.zlib.txt"
 SectionEnd
 
 Section -AdditionalIcons
