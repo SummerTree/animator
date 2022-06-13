@@ -138,7 +138,7 @@ QSlider::handle:Horizontal{
 	border-image: url(:/res/icons/handle.png);
 }
 QSlider::add-page:Horizontal{
-	background-color: rgb(230, 230, 230);
+	background-color: rgb(230, 231, 235);
 	border-radius:10px;
 	border-top-left-radius:0px;
 	border-bottom-left-radius:0px;
@@ -147,7 +147,7 @@ QSlider::add-page:Horizontal#H, QSlider::sub-page:Horizontal#H{
 	background-color:transparent;
 }
 QSlider::sub-page:Horizontal{
-	background-color: rgb(230, 230, 230);
+	background-color: rgb(230, 231, 235);
 	border-radius:10px;
 	border-top-right-radius:0px;
 	border-bottom-right-radius:0px;
@@ -348,8 +348,8 @@ QWidget#ToolWidget QToolButton:checked{
 	border-right:2px solid rgb(242,83,106);
 }
 QWidget#AssetBrowseDock{
-	min-width:90;
-	max-width:90;
+	min-width:80;
+	max-width:80;
 	border-radius:1px;
 	border:0px solid #a5a5a5;
 }
@@ -357,8 +357,8 @@ QWidget#AssetBrowseWidget{
 	background: rgb(241,242,248);
 }
 QWidget#AssetBrowseDock QToolButton{
-	min-width:90px;
-	max-width:90px;
+	min-width:80px;
+	max-width:80px;
 	min-height:80px;
 	max-height:80px;
 	font-size:16px;

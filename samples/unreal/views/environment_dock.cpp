@@ -288,7 +288,6 @@ namespace unreal
 		this->intensityLabel_->setText(tr("Intensity"));
 
 		this->intensitySlider = new QSlider(Qt::Horizontal);
-		this->intensitySlider->setObjectName("Value");
 		this->intensitySlider->setMinimum(0);
 		this->intensitySlider->setMaximum(100);
 		this->intensitySlider->setValue(0);
@@ -308,13 +307,12 @@ namespace unreal
 		this->horizontalRotationLabel_->setText(tr("Horizontal Rotation"));
 
 		this->horizontalRotationSlider = new QSlider(Qt::Horizontal);
-		this->horizontalRotationSlider->setObjectName("Value");
 		this->horizontalRotationSlider->setMinimum(-100);
 		this->horizontalRotationSlider->setMaximum(100);
 		this->horizontalRotationSlider->setValue(0);
 		this->horizontalRotationSlider->setMinimumWidth(270);
 		this->horizontalRotationSlider->installEventFilter(this);
-
+		
 		this->horizontalRotationSpinBox = new UDoubleSpinBox;
 		this->horizontalRotationSpinBox->setFixedWidth(50);
 		this->horizontalRotationSpinBox->setMinimum(-1.0f);
@@ -328,7 +326,6 @@ namespace unreal
 		this->verticalRotationLabel_->setText(tr("Vertical Rotation"));
 
 		this->verticalRotationSlider = new QSlider(Qt::Horizontal);
-		this->verticalRotationSlider->setObjectName("Value");
 		this->verticalRotationSlider->setMinimum(-100);
 		this->verticalRotationSlider->setMaximum(100);
 		this->verticalRotationSlider->setValue(0);

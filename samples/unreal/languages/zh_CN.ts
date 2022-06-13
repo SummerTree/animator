@@ -226,7 +226,7 @@
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="259"/>
-        <location filename="../views/environment_dock.cpp" line="511"/>
+        <location filename="../views/environment_dock.cpp" line="508"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
@@ -251,38 +251,38 @@
         <translation>亮度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="308"/>
+        <location filename="../views/environment_dock.cpp" line="307"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="328"/>
+        <location filename="../views/environment_dock.cpp" line="326"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="348"/>
+        <location filename="../views/environment_dock.cpp" line="345"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="401"/>
+        <location filename="../views/environment_dock.cpp" line="398"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="650"/>
-        <location filename="../views/environment_dock.cpp" line="707"/>
+        <location filename="../views/environment_dock.cpp" line="647"/>
+        <location filename="../views/environment_dock.cpp" line="704"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="664"/>
+        <location filename="../views/environment_dock.cpp" line="661"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="664"/>
+        <location filename="../views/environment_dock.cpp" line="661"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
@@ -1461,42 +1461,42 @@ $20 (Original cost $40)</source>
         <translation type="vanished">清空场景</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="20"/>
+        <location filename="../views/tool_dock.cpp" line="19"/>
         <source>Record</source>
         <translation type="unfinished">录制</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="21"/>
+        <location filename="../views/tool_dock.cpp" line="20"/>
         <source>Open Record Panel</source>
         <translation type="unfinished">显示录制面板</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="28"/>
+        <location filename="../views/tool_dock.cpp" line="27"/>
         <source>Main Light</source>
         <translation type="unfinished">主光源</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="29"/>
+        <location filename="../views/tool_dock.cpp" line="28"/>
         <source>Open Main Light Panel</source>
         <translation type="unfinished">显示主光源面板</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="36"/>
+        <location filename="../views/tool_dock.cpp" line="35"/>
         <source>Environment Light</source>
         <translation type="unfinished">环境光</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="37"/>
+        <location filename="../views/tool_dock.cpp" line="36"/>
         <source>Open Environment Light Panel</source>
         <translation type="unfinished">显示环境光面板</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="45"/>
+        <location filename="../views/tool_dock.cpp" line="44"/>
         <source>Camera</source>
         <translation type="unfinished">相机</translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="46"/>
+        <location filename="../views/tool_dock.cpp" line="45"/>
         <source>Open Camera Panel</source>
         <translation type="unfinished">显示相机面板</translation>
     </message>
@@ -1860,12 +1860,12 @@ $20 (Original cost $40)</source>
         <translation>相机</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="164"/>
+        <location filename="../views/view_dock.cpp" line="165"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="164"/>
+        <location filename="../views/view_dock.cpp" line="165"/>
         <source>Unsupported light type.</source>
         <translation>不支持的光源类型。</translation>
     </message>

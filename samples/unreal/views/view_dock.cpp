@@ -20,7 +20,8 @@ namespace unreal
 		this->setAcceptDrops(true);
 		this->setFocusPolicy(Qt::StrongFocus);
 		this->setContextMenuPolicy(Qt::PreventContextMenu);
-		
+		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
+
 		this->installEventFilter(this);
 	}
 

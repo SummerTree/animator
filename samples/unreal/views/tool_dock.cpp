@@ -8,7 +8,6 @@ namespace unreal
 		, behaviour_(behaviour)
 	{
 		this->setObjectName("ToolDock");
-		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 		this->setFeatures(DockWidgetFeature::NoDockWidgetFeatures);
 
 		auto oldTitleBar = this->titleBarWidget();

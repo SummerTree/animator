@@ -171,7 +171,7 @@
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="259"/>
-        <location filename="../views/environment_dock.cpp" line="511"/>
+        <location filename="../views/environment_dock.cpp" line="508"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
@@ -196,38 +196,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="308"/>
+        <location filename="../views/environment_dock.cpp" line="307"/>
         <source>Horizontal Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="328"/>
+        <location filename="../views/environment_dock.cpp" line="326"/>
         <source>Vertical Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="348"/>
+        <location filename="../views/environment_dock.cpp" line="345"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="401"/>
+        <location filename="../views/environment_dock.cpp" line="398"/>
         <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="650"/>
-        <location filename="../views/environment_dock.cpp" line="707"/>
+        <location filename="../views/environment_dock.cpp" line="647"/>
+        <location filename="../views/environment_dock.cpp" line="704"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="664"/>
+        <location filename="../views/environment_dock.cpp" line="661"/>
         <source>Import Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="664"/>
+        <location filename="../views/environment_dock.cpp" line="661"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1225,42 +1225,42 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ToolDock</name>
     <message>
-        <location filename="../views/tool_dock.cpp" line="20"/>
+        <location filename="../views/tool_dock.cpp" line="19"/>
         <source>Record</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="21"/>
+        <location filename="../views/tool_dock.cpp" line="20"/>
         <source>Open Record Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="28"/>
+        <location filename="../views/tool_dock.cpp" line="27"/>
         <source>Main Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="29"/>
+        <location filename="../views/tool_dock.cpp" line="28"/>
         <source>Open Main Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="36"/>
+        <location filename="../views/tool_dock.cpp" line="35"/>
         <source>Environment Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="37"/>
+        <location filename="../views/tool_dock.cpp" line="36"/>
         <source>Open Environment Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="45"/>
+        <location filename="../views/tool_dock.cpp" line="44"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="46"/>
+        <location filename="../views/tool_dock.cpp" line="45"/>
         <source>Open Camera Panel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1548,12 +1548,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="164"/>
+        <location filename="../views/view_dock.cpp" line="165"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="164"/>
+        <location filename="../views/view_dock.cpp" line="165"/>
         <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>
