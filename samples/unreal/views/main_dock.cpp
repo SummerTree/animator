@@ -69,11 +69,11 @@ namespace unreal
 
 		lightDock_->hide();
 		mainLightDock_->hide();
-		environmentDock_->show();
+		environmentDock_->hide();
 		materialDock_->hide();
 		recordDock_->hide();
 		cameraDock_->hide();
-		modelDock_->show();
+		modelDock_->hide();
 		motionDock_->hide();
 
 		this->connect(&timer, &QTimer::timeout, this, &MainDock::update);
@@ -485,6 +485,9 @@ namespace unreal
 
 				spdlog::debug("finish");
 				
+				this->modelDock_->show();
+				this->environmentDock_->show();
+
 				this->restoreLayout();
 
 				init_flag = true;
