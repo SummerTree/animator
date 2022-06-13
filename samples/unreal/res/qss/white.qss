@@ -346,7 +346,7 @@ QWidget#ToolWidget QToolButton{
 	font-family: "Microsoft YaHei";
 }
 QWidget#ToolWidget QToolButton:checked{
-	background: rgb(250, 250, 250);
+	background: rgb(230,231,235);
 	border:0px;
 	border-right:2px solid rgb(242,83,106);
 }

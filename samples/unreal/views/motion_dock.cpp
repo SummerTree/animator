@@ -21,7 +21,7 @@ namespace unreal
 	{
 		this->setWindowTitle(tr("Motion Library"));
 		this->setObjectName("MotionDock");
-		this->setFixedWidth(380);
+		this->setFixedWidth(360);
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
 		auto oldTitleBar = this->titleBarWidget();

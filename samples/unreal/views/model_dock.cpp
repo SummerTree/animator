@@ -24,7 +24,7 @@ namespace unreal
 	{
 		this->setWindowTitle(tr("Model Library"));
 		this->setObjectName("ModelDock");
-		this->setFixedWidth(380);
+		this->setFixedWidth(360);
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		
 		auto oldTitleBar = this->titleBarWidget();

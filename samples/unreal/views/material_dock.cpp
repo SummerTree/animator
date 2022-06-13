@@ -2123,7 +2123,7 @@ namespace unreal
 		this->setObjectName("MaterialDock");
 		this->setWindowTitle(tr("Material"));
 		this->setMouseTracking(true);
-		this->setFixedWidth(380);
+		this->setFixedWidth(360);
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
 		auto oldTitleBar = this->titleBarWidget();
@@ -2146,10 +2146,10 @@ namespace unreal
 		topLayout_->setContentsMargins(5, 0, 0, 0);
 
 		materialList_ = new MaterialListPanel(behaviour, profile);
-		materialList_->mainWidget_->setFixedWidth(380);
+		materialList_->mainWidget_->setFixedWidth(360);
 
 		materialAssetList_ = new MaterialAssetPanel(behaviour, profile);
-		materialAssetList_->mainWidget_->setFixedWidth(380);
+		materialAssetList_->mainWidget_->setFixedWidth(360);
 
 		modifyWidget_ = new MaterialEditWindow(behaviour);
 		modifyWidget_->hide();
