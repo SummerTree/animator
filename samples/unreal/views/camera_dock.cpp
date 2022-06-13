@@ -109,7 +109,7 @@ namespace unreal
 		mainLayout_->addLayout(focusTargetLayout);
 		mainLayout_->addLayout(animtionLayout);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(10, 0, 20, 0);
+		mainLayout_->setContentsMargins(10, 0, 10, 0);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("CameraWidget");
