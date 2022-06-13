@@ -120,6 +120,21 @@ namespace unreal
 		volumeSlider_->setRange(0, 100);
 		volumeSlider_->setValue(100);
 		volumeSlider_->setFixedWidth(80);
+
+		auto splitLine = new QFrame;
+		splitLine->setFrameShape(QFrame::VLine);
+		splitLine->setFrameShadow(QFrame::Sunken);
+		splitLine->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+
+		auto splitLine2 = new QFrame;
+		splitLine2->setFrameShape(QFrame::VLine);
+		splitLine2->setFrameShadow(QFrame::Sunken);
+		splitLine2->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+
+		auto splitLine3 = new QFrame;
+		splitLine3->setFrameShape(QFrame::VLine);
+		splitLine3->setFrameShadow(QFrame::Sunken);
+		splitLine3->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
 		
 		layout_ = new QHBoxLayout;
 		layout_->setObjectName("ToplevelLayout");
@@ -127,14 +142,17 @@ namespace unreal
 		layout_->addWidget(openButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(saveButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(importButton_, 0, Qt::AlignCenter);
+		layout_->addWidget(cleanupButton_, 0, Qt::AlignCenter);
+		layout_->addWidget(splitLine);
 		layout_->addWidget(gpuButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(shotButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(audioButton_, 0, Qt::AlignCenter);
-		layout_->addWidget(cleanupButton_, 0, Qt::AlignCenter);
+		layout_->addWidget(splitLine2);
 		layout_->addWidget(resetButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(leftButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(playButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(rightButton_, 0, Qt::AlignCenter);
+		layout_->addWidget(splitLine3);
 		layout_->addWidget(volumeButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(volumeSlider_);
 		layout_->addStretch();

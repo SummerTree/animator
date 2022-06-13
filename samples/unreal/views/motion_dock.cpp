@@ -32,6 +32,11 @@ namespace unreal
 		title_->setObjectName("title");
 		title_->setText(tr("Motion Library"));
 
+		auto headerLine = new QFrame;
+		headerLine->setFrameShape(QFrame::HLine);
+		headerLine->setFrameShadow(QFrame::Sunken);
+		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+
 		importButton_ = new UPushButton;
 		importButton_->setObjectName("Import");
 		importButton_->setText(tr("Import"));
@@ -40,6 +45,8 @@ namespace unreal
 
 		topLayout_ = new QVBoxLayout();
 		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
+		topLayout_->addSpacing(10);
+		topLayout_->addWidget(headerLine);
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
 		topLayout_->setContentsMargins(5, 0, 0, 0);
 

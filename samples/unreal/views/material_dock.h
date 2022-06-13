@@ -304,6 +304,7 @@ namespace unreal
 		void itemDoubleClicked(QListWidgetItem* item);
 
 	private:
+		QLabel* title_;
 		QVBoxLayout* materialLayout_;
 		QVBoxLayout* mainLayout_;
 		MaterialListPanel* materialList_;
@@ -311,6 +312,7 @@ namespace unreal
 		MaterialEditWindow* modifyWidget_;
 		QScrollArea* modifyMaterialArea_;
 		QTabWidget* widget_;
+		QWidget* mainWidget_;
 		QListWidgetItem* selectedItem_;
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<UnrealProfile> profile_;

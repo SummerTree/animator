@@ -302,7 +302,7 @@ namespace unreal
 		this->intensitySpinBox->setValue(0.0f);
 		this->intensitySpinBox->setDecimals(1);
 		this->intensitySpinBox->installEventFilter(this);
-
+		
 		this->horizontalRotationLabel_ = new QLabel;
 		this->horizontalRotationLabel_->setText(tr("Horizontal Rotation"));
 

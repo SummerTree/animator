@@ -14,10 +14,6 @@ namespace unreal
 		toggleButton.setCheckable(true);
 		toggleButton.setChecked(false);
 
-		headerLine.setFrameShape(QFrame::HLine);
-		headerLine.setFrameShadow(QFrame::Sunken);
-		headerLine.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-
 		contentArea.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 		contentArea.setMaximumHeight(0);
 		contentArea.setMinimumHeight(0);
@@ -29,8 +25,7 @@ namespace unreal
 		int row = 0;
 		mainLayout.setVerticalSpacing(0);
 		mainLayout.setContentsMargins(0, 0, 0, 0);
-		mainLayout.addWidget(&toggleButton, row, 0, 1, 1, Qt::AlignLeft);
-		mainLayout.addWidget(&headerLine, row++, 2, 1, 1);
+		mainLayout.addWidget(&toggleButton, row++, 0, 1, 1, Qt::AlignLeft);
 		mainLayout.addWidget(&contentArea, row, 0, 1, 3);
 		setLayout(&mainLayout);
 

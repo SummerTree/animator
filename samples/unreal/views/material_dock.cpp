@@ -2130,6 +2130,21 @@ namespace unreal
 		this->setTitleBarWidget(new QWidget());
 		delete oldTitleBar;
 
+		title_ = new QLabel;
+		title_->setObjectName("title");
+		title_->setText(tr("Material Library"));
+
+		auto headerLine = new QFrame;
+		headerLine->setFrameShape(QFrame::HLine);
+		headerLine->setFrameShadow(QFrame::Sunken);
+		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+
+		auto topLayout_ = new QVBoxLayout();
+		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
+		topLayout_->addSpacing(10);
+		topLayout_->addWidget(headerLine);
+		topLayout_->setContentsMargins(5, 0, 0, 0);
+
 		materialList_ = new MaterialListPanel(behaviour, profile);
 		materialList_->mainWidget_->setFixedWidth(380);
 
@@ -2152,7 +2167,16 @@ namespace unreal
 		widget_->addTab(materialAssetList_, tr("Library"));
 		widget_->addTab(sceneWidget_, tr("Scene"));
 
-		this->setWidget(widget_);
+		mainLayout_ = new QVBoxLayout;
+		mainLayout_->addLayout(topLayout_);
+		mainLayout_->addWidget(headerLine);
+		mainLayout_->addWidget(widget_);
+		mainLayout_->setContentsMargins(0, 10, 0, 10);
+
+		mainWidget_ = new QWidget;
+		mainWidget_->setLayout(mainLayout_);
+
+		this->setWidget(mainWidget_);
 
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(backEvent()));
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));

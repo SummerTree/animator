@@ -636,11 +636,11 @@ unreal--UPushButton:hover{
 }
 unreal--UDoubleSpinBox {
 	color: rgb(48,48,50);
+	background: rgb(241,242,248);
 	border: 1px solid rgb(242,83,106);
-	border-radius:2px;
-	padding:1px 18px 1px 3px;
-	max-width:220px;
-	background: rgb(240, 240, 240);
+	border-radius:5px;
+	min-width:55px;
+	max-width:55px;
 }
 unreal--UDoubleSpinBox::up-button{
 	height: 0px;
@@ -652,11 +652,11 @@ unreal--UDoubleSpinBox::down-button{
 }
 unreal--USpinBox {
 	color: rgb(48,48,50);
-	border: 1px solid #242424;
-	border-radius:2px;
-	padding:1px 18px 1px 3px;
-	max-width:220px;
-	background: rgb(200,200,200);
+	background: rgb(241,242,248);
+	border: 1px solid rgb(242,83,106);
+	border-radius:5px;
+	min-width:55px;
+	max-width:55px;
 }
 unreal--USpinBox::up-button{
 	height: 0px;
