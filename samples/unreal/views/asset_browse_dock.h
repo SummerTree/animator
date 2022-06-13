@@ -1,5 +1,5 @@
-#ifndef UNREAL_THUMBNAIL_DOCK_H_
-#define UNREAL_THUMBNAIL_DOCK_H_
+#ifndef UNREAL_ASSET_BROWSE_DOCK_H_
+#define UNREAL_ASSET_BROWSE_DOCK_H_
 
 #include <qapplication.h>
 #include <qlayout.h>
@@ -9,6 +9,7 @@
 #include <qlabel.h>
 #include <qdialog.h>
 #include <qscrollarea.h>
+#include <qbuttongroup.h>
 #include <QtGui/qevent.h>
 #include <qdockwidget.h>
 #include "unreal_profile.h"
@@ -17,48 +18,35 @@
 
 namespace unreal
 {
-	class ThumbnailDock final : public QDockWidget
+	class AssetBrowseDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		ThumbnailDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<UnrealProfile> profile) noexcept;
-		~ThumbnailDock() noexcept;
+		AssetBrowseDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept;
+		~AssetBrowseDock() noexcept;
 
 		void closeEvent(QCloseEvent* event);
 		bool eventFilter(QObject* watched, QEvent* event);
 
 	private Q_SLOTS:
-		void recordEvent() noexcept;
 		void lightEvent() noexcept;
-		void sunEvent() noexcept;
 		void materialEvent() noexcept;
 		void modelEvent() noexcept;
-		void environmentEvent() noexcept;
-		void cameraEvent() noexcept;
-		void settingsEvent() noexcept;
 		void motionEvent() noexcept;
+		void settingsEvent() noexcept;
 
 	Q_SIGNALS:
-		void sunSignal();
 		void lightSignal();
-		void recordSignal();
 		void modelSignal();
 		void materialSignal();
-		void environmentSignal();
-		void cameraSignal();
 		void motionSignal();
-		void languageChangeSignal(QString filename);
 
 	public:
-		QToolButton* recordButton_;
-		QToolButton* lightButton_;
-		QToolButton* sunButton_;
-		QToolButton* environmentButton_;
 		QToolButton* materialButton_;
 		QToolButton* modelButton_;
-		QToolButton* cameraButton_;
-		QToolButton* settingsButton_;
 		QToolButton* motionButton_;
+		QToolButton* lightButton_;
+		QToolButton* settingsButton_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<UnrealProfile> profile_;

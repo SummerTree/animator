@@ -12,6 +12,7 @@
 #include <qtoolbar.h>
 #include <QSlider>
 
+#include "unreal_profile.h"
 #include "unreal_behaviour.h"
 
 namespace unreal
@@ -26,6 +27,13 @@ namespace unreal
 		void paintEvent(QPaintEvent* e) noexcept;
 
 	public Q_SLOTS:
+		void openEvent() noexcept;
+		void importEvent() noexcept;
+		void saveEvent() noexcept;
+		void shotEvent() noexcept;
+		void gpuEvent() noexcept;
+		void audioEvent() noexcept;
+		void cleanupEvent() noexcept;
 		void playEvent() noexcept;
 		void resetEvent() noexcept;
 		void leftEvent() noexcept;
@@ -38,8 +46,6 @@ namespace unreal
 		bool playEnable_;
 		bool volumeEnable_;
 
-		QHBoxLayout layout_;
-
 		QIcon playIcon_;
 		QIcon playOnIcon_;
 		QIcon leftIcon_;
@@ -48,13 +54,30 @@ namespace unreal
 		QIcon volumeOnIcon_;
 		QIcon volumeOffIcon_;
 
-		QToolButton playButton;
-		QToolButton resetButton;
-		QToolButton leftButton;
-		QToolButton rightButton;
-		QToolButton volumeButton;
+		bool gpuEnable_;
+		bool audioEnable_;
+		bool hdrEnable_;
 
-		QSlider volumeSlider_;
+		QIcon gpuIcon_;
+		QIcon gpuOnIcon_;
+		QIcon audioIcon_;
+		QIcon audioOnIcon_;
+
+		QToolButton* openButton_;
+		QToolButton* saveButton_;
+		QToolButton* importButton_;
+		QToolButton* shotButton_;
+		QToolButton* gpuButton_;
+		QToolButton* audioButton_;
+		QToolButton* cleanupButton_;
+		QToolButton* playButton_;
+		QToolButton* resetButton_;
+		QToolButton* leftButton_;
+		QToolButton* rightButton_;
+		QToolButton* volumeButton_;
+
+		QSlider* volumeSlider_;
+		QHBoxLayout* layout_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<unreal::UnrealProfile> profile_;

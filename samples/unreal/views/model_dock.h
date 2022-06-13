@@ -38,11 +38,13 @@ namespace unreal
 		void addItem(std::string_view uuid) noexcept;
 
 	public:
+		QLabel* title_;
+
 		QListWidget* listWidget_;
 		QWidget* mainWidget_;
 		QVBoxLayout* mainLayout_;
 
-		QHBoxLayout* topLayout_;
+		QVBoxLayout* topLayout_;
 		QHBoxLayout* bottomLayout_;
 
 		UPushButton* importButton_;

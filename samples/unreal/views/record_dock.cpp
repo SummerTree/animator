@@ -14,6 +14,11 @@ namespace unreal
 	{
 		this->setObjectName("RecordDock");
 		this->setWindowTitle(tr("Record"));
+		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
+
+		auto oldTitleBar = this->titleBarWidget();
+		this->setTitleBarWidget(new QWidget());
+		delete oldTitleBar;
 
 		markButton_ = new UPushButton();
 		markButton_->setObjectName("mark");
@@ -85,7 +90,7 @@ namespace unreal
 		outputTypeCombo_->addItem(tr("Frame Sequence"));
 		outputTypeCombo_->setStyleSheet("color:white");
 		outputTypeCombo_->installEventFilter(this);
-
+		
 		frame_ = new ULabel();
 		frame_->setText(tr("Play:"));
 
@@ -135,11 +140,11 @@ namespace unreal
 		frameLayout_->addWidget(endFrame_, 0, Qt::AlignLeft);
 		frameLayout_->addStretch();
 
-		recordButton_ = new UPushButton();
+		recordButton_ = new QPushButton();
 		recordButton_->setObjectName("render");
 		recordButton_->setText(tr("Start Render"));
 		recordButton_->setContentsMargins(0, 0, 0, 0);
-
+		
 		videoRatioLayout_ = new QHBoxLayout();
 		videoRatioLayout_->addStretch();
 		videoRatioLayout_->addWidget(speed1_, 0, Qt::AlignRight);

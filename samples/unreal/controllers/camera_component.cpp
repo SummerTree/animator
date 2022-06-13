@@ -208,7 +208,7 @@ namespace unreal
 		camera->setAperture(this->getModel()->useDepthOfFiled ? this->getModel()->aperture.getValue() : 0.0f);
 		camera->setCameraType(octoon::CameraType::Main);
 		camera->setClearFlags(octoon::ClearFlagBits::AllBit);
-		camera->setClearColor(octoon::math::float4(0.0f, 0.0f, 0.0f, 1.0f));
+		camera->setClearColor(octoon::math::float4(0.6f, 0.6f, 0.64f, 1.0f));
 		camera->setupFramebuffers(size.x, size.y, 0, octoon::GraphicsFormat::R32G32B32SFloat);
 
 		this->getModel()->camera = mainCamera;

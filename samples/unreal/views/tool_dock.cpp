@@ -1,108 +1,71 @@
 #include "tool_dock.h"
 #include "spdlog/spdlog.h"
-#include <QtConcurrent/qtconcurrentrun.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qmimedata.h>
-#include <qprogressdialog.h>
-#include <qscrollarea.h>
-#include <octoon/asset_database.h>
 
 namespace unreal
 {
 	ToolDock::ToolDock(const octoon::GameAppPtr& gameApp, const octoon::GameObjectPtr& behaviour, std::shared_ptr<UnrealProfile> profile) noexcept
 		: profile_(profile)
-		, gpuEnable_(false)
-		, audioEnable_(false)
-		, hdrEnable_(false)
 		, behaviour_(behaviour)
-		, gpuIcon_(QIcon::fromTheme("res", QIcon(":res/icons/gpu.png")))
-		, gpuOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/gpu-on.png")))
-		, audioIcon_(QIcon::fromTheme("res", QIcon(":res/icons/music.svg")))
-		, audioOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/music-on.png")))
 	{
 		this->setObjectName("ToolDock");
 		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-		this->setFeatures(DockWidgetFeature::DockWidgetMovable | DockWidgetFeature::DockWidgetFloatable);
+		this->setFeatures(DockWidgetFeature::NoDockWidgetFeatures);
 
-		openButton_ = new QToolButton;
-		openButton_->setObjectName("import");
-		openButton_->setText(tr("Open"));
-		openButton_->setToolTip(tr("Open Project(.pmm, .apg)"));
-		openButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		openButton_->installEventFilter(this);
+		auto oldTitleBar = this->titleBarWidget();
+		this->setTitleBarWidget(new QWidget());
+		delete oldTitleBar;
 
-		importButton_ = new QToolButton;
-		importButton_->setObjectName("import");
-		importButton_->setText(tr("Import"));
-		importButton_->setToolTip(tr("Import Resource File(.pmm, .apg)"));
-		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		importButton_->installEventFilter(this);
+		recordButton_ = new QToolButton;
+		recordButton_->setObjectName("record");
+		recordButton_->setText(tr("Record"));
+		recordButton_->setToolTip(tr("Open Record Panel"));
+		recordButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		recordButton_->setCheckable(true);
+		recordButton_->installEventFilter(this);
 
-		saveButton_ = new QToolButton;
-		saveButton_->setObjectName("save");
-		saveButton_->setText(tr("Save"));
-		saveButton_->setToolTip(tr("Export Project"));
-		saveButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		saveButton_->installEventFilter(this);
-		saveButton_->setShortcut(tr("Ctrl+S"));
+		sunButton_ = new QToolButton;
+		sunButton_->setObjectName("sun");
+		sunButton_->setText(tr("Main Light"));
+		sunButton_->setToolTip(tr("Open Main Light Panel"));
+		sunButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		sunButton_->setCheckable(true);
+		sunButton_->installEventFilter(this);
 
-		audioButton_ = new QToolButton;
-		audioButton_->setObjectName("audio");
-		audioButton_->setText(tr("Music"));
-		audioButton_->setToolTip(tr("Set Background Audio File"));
-		audioButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		audioButton_->installEventFilter(this);
-
-		shotButton_ = new QToolButton;
-		shotButton_->setObjectName("shot");
-		shotButton_->setText(tr("Screenshot"));
-		shotButton_->setToolTip(tr("Denoising Screenshot"));
-		shotButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		shotButton_->installEventFilter(this);
-
-		gpuButton_ = new QToolButton;
-		gpuButton_->setObjectName("gpu");
-		gpuButton_->setText(tr("Render"));
-		gpuButton_->setToolTip(tr("Enable High Quality Rendering"));
-		gpuButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		gpuButton_->installEventFilter(this);
-
-		cleanupButton_ = new QToolButton;
-		cleanupButton_->setObjectName("cleanup");
-		cleanupButton_->setText(tr("Cleanup"));
-		cleanupButton_->setToolTip(tr("Cleanup Scene"));
-		cleanupButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		cleanupButton_->installEventFilter(this);
+		environmentButton_ = new QToolButton;
+		environmentButton_->setObjectName("environment");
+		environmentButton_->setText(tr("Environment Light"));
+		environmentButton_->setToolTip(tr("Open Environment Light Panel"));
+		environmentButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		environmentButton_->setCheckable(true);
+		environmentButton_->installEventFilter(this);
+		environmentButton_->click();
+		
+		cameraButton_ = new QToolButton;
+		cameraButton_->setObjectName("camera");
+		cameraButton_->setText(tr("Camera"));
+		cameraButton_->setToolTip(tr("Open Camera Panel"));
+		cameraButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		cameraButton_->setCheckable(true);
+		cameraButton_->installEventFilter(this);
+		
+		auto buttonGroup_ = new QButtonGroup();
+		buttonGroup_->addButton(sunButton_, 0);
+		buttonGroup_->addButton(environmentButton_, 1);
+		buttonGroup_->addButton(cameraButton_, 2);
+		buttonGroup_->addButton(recordButton_, 3);
 
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
-		layout->addWidget(openButton_, 0, Qt::AlignCenter);
-		layout->addWidget(saveButton_, 0, Qt::AlignCenter);
-		layout->addWidget(importButton_, 0, Qt::AlignCenter);
-		layout->addWidget(gpuButton_, 0, Qt::AlignCenter);
-		layout->addWidget(shotButton_, 0, Qt::AlignCenter);
-		layout->addWidget(audioButton_, 0, Qt::AlignCenter);
-		layout->addWidget(cleanupButton_, 0, Qt::AlignCenter);
+		layout->addWidget(sunButton_, 0, Qt::AlignCenter);
+		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
+		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
+		layout->addWidget(recordButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 
-		auto contentWidget = new QWidget;
-		contentWidget->setLayout(layout);
-
-		auto contentWidgetArea = new QScrollArea();
-		contentWidgetArea->setWidget(contentWidget);
-		contentWidgetArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		contentWidgetArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		contentWidgetArea->setWidgetResizable(true);
-
-		auto mainLayout = new QVBoxLayout();
-		mainLayout->setSpacing(0);
-		mainLayout->setContentsMargins(0, 0, 0, 0);
-		mainLayout->addWidget(contentWidgetArea);
-
 		auto mainWidget = new QWidget;
-		mainWidget->setLayout(mainLayout);
+		mainWidget->setObjectName("ToolWidget");
+		mainWidget->setLayout(layout);
 
 		this->setWidget(mainWidget);
 
@@ -114,13 +77,10 @@ namespace unreal
 			this->update();
 		};
 
-		this->connect(openButton_, SIGNAL(clicked()), this, SLOT(openEvent()));
-		this->connect(importButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
-		this->connect(saveButton_, SIGNAL(clicked()), this, SLOT(saveEvent()));
-		this->connect(audioButton_, SIGNAL(clicked()), this, SLOT(audioEvent()));
-		this->connect(shotButton_, SIGNAL(clicked()), this, SLOT(shotEvent()));
-		this->connect(gpuButton_, SIGNAL(clicked()), this, SLOT(gpuEvent()));
-		this->connect(cleanupButton_, SIGNAL(clicked()), this, SLOT(cleanupEvent()));
+		this->connect(recordButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
+		this->connect(sunButton_, SIGNAL(clicked()), this, SLOT(sunEvent()));
+		this->connect(environmentButton_, SIGNAL(clicked()), this, SLOT(environmentEvent()));
+		this->connect(cameraButton_, SIGNAL(clicked()), this, SLOT(cameraEvent()));
 
 		spdlog::debug("create tool dock");
 	}
@@ -130,321 +90,27 @@ namespace unreal
 	}
 
 	void
-	ToolDock::openEvent() noexcept
+	ToolDock::recordEvent() noexcept
 	{
-		spdlog::debug("Entered openEvent");
-		try
-		{
-			if (!octoon::AssetDatabase::instance()->getUpdateList().empty() || !profile_->path.empty())
-			{
-				if (QMessageBox::question(this, tr("Info"), tr("Do you want to discard your local changes?")) == QMessageBox::No)
-					return;
-
-				QCoreApplication::processEvents();
-			}
-			
-			if (behaviour_ && !profile_->playerModule->isPlaying)
-			{
-				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-				if (behaviour)
-				{
-					QString fileName = QFileDialog::getExistingDirectory(this, tr("Open Project"));
-					if (!fileName.isEmpty())
-					{
-#if 1
-						auto path = fileName.toStdWString();
-						if (std::filesystem::exists(std::filesystem::path(path).append("manifest.json")))
-						{
-							QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
-							dialog.setWindowTitle(tr("Open Project..."));
-							dialog.setWindowModality(Qt::WindowModal);
-							dialog.setValue(0);
-							dialog.show();
-
-							QCoreApplication::processEvents();
-
-							behaviour->open(path);
-
-							dialog.setValue(1);
-						}
-						else
-						{
-							QCoreApplication::processEvents();
-							QMessageBox::critical(this, tr("Error"), tr("Can't find manifest.json in %1").arg(fileName));
-						}
-#else
-						// load task
-						auto fn = [&]() {
-							behaviour->open(fileName.toStdWString());
-						};
-						QFuture<void> fu = QtConcurrent::run(fn);
-
-						// progress dialog
-						QProgressDialog dialog(tr("Opening"), tr("Cancel"), 0, 2000, this);
-						dialog.setWindowTitle(tr("Open Progress"));
-						dialog.setWindowModality(Qt::WindowModal);
-						dialog.show();
-						for (int i = 0; i < 1900; i++)
-						{
-							dialog.setValue(i);
-							QCoreApplication::processEvents();
-							if (dialog.wasCanceled())
-								break;
-						}
-
-						// wait finish
-						fu.waitForFinished();
-
-						// left progress
-						for (int i = 1900; i < 2000; i++)
-						{
-							dialog.setValue(i);
-							QCoreApplication::processEvents();
-							if (dialog.wasCanceled())
-								break;
-						}
-						dialog.setValue(2000);
-#endif
-					}
-				}
-			}
-		}
-		catch (const std::exception& e)
-		{
-			QCoreApplication::processEvents();
-
-			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
-			QMessageBox::critical(this, tr("Error"), tr("Failed to open project: ") + QString::fromStdString(e.what()));
-		}
-		spdlog::debug("Exited openEvent");
+		emit recordSignal();
 	}
 
 	void
-	ToolDock::importEvent() noexcept
+	ToolDock::sunEvent() noexcept
 	{
-		spdlog::debug("Entered importEvent");
-		try
-		{
-			if (behaviour_ && !profile_->playerModule->isPlaying)
-			{
-				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-				if (behaviour)
-				{
-					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)"));
-					if (!fileName.isEmpty())
-					{
-						behaviour->load(fileName.toStdWString());
-					}
-				}
-			}
-		}
-		catch (const std::exception& e)
-		{
-			QCoreApplication::processEvents();
-
-			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
-			QMessageBox::critical(this, tr("Error"), tr("Failed to import resource: ") + QString::fromStdString(e.what()));
-		}
-
-		spdlog::debug("Exited importEvent");
+		emit sunSignal();
 	}
 
 	void
-	ToolDock::saveEvent() noexcept
+	ToolDock::environmentEvent() noexcept
 	{
-		try
-		{
-			spdlog::debug("Entered saveEvent");
-
-			if (behaviour_)
-			{
-				auto filepath = this->profile_->path;
-				if (filepath.empty())
-				{
-					QString fileName = QFileDialog::getExistingDirectory(this, tr("New Project"));
-					if (fileName.isEmpty())
-						return;
-					filepath = fileName.toStdWString();
-				}
-				
-				QProgressDialog dialog(tr("Save..."), tr("Cancel"), 0, 1, this);
-				dialog.setWindowTitle(tr("Save Project"));
-				dialog.setWindowModality(Qt::WindowModal);
-				dialog.setValue(0);
-				dialog.show();
-
-				QCoreApplication::processEvents();
-
-				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-				behaviour->save(filepath);
-
-				dialog.setValue(1);
-
-				QApplication::beep();
-			}
-
-			spdlog::debug("Exited saveEvent");
-		}
-		catch (const std::exception& e)
-		{
-			QMessageBox::critical(this, tr("Error"), e.what());
-		}
+		emit environmentSignal();
 	}
 
 	void
-	ToolDock::audioEvent() noexcept
+	ToolDock::cameraEvent() noexcept
 	{
-		spdlog::debug("Entered audioEvent");
-
-		try
-		{
-			if (behaviour_ && !profile_->playerModule->isPlaying && !profile_->recordModule->active)
-			{
-				if (!audioEnable_)
-				{
-					QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)"));
-					if (!fileName.isEmpty())
-					{
-						profile_->soundModule->filepath = fileName.toUtf8().toStdString();
-						audioButton_->setIcon(audioOnIcon_);
-						audioEnable_ = true;
-					}
-				}
-				else
-				{
-					profile_->soundModule->filepath = std::string();
-					audioButton_->setIcon(audioIcon_);
-					audioEnable_ = false;
-				}
-			}
-		}
-		catch (const std::exception& e)
-		{
-			spdlog::error("Function audioEvent raised exception: " + std::string(e.what()));
-
-			QCoreApplication::processEvents();
-			QMessageBox::critical(this, tr("Error"), e.what());
-		}
-
-		spdlog::debug("Exited audioEvent");
-	}
-
-	void
-	ToolDock::shotEvent() noexcept
-	{
-		try
-		{
-			spdlog::debug("Entered shotEvent");
-
-			if (behaviour_)
-			{
-				QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image"), "", tr("PNG Files (*.png)"));
-				if (!fileName.isEmpty())
-				{
-					auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-					behaviour->renderPicture(fileName.toStdWString());
-				}
-			}
-
-			spdlog::debug("Exited shotEvent");
-		}
-		catch (const std::exception& e)
-		{
-			QMessageBox::critical(this, tr("Error"), e.what());
-		}
-	}
-
-	void
-	ToolDock::gpuEvent() noexcept
-	{
-		try
-		{
-			spdlog::debug("Entered gpuEvent");
-
-			if (!gpuEnable_)
-			{
-				profile_->offlineModule->setEnable(true);
-				gpuButton_->setIcon(gpuOnIcon_);
-				gpuEnable_ = true;
-			}
-			else
-			{
-				profile_->offlineModule->setEnable(false);
-				gpuButton_->setIcon(gpuIcon_);
-				gpuEnable_ = false;
-			}
-		}
-		catch (const std::exception& e)
-		{
-			QMessageBox::critical(this, tr("Error"), e.what());
-		}
-	}
-
-	void
-	ToolDock::cleanupEvent() noexcept
-	{
-		try
-		{
-			spdlog::debug("Entered cleanupEvent");
-
-			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
-			if (behaviour)
-			{
-				if (!octoon::AssetDatabase::instance()->getUpdateList().empty() || !profile_->path.empty())
-				{
-					if (QMessageBox::question(this, tr("Info"), tr("Do you want to discard your local changes?")) == QMessageBox::Yes)
-						behaviour->reset();
-				}
-				else
-				{
-					behaviour->reset();
-				}
-			}
-
-			spdlog::debug("Exited cleanupEvent");
-		}
-		catch (const std::exception& e)
-		{
-			QMessageBox::critical(this, tr("Error"), e.what());
-		}
-	}
-
-	void
-	ToolDock::update() noexcept
-	{
-		if (this->profile_->offlineModule->getEnable())
-		{
-			if (!gpuEnable_)
-			{
-				gpuButton_->setIcon(gpuOnIcon_);
-				gpuEnable_ = true;
-			}
-		}
-		else
-		{
-			if (gpuEnable_)
-			{
-				gpuButton_->setIcon(gpuIcon_);
-				gpuEnable_ = false;
-			}
-		}
-
-		if (this->profile_->soundModule->sound.getValue())
-		{
-			if (!audioEnable_)
-			{
-				audioButton_->setIcon(audioOnIcon_);
-				audioEnable_ = true;
-			}
-		}
-		else
-		{
-			if (audioEnable_)
-			{
-				audioButton_->setIcon(audioIcon_);
-				audioEnable_ = false;
-			}
-		}
+		emit cameraSignal();
 	}
 
 	bool

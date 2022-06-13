@@ -24,16 +24,27 @@ namespace unreal
 	{
 		this->setWindowTitle(tr("Model Library"));
 		this->setObjectName("ModelDock");
+		this->setFixedWidth(380);
+		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		
+		auto oldTitleBar = this->titleBarWidget();
+		this->setTitleBarWidget(new QWidget());
+		delete oldTitleBar;
+
+		title_ = new QLabel;
+		title_->setObjectName("title");
+		title_->setText(tr("Model Library"));
 
 		importButton_ = new UPushButton;
 		importButton_->setObjectName("Import");
 		importButton_->setText(tr("Import"));
 		importButton_->setFixedSize(190, 35);
 		importButton_->installEventFilter(this);
-
-		topLayout_ = new QHBoxLayout();
+		
+		topLayout_ = new QVBoxLayout();
+		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
+		topLayout_->addSpacing(10);
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
-		topLayout_->addStretch();
 		topLayout_->setContentsMargins(5, 0, 0, 0);
 
 		bottomLayout_ = new QHBoxLayout();
@@ -42,12 +53,13 @@ namespace unreal
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
 
 		listWidget_ = new DraggableListWindow;
+		listWidget_->setFixedWidth(380);
 		listWidget_->setStyleSheet("background:transparent;");
-		listWidget_->setSpacing(0);
+		listWidget_->setSpacing(10);
 
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
-		mainLayout_->addWidget(listWidget_);
+		mainLayout_->addWidget(listWidget_, 0, Qt::AlignHCenter);
 		mainLayout_->addStretch();
 		mainLayout_->addLayout(bottomLayout_);
 		mainLayout_->setContentsMargins(0, 10, 0, 10);

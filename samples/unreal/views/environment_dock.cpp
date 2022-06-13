@@ -31,7 +31,7 @@ namespace unreal
 		okButton_ = new QToolButton;
 		okButton_->setObjectName("Ok");
 		okButton_->setText(tr("Ok"));
-
+		
 		closeButton_ = new QToolButton;
 		closeButton_->setObjectName("Close");
 		closeButton_->setText(tr("Close"));
@@ -243,6 +243,10 @@ namespace unreal
 		this->setWindowTitle(tr("Environment Light"));
 		this->setObjectName("EnvironmentDock");
 		this->installEventFilter(this);
+
+		auto oldTitleBar = this->titleBarWidget();
+		this->setTitleBarWidget(new QWidget());
+		delete oldTitleBar;
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setObjectName("Preview");

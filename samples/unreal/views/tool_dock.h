@@ -11,6 +11,7 @@
 #include <qscrollarea.h>
 #include <QtGui/qevent.h>
 #include <qdockwidget.h>
+#include <qbuttongroup.h>
 #include "unreal_profile.h"
 #include "unreal_behaviour.h"
 
@@ -24,36 +25,24 @@ namespace unreal
 		~ToolDock() noexcept;
 
 		bool eventFilter(QObject* watched, QEvent* event);
-
+		
 	private Q_SLOTS:
-		void openEvent() noexcept;
-		void importEvent() noexcept;
-		void saveEvent() noexcept;
-		void shotEvent() noexcept;
-		void gpuEvent() noexcept;
-		void audioEvent() noexcept;
-		void cleanupEvent() noexcept;
+		void recordEvent() noexcept;
+		void sunEvent() noexcept;
+		void environmentEvent() noexcept;
+		void cameraEvent() noexcept;
 
-	private:
-		void update() noexcept;
+	Q_SIGNALS:
+		void sunSignal();
+		void recordSignal();
+		void environmentSignal();
+		void cameraSignal();
 
 	public:
-		bool gpuEnable_;
-		bool audioEnable_;
-		bool hdrEnable_;
-
-		QIcon gpuIcon_;
-		QIcon gpuOnIcon_;
-		QIcon audioIcon_;
-		QIcon audioOnIcon_;
-
-		QToolButton* openButton_;
-		QToolButton* saveButton_;
-		QToolButton* importButton_;
-		QToolButton* shotButton_;
-		QToolButton* gpuButton_;
-		QToolButton* audioButton_;
-		QToolButton* cleanupButton_;
+		QToolButton* recordButton_;
+		QToolButton* sunButton_;
+		QToolButton* environmentButton_;
+		QToolButton* cameraButton_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<UnrealProfile> profile_;

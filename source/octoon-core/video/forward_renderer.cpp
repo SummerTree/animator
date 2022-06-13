@@ -210,7 +210,7 @@ namespace octoon
 				auto viewport = math::float4((float)vp.x, (float)vp.y, (float)vp.width, (float)vp.height);
 
 				c.context->configureTarget(nullptr);
-				c.context->configureClear(ClearFlagBits::AllBit, math::float4::Zero, 1.0f, 0);
+				c.context->configureClear(ClearFlagBits::AllBit, renderingData.camera->getClearColor(), 1.0f, 0);
 
 				if (!fbo->getFramebufferDesc().getColorAttachments().empty())
 				{

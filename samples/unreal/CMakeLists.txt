@@ -119,8 +119,8 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/material_dock.cpp
 	${SOURCE_PATH}/views/light_dock.h
 	${SOURCE_PATH}/views/light_dock.cpp
-	${SOURCE_PATH}/views/thumbnail_dock.h
-	${SOURCE_PATH}/views/thumbnail_dock.cpp
+	${SOURCE_PATH}/views/asset_browse_dock.h
+	${SOURCE_PATH}/views/asset_browse_dock.cpp
 	${SOURCE_PATH}/views/setting_window.h
 	${SOURCE_PATH}/views/setting_window.cpp
 	${SOURCE_PATH}/views/title_bar.h

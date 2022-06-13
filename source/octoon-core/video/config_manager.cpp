@@ -501,6 +501,9 @@ namespace octoon
 			float framebufferY = (framebufferHeight_ - framebufferHeight) / 2;
 
 			auto mode = viewport.width == framebufferWidth_ && viewport.height == framebufferHeight_ ? SamplerFilter::Nearest : SamplerFilter::Linear;
+
+			context->setFramebuffer(nullptr);
+			context->clearFramebuffer(0, ClearFlagBits::AllBit, mainCamera->getClearColor(), 1.0f, 0);
 			context->blitFramebuffer(framebuffer_, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight), mode);
 			context->discardFramebuffer(framebuffer_, ClearFlagBits::AllBit);
 		}

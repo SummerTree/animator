@@ -83,7 +83,7 @@ namespace unreal
 		UPushButton* speed2_;
 		UPushButton* speed3_;
 		UPushButton* speed4_;
-		UPushButton* recordButton_;
+		QPushButton* recordButton_;
 		UPushButton* markButton_;
 		QCheckBox* denoiseButton_;
 

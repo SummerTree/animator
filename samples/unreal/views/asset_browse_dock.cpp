@@ -1,0 +1,152 @@
+#include "asset_browse_dock.h"
+#include "setting_window.h"
+#include <qscrollarea.h>
+#include <qmessagebox.h>
+#include <qfiledialog.h>
+#include <qmimedata.h>
+#include <qprogressdialog.h>
+#include <QtConcurrent/qtconcurrentrun.h>
+
+namespace unreal
+{
+	AssetBrowseDock::AssetBrowseDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept
+		: profile_(profile)
+		, behaviour_(behaviour)
+	{
+		this->setObjectName("AssetBrowseDock");
+		this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+		this->setFeatures(DockWidgetFeature::NoDockWidgetFeatures);
+
+		auto oldTitleBar = this->titleBarWidget();
+		this->setTitleBarWidget(new QWidget());
+		delete oldTitleBar;
+
+		materialButton_ = new QToolButton;
+		materialButton_->setObjectName("material");
+		materialButton_->setText(tr("Material"));
+		materialButton_->setToolTip(tr("Open Material Panel"));
+		materialButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		materialButton_->setCheckable(true);
+		materialButton_->installEventFilter(this);
+		materialButton_->click();
+
+		modelButton_ = new QToolButton;
+		modelButton_->setObjectName("model");
+		modelButton_->setText(tr("Model"));
+		modelButton_->setToolTip(tr("Open Model Panel"));
+		modelButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		modelButton_->setCheckable(true);
+		modelButton_->installEventFilter(this);
+
+		motionButton_ = new QToolButton;
+		motionButton_->setObjectName("motion");
+		motionButton_->setText(tr("Motion"));
+		motionButton_->setToolTip(tr("Open Motion Panel"));
+		motionButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		motionButton_->setCheckable(true);
+		motionButton_->installEventFilter(this);
+
+		lightButton_ = new QToolButton;
+		lightButton_->setObjectName("sun");
+		lightButton_->setText(tr("Light"));
+		lightButton_->setToolTip(tr("Open Light Panel"));
+		lightButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		lightButton_->installEventFilter(this);
+		lightButton_->hide();
+
+		settingsButton_ = new QToolButton;
+		settingsButton_->setObjectName("setting");
+		settingsButton_->setText(tr("Settings"));
+		settingsButton_->setToolTip(tr("Settings"));
+		settingsButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		settingsButton_->installEventFilter(this);
+
+		auto buttonGroup_ = new QButtonGroup();
+		buttonGroup_->addButton(materialButton_, 0);
+		buttonGroup_->addButton(modelButton_, 1);
+		buttonGroup_->addButton(motionButton_, 2);
+
+		auto mainLayout = new QVBoxLayout;
+		mainLayout->addWidget(materialButton_, 0, Qt::AlignCenter);
+		mainLayout->addWidget(modelButton_, 0, Qt::AlignCenter);
+		mainLayout->addWidget(motionButton_, 0, Qt::AlignCenter);
+		mainLayout->addWidget(lightButton_, 0, Qt::AlignCenter);
+		mainLayout->addStretch();
+		mainLayout->addWidget(settingsButton_, 0, Qt::AlignCenter | Qt::AlignBottom);
+		mainLayout->setSpacing(4);
+		mainLayout->setContentsMargins(0, 0, 0, 0);
+
+		auto mainWidget = new QWidget;
+		mainWidget->setObjectName("AssetBrowseWidget");
+		mainWidget->setLayout(mainLayout);
+
+		this->setWidget(mainWidget);
+
+		this->connect(materialButton_, SIGNAL(clicked()), this, SLOT(materialEvent()));
+		this->connect(modelButton_, SIGNAL(clicked()), this, SLOT(modelEvent()));
+		this->connect(motionButton_, SIGNAL(clicked()), this, SLOT(motionEvent()));
+		this->connect(lightButton_, SIGNAL(clicked()), this, SLOT(lightEvent()));
+		this->connect(settingsButton_, SIGNAL(clicked()), this, SLOT(settingsEvent()));
+	}
+
+	AssetBrowseDock::~AssetBrowseDock() noexcept
+	{
+	}
+
+	void
+	AssetBrowseDock::materialEvent() noexcept
+	{
+		emit materialSignal();
+	}
+
+	void
+	AssetBrowseDock::modelEvent() noexcept
+	{
+		emit modelSignal();
+	}
+
+	void
+	AssetBrowseDock::motionEvent() noexcept
+	{
+		emit motionSignal();
+	}
+
+	void
+	AssetBrowseDock::lightEvent() noexcept
+	{
+		emit lightSignal();
+	}
+
+	void
+	AssetBrowseDock::closeEvent(QCloseEvent* event)
+	{
+		if (profile_->playerModule->isPlaying)
+			event->ignore();
+		else
+			event->accept();
+	}
+
+	void
+	AssetBrowseDock::settingsEvent() noexcept
+	{
+		SettingWindow* settings_dialog_ = new SettingWindow(this->behaviour_->getComponent<UnrealBehaviour>());
+		connect(settings_dialog_, SIGNAL(languageChangeSignal(QString)), this, SIGNAL(languageChangeSignal(QString)));
+
+		settings_dialog_->show();
+	}
+
+	bool
+	AssetBrowseDock::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint &&
+			event->type() != QEvent::Resize)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
+	}
+}

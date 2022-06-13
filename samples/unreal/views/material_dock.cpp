@@ -1754,7 +1754,7 @@ namespace unreal
 	{
 		mainWidget_ = new DraggableListWindow;
 		mainWidget_->setStyleSheet("background:transparent;");
-		mainWidget_->setSpacing(0);
+		mainWidget_->setSpacing(5);
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addWidget(mainWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
@@ -1941,7 +1941,7 @@ namespace unreal
 
 		mainWidget_ = new DraggableListWindow;
 		mainWidget_->setStyleSheet("background:transparent;");
-		mainWidget_->setSpacing(0);
+		mainWidget_->setSpacing(5);
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addLayout(topLayout_);
@@ -2123,9 +2123,18 @@ namespace unreal
 		this->setObjectName("MaterialDock");
 		this->setWindowTitle(tr("Material"));
 		this->setMouseTracking(true);
-		
+		this->setFixedWidth(380);
+		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
+
+		auto oldTitleBar = this->titleBarWidget();
+		this->setTitleBarWidget(new QWidget());
+		delete oldTitleBar;
+
 		materialList_ = new MaterialListPanel(behaviour, profile);
-		materialList_->mainWidget_->setFixedWidth(340);
+		materialList_->mainWidget_->setFixedWidth(380);
+
+		materialAssetList_ = new MaterialAssetPanel(behaviour, profile);
+		materialAssetList_->mainWidget_->setFixedWidth(380);
 
 		modifyWidget_ = new MaterialEditWindow(behaviour);
 		modifyWidget_->hide();
@@ -2138,9 +2147,6 @@ namespace unreal
 
 		auto sceneWidget_ = new QWidget;
 		sceneWidget_->setLayout(sceneLayout_);
-
-		materialAssetList_ = new MaterialAssetPanel(behaviour, profile);
-		materialAssetList_->mainWidget_->setFixedWidth(340);
 
 		widget_ = new QTabWidget;
 		widget_->addTab(materialAssetList_, tr("Library"));

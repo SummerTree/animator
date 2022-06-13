@@ -28,7 +28,6 @@
 
 namespace unreal
 {
-
 	class CameraDock final : public UDockWidget
 	{
 		Q_OBJECT
@@ -52,11 +51,11 @@ namespace unreal
 		void onUnloadAnimation();
 
 	public:
-		ULabel* dofInfoLabel_;
-		ULabel* focalLengthLabel_;
-		ULabel* focusDistanceName_;
-		ULabel* focusDistanceLabel_;
-		ULabel* dofLabel_;
+		QLabel* dofInfoLabel_;
+		QLabel* focalLengthLabel_;
+		QLabel* focusDistanceName_;
+		QLabel* focusDistanceLabel_;
+		QLabel* dofLabel_;
 
 		QCheckBox* dofButton_;
 		QToolButton* focusTargetButton_;

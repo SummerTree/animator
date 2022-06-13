@@ -3,7 +3,6 @@
 #include <octoon/transform_component.h>
 #include <octoon/directional_light_component.h>
 
-
 namespace unreal
 {
 	MainLightDock::MainLightDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<unreal::UnrealProfile>& profile)
@@ -11,6 +10,11 @@ namespace unreal
 	{
 		this->setWindowTitle(tr("Main Light"));
 		this->setObjectName("MainLightDock");
+		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
+
+		auto oldTitleBar = this->titleBarWidget();
+		this->setTitleBarWidget(new QWidget());
+		delete oldTitleBar;
 
 		auto color = profile->mainLightModule->color.getValue();
 

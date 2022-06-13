@@ -18,7 +18,7 @@
 #include "views/toplevel_bar.h"
 #include "views/view_dock.h"
 #include "views/tool_dock.h"
-#include "views/thumbnail_dock.h"
+#include "views/asset_browse_dock.h"
 #include "views/light_dock.h"
 #include "views/main_light_dock.h"
 #include "views/environment_dock.h"
@@ -60,6 +60,7 @@ namespace unreal
 		void open() noexcept(false);
 		void update() noexcept;
 
+		QDockWidget* assetDock() noexcept;
 		QDockWidget* visableDock() noexcept;
 
 	private:
@@ -78,7 +79,7 @@ namespace unreal
 		std::unique_ptr<ToplevelBar> toplevelDock_;
 		std::unique_ptr<ViewDock> viewDock_;
 		std::unique_ptr<ToolDock> toolDock_;
-		std::unique_ptr<ThumbnailDock> thumbnailDock_;
+		std::unique_ptr<AssetBrowseDock> assetBrowseDock_;
 		std::unique_ptr<RecordDock> recordDock_;
 		std::unique_ptr<LightDock> lightDock_;
 		std::unique_ptr<MainLightDock> mainLightDock_;

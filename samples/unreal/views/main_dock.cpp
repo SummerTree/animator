@@ -37,7 +37,7 @@ namespace unreal
 
 		toplevelDock_ = std::make_unique<ToplevelBar>(behaviour_, profile_);
 		toolDock_ = std::make_unique<ToolDock>(gameApp_, behaviour_, profile_);
-		thumbnailDock_ = std::make_unique<ThumbnailDock>(gameApp_, behaviour_, profile_);
+		assetBrowseDock_ = std::make_unique<AssetBrowseDock>(behaviour_, profile_);
 		viewDock_ = std::make_unique<ViewDock>(gameApp_, behaviour_, profile_);
 		recordDock_ = std::make_unique<RecordDock>(behaviour_, profile_);
 		lightDock_ = std::make_unique<LightDock>(profile_);
@@ -51,17 +51,18 @@ namespace unreal
 
 		this->addToolBar(toplevelDock_.get());
 
-		this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, toolDock_.get());
-		this->addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, thumbnailDock_.get());
+		this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, assetBrowseDock_.get());
+		this->addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, toolDock_.get());
 
-		this->splitDockWidget(thumbnailDock_.get(), mainLightDock_.get(), Qt::Orientation::Horizontal);
-		this->splitDockWidget(mainLightDock_.get(), lightDock_.get(), Qt::Orientation::Vertical);
-		this->splitDockWidget(mainLightDock_.get(), materialDock_.get(), Qt::Orientation::Vertical);
-		this->splitDockWidget(mainLightDock_.get(), motionDock_.get(), Qt::Orientation::Vertical);
-		this->splitDockWidget(mainLightDock_.get(), modelDock_.get(), Qt::Orientation::Vertical);
-		this->splitDockWidget(mainLightDock_.get(), recordDock_.get(), Qt::Orientation::Vertical);
-		this->splitDockWidget(mainLightDock_.get(), environmentDock_.get(), Qt::Orientation::Vertical);
-		this->splitDockWidget(mainLightDock_.get(), cameraDock_.get(), Qt::Orientation::Vertical);
+		this->splitDockWidget(assetBrowseDock_.get(), materialDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(assetBrowseDock_.get(), motionDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(assetBrowseDock_.get(), modelDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(assetBrowseDock_.get(), lightDock_.get(), Qt::Orientation::Horizontal);
+
+		this->splitDockWidget(toolDock_.get(), mainLightDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(toolDock_.get(), recordDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(toolDock_.get(), environmentDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(toolDock_.get(), cameraDock_.get(), Qt::Orientation::Horizontal);
 
 		this->setCentralWidget(viewDock_.get());
 		this->setStatusBar(statusBar_.get());
@@ -76,16 +77,16 @@ namespace unreal
 		motionDock_->hide();
 
 		this->connect(&timer, &QTimer::timeout, this, &MainDock::update);
-		this->connect(thumbnailDock_.get(), &ThumbnailDock::sunSignal, this, &MainDock::onSunSignal);
-		this->connect(thumbnailDock_.get(), &ThumbnailDock::lightSignal, this, &MainDock::onLightSignal);
-		this->connect(thumbnailDock_.get(), &ThumbnailDock::recordSignal, this, &MainDock::onRecordSignal);
-		this->connect(thumbnailDock_.get(), &ThumbnailDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
-		this->connect(thumbnailDock_.get(), &ThumbnailDock::materialSignal, this, &MainDock::onMaterialSignal);
-		this->connect(thumbnailDock_.get(), &ThumbnailDock::modelSignal, this, &MainDock::onModelSignal);
-		this->connect(thumbnailDock_.get(), &ThumbnailDock::cameraSignal, this, &MainDock::onCameraSignal);
-		this->connect(thumbnailDock_.get(), &ThumbnailDock::motionSignal, this, &MainDock::onMotionSignal);
+
+		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::lightSignal, this, &MainDock::onLightSignal);
+		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::materialSignal, this, &MainDock::onMaterialSignal);
+		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::modelSignal, this, &MainDock::onModelSignal);
+		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::motionSignal, this, &MainDock::onMotionSignal);
 		
-		this->connect(thumbnailDock_.get(), SIGNAL(languageChangeSignal(QString)), this, SLOT(onLanguageChanged(QString)));
+		this->connect(toolDock_.get(), &ToolDock::sunSignal, this, &MainDock::onSunSignal);
+		this->connect(toolDock_.get(), &ToolDock::recordSignal, this, &MainDock::onRecordSignal);
+		this->connect(toolDock_.get(), &ToolDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
+		this->connect(toolDock_.get(), &ToolDock::cameraSignal, this, &MainDock::onCameraSignal);
 
 		timer.start();
 
@@ -106,7 +107,7 @@ namespace unreal
 		this->removeDockWidget(materialDock_.get());
 		this->removeDockWidget(modelDock_.get());
 		this->removeDockWidget(recordDock_.get());
-		this->removeDockWidget(thumbnailDock_.get());
+		this->removeDockWidget(assetBrowseDock_.get());
 		this->removeDockWidget(cameraDock_.get());
 
 		this->setStatusBar(nullptr);
@@ -121,7 +122,7 @@ namespace unreal
 		materialDock_.reset();
 		modelDock_.reset();
 		recordDock_.reset();
-		thumbnailDock_.reset();
+		assetBrowseDock_.reset();
 		cameraDock_.reset();
 		motionDock_.reset();
 		statusBar_.reset();
@@ -147,11 +148,18 @@ namespace unreal
 	MainDock::restoreLayout() noexcept
 	{
 		auto layout = QDir::homePath().toStdString() + "/.animator/layout.init";
-		QSettings settings(QString::fromStdString(layout), QSettings::Format::IniFormat);
-		settings.beginGroup("MainDock");
-		restoreGeometry(settings.value("geometry").toByteArray());
-		restoreState(settings.value("state").toByteArray());
-		settings.endGroup();
+		if (std::filesystem::exists(layout))
+		{
+			QSettings settings(QString::fromStdString(layout), QSettings::Format::IniFormat);
+			settings.beginGroup("MainDock");
+			restoreGeometry(settings.value("geometry").toByteArray());
+			restoreState(settings.value("state").toByteArray());
+			settings.endGroup();
+		}
+		else
+		{
+			viewDock_->resize(1280, 720);
+		}
 	}
 
 	void
@@ -239,7 +247,7 @@ namespace unreal
 		{
 			if (lightDock_->isHidden())
 			{
-				auto widget = this->visableDock();
+				auto widget = this->assetDock();
 				if (widget)
 				{
 					this->tabifyDockWidget(widget, lightDock_.get());
@@ -322,7 +330,7 @@ namespace unreal
 		{
 			if (materialDock_->isHidden())
 			{
-				auto widget = this->visableDock();
+				auto widget = this->assetDock();
 				if (widget)
 				{
 					this->tabifyDockWidget(widget, materialDock_.get());
@@ -349,7 +357,7 @@ namespace unreal
 		{
 			if (modelDock_->isHidden())
 			{
-				auto widget = this->visableDock();
+				auto widget = this->assetDock();
 				if (widget)
 				{
 					this->tabifyDockWidget(widget, modelDock_.get());
@@ -403,7 +411,7 @@ namespace unreal
 		{
 			if (motionDock_->isHidden())
 			{
-				auto widget = this->visableDock();
+				auto widget = this->assetDock();
 				if (widget)
 				{
 					this->tabifyDockWidget(widget, motionDock_.get());
@@ -424,24 +432,31 @@ namespace unreal
 	}
 
 	QDockWidget*
-	MainDock::visableDock() noexcept
+	MainDock::assetDock() noexcept
 	{
-		if (recordDock_->isVisible())
-			return recordDock_.get();
 		if (lightDock_->isVisible())
 			return lightDock_.get();
-		if (mainLightDock_->isVisible())
-			return mainLightDock_.get();
-		if (environmentDock_->isVisible())
-			return environmentDock_.get();
-		if (materialDock_->isVisible())
-			return materialDock_.get();
-		if (cameraDock_->isVisible())
-			return cameraDock_.get();
 		if (modelDock_->isVisible())
 			return modelDock_.get();
 		if (motionDock_->isVisible())
 			return motionDock_.get();
+		if (materialDock_->isVisible())
+			return materialDock_.get();
+
+		return nullptr;
+	}
+
+	QDockWidget*
+	MainDock::visableDock() noexcept
+	{
+		if (recordDock_->isVisible())
+			return recordDock_.get();
+		if (mainLightDock_->isVisible())
+			return mainLightDock_.get();
+		if (environmentDock_->isVisible())
+			return environmentDock_.get();
+		if (cameraDock_->isVisible())
+			return cameraDock_.get();
 
 		return nullptr;
 	}
@@ -469,7 +484,7 @@ namespace unreal
 				behaviour_->addComponent<UnrealBehaviour>(profile_);
 
 				spdlog::debug("finish");
-
+				
 				this->restoreLayout();
 
 				init_flag = true;

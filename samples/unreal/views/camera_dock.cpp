@@ -15,16 +15,21 @@ namespace unreal
 	{
 		this->setObjectName("CameraDock");
 		this->setWindowTitle(tr("Camera"));
+		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
+
+		auto oldTitleBar = this->titleBarWidget();
+		this->setTitleBarWidget(new QWidget());
+		delete oldTitleBar;
 
 		fovSpinbox_ = UDoubleSpinLine::create(this, tr("fov:"), 1.0f, 120.0f, 1.0f, 60.0f);
 		fovSpinbox_->doublespinbox_->setSuffix(u8"бу");
 		fovSpinbox_->doublespinbox_->setDecimals(1);
 
-		dofInfoLabel_ = new ULabel();
+		dofInfoLabel_ = new QLabel();
 		dofInfoLabel_->setText(tr("* The following parameters take effect on rendering"));
 		dofInfoLabel_->setStyleSheet("color: rgb(100,100,100);");
 
-		dofLabel_ = new ULabel();
+		dofLabel_ = new QLabel();
 		dofLabel_->setText(tr("Depth Of Filed:"));
 
 		dofButton_ = new QCheckBox();
@@ -46,8 +51,8 @@ namespace unreal
 
 		focusDistanceSpinbox_ = UDoubleSpinLine::create(this, tr("Focus Distance:"), 0.0f, std::numeric_limits<float>::infinity(), 0.1f, 0.0f);
 		focusDistanceSpinbox_->doublespinbox_->setSuffix(tr("m"));
-
-		focusDistanceName_ = new ULabel();
+		
+		focusDistanceName_ = new QLabel();
 		focusDistanceName_->setText(tr("Target: Empty"));
 		focusDistanceName_->setStyleSheet("color: rgb(200,200,200);");
 
@@ -94,6 +99,7 @@ namespace unreal
 		mainLayout_->setContentsMargins(30, 5, 20, 0);
 
 		mainWidget_ = new QWidget;
+		mainWidget_->setObjectName("CameraWidget");
 		mainWidget_->setLayout(mainLayout_);
 
 		this->setWidget(mainWidget_);
