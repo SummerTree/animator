@@ -200,7 +200,7 @@ namespace unreal
 		mainLayout_->addWidget(scrollArea_);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout_->setContentsMargins(10, 0, 0, 10);
+		mainLayout_->setContentsMargins(10, 0, 10, 10);
 
 		mainWidget_ = new QWidget();
 		mainWidget_->setLayout(mainLayout_);

@@ -222,7 +222,7 @@ namespace unreal
 		mainLayout_->addWidget(contentWidgetArea_);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(recordButton_, 0, Qt::AlignCenter);
-		mainLayout_->setContentsMargins(10, 0, 0, 10);
+		mainLayout_->setContentsMargins(10, 0, 10, 10);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("RecordWidget");
