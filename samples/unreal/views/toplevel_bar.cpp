@@ -29,6 +29,7 @@ namespace unreal
 		, audioOnIcon_(QIcon::fromTheme("res", QIcon(":res/icons/music-on.png")))
 	{
 		this->setObjectName("ToplevelBar");
+		this->setMovable(false);
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 		openButton_ = new QToolButton;
