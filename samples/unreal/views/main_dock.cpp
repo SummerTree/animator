@@ -73,7 +73,7 @@ namespace unreal
 		materialDock_->hide();
 		recordDock_->hide();
 		cameraDock_->hide();
-		modelDock_->hide();
+		modelDock_->show();
 		motionDock_->hide();
 
 		this->connect(&timer, &QTimer::timeout, this, &MainDock::update);
