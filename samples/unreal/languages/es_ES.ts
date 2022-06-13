@@ -22,38 +22,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="35"/>
+        <location filename="../views/asset_browse_dock.cpp" line="34"/>
         <source>Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="36"/>
+        <location filename="../views/asset_browse_dock.cpp" line="35"/>
         <source>Open Model Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="51"/>
+        <location filename="../views/asset_browse_dock.cpp" line="48"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="52"/>
+        <location filename="../views/asset_browse_dock.cpp" line="49"/>
         <source>Open Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="59"/>
-        <location filename="../views/asset_browse_dock.cpp" line="60"/>
+        <location filename="../views/asset_browse_dock.cpp" line="55"/>
+        <location filename="../views/asset_browse_dock.cpp" line="56"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="43"/>
+        <location filename="../views/asset_browse_dock.cpp" line="41"/>
         <source>Motion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="44"/>
+        <location filename="../views/asset_browse_dock.cpp" line="42"/>
         <source>Open Motion Panel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1260,32 +1260,32 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="27"/>
+        <location filename="../views/tool_dock.cpp" line="26"/>
         <source>Main Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="28"/>
+        <location filename="../views/tool_dock.cpp" line="27"/>
         <source>Open Main Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="35"/>
+        <location filename="../views/tool_dock.cpp" line="33"/>
         <source>Environment Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="36"/>
+        <location filename="../views/tool_dock.cpp" line="34"/>
         <source>Open Environment Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="44"/>
+        <location filename="../views/tool_dock.cpp" line="41"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/tool_dock.cpp" line="45"/>
+        <location filename="../views/tool_dock.cpp" line="42"/>
         <source>Open Camera Panel</source>
         <translation type="unfinished"></translation>
     </message>

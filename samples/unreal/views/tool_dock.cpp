@@ -20,7 +20,6 @@ namespace unreal
 		videoButton_->setToolTip(tr("Open Video Panel"));
 		videoButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		videoButton_->setCheckable(true);
-		videoButton_->installEventFilter(this);
 
 		sunButton_ = new QToolButton;
 		sunButton_->setObjectName("sun");
@@ -28,7 +27,6 @@ namespace unreal
 		sunButton_->setToolTip(tr("Open Main Light Panel"));
 		sunButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		sunButton_->setCheckable(true);
-		sunButton_->installEventFilter(this);
 
 		environmentButton_ = new QToolButton;
 		environmentButton_->setObjectName("environment");
@@ -36,7 +34,6 @@ namespace unreal
 		environmentButton_->setToolTip(tr("Open Environment Light Panel"));
 		environmentButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		environmentButton_->setCheckable(true);
-		environmentButton_->installEventFilter(this);
 		environmentButton_->click();
 		
 		cameraButton_ = new QToolButton;
@@ -45,7 +42,6 @@ namespace unreal
 		cameraButton_->setToolTip(tr("Open Camera Panel"));
 		cameraButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		cameraButton_->setCheckable(true);
-		cameraButton_->installEventFilter(this);
 		
 		auto buttonGroup_ = new QButtonGroup();
 		buttonGroup_->addButton(sunButton_, 0);
@@ -102,20 +98,5 @@ namespace unreal
 	ToolDock::cameraEvent() noexcept
 	{
 		emit cameraSignal();
-	}
-
-	bool
-	ToolDock::eventFilter(QObject* watched, QEvent* event)
-	{
-		if (event->type() != QEvent::Paint &&
-			event->type() != QEvent::Resize)
-		{
-			if (profile_->playerModule->isPlaying)
-			{
-				return true;
-			}
-		}
-
-		return QWidget::eventFilter(watched, event);
 	}
 }

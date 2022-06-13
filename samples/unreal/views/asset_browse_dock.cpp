@@ -27,7 +27,6 @@ namespace unreal
 		materialButton_->setToolTip(tr("Open Material Panel"));
 		materialButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		materialButton_->setCheckable(true);
-		materialButton_->installEventFilter(this);
 		materialButton_->click();
 
 		modelButton_ = new QToolButton;
@@ -36,7 +35,6 @@ namespace unreal
 		modelButton_->setToolTip(tr("Open Model Panel"));
 		modelButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		modelButton_->setCheckable(true);
-		modelButton_->installEventFilter(this);
 
 		motionButton_ = new QToolButton;
 		motionButton_->setObjectName("motion");
@@ -44,14 +42,12 @@ namespace unreal
 		motionButton_->setToolTip(tr("Open Motion Panel"));
 		motionButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		motionButton_->setCheckable(true);
-		motionButton_->installEventFilter(this);
 
 		lightButton_ = new QToolButton;
 		lightButton_->setObjectName("sun");
 		lightButton_->setText(tr("Light"));
 		lightButton_->setToolTip(tr("Open Light Panel"));
 		lightButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		lightButton_->installEventFilter(this);
 		lightButton_->hide();
 
 		settingsButton_ = new QToolButton;
@@ -59,7 +55,6 @@ namespace unreal
 		settingsButton_->setText(tr("Settings"));
 		settingsButton_->setToolTip(tr("Settings"));
 		settingsButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		settingsButton_->installEventFilter(this);
 
 		auto buttonGroup_ = new QButtonGroup();
 		buttonGroup_->addButton(materialButton_, 0);
@@ -133,20 +128,5 @@ namespace unreal
 		connect(settings_dialog_, SIGNAL(languageChangeSignal(QString)), this, SIGNAL(languageChangeSignal(QString)));
 
 		settings_dialog_->show();
-	}
-
-	bool
-	AssetBrowseDock::eventFilter(QObject* watched, QEvent* event)
-	{
-		if (event->type() != QEvent::Paint &&
-			event->type() != QEvent::Resize)
-		{
-			if (profile_->playerModule->isPlaying)
-			{
-				return true;
-			}
-		}
-
-		return QWidget::eventFilter(watched, event);
 	}
 }

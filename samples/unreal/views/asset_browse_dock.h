@@ -26,7 +26,6 @@ namespace unreal
 		~AssetBrowseDock() noexcept;
 
 		void closeEvent(QCloseEvent* event);
-		bool eventFilter(QObject* watched, QEvent* event);
 
 	private Q_SLOTS:
 		void lightEvent() noexcept;
