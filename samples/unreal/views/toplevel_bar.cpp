@@ -122,20 +122,26 @@ namespace unreal
 		volumeSlider_->setFixedWidth(80);
 
 		auto splitLine = new QFrame;
+		splitLine->setObjectName("Separator");
 		splitLine->setFrameShape(QFrame::VLine);
-		splitLine->setFrameShadow(QFrame::Sunken);
+		splitLine->setFrameShadow(QFrame::Plain);
 		splitLine->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+		splitLine->setContentsMargins(0, 10, 0, 10);
 
 		auto splitLine2 = new QFrame;
+		splitLine2->setObjectName("Separator");
 		splitLine2->setFrameShape(QFrame::VLine);
-		splitLine2->setFrameShadow(QFrame::Sunken);
+		splitLine2->setFrameShadow(QFrame::Plain);
 		splitLine2->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-
-		auto splitLine3 = new QFrame;
-		splitLine3->setFrameShape(QFrame::VLine);
-		splitLine3->setFrameShadow(QFrame::Sunken);
-		splitLine3->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+		splitLine2->setContentsMargins(0, 10, 0, 10);
 		
+		auto splitLine3 = new QFrame;
+		splitLine3->setObjectName("Separator");
+		splitLine3->setFrameShape(QFrame::VLine);
+		splitLine3->setFrameShadow(QFrame::Plain);
+		splitLine3->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+		splitLine3->setContentsMargins(0, 10, 0, 10);
+
 		layout_ = new QHBoxLayout;
 		layout_->setObjectName("ToplevelLayout");
 		layout_->addStretch();

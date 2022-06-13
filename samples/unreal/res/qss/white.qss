@@ -1,6 +1,9 @@
 QWidget{
 	background: rgb(250, 250, 250);
 }
+QFrame#Separator{
+	color: rgb(230, 230, 230);
+}
 QLabel{
 	color:rgb(48,48,50);
 	font-family: "Microsoft YaHei";

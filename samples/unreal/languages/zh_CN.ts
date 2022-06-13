@@ -1607,8 +1607,8 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="111"/>
         <location filename="../views/toplevel_bar.cpp" line="113"/>
-        <location filename="../views/toplevel_bar.cpp" line="605"/>
-        <location filename="../views/toplevel_bar.cpp" line="656"/>
+        <location filename="../views/toplevel_bar.cpp" line="611"/>
+        <location filename="../views/toplevel_bar.cpp" line="662"/>
         <source>Volume</source>
         <translation>音量</translation>
     </message>
@@ -1618,32 +1618,32 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="562"/>
-        <location filename="../views/toplevel_bar.cpp" line="588"/>
-        <location filename="../views/toplevel_bar.cpp" line="634"/>
+        <location filename="../views/toplevel_bar.cpp" line="568"/>
+        <location filename="../views/toplevel_bar.cpp" line="594"/>
+        <location filename="../views/toplevel_bar.cpp" line="640"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="562"/>
-        <location filename="../views/toplevel_bar.cpp" line="588"/>
-        <location filename="../views/toplevel_bar.cpp" line="634"/>
+        <location filename="../views/toplevel_bar.cpp" line="568"/>
+        <location filename="../views/toplevel_bar.cpp" line="594"/>
+        <location filename="../views/toplevel_bar.cpp" line="640"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="247"/>
-        <location filename="../views/toplevel_bar.cpp" line="291"/>
-        <location filename="../views/toplevel_bar.cpp" line="320"/>
-        <location filename="../views/toplevel_bar.cpp" line="364"/>
-        <location filename="../views/toplevel_bar.cpp" line="400"/>
-        <location filename="../views/toplevel_bar.cpp" line="427"/>
-        <location filename="../views/toplevel_bar.cpp" line="453"/>
-        <location filename="../views/toplevel_bar.cpp" line="482"/>
-        <location filename="../views/toplevel_bar.cpp" line="515"/>
-        <location filename="../views/toplevel_bar.cpp" line="542"/>
-        <location filename="../views/toplevel_bar.cpp" line="568"/>
-        <location filename="../views/toplevel_bar.cpp" line="594"/>
+        <location filename="../views/toplevel_bar.cpp" line="253"/>
+        <location filename="../views/toplevel_bar.cpp" line="297"/>
+        <location filename="../views/toplevel_bar.cpp" line="326"/>
+        <location filename="../views/toplevel_bar.cpp" line="370"/>
+        <location filename="../views/toplevel_bar.cpp" line="406"/>
+        <location filename="../views/toplevel_bar.cpp" line="433"/>
+        <location filename="../views/toplevel_bar.cpp" line="459"/>
+        <location filename="../views/toplevel_bar.cpp" line="488"/>
+        <location filename="../views/toplevel_bar.cpp" line="521"/>
+        <location filename="../views/toplevel_bar.cpp" line="548"/>
+        <location filename="../views/toplevel_bar.cpp" line="574"/>
+        <location filename="../views/toplevel_bar.cpp" line="600"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -1654,8 +1654,8 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="37"/>
-        <location filename="../views/toplevel_bar.cpp" line="225"/>
-        <location filename="../views/toplevel_bar.cpp" line="379"/>
+        <location filename="../views/toplevel_bar.cpp" line="231"/>
+        <location filename="../views/toplevel_bar.cpp" line="385"/>
         <source>Open Project</source>
         <translation type="unfinished">打开项目</translation>
     </message>
@@ -1745,114 +1745,114 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">重置</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="214"/>
-        <location filename="../views/toplevel_bar.cpp" line="469"/>
+        <location filename="../views/toplevel_bar.cpp" line="220"/>
+        <location filename="../views/toplevel_bar.cpp" line="475"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="214"/>
-        <location filename="../views/toplevel_bar.cpp" line="469"/>
+        <location filename="../views/toplevel_bar.cpp" line="220"/>
+        <location filename="../views/toplevel_bar.cpp" line="475"/>
         <source>Do you want to discard your local changes?</source>
         <translation type="unfinished">是否要丢弃当前的场景?</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="232"/>
+        <location filename="../views/toplevel_bar.cpp" line="238"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="232"/>
-        <location filename="../views/toplevel_bar.cpp" line="257"/>
-        <location filename="../views/toplevel_bar.cpp" line="344"/>
+        <location filename="../views/toplevel_bar.cpp" line="238"/>
+        <location filename="../views/toplevel_bar.cpp" line="263"/>
+        <location filename="../views/toplevel_bar.cpp" line="350"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="233"/>
+        <location filename="../views/toplevel_bar.cpp" line="239"/>
         <source>Open Project...</source>
         <translation type="unfinished">打开项目</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="247"/>
+        <location filename="../views/toplevel_bar.cpp" line="253"/>
         <source>Can&apos;t find manifest.json in %1</source>
         <translation type="unfinished">无法在%1目录中找到manifest.json文件</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="257"/>
+        <location filename="../views/toplevel_bar.cpp" line="263"/>
         <source>Opening</source>
         <translation type="unfinished">打开中</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="258"/>
+        <location filename="../views/toplevel_bar.cpp" line="264"/>
         <source>Open Progress</source>
         <translation type="unfinished">打开进度</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="291"/>
+        <location filename="../views/toplevel_bar.cpp" line="297"/>
         <source>Failed to open project: </source>
         <translation type="unfinished">打开项目失败： </translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="307"/>
+        <location filename="../views/toplevel_bar.cpp" line="313"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="307"/>
+        <location filename="../views/toplevel_bar.cpp" line="313"/>
         <source>All Files(*.pmm *.pmx *.abc *.mdl *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="320"/>
+        <location filename="../views/toplevel_bar.cpp" line="326"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="338"/>
+        <location filename="../views/toplevel_bar.cpp" line="344"/>
         <source>New Project</source>
         <translation type="unfinished">New Project</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="344"/>
+        <location filename="../views/toplevel_bar.cpp" line="350"/>
         <source>Save...</source>
         <translation type="unfinished">保存中...</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="345"/>
+        <location filename="../views/toplevel_bar.cpp" line="351"/>
         <source>Save Project</source>
         <translation type="unfinished">保存项目</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="379"/>
+        <location filename="../views/toplevel_bar.cpp" line="385"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="415"/>
+        <location filename="../views/toplevel_bar.cpp" line="421"/>
         <source>Save Image</source>
         <translation type="unfinished">保存图像</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="415"/>
+        <location filename="../views/toplevel_bar.cpp" line="421"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="507"/>
+        <location filename="../views/toplevel_bar.cpp" line="513"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="87"/>
-        <location filename="../views/toplevel_bar.cpp" line="500"/>
-        <location filename="../views/toplevel_bar.cpp" line="534"/>
+        <location filename="../views/toplevel_bar.cpp" line="506"/>
+        <location filename="../views/toplevel_bar.cpp" line="540"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="612"/>
-        <location filename="../views/toplevel_bar.cpp" line="650"/>
+        <location filename="../views/toplevel_bar.cpp" line="618"/>
+        <location filename="../views/toplevel_bar.cpp" line="656"/>
         <source>VolumeOff</source>
         <translation>音量关闭</translation>
     </message>
