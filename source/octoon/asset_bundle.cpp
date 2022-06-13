@@ -27,26 +27,20 @@ namespace octoon
 	{
 		assetPath_ = assetPath;
 
-		auto modelPath = std::filesystem::path(assetPath).append("model").string();
-		auto motionPath = std::filesystem::path(assetPath).append("motion").string();
-		auto materialPath = std::filesystem::path(assetPath).append("material").string();
-		auto texturePath = std::filesystem::path(assetPath).append("texture").string();
-		auto hdriPath = std::filesystem::path(assetPath).append("hdri").string();
-
 		this->modelAsset_ = std::make_unique<AssetImporter>();
-		this->modelAsset_->open(modelPath);
+		this->modelAsset_->open(std::filesystem::path(assetPath).append("Model"));
 
 		this->motionAsset_ = std::make_unique<AssetImporter>();
-		this->motionAsset_->open(motionPath);
+		this->motionAsset_->open(std::filesystem::path(assetPath).append("Motion"));
 
 		this->materialAsset_ = std::make_unique<AssetImporter>();
-		this->materialAsset_->open(materialPath);
+		this->materialAsset_->open(std::filesystem::path(assetPath).append("Material"));
 
 		this->textureAsset_ = std::make_unique<AssetImporter>();
-		this->textureAsset_->open(texturePath);
+		this->textureAsset_->open(std::filesystem::path(assetPath).append("Texture"));
 
 		this->hdriAsset_ = std::make_unique<AssetImporter>();
-		this->hdriAsset_->open(hdriPath);
+		this->hdriAsset_->open(std::filesystem::path(assetPath).append("HDRi"));
 	}
 
 	void

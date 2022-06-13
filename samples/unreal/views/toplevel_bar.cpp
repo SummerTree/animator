@@ -77,7 +77,6 @@ namespace unreal
 		this->connect(&rightButton, SIGNAL(clicked()), this, SLOT(rightEvent()));
 		this->connect(&volumeButton, SIGNAL(clicked()), this, SLOT(volumeEvent()));
 		this->connect(&volumeSlider_, SIGNAL(valueChanged(int)), this, SLOT(volumeSliderEvent(int)));
-		// this->connect(&slider_, SIGNAL(valueChanged(int)), this, SLOT(sliderEvent(int)));
 	}
 
 	ToplevelBar::~ToplevelBar() noexcept
@@ -120,38 +119,27 @@ namespace unreal
 	void
 	ToplevelBar::resetEvent() noexcept
 	{
-		auto resetSignal = [this]() -> bool
+		try
 		{
-			try
+			if (behaviour_ && !profile_->playerModule->isPlaying)
 			{
-				if (behaviour_ && !profile_->playerModule->isPlaying)
+				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+				if (behaviour->isOpen())
 				{
-					auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-					if (behaviour->isOpen())
+					auto player = behaviour->getComponent<PlayerComponent>();
+					if (player)
 					{
-						auto player = dynamic_cast<PlayerComponent*>(behaviour->getComponent<PlayerComponent>());
-						if (player)
-						{
-							player->reset();
-							return true;
-						}
+						player->reset();
+						playButton.setIcon(playIcon_);
+						playButton.setToolTip(tr("Play"));
+						playEnable_ = false;
 					}
 				}
-
-				return false;
 			}
-			catch (const std::exception& e)
-			{
-				QMessageBox::critical(this, tr("Error"), e.what());
-				return false;
-			}
-		};
-
-		if (resetSignal())
+		}
+		catch (const std::exception& e)
 		{
-			playButton.setIcon(playIcon_);
-			playButton.setToolTip(tr("Play"));
-			playEnable_ = false;
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 

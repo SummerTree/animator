@@ -46,24 +46,13 @@ namespace unreal
 	void
 	UnrealBehaviour::save(const std::filesystem::path& path) noexcept(false)
 	{
-		profile_->save(path);
+		this->profile_->save(path);
 	}
 
 	void
 	UnrealBehaviour::reset() noexcept
 	{
-		this->profile_->path.clear();
-		this->profile_->soundModule->reset();
-		this->profile_->cameraModule->reset();
-		this->profile_->entitiesModule->reset();
-		this->profile_->mainLightModule->reset();
-		this->profile_->environmentLightModule->reset();
-		this->profile_->selectorModule->reset();
-		this->profile_->encodeModule->reset();
-		this->profile_->offlineModule->reset();
-		this->profile_->physicsModule->reset();
-		this->profile_->recordModule->reset();
-		this->profile_->playerModule->reset();
+		this->profile_->reset();
 
 		octoon::AssetBundle::instance()->unload();
 	}
@@ -71,6 +60,9 @@ namespace unreal
 	bool
 	UnrealBehaviour::isOpen() const noexcept
 	{
+		if (!profile_->path.empty())
+			return true;
+
 		if (profile_->playerModule->timeLength > 0)
 			return true;
 

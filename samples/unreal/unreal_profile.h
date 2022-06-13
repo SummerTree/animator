@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <filesystem>
+#include <octoon/asset_bundle.h>
 
 #include "module/encode_module.h"
 #include "module/physics_module.h"
@@ -26,13 +27,15 @@ namespace unreal
 	{
 	public:
 		UnrealProfile() noexcept;
-		UnrealProfile(const std::filesystem::path& path_) noexcept(false);
+		UnrealProfile(const std::filesystem::path& path) noexcept(false);
 		virtual ~UnrealProfile() noexcept;
 
 		void disconnect() noexcept;
 		
-		void load(const std::filesystem::path& path_) noexcept(false);
-		void save(const std::filesystem::path& path_) noexcept(false);
+		void load(const std::filesystem::path& path) noexcept(false);
+		void save(const std::filesystem::path& path) noexcept(false);
+
+		void reset() noexcept;
 
 	private:
 		UnrealProfile(const UnrealProfile&) = delete;
@@ -40,6 +43,9 @@ namespace unreal
 
 	public:
 		std::filesystem::path path;
+
+		std::string version;
+		std::shared_ptr<octoon::AssetBundle> ab;
 		std::shared_ptr<RecordModule> recordModule;
 		std::shared_ptr<SoundModule> soundModule;
 		std::shared_ptr<EntitiesModule> entitiesModule;

@@ -535,8 +535,8 @@ namespace unreal
 				this->timer_.update();
 				this->getContext()->profile->offlineModule->sppCount = 0;
 
-				auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));
-				auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
+				auto curFrame = static_cast<int>(std::max(1.0f, std::round(model->curTime * 30.0f)));
+				auto totalFrame = static_cast<int>(std::max(1.0f, std::round(model->timeLength * 30.0f)));
 
 				model->takeupTime = model->takeupTime.getValue() + this->timer_.frame_time();
 				model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / curFrame);
@@ -549,8 +549,8 @@ namespace unreal
 			this->sendMessage("editor:player:record");
 			this->timer_.update();
 
-			auto curFrame = std::max<int>(1, std::round(model->curTime * 30.0f));
-			auto totalFrame = std::max<int>(1, std::round(model->timeLength * 30.0f));
+			auto curFrame = static_cast<int>(std::max(1.0f, std::round(model->curTime * 30.0f)));
+			auto totalFrame = static_cast<int>(std::max(1.0f, std::round(model->timeLength * 30.0f)));
 
 			model->takeupTime = model->takeupTime.getValue() + this->timer_.frame_time();
 			model->estimatedTime = (totalFrame - curFrame) * (model->takeupTime / curFrame);

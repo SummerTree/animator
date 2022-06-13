@@ -1474,8 +1474,8 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="35"/>
-        <location filename="../views/toplevel_bar.cpp" line="217"/>
-        <location filename="../views/toplevel_bar.cpp" line="268"/>
+        <location filename="../views/toplevel_bar.cpp" line="205"/>
+        <location filename="../views/toplevel_bar.cpp" line="256"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1485,41 +1485,41 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="174"/>
-        <location filename="../views/toplevel_bar.cpp" line="200"/>
-        <location filename="../views/toplevel_bar.cpp" line="246"/>
+        <location filename="../views/toplevel_bar.cpp" line="162"/>
+        <location filename="../views/toplevel_bar.cpp" line="188"/>
+        <location filename="../views/toplevel_bar.cpp" line="234"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="174"/>
-        <location filename="../views/toplevel_bar.cpp" line="200"/>
-        <location filename="../views/toplevel_bar.cpp" line="246"/>
+        <location filename="../views/toplevel_bar.cpp" line="162"/>
+        <location filename="../views/toplevel_bar.cpp" line="188"/>
+        <location filename="../views/toplevel_bar.cpp" line="234"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="116"/>
-        <location filename="../views/toplevel_bar.cpp" line="145"/>
-        <location filename="../views/toplevel_bar.cpp" line="180"/>
-        <location filename="../views/toplevel_bar.cpp" line="206"/>
+        <location filename="../views/toplevel_bar.cpp" line="115"/>
+        <location filename="../views/toplevel_bar.cpp" line="142"/>
+        <location filename="../views/toplevel_bar.cpp" line="168"/>
+        <location filename="../views/toplevel_bar.cpp" line="194"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="108"/>
+        <location filename="../views/toplevel_bar.cpp" line="107"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="101"/>
-        <location filename="../views/toplevel_bar.cpp" line="153"/>
+        <location filename="../views/toplevel_bar.cpp" line="100"/>
+        <location filename="../views/toplevel_bar.cpp" line="134"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="224"/>
-        <location filename="../views/toplevel_bar.cpp" line="262"/>
+        <location filename="../views/toplevel_bar.cpp" line="212"/>
+        <location filename="../views/toplevel_bar.cpp" line="250"/>
         <source>VolumeOff</source>
         <translation type="unfinished"></translation>
     </message>

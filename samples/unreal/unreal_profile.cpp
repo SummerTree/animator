@@ -8,7 +8,8 @@
 namespace unreal
 {
 	UnrealProfile::UnrealProfile() noexcept
-		: physicsModule(std::make_shared<PhysicsModule>())
+		: version(UNREAL_VERSION)
+		, physicsModule(std::make_shared<PhysicsModule>())
 		, encodeModule(std::make_shared<EncodeModule>())
 		, playerModule(std::make_shared<PlayerModule>())
 		, soundModule(std::make_shared<SoundModule>())
@@ -55,47 +56,69 @@ namespace unreal
 	}
 
 	void
+	UnrealProfile::reset() noexcept
+	{
+		this->path.clear();
+		this->physicsModule->reset();
+		this->encodeModule->reset();
+		this->playerModule->reset();
+		this->soundModule->reset();
+		this->entitiesModule->reset();
+		this->offlineModule->reset();
+		this->recordModule->reset();
+		this->markModule->reset();
+		this->mainLightModule->reset();
+		this->environmentLightModule->reset();
+		this->cameraModule->reset();
+		this->resourceModule->reset();
+		this->selectorModule->reset();
+		this->gridModule->reset();
+		this->ab.reset();
+	}
+
+	void
 	UnrealProfile::load(const std::filesystem::path& path_) noexcept(false)
 	{
 		std::ifstream stream(std::filesystem::path(path_).append("manifest.json"));
 		if (stream)
 		{
-			auto ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).append("Assets"));
-
 			auto json = nlohmann::json::parse(stream);
-			json["version"] = UNREAL_VERSION;
-			this->path = path_.string();
 
-			if (json["physics"].is_object())
-				this->physicsModule->load(json["physics"], ab);
-			if (json["encode"].is_object())
-				this->encodeModule->load(json["encode"], ab);
-			if (json["time"].is_object())
-				this->playerModule->load(json["time"], ab);
-			if (json["sound"].is_object())
-				this->soundModule->load(json["sound"], ab);
-			if (json["entities"].is_object())
-				this->entitiesModule->load(json["entities"], ab);
-			if (json["offline"].is_object())
-				this->offlineModule->load(json["offline"], ab);
-			if (json["canvas"].is_object())
-				this->recordModule->load(json["canvas"], ab);
-			if (json["camera"].is_object())
-				this->cameraModule->load(json["camera"], ab);
-			if (json["mark"].is_object())
-				this->markModule->load(json["mark"], ab);
-			if (json["mainLight"].is_object())
-				this->mainLightModule->load(json["mainLight"], ab);
-			if (json["environmentLight"].is_object())
-				this->environmentLightModule->load(json["environmentLight"], ab);
-			if (json["resource"].is_object())
-				this->resourceModule->load(json["resource"], ab);
-			if (json["drag"].is_object())
-				this->selectorModule->load(json["drag"], ab);
-			if (json["grid"].is_object())
-				this->gridModule->load(json["grid"], ab);
+			this->path = path_;
+			this->ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).append("Assets"));
 
-			ab->unload();
+			if (json.contains("version") && json["physics"].is_string())
+				this->version = json["version"].get<std::string>();
+			if (json.contains("physics") && json["physics"].is_object())
+				this->physicsModule->load(json["physics"], this->ab);
+			if (json.contains("encode") && json["encode"].is_object())
+				this->encodeModule->load(json["encode"], this->ab);
+			if (json.contains("time") && json["time"].is_object())
+				this->playerModule->load(json["time"], this->ab);
+			if (json.contains("sound") && json["sound"].is_object())
+				this->soundModule->load(json["sound"], this->ab);
+			if (json.contains("entities") && json["entities"].is_object())
+				this->entitiesModule->load(json["entities"], this->ab);
+			if (json.contains("offline") && json["offline"].is_object())
+				this->offlineModule->load(json["offline"], this->ab);
+			if (json.contains("canvas") && json["canvas"].is_object())
+				this->recordModule->load(json["canvas"], this->ab);
+			if (json.contains("camera") && json["camera"].is_object())
+				this->cameraModule->load(json["camera"], this->ab);
+			if (json.contains("mark") && json["mark"].is_object())
+				this->markModule->load(json["mark"], this->ab);
+			if (json.contains("mainLight") && json["mainLight"].is_object())
+				this->mainLightModule->load(json["mainLight"], this->ab);
+			if (json.contains("environmentLight") && json["environmentLight"].is_object())
+				this->environmentLightModule->load(json["environmentLight"], this->ab);
+			if (json.contains("resource") && json["resource"].is_object())
+				this->resourceModule->load(json["resource"], this->ab);
+			if (json.contains("drag") && json["drag"].is_object())
+				this->selectorModule->load(json["drag"], this->ab);
+			if (json.contains("grid") && json["grid"].is_object())
+				this->gridModule->load(json["grid"], this->ab);
+
+			this->ab->unload();
 		}
 		else
 		{
@@ -118,38 +141,34 @@ namespace unreal
 				std::filesystem::remove(backupFile);
 
 			if (std::filesystem::exists(manifestFile))
-			{
 				std::filesystem::rename(manifestFile, backupFile);
-#ifdef _WINDOWS_
-				SetFileAttributesW(backupFile.c_str(), FILE_ATTRIBUTE_HIDDEN);
-#endif
-			}
 
 			std::ofstream stream(manifestFile);
 			if (stream)
 			{
 				nlohmann::json json;
+				json["version"] = UNREAL_VERSION;
 
-				auto ab = std::make_shared<octoon::AssetBundle>();
-				ab->open(std::filesystem::path(path_).append("Assets"));
+				auto assetBundle = std::make_shared<octoon::AssetBundle>();
+				assetBundle->open(std::filesystem::path(path_).append("Assets"));
 
-				this->path = path_.string();
-				this->physicsModule->save(json["physics"], ab);
-				this->encodeModule->save(json["encode"], ab);
-				this->playerModule->save(json["time"], ab);
-				this->soundModule->save(json["sound"], ab);
-				this->entitiesModule->save(json["entities"], ab);
-				this->offlineModule->save(json["offline"], ab);
-				this->cameraModule->save(json["camera"], ab);
-				this->recordModule->save(json["canvas"], ab);
-				this->markModule->save(json["mark"], ab);
-				this->mainLightModule->save(json["mainLight"], ab);
-				this->environmentLightModule->save(json["environmentLight"], ab);
-				this->resourceModule->save(json["resource"], ab);
-				this->selectorModule->save(json["drag"], ab);
-				this->gridModule->save(json["grid"], ab);
+				this->path = path_;
+				this->physicsModule->save(json["physics"], assetBundle);
+				this->encodeModule->save(json["encode"], assetBundle);
+				this->playerModule->save(json["time"], assetBundle);
+				this->soundModule->save(json["sound"], assetBundle);
+				this->entitiesModule->save(json["entities"], assetBundle);
+				this->offlineModule->save(json["offline"], assetBundle);
+				this->cameraModule->save(json["camera"], assetBundle);
+				this->recordModule->save(json["canvas"], assetBundle);
+				this->markModule->save(json["mark"], assetBundle);
+				this->mainLightModule->save(json["mainLight"], assetBundle);
+				this->environmentLightModule->save(json["environmentLight"], assetBundle);
+				this->resourceModule->save(json["resource"], assetBundle);
+				this->selectorModule->save(json["drag"], assetBundle);
+				this->gridModule->save(json["grid"], assetBundle);
 
-				ab->saveAssets();
+				assetBundle->saveAssets();
 
 				auto string = json.dump();
 				stream.write(string.c_str(), string.size());
@@ -168,12 +187,7 @@ namespace unreal
 				std::filesystem::remove(manifestFile);
 
 			if (std::filesystem::exists(backupFile))
-			{
 				std::filesystem::rename(backupFile, manifestFile);
-#ifdef _WINDOWS_
-				SetFileAttributesW(manifestFile.c_str(), FILE_ATTRIBUTE_NORMAL);
-#endif
-			}
 
 			throw e;
 		}
