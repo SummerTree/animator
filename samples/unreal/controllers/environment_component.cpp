@@ -126,24 +126,26 @@ namespace unreal
 		{
 			auto& model = this->getModel();
 
-			this->texture_ = texture;
-			this->radianceTexture_ = texture ? octoon::PMREMLoader::load(this->texture_) : nullptr;
-
-			auto& environmentLight = model->environmentLight.getValue();
-			if (environmentLight)
+			if (this->texture_ != texture)
 			{
-				auto environmentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
-				if (environmentComponent)
-				{
-					environmentComponent->setBackgroundMap(model->useTexture ? texture : nullptr);
-					environmentComponent->setRadianceMap(model->useTexture ? this->radianceTexture_ : nullptr);
-				}
+				this->radianceTexture_ = texture ? octoon::PMREMLoader::load(this->texture_) : nullptr;
 
-				auto meshRenderer = environmentLight->getComponent<octoon::MeshRendererComponent>();
-				if (meshRenderer)
+				auto& environmentLight = model->environmentLight.getValue();
+				if (environmentLight)
 				{
-					auto material = meshRenderer->getMaterial()->downcast<octoon::MeshBasicMaterial>();
-					material->setColorMap(model->useTexture ? texture : nullptr);
+					auto environmentComponent = environmentLight->getComponent<octoon::EnvironmentLightComponent>();
+					if (environmentComponent)
+					{
+						environmentComponent->setBackgroundMap(model->useTexture ? texture : nullptr);
+						environmentComponent->setRadianceMap(model->useTexture ? this->radianceTexture_ : nullptr);
+					}
+
+					auto meshRenderer = environmentLight->getComponent<octoon::MeshRendererComponent>();
+					if (meshRenderer)
+					{
+						auto material = meshRenderer->getMaterial()->downcast<octoon::MeshBasicMaterial>();
+						material->setColorMap(model->useTexture ? texture : nullptr);
+					}
 				}
 			}
 		};

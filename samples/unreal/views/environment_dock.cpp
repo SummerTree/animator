@@ -482,6 +482,7 @@ namespace unreal
 
 						this->setPreviewImage(QFileInfo(name).fileName(), previewImage);
 						this->setThumbnailImage(name, *previewImage);
+						this->updatePreviewImage();
 					}
 				}
 				else
@@ -506,6 +507,7 @@ namespace unreal
 
 					this->setPreviewImage(QFileInfo(QString::fromStdString(name)).fileName(), previewImage);
 					this->setThumbnailImage(QString::fromStdString(name), *previewImage);
+					this->updatePreviewImage();
 				}
 			}
 			else
@@ -514,9 +516,8 @@ namespace unreal
 				this->thumbnailPath->clear();
 				this->thumbnailPath->setToolTip(QString());
 				this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
+				this->updatePreviewImage();
 			}
-
-			this->updatePreviewImage();
 		};
 
 		connect(previewButton_, SIGNAL(clicked(bool)), this, SLOT(previewClickEvent(bool)));
