@@ -430,7 +430,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/main_dock.cpp" line="22"/>
         <source>AnimatorGo Lite</source>
-        <translation>动映（测试版）</translation>
+        <translation>AnimatorGo Lite（测试版）</translation>
     </message>
     <message>
         <location filename="../views/main_dock.cpp" line="230"/>
@@ -1200,7 +1200,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/splash_screen.cpp" line="24"/>
         <source>AnimatorGo Lite 2022</source>
-        <translation>动映 Lite 2022</translation>
+        <translation>AnimatorGo Lite 2022</translation>
     </message>
     <message>
         <location filename="../views/splash_screen.cpp" line="29"/>
