@@ -152,13 +152,13 @@ namespace unreal
 		layout_->addWidget(splitLine);
 		layout_->addWidget(gpuButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(shotButton_, 0, Qt::AlignCenter);
-		layout_->addWidget(audioButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(splitLine2);
 		layout_->addWidget(resetButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(leftButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(playButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(rightButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(splitLine3);
+		layout_->addWidget(audioButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(volumeButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(volumeSlider_);
 		layout_->addStretch();
@@ -178,11 +178,19 @@ namespace unreal
 		this->addWidget(mainWidget);
 
 		profile->playerModule->isPlaying += [this](bool value) {
-			this->repaint();
+			this->update();
 		};
 
 		profile->playerModule->finish += [this](bool value) {
-			this->repaint();
+			this->update();
+		};
+
+		profile->offlineModule->enable += [this](bool value) {
+			this->update();
+		};
+
+		profile->soundModule->sound += [this](const octoon::GameObjectPtr& value) {
+			this->update();
 		};
 
 		profile->soundModule->volume += [this](float value) {
@@ -666,7 +674,7 @@ namespace unreal
 	}
 
 	void
-	ToplevelBar::paintEvent(QPaintEvent* e) noexcept
+	ToplevelBar::update() noexcept
 	{
 		if (profile_->playerModule->isPlaying)
 		{
@@ -682,6 +690,40 @@ namespace unreal
 			{
 				playButton_->setIcon(playIcon_);
 				playEnable_ = false;
+			}
+		}
+
+		if (this->profile_->offlineModule->getEnable())
+		{
+			if (!gpuEnable_)
+			{
+				gpuButton_->setIcon(gpuOnIcon_);
+				gpuEnable_ = true;
+			}
+		}
+		else
+		{
+			if (gpuEnable_)
+			{
+				gpuButton_->setIcon(gpuIcon_);
+				gpuEnable_ = false;
+			}
+		}
+
+		if (this->profile_->soundModule->sound.getValue())
+		{
+			if (!audioEnable_)
+			{
+				audioButton_->setIcon(audioOnIcon_);
+				audioEnable_ = true;
+			}
+		}
+		else
+		{
+			if (audioEnable_)
+			{
+				audioButton_->setIcon(audioIcon_);
+				audioEnable_ = false;
 			}
 		}
 	}

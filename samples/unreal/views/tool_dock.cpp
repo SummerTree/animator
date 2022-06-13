@@ -68,14 +68,6 @@ namespace unreal
 
 		this->setWidget(mainWidget);
 
-		profile->offlineModule->enable += [this](bool value) {
-			this->update();
-		};
-
-		profile->soundModule->sound += [this](const octoon::GameObjectPtr& value) {
-			this->update();
-		};
-
 		this->connect(recordButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
 		this->connect(sunButton_, SIGNAL(clicked()), this, SLOT(sunEvent()));
 		this->connect(environmentButton_, SIGNAL(clicked()), this, SLOT(environmentEvent()));

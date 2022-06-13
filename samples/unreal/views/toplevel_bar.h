@@ -24,7 +24,7 @@ namespace unreal
 		ToplevelBar(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<unreal::UnrealProfile>& profile) noexcept;
 		~ToplevelBar() noexcept;
 
-		void paintEvent(QPaintEvent* e) noexcept;
+		void update() noexcept;
 
 	public Q_SLOTS:
 		void openEvent() noexcept;
