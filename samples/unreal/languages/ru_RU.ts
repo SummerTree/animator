@@ -896,7 +896,12 @@ $20 (Original cost $40)</source>
     <name>unreal::RecordDock</name>
     <message>
         <location filename="../views/record_dock.cpp" line="16"/>
-        <source>Record</source>
+        <source>Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="25"/>
+        <source>Video Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1052,11 +1057,6 @@ $20 (Original cost $40)</source>
         <location filename="../views/record_dock.cpp" line="301"/>
         <location filename="../views/record_dock.cpp" line="472"/>
         <source>Stop Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="25"/>
-        <source>Record Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1251,12 +1251,12 @@ $20 (Original cost $40)</source>
     <name>unreal::ToolDock</name>
     <message>
         <location filename="../views/tool_dock.cpp" line="19"/>
-        <source>Record</source>
+        <source>Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="20"/>
-        <source>Open Record Panel</source>
+        <source>Open Video Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

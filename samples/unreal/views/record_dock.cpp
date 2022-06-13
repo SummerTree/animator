@@ -13,7 +13,7 @@ namespace unreal
 		, profile_(profile)
 	{
 		this->setObjectName("RecordDock");
-		this->setWindowTitle(tr("Record"));
+		this->setWindowTitle(tr("Video"));
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
 		auto oldTitleBar = this->titleBarWidget();
@@ -22,7 +22,7 @@ namespace unreal
 
 		auto title_ = new QLabel;
 		title_->setObjectName("title");
-		title_->setText(tr("Record Editor"));
+		title_->setText(tr("Video Editor"));
 
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("Separator");

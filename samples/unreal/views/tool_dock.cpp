@@ -14,13 +14,13 @@ namespace unreal
 		this->setTitleBarWidget(new QWidget());
 		delete oldTitleBar;
 
-		recordButton_ = new QToolButton;
-		recordButton_->setObjectName("record");
-		recordButton_->setText(tr("Record"));
-		recordButton_->setToolTip(tr("Open Record Panel"));
-		recordButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		recordButton_->setCheckable(true);
-		recordButton_->installEventFilter(this);
+		videoButton_ = new QToolButton;
+		videoButton_->setObjectName("record");
+		videoButton_->setText(tr("Video"));
+		videoButton_->setToolTip(tr("Open Video Panel"));
+		videoButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		videoButton_->setCheckable(true);
+		videoButton_->installEventFilter(this);
 
 		sunButton_ = new QToolButton;
 		sunButton_->setObjectName("sun");
@@ -51,7 +51,7 @@ namespace unreal
 		buttonGroup_->addButton(sunButton_, 0);
 		buttonGroup_->addButton(environmentButton_, 1);
 		buttonGroup_->addButton(cameraButton_, 2);
-		buttonGroup_->addButton(recordButton_, 3);
+		buttonGroup_->addButton(videoButton_, 3);
 
 		auto layout = new QVBoxLayout;
 		layout->setSpacing(4);
@@ -59,7 +59,7 @@ namespace unreal
 		layout->addWidget(sunButton_, 0, Qt::AlignCenter);
 		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
 		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
-		layout->addWidget(recordButton_, 0, Qt::AlignCenter);
+		layout->addWidget(videoButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 
 		auto mainWidget = new QWidget;
@@ -68,7 +68,7 @@ namespace unreal
 
 		this->setWidget(mainWidget);
 
-		this->connect(recordButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
+		this->connect(videoButton_, SIGNAL(clicked()), this, SLOT(recordEvent()));
 		this->connect(sunButton_, SIGNAL(clicked()), this, SLOT(sunEvent()));
 		this->connect(environmentButton_, SIGNAL(clicked()), this, SLOT(environmentEvent()));
 		this->connect(cameraButton_, SIGNAL(clicked()), this, SLOT(cameraEvent()));

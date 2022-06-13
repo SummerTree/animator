@@ -943,14 +943,12 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::RecordDock</name>
     <message>
-        <location filename="../views/record_dock.cpp" line="16"/>
         <source>Record</source>
-        <translation>录制</translation>
+        <translation type="vanished">录制</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="25"/>
         <source>Record Editor</source>
-        <translation type="unfinished">录制编辑</translation>
+        <translation type="obsolete">录制编辑</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="41"/>
@@ -1106,6 +1104,16 @@ $20 (Original cost $40)</source>
         <location filename="../views/record_dock.cpp" line="472"/>
         <source>Stop Render</source>
         <translation>停止渲染</translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="16"/>
+        <source>Video</source>
+        <translation type="unfinished">视频</translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="25"/>
+        <source>Video Editor</source>
+        <translation type="unfinished">视频编辑</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="445"/>
@@ -1423,58 +1431,14 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ToolDock</name>
     <message>
-        <source>Import</source>
-        <translation type="vanished">导入</translation>
-    </message>
-    <message>
-        <source>Import Resource File(.pmm, .mdl)</source>
-        <translation type="vanished">加载资源(.pmm, .mdl)</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="vanished">保存</translation>
-    </message>
-    <message>
-        <source>Music</source>
-        <translation type="vanished">音乐</translation>
-    </message>
-    <message>
-        <source>Set Background Audio File</source>
-        <translation type="vanished">设置背景音乐</translation>
-    </message>
-    <message>
-        <source>Screenshot</source>
-        <translation type="vanished">截屏</translation>
-    </message>
-    <message>
-        <source>Denoising Screenshot</source>
-        <translation type="vanished">降噪截屏</translation>
-    </message>
-    <message>
-        <source>Render</source>
-        <translation type="vanished">渲染</translation>
-    </message>
-    <message>
-        <source>Enable High Quality Rendering</source>
-        <translation type="vanished">启用高质量渲染</translation>
-    </message>
-    <message>
-        <source>Cleanup</source>
-        <translation type="vanished">清空</translation>
-    </message>
-    <message>
-        <source>Cleanup Scene</source>
-        <translation type="vanished">清空场景</translation>
-    </message>
-    <message>
         <location filename="../views/tool_dock.cpp" line="19"/>
-        <source>Record</source>
-        <translation type="unfinished">录制</translation>
+        <source>Video</source>
+        <translation type="unfinished">视频</translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="20"/>
-        <source>Open Record Panel</source>
-        <translation type="unfinished">显示录制面板</translation>
+        <source>Open Video Panel</source>
+        <translation type="unfinished">打开视频面板</translation>
     </message>
     <message>
         <location filename="../views/tool_dock.cpp" line="27"/>
@@ -1505,82 +1469,6 @@ $20 (Original cost $40)</source>
         <location filename="../views/tool_dock.cpp" line="45"/>
         <source>Open Camera Panel</source>
         <translation type="unfinished">显示相机面板</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation type="obsolete">设置</translation>
-    </message>
-    <message>
-        <source>Open Project</source>
-        <translation type="vanished">打开项目</translation>
-    </message>
-    <message>
-        <source>Do you want to discard your local changes?</source>
-        <translation type="vanished">是否要丢弃当前的场景?</translation>
-    </message>
-    <message>
-        <source>All Files(*.pmm *.pmx *.abc *.mdl);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; Material Files (*.mdl)</source>
-        <translation type="vanished">所有文件(*.pmm *.pmx *.abc *.mdl);; PMM 文件 (*.pmm);; PMX 文件 (*.pmx);; Abc 文件 (*.abc);;材质文件 (*.mdl)</translation>
-    </message>
-    <message>
-        <source>Opening</source>
-        <translation type="vanished">打开中</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">取消</translation>
-    </message>
-    <message>
-        <source>Load Project...</source>
-        <translation type="vanished">加载项目</translation>
-    </message>
-    <message>
-        <source>Open Progress</source>
-        <translation type="vanished">打开进度</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">错误</translation>
-    </message>
-    <message>
-        <source>Failed to open project: </source>
-        <translation type="vanished">打开项目失败： </translation>
-    </message>
-    <message>
-        <source>Import Resource</source>
-        <translation type="vanished">加载资源</translation>
-    </message>
-    <message>
-        <source>New Project</source>
-        <translation type="obsolete">New Project</translation>
-    </message>
-    <message>
-        <source>Loading...</source>
-        <translation type="vanished">加载中...</translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="vanished">打开</translation>
-    </message>
-    <message>
-        <source>Open Project...</source>
-        <translation type="vanished">打开项目</translation>
-    </message>
-    <message>
-        <source>Can&apos;t find manifest.json in %1</source>
-        <translation type="vanished">无法在%1目录中找到manifest.json文件</translation>
-    </message>
-    <message>
-        <source>Save...</source>
-        <translation type="vanished">保存中...</translation>
-    </message>
-    <message>
-        <source>Save Project</source>
-        <translation type="vanished">保存项目</translation>
-    </message>
-    <message>
-        <source>Save Image</source>
-        <translation type="vanished">保存图像</translation>
     </message>
 </context>
 <context>
