@@ -248,6 +248,17 @@ namespace unreal
 		this->setTitleBarWidget(new QWidget());
 		delete oldTitleBar;
 
+		title_ = new QLabel;
+		title_->setObjectName("title");
+		title_->setText(tr("Environment Editor"));
+		
+		auto headerLine = new QFrame;
+		headerLine->setObjectName("Separator");
+		headerLine->setFrameShape(QFrame::HLine);
+		headerLine->setFrameShadow(QFrame::Sunken);
+		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+		headerLine->setContentsMargins(0, 10, 0, 10);
+
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setObjectName("Preview");
 		this->previewButton_->setIconSize(QSize(260, 130));
@@ -295,7 +306,6 @@ namespace unreal
 		this->intensitySlider->installEventFilter(this);
 
 		this->intensitySpinBox = new UDoubleSpinBox;
-		this->intensitySpinBox->setFixedWidth(50);
 		this->intensitySpinBox->setMaximum(10.0f);
 		this->intensitySpinBox->setSingleStep(0.1f);
 		this->intensitySpinBox->setAlignment(Qt::AlignRight);
@@ -314,7 +324,6 @@ namespace unreal
 		this->horizontalRotationSlider->installEventFilter(this);
 		
 		this->horizontalRotationSpinBox = new UDoubleSpinBox;
-		this->horizontalRotationSpinBox->setFixedWidth(50);
 		this->horizontalRotationSpinBox->setMinimum(-1.0f);
 		this->horizontalRotationSpinBox->setMaximum(1.0f);
 		this->horizontalRotationSpinBox->setSingleStep(0.03f);
@@ -333,7 +342,6 @@ namespace unreal
 		this->verticalRotationSlider->installEventFilter(this);
 
 		this->verticalRotationSpinBox = new UDoubleSpinBox;
-		this->verticalRotationSpinBox->setFixedWidth(50);
 		this->verticalRotationSpinBox->setMinimum(-1.0f);
 		this->verticalRotationSpinBox->setMaximum(1.0f);
 		this->verticalRotationSpinBox->setSingleStep(0.03f);
@@ -399,18 +407,15 @@ namespace unreal
 		this->spoiler->setContentLayout(*spoilerLayout);
 		this->spoiler->toggleButton.click();
 
-		auto imageLayout = new QHBoxLayout();
-		imageLayout->addStretch();
-		imageLayout->addWidget(previewButton_, 0, Qt::AlignCenter);
-		imageLayout->addStretch();
-
 		auto mainLayout = new QVBoxLayout();
-		mainLayout->addLayout(imageLayout);
+		mainLayout->addWidget(title_, 0, Qt::AlignLeft);
+		mainLayout->addWidget(headerLine);
+		mainLayout->addWidget(previewButton_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(previewName_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(spoiler);
 		mainLayout->addStretch();
 		mainLayout->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout->setContentsMargins(10, 10, 10, 10);
+		mainLayout->setContentsMargins(10, 0, 10, 10);
 
 		auto mainWidget = new QWidget();
 		mainWidget->setObjectName("EnvironmentWidget");

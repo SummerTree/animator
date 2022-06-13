@@ -20,6 +20,17 @@ namespace unreal
 		this->setTitleBarWidget(new QWidget());
 		delete oldTitleBar;
 
+		auto title_ = new QLabel;
+		title_->setObjectName("title");
+		title_->setText(tr("Record Editor"));
+
+		auto headerLine = new QFrame;
+		headerLine->setObjectName("Separator");
+		headerLine->setFrameShape(QFrame::HLine);
+		headerLine->setFrameShadow(QFrame::Sunken);
+		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+		headerLine->setContentsMargins(0, 10, 0, 10);
+
 		markButton_ = new UPushButton();
 		markButton_->setObjectName("mark");
 		markButton_->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
@@ -128,6 +139,7 @@ namespace unreal
 		denoiseLayout_->setContentsMargins(0, 0, 0, 0);
 
 		bouncesSpinbox_ = USpinLine::create(this, tr("Recursion depth per pixel:"), 1, 32, 1, 0);
+
 		sppSpinbox_ = USpinLine::create(this, tr("Sample number per pixel:"), 1, 9999, 1, 0);
 
 		crfSpinbox = UDoubleSpinLine::create(this, tr("Constant Rate Factor (CRF):"), 0.0f, 63.0f, 0);
@@ -192,6 +204,7 @@ namespace unreal
 
 		auto contentLayout = new QVBoxLayout();
 		contentLayout->addWidget(videoSpoiler_);
+		contentLayout->addSpacing(5);
 		contentLayout->addWidget(markSpoiler_);
 		contentLayout->addStretch();
 
@@ -204,14 +217,17 @@ namespace unreal
 		contentWidgetArea_->setWidgetResizable(true);
 
 		mainLayout_ = new QVBoxLayout();
+		mainLayout_->addWidget(title_);
+		mainLayout_->addWidget(headerLine);
 		mainLayout_->addWidget(contentWidgetArea_);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(recordButton_, 0, Qt::AlignCenter);
-		mainLayout_->setContentsMargins(0, 0, 0, 10);
+		mainLayout_->setContentsMargins(10, 0, 0, 10);
 
 		mainWidget_ = new QWidget;
+		mainWidget_->setObjectName("RecordWidget");
 		mainWidget_->setLayout(mainLayout_);
-
+		
 		this->setWidget(mainWidget_);
 
 		profile_->offlineModule->bounces += [this](std::uint32_t value)

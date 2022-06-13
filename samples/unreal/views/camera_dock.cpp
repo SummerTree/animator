@@ -21,6 +21,17 @@ namespace unreal
 		this->setTitleBarWidget(new QWidget());
 		delete oldTitleBar;
 
+		auto title_ = new QLabel;
+		title_->setObjectName("title");
+		title_->setText(tr("Camera Editor"));
+
+		auto headerLine = new QFrame;
+		headerLine->setObjectName("Separator");
+		headerLine->setFrameShape(QFrame::HLine);
+		headerLine->setFrameShadow(QFrame::Sunken);
+		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+		headerLine->setContentsMargins(0, 10, 0, 10);
+
 		fovSpinbox_ = UDoubleSpinLine::create(this, tr("fov:"), 1.0f, 120.0f, 1.0f, 60.0f);
 		fovSpinbox_->doublespinbox_->setSuffix(u8"бу");
 		fovSpinbox_->doublespinbox_->setDecimals(1);
@@ -87,6 +98,8 @@ namespace unreal
 		animtionLayout->setContentsMargins(0, 0, 0, 0);
 
 		mainLayout_ = new QVBoxLayout;
+		mainLayout_->addWidget(title_);
+		mainLayout_->addWidget(headerLine);
 		mainLayout_->addWidget(fovSpinbox_);
 		mainLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
 		mainLayout_->addLayout(dofLayout_);
@@ -96,7 +109,7 @@ namespace unreal
 		mainLayout_->addLayout(focusTargetLayout);
 		mainLayout_->addLayout(animtionLayout);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(30, 5, 20, 0);
+		mainLayout_->setContentsMargins(10, 0, 20, 0);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("CameraWidget");

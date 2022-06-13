@@ -43,6 +43,7 @@ namespace unreal
         spinline->spinbox_->setRange(min, max);
         spinline->spinbox_->setSingleStep(step);
         spinline->spinbox_->setValue(value);
+		spinline->spinbox_->setAlignment(Qt::AlignRight);
         return spinline;
 	}
 	void

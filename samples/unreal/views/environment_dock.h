@@ -96,6 +96,7 @@ namespace unreal
 		QLabel* intensityLabel_;
 		QLabel* horizontalRotationLabel_;
 		QLabel* verticalRotationLabel_;
+		QLabel* title_;
 
 		QToolButton* previewButton_;
 		QToolButton* colorButton;

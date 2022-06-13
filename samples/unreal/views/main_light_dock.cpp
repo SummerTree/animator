@@ -16,6 +16,17 @@ namespace unreal
 		this->setTitleBarWidget(new QWidget());
 		delete oldTitleBar;
 
+		auto title_ = new QLabel;
+		title_->setObjectName("title");
+		title_->setText(tr("Main Light Editor"));
+
+		auto headerLine = new QFrame;
+		headerLine->setObjectName("Separator");
+		headerLine->setFrameShape(QFrame::HLine);
+		headerLine->setFrameShadow(QFrame::Sunken);
+		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+		headerLine->setContentsMargins(0, 10, 0, 10);
+
 		auto color = profile->mainLightModule->color.getValue();
 
 		colorDialog_ = new ColorDialog();
@@ -184,10 +195,12 @@ namespace unreal
 		scrollArea_->setWidgetResizable(true);
 
 		mainLayout_ = new QVBoxLayout();
+		mainLayout_->addWidget(title_);
+		mainLayout_->addWidget(headerLine);
 		mainLayout_->addWidget(scrollArea_);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout_->setContentsMargins(0, 0, 0, 10);
+		mainLayout_->setContentsMargins(10, 0, 0, 10);
 
 		mainWidget_ = new QWidget();
 		mainWidget_->setLayout(mainLayout_);
