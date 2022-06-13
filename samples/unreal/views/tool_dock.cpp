@@ -50,13 +50,14 @@ namespace unreal
 		buttonGroup_->addButton(videoButton_, 3);
 
 		auto layout = new QVBoxLayout;
-		layout->setSpacing(4);
 		layout->setContentsMargins(0, 0, 0, 0);
 		layout->addWidget(sunButton_, 0, Qt::AlignCenter);
 		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
 		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
 		layout->addWidget(videoButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
+		layout->setSpacing(0);
+		layout->setContentsMargins(0, 0, 0, 0);
 
 		auto mainWidget = new QWidget;
 		mainWidget->setObjectName("ToolWidget");

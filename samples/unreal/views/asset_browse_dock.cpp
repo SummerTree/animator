@@ -68,7 +68,7 @@ namespace unreal
 		mainLayout->addWidget(lightButton_, 0, Qt::AlignCenter);
 		mainLayout->addStretch();
 		mainLayout->addWidget(settingsButton_, 0, Qt::AlignCenter | Qt::AlignBottom);
-		mainLayout->setSpacing(4);
+		mainLayout->setSpacing(0);
 		mainLayout->setContentsMargins(0, 0, 0, 0);
 
 		auto mainWidget = new QWidget;
