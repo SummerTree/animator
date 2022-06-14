@@ -728,66 +728,69 @@ QWidget#RecordDock QPushButton#render{
 	color: rgb(255,255,255);
 	background-color:rgb(242,83,106);
 }
-QWidget#RecordDock unreal--UPushButton#select1{
-	min-width:120;
+QWidget#RecordDock QPushButton#select1{
+	min-width:140;
 	min-height:35;
-	border:1px solid #a5a5a5;
-	border-radius:5px;
+	border:1px solid #a0a0a0;
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+	color: rgb(48,48,50);
 	font-size:18px;
 	font-family: "Microsoft YaHei";
 }
-QWidget#RecordDock unreal--UPushButton#select2{
-	min-width:120;
+QWidget#RecordDock QPushButton#select2{
+	min-width:140;
 	min-height:35;
-	border:1px solid #a5a5a5;
-	border-radius:5px;
+	border:1px solid #a0a0a0;
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+	color: rgb(48,48,50);
 	font-size:18px;
 	font-family: "Microsoft YaHei";
 }
-QWidget#RecordDock unreal--UPushButton#select1:checked{
-	border:2px solid rgb(242,83,106);
+QWidget#RecordDock QPushButton#select1:checked,
+QWidget#RecordDock QPushButton#select2:checked{
+	border:0px;
+	color: rgb(255,255,255);
+	background:rgb(242,83,106);
 }
-QWidget#RecordDock unreal--UPushButton#select2:checked{
-	border:2px solid rgb(242,83,106);
-}
-QWidget#RecordDock unreal--UPushButton#speed1{
-	min-width:66;
+QWidget#RecordDock QPushButton#speed1,
+QWidget#RecordDock QPushButton#speed2,
+QWidget#RecordDock QPushButton#speed3,
+QWidget#RecordDock QPushButton#speed4{
+	min-width:65;
 	min-height:25;
-	border:1px solid #a5a5a5;
+	border:1px solid #a0a0a0;
 	border-radius:5px;
-	border-top-right-radius:0px;
-	border-bottom-right-radius:0px;
+	color: rgb(48,48,50);
 	font-size:18px;
 	font-family: "Microsoft YaHei";
 }
-QWidget#RecordDock unreal--UPushButton#speed2, unreal--UPushButton#speed3{
-	min-width:66;
-	min-height:25;
-	border:1px solid #a5a5a5;
-	font-size:18px;
-	font-family: "Microsoft YaHei";
+QWidget#RecordDock QPushButton#speed1:checked,
+QWidget#RecordDock QPushButton#speed2:checked,
+QWidget#RecordDock QPushButton#speed3:checked,
+QWidget#RecordDock QPushButton#speed4:checked{
+	border:0px;
+	color: rgb(255,255,255);
+	background:rgb(242,83,106);
 }
-QWidget#RecordDock unreal--UPushButton#speed4{
-	min-width:66;
-	min-height:25;
-	border:1px solid #a5a5a5;
+QWidget#RecordDock QPushButton#mode1,
+QWidget#RecordDock QPushButton#mode2,
+QWidget#RecordDock QPushButton#mode3{
+	min-width:90;
+	min-height:35;
+	border:1px solid #a0a0a0;
 	border-radius:5px;
-	border-top-left-radius:0px;
-	border-bottom-left-radius:0px;
-	font-size:18px;
+	color: rgb(48,48,50);
+	font-size:16px;
 	font-family: "Microsoft YaHei";
 }
-QWidget#RecordDock unreal--UPushButton#speed1:checked{
-	border:2px solid rgb(242,83,106);
-}
-QWidget#RecordDock unreal--UPushButton#speed2:checked{
-	border:2px solid rgb(242,83,106);
-}
-QWidget#RecordDock unreal--UPushButton#speed3:checked{
-	border:2px solid rgb(242,83,106);
-}
-QWidget#RecordDock unreal--UPushButton#speed4:checked{
-	border:2px solid rgb(242,83,106);
+QWidget#RecordDock QPushButton#mode1:checked,
+QWidget#RecordDock QPushButton#mode2:checked,
+QWidget#RecordDock QPushButton#mode3:checked{
+	border:0px;
+	color: rgb(255,255,255);
+	background:rgb(242,83,106);
 }
 QWidget#RecordDock QLineEdit{
 	max-width:60;

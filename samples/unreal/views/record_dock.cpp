@@ -49,14 +49,14 @@ namespace unreal
 		quality_ = new QLabel();
 		quality_->setText(tr("Render Pipeline"));
 
-		select1_ = new UPushButton();
+		select1_ = new QPushButton();
 		select1_->setObjectName("select1");
 		select1_->setText(tr("Ultra Render"));
 		select1_->setCheckable(true);
 		select1_->click();
 		select1_->installEventFilter(this);
 
-		select2_ = new UPushButton();
+		select2_ = new QPushButton();
 		select2_->setObjectName("select2");
 		select2_->setText(tr("Realtime Render"));
 		select2_->setCheckable(true);
@@ -69,26 +69,26 @@ namespace unreal
 		videoRatio_ = new QLabel();
 		videoRatio_->setText(tr("Frame Per Second"));
 
-		speed1_ = new UPushButton();
+		speed1_ = new QPushButton();
 		speed1_->setObjectName("speed1");
 		speed1_->setText(tr("24"));
 		speed1_->setCheckable(true);
-		speed1_->click();
 		speed1_->installEventFilter(this);
 
-		speed2_ = new UPushButton();
+		speed2_ = new QPushButton();
 		speed2_->setObjectName("speed2");
 		speed2_->setText(tr("25"));
 		speed2_->setCheckable(true);
 		speed2_->installEventFilter(this);
-
-		speed3_ = new UPushButton();
+		
+		speed3_ = new QPushButton();
 		speed3_->setObjectName("speed3");
 		speed3_->setText(tr("30"));
 		speed3_->setCheckable(true);
+		speed3_->click();
 		speed3_->installEventFilter(this);
 
-		speed4_ = new UPushButton();
+		speed4_ = new QPushButton();
 		speed4_->setObjectName("speed4");
 		speed4_->setText(tr("60"));
 		speed4_->setCheckable(true);
@@ -101,14 +101,32 @@ namespace unreal
 		speedGroup_->addButton(speed4_, 3);
 
 		// output video type
-		outputType_ = new QLabel();
-		outputType_->setText(tr("Output Type"));
+		encodeType_ = new QLabel();
+		encodeType_->setText(tr("Encode Type"));
 
-		outputTypeCombo_ = new QComboBox();
-		outputTypeCombo_->addItem(tr("H265"));
-		outputTypeCombo_->addItem(tr("H264"));
-		outputTypeCombo_->addItem(tr("Frame Sequence"));
-		outputTypeCombo_->installEventFilter(this);
+		mode1_ = new QPushButton();
+		mode1_->setObjectName("mode1");
+		mode1_->setText(tr("H264"));
+		mode1_->setCheckable(true);
+		mode1_->installEventFilter(this);
+
+		mode2_ = new QPushButton();
+		mode2_->setObjectName("mode2");
+		mode2_->setText(tr("H265"));
+		mode2_->setCheckable(true);
+		mode2_->installEventFilter(this);
+
+		mode3_ = new QPushButton();
+		mode3_->setObjectName("mode3");
+		mode3_->setText(tr("Images"));
+		mode3_->setCheckable(true);
+		mode3_->click();
+		mode3_->installEventFilter(this);
+
+		modeGroup_ = new QButtonGroup();
+		modeGroup_->addButton(mode1_, 0);
+		modeGroup_->addButton(mode2_, 1);
+		modeGroup_->addButton(mode3_, 2);
 		
 		frame_ = new QLabel();
 		frame_->setText(tr("Play:"));
@@ -165,6 +183,12 @@ namespace unreal
 		recordButton_->setText(tr("Start Render"));
 		recordButton_->setContentsMargins(0, 0, 0, 0);
 		
+		auto selectLayout_ = new QHBoxLayout();
+		selectLayout_->addWidget(select1_, 0, Qt::AlignRight);
+		selectLayout_->addWidget(select2_, 0, Qt::AlignLeft);
+		selectLayout_->setSpacing(0);
+		selectLayout_->setContentsMargins(0, 0, 0, 0);
+
 		videoRatioLayout_ = new QHBoxLayout();
 		videoRatioLayout_->addStretch();
 		videoRatioLayout_->addWidget(speed1_, 0, Qt::AlignRight);
@@ -174,10 +198,13 @@ namespace unreal
 		videoRatioLayout_->addStretch();
 		videoRatioLayout_->setContentsMargins(0, 0, 0, 0);
 
-		auto selectLayout_ = new QHBoxLayout();
-		selectLayout_->addWidget(select1_, 0, Qt::AlignLeft);
-		selectLayout_->addWidget(select2_, 0, Qt::AlignLeft);
-		selectLayout_->setContentsMargins(0, 0, 0, 0);
+		auto encodeLayout_ = new QHBoxLayout();
+		encodeLayout_->addStretch();
+		encodeLayout_->addWidget(mode1_, 0, Qt::AlignLeft);
+		encodeLayout_->addWidget(mode2_, 0, Qt::AlignVCenter);
+		encodeLayout_->addWidget(mode3_, 0, Qt::AlignRight);
+		encodeLayout_->addStretch();
+		encodeLayout_->setContentsMargins(0, 0, 0, 0);
 
 		auto videoLayout = new QVBoxLayout;
 		videoLayout->addSpacing(10);
@@ -189,12 +216,11 @@ namespace unreal
 		videoLayout->addWidget(videoRatio_);
 		videoLayout->addLayout(videoRatioLayout_);
 		videoLayout->addSpacing(10);
+		videoLayout->addWidget(encodeType_);
+		videoLayout->addLayout(encodeLayout_);
+		videoLayout->addSpacing(15);
 		videoLayout->addWidget(frame_);
 		videoLayout->addLayout(frameLayout_);
-		videoLayout->addSpacing(10);
-		videoLayout->addWidget(outputType_);
-		videoLayout->addWidget(outputTypeCombo_);
-		videoLayout->addSpacing(10);
 		videoLayout->addLayout(denoiseLayout_);
 		videoLayout->addWidget(sppSpinbox_);
 		videoLayout->addWidget(bouncesSpinbox_);
@@ -324,6 +350,9 @@ namespace unreal
 		connect(speed2_, SIGNAL(toggled(bool)), this, SLOT(speed2Event(bool)));
 		connect(speed3_, SIGNAL(toggled(bool)), this, SLOT(speed3Event(bool)));
 		connect(speed4_, SIGNAL(toggled(bool)), this, SLOT(speed4Event(bool)));
+		connect(mode1_, SIGNAL(toggled(bool)), this, SLOT(mode1Event(bool)));
+		connect(mode2_, SIGNAL(toggled(bool)), this, SLOT(mode2Event(bool)));
+		connect(mode3_, SIGNAL(toggled(bool)), this, SLOT(mode3Event(bool)));
 		connect(denoiseButton_, SIGNAL(stateChanged(int)), this, SLOT(denoiseEvent(int)));
 		connect(startFrame_, SIGNAL(valueChanged(int)), this, SLOT(startEvent(int)));
 		connect(endFrame_, SIGNAL(valueChanged(int)), this, SLOT(endEvent(int)));
@@ -331,7 +360,6 @@ namespace unreal
 		connect(bouncesSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onBouncesChanged(int)));
 		connect(crfSpinbox, SIGNAL(valueChanged(double)), this, SLOT(onCrfChanged(double)));
 		connect(recordButton_, SIGNAL(clicked(bool)), this, SLOT(recordEvent(bool)));
-		connect(outputTypeCombo_, SIGNAL(currentIndexChanged(int)), this, SLOT(outputTypeEvent(int)));
 		connect(resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
 	}
 
@@ -406,6 +434,27 @@ namespace unreal
 	{
 		if (checked)
 			profile_->playerModule->recordFps = 60;
+	}
+
+	void
+	RecordDock::mode1Event(bool checked)
+	{
+		if (checked)
+			profile_->encodeModule->encodeMode = EncodeMode::H264;
+	}
+
+	void
+	RecordDock::mode2Event(bool checked)
+	{
+		if (checked)
+			profile_->encodeModule->encodeMode = EncodeMode::H265;
+	}
+
+	void
+	RecordDock::mode3Event(bool checked)
+	{
+		if (checked)
+			profile_->encodeModule->encodeMode = EncodeMode::Frame;
 	}
 
 	void
@@ -509,6 +558,13 @@ namespace unreal
 			speed3_->click();
 		else if (profile_->playerModule->recordFps == 60)
 			speed4_->click();
+
+		if (profile_->encodeModule->encodeMode == EncodeMode::H264)
+			mode1_->click();
+		else if (profile_->encodeModule->encodeMode == EncodeMode::H265)
+			mode2_->click();
+		else if (profile_->encodeModule->encodeMode == EncodeMode::Frame)
+			mode3_->click();
 
 		auto& framebufferSize = profile_->cameraModule->framebufferSize.getValue();
 		if (framebufferSize.x == 720 && framebufferSize.y == 480)

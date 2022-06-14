@@ -52,6 +52,9 @@ namespace unreal
 		void speed2Event(bool checked);
 		void speed3Event(bool checked);
 		void speed4Event(bool checked);
+		void mode1Event(bool checked);
+		void mode2Event(bool checked);
+		void mode3Event(bool checked);
 		void startEvent(int);
 		void endEvent(int);
 		void outputTypeEvent(int);
@@ -64,7 +67,7 @@ namespace unreal
 		QLabel* quality_;
 		QLabel* videoRatio_;
 		QLabel* frame_;
-		QLabel* outputType_;
+		QLabel* encodeType_;
 		QLabel* sppLabel;
 		QLabel* bouncesLabel_;
 		QLabel* crfLabel;
@@ -76,14 +79,20 @@ namespace unreal
 		QComboBox* resolutionCombo;
 		QButtonGroup* group_;
 		QButtonGroup* speedGroup_;
-		QComboBox* outputTypeCombo_;
+		QButtonGroup* modeGroup_;
 
-		UPushButton* select1_;
-		UPushButton* select2_;
-		UPushButton* speed1_;
-		UPushButton* speed2_;
-		UPushButton* speed3_;
-		UPushButton* speed4_;
+		QPushButton* select1_;
+		QPushButton* select2_;
+
+		QPushButton* speed1_;
+		QPushButton* speed2_;
+		QPushButton* speed3_;
+		QPushButton* speed4_;
+
+		QPushButton* mode1_;
+		QPushButton* mode2_;
+		QPushButton* mode3_;
+
 		QPushButton* recordButton_;
 		QCheckBox* denoiseButton_;
 
