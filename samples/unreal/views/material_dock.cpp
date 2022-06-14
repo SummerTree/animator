@@ -2229,6 +2229,7 @@ namespace unreal
 		modifyWidget_->hide();
 		materialList_->show();
 		materialList_->updateItemList();
+		materialList_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
 		this->setWindowTitle(tr("Material"));
 	}
 

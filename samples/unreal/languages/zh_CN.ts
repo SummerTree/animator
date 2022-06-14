@@ -612,7 +612,7 @@ $20 (Original cost $40)</source>
     <name>unreal::MaterialDock</name>
     <message>
         <location filename="../views/material_dock.cpp" line="2075"/>
-        <location filename="../views/material_dock.cpp" line="2232"/>
+        <location filename="../views/material_dock.cpp" line="2233"/>
         <source>Material</source>
         <translation>材质</translation>
     </message>
@@ -632,28 +632,28 @@ $20 (Original cost $40)</source>
         <translation>场景</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2247"/>
+        <location filename="../views/material_dock.cpp" line="2248"/>
         <source>Material Properties</source>
         <translation>材质属性</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2270"/>
+        <location filename="../views/material_dock.cpp" line="2271"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2270"/>
+        <location filename="../views/material_dock.cpp" line="2271"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished">NVIDIA MDL Files (*.mdl)</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2275"/>
         <location filename="../views/material_dock.cpp" line="2276"/>
+        <location filename="../views/material_dock.cpp" line="2277"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2275"/>
+        <location filename="../views/material_dock.cpp" line="2276"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>

@@ -124,7 +124,7 @@ QTabBar::tab {
   	background:transparent;
 }
 QTabBar::tab:selected {
-	color:rgb(48,48,50);
+	color:rgb(255,255,255);
  	background: rgb(242,83,106);
 }
 QSlider{
