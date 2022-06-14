@@ -58,6 +58,7 @@ namespace unreal
 		void onSppChanged(int);
 		void onBouncesChanged(int);
 		void onCrfChanged(double);
+		void onResolutionCombo(int index);
 
 	  public:
 		ULabel* quality_;
@@ -70,11 +71,12 @@ namespace unreal
 		ULabel* startLabel_;
 		ULabel* endLabel_;
 		ULabel* denoiseLabel_;
+		QLabel* resolutionLabel;
 
+		QComboBox* resolutionCombo;
 		QButtonGroup* group_;
 		QButtonGroup* speedGroup_;
-
-		UComboBox* outputTypeCombo_;
+		QComboBox* outputTypeCombo_;
 
 		UPushButton* select1_;
 		UPushButton* select2_;

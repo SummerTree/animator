@@ -54,11 +54,8 @@ namespace unreal
 		void retranslate();
 		void setupUI();
 
-		ULabel* langLabel_;
-		UComboBox* langCombo_;
-		ULabel* renderLabel;
-		ULabel* resolutionLabel;
-		UComboBox* resolutionCombo;
+		QLabel* langLabel_;
+		QComboBox* langCombo_;
 
 		std::vector<QString> languages_;
 	private:
@@ -87,8 +84,6 @@ namespace unreal
 		void valueChanged(int value);
 		void itemClicked(QListWidgetItem* item);
 
-		void onResetButton();
-		void onResolutionCombo(int index);
 		void onCheckVersion();
 		void onLangCombo(int index);
 	

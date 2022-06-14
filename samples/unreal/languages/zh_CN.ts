@@ -1021,105 +1021,105 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">录制编辑</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="35"/>
+        <location filename="../views/record_dock.cpp" line="50"/>
         <source>Render Quality</source>
         <translation>渲染质量</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="39"/>
+        <location filename="../views/record_dock.cpp" line="54"/>
         <source>Ultra Render</source>
         <translation>高清渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="46"/>
+        <location filename="../views/record_dock.cpp" line="61"/>
         <source>Fast Render</source>
         <translation>极速渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="55"/>
+        <location filename="../views/record_dock.cpp" line="70"/>
         <source>Frame Per Second</source>
         <translation>帧率</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="59"/>
+        <location filename="../views/record_dock.cpp" line="74"/>
         <source>24</source>
         <translation>24</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="66"/>
+        <location filename="../views/record_dock.cpp" line="81"/>
         <source>25</source>
         <translation>25</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="72"/>
+        <location filename="../views/record_dock.cpp" line="87"/>
         <source>30</source>
         <translation>30</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="78"/>
+        <location filename="../views/record_dock.cpp" line="93"/>
         <source>60</source>
         <translation>60</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="90"/>
+        <location filename="../views/record_dock.cpp" line="105"/>
         <source>Output Type</source>
         <translation>输出格式</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="93"/>
+        <location filename="../views/record_dock.cpp" line="108"/>
         <source>H265</source>
         <translation>H265</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="94"/>
+        <location filename="../views/record_dock.cpp" line="109"/>
         <source>H264</source>
         <translation>H264</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="95"/>
+        <location filename="../views/record_dock.cpp" line="110"/>
         <source>Frame Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="100"/>
+        <location filename="../views/record_dock.cpp" line="114"/>
         <source>Play:</source>
         <translation>播放：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="103"/>
+        <location filename="../views/record_dock.cpp" line="117"/>
         <source>Start</source>
         <translation>开始</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="106"/>
+        <location filename="../views/record_dock.cpp" line="120"/>
         <source>- End</source>
         <translation>- 结束</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="123"/>
+        <location filename="../views/record_dock.cpp" line="137"/>
         <source>Denoise:</source>
         <translation>开启降噪：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="135"/>
+        <location filename="../views/record_dock.cpp" line="149"/>
         <source>Recursion depth per pixel:</source>
         <translation>每像素光线弹射次数：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="137"/>
+        <location filename="../views/record_dock.cpp" line="151"/>
         <source>Sample number per pixel:</source>
         <translation>每像素采样数:</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="139"/>
+        <location filename="../views/record_dock.cpp" line="153"/>
         <source>Constant Rate Factor (CRF):</source>
         <translation>固定码率系数(CRF):</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="151"/>
-        <location filename="../views/record_dock.cpp" line="266"/>
-        <location filename="../views/record_dock.cpp" line="277"/>
-        <location filename="../views/record_dock.cpp" line="438"/>
+        <location filename="../views/record_dock.cpp" line="165"/>
+        <location filename="../views/record_dock.cpp" line="307"/>
+        <location filename="../views/record_dock.cpp" line="318"/>
+        <location filename="../views/record_dock.cpp" line="496"/>
         <source>Start Render</source>
         <translation>开始渲染</translation>
     </message>
@@ -1128,49 +1128,49 @@ $20 (Original cost $40)</source>
         <translation type="vanished">水印</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="189"/>
+        <location filename="../views/record_dock.cpp" line="204"/>
         <source>Render Settings</source>
         <translation>渲染设置</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="404"/>
+        <location filename="../views/record_dock.cpp" line="446"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="404"/>
+        <location filename="../views/record_dock.cpp" line="446"/>
         <source>Start frame must be less than end frame.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="410"/>
+        <location filename="../views/record_dock.cpp" line="452"/>
         <source>Save Video</source>
         <translation>保存视频</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="410"/>
+        <location filename="../views/record_dock.cpp" line="452"/>
         <source>MP4 Files (*.mp4)</source>
         <translation>MP4 Files (*.mp4)</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="410"/>
+        <location filename="../views/record_dock.cpp" line="452"/>
         <source>New Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="412"/>
+        <location filename="../views/record_dock.cpp" line="454"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="412"/>
+        <location filename="../views/record_dock.cpp" line="454"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="268"/>
-        <location filename="../views/record_dock.cpp" line="275"/>
-        <location filename="../views/record_dock.cpp" line="436"/>
+        <location filename="../views/record_dock.cpp" line="309"/>
+        <location filename="../views/record_dock.cpp" line="316"/>
+        <location filename="../views/record_dock.cpp" line="494"/>
         <source>Stop Render</source>
         <translation>停止渲染</translation>
     </message>
@@ -1185,12 +1185,17 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">视频编辑</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="419"/>
+        <location filename="../views/record_dock.cpp" line="35"/>
+        <source>Resolution</source>
+        <translation type="unfinished">分辨率</translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="461"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="419"/>
+        <location filename="../views/record_dock.cpp" line="461"/>
         <source>Failed to create file</source>
         <translation>创建文件失败</translation>
     </message>
@@ -1215,30 +1220,30 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">主面板</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="230"/>
+        <location filename="../views/setting_window.cpp" line="122"/>
+        <location filename="../views/setting_window.cpp" line="180"/>
         <source>General</source>
         <translation>通用</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="230"/>
+        <location filename="../views/setting_window.cpp" line="122"/>
+        <location filename="../views/setting_window.cpp" line="180"/>
         <source>Interface</source>
         <translation>界面</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="149"/>
-        <location filename="../views/setting_window.cpp" line="230"/>
+        <location filename="../views/setting_window.cpp" line="122"/>
+        <location filename="../views/setting_window.cpp" line="180"/>
         <source>Graphics</source>
         <translation>图像</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="335"/>
+        <location filename="../views/setting_window.cpp" line="238"/>
         <source>Information</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="335"/>
+        <location filename="../views/setting_window.cpp" line="238"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1314,7 +1319,7 @@ $20 (Original cost $40)</source>
     <name>unreal::SettingMainPlaneInterface</name>
     <message>
         <location filename="../views/setting_window.cpp" line="78"/>
-        <location filename="../views/setting_window.cpp" line="120"/>
+        <location filename="../views/setting_window.cpp" line="95"/>
         <source>Language</source>
         <translation>语言</translation>
     </message>
@@ -1331,34 +1336,30 @@ $20 (Original cost $40)</source>
         <translation type="vanished">日语</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="85"/>
-        <location filename="../views/setting_window.cpp" line="128"/>
         <source>Render Settings</source>
-        <translation>渲染设置</translation>
+        <translation type="vanished">渲染设置</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="74"/>
-        <location filename="../views/setting_window.cpp" line="123"/>
+        <location filename="../views/setting_window.cpp" line="98"/>
         <source>English (United State)</source>
         <translation>英语（美国）</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="73"/>
-        <location filename="../views/setting_window.cpp" line="122"/>
+        <location filename="../views/setting_window.cpp" line="97"/>
         <source>Chinese (Simplified)</source>
         <translation>中文（简体）</translation>
     </message>
     <message>
         <location filename="../views/setting_window.cpp" line="75"/>
-        <location filename="../views/setting_window.cpp" line="124"/>
+        <location filename="../views/setting_window.cpp" line="99"/>
         <source>Japanese (Japan)</source>
         <translation>日语（日本）</translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="89"/>
-        <location filename="../views/setting_window.cpp" line="129"/>
         <source>Resolution</source>
-        <translation>渲染分辨率</translation>
+        <translation type="vanished">渲染分辨率</translation>
     </message>
 </context>
 <context>

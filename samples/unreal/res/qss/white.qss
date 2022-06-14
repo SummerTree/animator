@@ -186,7 +186,7 @@ QScrollBar:vertical{
 }
 QScrollBar#settingScrollBar:vertical{
     width:8px;
-    background:rgb(40,40,40);
+    background:rgb(250,250,250);
     margin:0px,0px,0px,0px;
     padding-top:9px;
     padding-bottom:9px;
@@ -226,6 +226,37 @@ QScrollBar::sub-line:vertical:hover{
 QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical{
     background:rgba(0,0,0,10%);
     border-radius:4px;
+}
+QComboBox {
+	color: rgb(48,48,50);
+    border-radius:2px;
+    padding:1px 18px 1px 3px;
+    max-width:220px;
+	border:1px solid rgb(80,80,80);
+}
+QComboBox:editable {
+	color: rgb(48,48,50);
+    background: rgb(80,80,80);
+}
+QComboBox:on {
+    padding-top: 3px;
+    padding-left: 4px;
+}
+QComboBox::drop-down {
+    width: 25px;
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+QComboBox::down-arrow:on {
+    top: 1px;
+    left: 1px;
+}
+QComboBox QAbstractItemView {
+	color: rgb(48,48,50);
+    border: 2px solid rgb(80,80,80);
+    selection-background-color: green;
 }
 QListWidget{
 	border:none;
@@ -609,39 +640,6 @@ QWidget#CameraWidget unreal--UDoubleSpinBox {
 QWidget#RecordWidget unreal--UDoubleSpinBox, QWidget#RecordWidget unreal--USpinBox {
 	min-width: 60px;
 	max-width: 60px;
-}
-unreal--UComboBox {
-	color: rgb(48,48,50);
-    border-radius:2px;
-    padding:1px 18px 1px 3px;
-    max-width:220px;
-	border:1px solid rgb(80,80,80);
-}
-
-unreal--UComboBox:editable {
-	color: rgb(48,48,50);
-    background: rgb(80,80,80);
-}
-
-unreal--UComboBox:on {
-    padding-top: 3px;
-    padding-left: 4px;
-}
-unreal--UComboBox::drop-down {
-    width: 25px;
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-}
-unreal--UComboBox::down-arrow:on {
-    top: 1px;
-    left: 1px;
-}
-unreal--UComboBox QAbstractItemView {
-	color: rgb(48,48,50);
-    border: 2px solid rgb(80,80,80);
-    selection-background-color: green;
 }
 unreal--ULabel {
 	color: rgb(48,48,50);

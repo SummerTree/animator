@@ -55,7 +55,7 @@ namespace unreal
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setSpacing(5);
 		listWidget_->installEventFilter(this);
-
+		
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
 		mainLayout_->addWidget(listWidget_, 0, Qt::AlignCenter);

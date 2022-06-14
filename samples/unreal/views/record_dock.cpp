@@ -31,6 +31,21 @@ namespace unreal
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 		headerLine->setContentsMargins(0, 10, 0, 10);
 
+		resolutionLabel = new QLabel(this);
+		resolutionLabel->setText(tr("Resolution"));
+
+		resolutionCombo = new QComboBox(this);
+		resolutionCombo->addItem("720*480");
+		resolutionCombo->addItem("800*480");
+		resolutionCombo->addItem("1024*576");
+		resolutionCombo->addItem("1280x720");
+		resolutionCombo->addItem("1920x1080");
+		resolutionCombo->addItem("540x960");
+		resolutionCombo->addItem("720x1280");
+		resolutionCombo->addItem("1080x1920");
+		resolutionCombo->setFont(QFont("Microsoft YaHei", 9, 50));
+		resolutionCombo->installEventFilter(this);
+
 		quality_ = new ULabel();
 		quality_->setText(tr("Render Quality"));
 
@@ -89,11 +104,10 @@ namespace unreal
 		outputType_ = new ULabel();
 		outputType_->setText(tr("Output Type"));
 
-		outputTypeCombo_ = new UComboBox();
+		outputTypeCombo_ = new QComboBox();
 		outputTypeCombo_->addItem(tr("H265"));
 		outputTypeCombo_->addItem(tr("H264"));
 		outputTypeCombo_->addItem(tr("Frame Sequence"));
-		outputTypeCombo_->setStyleSheet("color:white");
 		outputTypeCombo_->installEventFilter(this);
 		
 		frame_ = new ULabel();
@@ -166,6 +180,9 @@ namespace unreal
 		selectLayout_->setContentsMargins(0, 0, 0, 0);
 
 		auto videoLayout = new QVBoxLayout;
+		videoLayout->addSpacing(10);
+		videoLayout->addWidget(resolutionLabel);
+		videoLayout->addWidget(resolutionCombo);
 		videoLayout->addWidget(quality_);
 		videoLayout->addLayout(selectLayout_);
 		videoLayout->addSpacing(10);
@@ -180,9 +197,7 @@ namespace unreal
 		videoLayout->addSpacing(10);
 		videoLayout->addLayout(denoiseLayout_);
 		videoLayout->addWidget(sppSpinbox_);
-		videoLayout->addSpacing(10);
 		videoLayout->addWidget(bouncesSpinbox_);
-		videoLayout->addSpacing(10);
 		videoLayout->addWidget(crfSpinbox);
 		videoLayout->setContentsMargins(20, 0, 20, 10);
 
@@ -203,6 +218,32 @@ namespace unreal
 		mainWidget_->setLayout(mainLayout_);
 		
 		this->setWidget(mainWidget_);
+
+		profile_->cameraModule->framebufferSize += [this](const octoon::math::uint2& framebufferSize)
+		{
+			resolutionCombo->blockSignals(true);
+
+			if (framebufferSize.x == 720 && framebufferSize.y == 480)
+				resolutionCombo->setCurrentIndex(0);
+			else if (framebufferSize.x == 800 && framebufferSize.y == 480)
+				resolutionCombo->setCurrentIndex(1);
+			else if (framebufferSize.x == 1024 && framebufferSize.y == 576)
+				resolutionCombo->setCurrentIndex(2);
+			else if (framebufferSize.x == 1280 && framebufferSize.y == 720)
+				resolutionCombo->setCurrentIndex(3);
+			else if (framebufferSize.x == 1920 && framebufferSize.y == 1080)
+				resolutionCombo->setCurrentIndex(4);
+			else if (framebufferSize.x == 540 && framebufferSize.y == 960)
+				resolutionCombo->setCurrentIndex(5);
+			else if (framebufferSize.x == 720 && framebufferSize.y == 1280)
+				resolutionCombo->setCurrentIndex(6);
+			else if (framebufferSize.x == 1080 && framebufferSize.y == 1920)
+				resolutionCombo->setCurrentIndex(7);
+			else
+				throw std::runtime_error("resolution not found");
+
+			resolutionCombo->blockSignals(false);
+		};
 
 		profile_->offlineModule->bounces += [this](std::uint32_t value)
 		{
@@ -291,6 +332,7 @@ namespace unreal
 		connect(crfSpinbox, SIGNAL(valueChanged(double)), this, SLOT(onCrfChanged(double)));
 		connect(recordButton_, SIGNAL(clicked(bool)), this, SLOT(recordEvent(bool)));
 		connect(outputTypeCombo_, SIGNAL(currentIndexChanged(int)), this, SLOT(outputTypeEvent(int)));
+		connect(resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
 	}
 
 	RecordDock::~RecordDock() noexcept
@@ -427,6 +469,22 @@ namespace unreal
 	}
 
 	void
+	RecordDock::onResolutionCombo(int index)
+	{
+		switch (resolutionCombo->currentIndex())
+		{
+		case 0: profile_->cameraModule->framebufferSize = octoon::math::uint2(720, 480); break;
+		case 1: profile_->cameraModule->framebufferSize = octoon::math::uint2(800, 480); break;
+		case 2: profile_->cameraModule->framebufferSize = octoon::math::uint2(1024, 576); break;
+		case 3: profile_->cameraModule->framebufferSize = octoon::math::uint2(1280, 720); break;
+		case 4: profile_->cameraModule->framebufferSize = octoon::math::uint2(1920, 1080); break;
+		case 5: profile_->cameraModule->framebufferSize = octoon::math::uint2(540, 960); break;
+		case 6: profile_->cameraModule->framebufferSize = octoon::math::uint2(720, 1280); break;
+		case 7:  profile_->cameraModule->framebufferSize = octoon::math::uint2(1080, 1920); break;
+		}
+	}
+
+	void
 	RecordDock::showEvent(QShowEvent* event)
 	{
 		startFrame_->setValue(0);
@@ -451,6 +509,26 @@ namespace unreal
 			speed3_->click();
 		else if (profile_->playerModule->recordFps == 60)
 			speed4_->click();
+
+		auto& framebufferSize = profile_->cameraModule->framebufferSize.getValue();
+		if (framebufferSize.x == 720 && framebufferSize.y == 480)
+			resolutionCombo->setCurrentIndex(0);
+		else if (framebufferSize.x == 800 && framebufferSize.y == 480)
+			resolutionCombo->setCurrentIndex(1);
+		else if (framebufferSize.x == 1024 && framebufferSize.y == 576)
+			resolutionCombo->setCurrentIndex(2);
+		else if (framebufferSize.x == 1280 && framebufferSize.y == 720)
+			resolutionCombo->setCurrentIndex(3);
+		else if (framebufferSize.x == 1920 && framebufferSize.y == 1080)
+			resolutionCombo->setCurrentIndex(4);
+		else if (framebufferSize.x == 540 && framebufferSize.y == 960)
+			resolutionCombo->setCurrentIndex(5);
+		else if (framebufferSize.x == 720 && framebufferSize.y == 1280)
+			resolutionCombo->setCurrentIndex(6);
+		else if (framebufferSize.x == 1080 && framebufferSize.y == 1920)
+			resolutionCombo->setCurrentIndex(7);
+		else
+			throw std::runtime_error("resolution not found");
 
 		denoiseButton_->setCheckState(profile_->recordModule->denoise ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 		sppSpinbox_->setValue(profile_->offlineModule->spp);

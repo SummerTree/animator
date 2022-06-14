@@ -74,39 +74,14 @@ namespace unreal
 			tr("English (United State)"),
 			tr("Japanese (Japan)")
 		};
-		langLabel_ = new ULabel(this);
+		langLabel_ = new QLabel(this);
 		langLabel_->setText(tr("Language"));
 
-		langCombo_ = new UComboBox(this);
+		langCombo_ = new QComboBox(this);
 		for (auto item : languages_)
 			langCombo_->addItem(item);
 
-		renderLabel = new ULabel(this);
-		renderLabel->setText(tr("Render Settings"));
-		renderLabel->setStyleSheet("color: rgb(255,255,255);");
-
-		resolutionLabel = new ULabel(this);
-		resolutionLabel->setText(tr("Resolution"));
-		resolutionLabel->setStyleSheet("color: rgb(200,200,200);");
-
-		resolutionCombo = new UComboBox(this);
-		resolutionCombo->addItem("720*480");
-		resolutionCombo->addItem("800*480");
-		resolutionCombo->addItem("1024*576");
-		resolutionCombo->addItem("1280x720");
-		resolutionCombo->addItem("1920x1080");
-		resolutionCombo->addItem("540x960");
-		resolutionCombo->addItem("720x1280");
-		resolutionCombo->addItem("1080x1920");
-		resolutionCombo->setStyleSheet("color: rgb(200,200,200);");
-		resolutionCombo->setFont(QFont("Microsoft YaHei", 9, 50));
-
 		layout_ = new QVBoxLayout(this);
-		layout_->addWidget(renderLabel);
-		layout_->addSpacing(10);
-		layout_->addWidget(resolutionLabel);
-		layout_->addSpacing(10);
-		layout_->addWidget(resolutionCombo);
 		layout_->addSpacing(10);
 		layout_->addWidget(langLabel_);
 		layout_->addSpacing(10);
@@ -125,8 +100,6 @@ namespace unreal
 		};
 		for (int i = 0; i < languages_.size(); ++i)
 			langCombo_->setItemText(i, languages_[i]);
-		renderLabel->setText(tr("Render Settings"));
-		resolutionLabel->setText(tr("Resolution"));
 	}
 
 	SettingMainPlaneGraphics::SettingMainPlaneGraphics(QWidget* parent)
@@ -167,7 +140,6 @@ namespace unreal
 
 		scrollWidget_ = new QWidget(this);
 		scrollWidget_->setFixedWidth(490);
-		scrollWidget_->setStyleSheet("background-color: rgb(40,40,40);");
 
 		mainPlaneGeneral_ = new SettingMainPlaneGeneral(scrollWidget_, behaviour);
 		mainPlaneInterface_ = new SettingMainPlaneInterface(scrollWidget_);
@@ -189,32 +161,10 @@ namespace unreal
 		layout_->setSpacing(0);
 		layout_->setContentsMargins(0, 0, 0, 0);
 
-		auto& profile = behaviour->getProfile();
-		auto& framebufferSize = profile->cameraModule->framebufferSize.getValue();
-		if (framebufferSize.x == 720 && framebufferSize.y == 480)
-			mainPlaneInterface_->resolutionCombo->setCurrentIndex(0);
-		else if (framebufferSize.x == 800 && framebufferSize.y == 480)
-			mainPlaneInterface_->resolutionCombo->setCurrentIndex(1);
-		else if (framebufferSize.x == 1024 && framebufferSize.y == 576)
-			mainPlaneInterface_->resolutionCombo->setCurrentIndex(2);
-		else if (framebufferSize.x == 1280 && framebufferSize.y == 720)
-			mainPlaneInterface_->resolutionCombo->setCurrentIndex(3);
-		else if (framebufferSize.x == 1920 && framebufferSize.y == 1080)
-			mainPlaneInterface_->resolutionCombo->setCurrentIndex(4);
-		else if (framebufferSize.x == 540 && framebufferSize.y == 960)
-			mainPlaneInterface_->resolutionCombo->setCurrentIndex(5);
-		else if (framebufferSize.x == 720 && framebufferSize.y == 1280)
-			mainPlaneInterface_->resolutionCombo->setCurrentIndex(6);
-		else if (framebufferSize.x == 1080 && framebufferSize.y == 1920)
-			mainPlaneInterface_->resolutionCombo->setCurrentIndex(7);
-		else
-			throw std::runtime_error("SettingContextPlane::SettingContextPlane: resolution not found");
-
 		connect(scrollArea_->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
 		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(mainPlaneGeneral_->resetButton, SIGNAL(clicked()), this, SLOT(onResetButton()));
 		connect(mainPlaneGeneral_->infoButton, SIGNAL(clicked()), this, SLOT(onCheckVersion()));
-		connect(mainPlaneInterface_->resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
 		connect(mainPlaneInterface_->langCombo_, SIGNAL(currentIndexChanged(int)), this, SLOT(onLangCombo(int)));
 
 		this->installEventFilter(this);
@@ -275,53 +225,6 @@ namespace unreal
 				auto widget = scrollArea_->widget()->layout()->itemAt(i)->widget();
 				scrollArea_->verticalScrollBar()->setSliderPosition(widget->pos().y());
 			}
-		}
-	}
-
-	void
-	SettingContextPlane::onResetButton()
-	{
-		mainPlaneInterface_->resolutionCombo->setCurrentIndex(3);
-	}
-
-	void
-	SettingContextPlane::onResolutionCombo(int index)
-	{
-		auto& profile = behaviour_->getProfile();
-		switch (mainPlaneInterface_->resolutionCombo->currentIndex())
-		{
-		case 0: {
-			profile->cameraModule->framebufferSize = octoon::math::uint2(720, 480);
-		}
-		break;
-		case 1: {
-			profile->cameraModule->framebufferSize = octoon::math::uint2(800, 480);
-		}
-		break;
-		case 2: {
-			profile->cameraModule->framebufferSize = octoon::math::uint2(1024, 576);
-		}
-		break;
-		case 3: {
-			profile->cameraModule->framebufferSize = octoon::math::uint2(1280, 720);
-		}
-		break;
-		case 4: {
-			profile->cameraModule->framebufferSize = octoon::math::uint2(1920, 1080);
-		}
-		break;
-		case 5: {
-			profile->cameraModule->framebufferSize = octoon::math::uint2(540, 960);
-		}
-		break;
-		case 6: {
-			profile->cameraModule->framebufferSize = octoon::math::uint2(720, 1280);
-		}
-		break;
-		case 7: {
-			profile->cameraModule->framebufferSize = octoon::math::uint2(1080, 1920);
-		}
-		break;
 		}
 	}
 
