@@ -24,6 +24,9 @@ namespace unreal
 		EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~EnvironmentListDialog() noexcept;
 
+		void addItem(std::string_view uuid) noexcept(false);
+
+	private:
 		void resizeEvent(QResizeEvent* e) noexcept override;
 		void showEvent(QShowEvent* event) noexcept override;
 		void keyPressEvent(QKeyEvent* event) noexcept override;
@@ -38,9 +41,6 @@ namespace unreal
 
 	Q_SIGNALS:
 		void itemSelected(QListWidgetItem* item);
-
-	private:
-		void addItem(std::string_view uuid) noexcept;
 
 	public:
 		QListWidget* listWidget_;

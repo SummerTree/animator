@@ -242,7 +242,7 @@ namespace unreal
 		~MaterialListPanel() noexcept;
 
 		void addItem(std::string_view uuid) noexcept;
-		void addItem(const nlohmann::json& package) noexcept;
+		void addItem(const nlohmann::json& package) noexcept(false);
 
 		void updateItemList();
 
@@ -267,7 +267,7 @@ namespace unreal
 		MaterialAssetPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~MaterialAssetPanel() noexcept;
 
-		void addItem(std::string_view uuid) noexcept;
+		void addItem(std::string_view uuid) noexcept(false);
 
 		void updateItemList();
 

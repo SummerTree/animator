@@ -31,17 +31,14 @@ namespace unreal
 				QListWidgetItem* item = this->itemAt(this->startPos);
 				if (item)
 				{
-					auto widget = this->itemWidget(item);
-					auto layout = widget->layout();
-					auto label = dynamic_cast<QLabel*>(layout->itemAt(0)->widget());
-					if (label)
+					if (item)
 					{
 						auto mimeData = new QMimeData;
 						mimeData->setData("object/mimeData", item->data(Qt::UserRole).toByteArray());
 
 						auto drag = new QDrag(this);
 						drag->setMimeData(mimeData);
-						drag->setPixmap(label->pixmap(Qt::ReturnByValue));
+						drag->setPixmap(item->icon().pixmap(this->iconSize()));
 						drag->setHotSpot(QPoint(drag->pixmap().width() / 2, drag->pixmap().height() / 2));
 						drag->exec(Qt::MoveAction);
 

@@ -261,14 +261,19 @@ QComboBox QAbstractItemView {
 QListWidget{
 	border:none;
 	color: rgb(48,48,50);
-	background-color:rgb(240,240,240);
+	background-color: transparent;
 }
-QListWidget::Item:hover{
+QListWidget::item{
+	padding-top:10px;
+	border: 5px;
 	color: rgb(48,48,50);
-	background-color: rgb(230,230,230);
+	background-color: rgb(235,235,235);
 }
-QListWidget::Item:selected{
-	border-width: 0px;
+QListWidget::item:hover{
+	color: rgb(48,48,50);
+	background-color: rgb(240,240,240);
+}
+QListWidget::item:selected{
 	color: rgb(255,255,255);
 	background-color: rgb(242,83,106);
 }
@@ -613,6 +618,17 @@ QWidget#MaterialDialog > QToolButton{
 QWidget#MaterialDialog > QToolButton:hover{
 	background-color: rgba(240,240,240);
 	border:none;
+}
+QWidget#EnvironmentDialog > QListWidget::item{
+	background-color: transparent;
+}
+QWidget#EnvironmentDialog > QListWidget::item:hover{
+	color: rgb(48,48,50);
+	background-color: rgb(230,230,230);
+}
+QWidget#EnvironmentDialog > QListWidget::item:selected{
+	color: rgb(255,255,255);
+	background-color: rgb(242,83,106);
 }
 QWidget#EnvironmentDialog > QToolButton#Ok{
 	width:60;

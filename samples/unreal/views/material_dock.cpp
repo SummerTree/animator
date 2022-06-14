@@ -1807,100 +1807,73 @@ namespace unreal
 	}
 
 	void
-	MaterialListPanel::addItem(const nlohmann::json& package) noexcept
+	MaterialListPanel::addItem(const nlohmann::json& package) noexcept(false)
 	{
-		try
+		if (package.is_object())
 		{
-			if (!package.is_null())
+			auto item = std::make_unique<QListWidgetItem>();
+			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
+			item->setSizeHint(mainWidget_->iconSize() + QSize(10, 50));
+
+			auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
+			if (material)
 			{
-				QLabel* imageLabel = new QLabel;
-				imageLabel->setObjectName("preview");
-				imageLabel->setFixedSize(QSize(100, 100));
+				QFontMetrics metrics(item->font());
+				item->setToolTip(QString::fromStdString(material->getName()));
+				item->setText(metrics.elidedText(item->toolTip(), Qt::ElideRight, mainWidget_->iconSize().width()));
 
-				QLabel* nameLabel = new QLabel();
-				nameLabel->setObjectName("name");
-				nameLabel->setFixedHeight(30);
+				auto colorTexture = octoon::AssetDatabase::instance()->createMaterialPreview(material);
+				auto width = colorTexture->getTextureDesc().getWidth();
+				auto height = colorTexture->getTextureDesc().getHeight();
 
-				QVBoxLayout* widgetLayout = new QVBoxLayout;
-				widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
-				widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
-				widgetLayout->setSpacing(0);
-				widgetLayout->setContentsMargins(0, 0, 0, 0);
-
-				QWidget* widget = new QWidget;
-				widget->setLayout(widgetLayout);
-
-				QListWidgetItem* item = new QListWidgetItem;
-				item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-				item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
-
-				mainWidget_->addItem(item);
-				mainWidget_->setItemWidget(item, widget);
-
-				auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
-				if (material)
+				std::uint8_t* pixels;
+				if (colorTexture->map(0, 0, width, height, 0, (void**)&pixels))
 				{
-					QFontMetrics metrics(nameLabel->font());
-					nameLabel->setToolTip(QString::fromStdString(material->getName()));
-					nameLabel->setText(metrics.elidedText(nameLabel->toolTip(), Qt::ElideRight, imageLabel->width()));
+					QImage image(width, height, QImage::Format_RGB888);
 
-					auto colorTexture = octoon::AssetDatabase::instance()->createMaterialPreview(material);
-					auto width = colorTexture->getTextureDesc().getWidth();
-					auto height = colorTexture->getTextureDesc().getHeight();
+					constexpr auto size = 16;
 
-					std::uint8_t* pixels;
-					if (colorTexture->map(0, 0, width, height, 0, (void**)&pixels))
+					for (std::uint32_t y = 0; y < height; y++)
 					{
-						QImage image(width, height, QImage::Format_RGB888);
-
-						constexpr auto size = 16;
-
-						for (std::uint32_t y = 0; y < height; y++)
+						for (std::uint32_t x = 0; x < width; x++)
 						{
-							for (std::uint32_t x = 0; x < width; x++)
-							{
-								auto n = (y * height + x) * 4;
+							auto n = (y * height + x) * 4;
 
-								std::uint8_t u = x / size % 2;
-								std::uint8_t v = y / size % 2;
-								std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
+							std::uint8_t u = x / size % 2;
+							std::uint8_t v = y / size % 2;
+							std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
 
-								auto r = octoon::math::lerp(bg, pixels[n], pixels[n + 3] / 255.f);
-								auto g = octoon::math::lerp(bg, pixels[n + 1], pixels[n + 3] / 255.f);
-								auto b = octoon::math::lerp(bg, pixels[n + 2], pixels[n + 3] / 255.f);
+							auto r = octoon::math::lerp(bg, pixels[n], pixels[n + 3] / 255.f);
+							auto g = octoon::math::lerp(bg, pixels[n + 1], pixels[n + 3] / 255.f);
+							auto b = octoon::math::lerp(bg, pixels[n + 2], pixels[n + 3] / 255.f);
 
-								image.setPixelColor((int)x, (int)y, QColor::fromRgb(r, g, b));
-							}
+							image.setPixelColor((int)x, (int)y, QColor::fromRgb(r, g, b));
 						}
-
-						colorTexture->unmap();
-
-						imageLabel->setPixmap(QPixmap::fromImage(image).scaled(imageLabel->width(), imageLabel->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-						imageLabel->setToolTip(nameLabel->toolTip());
-					}
-				}
-				else
-				{
-					if (package.find("preview") != package.end())
-					{
-						auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
-						imageLabel->setPixmap(QPixmap(filepath).scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 					}
 
-					if (package.find("name") != package.end())
-					{
-						QFontMetrics metrics(nameLabel->font());
+					colorTexture->unmap();
 
-						auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
-						nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
-						nameLabel->setToolTip(name);
-						imageLabel->setToolTip(name);
-					}
+					item->setIcon(QIcon(QPixmap::fromImage(image).scaled(mainWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 				}
 			}
-		}
-		catch (...)
-		{
+			else
+			{
+				if (package.contains("preview"))
+				{
+					auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+					item->setIcon(QIcon(QPixmap(filepath).scaled(mainWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+				}
+
+				if (package.contains("name"))
+				{
+					QFontMetrics metrics(mainWidget_->font());
+					auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
+					item->setText(metrics.elidedText(name, Qt::ElideRight, mainWidget_->iconSize().width()));
+					item->setToolTip(name);
+				}
+			}
+
+			mainWidget_->addItem(item.release());
 		}
 	}
 
@@ -1909,7 +1882,15 @@ namespace unreal
 	{
 		auto package = octoon::MaterialImporter::instance()->getPackage(uuid);
 		if (package.is_object())
-			this->addItem(package);
+		{
+			try
+			{
+				this->addItem(package);
+			}
+			catch (...)
+			{
+			}
+		}
 	}
 
 	void
@@ -1929,6 +1910,7 @@ namespace unreal
 		this->setObjectName("MaterialAssetPanel");
 
 		mainWidget_ = new DraggableListWindow;
+		mainWidget_->setIconSize(QSize(100, 100));
 		mainWidget_->setStyleSheet("background:transparent;");
 		mainWidget_->setSpacing(5);
 
@@ -1984,50 +1966,30 @@ namespace unreal
 	}
 
 	void
-	MaterialAssetPanel::addItem(std::string_view uuid) noexcept
+	MaterialAssetPanel::addItem(std::string_view uuid) noexcept(false)
 	{
 		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
-		if (!package.is_null())
+		if (package.is_object())
 		{
-			QLabel* imageLabel = new QLabel;
-			imageLabel->setObjectName("preview");
-			imageLabel->setFixedSize(QSize(100, 100));
-
-			QLabel* nameLabel = new QLabel();
-			nameLabel->setObjectName("name");
-			nameLabel->setFixedHeight(30);
-
-			QVBoxLayout* widgetLayout = new QVBoxLayout;
-			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
-			widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
-			widgetLayout->setSpacing(0);
-			widgetLayout->setContentsMargins(0, 0, 0, 0);
-
-			QWidget* widget = new QWidget;
-			widget->setLayout(widgetLayout);
-
-			QListWidgetItem* item = new QListWidgetItem;
+			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
-
-			mainWidget_->addItem(item);
-			mainWidget_->setItemWidget(item, widget);
-
-			if (package.find("preview") != package.end())
+			item->setSizeHint(mainWidget_->iconSize() + QSize(10, 50));
+			
+			if (package.contains("preview"))
 			{
 				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
-				imageLabel->setPixmap(QPixmap(filepath).scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+				item->setIcon(QIcon(QPixmap(filepath).scaled(mainWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 			}
 
-			if (package.find("name") != package.end())
+			if (package.contains("name"))
 			{
-				QFontMetrics metrics(nameLabel->font());
-
+				QFontMetrics metrics(mainWidget_->font());
 				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
-				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
-				nameLabel->setToolTip(name);
-				imageLabel->setToolTip(name);
+				item->setText(metrics.elidedText(name, Qt::ElideRight, mainWidget_->iconSize().width()));
+				item->setToolTip(name);
 			}
+
+			mainWidget_->addItem(item.release());
 		}
 	}
 
@@ -2037,7 +1999,15 @@ namespace unreal
 		mainWidget_->clear();
 
 		for (auto& it : octoon::AssetBundle::instance()->getMaterialList())
-			this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
+		{
+			try
+			{
+				this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
+			}
+			catch (...)
+			{
+			}
+		}
 	}
 
 	void

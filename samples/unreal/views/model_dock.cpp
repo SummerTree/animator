@@ -54,9 +54,10 @@ namespace unreal
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
 
 		listWidget_ = new DraggableListWindow;
+		listWidget_->setIconSize(QSize(150, 150));
 		listWidget_->setFixedWidth(380);
 		listWidget_->setStyleSheet("background:transparent;");
-		listWidget_->setSpacing(10);
+		listWidget_->setSpacing(5);
 
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
@@ -94,52 +95,31 @@ namespace unreal
 	ModelDock::addItem(std::string_view uuid) noexcept
 	{
 		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
-		if (!package.is_null())
+		if (package.is_object())
 		{
-			QLabel* imageLabel = new QLabel;
-			imageLabel->setObjectName("preview");
-			imageLabel->setFixedSize(QSize(150, 150));
-			imageLabel->installEventFilter(this);
-
-			QLabel* nameLabel = new QLabel();
-			nameLabel->setObjectName("name");
-			nameLabel->setFixedHeight(30);
-			nameLabel->installEventFilter(this);
-
-			QVBoxLayout* widgetLayout = new QVBoxLayout;
-			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
-			widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
-			widgetLayout->setSpacing(0);
-			widgetLayout->setContentsMargins(0, 0, 0, 0);
-
-			QWidget* widget = new QWidget;
-			widget->setLayout(widgetLayout);
-
-			QListWidgetItem* item = new QListWidgetItem;
+			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(15, 15));
+			item->setSizeHint(listWidget_->iconSize() + QSize(20, 50));
 
-			listWidget_->addItem(item);
-			listWidget_->setItemWidget(item, widget);
-
-			if (package.find("preview") != package.end())
+			if (package.contains("preview"))
 			{
 				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
-				imageLabel->setPixmap(QPixmap(filepath).scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+				item->setIcon(QIcon(QPixmap(filepath).scaled(listWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 			}
 			else
 			{
-				imageLabel->setPixmap(QPixmap(":res/icons/model.png").scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+				item->setIcon(QIcon(QPixmap(":res/icons/model.png").scaled(listWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 			}
 
-			if (package.find("name") != package.end())
+			if (package.contains("name"))
 			{
-				QFontMetrics metrics(nameLabel->font());
-
+				QFontMetrics metrics(mainWidget_->font());
 				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
-				imageLabel->setToolTip(name);
-				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
+				item->setText(metrics.elidedText(name, Qt::ElideRight, listWidget_->iconSize().width()));
+				item->setToolTip(name);
 			}
+
+			listWidget_->addItem(item.release());
 		}
 	}
 

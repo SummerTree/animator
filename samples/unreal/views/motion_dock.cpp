@@ -52,6 +52,7 @@ namespace unreal
 
 		listWidget_ = new DraggableListWindow;
 		listWidget_->setFixedWidth(360);
+		listWidget_->setIconSize(QSize(100, 100));
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setSpacing(5);
 		listWidget_->installEventFilter(this);
@@ -93,53 +94,31 @@ namespace unreal
 	MotionDock::addItem(std::string_view uuid) noexcept
 	{
 		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
-		if (!package.is_null())
+		if (package.is_object())
 		{
-			QLabel* imageLabel = new QLabel;
-			imageLabel->setObjectName("preview");
-			imageLabel->setFixedSize(QSize(100, 100));
-			imageLabel->installEventFilter(this);
-
-			QLabel* nameLabel = new QLabel();
-			nameLabel->setFixedHeight(30);
-			nameLabel->installEventFilter(this);
-
-			QVBoxLayout* widgetLayout = new QVBoxLayout;
-			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
-			widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
-			widgetLayout->setSpacing(0);
-			widgetLayout->setContentsMargins(0, 0, 0, 0);
-
-			QWidget* widget = new QWidget;
-			widget->setLayout(widgetLayout);
-
-			QListWidgetItem* item = new QListWidgetItem;
+			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
+			item->setSizeHint(listWidget_->iconSize() + QSize(10, 50));
 
-			listWidget_->addItem(item);
-			listWidget_->setItemWidget(item, widget);
-
-			if (package.find("preview") != package.end())
+			if (package.contains("preview"))
 			{
-				auto filepath = package["preview"].get<nlohmann::json::string_t>();
-				imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+				item->setIcon(QIcon(QPixmap(filepath).scaled(listWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 			}
 			else
 			{
-				imageLabel->setPixmap(QPixmap(":res/icons/dance2.png").scaled(imageLabel->size()));
+				item->setIcon(QIcon(QPixmap(":res/icons/dance2.png").scaled(listWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 			}
 
-			if (package.find("name") != package.end())
+			if (package.contains("name"))
 			{
-				QFontMetrics metrics(nameLabel->font());
-
+				QFontMetrics metrics(mainWidget_->font());
 				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
-				item->setWhatsThis(name);
-				imageLabel->setToolTip(name);
-				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
-				nameLabel->setToolTip(name);
+				item->setText(metrics.elidedText(name, Qt::ElideRight, listWidget_->iconSize().width()));
+				item->setToolTip(name);
 			}
+
+			listWidget_->addItem(item.release());
 		}
 	}
 

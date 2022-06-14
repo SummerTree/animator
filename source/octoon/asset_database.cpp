@@ -973,32 +973,12 @@ namespace octoon
 		auto colorTexture = this->createMaterialPreview(material);
 		auto width = colorTexture->getTextureDesc().getWidth();
 		auto height = colorTexture->getTextureDesc().getHeight();
-
+		
 		std::uint8_t* data;
 		if (colorTexture->map(0, 0, width, height, 0, (void**)&data))
 		{
-			texture.create(Format::R8G8B8SRGB, width, height);
-
-			auto destData = texture.data();
-
-			constexpr auto size = 16;
-
-			for (std::uint32_t y = 0; y < height; y++)
-			{
-				for (std::uint32_t x = 0; x < width; x++)
-				{
-					auto src = (y * height + x) * 4;
-					auto dest = (y * height + x) * 3;
-
-					std::uint8_t u = x / size % 2;
-					std::uint8_t v = y / size % 2;
-					std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
-
-					destData[dest] = math::lerp(bg, data[src], data[src + 3] / 255.f);
-					destData[dest + 1] = math::lerp(bg, data[src + 1], data[src + 3] / 255.f);
-					destData[dest + 2] = math::lerp(bg, data[src + 2], data[src + 3] / 255.f);
-				}
-			}
+			texture.create(Format::R8G8B8A8SRGB, width, height);
+			std::memcpy(texture.data(), data, width * height * 4);
 
 			colorTexture->unmap();
 		}
@@ -1129,28 +1109,8 @@ namespace octoon
 			std::uint8_t* data;
 			if (colorTexture->map(0, 0, framebufferDesc.getWidth(), framebufferDesc.getHeight(), 0, (void**)&data))
 			{
-				texture.create(Format::R8G8B8SRGB, width, height);
-
-				auto destData = texture.data();
-
-				constexpr auto size = 16;
-
-				for (std::uint32_t y = 0; y < height; y++)
-				{
-					for (std::uint32_t x = 0; x < width; x++)
-					{
-						auto src = (y * height + x) * 4;
-						auto dest = (y * height + x) * 3;
-
-						std::uint8_t u = x / size % 2;
-						std::uint8_t v = y / size % 2;
-						std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
-
-						destData[dest] = math::lerp(bg, data[src], data[src + 3] / 255.f);
-						destData[dest + 1] = math::lerp(bg, data[src + 1], data[src + 3] / 255.f);
-						destData[dest + 2] = math::lerp(bg, data[src + 2], data[src + 3] / 255.f);
-					}
-				}
+				texture.create(Format::R8G8B8A8SRGB, width, height);
+				std::memcpy(texture.data(), data, width * height * 4);
 
 				colorTexture->unmap();
 			}

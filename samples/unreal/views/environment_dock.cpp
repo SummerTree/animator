@@ -53,6 +53,7 @@ namespace unreal
 		bottomLayout_->setContentsMargins(0, 5, 10, 0);
 
 		listWidget_ = new QListWidget;
+		listWidget_->setIconSize(QSize(200, 100));
 		listWidget_->setResizeMode(QListView::Fixed);
 		listWidget_->setViewMode(QListView::IconMode);
 		listWidget_->setMovement(QListView::Static);
@@ -80,47 +81,30 @@ namespace unreal
 	}
 
 	void
-	EnvironmentListDialog::addItem(std::string_view uuid) noexcept
+	EnvironmentListDialog::addItem(std::string_view uuid) noexcept(false)
 	{
 		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
-		if (!package.is_null())
+		if (package.is_object())
 		{
-			QLabel* imageLabel = new QLabel;
-			imageLabel->setFixedSize(QSize(200, 100));
+			auto item = std::make_unique<QListWidgetItem>();
+			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
+			item->setSizeHint(listWidget_->iconSize() + QSize(10, 50));
 
-			QLabel* nameLabel = new QLabel();
-			nameLabel->setFixedHeight(30);
-
-			QVBoxLayout* widgetLayout = new QVBoxLayout;
-			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
-			widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
-			widgetLayout->setSpacing(0);
-			widgetLayout->setContentsMargins(0, 0, 0, 0);
-
-			QWidget* widget = new QWidget;
-			widget->setLayout(widgetLayout);
-
-			QListWidgetItem* item = new QListWidgetItem;
-			item->setData(Qt::UserRole, QString::fromStdString(std::string(uuid)));
-			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
-
-			listWidget_->addItem(item);
-			listWidget_->setItemWidget(item, widget);
-
-			if (package.find("preview") != package.end())
+			if (package.contains("preview"))
 			{
-				auto filepath = package["preview"].get<nlohmann::json::string_t>();
-				imageLabel->setPixmap(QPixmap(QString::fromStdString(filepath)).scaled(imageLabel->size()));
+				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+				item->setIcon(QIcon(QPixmap(filepath).scaled(listWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 			}
 
-			if (package.find("name") != package.end())
+			if (package.contains("name"))
 			{
-				QFontMetrics metrics(nameLabel->font());
-
+				QFontMetrics metrics(listWidget_->font());
 				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
-				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
-				imageLabel->setToolTip(name);
+				item->setText(metrics.elidedText(name, Qt::ElideRight, listWidget_->iconSize().width()));
+				item->setToolTip(name);
 			}
+
+			listWidget_->addItem(item.release());
 		}
 	}
 
@@ -194,9 +178,7 @@ namespace unreal
 	EnvironmentListDialog::resizeEvent(QResizeEvent * e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins();
-		listWidget_->resize(
-			this->width(),
-			this->height() - (margins.top() + margins.bottom()) * 2 - okButton_->height() - importButton_->height());
+		listWidget_->resize(this->width(), this->height() - (margins.top() + margins.bottom()) * 2 - okButton_->height() - importButton_->height());
 	}
 
 	void
@@ -205,7 +187,15 @@ namespace unreal
 		listWidget_->clear();
 
 		for (auto& uuid : octoon::AssetBundle::instance()->getHDRiList())
-			this->addItem(uuid.get<nlohmann::json::string_t>());
+		{
+			try
+			{
+				this->addItem(uuid.get<nlohmann::json::string_t>());
+			}
+			catch (...)
+			{
+			}
+		}
 	}
 
 	void
