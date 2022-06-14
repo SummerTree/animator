@@ -25,7 +25,7 @@ namespace unreal
 		layout_->setSpacing(0);
 		layout_->insertStretch(2, 550);
 		layout_->setContentsMargins(10, 0, 0, 0);
-
+		
 		this->connect(closeButton_.get(), SIGNAL(clicked()), this, SLOT(closeEvent()));
 
 		this->setObjectName("settingTitle");

@@ -24,8 +24,6 @@ namespace unreal
 		infoLabel->setText(tr("Version"));
 		infoButton->setText(tr("Check Updates"));
 		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(UNREAL_VERSION));
-		resetLabel->setText(tr("Reset to default settings"));
-		resetButton->setText(tr("Reset"));
 	}
 
 	void
@@ -41,22 +39,11 @@ namespace unreal
 		versionLabel = new ULabel(this);
 		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(UNREAL_VERSION));
 
-		resetLabel = new ULabel(this);
-		resetLabel->setText(tr("Reset to default settings"));
-	
-		resetButton = new UPushButton(this);
-		resetButton->setText(tr("Reset"));
-		resetButton->setFixedSize(190, 35);
-
 		layout_ = new QVBoxLayout(this);
 		layout_->addWidget(infoLabel);
 		layout_->addWidget(infoButton);
 		layout_->addWidget(versionLabel);
-		layout_->addSpacing(10);
-		layout_->addWidget(resetLabel);
-		layout_->addSpacing(10);
-		layout_->addWidget(resetButton);
-		layout_->setContentsMargins(0, 0, 0, 10);
+		layout_->setContentsMargins(0, 0, 0, 0);
 	}
 
 	SettingMainPlaneInterface::SettingMainPlaneInterface(QWidget* parent)
@@ -163,7 +150,6 @@ namespace unreal
 
 		connect(scrollArea_->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
 		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
-		connect(mainPlaneGeneral_->resetButton, SIGNAL(clicked()), this, SLOT(onResetButton()));
 		connect(mainPlaneGeneral_->infoButton, SIGNAL(clicked()), this, SLOT(onCheckVersion()));
 		connect(mainPlaneInterface_->langCombo_, SIGNAL(currentIndexChanged(int)), this, SLOT(onLangCombo(int)));
 

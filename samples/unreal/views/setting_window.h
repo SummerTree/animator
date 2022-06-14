@@ -38,8 +38,6 @@ namespace unreal
 		ULabel* infoLabel;
 		UPushButton* infoButton;
 		ULabel* versionLabel;
-		ULabel* resetLabel;
-		UPushButton* resetButton;
 
 	private:
 		QVBoxLayout* layout_;

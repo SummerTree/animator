@@ -452,6 +452,7 @@ QWidget#settingTitle > QToolButton{
 	height:32px;
 }
 QWidget#settingTitle > QPushButton#setting{
+	border:0px;
 	qproperty-icon: url(":res/icons/setting.png");
 }
 QWidget#settingTitle > QToolButton#close{
