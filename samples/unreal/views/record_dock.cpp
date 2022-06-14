@@ -23,6 +23,7 @@ namespace unreal
 		auto title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Video Editor"));
+		title_->setContentsMargins(0, 10, 0, 10);
 
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("Separator");

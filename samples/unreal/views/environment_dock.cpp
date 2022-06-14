@@ -251,7 +251,8 @@ namespace unreal
 		title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Environment Editor"));
-		
+		title_->setContentsMargins(0, 10, 0, 10);
+
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("Separator");
 		headerLine->setFrameShape(QFrame::HLine);
