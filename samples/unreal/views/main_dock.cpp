@@ -443,7 +443,7 @@ namespace unreal
 		{
 			if (!profile_->playerModule->isPlaying)
 			{
-				QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("All Files(*.pmx *.abc *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)"));
+				QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("All Files(*.pmx *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)"));
 				if (!filepaths.isEmpty())
 				{
 					QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);

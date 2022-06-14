@@ -570,7 +570,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/main_dock.cpp" line="446"/>
-        <source>All Files(*.pmx *.abc *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)</source>
+        <source>All Files(*.pmx *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
