@@ -43,7 +43,6 @@ namespace unreal
 		resolutionCombo->addItem("540x960");
 		resolutionCombo->addItem("720x1280");
 		resolutionCombo->addItem("1080x1920");
-		resolutionCombo->setFont(QFont("Microsoft YaHei", 9, 50));
 		resolutionCombo->installEventFilter(this);
 
 		quality_ = new ULabel();
@@ -58,7 +57,7 @@ namespace unreal
 
 		select2_ = new UPushButton();
 		select2_->setObjectName("select2");
-		select2_->setText(tr("Fast Render"));
+		select2_->setText(tr("Realtime Render"));
 		select2_->setCheckable(true);
 		select2_->installEventFilter(this);
 
