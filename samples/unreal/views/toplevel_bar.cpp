@@ -43,7 +43,7 @@ namespace unreal
 		saveButton_ = new QToolButton;
 		saveButton_->setObjectName("save");
 		saveButton_->setText(tr("Save"));
-		saveButton_->setToolTip(tr("Export Project"));
+		saveButton_->setToolTip(tr("Save Project"));
 		saveButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		saveButton_->installEventFilter(this);
 		saveButton_->setShortcut(tr("Ctrl+S"));
@@ -161,6 +161,7 @@ namespace unreal
 		layout_->addWidget(splitLine3);
 		layout_->addWidget(audioButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(volumeButton_, 0, Qt::AlignCenter);
+		layout_->addSpacing(5);
 		layout_->addWidget(volumeSlider_);
 		layout_->addStretch();
 		layout_->setSpacing(0);
@@ -307,7 +308,7 @@ namespace unreal
 		}
 		spdlog::debug("Exited openEvent");
 	}
-
+	
 	void
 	ToplevelBar::importEvent() noexcept
 	{
@@ -319,7 +320,7 @@ namespace unreal
 				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 				if (behaviour)
 				{
-					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmm *.pmx *.abc *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);;"));
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmm *.pmx *.abc *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd)"));
 					if (!fileName.isEmpty())
 					{
 						behaviour->load(fileName.toStdWString());

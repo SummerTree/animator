@@ -58,7 +58,7 @@ namespace unreal
 		layout->addStretch();
 		layout->setSpacing(0);
 		layout->setContentsMargins(0, 0, 0, 0);
-
+		
 		auto mainWidget = new QWidget;
 		mainWidget->setObjectName("ToolWidget");
 		mainWidget->setLayout(layout);

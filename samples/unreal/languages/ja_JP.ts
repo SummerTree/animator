@@ -1331,8 +1331,8 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="112"/>
         <location filename="../views/toplevel_bar.cpp" line="114"/>
-        <location filename="../views/toplevel_bar.cpp" line="620"/>
-        <location filename="../views/toplevel_bar.cpp" line="671"/>
+        <location filename="../views/toplevel_bar.cpp" line="621"/>
+        <location filename="../views/toplevel_bar.cpp" line="672"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1342,37 +1342,32 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="322"/>
-        <source>All Files(*.pmm *.pmx *.abc *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/toplevel_bar.cpp" line="577"/>
-        <location filename="../views/toplevel_bar.cpp" line="603"/>
-        <location filename="../views/toplevel_bar.cpp" line="649"/>
+        <location filename="../views/toplevel_bar.cpp" line="578"/>
+        <location filename="../views/toplevel_bar.cpp" line="604"/>
+        <location filename="../views/toplevel_bar.cpp" line="650"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="577"/>
-        <location filename="../views/toplevel_bar.cpp" line="603"/>
-        <location filename="../views/toplevel_bar.cpp" line="649"/>
+        <location filename="../views/toplevel_bar.cpp" line="578"/>
+        <location filename="../views/toplevel_bar.cpp" line="604"/>
+        <location filename="../views/toplevel_bar.cpp" line="650"/>
         <source>Please load a project with pmm extension.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="262"/>
-        <location filename="../views/toplevel_bar.cpp" line="306"/>
-        <location filename="../views/toplevel_bar.cpp" line="335"/>
-        <location filename="../views/toplevel_bar.cpp" line="379"/>
-        <location filename="../views/toplevel_bar.cpp" line="415"/>
-        <location filename="../views/toplevel_bar.cpp" line="442"/>
-        <location filename="../views/toplevel_bar.cpp" line="468"/>
-        <location filename="../views/toplevel_bar.cpp" line="497"/>
-        <location filename="../views/toplevel_bar.cpp" line="530"/>
-        <location filename="../views/toplevel_bar.cpp" line="557"/>
-        <location filename="../views/toplevel_bar.cpp" line="583"/>
-        <location filename="../views/toplevel_bar.cpp" line="609"/>
+        <location filename="../views/toplevel_bar.cpp" line="263"/>
+        <location filename="../views/toplevel_bar.cpp" line="307"/>
+        <location filename="../views/toplevel_bar.cpp" line="336"/>
+        <location filename="../views/toplevel_bar.cpp" line="380"/>
+        <location filename="../views/toplevel_bar.cpp" line="416"/>
+        <location filename="../views/toplevel_bar.cpp" line="443"/>
+        <location filename="../views/toplevel_bar.cpp" line="469"/>
+        <location filename="../views/toplevel_bar.cpp" line="498"/>
+        <location filename="../views/toplevel_bar.cpp" line="531"/>
+        <location filename="../views/toplevel_bar.cpp" line="558"/>
+        <location filename="../views/toplevel_bar.cpp" line="584"/>
+        <location filename="../views/toplevel_bar.cpp" line="610"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1383,8 +1378,8 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="38"/>
-        <location filename="../views/toplevel_bar.cpp" line="240"/>
-        <location filename="../views/toplevel_bar.cpp" line="394"/>
+        <location filename="../views/toplevel_bar.cpp" line="241"/>
+        <location filename="../views/toplevel_bar.cpp" line="395"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1396,11 +1391,6 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="45"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/toplevel_bar.cpp" line="46"/>
-        <source>Export Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1464,103 +1454,109 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="229"/>
-        <location filename="../views/toplevel_bar.cpp" line="484"/>
+        <location filename="../views/toplevel_bar.cpp" line="230"/>
+        <location filename="../views/toplevel_bar.cpp" line="485"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="229"/>
-        <location filename="../views/toplevel_bar.cpp" line="484"/>
+        <location filename="../views/toplevel_bar.cpp" line="230"/>
+        <location filename="../views/toplevel_bar.cpp" line="485"/>
         <source>Do you want to discard your local changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="247"/>
+        <location filename="../views/toplevel_bar.cpp" line="248"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="247"/>
-        <location filename="../views/toplevel_bar.cpp" line="272"/>
-        <location filename="../views/toplevel_bar.cpp" line="359"/>
+        <location filename="../views/toplevel_bar.cpp" line="248"/>
+        <location filename="../views/toplevel_bar.cpp" line="273"/>
+        <location filename="../views/toplevel_bar.cpp" line="360"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="248"/>
+        <location filename="../views/toplevel_bar.cpp" line="249"/>
         <source>Open Project...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="262"/>
+        <location filename="../views/toplevel_bar.cpp" line="263"/>
         <source>Can&apos;t find manifest.json in %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="272"/>
+        <location filename="../views/toplevel_bar.cpp" line="273"/>
         <source>Opening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="273"/>
+        <location filename="../views/toplevel_bar.cpp" line="274"/>
         <source>Open Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="306"/>
+        <location filename="../views/toplevel_bar.cpp" line="307"/>
         <source>Failed to open project: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="322"/>
+        <location filename="../views/toplevel_bar.cpp" line="323"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="335"/>
+        <location filename="../views/toplevel_bar.cpp" line="323"/>
+        <source>All Files(*.pmm *.pmx *.abc *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="336"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="353"/>
+        <location filename="../views/toplevel_bar.cpp" line="354"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="359"/>
+        <location filename="../views/toplevel_bar.cpp" line="360"/>
         <source>Save...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="360"/>
+        <location filename="../views/toplevel_bar.cpp" line="46"/>
+        <location filename="../views/toplevel_bar.cpp" line="361"/>
         <source>Save Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="394"/>
+        <location filename="../views/toplevel_bar.cpp" line="395"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="430"/>
+        <location filename="../views/toplevel_bar.cpp" line="431"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="430"/>
+        <location filename="../views/toplevel_bar.cpp" line="431"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="522"/>
+        <location filename="../views/toplevel_bar.cpp" line="523"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="88"/>
-        <location filename="../views/toplevel_bar.cpp" line="515"/>
-        <location filename="../views/toplevel_bar.cpp" line="549"/>
+        <location filename="../views/toplevel_bar.cpp" line="516"/>
+        <location filename="../views/toplevel_bar.cpp" line="550"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1575,8 +1571,8 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="627"/>
-        <location filename="../views/toplevel_bar.cpp" line="665"/>
+        <location filename="../views/toplevel_bar.cpp" line="628"/>
+        <location filename="../views/toplevel_bar.cpp" line="666"/>
         <source>VolumeOff</source>
         <translation type="unfinished"></translation>
     </message>
