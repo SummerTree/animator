@@ -13,6 +13,7 @@
 #include <qspinbox.h>
 #include <qtimer.h>
 #include <qcheckbox.h>
+#include <qslider.h>
 #include "unreal_behaviour.h"
 
 #include <octoon/game_object.h>
@@ -42,6 +43,8 @@ namespace unreal
 
 	private Q_SLOTS:
 		void onFovChanged(double);
+		void onFovSliderEvent(int);
+
 		void onFocalLengthChanged(double);
 		void onApertureChanged(double);
 		void onFocusDistanceChanged(double);
@@ -59,6 +62,7 @@ namespace unreal
 
 		QCheckBox* dofButton_;
 		QToolButton* focusTargetButton_;
+		QSlider* fovSlider;
 		UDoubleSpinLine* fovSpinbox_;
 		UDoubleSpinLine* apertureSpinbox_;
 		UDoubleSpinLine* focalLengthSpinbox_;

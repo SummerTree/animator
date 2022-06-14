@@ -37,6 +37,13 @@ namespace unreal
 		fovSpinbox_->doublespinbox_->setSuffix(u8"бу");
 		fovSpinbox_->doublespinbox_->setDecimals(1);
 
+		fovSlider = new QSlider(Qt::Horizontal);
+		fovSlider->setMinimum(100.0f);
+		fovSlider->setMaximum(12000.0f);
+		fovSlider->setValue(100.f);
+		fovSlider->setMinimumWidth(270);
+		fovSlider->installEventFilter(this);
+
 		dofInfoLabel_ = new QLabel();
 		dofInfoLabel_->setText(tr("* The following parameters take effect on rendering"));
 		dofInfoLabel_->setStyleSheet("color: rgb(100,100,100);");
@@ -97,17 +104,22 @@ namespace unreal
 		animtionLayout->addStretch();
 		animtionLayout->setContentsMargins(0, 0, 0, 0);
 
+		auto topLayout_ = new QVBoxLayout;
+		topLayout_->addWidget(fovSpinbox_);
+		topLayout_->addWidget(fovSlider);
+		topLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
+		topLayout_->addLayout(dofLayout_);
+		topLayout_->addWidget(apertureSpinbox_);
+		topLayout_->addWidget(focalLengthSpinbox_);
+		topLayout_->addWidget(focusDistanceSpinbox_);
+		topLayout_->addLayout(focusTargetLayout);
+		topLayout_->addLayout(animtionLayout);
+		topLayout_->setContentsMargins(10, 0, 10, 0);
+
 		mainLayout_ = new QVBoxLayout;
 		mainLayout_->addWidget(title_);
 		mainLayout_->addWidget(headerLine);
-		mainLayout_->addWidget(fovSpinbox_);
-		mainLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
-		mainLayout_->addLayout(dofLayout_);
-		mainLayout_->addWidget(apertureSpinbox_);
-		mainLayout_->addWidget(focalLengthSpinbox_);
-		mainLayout_->addWidget(focusDistanceSpinbox_);
-		mainLayout_->addLayout(focusTargetLayout);
-		mainLayout_->addLayout(animtionLayout);
+		mainLayout_->addLayout(topLayout_);
 		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(10, 10, 10, 10);
 
@@ -121,6 +133,10 @@ namespace unreal
 			this->fovSpinbox_->blockSignals(true);
 			this->fovSpinbox_->setValue(fov);
 			this->fovSpinbox_->blockSignals(false);
+
+			this->fovSlider->blockSignals(true);
+			this->fovSlider->setValue(fov * 100);
+			this->fovSlider->blockSignals(false);
 		};
 
 		profile_->cameraModule->useDepthOfFiled += [this](bool value) {
@@ -147,9 +163,10 @@ namespace unreal
 			else
 				unloadButton_->setEnabled(false);
 		};
-
+		
 		connect(focusTargetButton_, SIGNAL(mouseMoveSignal()), this, SLOT(onUpdateTarget()));
 		connect(fovSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFovChanged(double)));
+		connect(fovSlider, SIGNAL(valueChanged(int)), this, SLOT(onFovSliderEvent(int)));
 		connect(apertureSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onApertureChanged(double)));
 		connect(dofButton_, SIGNAL(stateChanged(int)), this, SLOT(dofEvent(int)));
 		connect(focalLengthSpinbox_, SIGNAL(valueChanged(double)), this, SLOT(onFocalLengthChanged(double)));
@@ -195,6 +212,12 @@ namespace unreal
 	CameraDock::onFovChanged(double value)
 	{
 		profile_->cameraModule->fov = value;
+	}
+
+	void
+	CameraDock::onFovSliderEvent(int value)
+	{
+		profile_->cameraModule->fov = value / 100.0f;
 	}
 
 	void
