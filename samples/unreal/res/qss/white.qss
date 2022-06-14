@@ -357,8 +357,8 @@ QWidget#ToplevelBar{
 QWidget#ToplevelBar QToolButton{
 	min-width:60px;
 	max-width:60px;
-	min-height:60px;
-	max-height:60px;
+	min-height:55px;
+	max-height:55px;
 	padding-top:5px;
 	font-size:14px;
 	font-family: "Microsoft YaHei";
@@ -376,9 +376,9 @@ QWidget#ToolWidget{
 QWidget#ToolWidget QToolButton{
 	min-width:70px;
 	max-width:70px;
-	min-height:65px;
-	max-height:65px;
-	margin-top:5px;
+	min-height:60px;
+	max-height:60px;
+	padding-top:5px;
 	font-size:14px;
 	font-family: "Microsoft YaHei";
 }
