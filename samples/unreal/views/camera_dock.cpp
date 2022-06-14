@@ -66,7 +66,6 @@ namespace unreal
 		
 		focusDistanceName_ = new QLabel();
 		focusDistanceName_->setText(tr("Target: Empty"));
-		focusDistanceName_->setStyleSheet("color: rgb(200,200,200);");
 
 		focusTargetButton_ = new DraggableButton();
 		focusTargetButton_->setIcon(QIcon(":res/icons/target.png"));

@@ -127,47 +127,47 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="68"/>
-        <location filename="../views/camera_dock.cpp" line="188"/>
-        <location filename="../views/camera_dock.cpp" line="232"/>
-        <location filename="../views/camera_dock.cpp" line="297"/>
+        <location filename="../views/camera_dock.cpp" line="187"/>
+        <location filename="../views/camera_dock.cpp" line="231"/>
+        <location filename="../views/camera_dock.cpp" line="296"/>
         <source>Target: Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="74"/>
+        <location filename="../views/camera_dock.cpp" line="73"/>
         <source>Drag and drop this icon onto the target model to enable autofocus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="79"/>
-        <location filename="../views/camera_dock.cpp" line="248"/>
+        <location filename="../views/camera_dock.cpp" line="78"/>
+        <location filename="../views/camera_dock.cpp" line="247"/>
         <source>Load Animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="85"/>
+        <location filename="../views/camera_dock.cpp" line="84"/>
         <source>Uninstall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="180"/>
-        <location filename="../views/camera_dock.cpp" line="293"/>
+        <location filename="../views/camera_dock.cpp" line="179"/>
+        <location filename="../views/camera_dock.cpp" line="292"/>
         <source>Target: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="182"/>
-        <location filename="../views/camera_dock.cpp" line="292"/>
+        <location filename="../views/camera_dock.cpp" line="181"/>
+        <location filename="../views/camera_dock.cpp" line="291"/>
         <source>Auto-measuring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="248"/>
+        <location filename="../views/camera_dock.cpp" line="247"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="260"/>
+        <location filename="../views/camera_dock.cpp" line="259"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
