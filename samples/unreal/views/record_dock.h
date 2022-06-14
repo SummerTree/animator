@@ -61,16 +61,16 @@ namespace unreal
 		void onResolutionCombo(int index);
 
 	  public:
-		ULabel* quality_;
-		ULabel* videoRatio_;
-		ULabel* frame_;
-		ULabel* outputType_;
-		ULabel* sppLabel;
-		ULabel* bouncesLabel_;
-		ULabel* crfLabel;
-		ULabel* startLabel_;
-		ULabel* endLabel_;
-		ULabel* denoiseLabel_;
+		QLabel* quality_;
+		QLabel* videoRatio_;
+		QLabel* frame_;
+		QLabel* outputType_;
+		QLabel* sppLabel;
+		QLabel* bouncesLabel_;
+		QLabel* crfLabel;
+		QLabel* startLabel_;
+		QLabel* endLabel_;
+		QLabel* denoiseLabel_;
 		QLabel* resolutionLabel;
 
 		QComboBox* resolutionCombo;

@@ -45,8 +45,8 @@ namespace unreal
 		resolutionCombo->addItem("1080x1920");
 		resolutionCombo->installEventFilter(this);
 
-		quality_ = new ULabel();
-		quality_->setText(tr("Render Quality"));
+		quality_ = new QLabel();
+		quality_->setText(tr("Render Pipeline"));
 
 		select1_ = new UPushButton();
 		select1_->setObjectName("select1");
@@ -65,7 +65,7 @@ namespace unreal
 		group_->addButton(select1_, 0);
 		group_->addButton(select2_, 1);
 
-		videoRatio_ = new ULabel();
+		videoRatio_ = new QLabel();
 		videoRatio_->setText(tr("Frame Per Second"));
 
 		speed1_ = new UPushButton();
@@ -100,7 +100,7 @@ namespace unreal
 		speedGroup_->addButton(speed4_, 3);
 
 		// output video type
-		outputType_ = new ULabel();
+		outputType_ = new QLabel();
 		outputType_->setText(tr("Output Type"));
 
 		outputTypeCombo_ = new QComboBox();
@@ -109,13 +109,13 @@ namespace unreal
 		outputTypeCombo_->addItem(tr("Frame Sequence"));
 		outputTypeCombo_->installEventFilter(this);
 		
-		frame_ = new ULabel();
+		frame_ = new QLabel();
 		frame_->setText(tr("Play:"));
 
-		startLabel_ = new ULabel();
+		startLabel_ = new QLabel();
 		startLabel_->setText(tr("Start"));
 
-		endLabel_ = new ULabel();
+		endLabel_ = new QLabel();
 		endLabel_->setText(tr("- End"));
 
 		startFrame_ = new USpinBox();
@@ -132,7 +132,7 @@ namespace unreal
 		endFrame_->setMaximum(99999);
 		endFrame_->installEventFilter(this);
 
-		denoiseLabel_ = new ULabel();
+		denoiseLabel_ = new QLabel();
 		denoiseLabel_->setText(tr("Denoise:"));
 
 		denoiseButton_ = new QCheckBox();

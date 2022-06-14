@@ -1022,8 +1022,8 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="49"/>
-        <source>Render Quality</source>
-        <translation>渲染质量</translation>
+        <source>Render Pipeline</source>
+        <translation>渲染管线</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="53"/>

@@ -932,11 +932,6 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="49"/>
-        <source>Render Quality</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../views/record_dock.cpp" line="53"/>
         <source>Ultra Render</source>
         <translation type="unfinished"></translation>
@@ -1074,6 +1069,11 @@ $20 (Original cost $40)</source>
         <location filename="../views/record_dock.cpp" line="315"/>
         <location filename="../views/record_dock.cpp" line="493"/>
         <source>Stop Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="49"/>
+        <source>Render Pipeline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
