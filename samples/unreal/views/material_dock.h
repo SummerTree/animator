@@ -293,6 +293,9 @@ namespace unreal
 		MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~MaterialDock() noexcept;
 
+		void addItem(std::string_view uuid) noexcept;
+
+	private:
 		void showEvent(QShowEvent* e) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
 		void closeEvent(QCloseEvent* e) override;
@@ -306,7 +309,6 @@ namespace unreal
 		QLabel* title_;
 		QVBoxLayout* materialLayout_;
 		QVBoxLayout* mainLayout_;
-		QPushButton* importButton_;
 		MaterialListPanel* materialList_;
 		MaterialAssetPanel* materialAssetList_;
 		MaterialEditWindow* modifyWidget_;

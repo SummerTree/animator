@@ -65,7 +65,7 @@ namespace unreal
 
 		QToolButton* openButton_;
 		QToolButton* saveButton_;
-		QToolButton* importButton_;
+		QToolButton* loadButton_;
 		QToolButton* shotButton_;
 		QToolButton* gpuButton_;
 		QToolButton* audioButton_;

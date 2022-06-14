@@ -1,5 +1,6 @@
 #include "asset_browse_dock.h"
 #include "setting_window.h"
+#include "spdlog/spdlog.h"
 #include <qscrollarea.h>
 #include <qmessagebox.h>
 #include <qfiledialog.h>
@@ -56,6 +57,13 @@ namespace unreal
 		settingsButton_->setToolTip(tr("Settings"));
 		settingsButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
+		importButton_ = new QToolButton;
+		importButton_->setObjectName("import");
+		importButton_->setText(tr("Import"));
+		importButton_->setToolTip(tr("Import Resource File(.pmm, .pmx)"));
+		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		importButton_->installEventFilter(this);
+
 		auto buttonGroup_ = new QButtonGroup();
 		buttonGroup_->addButton(materialButton_, 0);
 		buttonGroup_->addButton(modelButton_, 1);
@@ -66,6 +74,7 @@ namespace unreal
 		mainLayout->addWidget(modelButton_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(motionButton_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(lightButton_, 0, Qt::AlignCenter);
+		mainLayout->addWidget(importButton_, 0, Qt::AlignCenter);
 		mainLayout->addStretch();
 		mainLayout->addWidget(settingsButton_, 0, Qt::AlignCenter | Qt::AlignBottom);
 		mainLayout->setSpacing(0);
@@ -81,6 +90,7 @@ namespace unreal
 		this->connect(modelButton_, SIGNAL(clicked()), this, SLOT(modelEvent()));
 		this->connect(motionButton_, SIGNAL(clicked()), this, SLOT(motionEvent()));
 		this->connect(lightButton_, SIGNAL(clicked()), this, SLOT(lightEvent()));
+		this->connect(importButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
 		this->connect(settingsButton_, SIGNAL(clicked()), this, SLOT(settingsEvent()));
 	}
 
@@ -110,6 +120,12 @@ namespace unreal
 	AssetBrowseDock::lightEvent() noexcept
 	{
 		emit lightSignal();
+	}
+
+	void
+	AssetBrowseDock::importEvent() noexcept
+	{
+		emit importSignal();
 	}
 
 	void

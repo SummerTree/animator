@@ -23,10 +23,7 @@ namespace unreal
 		ModelDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~ModelDock() noexcept;
 
-		void resizeEvent(QResizeEvent* e) noexcept override;
-		void showEvent(QShowEvent* event) noexcept override;
-		void keyPressEvent(QKeyEvent* event) noexcept override;
-		bool eventFilter(QObject* watched, QEvent* event);
+		void addItem(std::string_view uuid) noexcept;
 
 	public Q_SLOTS:
 		void importClickEvent();
@@ -34,8 +31,10 @@ namespace unreal
 		void itemClicked(QListWidgetItem* item);
 		void itemSelected(QListWidgetItem* item);
 
-	private:
-		void addItem(std::string_view uuid) noexcept;
+		void resizeEvent(QResizeEvent* e) noexcept override;
+		void showEvent(QShowEvent* event) noexcept override;
+		void keyPressEvent(QKeyEvent* event) noexcept override;
+		bool eventFilter(QObject* watched, QEvent* event);
 
 	public:
 		QLabel* title_;
@@ -46,8 +45,6 @@ namespace unreal
 
 		QVBoxLayout* topLayout_;
 		QHBoxLayout* bottomLayout_;
-
-		UPushButton* importButton_;
 
 		QListWidgetItem* clickedItem_;
 

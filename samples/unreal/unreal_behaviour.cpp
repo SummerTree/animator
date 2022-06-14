@@ -102,13 +102,9 @@ namespace unreal
 			playerComponent_->reset();
 		}
 		else if (ext == u8".ogg" || ext == u8".mp3" || ext == u8".wav" || ext == u8".flac")
+		{
 			profile_->soundModule->filepath = path.string();
-		else if (ext == u8".mdl")
-			octoon::AssetBundle::instance()->importAsset(path);
-		else if (ext == u8".vmd")
-			octoon::AssetBundle::instance()->importAsset(path);
-		else if (ext == u8".hdr")
-			octoon::AssetBundle::instance()->importAsset(path);
+		}
 	}
 
 	void

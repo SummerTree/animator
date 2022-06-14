@@ -2091,17 +2091,10 @@ namespace unreal
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-		importButton_ = new UPushButton;
-		importButton_->setObjectName("Import");
-		importButton_->setText(tr("Import"));
-		importButton_->setFixedSize(190, 35);
-		importButton_->installEventFilter(this);
-
 		auto topLayout_ = new QVBoxLayout();
 		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
 		topLayout_->addSpacing(10);
 		topLayout_->addWidget(headerLine);
-		topLayout_->addWidget(importButton_);
 		topLayout_->setContentsMargins(5, 0, 0, 0);
 		
 		materialList_ = new MaterialListPanel(behaviour, profile);
@@ -2137,7 +2130,6 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
-		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(backEvent()));
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
@@ -2265,6 +2257,13 @@ namespace unreal
 	}
 
 	void
+	MaterialDock::addItem(std::string_view uuid) noexcept
+	{
+		assert(this->materialAssetList_);
+		this->materialAssetList_->addItem(uuid);
+	}
+
+	void
 	MaterialDock::importClickEvent()
 	{
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("NVIDIA MDL Files (*.mdl)"));
@@ -2288,7 +2287,7 @@ namespace unreal
 
 					auto list = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
 					for (auto& it : list)
-						this->materialAssetList_->addItem(it.get<nlohmann::json::string_t>());
+						this->addItem(it.get<nlohmann::json::string_t>());
 				}
 
 				octoon::AssetBundle::instance()->saveAssets();

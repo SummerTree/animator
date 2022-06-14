@@ -12,48 +12,58 @@
 <context>
     <name>unreal::AssetBrowseDock</name>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="26"/>
+        <location filename="../views/asset_browse_dock.cpp" line="27"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="27"/>
+        <location filename="../views/asset_browse_dock.cpp" line="28"/>
         <source>Open Material Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="34"/>
+        <location filename="../views/asset_browse_dock.cpp" line="35"/>
         <source>Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="35"/>
+        <location filename="../views/asset_browse_dock.cpp" line="36"/>
         <source>Open Model Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="48"/>
+        <location filename="../views/asset_browse_dock.cpp" line="49"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="49"/>
+        <location filename="../views/asset_browse_dock.cpp" line="50"/>
         <source>Open Light Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="55"/>
         <location filename="../views/asset_browse_dock.cpp" line="56"/>
+        <location filename="../views/asset_browse_dock.cpp" line="57"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="41"/>
-        <source>Motion</source>
+        <location filename="../views/asset_browse_dock.cpp" line="62"/>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/asset_browse_dock.cpp" line="63"/>
+        <source>Import Resource File(.pmm, .pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/asset_browse_dock.cpp" line="42"/>
+        <source>Motion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/asset_browse_dock.cpp" line="43"/>
         <source>Open Motion Panel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -460,26 +470,53 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MainDock</name>
     <message>
-        <location filename="../views/main_dock.cpp" line="22"/>
+        <location filename="../views/main_dock.cpp" line="24"/>
         <source>AnimatorGo Lite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="238"/>
-        <location filename="../views/main_dock.cpp" line="266"/>
-        <location filename="../views/main_dock.cpp" line="294"/>
-        <location filename="../views/main_dock.cpp" line="322"/>
-        <location filename="../views/main_dock.cpp" line="349"/>
-        <location filename="../views/main_dock.cpp" line="376"/>
-        <location filename="../views/main_dock.cpp" line="403"/>
-        <location filename="../views/main_dock.cpp" line="430"/>
-        <location filename="../views/main_dock.cpp" line="499"/>
-        <location filename="../views/main_dock.cpp" line="526"/>
+        <location filename="../views/main_dock.cpp" line="241"/>
+        <location filename="../views/main_dock.cpp" line="269"/>
+        <location filename="../views/main_dock.cpp" line="297"/>
+        <location filename="../views/main_dock.cpp" line="325"/>
+        <location filename="../views/main_dock.cpp" line="352"/>
+        <location filename="../views/main_dock.cpp" line="379"/>
+        <location filename="../views/main_dock.cpp" line="406"/>
+        <location filename="../views/main_dock.cpp" line="433"/>
+        <location filename="../views/main_dock.cpp" line="491"/>
+        <location filename="../views/main_dock.cpp" line="562"/>
+        <location filename="../views/main_dock.cpp" line="589"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="500"/>
+        <location filename="../views/main_dock.cpp" line="446"/>
+        <source>Import Resource</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="446"/>
+        <source>All Files(*.pmx *.abc *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="449"/>
+        <location filename="../views/main_dock.cpp" line="450"/>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="449"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="491"/>
+        <source>Failed to import resource: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/main_dock.cpp" line="563"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -549,7 +586,7 @@ $20 (Original cost $40)</source>
     <name>unreal::MaterialDock</name>
     <message>
         <location filename="../views/material_dock.cpp" line="2075"/>
-        <location filename="../views/material_dock.cpp" line="2239"/>
+        <location filename="../views/material_dock.cpp" line="2231"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -559,43 +596,38 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2096"/>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/material_dock.cpp" line="2126"/>
+        <location filename="../views/material_dock.cpp" line="2119"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2127"/>
+        <location filename="../views/material_dock.cpp" line="2120"/>
         <source>Scene</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2254"/>
+        <location filename="../views/material_dock.cpp" line="2246"/>
         <source>Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2270"/>
+        <location filename="../views/material_dock.cpp" line="2269"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2270"/>
+        <location filename="../views/material_dock.cpp" line="2269"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/material_dock.cpp" line="2274"/>
         <location filename="../views/material_dock.cpp" line="2275"/>
-        <location filename="../views/material_dock.cpp" line="2276"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2275"/>
+        <location filename="../views/material_dock.cpp" line="2274"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -790,51 +822,46 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="46"/>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/model_dock.cpp" line="160"/>
+        <location filename="../views/model_dock.cpp" line="152"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="160"/>
+        <location filename="../views/model_dock.cpp" line="152"/>
         <source>Are you sure you want to delete this model?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="176"/>
+        <location filename="../views/model_dock.cpp" line="168"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="183"/>
+        <location filename="../views/model_dock.cpp" line="175"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="183"/>
+        <location filename="../views/model_dock.cpp" line="175"/>
         <source>PMX Files (*.pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="188"/>
-        <location filename="../views/model_dock.cpp" line="189"/>
-        <location filename="../views/model_dock.cpp" line="235"/>
-        <location filename="../views/model_dock.cpp" line="236"/>
+        <location filename="../views/model_dock.cpp" line="180"/>
+        <location filename="../views/model_dock.cpp" line="181"/>
+        <location filename="../views/model_dock.cpp" line="227"/>
+        <location filename="../views/model_dock.cpp" line="228"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="188"/>
-        <location filename="../views/model_dock.cpp" line="235"/>
+        <location filename="../views/model_dock.cpp" line="180"/>
+        <location filename="../views/model_dock.cpp" line="227"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="238"/>
+        <location filename="../views/model_dock.cpp" line="230"/>
         <source>Unknown-name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -848,46 +875,41 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="43"/>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/motion_dock.cpp" line="159"/>
+        <location filename="../views/motion_dock.cpp" line="151"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="159"/>
+        <location filename="../views/motion_dock.cpp" line="151"/>
         <source>Are you sure you want to delete this motion data?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="175"/>
+        <location filename="../views/motion_dock.cpp" line="167"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="182"/>
+        <location filename="../views/motion_dock.cpp" line="174"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="182"/>
+        <location filename="../views/motion_dock.cpp" line="174"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="189"/>
-        <location filename="../views/motion_dock.cpp" line="190"/>
-        <location filename="../views/motion_dock.cpp" line="239"/>
-        <location filename="../views/motion_dock.cpp" line="240"/>
+        <location filename="../views/motion_dock.cpp" line="181"/>
+        <location filename="../views/motion_dock.cpp" line="182"/>
+        <location filename="../views/motion_dock.cpp" line="231"/>
+        <location filename="../views/motion_dock.cpp" line="232"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="189"/>
-        <location filename="../views/motion_dock.cpp" line="239"/>
+        <location filename="../views/motion_dock.cpp" line="181"/>
+        <location filename="../views/motion_dock.cpp" line="231"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1321,6 +1343,11 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/toplevel_bar.cpp" line="322"/>
+        <source>All Files(*.pmm *.pmx *.abc *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../views/toplevel_bar.cpp" line="577"/>
         <location filename="../views/toplevel_bar.cpp" line="603"/>
         <location filename="../views/toplevel_bar.cpp" line="649"/>
@@ -1380,16 +1407,6 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="49"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/toplevel_bar.cpp" line="53"/>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/toplevel_bar.cpp" line="54"/>
-        <source>Import Resource File(.pmm, .pmx)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1502,11 +1519,6 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="322"/>
-        <source>All Files(*.pmm *.pmx *.abc *.mdl *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../views/toplevel_bar.cpp" line="335"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
@@ -1551,6 +1563,16 @@ $20 (Original cost $40)</source>
         <location filename="../views/toplevel_bar.cpp" line="515"/>
         <location filename="../views/toplevel_bar.cpp" line="549"/>
         <source>Play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="53"/>
+        <source>Load</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="54"/>
+        <source>Import Resource File(.pmm, .pmx, .wav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

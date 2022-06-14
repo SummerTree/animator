@@ -4,6 +4,8 @@
 #include <qmessagebox.h>
 #include <qsettings.h>
 #include <QDir>
+#include <qfiledialog.h>
+#include <qprogressdialog.h>
 
 #include "spdlog/spdlog.h"
 
@@ -82,6 +84,7 @@ namespace unreal
 		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::materialSignal, this, &MainDock::onMaterialSignal);
 		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::modelSignal, this, &MainDock::onModelSignal);
 		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::motionSignal, this, &MainDock::onMotionSignal);
+		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::importSignal, this, &MainDock::onImportSignal);
 		
 		this->connect(toolDock_.get(), &ToolDock::sunSignal, this, &MainDock::onSunSignal);
 		this->connect(toolDock_.get(), &ToolDock::recordSignal, this, &MainDock::onRecordSignal);
@@ -429,6 +432,66 @@ namespace unreal
 		{
 			QMessageBox::information(this, tr("Error"), e.what());
 		}
+	}
+
+	void
+	MainDock::onImportSignal() noexcept
+	{
+		spdlog::debug("Entered importEvent");
+
+		try
+		{
+			if (!profile_->playerModule->isPlaying)
+			{
+				QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("All Files(*.pmx *.abc *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)"));
+				if (!filepaths.isEmpty())
+				{
+					QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
+					dialog.setWindowTitle(tr("Loading..."));
+					dialog.setWindowModality(Qt::WindowModal);
+					dialog.show();
+
+					for (qsizetype i = 0; i < filepaths.size(); i++)
+					{
+						dialog.setValue(i);
+						dialog.setLabelText(QFileInfo(filepaths[i]).fileName());
+
+						QCoreApplication::processEvents();
+						if (dialog.wasCanceled())
+							break;
+
+						auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
+						if (!package.is_null())
+						{
+							auto ext = std::filesystem::path(filepaths[i].toStdWString()).extension().wstring();
+							for (auto& it : ext)
+								it = (char)std::tolower(it);
+
+							if (ext == L".pmx")
+								this->modelDock_->addItem(package["uuid"].get<nlohmann::json::string_t>());
+							else if (ext == L".vmd")
+								this->motionDock_->addItem(package["uuid"].get<nlohmann::json::string_t>());
+							else if (ext == L".mdl")
+							{
+								for (auto& it : package)
+									this->materialDock_->addItem(it.get<nlohmann::json::string_t>());
+							}
+						}
+					}
+
+					octoon::AssetBundle::instance()->saveAssets();
+				}
+			}
+		}
+		catch (const std::exception& e)
+		{
+			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
+
+			QCoreApplication::processEvents();
+			QMessageBox::critical(this, tr("Error"), tr("Failed to import resource: ") + QString::fromStdString(e.what()));
+		}
+
+		spdlog::debug("Exited importEvent");
 	}
 
 	QDockWidget*

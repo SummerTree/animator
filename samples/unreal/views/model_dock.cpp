@@ -40,18 +40,11 @@ namespace unreal
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-
-		importButton_ = new UPushButton;
-		importButton_->setObjectName("Import");
-		importButton_->setText(tr("Import"));
-		importButton_->setFixedSize(190, 35);
-		importButton_->installEventFilter(this);
-		
+	
 		topLayout_ = new QVBoxLayout();
 		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
 		topLayout_->addSpacing(10);
 		topLayout_->addWidget(headerLine);
-		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
 		topLayout_->setContentsMargins(5, 0, 0, 0);
 
 		bottomLayout_ = new QHBoxLayout();
@@ -88,7 +81,6 @@ namespace unreal
 			}
 		};*/
 
-		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(listWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 	}
@@ -256,14 +248,14 @@ namespace unreal
 		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins() + bottomLayout_->contentsMargins();
 		listWidget_->resize(
 			this->width(),
-			mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
+			mainWidget_->height() - margins.top() - margins.bottom());
 	}
 
 	void
 	ModelDock::showEvent(QShowEvent* event) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins() + bottomLayout_->contentsMargins();
-		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - importButton_->height());
+		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom());
 		listWidget_->clear();
 
 		for (auto& uuid : octoon::AssetBundle::instance()->getModelList())

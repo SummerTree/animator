@@ -33,18 +33,21 @@ namespace unreal
 		void modelEvent() noexcept;
 		void motionEvent() noexcept;
 		void settingsEvent() noexcept;
+		void importEvent() noexcept;
 
 	Q_SIGNALS:
 		void lightSignal();
 		void modelSignal();
 		void materialSignal();
 		void motionSignal();
+		void importSignal();
 
 	public:
 		QToolButton* materialButton_;
 		QToolButton* modelButton_;
 		QToolButton* motionButton_;
 		QToolButton* lightButton_;
+		QToolButton* importButton_;
 		QToolButton* settingsButton_;
 
 		octoon::GameObjectPtr behaviour_;

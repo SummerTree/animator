@@ -56,6 +56,7 @@ namespace unreal
 		void onModelSignal() noexcept;
 		void onCameraSignal() noexcept;
 		void onMotionSignal() noexcept;
+		void onImportSignal() noexcept;
 
 		void open() noexcept(false);
 		void update() noexcept;

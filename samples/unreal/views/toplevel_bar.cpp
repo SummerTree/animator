@@ -48,12 +48,12 @@ namespace unreal
 		saveButton_->installEventFilter(this);
 		saveButton_->setShortcut(tr("Ctrl+S"));
 		
-		importButton_ = new QToolButton;
-		importButton_->setObjectName("import");
-		importButton_->setText(tr("Import"));
-		importButton_->setToolTip(tr("Import Resource File(.pmm, .pmx)"));
-		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-		importButton_->installEventFilter(this);
+		loadButton_ = new QToolButton;
+		loadButton_->setObjectName("import");
+		loadButton_->setText(tr("Load"));
+		loadButton_->setToolTip(tr("Import Resource File(.pmm, .pmx, .wav)"));
+		loadButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		loadButton_->installEventFilter(this);
 
 		audioButton_ = new QToolButton;
 		audioButton_->setObjectName("audio");
@@ -148,7 +148,7 @@ namespace unreal
 		layout_->addStretch();
 		layout_->addWidget(openButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(saveButton_, 0, Qt::AlignCenter);
-		layout_->addWidget(importButton_, 0, Qt::AlignCenter);
+		layout_->addWidget(loadButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(cleanupButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(splitLine);
 		layout_->addWidget(gpuButton_, 0, Qt::AlignCenter);
@@ -199,7 +199,7 @@ namespace unreal
 		};
 
 		this->connect(openButton_, SIGNAL(clicked()), this, SLOT(openEvent()));
-		this->connect(importButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
+		this->connect(loadButton_, SIGNAL(clicked()), this, SLOT(importEvent()));
 		this->connect(saveButton_, SIGNAL(clicked()), this, SLOT(saveEvent()));
 		this->connect(audioButton_, SIGNAL(clicked()), this, SLOT(audioEvent()));
 		this->connect(shotButton_, SIGNAL(clicked()), this, SLOT(shotEvent()));
@@ -319,7 +319,7 @@ namespace unreal
 				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 				if (behaviour)
 				{
-					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmm *.pmx *.abc *.mdl *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);; Material Files (*.mdl)"));
+					QString fileName = QFileDialog::getOpenFileName(this, tr("Import Resource"), "", tr("All Files(*.pmm *.pmx *.abc *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd);;"));
 					if (!fileName.isEmpty())
 					{
 						behaviour->load(fileName.toStdWString());
