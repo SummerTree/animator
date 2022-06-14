@@ -534,32 +534,47 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/main_light_dock.cpp" line="35"/>
+        <source>Hue</source>
+        <translation type="unfinished">色相</translation>
+    </message>
+    <message>
+        <location filename="../views/main_light_dock.cpp" line="36"/>
+        <source>Saturation</source>
+        <translation type="unfinished">饱和度</translation>
+    </message>
+    <message>
         <location filename="../views/main_light_dock.cpp" line="37"/>
+        <source>Value</source>
+        <translation type="unfinished">亮度</translation>
+    </message>
+    <message>
+        <location filename="../views/main_light_dock.cpp" line="40"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="42"/>
+        <location filename="../views/main_light_dock.cpp" line="45"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="69"/>
+        <location filename="../views/main_light_dock.cpp" line="72"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="95"/>
+        <location filename="../views/main_light_dock.cpp" line="98"/>
         <source>Rotation X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="122"/>
+        <location filename="../views/main_light_dock.cpp" line="125"/>
         <source>Rotation Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="149"/>
+        <location filename="../views/main_light_dock.cpp" line="152"/>
         <source>Rotation Z</source>
         <translation type="unfinished"></translation>
     </message>

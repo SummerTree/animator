@@ -79,7 +79,7 @@ namespace unreal
 		void colorSelected(QColor);
 		void rejected();
 
-	private:
+	public:
 		bool currentColorChangedEvent_;
 
 		octoon::math::float3 hsv_;

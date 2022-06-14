@@ -32,6 +32,9 @@ namespace unreal
 		colorDialog_ = new ColorDialog();
 		colorDialog_->setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
 		colorDialog_->installEventFilter(this);
+		colorDialog_->labelH_->setText(tr("Hue"));
+		colorDialog_->labelS_->setText(tr("Saturation"));
+		colorDialog_->labelV_->setText(tr("Value"));
 
 		resetButton_ = new QToolButton();
 		resetButton_->setText(tr("Reset"));
@@ -63,7 +66,7 @@ namespace unreal
 		layoutIntensity_ = new QHBoxLayout();
 		layoutIntensity_->addWidget(labelIntensity_, 0, Qt::AlignLeft);
 		layoutIntensity_->addWidget(intensitySpinBox_, 0, Qt::AlignRight);
-		layoutIntensity_->setContentsMargins(40, 5, 35, 0);
+		layoutIntensity_->setContentsMargins(25, 5, 21, 0);
 
 		labelSize_ = new ULabel();
 		labelSize_->setText(tr("Size"));
@@ -89,7 +92,7 @@ namespace unreal
 		layoutSize_ = new QHBoxLayout();
 		layoutSize_->addWidget(labelSize_, 0, Qt::AlignLeft);
 		layoutSize_->addWidget(sizeSpinBox_, 0, Qt::AlignRight);
-		layoutSize_->setContentsMargins(40, 5, 35, 0);
+		layoutSize_->setContentsMargins(25, 5, 21, 0);
 
 		labelRotationX_ = new ULabel();
 		labelRotationX_->setText(tr("Rotation X"));
@@ -116,7 +119,7 @@ namespace unreal
 		layoutRotationX_ = new QHBoxLayout();
 		layoutRotationX_->addWidget(labelRotationX_, 0, Qt::AlignLeft);
 		layoutRotationX_->addWidget(editRotationX_, 0, Qt::AlignRight);
-		layoutRotationX_->setContentsMargins(40, 5, 35, 0);
+		layoutRotationX_->setContentsMargins(25, 5, 21, 0);
 
 		labelRotationY_ = new ULabel();
 		labelRotationY_->setText(tr("Rotation Y"));
@@ -143,7 +146,7 @@ namespace unreal
 		layoutRotationY_ = new QHBoxLayout();
 		layoutRotationY_->addWidget(labelRotationY_, 0, Qt::AlignLeft);
 		layoutRotationY_->addWidget(editRotationY_, 0, Qt::AlignRight);
-		layoutRotationY_->setContentsMargins(40, 5, 35, 0);
+		layoutRotationY_->setContentsMargins(25, 5, 21, 0);
 
 		labelRotationZ_ = new ULabel();
 		labelRotationZ_->setText(tr("Rotation Z"));
@@ -170,7 +173,7 @@ namespace unreal
 		layoutRotationZ_ = new QHBoxLayout();
 		layoutRotationZ_->addWidget(labelRotationZ_, 0, Qt::AlignLeft);
 		layoutRotationZ_->addWidget(editRotationZ_, 0, Qt::AlignRight);
-		layoutRotationZ_->setContentsMargins(40, 5, 35, 0);
+		layoutRotationZ_->setContentsMargins(25, 5, 21, 0);
 
 		scrollLayout_ = new QVBoxLayout();
 		scrollLayout_->addWidget(colorDialog_, 0, Qt::AlignHCenter | Qt::AlignTop);
