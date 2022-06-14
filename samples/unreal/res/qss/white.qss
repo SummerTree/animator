@@ -193,13 +193,13 @@ QScrollBar#settingScrollBar:vertical{
 }
 QScrollBar::handle:vertical{
     width:8px;
-    background:rgb(68,68,68);
+    background:rgb(242,83,106);
     border-radius:3px;
     min-height:20;
 }
 QScrollBar::handle:vertical:hover{
     width:8px;
-    background:rgb(84,84,84);
+    background:rgb(251,114,153);
     border-radius:4px;
     min-height:20;
 }
