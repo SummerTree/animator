@@ -2135,6 +2135,7 @@ namespace unreal
 		title_->setText(tr("Material Library"));
 
 		auto headerLine = new QFrame;
+		headerLine->setObjectName("Separator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
@@ -2144,7 +2145,7 @@ namespace unreal
 		topLayout_->addSpacing(10);
 		topLayout_->addWidget(headerLine);
 		topLayout_->setContentsMargins(5, 0, 0, 0);
-
+		
 		materialList_ = new MaterialListPanel(behaviour, profile);
 		materialList_->mainWidget_->setFixedWidth(360);
 

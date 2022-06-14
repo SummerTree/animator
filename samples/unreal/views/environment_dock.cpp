@@ -415,7 +415,7 @@ namespace unreal
 		mainLayout->addWidget(spoiler);
 		mainLayout->addStretch();
 		mainLayout->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout->setContentsMargins(10, 0, 10, 10);
+		mainLayout->setContentsMargins(10, 10, 10, 10);
 
 		auto mainWidget = new QWidget();
 		mainWidget->setObjectName("EnvironmentWidget");

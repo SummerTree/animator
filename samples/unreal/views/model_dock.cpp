@@ -36,6 +36,7 @@ namespace unreal
 		title_->setText(tr("Model Library"));
 
 		auto headerLine = new QFrame;
+		headerLine->setObjectName("Separator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);

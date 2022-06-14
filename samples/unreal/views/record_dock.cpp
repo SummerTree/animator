@@ -31,12 +31,6 @@ namespace unreal
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 		headerLine->setContentsMargins(0, 10, 0, 10);
 
-		markButton_ = new UPushButton();
-		markButton_->setObjectName("mark");
-		markButton_->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
-		markButton_->setIconSize(QSize(139, 143));
-		markButton_->installEventFilter(this);
-
 		quality_ = new ULabel();
 		quality_->setText(tr("Render Quality"));
 
@@ -190,39 +184,19 @@ namespace unreal
 		videoLayout->addWidget(bouncesSpinbox_);
 		videoLayout->addSpacing(10);
 		videoLayout->addWidget(crfSpinbox);
-		videoLayout->setContentsMargins(20, 10, 0, 0);
-
-		auto markLayout = new QVBoxLayout;
-		markLayout->addWidget(markButton_, 0, Qt::AlignCenter);
-
-		markSpoiler_ = new Spoiler(tr("Watermark"));
-		markSpoiler_->setContentLayout(*markLayout);
+		videoLayout->setContentsMargins(20, 0, 20, 10);
 
 		videoSpoiler_ = new Spoiler(tr("Render Settings"));
 		videoSpoiler_->setContentLayout(*videoLayout);
 		videoSpoiler_->toggleButton.click();
 
-		auto contentLayout = new QVBoxLayout();
-		contentLayout->addWidget(videoSpoiler_);
-		contentLayout->addSpacing(5);
-		contentLayout->addWidget(markSpoiler_);
-		contentLayout->addStretch();
-
-		auto contentWidget = new QWidget;
-		contentWidget->setLayout(contentLayout);
-
-		contentWidgetArea_ = new QScrollArea();
-		contentWidgetArea_->setWidget(contentWidget);
-		contentWidgetArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		contentWidgetArea_->setWidgetResizable(true);
-
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addWidget(title_);
 		mainLayout_->addWidget(headerLine);
-		mainLayout_->addWidget(contentWidgetArea_);
+		mainLayout_->addWidget(videoSpoiler_);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(recordButton_, 0, Qt::AlignCenter);
-		mainLayout_->setContentsMargins(10, 0, 10, 10);
+		mainLayout_->setContentsMargins(10, 10, 10, 10);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("RecordWidget");
@@ -450,16 +424,6 @@ namespace unreal
 				behaviour->stopRecord();
 			}
 		}
-	}
-
-	void
-	RecordDock::paintEvent(QPaintEvent* e) noexcept
-	{
-		int left, top, bottom, right;
-		mainLayout_->getContentsMargins(&left, &top, &right, &bottom);
-		contentWidgetArea_->resize(contentWidgetArea_->size().width(), mainWidget_->size().height() - recordButton_->height() - (top + bottom) * 2);
-
-		QDockWidget::paintEvent(e);
 	}
 
 	void

@@ -619,7 +619,7 @@ $20 (Original cost $40)</source>
     <name>unreal::MaterialDock</name>
     <message>
         <location filename="../views/material_dock.cpp" line="2124"/>
-        <location filename="../views/material_dock.cpp" line="2279"/>
+        <location filename="../views/material_dock.cpp" line="2281"/>
         <source>Material</source>
         <translation>材质</translation>
     </message>
@@ -629,17 +629,17 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">材质库</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2167"/>
+        <location filename="../views/material_dock.cpp" line="2168"/>
         <source>Library</source>
         <translation>材质库</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2168"/>
+        <location filename="../views/material_dock.cpp" line="2169"/>
         <source>Scene</source>
         <translation>场景</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2294"/>
+        <location filename="../views/material_dock.cpp" line="2296"/>
         <source>Material Properties</source>
         <translation>材质属性</translation>
     </message>
@@ -838,51 +838,51 @@ $20 (Original cost $40)</source>
         <translation>模型库</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="45"/>
+        <location filename="../views/model_dock.cpp" line="46"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="159"/>
+        <location filename="../views/model_dock.cpp" line="160"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="159"/>
+        <location filename="../views/model_dock.cpp" line="160"/>
         <source>Are you sure you want to delete this model?</source>
         <translation>确定要删除此模型吗?</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="175"/>
+        <location filename="../views/model_dock.cpp" line="176"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="182"/>
+        <location filename="../views/model_dock.cpp" line="183"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="182"/>
+        <location filename="../views/model_dock.cpp" line="183"/>
         <source>PMX Files (*.pmx)</source>
         <translation>PMX 文件 (*.pmx)</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="187"/>
         <location filename="../views/model_dock.cpp" line="188"/>
-        <location filename="../views/model_dock.cpp" line="234"/>
+        <location filename="../views/model_dock.cpp" line="189"/>
         <location filename="../views/model_dock.cpp" line="235"/>
+        <location filename="../views/model_dock.cpp" line="236"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="187"/>
-        <location filename="../views/model_dock.cpp" line="234"/>
+        <location filename="../views/model_dock.cpp" line="188"/>
+        <location filename="../views/model_dock.cpp" line="235"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="237"/>
+        <location filename="../views/model_dock.cpp" line="238"/>
         <source>Unknown-name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -896,46 +896,46 @@ $20 (Original cost $40)</source>
         <translation>动作库</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="42"/>
+        <location filename="../views/motion_dock.cpp" line="43"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="158"/>
+        <location filename="../views/motion_dock.cpp" line="159"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="158"/>
+        <location filename="../views/motion_dock.cpp" line="159"/>
         <source>Are you sure you want to delete this motion data?</source>
         <translation>确定要删除此动作数据吗?</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="174"/>
+        <location filename="../views/motion_dock.cpp" line="175"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="181"/>
+        <location filename="../views/motion_dock.cpp" line="182"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="181"/>
+        <location filename="../views/motion_dock.cpp" line="182"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="188"/>
         <location filename="../views/motion_dock.cpp" line="189"/>
-        <location filename="../views/motion_dock.cpp" line="238"/>
+        <location filename="../views/motion_dock.cpp" line="190"/>
         <location filename="../views/motion_dock.cpp" line="239"/>
+        <location filename="../views/motion_dock.cpp" line="240"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="188"/>
-        <location filename="../views/motion_dock.cpp" line="238"/>
+        <location filename="../views/motion_dock.cpp" line="189"/>
+        <location filename="../views/motion_dock.cpp" line="239"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -951,157 +951,156 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">录制编辑</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="41"/>
+        <location filename="../views/record_dock.cpp" line="35"/>
         <source>Render Quality</source>
         <translation>渲染质量</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="45"/>
+        <location filename="../views/record_dock.cpp" line="39"/>
         <source>Ultra Render</source>
         <translation>高清渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="52"/>
+        <location filename="../views/record_dock.cpp" line="46"/>
         <source>Fast Render</source>
         <translation>极速渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="61"/>
+        <location filename="../views/record_dock.cpp" line="55"/>
         <source>Frame Per Second</source>
         <translation>帧率</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="65"/>
+        <location filename="../views/record_dock.cpp" line="59"/>
         <source>24</source>
         <translation>24</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="72"/>
+        <location filename="../views/record_dock.cpp" line="66"/>
         <source>25</source>
         <translation>25</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="78"/>
+        <location filename="../views/record_dock.cpp" line="72"/>
         <source>30</source>
         <translation>30</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="84"/>
+        <location filename="../views/record_dock.cpp" line="78"/>
         <source>60</source>
         <translation>60</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="96"/>
+        <location filename="../views/record_dock.cpp" line="90"/>
         <source>Output Type</source>
         <translation>输出格式</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="99"/>
+        <location filename="../views/record_dock.cpp" line="93"/>
         <source>H265</source>
         <translation>H265</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="100"/>
+        <location filename="../views/record_dock.cpp" line="94"/>
         <source>H264</source>
         <translation>H264</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="101"/>
+        <location filename="../views/record_dock.cpp" line="95"/>
         <source>Frame Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="106"/>
+        <location filename="../views/record_dock.cpp" line="100"/>
         <source>Play:</source>
         <translation>播放：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="109"/>
+        <location filename="../views/record_dock.cpp" line="103"/>
         <source>Start</source>
         <translation>开始</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="112"/>
+        <location filename="../views/record_dock.cpp" line="106"/>
         <source>- End</source>
         <translation>- 结束</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="129"/>
+        <location filename="../views/record_dock.cpp" line="123"/>
         <source>Denoise:</source>
         <translation>开启降噪：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="141"/>
+        <location filename="../views/record_dock.cpp" line="135"/>
         <source>Recursion depth per pixel:</source>
         <translation>每像素光线弹射次数：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="143"/>
+        <location filename="../views/record_dock.cpp" line="137"/>
         <source>Sample number per pixel:</source>
         <translation>每像素采样数:</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="145"/>
+        <location filename="../views/record_dock.cpp" line="139"/>
         <source>Constant Rate Factor (CRF):</source>
         <translation>固定码率系数(CRF):</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="157"/>
-        <location filename="../views/record_dock.cpp" line="292"/>
-        <location filename="../views/record_dock.cpp" line="303"/>
-        <location filename="../views/record_dock.cpp" line="474"/>
+        <location filename="../views/record_dock.cpp" line="151"/>
+        <location filename="../views/record_dock.cpp" line="266"/>
+        <location filename="../views/record_dock.cpp" line="277"/>
+        <location filename="../views/record_dock.cpp" line="438"/>
         <source>Start Render</source>
         <translation>开始渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="198"/>
         <source>Watermark</source>
-        <translation>水印</translation>
+        <translation type="vanished">水印</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="201"/>
+        <location filename="../views/record_dock.cpp" line="189"/>
         <source>Render Settings</source>
         <translation>渲染设置</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="430"/>
+        <location filename="../views/record_dock.cpp" line="404"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="430"/>
+        <location filename="../views/record_dock.cpp" line="404"/>
         <source>Start frame must be less than end frame.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="436"/>
+        <location filename="../views/record_dock.cpp" line="410"/>
         <source>Save Video</source>
         <translation>保存视频</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="436"/>
+        <location filename="../views/record_dock.cpp" line="410"/>
         <source>MP4 Files (*.mp4)</source>
         <translation>MP4 Files (*.mp4)</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="436"/>
+        <location filename="../views/record_dock.cpp" line="410"/>
         <source>New Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="438"/>
+        <location filename="../views/record_dock.cpp" line="412"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="438"/>
+        <location filename="../views/record_dock.cpp" line="412"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="294"/>
-        <location filename="../views/record_dock.cpp" line="301"/>
-        <location filename="../views/record_dock.cpp" line="472"/>
+        <location filename="../views/record_dock.cpp" line="268"/>
+        <location filename="../views/record_dock.cpp" line="275"/>
+        <location filename="../views/record_dock.cpp" line="436"/>
         <source>Stop Render</source>
         <translation>停止渲染</translation>
     </message>
@@ -1116,12 +1115,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">视频编辑</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="445"/>
+        <location filename="../views/record_dock.cpp" line="419"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="445"/>
+        <location filename="../views/record_dock.cpp" line="419"/>
         <source>Failed to create file</source>
         <translation>创建文件失败</translation>
     </message>

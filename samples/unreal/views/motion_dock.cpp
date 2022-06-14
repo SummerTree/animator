@@ -33,6 +33,7 @@ namespace unreal
 		title_->setText(tr("Motion Library"));
 
 		auto headerLine = new QFrame;
+		headerLine->setObjectName("Separator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);

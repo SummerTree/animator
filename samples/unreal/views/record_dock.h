@@ -39,7 +39,6 @@ namespace unreal
 		~RecordDock() noexcept;
 
 		void showEvent(QShowEvent* event) override;
-		void paintEvent(QPaintEvent* e) noexcept override;
 		void closeEvent(QCloseEvent* event) override;
 
 		bool eventFilter(QObject* watched, QEvent* event);
@@ -84,7 +83,6 @@ namespace unreal
 		UPushButton* speed3_;
 		UPushButton* speed4_;
 		QPushButton* recordButton_;
-		UPushButton* markButton_;
 		QCheckBox* denoiseButton_;
 
 		USpinBox* startFrame_;
@@ -100,9 +98,7 @@ namespace unreal
 
 		QWidget* mainWidget_;
 
-		Spoiler* markSpoiler_;
 		Spoiler* videoSpoiler_;
-		QScrollArea* contentWidgetArea_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<UnrealProfile> profile_;
