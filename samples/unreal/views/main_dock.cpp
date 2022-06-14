@@ -548,8 +548,8 @@ namespace unreal
 
 				spdlog::debug("finish");
 				
-				this->modelDock_->show();
-				this->environmentDock_->show();
+				this->assetBrowseDock_->modelButton_->click();
+				this->toolDock_->environmentButton_->click();
 
 				this->restoreLayout();
 
