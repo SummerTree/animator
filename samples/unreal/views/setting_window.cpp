@@ -89,17 +89,6 @@ namespace unreal
 			langCombo_->setItemText(i, languages_[i]);
 	}
 
-	SettingMainPlaneGraphics::SettingMainPlaneGraphics(QWidget* parent)
-		: UPanel(parent)
-	{
-	}
-
-	void
-	SettingMainPlaneGraphics::retranslate()
-	{
-		
-	}
-
 	SettingContextPlane::SettingContextPlane(QWidget* parent, const std::shared_ptr<unreal::UnrealBehaviour>& behaviour) noexcept(false)
 		: UPanel(parent)
 		, behaviour_(behaviour)
@@ -130,12 +119,10 @@ namespace unreal
 
 		mainPlaneGeneral_ = new SettingMainPlaneGeneral(scrollWidget_, behaviour);
 		mainPlaneInterface_ = new SettingMainPlaneInterface(scrollWidget_);
-		mainPlaneGraphics_ = new SettingMainPlaneGraphics(scrollWidget_);
 
 		gridLayout_ = new QVBoxLayout(scrollWidget_);
 		gridLayout_->addWidget(mainPlaneGeneral_);
 		gridLayout_->addWidget(mainPlaneInterface_);
-		gridLayout_->addWidget(mainPlaneGraphics_);
 
 		scrollArea_ = new QScrollArea(this);
 		scrollArea_->setWidget(scrollWidget_);

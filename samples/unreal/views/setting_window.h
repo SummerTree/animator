@@ -60,15 +60,6 @@ namespace unreal
 		QVBoxLayout* layout_;
 	};
 
-	class SettingMainPlaneGraphics final : public UPanel
-	{
-		Q_OBJECT
-	public:
-		SettingMainPlaneGraphics(QWidget* parent);
-
-		void retranslate();
-	};
-
 	class SettingContextPlane final : public UPanel
 	{
 		Q_OBJECT
