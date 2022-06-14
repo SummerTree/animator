@@ -34,18 +34,19 @@ namespace unreal
 		title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Model Library"));
+		title_->setContentsMargins(0, 10, 0, 10);
 
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("Separator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-	
+		headerLine->setContentsMargins(0, 10, 0, 10);
+
 		topLayout_ = new QVBoxLayout();
 		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
-		topLayout_->addSpacing(10);
 		topLayout_->addWidget(headerLine);
-		topLayout_->setContentsMargins(5, 0, 0, 0);
+		topLayout_->setContentsMargins(5, 0, 5, 0);
 
 		bottomLayout_ = new QHBoxLayout();
 		bottomLayout_->addStretch();

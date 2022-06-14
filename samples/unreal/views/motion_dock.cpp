@@ -31,18 +31,19 @@ namespace unreal
 		title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Motion Library"));
+		title_->setContentsMargins(0, 10, 0, 10);
 
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("Separator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+		headerLine->setContentsMargins(0, 10, 0, 10);
 
 		topLayout_ = new QVBoxLayout();
 		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
-		topLayout_->addSpacing(10);
 		topLayout_->addWidget(headerLine);
-		topLayout_->setContentsMargins(5, 0, 0, 0);
+		topLayout_->setContentsMargins(5, 0, 5, 0);
 
 		bottomLayout_ = new QHBoxLayout();
 		bottomLayout_->addStretch();
@@ -50,13 +51,14 @@ namespace unreal
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
 
 		listWidget_ = new DraggableListWindow;
+		listWidget_->setFixedWidth(360);
 		listWidget_->setStyleSheet("background:transparent;");
-		listWidget_->setSpacing(0);
+		listWidget_->setSpacing(5);
 		listWidget_->installEventFilter(this);
 
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
-		mainLayout_->addWidget(listWidget_, 0, Qt::AlignVCenter);
+		mainLayout_->addWidget(listWidget_, 0, Qt::AlignCenter);
 		mainLayout_->addStretch();
 		mainLayout_->addLayout(bottomLayout_);
 		mainLayout_->setContentsMargins(0, 10, 0, 10);
