@@ -62,14 +62,14 @@ namespace unreal
 		listWidget_ = new DraggableListWindow;
 		listWidget_->setSelectionMode(QListWidget::NoSelection);
 		listWidget_->setIconSize(QSize(150, 150));
-		listWidget_->setFixedWidth(380);
+		listWidget_->setFixedWidth(this->width());
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setSpacing(5);
 		//listWidget_->setGraphicsEffect(shadowEffect);
-
+		
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
-		mainLayout_->addWidget(listWidget_, 0, Qt::AlignHCenter);
+		mainLayout_->addWidget(listWidget_, 0, Qt::AlignCenter);
 		mainLayout_->addStretch();
 		mainLayout_->addLayout(bottomLayout_);
 		mainLayout_->setContentsMargins(0, 10, 0, 10);
@@ -107,7 +107,7 @@ namespace unreal
 		{
 			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(listWidget_->iconSize() + QSize(20, 50));
+			item->setSizeHint(listWidget_->iconSize() + QSize(19, 50));
 
 			if (package.contains("preview"))
 			{
@@ -206,28 +206,24 @@ namespace unreal
 		if (!item)
 			return;
 		
-		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-		if (behaviour)
+		auto uuid = item->data(Qt::UserRole).toString().toStdString();
+		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
+		if (package.is_object())
 		{
-			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto package = octoon::AssetBundle::instance()->getPackage(uuid);
-			if (package.is_object())
-			{
-				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
-				dialog.setWindowTitle(tr("Loading..."));
-				dialog.setWindowModality(Qt::WindowModal);
-				dialog.setLabelText(package["name"].is_string() ? QString::fromUtf8(package["name"].get<nlohmann::json::string_t>()) : tr("Unknown-name"));
-				dialog.setValue(0);
-				dialog.show();
+			QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
+			dialog.setWindowTitle(tr("Loading..."));
+			dialog.setWindowModality(Qt::WindowModal);
+			dialog.setLabelText(package["name"].is_string() ? QString::fromUtf8(package["name"].get<nlohmann::json::string_t>()) : tr("Unknown-name"));
+			dialog.setValue(0);
+			dialog.show();
 
-				QCoreApplication::processEvents();
+			QCoreApplication::processEvents();
 
-				auto model = octoon::AssetBundle::instance()->loadAsset<octoon::GameObject>(uuid);
-				if (model)
-					this->profile_->entitiesModule->objects.getValue().push_back(model);
+			auto model = octoon::AssetBundle::instance()->loadAsset<octoon::GameObject>(uuid);
+			if (model)
+				this->profile_->entitiesModule->objects.getValue().push_back(model);
 
-				dialog.setValue(1);
-			}
+			dialog.setValue(1);
 		}
 	}
 
