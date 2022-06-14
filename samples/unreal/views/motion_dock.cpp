@@ -52,6 +52,7 @@ namespace unreal
 
 		listWidget_ = new DraggableListWindow;
 		listWidget_->setFixedWidth(360);
+		listWidget_->setSelectionMode(QListWidget::NoSelection);
 		listWidget_->setIconSize(QSize(100, 100));
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setSpacing(5);

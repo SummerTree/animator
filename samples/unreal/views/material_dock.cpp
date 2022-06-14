@@ -1911,6 +1911,7 @@ namespace unreal
 
 		mainWidget_ = new DraggableListWindow;
 		mainWidget_->setIconSize(QSize(100, 100));
+		mainWidget_->setSelectionMode(QListWidget::NoSelection);
 		mainWidget_->setStyleSheet("background:transparent;");
 		mainWidget_->setSpacing(5);
 

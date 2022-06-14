@@ -593,17 +593,17 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialAssetPanel</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="2020"/>
+        <location filename="../views/material_dock.cpp" line="2021"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2020"/>
+        <location filename="../views/material_dock.cpp" line="2021"/>
         <source>Are you sure you want to delete this material?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2036"/>
+        <location filename="../views/material_dock.cpp" line="2037"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
@@ -611,49 +611,49 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialDock</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="2045"/>
-        <location filename="../views/material_dock.cpp" line="2203"/>
+        <location filename="../views/material_dock.cpp" line="2046"/>
+        <location filename="../views/material_dock.cpp" line="2204"/>
         <source>Material</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2056"/>
+        <location filename="../views/material_dock.cpp" line="2057"/>
         <source>Material Library</source>
         <translation type="unfinished">材质库</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2090"/>
+        <location filename="../views/material_dock.cpp" line="2091"/>
         <source>Library</source>
         <translation>材质库</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2091"/>
+        <location filename="../views/material_dock.cpp" line="2092"/>
         <source>Scene</source>
         <translation>场景</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2218"/>
+        <location filename="../views/material_dock.cpp" line="2219"/>
         <source>Material Properties</source>
         <translation>材质属性</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2241"/>
+        <location filename="../views/material_dock.cpp" line="2242"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2241"/>
+        <location filename="../views/material_dock.cpp" line="2242"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished">NVIDIA MDL Files (*.mdl)</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2246"/>
         <location filename="../views/material_dock.cpp" line="2247"/>
+        <location filename="../views/material_dock.cpp" line="2248"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2246"/>
+        <location filename="../views/material_dock.cpp" line="2247"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
@@ -842,8 +842,8 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ModelDock</name>
     <message>
-        <location filename="../views/model_dock.cpp" line="25"/>
-        <location filename="../views/model_dock.cpp" line="36"/>
+        <location filename="../views/model_dock.cpp" line="26"/>
+        <location filename="../views/model_dock.cpp" line="37"/>
         <source>Model Library</source>
         <translation>模型库</translation>
     </message>
@@ -852,46 +852,46 @@ $20 (Original cost $40)</source>
         <translation type="vanished">导入</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="133"/>
+        <location filename="../views/model_dock.cpp" line="141"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="133"/>
+        <location filename="../views/model_dock.cpp" line="141"/>
         <source>Are you sure you want to delete this model?</source>
         <translation>确定要删除此模型吗?</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="149"/>
+        <location filename="../views/model_dock.cpp" line="157"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="156"/>
+        <location filename="../views/model_dock.cpp" line="164"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="156"/>
+        <location filename="../views/model_dock.cpp" line="164"/>
         <source>PMX Files (*.pmx)</source>
         <translation>PMX 文件 (*.pmx)</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="161"/>
-        <location filename="../views/model_dock.cpp" line="162"/>
-        <location filename="../views/model_dock.cpp" line="208"/>
-        <location filename="../views/model_dock.cpp" line="209"/>
+        <location filename="../views/model_dock.cpp" line="169"/>
+        <location filename="../views/model_dock.cpp" line="170"/>
+        <location filename="../views/model_dock.cpp" line="216"/>
+        <location filename="../views/model_dock.cpp" line="217"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="161"/>
-        <location filename="../views/model_dock.cpp" line="208"/>
+        <location filename="../views/model_dock.cpp" line="169"/>
+        <location filename="../views/model_dock.cpp" line="216"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="211"/>
+        <location filename="../views/model_dock.cpp" line="219"/>
         <source>Unknown-name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -909,41 +909,41 @@ $20 (Original cost $40)</source>
         <translation type="vanished">导入</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="132"/>
+        <location filename="../views/motion_dock.cpp" line="133"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="132"/>
+        <location filename="../views/motion_dock.cpp" line="133"/>
         <source>Are you sure you want to delete this motion data?</source>
         <translation>确定要删除此动作数据吗?</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="148"/>
+        <location filename="../views/motion_dock.cpp" line="149"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="155"/>
+        <location filename="../views/motion_dock.cpp" line="156"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="155"/>
+        <location filename="../views/motion_dock.cpp" line="156"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="162"/>
         <location filename="../views/motion_dock.cpp" line="163"/>
-        <location filename="../views/motion_dock.cpp" line="212"/>
+        <location filename="../views/motion_dock.cpp" line="164"/>
         <location filename="../views/motion_dock.cpp" line="213"/>
+        <location filename="../views/motion_dock.cpp" line="214"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/motion_dock.cpp" line="162"/>
-        <location filename="../views/motion_dock.cpp" line="212"/>
+        <location filename="../views/motion_dock.cpp" line="163"/>
+        <location filename="../views/motion_dock.cpp" line="213"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
