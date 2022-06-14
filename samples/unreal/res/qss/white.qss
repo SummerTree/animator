@@ -268,9 +268,9 @@ QListWidget::Item:hover{
 	background-color: rgb(230,230,230);
 }
 QListWidget::Item:selected{
-	color: rgb(48,48,50);
-	background-color: rgb(242,83,106);
 	border-width: 0px;
+	color: rgb(255,255,255);
+	background-color: rgb(242,83,106);
 }
 QCheckBox{
 	color:rgb(48,48,50);
@@ -605,22 +605,38 @@ QWidget#ColorDialog > ColorPlane{
 	color: rgb(250,250,250);
 	background-color: rgb(250,250,250);
 }
-QWidget#EnvironmentDialog > QToolButton, QWidget#MaterialDialog > QToolButton{
+QWidget#MaterialDialog > QToolButton{
 	color:rgb(48,48,50);
 	background-color: rgb(250,250,250);
 	border:2px solid rgb(242,83,106);
 }
-QWidget#EnvironmentDialog > QToolButton:hover, QWidget#MaterialDialog > QToolButton:hover{
+QWidget#MaterialDialog > QToolButton:hover{
 	background-color: rgba(240,240,240);
 	border:none;
+}
+QWidget#EnvironmentDialog > QToolButton#Ok{
+	width:60;
+	height:30;
+	border:0px;
+	color: rgb(255,255,255);
+	background-color:rgb(242,83,106);
+}
+QWidget#EnvironmentDialog > QToolButton#Close{
+	width:60;
+	height:30;
+	border:0px;
+	color:rgb(48,48,50);
+	background-color:rgb(200,200,200);
 }
 QWidget#EnvironmentDialog > QToolButton#Import{
 	width:60;
 	height:30;
+	color:rgb(48,48,50);
+	background-color: rgb(200,200,200);
 }
-QWidget#EnvironmentDialog > QToolButton#Ok, QWidget#EnvironmentDialog > QToolButton#Close{
-	width:50;
-	height:30;
+QWidget#EnvironmentDialog > QToolButton#Import:hover{
+	color: rgb(255,255,255);
+	background-color:rgb(242,83,106);
 }
 QWidget#ModelWidget > QToolButton#Import, QWidget#MotionWidget > QToolButton#Import, QWidget#MaterialAssetPanel > QToolButton#Import{
 	width:60;

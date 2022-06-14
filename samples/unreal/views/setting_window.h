@@ -86,7 +86,6 @@ namespace unreal
 		QListWidgetItem* listWidgetItems_[3];
 		SettingMainPlaneGeneral* mainPlaneGeneral_;
 		SettingMainPlaneInterface* mainPlaneInterface_;
-		SettingMainPlaneGraphics* mainPlaneGraphics_;
 		QVBoxLayout* gridLayout_;
 		QScrollArea* scrollArea_;
 		QWidget* scrollWidget_;

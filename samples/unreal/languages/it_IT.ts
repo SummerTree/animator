@@ -1126,30 +1126,30 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SettingContextPlane</name>
     <message>
-        <location filename="../views/setting_window.cpp" line="109"/>
-        <location filename="../views/setting_window.cpp" line="166"/>
+        <location filename="../views/setting_window.cpp" line="98"/>
+        <location filename="../views/setting_window.cpp" line="153"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="109"/>
-        <location filename="../views/setting_window.cpp" line="166"/>
+        <location filename="../views/setting_window.cpp" line="98"/>
+        <location filename="../views/setting_window.cpp" line="153"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="109"/>
-        <location filename="../views/setting_window.cpp" line="166"/>
+        <location filename="../views/setting_window.cpp" line="98"/>
+        <location filename="../views/setting_window.cpp" line="153"/>
         <source>Graphics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="224"/>
+        <location filename="../views/setting_window.cpp" line="211"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/setting_window.cpp" line="224"/>
+        <location filename="../views/setting_window.cpp" line="211"/>
         <source>You are using the latest version of the renderer, no need to update!</source>
         <translation type="unfinished"></translation>
     </message>

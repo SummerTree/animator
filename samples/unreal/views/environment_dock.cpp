@@ -50,7 +50,7 @@ namespace unreal
 		bottomLayout_->addWidget(okButton_, 0, Qt::AlignRight);
 		bottomLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
 		bottomLayout_->setSpacing(2);
-		bottomLayout_->setContentsMargins(0, 5, 15, 0);
+		bottomLayout_->setContentsMargins(0, 5, 10, 0);
 
 		listWidget_ = new QListWidget;
 		listWidget_->setResizeMode(QListView::Fixed);
