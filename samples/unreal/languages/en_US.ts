@@ -173,6 +173,24 @@
     </message>
 </context>
 <context>
+    <name>unreal::ColorDialog</name>
+    <message>
+        <location filename="../widgets/color_dialog.cpp" line="265"/>
+        <source>Hue</source>
+        <translation type="unfinished">色相</translation>
+    </message>
+    <message>
+        <location filename="../widgets/color_dialog.cpp" line="267"/>
+        <source>Saturation</source>
+        <translation type="unfinished">饱和度</translation>
+    </message>
+    <message>
+        <location filename="../widgets/color_dialog.cpp" line="269"/>
+        <source>Value</source>
+        <translation type="unfinished">亮度</translation>
+    </message>
+</context>
+<context>
     <name>unreal::EnvironmentDock</name>
     <message>
         <location filename="../views/environment_dock.cpp" line="243"/>
@@ -534,47 +552,44 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="35"/>
         <source>Hue</source>
-        <translation type="unfinished">色相</translation>
+        <translation type="obsolete">色相</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="36"/>
         <source>Saturation</source>
-        <translation type="unfinished">饱和度</translation>
+        <translation type="obsolete">饱和度</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="obsolete">亮度</translation>
     </message>
     <message>
         <location filename="../views/main_light_dock.cpp" line="37"/>
-        <source>Value</source>
-        <translation type="unfinished">亮度</translation>
-    </message>
-    <message>
-        <location filename="../views/main_light_dock.cpp" line="40"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="45"/>
+        <location filename="../views/main_light_dock.cpp" line="42"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="72"/>
+        <location filename="../views/main_light_dock.cpp" line="69"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="98"/>
+        <location filename="../views/main_light_dock.cpp" line="95"/>
         <source>Rotation X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="125"/>
+        <location filename="../views/main_light_dock.cpp" line="122"/>
         <source>Rotation Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="152"/>
+        <location filename="../views/main_light_dock.cpp" line="149"/>
         <source>Rotation Z</source>
         <translation type="unfinished"></translation>
     </message>

@@ -11,7 +11,7 @@ namespace unreal
 	UDoubleSpinLine::~UDoubleSpinLine()
 	{
 	}
-
+	
 	void
 	UDoubleSpinLine::setValue(double val)
 	{

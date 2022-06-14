@@ -28,13 +28,10 @@ namespace unreal
 		headerLine->setContentsMargins(0, 10, 0, 10);
 
 		auto color = profile->mainLightModule->color.getValue();
-
+		
 		colorDialog_ = new ColorDialog();
 		colorDialog_->setCurrentColor(QColor::fromRgbF(color.x, color.y, color.z));
 		colorDialog_->installEventFilter(this);
-		colorDialog_->labelH_->setText(tr("Hue"));
-		colorDialog_->labelS_->setText(tr("Saturation"));
-		colorDialog_->labelV_->setText(tr("Value"));
 
 		resetButton_ = new QToolButton();
 		resetButton_->setText(tr("Reset"));
