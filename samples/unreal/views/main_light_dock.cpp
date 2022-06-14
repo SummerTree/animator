@@ -42,7 +42,7 @@ namespace unreal
 		labelIntensity_->setText(tr("Intensity"));
 
 		intensitySpinBox_ = new UDoubleSpinBox();
-		intensitySpinBox_->setFixedWidth(50);
+		intensitySpinBox_->setFixedWidth(60);
 		intensitySpinBox_->setMaximum(10.0f);
 		intensitySpinBox_->setSingleStep(0.1f);
 		intensitySpinBox_->setAlignment(Qt::AlignRight);
@@ -69,7 +69,7 @@ namespace unreal
 		labelSize_->setText(tr("Size"));
 
 		sizeSpinBox_ = new UDoubleSpinBox();
-		sizeSpinBox_->setFixedWidth(50);
+		sizeSpinBox_->setFixedWidth(60);
 		sizeSpinBox_->setMaximum(1.0f);
 		sizeSpinBox_->setSingleStep(0.05f);
 		sizeSpinBox_->setAlignment(Qt::AlignRight);
@@ -95,7 +95,7 @@ namespace unreal
 		labelRotationX_->setText(tr("Rotation X"));
 
 		editRotationX_ = new UDoubleSpinBox();
-		editRotationX_->setFixedWidth(50);
+		editRotationX_->setFixedWidth(60);
 		editRotationX_->setMaximum(360.0f);
 		editRotationX_->setSingleStep(1.0f);
 		editRotationX_->setAlignment(Qt::AlignRight);
@@ -122,7 +122,7 @@ namespace unreal
 		labelRotationY_->setText(tr("Rotation Y"));
 
 		editRotationY_ = new UDoubleSpinBox();
-		editRotationY_->setFixedWidth(50);
+		editRotationY_->setFixedWidth(60);
 		editRotationY_->setMaximum(360.0f);
 		editRotationY_->setSingleStep(1.0f);
 		editRotationY_->setAlignment(Qt::AlignRight);
@@ -149,7 +149,7 @@ namespace unreal
 		labelRotationZ_->setText(tr("Rotation Z"));
 
 		editRotationZ_ = new UDoubleSpinBox();
-		editRotationZ_->setFixedWidth(50);
+		editRotationZ_->setFixedWidth(60);
 		editRotationZ_->setMaximum(360.0f);
 		editRotationZ_->setSingleStep(1.0f);
 		editRotationZ_->setAlignment(Qt::AlignRight);
