@@ -277,10 +277,8 @@ namespace unreal
 	public Q_SLOTS:
 		void itemClicked(QListWidgetItem* item);
 		void itemSelected(QListWidgetItem* item);
-		void importClickEvent();
 
 	public:
-		QPushButton* importButton_;
 		QListWidget* mainWidget_;
 		QVBoxLayout* mainLayout_;
 		QListWidgetItem* clickedItem_;
@@ -302,11 +300,13 @@ namespace unreal
 	private Q_SLOTS:
 		void backEvent();
 		void itemDoubleClicked(QListWidgetItem* item);
+		void importClickEvent();
 
 	private:
 		QLabel* title_;
 		QVBoxLayout* materialLayout_;
 		QVBoxLayout* mainLayout_;
+		QPushButton* importButton_;
 		MaterialListPanel* materialList_;
 		MaterialAssetPanel* materialAssetList_;
 		MaterialEditWindow* modifyWidget_;

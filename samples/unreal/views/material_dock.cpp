@@ -1928,28 +1928,15 @@ namespace unreal
 	{
 		this->setObjectName("MaterialAssetPanel");
 
-		importButton_ = new UPushButton;
-		importButton_->setObjectName("Import");
-		importButton_->setText(tr("Import"));
-		importButton_->setFixedSize(190, 35);
-		importButton_->installEventFilter(this);
-		
-		auto topLayout_ = new QHBoxLayout();
-		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
-		topLayout_->addStretch();
-		topLayout_->setContentsMargins(5, 0, 0, 0);
-
 		mainWidget_ = new DraggableListWindow;
 		mainWidget_->setStyleSheet("background:transparent;");
 		mainWidget_->setSpacing(5);
 
 		mainLayout_ = new QVBoxLayout(this);
-		mainLayout_->addLayout(topLayout_);
 		mainLayout_->addWidget(mainWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(0, 10, 0, 5);
 
-		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(mainWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 	}
@@ -1962,7 +1949,7 @@ namespace unreal
 	MaterialAssetPanel::resizeEvent(QResizeEvent* e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins();
-		mainWidget_->resize(this->width(), this->height() - margins.top() - margins.bottom() - importButton_->height());
+		mainWidget_->resize(this->width(), this->height() - margins.top() - margins.bottom());
 	}
 
 	void
@@ -2054,42 +2041,6 @@ namespace unreal
 	}
 
 	void
-	MaterialAssetPanel::importClickEvent()
-	{
-		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("NVIDIA MDL Files (*.mdl)"));
-		if (!filepaths.isEmpty())
-		{
-			try
-			{
-				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
-				dialog.setWindowTitle(tr("Loading..."));
-				dialog.setWindowModality(Qt::WindowModal);
-				dialog.show();
-
-				for (qsizetype i = 0; i < filepaths.size(); i++)
-				{
-					dialog.setValue(i);
-					dialog.setLabelText(QFileInfo(filepaths[i]).fileName());
-
-					QCoreApplication::processEvents();
-					if (dialog.wasCanceled())
-						break;
-
-					auto list = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
-					for (auto& it : list)
-						this->addItem(it.get<nlohmann::json::string_t>());
-				}
-
-				octoon::AssetBundle::instance()->saveAssets();
-			}
-			catch (...)
-			{
-				octoon::AssetBundle::instance()->saveAssets();
-			}
-		}
-	}
-
-	void
 	MaterialAssetPanel::keyPressEvent(QKeyEvent * event) noexcept
 	{
 		try
@@ -2140,10 +2091,17 @@ namespace unreal
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
+		importButton_ = new UPushButton;
+		importButton_->setObjectName("Import");
+		importButton_->setText(tr("Import"));
+		importButton_->setFixedSize(190, 35);
+		importButton_->installEventFilter(this);
+
 		auto topLayout_ = new QVBoxLayout();
 		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
 		topLayout_->addSpacing(10);
 		topLayout_->addWidget(headerLine);
+		topLayout_->addWidget(importButton_);
 		topLayout_->setContentsMargins(5, 0, 0, 0);
 		
 		materialList_ = new MaterialListPanel(behaviour, profile);
@@ -2179,6 +2137,7 @@ namespace unreal
 
 		this->setWidget(mainWidget_);
 
+		connect(importButton_, SIGNAL(clicked()), this, SLOT(importClickEvent()));
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(backEvent()));
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
@@ -2301,6 +2260,42 @@ namespace unreal
 					modifyWidget_->setMaterial(material);
 					modifyWidget_->show();
 				}
+			}
+		}
+	}
+
+	void
+	MaterialDock::importClickEvent()
+	{
+		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("NVIDIA MDL Files (*.mdl)"));
+		if (!filepaths.isEmpty())
+		{
+			try
+			{
+				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
+				dialog.setWindowTitle(tr("Loading..."));
+				dialog.setWindowModality(Qt::WindowModal);
+				dialog.show();
+
+				for (qsizetype i = 0; i < filepaths.size(); i++)
+				{
+					dialog.setValue(i);
+					dialog.setLabelText(QFileInfo(filepaths[i]).fileName());
+
+					QCoreApplication::processEvents();
+					if (dialog.wasCanceled())
+						break;
+
+					auto list = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
+					for (auto& it : list)
+						this->materialAssetList_->addItem(it.get<nlohmann::json::string_t>());
+				}
+
+				octoon::AssetBundle::instance()->saveAssets();
+			}
+			catch (...)
+			{
+				octoon::AssetBundle::instance()->saveAssets();
 			}
 		}
 	}

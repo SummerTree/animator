@@ -109,7 +109,7 @@ namespace unreal
 		this->removeDockWidget(recordDock_.get());
 		this->removeDockWidget(assetBrowseDock_.get());
 		this->removeDockWidget(cameraDock_.get());
-
+		
 		this->setStatusBar(nullptr);
 		this->setCentralWidget(nullptr);
 		

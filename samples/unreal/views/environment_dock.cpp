@@ -350,6 +350,7 @@ namespace unreal
 		this->verticalRotationSpinBox->installEventFilter(this);
 
 		this->resetButton_ = new QToolButton();
+		this->resetButton_->setObjectName("Reset");
 		this->resetButton_->setText(tr("Reset"));
 		this->resetButton_->installEventFilter(this);
 
@@ -420,7 +421,7 @@ namespace unreal
 		auto mainWidget = new QWidget();
 		mainWidget->setObjectName("EnvironmentWidget");
 		mainWidget->setLayout(mainLayout);
-
+		
 		this->setWidget(mainWidget);
 
 		this->profile_->environmentLightModule->offset += [this](const octoon::math::float2& value) {
