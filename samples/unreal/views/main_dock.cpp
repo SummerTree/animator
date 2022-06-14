@@ -158,6 +158,56 @@ namespace unreal
 			restoreGeometry(settings.value("geometry").toByteArray());
 			restoreState(settings.value("state").toByteArray());
 			settings.endGroup();
+
+			if (lightDock_->isVisible())
+			{
+				assetBrowseDock_->lightButton_->blockSignals(true);
+				assetBrowseDock_->lightButton_->clicked(true);
+				assetBrowseDock_->lightButton_->blockSignals(false);
+			}
+			if (modelDock_->isVisible())
+			{
+				assetBrowseDock_->modelButton_->blockSignals(true);
+				assetBrowseDock_->modelButton_->clicked(true);
+				assetBrowseDock_->modelButton_->blockSignals(false);
+			}
+			if (motionDock_->isVisible())
+			{
+				assetBrowseDock_->motionButton_->blockSignals(true);
+				assetBrowseDock_->motionButton_->clicked(true);
+				assetBrowseDock_->motionButton_->blockSignals(false);
+			}
+			if (materialDock_->isVisible())
+			{
+				assetBrowseDock_->materialButton_->blockSignals(true);
+				assetBrowseDock_->materialButton_->clicked(true);
+				assetBrowseDock_->materialButton_->blockSignals(false);
+			}
+			
+			if (recordDock_->isVisible())
+			{
+				toolDock_->videoButton_->blockSignals(true);
+				toolDock_->videoButton_->clicked(true);
+				toolDock_->videoButton_->blockSignals(false);
+			}
+			if (mainLightDock_->isVisible())
+			{
+				toolDock_->sunButton_->blockSignals(true);
+				toolDock_->sunButton_->clicked(true);
+				toolDock_->sunButton_->blockSignals(false);
+			}
+			if (environmentDock_->isVisible())
+			{
+				toolDock_->environmentButton_->blockSignals(true);
+				toolDock_->environmentButton_->clicked(true);
+				toolDock_->environmentButton_->blockSignals(false);
+			}
+			if (cameraDock_->isVisible())
+			{
+				toolDock_->cameraButton_->blockSignals(true);
+				toolDock_->cameraButton_->clicked(true);
+				toolDock_->cameraButton_->blockSignals(false);
+			}
 		}
 		else
 		{

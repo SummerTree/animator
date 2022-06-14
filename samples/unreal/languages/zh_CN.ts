@@ -549,43 +549,43 @@ $20 (Original cost $40)</source>
         <translation>AnimatorGo Lite（测试版）</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="241"/>
-        <location filename="../views/main_dock.cpp" line="269"/>
-        <location filename="../views/main_dock.cpp" line="297"/>
-        <location filename="../views/main_dock.cpp" line="325"/>
-        <location filename="../views/main_dock.cpp" line="352"/>
-        <location filename="../views/main_dock.cpp" line="379"/>
-        <location filename="../views/main_dock.cpp" line="406"/>
-        <location filename="../views/main_dock.cpp" line="433"/>
-        <location filename="../views/main_dock.cpp" line="491"/>
-        <location filename="../views/main_dock.cpp" line="562"/>
-        <location filename="../views/main_dock.cpp" line="589"/>
+        <location filename="../views/main_dock.cpp" line="291"/>
+        <location filename="../views/main_dock.cpp" line="319"/>
+        <location filename="../views/main_dock.cpp" line="347"/>
+        <location filename="../views/main_dock.cpp" line="375"/>
+        <location filename="../views/main_dock.cpp" line="402"/>
+        <location filename="../views/main_dock.cpp" line="429"/>
+        <location filename="../views/main_dock.cpp" line="456"/>
+        <location filename="../views/main_dock.cpp" line="483"/>
+        <location filename="../views/main_dock.cpp" line="541"/>
+        <location filename="../views/main_dock.cpp" line="612"/>
+        <location filename="../views/main_dock.cpp" line="639"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="446"/>
+        <location filename="../views/main_dock.cpp" line="496"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="446"/>
+        <location filename="../views/main_dock.cpp" line="496"/>
         <source>All Files(*.pmx *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="449"/>
-        <location filename="../views/main_dock.cpp" line="450"/>
+        <location filename="../views/main_dock.cpp" line="499"/>
+        <location filename="../views/main_dock.cpp" line="500"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="449"/>
+        <location filename="../views/main_dock.cpp" line="499"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="491"/>
+        <location filename="../views/main_dock.cpp" line="541"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -594,7 +594,7 @@ $20 (Original cost $40)</source>
         <translation type="vanished">获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="563"/>
+        <location filename="../views/main_dock.cpp" line="613"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
