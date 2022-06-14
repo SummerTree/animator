@@ -264,6 +264,8 @@ namespace unreal
 	CameraDock::onUnloadAnimation()
 	{
 		this->profile_->cameraModule->animation = nullptr;
+		this->profile_->cameraModule->translate = octoon::math::float3(0, 10, -10);
+		this->profile_->cameraModule->rotation = octoon::math::float3::Zero;
 
 		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 		if (behaviour)
