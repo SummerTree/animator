@@ -32,7 +32,7 @@ namespace unreal
 		vlayout = new QVBoxLayout(widget);
 		vlayout->addWidget(englishName);
 		vlayout->addWidget(copyrightInfo);
-		vlayout->setContentsMargins(0, 10, 0, 0);
+		vlayout->setContentsMargins(0, 15, 0, 0);
 
 		hlayout = new QHBoxLayout();
 		hlayout->addWidget(logo, 0, Qt::AlignRight);
