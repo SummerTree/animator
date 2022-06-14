@@ -1031,10 +1031,6 @@ $20 (Original cost $40)</source>
         <translation>光线追踪</translation>
     </message>
     <message>
-        <source>Fast Render</source>
-        <translation type="vanished">实时渲染</translation>
-    </message>
-    <message>
         <location filename="../views/record_dock.cpp" line="69"/>
         <source>Frame Per Second</source>
         <translation>帧率</translation>
@@ -1191,7 +1187,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="60"/>
         <source>Realtime Render</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">实时渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="460"/>
