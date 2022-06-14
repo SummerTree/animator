@@ -94,24 +94,28 @@ namespace unreal
 		leftButton_->setObjectName("left");
 		leftButton_->setText(tr("Left"));
 		leftButton_->setToolTip(tr("Backward 1 second"));
+		leftButton_->installEventFilter(this);
 		leftButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		
 		rightButton_ = new QToolButton;
 		rightButton_->setObjectName("right");
 		rightButton_->setText(tr("Right"));
 		rightButton_->setToolTip(tr("Forward 1 second"));
+		rightButton_->installEventFilter(this);
 		rightButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		resetButton_ = new QToolButton;
 		resetButton_->setObjectName("reset");
 		resetButton_->setText(tr("Reset"));
 		resetButton_->setToolTip(tr("Reset States"));
+		resetButton_->installEventFilter(this);
 		resetButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		volumeButton_ = new QToolButton;
 		volumeButton_->setText(tr("Volume"));
 		volumeButton_->setObjectName("volumeMiddle");
 		volumeButton_->setToolTip(tr("Volume"));
+		volumeButton_->installEventFilter(this);
 		volumeButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 		volumeSlider_ = new QSlider;
@@ -728,5 +732,20 @@ namespace unreal
 				audioEnable_ = false;
 			}
 		}
+	}
+
+	bool
+	ToplevelBar::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (event->type() != QEvent::Paint &&
+			event->type() != QEvent::Resize)
+		{
+			if (profile_->playerModule->isPlaying)
+			{
+				return true;
+			}
+		}
+
+		return QWidget::eventFilter(watched, event);
 	}
 }

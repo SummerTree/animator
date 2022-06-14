@@ -25,6 +25,7 @@ namespace unreal
 		~ToplevelBar() noexcept;
 
 		void update() noexcept;
+		bool eventFilter(QObject* watched, QEvent* event);
 
 	public Q_SLOTS:
 		void openEvent() noexcept;
