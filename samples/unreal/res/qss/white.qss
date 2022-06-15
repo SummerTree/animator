@@ -459,14 +459,17 @@ QWidget#AssetBrowseWidget > QToolButton:checked{
 	border:0px;
 	border-left:3px solid rgb(242,83,106);
 }
-QWidget#MainLightDock, 
-QWidget#EnvironmentDock, 
 QWidget#MaterialDock, 
-QWidget#RecordDock, 
-QWidget#CameraDock, 
 QWidget#LightDock, 
 QWidget#ModelDock,
 QWidget#MotionDock{
+	min-width:360;
+	max-width:360;
+}
+QWidget#MainLightDock, 
+QWidget#EnvironmentDock,
+QWidget#RecordDock,
+QWidget#CameraDock{
 	min-width:340;
 	max-width:340;
 }

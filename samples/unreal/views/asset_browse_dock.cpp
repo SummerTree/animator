@@ -29,7 +29,7 @@ namespace unreal
 		materialButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		materialButton_->setCheckable(true);
 		materialButton_->click();
-
+		
 		modelButton_ = new QToolButton;
 		modelButton_->setObjectName("model");
 		modelButton_->setText(tr("Model"));
