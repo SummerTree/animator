@@ -263,7 +263,6 @@ namespace unreal
 		recordButton_->setContentsMargins(0, 0, 0, 0);
 		
 		auto videoLayout = new QVBoxLayout;
-		videoLayout->addSpacing(10);
 		videoLayout->addWidget(videoRatio_);
 		videoLayout->addLayout(videoRatioLayout_);
 		videoLayout->addSpacing(10);
@@ -288,7 +287,7 @@ namespace unreal
 		videoLayout->addLayout(denoiseLayout_);
 		videoLayout->addWidget(sppSpinbox_);
 		videoLayout->addWidget(bouncesSpinbox_);
-		videoLayout->setContentsMargins(20, 0, 20, 10);
+		videoLayout->setContentsMargins(20, 0, 20, 0);
 
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addWidget(title_);
