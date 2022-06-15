@@ -5,12 +5,12 @@
 
 namespace unreal
 {
-	class USpinBox : public QSpinBox
+	class SpinBox : public QSpinBox
 	{
 		Q_OBJECT
 	public:
-		explicit USpinBox(QWidget* parent = 0);
-		~USpinBox();
+		explicit SpinBox(QWidget* parent = 0);
+		~SpinBox();
 
 		void
 		focusInEvent(QFocusEvent* event) override

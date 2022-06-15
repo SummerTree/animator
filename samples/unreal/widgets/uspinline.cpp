@@ -17,7 +17,7 @@ namespace unreal
     {
         label_ = new ULabel(this);
         label_->setText("label");
-        spinbox_ = new USpinBox(this);
+        spinbox_ = new SpinBox(this);
         spinbox_->setRange(0, 100);
         spinbox_->setValue(0);
         layout_ = new QHBoxLayout(this);

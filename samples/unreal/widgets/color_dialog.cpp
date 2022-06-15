@@ -268,15 +268,15 @@ namespace unreal
 		labelV_ = std::make_unique<QLabel>();
 		labelV_->setText(tr("Value"));
 
-		editH_ = std::make_unique<USpinBox>();
+		editH_ = std::make_unique<QSpinBox>();
 		editH_->setFixedWidth(60);
 		editH_->setMaximum(360);
 		editH_->setAlignment(Qt::AlignRight);
-		editS_ = std::make_unique<USpinBox>();
+		editS_ = std::make_unique<QSpinBox>();
 		editS_->setFixedWidth(60);
 		editS_->setMaximum(255);
 		editS_->setAlignment(Qt::AlignRight);
-		editV_ = std::make_unique<USpinBox>();
+		editV_ = std::make_unique<QSpinBox>();
 		editV_->setFixedWidth(60);
 		editV_->setMaximum(255);
 		editV_->setAlignment(Qt::AlignRight);

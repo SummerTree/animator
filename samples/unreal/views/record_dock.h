@@ -109,8 +109,8 @@ namespace unreal
 		QPushButton* recordButton_;
 		QCheckBox* denoiseButton_;
 
-		USpinBox* startFrame_;
-		USpinBox* endFrame_;
+		QSpinBox* startFrame_;
+		QSpinBox* endFrame_;
 		USpinLine* sppSpinbox_;
 		USpinLine* bouncesSpinbox_;
 

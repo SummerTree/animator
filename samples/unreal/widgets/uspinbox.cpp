@@ -2,11 +2,11 @@
 
 namespace unreal
 {
-	USpinBox::USpinBox(QWidget* parent)
+	SpinBox::SpinBox(QWidget* parent)
 		: QSpinBox(parent)
 	{
 	}
-	USpinBox::~USpinBox()
+	SpinBox::~SpinBox()
 	{
 	}
 }

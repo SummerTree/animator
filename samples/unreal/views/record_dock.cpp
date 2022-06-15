@@ -216,15 +216,15 @@ namespace unreal
 		endLabel_ = new QLabel();
 		endLabel_->setText(tr("- End"));
 
-		startFrame_ = new USpinBox();
-		startFrame_->setObjectName("start");
+		startFrame_ = new QSpinBox();
+		startFrame_->setObjectName("Start");
 		startFrame_->setAlignment(Qt::AlignRight);
 		startFrame_->setMinimum(0);
 		startFrame_->setMaximum(99999);
 		startFrame_->installEventFilter(this);
 
-		endFrame_ = new USpinBox();
-		endFrame_->setObjectName("end");
+		endFrame_ = new QSpinBox();
+		endFrame_->setObjectName("End");
 		endFrame_->setAlignment(Qt::AlignRight);
 		endFrame_->setMinimum(0);
 		endFrame_->setMaximum(99999);

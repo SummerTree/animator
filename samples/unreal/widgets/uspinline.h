@@ -30,7 +30,7 @@ namespace unreal
 		void onDisable();
 		void onEnable();
     public:
-        USpinBox* spinbox_;
+        SpinBox* spinbox_;
         ULabel* label_;
         QHBoxLayout* layout_;
 	};

@@ -297,6 +297,20 @@ QColorDialog > QTextEdit,QLineEdit,QPushButton{
   background-color: transparent;
   border: 1px solid #1c1c1c;
 }
+QSpinBox {
+	color: rgb(48,48,50);
+	background: rgb(241,242,248);
+	border: 1px solid rgb(242,83,106);
+	border-radius:5px;
+}
+QSpinBox::up-button{
+	height: 0px;
+	width: 0px;
+}
+QSpinBox::down-button{
+	height: 0px;
+	width: 0px;
+}
 QWidget#SplashWindow{
 	min-width:500px;
 	max-width:500px;
@@ -673,10 +687,6 @@ QWidget#CameraWidget unreal--UDoubleSpinBox {
 	min-width: 90px;
 	max-width: 90px;
 }
-QWidget#RecordWidget unreal--UDoubleSpinBox, QWidget#RecordWidget unreal--USpinBox {
-	min-width: 60px;
-	max-width: 60px;
-}
 unreal--ULabel {
 	color: rgb(48,48,50);
 }
@@ -703,24 +713,13 @@ unreal--UDoubleSpinBox::down-button{
 	height: 0px;
 	width: 0px;
 }
-unreal--USpinBox {
-	color: rgb(48,48,50);
-	background: rgb(241,242,248);
-	border: 1px solid rgb(242,83,106);
-	border-radius:5px;
-}
-unreal--USpinBox::up-button{
-	height: 0px;
-	width: 0px;
-}
-unreal--USpinBox::down-button{
-	height: 0px;
-	width: 0px;
-}
 QWidget#RecordDock QLineEdit{
 	max-width:60;
 	max-height:25;
 	border:1px solid #959595;
+}
+QWidget#RecordWidget QSpinBox {
+	min-width: 60px;
 }
 QWidget#RecordDock QRadioButton{
 	color:rgb(200,200,200);
