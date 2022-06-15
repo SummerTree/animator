@@ -50,7 +50,7 @@ namespace unreal
 		lightButton_->setToolTip(tr("Open Light Panel"));
 		lightButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		lightButton_->hide();
-
+		
 		settingsButton_ = new QToolButton;
 		settingsButton_->setObjectName("setting");
 		settingsButton_->setText(tr("Settings"));
@@ -64,10 +64,11 @@ namespace unreal
 		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		importButton_->installEventFilter(this);
 
-		auto buttonGroup_ = new QButtonGroup();
+		buttonGroup_ = new QButtonGroup();
 		buttonGroup_->addButton(materialButton_, 0);
 		buttonGroup_->addButton(modelButton_, 1);
 		buttonGroup_->addButton(motionButton_, 2);
+		buttonGroup_->addButton(lightButton_, 2);
 
 		auto mainLayout = new QVBoxLayout;
 		mainLayout->addWidget(materialButton_, 0, Qt::AlignCenter);
@@ -97,7 +98,7 @@ namespace unreal
 	AssetBrowseDock::~AssetBrowseDock() noexcept
 	{
 	}
-
+	
 	void
 	AssetBrowseDock::materialEvent() noexcept
 	{

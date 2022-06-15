@@ -49,6 +49,7 @@ namespace unreal
 		QToolButton* lightButton_;
 		QToolButton* importButton_;
 		QToolButton* settingsButton_;
+		QButtonGroup* buttonGroup_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<UnrealProfile> profile_;
