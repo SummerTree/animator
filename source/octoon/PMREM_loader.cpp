@@ -196,8 +196,8 @@ void main()
 	{
 		if (environmentMap)
 		{
-			std::uint32_t width = 64 << (mipNums - 1);
-			std::uint32_t height = 32 << (mipNums - 1);
+			std::uint32_t width = 32 << (mipNums - 1);
+			std::uint32_t height = 16 << (mipNums - 1);
 
 			auto renderContext = Renderer::instance()->getGraphicsDevice();
 
@@ -225,8 +225,8 @@ void main()
 			for (std::uint8_t i = 0; i < mipNums; i++)
 			{
 				GraphicsFramebufferDesc framebufferDesc;
-				framebufferDesc.setWidth(width >> i);
-				framebufferDesc.setHeight(height >> i);
+				framebufferDesc.setWidth(std::max<std::uint32_t>(width >> i, 1));
+				framebufferDesc.setHeight(std::max<std::uint32_t>(height >> i, 1));
 				framebufferDesc.setFramebufferLayout(renderContext->createFramebufferLayout(framebufferLayoutDesc));
 				framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture, i, 0));
 				framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture->getNativeTexture(), i, 0));

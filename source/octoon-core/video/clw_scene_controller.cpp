@@ -490,7 +490,7 @@ namespace octoon
 			clwLight->type = ClwScene::kIbl;
 			clwLight->multiplier = ibl.getIntensity();
 			clwLight->intensity = RadeonRays::float3(power.x, power.y, power.z);
-			clwLight->tex = GetTextureIndex(textureCollector, ibl.getEnvironmentMap());
+			clwLight->tex = GetTextureIndex(textureCollector, ibl.getBackgroundMap());
 			clwLight->tex_reflection = -1;
 			clwLight->tex_refraction = -1;
 			clwLight->tex_transparency = -1;
