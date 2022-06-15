@@ -175,12 +175,6 @@ namespace unreal
 		mainWidget->setObjectName("ToplevelWidget");
 		mainWidget->setLayout(layout_);
 
-		/*QGraphicsDropShadowEffect* wndShadow = new QGraphicsDropShadowEffect;
-		wndShadow->setBlurRadius(15.0);
-		wndShadow->setColor(QColor(0, 0, 0, 100));
-		wndShadow->setOffset(0.0f, 10.0f);
-		mainWidget->setGraphicsEffect(wndShadow);*/
-
 		this->addWidget(mainWidget);
 
 		profile->playerModule->isPlaying += [this](bool value) {

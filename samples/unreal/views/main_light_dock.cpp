@@ -205,7 +205,7 @@ namespace unreal
 
 		mainWidget_ = new QWidget();
 		mainWidget_->setLayout(mainLayout_);
-
+		
 		this->setWidget(mainWidget_);
 
 		this->profile_->mainLightModule->intensity += [this](float value)

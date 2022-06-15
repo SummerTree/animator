@@ -14,6 +14,7 @@
 #include <qmimedata.h>
 #include <qpainter.h>
 #include <qprogressdialog.h>
+#include <qgraphicseffect.h>
 
 namespace unreal
 {
@@ -262,10 +263,16 @@ namespace unreal
 		this->previewName_->setAlignment(Qt::AlignCenter);
 		this->previewName_->setMinimumWidth(260);
 
+		auto shadowEffect = std::make_unique<QGraphicsDropShadowEffect>();
+		shadowEffect->setOffset(5, 5);
+		shadowEffect->setColor(Qt::lightGray);
+		shadowEffect->setBlurRadius(10);
+
 		this->colorButton = new QToolButton;
 		this->colorButton->setObjectName("Color");
 		this->colorButton->setIconSize(QSize(50, 30));
 		this->colorButton->installEventFilter(this);
+		this->colorButton->setGraphicsEffect(shadowEffect.release());
 
 		this->thumbnail = new QToolButton;
 		this->thumbnail->setObjectName("Thumbnail ");

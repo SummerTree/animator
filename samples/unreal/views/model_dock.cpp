@@ -54,19 +54,13 @@ namespace unreal
 		bottomLayout_->setSpacing(2);
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
 
-		auto shadowEffect = std::make_unique<QGraphicsDropShadowEffect>();
-		shadowEffect->setOffset(5, 5);
-		shadowEffect->setColor(Qt::lightGray);
-		shadowEffect->setBlurRadius(10);
-
 		listWidget_ = new DraggableListWindow;
 		listWidget_->setSelectionMode(QListWidget::NoSelection);
 		listWidget_->setIconSize(QSize(150, 150));
 		listWidget_->setFixedWidth(this->width());
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setSpacing(5);
-		//listWidget_->setGraphicsEffect(shadowEffect);
-		
+	
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
 		mainLayout_->addWidget(listWidget_, 0, Qt::AlignCenter);

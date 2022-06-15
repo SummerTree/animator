@@ -268,11 +268,11 @@ QListWidget::item{
 	border: 5px;
 	border-radius:4px;
 	color: rgb(48,48,50);
-	background-color: rgb(236,236,236);
+	background-color: rgb(235,235,235);
 }
 QListWidget::item:hover{
 	color: rgb(48,48,50);
-	background-color: rgb(245,245,245);
+	background-color: rgb(240,240,240);
 }
 QListWidget::item:selected{
 	color: rgb(255,255,255);
@@ -469,6 +469,7 @@ QWidget#LightDock,
 QWidget#ModelDock,
 QWidget#MotionDock{
 	min-width:340;
+	max-width:340;
 }
 QWidget#MainLightDock QScrollBar, QWidget#MaterialDock QScrollBar
 {

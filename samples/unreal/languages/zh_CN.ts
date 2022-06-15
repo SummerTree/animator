@@ -193,79 +193,79 @@
 <context>
     <name>unreal::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="233"/>
+        <location filename="../views/environment_dock.cpp" line="234"/>
         <source>Environment Light</source>
         <translation>环境光</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="243"/>
+        <location filename="../views/environment_dock.cpp" line="244"/>
         <source>Environment Editor</source>
         <translation type="unfinished">环境光编辑</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="256"/>
+        <location filename="../views/environment_dock.cpp" line="257"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation>单击预览按钮以显示所有可替换的HDR图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="261"/>
-        <location filename="../views/environment_dock.cpp" line="507"/>
+        <location filename="../views/environment_dock.cpp" line="262"/>
+        <location filename="../views/environment_dock.cpp" line="514"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="274"/>
+        <location filename="../views/environment_dock.cpp" line="281"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="278"/>
+        <location filename="../views/environment_dock.cpp" line="285"/>
         <source>Thumbnail</source>
         <translation>环境贴图</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="282"/>
+        <location filename="../views/environment_dock.cpp" line="289"/>
         <source>Toggle Background</source>
         <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="290"/>
+        <location filename="../views/environment_dock.cpp" line="297"/>
         <source>Intensity</source>
         <translation>亮度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="308"/>
+        <location filename="../views/environment_dock.cpp" line="315"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="326"/>
+        <location filename="../views/environment_dock.cpp" line="333"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="345"/>
+        <location filename="../views/environment_dock.cpp" line="352"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="398"/>
+        <location filename="../views/environment_dock.cpp" line="405"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="645"/>
-        <location filename="../views/environment_dock.cpp" line="702"/>
+        <location filename="../views/environment_dock.cpp" line="652"/>
+        <location filename="../views/environment_dock.cpp" line="709"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="659"/>
+        <location filename="../views/environment_dock.cpp" line="666"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="659"/>
+        <location filename="../views/environment_dock.cpp" line="666"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
@@ -273,22 +273,22 @@
 <context>
     <name>unreal::EnvironmentListDialog</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="27"/>
+        <location filename="../views/environment_dock.cpp" line="28"/>
         <source>Environment Resource</source>
         <translation>环境资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="33"/>
+        <location filename="../views/environment_dock.cpp" line="34"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="37"/>
+        <location filename="../views/environment_dock.cpp" line="38"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="41"/>
+        <location filename="../views/environment_dock.cpp" line="42"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
@@ -297,38 +297,38 @@
         <translation type="vanished">加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="114"/>
+        <location filename="../views/environment_dock.cpp" line="115"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="114"/>
+        <location filename="../views/environment_dock.cpp" line="115"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="119"/>
         <location filename="../views/environment_dock.cpp" line="120"/>
+        <location filename="../views/environment_dock.cpp" line="121"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="119"/>
+        <location filename="../views/environment_dock.cpp" line="120"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="210"/>
+        <location filename="../views/environment_dock.cpp" line="211"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation>确定要删除此图像吗?</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="210"/>
+        <location filename="../views/environment_dock.cpp" line="211"/>
         <source>Info</source>
         <translation type="unfinished">提示</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="224"/>
+        <location filename="../views/environment_dock.cpp" line="225"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
@@ -852,46 +852,46 @@ $20 (Original cost $40)</source>
         <translation type="vanished">导入</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="141"/>
+        <location filename="../views/model_dock.cpp" line="135"/>
         <source>Info</source>
         <translation>信息</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="141"/>
+        <location filename="../views/model_dock.cpp" line="135"/>
         <source>Are you sure you want to delete this model?</source>
         <translation>确定要删除此模型吗?</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="157"/>
+        <location filename="../views/model_dock.cpp" line="151"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="164"/>
+        <location filename="../views/model_dock.cpp" line="158"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="164"/>
+        <location filename="../views/model_dock.cpp" line="158"/>
         <source>PMX Files (*.pmx)</source>
         <translation>PMX 文件 (*.pmx)</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="169"/>
-        <location filename="../views/model_dock.cpp" line="170"/>
-        <location filename="../views/model_dock.cpp" line="213"/>
-        <location filename="../views/model_dock.cpp" line="214"/>
+        <location filename="../views/model_dock.cpp" line="163"/>
+        <location filename="../views/model_dock.cpp" line="164"/>
+        <location filename="../views/model_dock.cpp" line="207"/>
+        <location filename="../views/model_dock.cpp" line="208"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="169"/>
-        <location filename="../views/model_dock.cpp" line="213"/>
+        <location filename="../views/model_dock.cpp" line="163"/>
+        <location filename="../views/model_dock.cpp" line="207"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/model_dock.cpp" line="216"/>
+        <location filename="../views/model_dock.cpp" line="210"/>
         <source>Unknown-name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -967,7 +967,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="133"/>
         <source>Frame Per Second</source>
-        <translation>帧率(fps)</translation>
+        <translation>帧率</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="137"/>
@@ -1482,8 +1482,8 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="115"/>
         <location filename="../views/toplevel_bar.cpp" line="117"/>
-        <location filename="../views/toplevel_bar.cpp" line="625"/>
-        <location filename="../views/toplevel_bar.cpp" line="676"/>
+        <location filename="../views/toplevel_bar.cpp" line="619"/>
+        <location filename="../views/toplevel_bar.cpp" line="670"/>
         <source>Volume</source>
         <translation>音量</translation>
     </message>
@@ -1493,32 +1493,32 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="582"/>
-        <location filename="../views/toplevel_bar.cpp" line="608"/>
-        <location filename="../views/toplevel_bar.cpp" line="654"/>
+        <location filename="../views/toplevel_bar.cpp" line="576"/>
+        <location filename="../views/toplevel_bar.cpp" line="602"/>
+        <location filename="../views/toplevel_bar.cpp" line="648"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="582"/>
-        <location filename="../views/toplevel_bar.cpp" line="608"/>
-        <location filename="../views/toplevel_bar.cpp" line="654"/>
+        <location filename="../views/toplevel_bar.cpp" line="576"/>
+        <location filename="../views/toplevel_bar.cpp" line="602"/>
+        <location filename="../views/toplevel_bar.cpp" line="648"/>
         <source>Please load a project with pmm extension.</source>
         <translation>请加载后缀为.pmm的文件.</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="267"/>
-        <location filename="../views/toplevel_bar.cpp" line="311"/>
-        <location filename="../views/toplevel_bar.cpp" line="340"/>
-        <location filename="../views/toplevel_bar.cpp" line="384"/>
-        <location filename="../views/toplevel_bar.cpp" line="420"/>
-        <location filename="../views/toplevel_bar.cpp" line="447"/>
-        <location filename="../views/toplevel_bar.cpp" line="473"/>
-        <location filename="../views/toplevel_bar.cpp" line="502"/>
-        <location filename="../views/toplevel_bar.cpp" line="535"/>
-        <location filename="../views/toplevel_bar.cpp" line="562"/>
-        <location filename="../views/toplevel_bar.cpp" line="588"/>
-        <location filename="../views/toplevel_bar.cpp" line="614"/>
+        <location filename="../views/toplevel_bar.cpp" line="261"/>
+        <location filename="../views/toplevel_bar.cpp" line="305"/>
+        <location filename="../views/toplevel_bar.cpp" line="334"/>
+        <location filename="../views/toplevel_bar.cpp" line="378"/>
+        <location filename="../views/toplevel_bar.cpp" line="414"/>
+        <location filename="../views/toplevel_bar.cpp" line="441"/>
+        <location filename="../views/toplevel_bar.cpp" line="467"/>
+        <location filename="../views/toplevel_bar.cpp" line="496"/>
+        <location filename="../views/toplevel_bar.cpp" line="529"/>
+        <location filename="../views/toplevel_bar.cpp" line="556"/>
+        <location filename="../views/toplevel_bar.cpp" line="582"/>
+        <location filename="../views/toplevel_bar.cpp" line="608"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -1529,8 +1529,8 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="38"/>
-        <location filename="../views/toplevel_bar.cpp" line="245"/>
-        <location filename="../views/toplevel_bar.cpp" line="399"/>
+        <location filename="../views/toplevel_bar.cpp" line="239"/>
+        <location filename="../views/toplevel_bar.cpp" line="393"/>
         <source>Open Project</source>
         <translation>打开项目</translation>
     </message>
@@ -1546,7 +1546,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="46"/>
-        <location filename="../views/toplevel_bar.cpp" line="365"/>
+        <location filename="../views/toplevel_bar.cpp" line="359"/>
         <source>Save Project</source>
         <translation>保存项目</translation>
     </message>
@@ -1611,103 +1611,103 @@ $20 (Original cost $40)</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="234"/>
-        <location filename="../views/toplevel_bar.cpp" line="489"/>
+        <location filename="../views/toplevel_bar.cpp" line="228"/>
+        <location filename="../views/toplevel_bar.cpp" line="483"/>
         <source>Info</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="234"/>
-        <location filename="../views/toplevel_bar.cpp" line="489"/>
+        <location filename="../views/toplevel_bar.cpp" line="228"/>
+        <location filename="../views/toplevel_bar.cpp" line="483"/>
         <source>Do you want to discard your local changes?</source>
         <translation>是否要丢弃当前的场景?</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="252"/>
+        <location filename="../views/toplevel_bar.cpp" line="246"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="252"/>
-        <location filename="../views/toplevel_bar.cpp" line="277"/>
-        <location filename="../views/toplevel_bar.cpp" line="364"/>
+        <location filename="../views/toplevel_bar.cpp" line="246"/>
+        <location filename="../views/toplevel_bar.cpp" line="271"/>
+        <location filename="../views/toplevel_bar.cpp" line="358"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="253"/>
+        <location filename="../views/toplevel_bar.cpp" line="247"/>
         <source>Open Project...</source>
         <translation>打开项目</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="267"/>
+        <location filename="../views/toplevel_bar.cpp" line="261"/>
         <source>Can&apos;t find manifest.json in %1</source>
         <translation>无法在%1目录中找到manifest.json文件</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="277"/>
+        <location filename="../views/toplevel_bar.cpp" line="271"/>
         <source>Opening</source>
         <translation>打开中</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="278"/>
+        <location filename="../views/toplevel_bar.cpp" line="272"/>
         <source>Open Progress</source>
         <translation>打开进度</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="311"/>
+        <location filename="../views/toplevel_bar.cpp" line="305"/>
         <source>Failed to open project: </source>
         <translation>打开项目失败： </translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="327"/>
+        <location filename="../views/toplevel_bar.cpp" line="321"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="327"/>
+        <location filename="../views/toplevel_bar.cpp" line="321"/>
         <source>All Files(*.pmm *.pmx *.abc *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="340"/>
+        <location filename="../views/toplevel_bar.cpp" line="334"/>
         <source>Failed to import resource: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="358"/>
+        <location filename="../views/toplevel_bar.cpp" line="352"/>
         <source>New Project</source>
         <translation>New Project</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="364"/>
+        <location filename="../views/toplevel_bar.cpp" line="358"/>
         <source>Save...</source>
         <translation>保存中...</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="399"/>
+        <location filename="../views/toplevel_bar.cpp" line="393"/>
         <source>All Files(*.wav *.mp3 *.flac *.ogg);; Wav Files (*.wav);; MP3 Files (*.mp3);; FLAC Files (*.flac);; OGG Files (*.ogg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="435"/>
+        <location filename="../views/toplevel_bar.cpp" line="429"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="435"/>
+        <location filename="../views/toplevel_bar.cpp" line="429"/>
         <source>PNG Files (*.png)</source>
         <translation>PNG图像文件 (*.png)</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="527"/>
+        <location filename="../views/toplevel_bar.cpp" line="521"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="88"/>
-        <location filename="../views/toplevel_bar.cpp" line="520"/>
-        <location filename="../views/toplevel_bar.cpp" line="554"/>
+        <location filename="../views/toplevel_bar.cpp" line="514"/>
+        <location filename="../views/toplevel_bar.cpp" line="548"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
@@ -1722,8 +1722,8 @@ $20 (Original cost $40)</source>
         <translation>加载资源文件(.pmm, .pmx, .wav)</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="632"/>
-        <location filename="../views/toplevel_bar.cpp" line="670"/>
+        <location filename="../views/toplevel_bar.cpp" line="626"/>
+        <location filename="../views/toplevel_bar.cpp" line="664"/>
         <source>VolumeOff</source>
         <translation>音量关闭</translation>
     </message>
