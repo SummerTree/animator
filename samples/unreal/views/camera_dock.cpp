@@ -27,7 +27,7 @@ namespace unreal
 		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
-		headerLine->setObjectName("HSeparator");
+		headerLine->setObjectName("HLine");
 		headerLine->setFixedHeight(1);
 		headerLine->setFrameShape(QFrame::NoFrame);
 		headerLine->setFrameShadow(QFrame::Plain);
@@ -74,10 +74,10 @@ namespace unreal
 		
 		focusDistanceName_ = new QLabel();
 		focusDistanceName_->setText(tr("Target: Empty"));
-
+		
 		focusTargetButton_ = new DraggableButton();
 		focusTargetButton_->setIcon(QIcon(":res/icons/target.png"));
-		focusTargetButton_->setIconSize(QSize(48, 48));
+		focusTargetButton_->setIconSize(QSize(38, 38));
 		focusTargetButton_->setToolTip(tr("Drag and drop this icon onto the target model to enable autofocus"));
 		focusTargetButton_->installEventFilter(this);
 

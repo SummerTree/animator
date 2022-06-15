@@ -128,6 +128,7 @@ namespace unreal
 
 			if (this->texture_ != texture)
 			{
+				this->texture_ = texture;
 				this->radianceTexture_ = texture ? octoon::PMREMLoader::load(this->texture_) : nullptr;
 
 				auto& environmentLight = model->environmentLight.getValue();

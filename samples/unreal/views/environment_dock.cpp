@@ -245,8 +245,7 @@ namespace unreal
 		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
-		headerLine->setObjectName("HSeparator");
-		headerLine->setFixedHeight(1);
+		headerLine->setObjectName("HLine");
 		headerLine->setFrameShape(QFrame::NoFrame);
 		headerLine->setFrameShadow(QFrame::Plain);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);

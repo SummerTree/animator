@@ -40,17 +40,16 @@ namespace octoon
 	}
 
 	GameObjects
-	OBJLoader::load(std::string_view filepath) noexcept(false)
+	OBJLoader::load(std::istream& stream) noexcept(false)
 	{
 		GameObjects objects;
 
 		tinyobj::attrib_t attrib;
 		std::vector<tinyobj::shape_t> shapes;
 		std::vector<tinyobj::material_t> materials;
-		std::string warn;
 		std::string err;
 
-		bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, err.c_str(), std::string(filepath).c_str());
+		bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, &stream);
 		if (ret)
 		{
 			auto defaultMaterial = std::make_shared<MeshStandardMaterial>();
@@ -108,7 +107,7 @@ namespace octoon
 			for (auto& shape : shapes)
 			{
 				std::size_t index_offset = 0;
-				std::set<std::tuple<int,int,int>> vertexSet;
+				std::set<std::tuple<int, int, int>> vertexSet;
 
 				for (std::size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++)
 				{
@@ -200,6 +199,18 @@ namespace octoon
 				objects.emplace_back(std::move(object));
 			}
 		}
+
+		return objects;
+	}
+
+	GameObjects
+	OBJLoader::load(const std::filesystem::path& filepath) noexcept(false)
+	{
+		GameObjects objects;
+
+		std::ifstream stream(filepath);
+		if (stream)
+			return load(stream);
 
 		return objects;
 	}

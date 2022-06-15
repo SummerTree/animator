@@ -1,17 +1,9 @@
 <RCC>
     <qresource prefix="/">
-    	<file>res/qml/main.qml</file>
-    	<file>res/qml/MainView.qml</file>
-    	<file>res/qml/Splash.qml</file>
-    	<file>res/qml/images/splash.png</file>
-    	<file>res/qml/images/logo.png</file>
-	    <file>res/qml/images/maximize.png</file>
-		<file>res/qml/images/minimize.png</file>
-		<file>res/qml/images/setting.png</file>
-		<file>res/qml/images/close.png</file>
 	    <file>res/icons/maximize.png</file>
 		<file>res/icons/minimize.png</file>
 		<file>res/icons/close.png</file>
+		<file>res/icons/folderPlus.png</file>
 		<file>res/icons/camera.png</file>
 		<file>res/icons/model.png</file>
 		<file>res/icons/close2.png</file>
@@ -37,6 +29,7 @@
 		<file>res/icons/gpu-on.png</file>
 		<file>res/icons/hdr.png</file>
 		<file>res/icons/hdr-on.png</file>
+		<file>res/icons/brush.png</file>
 		<file>res/icons/shot.png</file>
 		<file>res/icons/save.png</file>
 		<file>res/icons/logo.png</file>
@@ -48,15 +41,11 @@
 		<file>res/icons/left.png</file>
 		<file>res/icons/right.png</file>
 		<file>res/icons/volume.png</file>
-		<file>res/icons/vip.png</file>
-		<file>res/icons/vip-on.png</file>
 		<file>res/icons/sun.png</file>
-		<file>res/icons/sun-on.png</file>
 		<file>res/icons/user.png</file>
 		<file>res/icons/pass.png</file>
 		<file>res/icons/eye.png</file>
 		<file>res/icons/environment.png</file>
-		<file>res/icons/environment-on.png</file>
 		<file>res/icons/handle.png</file>
 		<file>res/icons/material.png</file>
 		<file>res/icons/back.png</file>

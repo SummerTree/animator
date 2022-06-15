@@ -1,11 +1,11 @@
 QWidget{
 	background: rgb(250,250,250);
 }
-QFrame#Separator{
+QFrame#VLine{
 	color: rgb(220, 220, 220);
 	background-color: transparent;
 }
-QFrame#HSeparator{
+QFrame#HLine{
 	color: rgb(220, 220, 220);
 	background-color: rgb(230, 230, 230);
 }
@@ -28,6 +28,9 @@ QToolButton:checked{
 QToolButton:hover{
 	background-color: rgb(230,230,230);
 	border:none;
+}
+QToolButton#folderPlus{
+	qproperty-icon: url(":res/icons/folderPlus.png");
 }
 QToolButton#back{
 	qproperty-icon: url(":res/icons/back.png");
@@ -115,6 +118,9 @@ QToolButton#volumeMiddle{
 }
 QToolButton#volumeCross{
 	qproperty-icon: url(":res/icons/volumeCross.png");
+}
+QToolButton#brush{
+	qproperty-icon: url(":res/icons/brush.png");
 }
 QTabWidget{
 	color:rgb(48,48,50);

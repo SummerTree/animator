@@ -33,7 +33,7 @@ namespace unreal
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 		openButton_ = new QToolButton;
-		openButton_->setObjectName("import");
+		openButton_->setObjectName("folderPlus");
 		openButton_->setText(tr("Open"));
 		openButton_->setToolTip(tr("Open Project"));
 		openButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -126,21 +126,24 @@ namespace unreal
 		volumeSlider_->setValue(100);
 
 		auto splitLine = new QFrame;
-		splitLine->setObjectName("Separator");
+		splitLine->setObjectName("VLine");
+		splitLine->setLineWidth(1);
 		splitLine->setFrameShape(QFrame::VLine);
 		splitLine->setFrameShadow(QFrame::Plain);
 		splitLine->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
 		splitLine->setContentsMargins(0, 8, 0, 8);
 
 		auto splitLine2 = new QFrame;
-		splitLine2->setObjectName("Separator");
+		splitLine2->setObjectName("VLine");
+		splitLine2->setLineWidth(1);
 		splitLine2->setFrameShape(QFrame::VLine);
 		splitLine2->setFrameShadow(QFrame::Plain);
 		splitLine2->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
 		splitLine2->setContentsMargins(0, 8, 0, 8);
 		
 		auto splitLine3 = new QFrame;
-		splitLine3->setObjectName("Separator");
+		splitLine3->setObjectName("VLine");
+		splitLine3->setLineWidth(1);
 		splitLine3->setFrameShape(QFrame::VLine);
 		splitLine3->setFrameShadow(QFrame::Plain);
 		splitLine3->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
@@ -570,10 +573,6 @@ namespace unreal
 					if (player)
 						player->sample(-1.0f);
 				}
-				else
-				{
-					QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
-				}
 			}
 		}
 		catch (const std::exception& e)
@@ -595,10 +594,6 @@ namespace unreal
 					auto player = dynamic_cast<PlayerComponent*>(behaviour->getComponent<PlayerComponent>());
 					if (player)
 						player->sample(1.0f);
-				}
-				else
-				{
-					QMessageBox::warning(this, tr("Warning"), tr("Please load a project with pmm extension."));
 				}
 			}
 		}
@@ -628,32 +623,10 @@ namespace unreal
 	}
 	
 	void
-	ToplevelBar::sliderEvent(int value)
-	{
-		if (behaviour_ && !profile_->playerModule->isPlaying)
-		{
-			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-			if (behaviour->isOpen())
-			{
-				auto player = behaviour->getComponent<PlayerComponent>();
-				if (player != nullptr)
-				{
-					auto& model = player->getModel();
-					player->sample(value - model->curTime);
-				}
-			}
-			else
-			{
-				QMessageBox::information(this, tr("Warning"), tr("Please load a project with pmm extension."));
-			}
-		}
-	}
-
-	void
 	ToplevelBar::volumeSliderEvent(int value)
 	{
 		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-		if (behaviour->isOpen())
+		if (behaviour)
 		{
 			this->profile_->soundModule->volume = value / 100.0f;
 

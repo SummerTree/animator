@@ -40,7 +40,6 @@ namespace unreal
 		void leftEvent() noexcept;
 		void rightEvent() noexcept;
 		void volumeEvent() noexcept;
-		void sliderEvent(int value);
 		void volumeSliderEvent(int value);
 
 	public:
