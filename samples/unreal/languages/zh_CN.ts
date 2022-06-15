@@ -1048,10 +1048,6 @@ $20 (Original cost $40)</source>
         <translation>开始渲染</translation>
     </message>
     <message>
-        <source>Watermark</source>
-        <translation type="vanished">水印</translation>
-    </message>
-    <message>
         <location filename="../views/record_dock.cpp" line="230"/>
         <source>Render Settings</source>
         <translation>渲染设置</translation>
@@ -1089,7 +1085,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="503"/>
         <source>PNG Files (*.png)</source>
-        <translation type="unfinished">PNG图像文件 (*.png)</translation>
+        <translation>PNG图像文件 (*.png)</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="335"/>
@@ -1101,27 +1097,27 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/record_dock.cpp" line="16"/>
         <source>Video</source>
-        <translation type="unfinished">视频</translation>
+        <translation>视频</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="25"/>
         <source>Video Editor</source>
-        <translation type="unfinished">视频编辑</translation>
+        <translation>视频编辑</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="36"/>
         <source>Resolution</source>
-        <translation type="unfinished">分辨率</translation>
+        <translation>分辨率</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="61"/>
         <source>Realtime Render</source>
-        <translation type="unfinished">实时渲染</translation>
+        <translation>实时渲染</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="121"/>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>图片序列</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="510"/>
@@ -1139,7 +1135,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/login_window.cpp" line="256"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../views/login_window.cpp" line="265"/>
