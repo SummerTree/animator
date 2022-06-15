@@ -718,6 +718,11 @@ QWidget#RecordDock QLineEdit{
 }
 QWidget#RecordWidget QSpinBox {
 	min-width: 60px;
+	max-width: 80px;
+}
+QWidget#RecordWidget QDoubleSpinBox {
+	min-width: 60px;
+	max-width: 80px;
 }
 QWidget#RecordDock QRadioButton{
 	color:rgb(200,200,200);
