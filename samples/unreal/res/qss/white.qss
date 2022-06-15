@@ -448,8 +448,6 @@ QWidget#AssetBrowseWidget > QToolButton{
 	min-height:80px;
 	max-height:80px;
 	border:0px;
-	background-color:rgb(255,255,255);
-	border-top-right-radius:10px;
 	font-size:16px;
 	font-family: "Microsoft YaHei";
 	font-weight: DemiBold;
