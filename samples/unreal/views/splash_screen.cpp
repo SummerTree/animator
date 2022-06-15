@@ -17,7 +17,6 @@ namespace unreal
 
 		widget = new QWidget(this);
 		widget->setObjectName("text");
-		widget->setFixedSize(300, 100);
 
 		englishName = new QLabel(widget);
 		englishName->setObjectName("title");

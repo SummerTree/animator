@@ -597,17 +597,17 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialAssetPanel</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="2021"/>
+        <location filename="../views/material_dock.cpp" line="2022"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2021"/>
+        <location filename="../views/material_dock.cpp" line="2022"/>
         <source>Are you sure you want to delete this material?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2037"/>
+        <location filename="../views/material_dock.cpp" line="2038"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -615,49 +615,49 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialDock</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="2046"/>
-        <location filename="../views/material_dock.cpp" line="2204"/>
+        <location filename="../views/material_dock.cpp" line="2047"/>
+        <location filename="../views/material_dock.cpp" line="2208"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2057"/>
+        <location filename="../views/material_dock.cpp" line="2058"/>
         <source>Material Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2091"/>
+        <location filename="../views/material_dock.cpp" line="2092"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2092"/>
+        <location filename="../views/material_dock.cpp" line="2093"/>
         <source>Scene</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2219"/>
+        <location filename="../views/material_dock.cpp" line="2223"/>
         <source>Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2242"/>
+        <location filename="../views/material_dock.cpp" line="2246"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2242"/>
+        <location filename="../views/material_dock.cpp" line="2246"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2247"/>
-        <location filename="../views/material_dock.cpp" line="2248"/>
+        <location filename="../views/material_dock.cpp" line="2251"/>
+        <location filename="../views/material_dock.cpp" line="2252"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2247"/>
+        <location filename="../views/material_dock.cpp" line="2251"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1242,22 +1242,22 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::SplashScreen</name>
     <message>
-        <location filename="../views/splash_screen.cpp" line="24"/>
+        <location filename="../views/splash_screen.cpp" line="23"/>
         <source>AnimatorGo Lite 2022</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="29"/>
+        <location filename="../views/splash_screen.cpp" line="28"/>
         <source>2022 AnimatorGo-Softwares (R). All Rights Reserved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="45"/>
+        <location filename="../views/splash_screen.cpp" line="44"/>
         <source>Version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="50"/>
+        <location filename="../views/splash_screen.cpp" line="49"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>

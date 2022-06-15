@@ -1753,6 +1753,7 @@ namespace unreal
 		, profile_(profile)
 	{
 		mainWidget_ = new DraggableListWindow;
+		mainWidget_->setIconSize(QSize(100, 100));
 		mainWidget_->setStyleSheet("background:transparent;");
 		mainWidget_->setSpacing(5);
 
@@ -2133,7 +2134,10 @@ namespace unreal
 					dirty |= octoon::MaterialImporter::instance()->addMaterial(mat);
 
 				if (dirty)
+				{
+					materialList_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
 					materialList_->updateItemList();
+				}
 
 				if (hit.mesh < materials.size())
 				{

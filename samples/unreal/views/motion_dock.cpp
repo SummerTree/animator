@@ -51,7 +51,7 @@ namespace unreal
 		bottomLayout_->setContentsMargins(0, 5, 15, 0);
 
 		listWidget_ = new DraggableListWindow;
-		listWidget_->setFixedWidth(360);
+		listWidget_->setFixedWidth(this->width());
 		listWidget_->setSelectionMode(QListWidget::NoSelection);
 		listWidget_->setIconSize(QSize(100, 100));
 		listWidget_->setStyleSheet("background:transparent;");
