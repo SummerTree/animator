@@ -36,25 +36,25 @@ namespace unreal
 		videoRatio_->setText(tr("Ratio"));
 
 		ratio1_ = new QPushButton();
-		ratio1_->setObjectName("ratio");
+		ratio1_->setObjectName("Ratio");
 		ratio1_->setText(tr("16:9"));
 		ratio1_->setCheckable(true);
 		ratio1_->installEventFilter(this);
 		
 		ratio2_ = new QPushButton();
-		ratio2_->setObjectName("ratio");
+		ratio2_->setObjectName("Ratio");
 		ratio2_->setText(tr("9:16"));
 		ratio2_->setCheckable(true);
 		ratio2_->installEventFilter(this);
 
 		ratio3_ = new QPushButton();
-		ratio3_->setObjectName("ratio");
+		ratio3_->setObjectName("Ratio");
 		ratio3_->setText(tr("4:3"));
 		ratio3_->setCheckable(true);
 		ratio3_->installEventFilter(this);
 
 		ratio4_ = new QPushButton();
-		ratio4_->setObjectName("ratio");
+		ratio4_->setObjectName("Ratio");
 		ratio4_->setText(tr("3:4"));
 		ratio4_->setCheckable(true);
 		ratio4_->installEventFilter(this);
@@ -78,26 +78,22 @@ namespace unreal
 		resolutionLabel->setText(tr("Resolution"));
 
 		resolution1_ = new QPushButton();
-		resolution1_->setObjectName("ratio");
-		resolution1_->setText(tr("16:9"));
+		resolution1_->setObjectName("Resolution");
 		resolution1_->setCheckable(true);
 		resolution1_->installEventFilter(this);
 
 		resolution2_ = new QPushButton();
-		resolution2_->setObjectName("ratio");
-		resolution2_->setText(tr("9:16"));
+		resolution2_->setObjectName("Resolution");
 		resolution2_->setCheckable(true);
 		resolution2_->installEventFilter(this);
 
 		resolution3_ = new QPushButton();
-		resolution3_->setObjectName("ratio");
-		resolution3_->setText(tr("4:3"));
+		resolution3_->setObjectName("Resolution");
 		resolution3_->setCheckable(true);
 		resolution3_->installEventFilter(this);
 
 		resolution4_ = new QPushButton();
-		resolution4_->setObjectName("ratio");
-		resolution4_->setText(tr("3:4"));
+		resolution4_->setObjectName("Resolution");
 		resolution4_->setCheckable(true);
 		resolution4_->installEventFilter(this);
 
@@ -127,36 +123,36 @@ namespace unreal
 		selectGroup_->addButton(select1_, 0);
 		selectGroup_->addButton(select2_, 1);
 
-		auto selectLayout_ = new QHBoxLayout();
-		selectLayout_->addWidget(select1_, 0, Qt::AlignRight);
-		selectLayout_->addWidget(select2_, 0, Qt::AlignLeft);
-		selectLayout_->setSpacing(0);
-		selectLayout_->setContentsMargins(0, 0, 0, 0);
+		auto qualityLayout_ = new QHBoxLayout();
+		qualityLayout_->addWidget(select1_, 0, Qt::AlignRight);
+		qualityLayout_->addWidget(select2_, 0, Qt::AlignLeft);
+		qualityLayout_->setSpacing(0);
+		qualityLayout_->setContentsMargins(0, 0, 0, 0);
 
 		videoFps_ = new QLabel();
 		videoFps_->setText(tr("Frame Per Second"));
 
 		speed1_ = new QPushButton();
-		speed1_->setObjectName("speed1");
+		speed1_->setObjectName("Speed");
 		speed1_->setText(tr("24"));
 		speed1_->setCheckable(true);
 		speed1_->installEventFilter(this);
 
 		speed2_ = new QPushButton();
-		speed2_->setObjectName("speed2");
+		speed2_->setObjectName("Speed");
 		speed2_->setText(tr("25"));
 		speed2_->setCheckable(true);
 		speed2_->installEventFilter(this);
 		
 		speed3_ = new QPushButton();
-		speed3_->setObjectName("speed3");
+		speed3_->setObjectName("Speed");
 		speed3_->setText(tr("30"));
 		speed3_->setCheckable(true);
 		speed3_->click();
 		speed3_->installEventFilter(this);
 
 		speed4_ = new QPushButton();
-		speed4_->setObjectName("speed4");
+		speed4_->setObjectName("Speed");
 		speed4_->setText(tr("60"));
 		speed4_->setCheckable(true);
 		speed4_->installEventFilter(this);
@@ -171,19 +167,19 @@ namespace unreal
 		encodeType_->setText(tr("Encode Type"));
 
 		mode1_ = new QPushButton();
-		mode1_->setObjectName("mode1");
+		mode1_->setObjectName("Mode");
 		mode1_->setText(tr("H264"));
 		mode1_->setCheckable(true);
 		mode1_->installEventFilter(this);
 
 		mode2_ = new QPushButton();
-		mode2_->setObjectName("mode2");
+		mode2_->setObjectName("Mode");
 		mode2_->setText(tr("H265"));
 		mode2_->setCheckable(true);
 		mode2_->installEventFilter(this);
 
 		mode3_ = new QPushButton();
-		mode3_->setObjectName("mode3");
+		mode3_->setObjectName("Mode");
 		mode3_->setText(tr("Images"));
 		mode3_->setCheckable(true);
 		mode3_->click();
@@ -262,7 +258,7 @@ namespace unreal
 		frameLayout_->addStretch();
 
 		recordButton_ = new QPushButton();
-		recordButton_->setObjectName("render");
+		recordButton_->setObjectName("Render");
 		recordButton_->setText(tr("Start Render"));
 		recordButton_->setContentsMargins(0, 0, 0, 0);
 		
@@ -276,11 +272,12 @@ namespace unreal
 		videoLayout->addWidget(resolution2_);
 		videoLayout->addWidget(resolution3_);
 		videoLayout->addWidget(resolution4_);
-		videoLayout->addWidget(quality_);
-		videoLayout->addLayout(selectLayout_);
 		videoLayout->addSpacing(10);
 		videoLayout->addWidget(videoFps_);
 		videoLayout->addLayout(videoFpsLayout_);
+		videoLayout->addSpacing(10);
+		videoLayout->addWidget(quality_);
+		videoLayout->addLayout(qualityLayout_);
 		videoLayout->addSpacing(10);
 		videoLayout->addWidget(encodeType_);
 		videoLayout->addLayout(encodeLayout_);
@@ -293,14 +290,10 @@ namespace unreal
 		videoLayout->addWidget(crfSpinbox);
 		videoLayout->setContentsMargins(20, 0, 20, 10);
 
-		videoSpoiler_ = new Spoiler(tr("Render Settings"));
-		videoSpoiler_->setContentLayout(*videoLayout);
-		videoSpoiler_->toggleButton.click();
-
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addWidget(title_);
 		mainLayout_->addWidget(headerLine);
-		mainLayout_->addWidget(videoSpoiler_);
+		mainLayout_->addLayout(videoLayout);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(recordButton_, 0, Qt::AlignCenter);
 		mainLayout_->setContentsMargins(10, 10, 10, 10);

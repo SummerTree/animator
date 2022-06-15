@@ -955,52 +955,52 @@ $20 (Original cost $40)</source>
         <translation type="vanished">录制</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="111"/>
+        <location filename="../views/record_dock.cpp" line="107"/>
         <source>Render Pipeline</source>
         <translation>渲染管线</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="115"/>
+        <location filename="../views/record_dock.cpp" line="111"/>
         <source>Ultra Render</source>
         <translation>光线追踪</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="137"/>
+        <location filename="../views/record_dock.cpp" line="133"/>
         <source>Frame Per Second</source>
         <translation>帧率(fps)</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="141"/>
+        <location filename="../views/record_dock.cpp" line="137"/>
         <source>24</source>
         <translation>24</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="147"/>
+        <location filename="../views/record_dock.cpp" line="143"/>
         <source>25</source>
         <translation>25</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="153"/>
+        <location filename="../views/record_dock.cpp" line="149"/>
         <source>30</source>
         <translation>30</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="160"/>
+        <location filename="../views/record_dock.cpp" line="156"/>
         <source>60</source>
         <translation>60</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="171"/>
+        <location filename="../views/record_dock.cpp" line="167"/>
         <source>Encode Type</source>
         <translation>编码器</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="181"/>
+        <location filename="../views/record_dock.cpp" line="177"/>
         <source>H265</source>
         <translation>H265</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="175"/>
+        <location filename="../views/record_dock.cpp" line="171"/>
         <source>H264</source>
         <translation>H264</translation>
     </message>
@@ -1011,115 +1011,110 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="40"/>
-        <location filename="../views/record_dock.cpp" line="82"/>
         <source>16:9</source>
         <translation type="unfinished">16:9</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="46"/>
-        <location filename="../views/record_dock.cpp" line="88"/>
         <source>9:16</source>
         <translation type="unfinished">9:16</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="52"/>
-        <location filename="../views/record_dock.cpp" line="94"/>
         <source>4:3</source>
         <translation type="unfinished">4:3</translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="58"/>
-        <location filename="../views/record_dock.cpp" line="100"/>
         <source>3:4</source>
         <translation type="unfinished">3:4</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="215"/>
+        <location filename="../views/record_dock.cpp" line="211"/>
         <source>Play:</source>
         <translation>播放：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="218"/>
+        <location filename="../views/record_dock.cpp" line="214"/>
         <source>Start</source>
         <translation>开始</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="221"/>
+        <location filename="../views/record_dock.cpp" line="217"/>
         <source>- End</source>
         <translation>- 结束</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="238"/>
+        <location filename="../views/record_dock.cpp" line="234"/>
         <source>Denoise:</source>
         <translation>开启降噪：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="250"/>
+        <location filename="../views/record_dock.cpp" line="246"/>
         <source>Recursion depth per pixel:</source>
         <translation>每像素光线弹射次数：</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="252"/>
+        <location filename="../views/record_dock.cpp" line="248"/>
         <source>Sample number per pixel:</source>
         <translation>每像素采样数:</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="254"/>
+        <location filename="../views/record_dock.cpp" line="250"/>
         <source>Constant Rate Factor (CRF):</source>
         <translation>固定码率系数(CRF):</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="266"/>
-        <location filename="../views/record_dock.cpp" line="457"/>
-        <location filename="../views/record_dock.cpp" line="468"/>
-        <location filename="../views/record_dock.cpp" line="749"/>
+        <location filename="../views/record_dock.cpp" line="262"/>
+        <location filename="../views/record_dock.cpp" line="450"/>
+        <location filename="../views/record_dock.cpp" line="461"/>
+        <location filename="../views/record_dock.cpp" line="742"/>
         <source>Start Render</source>
         <translation>开始渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="296"/>
         <source>Render Settings</source>
-        <translation>渲染设置</translation>
+        <translation type="vanished">渲染设置</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="710"/>
+        <location filename="../views/record_dock.cpp" line="703"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="710"/>
+        <location filename="../views/record_dock.cpp" line="703"/>
         <source>Start frame must be less than end frame.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="716"/>
+        <location filename="../views/record_dock.cpp" line="709"/>
         <source>Save Video</source>
         <translation>保存视频</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="716"/>
+        <location filename="../views/record_dock.cpp" line="709"/>
         <source>MP4 Files (*.mp4)</source>
         <translation>MP4 Files (*.mp4)</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="716"/>
+        <location filename="../views/record_dock.cpp" line="709"/>
         <source>New Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="718"/>
+        <location filename="../views/record_dock.cpp" line="711"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="718"/>
+        <location filename="../views/record_dock.cpp" line="711"/>
         <source>PNG Files (*.png)</source>
         <translation>PNG图像文件 (*.png)</translation>
     </message>
     <message>
+        <location filename="../views/record_dock.cpp" line="452"/>
         <location filename="../views/record_dock.cpp" line="459"/>
-        <location filename="../views/record_dock.cpp" line="466"/>
-        <location filename="../views/record_dock.cpp" line="747"/>
+        <location filename="../views/record_dock.cpp" line="740"/>
         <source>Stop Render</source>
         <translation>停止渲染</translation>
     </message>
@@ -1139,22 +1134,22 @@ $20 (Original cost $40)</source>
         <translation>分辨率</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="122"/>
+        <location filename="../views/record_dock.cpp" line="118"/>
         <source>Realtime Render</source>
         <translation>实时渲染</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="187"/>
+        <location filename="../views/record_dock.cpp" line="183"/>
         <source>Images</source>
         <translation>图片序列</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="725"/>
+        <location filename="../views/record_dock.cpp" line="718"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="725"/>
+        <location filename="../views/record_dock.cpp" line="718"/>
         <source>Failed to create file</source>
         <translation>创建文件失败</translation>
     </message>

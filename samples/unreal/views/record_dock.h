@@ -124,8 +124,6 @@ namespace unreal
 
 		QWidget* mainWidget_;
 
-		Spoiler* videoSpoiler_;
-
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<UnrealProfile> profile_;
 	};

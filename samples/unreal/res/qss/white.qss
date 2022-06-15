@@ -717,10 +717,15 @@ unreal--USpinBox::down-button{
 	height: 0px;
 	width: 0px;
 }
+QWidget#RecordDock QLineEdit{
+	max-width:60;
+	max-height:25;
+	border:1px solid #959595;
+}
 QWidget#RecordDock QRadioButton{
 	color:rgb(200,200,200);
 }
-QWidget#RecordDock QPushButton#render{
+QWidget#RecordDock QPushButton#Render{
 	width:240;
 	height:40;
 	color:rgb(48,48,50);
@@ -754,10 +759,7 @@ QWidget#RecordDock QPushButton#select2:checked{
 	color: rgb(255,255,255);
 	background:rgb(242,83,106);
 }
-QWidget#RecordDock QPushButton#speed1,
-QWidget#RecordDock QPushButton#speed2,
-QWidget#RecordDock QPushButton#speed3,
-QWidget#RecordDock QPushButton#speed4{
+QWidget#RecordDock QPushButton#Speed{
 	min-width:65;
 	min-height:25;
 	border:1px solid #a0a0a0;
@@ -766,17 +768,12 @@ QWidget#RecordDock QPushButton#speed4{
 	font-size:18px;
 	font-family: "Microsoft YaHei";
 }
-QWidget#RecordDock QPushButton#speed1:checked,
-QWidget#RecordDock QPushButton#speed2:checked,
-QWidget#RecordDock QPushButton#speed3:checked,
-QWidget#RecordDock QPushButton#speed4:checked{
+QWidget#RecordDock QPushButton#Speed:checked{
 	border:0px;
 	color: rgb(255,255,255);
 	background:rgb(242,83,106);
 }
-QWidget#RecordDock QPushButton#mode1,
-QWidget#RecordDock QPushButton#mode2,
-QWidget#RecordDock QPushButton#mode3{
+QWidget#RecordDock QPushButton#Mode{
 	min-width:90;
 	min-height:35;
 	border:1px solid #a0a0a0;
@@ -785,14 +782,12 @@ QWidget#RecordDock QPushButton#mode3{
 	font-size:16px;
 	font-family: "Microsoft YaHei";
 }
-QWidget#RecordDock QPushButton#mode1:checked,
-QWidget#RecordDock QPushButton#mode2:checked,
-QWidget#RecordDock QPushButton#mode3:checked{
+QWidget#RecordDock QPushButton#Mode:checked{
 	border:0px;
 	color: rgb(255,255,255);
 	background:rgb(242,83,106);
 }
-QWidget#RecordDock QPushButton#ratio{
+QWidget#RecordDock QPushButton#Ratio{
 	min-width:65;
 	min-height:25;
 	border:1px solid #a0a0a0;
@@ -801,13 +796,22 @@ QWidget#RecordDock QPushButton#ratio{
 	font-size:16px;
 	font-family: "Microsoft YaHei";
 }
-QWidget#RecordDock QPushButton#ratio:checked{
+QWidget#RecordDock QPushButton#Ratio:checked{
 	border:0px;
 	color: rgb(255,255,255);
 	background:rgb(242,83,106);
 }
-QWidget#RecordDock QLineEdit{
-	max-width:60;
-	max-height:25;
-	border:1px solid #959595;
+QWidget#RecordDock QPushButton#Resolution{
+	min-width:65;
+	min-height:25;
+	border:1px solid #a0a0a0;
+	border-radius:5px;
+	color: rgb(48,48,50);
+	font-size:16px;
+	font-family: "Microsoft YaHei";
+}
+QWidget#RecordDock QPushButton#Resolution:checked{
+	border:0px;
+	color: rgb(255,255,255);
+	background:rgb(242,83,106);
 }
