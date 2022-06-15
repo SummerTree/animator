@@ -1578,7 +1578,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="75"/>
         <source>Enable High Quality Rendering</source>
-        <translation>启用高质量渲染</translation>
+        <translation>开启全局光线追踪渲染器</translation>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="81"/>
