@@ -276,18 +276,18 @@ namespace unreal
 		videoLayout->addWidget(videoFps_);
 		videoLayout->addLayout(videoFpsLayout_);
 		videoLayout->addSpacing(10);
-		videoLayout->addWidget(quality_);
-		videoLayout->addLayout(qualityLayout_);
+		videoLayout->addWidget(frame_);
+		videoLayout->addLayout(frameLayout_);
 		videoLayout->addSpacing(10);
 		videoLayout->addWidget(encodeType_);
 		videoLayout->addLayout(encodeLayout_);
-		videoLayout->addSpacing(15);
-		videoLayout->addWidget(frame_);
-		videoLayout->addLayout(frameLayout_);
+		videoLayout->addWidget(crfSpinbox);
+		videoLayout->addSpacing(10);
+		videoLayout->addWidget(quality_);
+		videoLayout->addLayout(qualityLayout_);
 		videoLayout->addLayout(denoiseLayout_);
 		videoLayout->addWidget(sppSpinbox_);
 		videoLayout->addWidget(bouncesSpinbox_);
-		videoLayout->addWidget(crfSpinbox);
 		videoLayout->setContentsMargins(20, 0, 20, 10);
 
 		mainLayout_ = new QVBoxLayout();
