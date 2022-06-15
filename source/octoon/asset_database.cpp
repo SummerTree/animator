@@ -148,9 +148,9 @@ namespace octoon
 			auto texturePath2 = std::filesystem::path(rootPath).append(uuid2 + ".png");
 
 			Texture image(Format::R8G8B8SRGB, width, height, pixels.get());
-			image.resize(260, 130).save(texturePath2.string(), "png");
+			image.resize(260, 130).save(texturePath2, "png");
 
-			package["preview"] = texturePath2.string();
+			package["preview"] = (char*)texturePath2.u8string().c_str();
 		}
 
 		std::ofstream ifs(packagePath, std::ios_base::binary);
@@ -362,7 +362,7 @@ namespace octoon
 
 				if (std::filesystem::exists(texture.fullpath) && !std::filesystem::exists(texturePath))
 				{
-					auto textureRootPath = runtime::string::directory(texturePath.string());
+					auto textureRootPath = runtime::string::directory(texturePath);
 					std::filesystem::create_directories(textureRootPath);
 					std::filesystem::copy(texture.fullpath, texturePath);
 					std::filesystem::permissions(texturePath, std::filesystem::perms::owner_write);
@@ -524,7 +524,7 @@ namespace octoon
 			auto motion = VMDLoader::load(path);
 			if (motion)
 			{
-				assetPathList_[motion] = path.string();
+				assetPathList_[motion] = (char*)path.u8string().c_str();
 				assetGuidList_[motion] = make_guid();
 				return motion;
 			}
@@ -534,7 +534,7 @@ namespace octoon
 			auto texture = std::make_shared<Texture>(path);
 			if (texture)
 			{
-				assetPathList_[texture] = path.string();
+				assetPathList_[texture] = (char*)path.u8string().c_str();
 				assetGuidList_[texture] = make_guid();
 				return texture;
 			}
@@ -544,7 +544,7 @@ namespace octoon
 			auto model = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
 			if (model)
 			{
-				assetPathList_[model] = path.string();
+				assetPathList_[model] = (char*)path.u8string().c_str();
 				assetGuidList_[model] = make_guid();
 				return model;
 			}
@@ -555,7 +555,7 @@ namespace octoon
 			if (model)
 			{
 				model->addComponent<MeshAnimationComponent>(path);
-				assetPathList_[model] = path.string();
+				assetPathList_[model] = (char*)path.u8string().c_str();
 				assetGuidList_[model] = make_guid();
 				return model;
 			}
@@ -570,10 +570,10 @@ namespace octoon
 		auto ext = path.extension().string();
 		if (ext == ".pmx")
 		{
-			auto model = PMXLoader::load(path.string(), flags);
+			auto model = PMXLoader::load(path, flags);
 			if (model)
 			{
-				assetPathList_[model] = path.string();
+				assetPathList_[model] = (char*)path.u8string().c_str();
 				assetGuidList_[model] = make_guid();
 				return model;
 			}
@@ -584,7 +584,7 @@ namespace octoon
 			if (model)
 			{
 				model->addComponent<MeshAnimationComponent>(path.string());
-				assetPathList_[model] = path.string();
+				assetPathList_[model] = (char*)path.u8string().c_str();
 				assetGuidList_[model] = make_guid();
 
 				return model;

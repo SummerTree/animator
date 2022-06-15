@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "AnimatorGo"
-!define PRODUCT_VERSION "1.0.5alpha"
+!define PRODUCT_VERSION "1.0.6alpha"
 !define PRODUCT_PUBLISHER "AnimatorGo, Inc."
 !define PRODUCT_WEB_SITE "https://github.com/ray-cast"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\launcher.exe"

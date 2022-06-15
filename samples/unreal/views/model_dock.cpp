@@ -39,8 +39,9 @@ namespace unreal
 		
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("HSeparator");
-		headerLine->setFrameShape(QFrame::HLine);
-		headerLine->setFrameShadow(QFrame::Sunken);
+		headerLine->setFixedHeight(1);
+		headerLine->setFrameShape(QFrame::NoFrame);
+		headerLine->setFrameShadow(QFrame::Plain);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 		headerLine->setContentsMargins(0, 0, 0, 0);
 
