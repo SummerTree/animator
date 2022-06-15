@@ -14,9 +14,9 @@
 #include <QDialog>
 #include <qpropertyanimation.h>
 #include <qspinbox.h>
+#include <qcombobox.h>
 #include <QTranslator>
 
-#include "../widgets/ucombobox.h"
 #include "../widgets/upanel.h"
 #include "../widgets/upushbutton.h"
 
