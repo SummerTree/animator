@@ -1,6 +1,7 @@
 #include "color_dialog.h"
 #include <qevent.h>
 #include <qpainter.h>
+#include <qapplication.h>
 
 namespace unreal
 {
@@ -9,9 +10,13 @@ namespace unreal
 		, mousePress_(false)
 		, hueSelected_(false)
 		, boxSelected_(false)
-		, width_(0)
-		, height_(0)
-		, boxMargin_(52)
+		, hueWidth_(0)
+		, hueHeight_(0)
+		, hueCircleWidth_(0)
+		, hueCircleHeight_(0)
+		, rectangleWidth_(0)
+		, rectangleHeight_(0)
+		, boxMargin_(42)
 		, currentColor_(255, 255, 255)
 	{
 		this->setObjectName("ColorPlane");
@@ -33,14 +38,14 @@ namespace unreal
 		auto mouseX_ = ev->pos().x();
 		auto mouseY_ = ev->pos().y();
 
-		if (mouseX_ > boxMargin_ && mouseY_ > boxMargin_ && mouseX_ < width_ - boxMargin_ && mouseY_ < width_ - boxMargin_)
+		if (mouseX_ > boxMargin_ && mouseY_ > boxMargin_ && mouseX_ < this->width() - boxMargin_ && mouseY_ < this->height() - boxMargin_)
 		{
 			boxSelected_ = true;
 		}
 		else
 		{
-			float u = float(mouseX_) / width_ * 2.0f - 1.0f;
-			float v = float(mouseY_) / height_ * 2.0f - 1.0f;
+			float u = float(mouseX_) / this->width() * 2.0f - 1.0f;
+			float v = float(mouseY_) / this->height() * 2.0f - 1.0f;
 
 			float length = octoon::math::length(octoon::math::float2(u, v));
 			if (length <= 1.0f && length >= 0.85f)
@@ -68,8 +73,8 @@ namespace unreal
 				float s = mouseX_ - (int)boxMargin_;
 				float v = mouseY_ - (int)boxMargin_;
 
-				s /= (width_ - boxMargin_ * 2);
-				v /= (height_ - boxMargin_ * 2);
+				s /= (this->width() - boxMargin_ * 2);
+				v /= (this->height() - boxMargin_ * 2);
 				s = std::clamp(s, 0.0f, 1.0f);
 				v = std::clamp(v, 0.0f, 1.0f);
 
@@ -79,8 +84,8 @@ namespace unreal
 
 			if (hueSelected_)
 			{
-				float u = float(mouseX_) / width_ * 2.0f - 1.0f;
-				float v = float(mouseY_) / height_ * 2.0f - 1.0f;
+				float u = float(mouseX_) / this->width() * 2.0f - 1.0f;
+				float v = float(mouseY_) / this->height() * 2.0f - 1.0f;
 				float angle = atan2(u, v) / octoon::math::PI;
 
 				auto h = std::clamp(angle * 0.5f + 0.5f, 0.0f, 1.0f);
@@ -107,7 +112,7 @@ namespace unreal
 	void
 	ColorPlane::paintHue(std::uint32_t width, std::uint32_t height) noexcept
 	{
-		if (width_ != width || height_ != height)
+		if (hueWidth_ != width || hueHeight_ != height)
 		{
 			if (hueImage_.width() != width || hueImage_.height() != height)
 				hueImage_ = QImage(width, height, QImage::Format_RGBA8888);
@@ -152,15 +157,53 @@ namespace unreal
 				}
 			}
 
-			width_ = width;
-			height_ = height;
+			hueWidth_ = width;
+			hueHeight_ = height;
+		}
+	}
+
+	void
+	ColorPlane::paintHueSelector(std::uint32_t w, std::uint32_t h) noexcept
+	{
+		if (hueCircleWidth_ != w || hueCircleHeight_ != h)
+		{
+			if (hueSelectorImage_.width() != w || hueSelectorImage_.height() != h)
+				hueSelectorImage_ = QImage(w, h, QImage::Format_RGBA8888);
+
+			for (int y = 0; y < h; y++)
+			{
+				for (int x = 0; x < w; x++)
+				{
+					float u = float(x) / (w - 1) * 2.0f - 1.0f;
+					float v = float(y) / (h - 1) * 2.0f - 1.0f;
+
+					float length = octoon::math::length(octoon::math::float2(u, v));
+					if (length >= 0.97f)
+					{
+						auto smooth = octoon::math::smoothlerp(1.0f, 0.0f, (length - 0.97f) * 5.0f);
+						hueSelectorImage_.setPixelColor(x, y, QColor::fromRgbF(1.0f, 1.0f, 1.0f, smooth));
+					}
+					else if (length <= 0.84f)
+					{
+						auto smooth = octoon::math::smoothlerp(1.0f, 0.0f, (0.84f - length) * 5.0f);
+						hueSelectorImage_.setPixelColor(x, y, QColor::fromRgbF(1.0f, 1.0f, 1.0f, smooth));
+					}
+					else
+					{
+						hueSelectorImage_.setPixelColor(x, y, QColor::fromRgbF(1.0f, 1.0f, 1.0f));
+					}
+				}
+			}
+
+			hueCircleWidth_ = w;
+			hueCircleHeight_ = h;
 		}
 	}
 
 	void
 	ColorPlane::paintRectangle(std::uint32_t width, std::uint32_t height, float hue, float value) noexcept
 	{
-		if (widthRectangle_ != width || heightRectangle_ != height || hue_ != hue || value_ != value)
+		if (rectangleWidth_ != width || rectangleHeight_ != height || hue_ != hue || value_ != value)
 		{
 			if (colorImage_.width() != width || colorImage_.height() != height)
 				colorImage_ = QImage(width, height, QImage::Format_RGB888);
@@ -177,8 +220,8 @@ namespace unreal
 
 			hue_ = hue;
 			value_ = value;
-			widthRectangle_ = width;
-			heightRectangle_ = height;
+			rectangleWidth_ = width;
+			rectangleHeight_ = height;
 		}
 	}
 
@@ -186,70 +229,38 @@ namespace unreal
 	ColorPlane::paintEvent(QPaintEvent* event)
 	{
 		auto painter = QPainter(this);
+		auto dpi = QApplication::primaryScreen()->devicePixelRatio();
+
 		auto width = painter.window().width();
 		auto height = painter.window().height();
+		auto hueWidth = 18;
+		auto hueHeight = 18;
 
-		this->paintHue(width, height);
+		this->paintHue(width * dpi, height * dpi);
+		this->paintHueSelector(hueWidth * dpi, hueHeight * dpi);
 		this->paintRectangle(width - boxMargin_ * 2, height - boxMargin_ * 2, currentColor_.toHsv().hsvHueF(), currentColor_.toHsv().valueF());
-
-		painter.drawImage(0, 0, hueImage_);
-		painter.drawImage(boxMargin_, boxMargin_, colorImage_);
-
-		QPen pen;
-		pen.setColor(QColor(0, 0, 0));
-		painter.setPen(pen);
-
+		
 		auto hsv = currentColor_.toHsv();
 		auto s = hsv.hsvSaturationF();
 		auto value = 1.0f - hsv.valueF();
+		auto angle = 360.f - hsv.hsvHue();
+		auto angle_x = -90 + angle;
 
-		auto mouseX = boxMargin_ + s * (width - 104);
-		auto mouseY = boxMargin_ + value * (height - 104);
+		auto mouseHueX = (0.915f * std::cos(octoon::math::radians(angle_x)) * 0.5 + 0.5) * width - hueWidth / 2;
+		auto mouseHueY = (0.915f * -std::cos(octoon::math::radians(angle)) * 0.5 + 0.5) * height - hueHeight / 2;
+
+		painter.drawImage(QRect(0, 0, width, height), hueImage_);
+		painter.drawImage(QRect(mouseHueX, mouseHueY, hueWidth, hueHeight), hueSelectorImage_);
+		painter.drawImage(boxMargin_, boxMargin_, colorImage_);
+
+		auto mouseX = boxMargin_ + s * (width - 84);
+		auto mouseY = boxMargin_ + value * (height - 84);
 
 		for (int i = -5; i <= 5; i++)
 			painter.drawPoint(std::clamp<int>(mouseX + i, 0, width), mouseY);
 
 		for (int i = -5; i <= 5; i++)
 			painter.drawPoint(mouseX, std::clamp<int>(mouseY + i, 0, width));
-
-		auto angle = 360.f - hsv.hsvHue();
-		auto angle_x = -90 + angle;
-
-		auto hueWidth = 18;
-		auto hueHeight = 18;
-		auto mouseHueX = (0.915f * std::cos(octoon::math::radians(angle_x)) * 0.5 + 0.5) * width - hueWidth / 2;
-		auto mouseHueY = (0.915f * -std::cos(octoon::math::radians(angle)) * 0.5 + 0.5) * height - hueHeight / 2;
-
-		for (int y = 0; y < hueHeight; y++)
-		{
-			for (int x = 0; x < hueWidth; x++)
-			{
-				float u = float(x) / (hueWidth - 1) * 2.0f - 1.0f;
-				float v = float(y) / (hueHeight - 1) * 2.0f - 1.0f;
-
-				float length = octoon::math::length(octoon::math::float2(u, v));
-
-				if (length >= 0.97f)
-				{
-					auto smooth = octoon::math::smoothlerp(1.0f, 0.0f, (length - 0.97f) * 5.0f);
-					auto rgb = QColor::fromRgbF(1.0f, 1.0f, 1.0f, smooth);
-					pen.setColor(rgb);
-				}
-				else if (length <= 0.84f)
-				{
-					auto smooth = octoon::math::smoothlerp(1.0f, 0.0f, (0.84f - length) * 5.0f);
-					auto rgb = QColor::fromRgbF(1.0f, 1.0f, 1.0f, smooth);
-					pen.setColor(rgb);
-				}
-				else
-				{
-					pen.setColor(QColor::fromRgbF(1.0f, 1.0f, 1.0f));
-				}
-
-				painter.setPen(pen);
-				painter.drawPoint(mouseHueX + x, mouseHueY + y);
-			}
-		}
 
 		QLabel::paintEvent(event);
 	}
@@ -259,7 +270,7 @@ namespace unreal
 		this->setObjectName("ColorDialog");
 
 		label_ = std::make_unique<ColorPlane>();
-		label_->setMinimumSize(258, 258);
+		label_->setMinimumSize(200, 200);
 
 		labelH_ = std::make_unique<QLabel>();
 		labelH_->setText(tr("Hue"));
@@ -269,15 +280,15 @@ namespace unreal
 		labelV_->setText(tr("Value"));
 
 		editH_ = std::make_unique<QSpinBox>();
-		editH_->setFixedWidth(60);
+		editH_->setFixedWidth(48);
 		editH_->setMaximum(360);
 		editH_->setAlignment(Qt::AlignRight);
 		editS_ = std::make_unique<QSpinBox>();
-		editS_->setFixedWidth(60);
+		editS_->setFixedWidth(48);
 		editS_->setMaximum(255);
 		editS_->setAlignment(Qt::AlignRight);
 		editV_ = std::make_unique<QSpinBox>();
-		editV_->setFixedWidth(60);
+		editV_->setFixedWidth(48);
 		editV_->setMaximum(255);
 		editV_->setAlignment(Qt::AlignRight);
 
@@ -286,36 +297,36 @@ namespace unreal
 		sliderH_->setOrientation(Qt::Horizontal);
 		sliderH_->setMinimum(0);
 		sliderH_->setMaximum(360);
-		sliderH_->setFixedWidth(250);
+		sliderH_->setFixedWidth(200);
 
 		sliderS_ = std::make_unique<QSlider>();
 		sliderS_->setObjectName("S");
 		sliderS_->setOrientation(Qt::Horizontal);
 		sliderS_->setMinimum(0);
 		sliderS_->setMaximum(255);
-		sliderS_->setFixedWidth(250);
+		sliderS_->setFixedWidth(200);
 
 		sliderV_ = std::make_unique<QSlider>();
 		sliderV_->setObjectName("Value");
 		sliderV_->setOrientation(Qt::Horizontal);
 		sliderV_->setMinimum(0);
 		sliderV_->setMaximum(255);
-		sliderV_->setFixedWidth(250);
+		sliderV_->setFixedWidth(200);
 
 		layoutH_ = std::make_unique<QHBoxLayout>();
 		layoutH_->addWidget(labelH_.get(), 0, Qt::AlignLeft);
 		layoutH_->addWidget(editH_.get(), 0, Qt::AlignRight);
-		layoutH_->setContentsMargins(0, 5, 0, 0);
+		layoutH_->setContentsMargins(0, 4, 0, 0);
 
 		layoutS_ = std::make_unique<QHBoxLayout>();
 		layoutS_->addWidget(labelS_.get(), 0, Qt::AlignLeft);
 		layoutS_->addWidget(editS_.get(), 0, Qt::AlignRight);
-		layoutS_->setContentsMargins(0, 5, 0, 0);
+		layoutS_->setContentsMargins(0, 4, 0, 0);
 
 		layoutV_ = std::make_unique<QHBoxLayout>();
 		layoutV_->addWidget(labelV_.get(), 0, Qt::AlignLeft);
 		layoutV_->addWidget(editV_.get(), 0, Qt::AlignRight);
-		layoutV_->setContentsMargins(0, 5, 0, 0);
+		layoutV_->setContentsMargins(0, 4, 0, 0);
 
 		mainLayout_ = std::make_unique<QVBoxLayout>(this);
 		mainLayout_->addWidget(label_.get(), 0, Qt::AlignHCenter | Qt::AlignTop);

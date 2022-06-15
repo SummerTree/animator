@@ -117,35 +117,34 @@ namespace unreal
 		volumeButton_->setToolTip(tr("Volume"));
 		volumeButton_->installEventFilter(this);
 		volumeButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
+		
 		volumeSlider_ = new QSlider;
-		volumeSlider_->setObjectName("slider");
-		volumeSlider_->setToolTip(tr("Time"));
+		volumeSlider_->setObjectName("Slider");
+		volumeSlider_->setToolTip(tr("Volume"));
 		volumeSlider_->setOrientation(Qt::Horizontal);
 		volumeSlider_->setRange(0, 100);
 		volumeSlider_->setValue(100);
-		volumeSlider_->setFixedWidth(80);
 
 		auto splitLine = new QFrame;
 		splitLine->setObjectName("Separator");
 		splitLine->setFrameShape(QFrame::VLine);
 		splitLine->setFrameShadow(QFrame::Plain);
 		splitLine->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-		splitLine->setContentsMargins(0, 10, 0, 10);
+		splitLine->setContentsMargins(0, 8, 0, 8);
 
 		auto splitLine2 = new QFrame;
 		splitLine2->setObjectName("Separator");
 		splitLine2->setFrameShape(QFrame::VLine);
 		splitLine2->setFrameShadow(QFrame::Plain);
 		splitLine2->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-		splitLine2->setContentsMargins(0, 10, 0, 10);
+		splitLine2->setContentsMargins(0, 8, 0, 8);
 		
 		auto splitLine3 = new QFrame;
 		splitLine3->setObjectName("Separator");
 		splitLine3->setFrameShape(QFrame::VLine);
 		splitLine3->setFrameShadow(QFrame::Plain);
 		splitLine3->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-		splitLine3->setContentsMargins(0, 10, 0, 10);
+		splitLine3->setContentsMargins(0, 8, 0, 8);
 
 		layout_ = new QHBoxLayout;
 		layout_->setObjectName("ToplevelLayout");
@@ -165,7 +164,7 @@ namespace unreal
 		layout_->addWidget(splitLine3);
 		layout_->addWidget(audioButton_, 0, Qt::AlignCenter);
 		layout_->addWidget(volumeButton_, 0, Qt::AlignCenter);
-		layout_->addSpacing(5);
+		layout_->addSpacing(4);
 		layout_->addWidget(volumeSlider_);
 		layout_->addStretch();
 		layout_->setSpacing(0);

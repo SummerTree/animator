@@ -24,14 +24,14 @@ namespace unreal
 		auto title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Camera Editor"));
-		title_->setContentsMargins(0, 10, 0, 10);
+		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
-		headerLine->setObjectName("Separator");
+		headerLine->setObjectName("HSeparator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 10, 0, 10);
+		headerLine->setContentsMargins(0, 8, 0, 8);
 
 		fovSpinbox_ = UDoubleSpinLine::create(this, tr("fov:"), 1.0f, 120.0f, 1.0f, 60.0f);
 		fovSpinbox_->doublespinbox_->setSuffix(u8"бу");
@@ -41,7 +41,7 @@ namespace unreal
 		fovSlider->setMinimum(100.0f);
 		fovSlider->setMaximum(12000.0f);
 		fovSlider->setValue(100.f);
-		fovSlider->setMinimumWidth(270);
+		fovSlider->setMinimumWidth(215);
 		fovSlider->installEventFilter(this);
 
 		dofInfoLabel_ = new QLabel();
@@ -114,14 +114,14 @@ namespace unreal
 		topLayout_->addWidget(focusDistanceSpinbox_);
 		topLayout_->addLayout(focusTargetLayout);
 		topLayout_->addLayout(animtionLayout);
-		topLayout_->setContentsMargins(10, 0, 10, 0);
+		topLayout_->setContentsMargins(8, 0, 8, 0);
 
 		mainLayout_ = new QVBoxLayout;
 		mainLayout_->addWidget(title_);
 		mainLayout_->addWidget(headerLine);
 		mainLayout_->addLayout(topLayout_);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(10, 10, 10, 10);
+		mainLayout_->setContentsMargins(8, 8, 8, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("CameraWidget");

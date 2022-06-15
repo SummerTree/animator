@@ -26,7 +26,7 @@ namespace unreal
 	{
 		this->setObjectName("EnvironmentDialog");
 		this->setWindowTitle(tr("Environment Resource"));
-		this->setFixedSize(900, 600);
+		this->setFixedSize(720, 480);
 		this->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
 
 		okButton_ = new QToolButton;
@@ -44,31 +44,31 @@ namespace unreal
 		auto topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
 		topLayout_->addStretch();
-		topLayout_->setContentsMargins(15, 0, 0, 0);
+		topLayout_->setContentsMargins(12, 0, 0, 0);
 
 		auto bottomLayout_ = new QHBoxLayout();
 		bottomLayout_->addStretch();
 		bottomLayout_->addWidget(okButton_, 0, Qt::AlignRight);
 		bottomLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
 		bottomLayout_->setSpacing(2);
-		bottomLayout_->setContentsMargins(0, 5, 10, 0);
+		bottomLayout_->setContentsMargins(0, 4, 8, 0);
 
 		listWidget_ = new QListWidget;
-		listWidget_->setIconSize(QSize(200, 100));
+		listWidget_->setIconSize(QSize(160, 80));
 		listWidget_->setResizeMode(QListView::Fixed);
 		listWidget_->setViewMode(QListView::IconMode);
 		listWidget_->setMovement(QListView::Static);
 		listWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		listWidget_->setSpacing(10);
+		listWidget_->setSpacing(8);
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addLayout(topLayout_);
 		mainLayout_->addWidget(listWidget_);
 		mainLayout_->addStretch();
 		mainLayout_->addLayout(bottomLayout_);
-		mainLayout_->setContentsMargins(5, 10, 5, 10);
+		mainLayout_->setContentsMargins(4, 8, 4, 8);
 
 		connect(okButton_, SIGNAL(clicked()), this, SLOT(okClickEvent()));
 		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeClickEvent()));
@@ -89,7 +89,7 @@ namespace unreal
 		{
 			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(listWidget_->iconSize() + QSize(10, 50));
+			item->setSizeHint(listWidget_->iconSize() + QSize(8, 40));
 
 			if (package.contains("preview"))
 			{
@@ -242,18 +242,18 @@ namespace unreal
 		title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Environment Editor"));
-		title_->setContentsMargins(0, 10, 0, 10);
+		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
-		headerLine->setObjectName("Separator");
+		headerLine->setObjectName("HSeparator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 10, 0, 10);
+		headerLine->setContentsMargins(0, 8, 0, 8);
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setObjectName("Preview");
-		this->previewButton_->setIconSize(QSize(260, 130));
+		this->previewButton_->setIconSize(QSize(210, 105));
 		this->previewButton_->setToolTip(tr("Click the select a Preview button to locate each HDRi on your computer"));
 		this->previewButton_->installEventFilter(this);
 
@@ -261,16 +261,16 @@ namespace unreal
 		this->previewName_->setObjectName("PreviewName");
 		this->previewName_->setText(tr("Untitled"));
 		this->previewName_->setAlignment(Qt::AlignCenter);
-		this->previewName_->setMinimumWidth(260);
+		this->previewName_->setMinimumWidth(210);
 
 		auto shadowEffect = std::make_unique<QGraphicsDropShadowEffect>();
-		shadowEffect->setOffset(5, 5);
+		shadowEffect->setOffset(4, 4);
 		shadowEffect->setColor(Qt::lightGray);
-		shadowEffect->setBlurRadius(10);
+		shadowEffect->setBlurRadius(8);
 
 		this->colorButton = new QToolButton;
 		this->colorButton->setObjectName("Color");
-		this->colorButton->setIconSize(QSize(50, 30));
+		this->colorButton->setIconSize(QSize(40, 24));
 		this->colorButton->installEventFilter(this);
 		this->colorButton->setGraphicsEffect(shadowEffect.release());
 
@@ -291,7 +291,7 @@ namespace unreal
 		this->backgroundToggle->installEventFilter(this);
 
 		this->thumbnailPath = new QLabel;
-		this->thumbnailPath->setMinimumSize(QSize(160, 20));
+		this->thumbnailPath->setMinimumSize(QSize(128, 16));
 
 		this->intensityLabel_ = new QLabel;
 		this->intensityLabel_->setText(tr("Intensity"));
@@ -300,7 +300,7 @@ namespace unreal
 		this->intensitySlider->setMinimum(0);
 		this->intensitySlider->setMaximum(100);
 		this->intensitySlider->setValue(0);
-		this->intensitySlider->setMinimumWidth(270);
+		this->intensitySlider->setMinimumWidth(215);
 		this->intensitySlider->installEventFilter(this);
 
 		this->intensitySpinBox = new UDoubleSpinBox;
@@ -318,7 +318,7 @@ namespace unreal
 		this->horizontalRotationSlider->setMinimum(-100);
 		this->horizontalRotationSlider->setMaximum(100);
 		this->horizontalRotationSlider->setValue(0);
-		this->horizontalRotationSlider->setMinimumWidth(270);
+		this->horizontalRotationSlider->setMinimumWidth(215);
 		this->horizontalRotationSlider->installEventFilter(this);
 		
 		this->horizontalRotationSpinBox = new UDoubleSpinBox;
@@ -336,7 +336,7 @@ namespace unreal
 		this->verticalRotationSlider->setMinimum(-100);
 		this->verticalRotationSlider->setMaximum(100);
 		this->verticalRotationSlider->setValue(0);
-		this->verticalRotationSlider->setMinimumWidth(270);
+		this->verticalRotationSlider->setMinimumWidth(215);
 		this->verticalRotationSlider->installEventFilter(this);
 
 		this->verticalRotationSpinBox = new UDoubleSpinBox;
@@ -400,7 +400,7 @@ namespace unreal
 		spoilerLayout->addWidget(this->horizontalRotationSlider);
 		spoilerLayout->addLayout(verticalRotationLayout);
 		spoilerLayout->addWidget(this->verticalRotationSlider);
-		spoilerLayout->setContentsMargins(20, 0, 20, 0);
+		spoilerLayout->setContentsMargins(15, 0, 15, 0);
 
 		this->spoiler = new Spoiler(tr("Attribute"));
 		this->spoiler->setContentLayout(*spoilerLayout);
@@ -414,7 +414,7 @@ namespace unreal
 		mainLayout->addWidget(spoiler);
 		mainLayout->addStretch();
 		mainLayout->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout->setContentsMargins(10, 10, 10, 10);
+		mainLayout->setContentsMargins(8, 8, 8, 8);
 
 		auto mainWidget = new QWidget();
 		mainWidget->setObjectName("EnvironmentWidget");
@@ -565,7 +565,7 @@ namespace unreal
 
 		this->thumbnailPath->setToolTip(name);
 		this->thumbnailPath->setText(thumbnailMetrics.elidedText(this->thumbnailPath->toolTip(), Qt::ElideRight, this->thumbnailPath->width()));
-		this->thumbnail->setIcon(QIcon(QPixmap::fromImage(image.scaled(QSize(48, 30)))));
+		this->thumbnail->setIcon(QIcon(QPixmap::fromImage(image.scaled(QSize(38, 24)))));
 	}
 
 	void

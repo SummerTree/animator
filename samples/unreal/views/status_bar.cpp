@@ -9,15 +9,9 @@ namespace unreal
 		this->setObjectName("StatusBar");
 		this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	
-		profile->playerModule->curTime += [this](float time) {
-			this->updateEvent();
-		};
-		profile->playerModule->timeLength += [this](float time) {
-			this->updateEvent();
-		};
-		profile->offlineModule->sppCount += [this](float time) {
-			this->updateEvent();
-		};
+		profile->playerModule->curTime += [this](float time) { this->updateEvent(); };
+		profile->playerModule->timeLength += [this](float time) { this->updateEvent(); };
+		profile->offlineModule->sppCount += [this](float time) { this->updateEvent();};
 	}
 
 	StatusBar::~StatusBar()

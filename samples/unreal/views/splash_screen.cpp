@@ -22,7 +22,7 @@ namespace unreal
 		englishName->setObjectName("title");
 		englishName->setText(tr("AnimatorGo Lite 2022"));
 		englishName->setAlignment(Qt::AlignLeft);
-
+		
 		copyrightInfo = new QLabel(widget);
 		copyrightInfo->setObjectName("copyright");
 		copyrightInfo->setText(tr("2022 AnimatorGo-Softwares (R). All Rights Reserved."));
@@ -31,13 +31,13 @@ namespace unreal
 		vlayout = new QVBoxLayout(widget);
 		vlayout->addWidget(englishName);
 		vlayout->addWidget(copyrightInfo);
-		vlayout->setContentsMargins(0, 15, 0, 0);
+		vlayout->setContentsMargins(0, 12, 0, 0);
 
 		hlayout = new QHBoxLayout();
 		hlayout->addWidget(logo, 0, Qt::AlignRight);
 		hlayout->addWidget(widget, 0, Qt::AlignLeft);
-		hlayout->setContentsMargins(10, 0, 0, 10);
-		hlayout->setSpacing(10);
+		hlayout->setContentsMargins(8, 0, 0, 10);
+		hlayout->setSpacing(8);
 
 		versionInfo = new QLabel(this);
 		versionInfo->setObjectName("version");

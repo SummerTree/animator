@@ -21,7 +21,7 @@ namespace unreal
 	{
 		this->setWindowTitle(tr("Motion Library"));
 		this->setObjectName("MotionDock");
-		this->setFixedWidth(360);
+		this->setFixedWidth(290);
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
 		auto oldTitleBar = this->titleBarWidget();
@@ -31,31 +31,30 @@ namespace unreal
 		title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Motion Library"));
-		title_->setContentsMargins(0, 10, 0, 10);
+		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
-		headerLine->setObjectName("Separator");
+		headerLine->setObjectName("HSeparator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 10, 0, 10);
+		headerLine->setContentsMargins(0, 8, 0, 8);
 
 		topLayout_ = new QVBoxLayout();
 		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
 		topLayout_->addWidget(headerLine);
-		topLayout_->setContentsMargins(5, 0, 5, 0);
+		topLayout_->setContentsMargins(4, 0, 4, 0);
 
 		bottomLayout_ = new QHBoxLayout();
 		bottomLayout_->addStretch();
 		bottomLayout_->setSpacing(2);
-		bottomLayout_->setContentsMargins(0, 5, 15, 0);
+		bottomLayout_->setContentsMargins(0, 4, 12, 0);
 
 		listWidget_ = new DraggableListWindow;
 		listWidget_->setFixedWidth(this->width());
-		listWidget_->setSelectionMode(QListWidget::NoSelection);
-		listWidget_->setIconSize(QSize(100, 100));
+		listWidget_->setIconSize(QSize(80, 80));
 		listWidget_->setStyleSheet("background:transparent;");
-		listWidget_->setSpacing(5);
+		listWidget_->setSpacing(4);
 		listWidget_->installEventFilter(this);
 		
 		mainLayout_ = new QVBoxLayout();
@@ -63,7 +62,7 @@ namespace unreal
 		mainLayout_->addWidget(listWidget_, 0, Qt::AlignCenter);
 		mainLayout_->addStretch();
 		mainLayout_->addLayout(bottomLayout_);
-		mainLayout_->setContentsMargins(0, 10, 0, 10);
+		mainLayout_->setContentsMargins(0, 8, 0, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("MotionWidget");
@@ -99,16 +98,16 @@ namespace unreal
 		{
 			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(listWidget_->iconSize() + QSize(10, 50));
+			item->setSizeHint(listWidget_->iconSize() + QSize(9, 40));
 
 			if (package.contains("preview"))
 			{
 				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
-				item->setIcon(QIcon(QPixmap(filepath).scaled(listWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+				item->setIcon(QIcon(QPixmap(filepath)));
 			}
 			else
 			{
-				item->setIcon(QIcon(QPixmap(":res/icons/dance2.png").scaled(listWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+				item->setIcon(QIcon(QPixmap(":res/icons/dance2.png")));
 			}
 
 			if (package.contains("name"))

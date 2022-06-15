@@ -34,7 +34,7 @@ namespace unreal
 
 		infoButton = new UPushButton(this);
 		infoButton->setText(tr("Check Updates"));
-		infoButton->setFixedSize(190, 35);
+		infoButton->setFixedSize(152, 28);
 
 		versionLabel = new QLabel(this);
 		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(UNREAL_VERSION));
@@ -69,11 +69,11 @@ namespace unreal
 			langCombo_->addItem(item);
 
 		layout_ = new QVBoxLayout(this);
-		layout_->addSpacing(10);
+		layout_->addSpacing(8);
 		layout_->addWidget(langLabel_);
-		layout_->addSpacing(10);
+		layout_->addSpacing(8);
 		layout_->addWidget(langCombo_);
-		layout_->addSpacing(200);
+		layout_->addSpacing(160);
 	}
 
 	void
@@ -95,18 +95,18 @@ namespace unreal
 	{
 		this->setObjectName("settingContext");
 
-		QStringList strList{ tr("General"), tr("Interface"), tr("Graphics") };
+		QStringList strList{ tr("General") };
 
 		listWidget_ = new QListWidget(this);
 		listWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		listWidget_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		listWidget_->verticalScrollBar()->setFixedWidth(8);
+		listWidget_->verticalScrollBar()->setFixedWidth(6);
 
 		for (qsizetype i = 0; i < strList.size(); i++)
 		{
 			listWidgetItems_[i] = new QListWidgetItem();
 			listWidgetItems_[i]->setText(strList[i]);
-			listWidgetItems_[i]->setSizeHint(QSize(180, 30));
+			listWidgetItems_[i]->setSizeHint(QSize(144, 24));
 			listWidgetItems_[i]->setTextAlignment(Qt::AlignCenter);
 
 			listWidget_->addItem(listWidgetItems_[i]);
@@ -115,7 +115,7 @@ namespace unreal
 		listWidgetItems_[0]->setSelected(true);
 
 		scrollWidget_ = new QWidget(this);
-		scrollWidget_->setFixedWidth(490);
+		scrollWidget_->setFixedWidth(392);
 
 		mainPlaneGeneral_ = new SettingMainPlaneGeneral(scrollWidget_, behaviour);
 		mainPlaneInterface_ = new SettingMainPlaneInterface(scrollWidget_);
@@ -250,7 +250,7 @@ namespace unreal
 		closeAnimation_->setStartValue(1);
 		closeAnimation_->setEndValue(0);
 
-		this->setFixedSize(650, 450);
+		this->setFixedSize(520, 360);
 		this->connect(closeAnimation_.get(), SIGNAL(finished()), this, SLOT(close()));
 		this->connect(settingTitleWindow_.get(), &TitleBar::closeSignal, this, &SettingWindow::closeEvent);
 

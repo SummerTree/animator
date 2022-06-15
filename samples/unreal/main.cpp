@@ -48,19 +48,13 @@ int main(int argc, char *argv[])
 	auto logger = create_logger();
 	spdlog::set_default_logger(logger);
 	spdlog::info("Application started");
-
+	
 #ifdef _WINDOWS_
 	::SetConsoleOutputCP(CP_UTF8);
 #endif
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-	qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1.0");
-	qputenv("QT_ENABLE_HIGHDPI_SCALING", "0");
-	QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
-#endif
-
 	QFile styleSheet(":res/qss/white.qss");
-
+	
 	if (styleSheet.open(QIODevice::ReadOnly))
 	{
 		QApplication app(argc, argv);

@@ -3,6 +3,7 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qmimedata.h>
+#include <qapplication.h>
 
 namespace unreal
 {
@@ -40,7 +41,10 @@ namespace unreal
 	ViewDock::resizeEvent(QResizeEvent* e) noexcept
 	{
 		if (gameApp_->isOpen())
-			gameApp_->doWindowResize((octoon::WindHandle)this->winId(), this->width(), this->height());
+		{
+			auto dpi = QApplication::primaryScreen()->devicePixelRatio();
+			gameApp_->doWindowResize((octoon::WindHandle)this->winId(), e->size().width() * dpi, e->size().height() * dpi);
+		}
 
 		QDockWidget::resizeEvent(e);
 	}

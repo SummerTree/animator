@@ -211,7 +211,7 @@ namespace unreal
 		}
 		else
 		{
-			viewDock_->resize(1280, 720);
+			viewDock_->resize(1024, 576);
 		}
 	}
 

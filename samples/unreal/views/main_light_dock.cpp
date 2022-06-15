@@ -11,7 +11,7 @@ namespace unreal
 		this->setWindowTitle(tr("Main Light"));
 		this->setObjectName("MainLightDock");
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
-
+		
 		auto oldTitleBar = this->titleBarWidget();
 		this->setTitleBarWidget(new QWidget());
 		delete oldTitleBar;
@@ -19,14 +19,14 @@ namespace unreal
 		auto title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Main Light Editor"));
-		title_->setContentsMargins(0, 10, 0, 10);
+		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
-		headerLine->setObjectName("Separator");
+		headerLine->setObjectName("HSeparator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 10, 0, 10);
+		headerLine->setContentsMargins(0, 8, 0, 8);
 
 		auto color = profile->mainLightModule->color.getValue();
 		
@@ -36,14 +36,14 @@ namespace unreal
 
 		resetButton_ = new QToolButton();
 		resetButton_->setText(tr("Reset"));
-		resetButton_->setContentsMargins(0, 0, 10, 0);
+		resetButton_->setContentsMargins(0, 0, 8, 0);
 		resetButton_->installEventFilter(this);
 
 		labelIntensity_ = new QLabel();
 		labelIntensity_->setText(tr("Intensity"));
 
 		intensitySpinBox_ = new UDoubleSpinBox();
-		intensitySpinBox_->setFixedWidth(60);
+		intensitySpinBox_->setFixedWidth(48);
 		intensitySpinBox_->setMaximum(10.0f);
 		intensitySpinBox_->setSingleStep(0.1f);
 		intensitySpinBox_->setAlignment(Qt::AlignRight);
@@ -58,7 +58,7 @@ namespace unreal
 		intensitySlider_->setMinimum(0);
 		intensitySlider_->setMaximum(100);
 		intensitySlider_->setValue(profile->mainLightModule->intensity * 10.0f);
-		intensitySlider_->setFixedWidth(250);
+		intensitySlider_->setFixedWidth(200);
 		intensitySlider_->installEventFilter(this);
 
 		layoutIntensity_ = new QHBoxLayout();
@@ -70,7 +70,7 @@ namespace unreal
 		labelSize_->setText(tr("Size"));
 
 		sizeSpinBox_ = new UDoubleSpinBox();
-		sizeSpinBox_->setFixedWidth(60);
+		sizeSpinBox_->setFixedWidth(48);
 		sizeSpinBox_->setMaximum(1.0f);
 		sizeSpinBox_->setSingleStep(0.05f);
 		sizeSpinBox_->setAlignment(Qt::AlignRight);
@@ -84,7 +84,7 @@ namespace unreal
 		sizeSlider_->setMinimum(0);
 		sizeSlider_->setMaximum(100);
 		sizeSlider_->setValue(profile->mainLightModule->size * 100.0f);
-		sizeSlider_->setFixedWidth(250);
+		sizeSlider_->setFixedWidth(200);
 		sizeSlider_->installEventFilter(this);
 
 		layoutSize_ = new QHBoxLayout();
@@ -96,7 +96,7 @@ namespace unreal
 		labelRotationX_->setText(tr("Rotation X"));
 
 		editRotationX_ = new UDoubleSpinBox();
-		editRotationX_->setFixedWidth(60);
+		editRotationX_->setFixedWidth(48);
 		editRotationX_->setMaximum(360.0f);
 		editRotationX_->setSingleStep(1.0f);
 		editRotationX_->setAlignment(Qt::AlignRight);
@@ -111,7 +111,7 @@ namespace unreal
 		sliderRotationX_->setMinimum(0);
 		sliderRotationX_->setMaximum(360);
 		sliderRotationX_->setValue(profile->mainLightModule->rotation.getValue().x);
-		sliderRotationX_->setFixedWidth(250);
+		sliderRotationX_->setFixedWidth(200);
 		sliderRotationX_->installEventFilter(this);
 
 		layoutRotationX_ = new QHBoxLayout();
@@ -123,7 +123,7 @@ namespace unreal
 		labelRotationY_->setText(tr("Rotation Y"));
 
 		editRotationY_ = new UDoubleSpinBox();
-		editRotationY_->setFixedWidth(60);
+		editRotationY_->setFixedWidth(48);
 		editRotationY_->setMaximum(360.0f);
 		editRotationY_->setSingleStep(1.0f);
 		editRotationY_->setAlignment(Qt::AlignRight);
@@ -138,7 +138,7 @@ namespace unreal
 		sliderRotationY_->setMinimum(0);
 		sliderRotationY_->setMaximum(360);
 		sliderRotationY_->setValue(profile->mainLightModule->rotation.getValue().y);
-		sliderRotationY_->setFixedWidth(250);
+		sliderRotationY_->setFixedWidth(200);
 		sliderRotationY_->installEventFilter(this);
 
 		layoutRotationY_ = new QHBoxLayout();
@@ -150,7 +150,7 @@ namespace unreal
 		labelRotationZ_->setText(tr("Rotation Z"));
 
 		editRotationZ_ = new UDoubleSpinBox();
-		editRotationZ_->setFixedWidth(60);
+		editRotationZ_->setFixedWidth(48);
 		editRotationZ_->setMaximum(360.0f);
 		editRotationZ_->setSingleStep(1.0f);
 		editRotationZ_->setAlignment(Qt::AlignRight);
@@ -165,7 +165,7 @@ namespace unreal
 		sliderRotationZ_->setMinimum(0);
 		sliderRotationZ_->setMaximum(360);
 		sliderRotationZ_->setValue(profile->mainLightModule->rotation.getValue().z);
-		sliderRotationZ_->setFixedWidth(250);
+		sliderRotationZ_->setFixedWidth(200);
 		sliderRotationZ_->installEventFilter(this);
 
 		layoutRotationZ_ = new QHBoxLayout();
@@ -201,7 +201,7 @@ namespace unreal
 		mainLayout_->addWidget(scrollArea_);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout_->setContentsMargins(10, 10, 10, 10);
+		mainLayout_->setContentsMargins(8, 8, 8, 8);
 
 		mainWidget_ = new QWidget();
 		mainWidget_->setLayout(mainLayout_);

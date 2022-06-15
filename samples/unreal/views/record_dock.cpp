@@ -23,14 +23,14 @@ namespace unreal
 		auto title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Video Editor"));
-		title_->setContentsMargins(0, 10, 0, 10);
+		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
-		headerLine->setObjectName("Separator");
+		headerLine->setObjectName("HSeparator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 10, 0, 10);
+		headerLine->setContentsMargins(0, 8, 0, 8);
 
 		videoRatio_ = new QLabel(this);
 		videoRatio_->setText(tr("Ratio"));
@@ -258,7 +258,7 @@ namespace unreal
 		frameLayout_->addWidget(middleLabel_, 0, Qt::AlignCenter);
 		frameLayout_->addWidget(endLabel_, 0, Qt::AlignRight);
 		frameLayout_->addWidget(endFrame_, 0, Qt::AlignRight);
-		frameLayout_->setContentsMargins(20, 0, 20, 0);
+		frameLayout_->setContentsMargins(16, 0, 16, 0);
 
 		recordButton_ = new QPushButton();
 		recordButton_->setObjectName("Render");
@@ -268,29 +268,29 @@ namespace unreal
 		auto videoLayout = new QVBoxLayout;
 		videoLayout->addWidget(videoRatio_);
 		videoLayout->addLayout(videoRatioLayout_);
-		videoLayout->addSpacing(10);
+		videoLayout->addSpacing(8);
 		videoLayout->addWidget(resolutionLabel);
 		videoLayout->addWidget(resolution1_);
 		videoLayout->addWidget(resolution2_);
 		videoLayout->addWidget(resolution3_);
 		videoLayout->addWidget(resolution4_);
-		videoLayout->addSpacing(10);
+		videoLayout->addSpacing(8);
 		videoLayout->addWidget(videoFps_);
 		videoLayout->addLayout(videoFpsLayout_);
-		videoLayout->addSpacing(10);
+		videoLayout->addSpacing(8);
 		videoLayout->addWidget(frame_);
 		videoLayout->addLayout(frameLayout_);
-		videoLayout->addSpacing(10);
+		videoLayout->addSpacing(8);
 		videoLayout->addWidget(encodeType_);
 		videoLayout->addLayout(encodeLayout_);
 		videoLayout->addWidget(crfSpinbox);
-		videoLayout->addSpacing(10);
+		videoLayout->addSpacing(8);
 		videoLayout->addWidget(quality_);
 		videoLayout->addLayout(qualityLayout_);
 		videoLayout->addLayout(denoiseLayout_);
 		videoLayout->addWidget(sppSpinbox_);
 		videoLayout->addWidget(bouncesSpinbox_);
-		videoLayout->setContentsMargins(20, 0, 20, 0);
+		videoLayout->setContentsMargins(16, 0, 16, 0);
 
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addWidget(title_);
@@ -298,7 +298,7 @@ namespace unreal
 		mainLayout_->addLayout(videoLayout);
 		mainLayout_->addStretch();
 		mainLayout_->addWidget(recordButton_, 0, Qt::AlignCenter);
-		mainLayout_->setContentsMargins(10, 10, 10, 10);
+		mainLayout_->setContentsMargins(8, 8, 8, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("RecordWidget");

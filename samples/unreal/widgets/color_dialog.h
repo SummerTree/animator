@@ -29,6 +29,7 @@ namespace unreal
 		QColor getCurrentColor() const;
 
 		void paintHue(std::uint32_t w, std::uint32_t h) noexcept;
+		void paintHueSelector(std::uint32_t w, std::uint32_t h) noexcept;
 		void paintRectangle(std::uint32_t w, std::uint32_t h, float hue, float value) noexcept;
 
 	protected:
@@ -43,17 +44,20 @@ namespace unreal
 
 	private:
 		QImage hueImage_;
+		QImage hueSelectorImage_;
 		QImage colorImage_;
 		bool mousePress_;
 		bool hueSelected_;
 		bool boxSelected_;
 		float hue_;
 		float value_;
-		std::uint32_t width_;
-		std::uint32_t height_;
+		std::uint32_t hueWidth_;
+		std::uint32_t hueHeight_;
+		std::uint32_t hueCircleWidth_;
+		std::uint32_t hueCircleHeight_;
+		std::uint32_t rectangleWidth_;
+		std::uint32_t rectangleHeight_;
 		std::uint32_t boxMargin_;
-		std::uint32_t widthRectangle_;
-		std::uint32_t heightRectangle_;
 		QColor currentColor_;
 	};
 

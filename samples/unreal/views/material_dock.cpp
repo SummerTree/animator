@@ -53,20 +53,20 @@ namespace unreal
 	{
 		this->setObjectName("MaterialDialog");
 		this->setWindowTitle(tr("Material Resource"));
-		this->setFixedSize(900, 600);
+		this->setFixedSize(720, 480);
 		this->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
 
 		okButton_ = new QToolButton;
 		okButton_->setText(tr("Ok"));
-		okButton_->setFixedSize(50, 30);
+		okButton_->setFixedSize(40, 24);
 
 		closeButton_ = new QToolButton;
 		closeButton_->setText(tr("Close"));
-		closeButton_->setFixedSize(50, 30);
+		closeButton_->setFixedSize(40, 24);
 
 		importButton_ = new QToolButton;
 		importButton_->setText(tr("Import"));
-		importButton_->setFixedSize(60, 30);
+		importButton_->setFixedSize(48, 24);
 
 		mainWidget_ = new QListWidget;
 		mainWidget_->setResizeMode(QListView::Fixed);
@@ -75,26 +75,26 @@ namespace unreal
 		mainWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
 		mainWidget_->setStyleSheet("background:transparent;");
 		mainWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		mainWidget_->setSpacing(8);
+		mainWidget_->setSpacing(6);
 
 		auto topLayout_ = new QHBoxLayout();
 		topLayout_->addWidget(importButton_, 0, Qt::AlignLeft);
 		topLayout_->addStretch();
-		topLayout_->setContentsMargins(12, 0, 0, 0);
+		topLayout_->setContentsMargins(10, 0, 0, 0);
 
 		auto bottomLayout_ = new QHBoxLayout();
 		bottomLayout_->addStretch();
 		bottomLayout_->addWidget(okButton_, 0, Qt::AlignRight);
 		bottomLayout_->addWidget(closeButton_, 0, Qt::AlignRight);
 		bottomLayout_->setSpacing(2);
-		bottomLayout_->setContentsMargins(0, 5, 15, 0);
+		bottomLayout_->setContentsMargins(0, 4, 12, 0);
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addLayout(topLayout_);
 		mainLayout_->addWidget(mainWidget_);
 		mainLayout_->addStretch();
 		mainLayout_->addLayout(bottomLayout_);
-		mainLayout_->setContentsMargins(5, 10, 5, 10);
+		mainLayout_->setContentsMargins(4, 8, 4, 8);
 
 		connect(okButton_, SIGNAL(clicked()), this, SLOT(okClickEvent()));
 		connect(closeButton_, SIGNAL(clicked()), this, SLOT(closeClickEvent()));
@@ -114,10 +114,10 @@ namespace unreal
 		if (!package.is_null())
 		{
 			QLabel* imageLabel = new QLabel;
-			imageLabel->setFixedSize(QSize(128, 128));
+			imageLabel->setFixedSize(QSize(100, 100));
 
 			QLabel* nameLabel = new QLabel();
-			nameLabel->setFixedHeight(30);
+			nameLabel->setFixedHeight(24);
 
 			QVBoxLayout* widgetLayout = new QVBoxLayout;
 			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
@@ -130,7 +130,7 @@ namespace unreal
 
 			QListWidgetItem* item = new QListWidgetItem;
 			item->setData(Qt::UserRole, QString::fromStdString(std::string(uuid)));
-			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(10, 10));
+			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(8, 8));
 
 			mainWidget_->addItem(item);
 			mainWidget_->setItemWidget(item, widget);
@@ -253,9 +253,7 @@ namespace unreal
 	MaterialListDialog::resizeEvent(QResizeEvent* e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins();
-		mainWidget_->resize(
-			this->width(),
-			this->height() - (margins.top() + margins.bottom()) * 2 - okButton_->height() - importButton_->height());
+		mainWidget_->resize(this->width(), this->height() - (margins.top() + margins.bottom()) * 2 - okButton_->height() - importButton_->height());
 	}
 
 	void
@@ -288,7 +286,7 @@ namespace unreal
 		{
 			this->image = new QToolButton;
 			this->image->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
-			this->image->setIconSize(QSize(48, 48));
+			this->image->setIconSize(QSize(38, 38));
 
 			this->check = new QCheckBox;
 
@@ -296,7 +294,7 @@ namespace unreal
 			this->title->setText(name + tr(" Texture"));
 
 			this->path = new QLabel;
-			this->path->setMinimumSize(QSize(160, 20));
+			this->path->setMinimumSize(QSize(128, 16));
 
 			this->titleLayout = new QHBoxLayout;
 			this->titleLayout->addWidget(check, 0, Qt::AlignLeft);
@@ -314,7 +312,7 @@ namespace unreal
 			if (flags & CreateFlags::ColorBit)
 			{
 				this->color = new QToolButton;
-				this->color->setIconSize(QSize(50, 30));
+				this->color->setIconSize(QSize(40, 24));
 
 				textLayout->addWidget(this->color, 0, Qt::AlignRight);
 			}
@@ -341,10 +339,10 @@ namespace unreal
 			this->slider->setMinimum(0);
 			this->slider->setMaximum(100);
 			this->slider->setValue(0);
-			this->slider->setFixedWidth(260);
+			this->slider->setFixedWidth(206);
 
 			this->spinBox = new DoubleSpinBox;
-			this->spinBox->setFixedWidth(50);
+			this->spinBox->setFixedWidth(40);
 			this->spinBox->setMaximum(1.0f);
 			this->spinBox->setSingleStep(0.03f);
 			this->spinBox->setAlignment(Qt::AlignRight);
@@ -359,7 +357,7 @@ namespace unreal
 				layout->addLayout(this->mapLayout);
 			layout->addLayout(HLayout);
 			layout->addWidget(this->slider);
-			layout->setContentsMargins(20, 5, 50, 0);
+			layout->setContentsMargins(16, 4, 40, 0);
 			this->mainLayout = layout;
 
 			if (flags & CreateFlags::SpoilerBit)
@@ -373,7 +371,7 @@ namespace unreal
 		{
 			if (this->mapLayout)
 			{
-				this->mapLayout->setContentsMargins(20, 5, 50, 0);
+				this->mapLayout->setContentsMargins(16, 4, 40, 0);
 				this->mainLayout = this->mapLayout;
 			}
 
@@ -480,10 +478,10 @@ namespace unreal
 	{
 		backButton_ = new QToolButton;
 		backButton_->setObjectName("back");
-		backButton_->setIconSize(QSize(20, 20));
+		backButton_->setIconSize(QSize(16, 16));
 
 		previewButton_ = new QToolButton();
-		previewButton_->setFixedSize(QSize(128, 128));
+		previewButton_->setFixedSize(QSize(100, 100));
 
 		previewNameLabel_ = new QLabel();
 		previewNameLabel_->setText(tr("material"));
@@ -524,7 +522,7 @@ namespace unreal
 		previewLayout->setSpacing(4);
 		previewLayout->addWidget(previewButton_, 0, Qt::AlignCenter);
 		previewLayout->addWidget(previewNameLabel_, 0, Qt::AlignCenter);
-		previewLayout->setContentsMargins(0, 0, 10, 0);
+		previewLayout->setContentsMargins(0, 0, 8, 0);
 
 		QWidget* previewWidget = new QWidget;
 		previewWidget->setLayout(previewLayout);
@@ -532,17 +530,17 @@ namespace unreal
 		auto clearlayout = new QVBoxLayout();
 		clearlayout->addLayout(this->clearcoat_.mainLayout);
 		clearlayout->addLayout(this->clearcoatRoughness_.mainLayout);
-		clearlayout->setContentsMargins(20, 5, 50, 0);
+		clearlayout->setContentsMargins(16, 4, 40, 0);
 
 		auto subsurfaceLayout = new QVBoxLayout();
 		subsurfaceLayout->addLayout(this->subsurface_.mainLayout);
 		subsurfaceLayout->addLayout(this->subsurfaceValue_.mainLayout);
-		subsurfaceLayout->setContentsMargins(20, 5, 50, 0);
+		subsurfaceLayout->setContentsMargins(16, 4, 40, 0);
 
 		auto refractionLayout = new QVBoxLayout();
 		refractionLayout->addLayout(this->refraction_.mainLayout);
 		refractionLayout->addLayout(this->refractionIor_.mainLayout);
-		refractionLayout->setContentsMargins(20, 5, 50, 0);
+		refractionLayout->setContentsMargins(16, 4, 40, 0);
 
 		this->clearCoatSpoiler_ = new Spoiler(tr("Clear Coat"));
 		this->clearCoatSpoiler_->setContentLayout(*clearlayout);
@@ -558,7 +556,7 @@ namespace unreal
 
 		auto otherslayout = new QVBoxLayout();
 		otherslayout->addWidget(this->receiveShadowCheck_, 0, Qt::AlignLeft);
-		otherslayout->setContentsMargins(20, 5, 50, 0);
+		otherslayout->setContentsMargins(16, 4, 40, 0);
 
 		this->othersSpoiler_ = new Spoiler(tr("Other"));
 		this->othersSpoiler_->setContentLayout(*otherslayout);
@@ -595,8 +593,8 @@ namespace unreal
 		mainLayout->addLayout(headerLayout);
 		mainLayout->addWidget(previewWidget, 0, Qt::AlignCenter);
 		mainLayout->addWidget(contentWidgetArea);
-		mainLayout->setSpacing(5);
-		mainLayout->setContentsMargins(10, 10, 10, 10);
+		mainLayout->setSpacing(4);
+		mainLayout->setContentsMargins(8, 8, 8, 8);
 
 		connect(previewButton_, SIGNAL(clicked()), this, SLOT(previewButtonClickEvent()));
 		connect(albedo_.image, SIGNAL(clicked()), this, SLOT(colorMapClickEvent()));
@@ -1393,7 +1391,7 @@ namespace unreal
 
 				colorTexture->unmap();
 
-				this->previewButton_->setIcon(QPixmap::fromImage(image).scaled(previewButton_->width(), previewButton_->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+				this->previewButton_->setIcon(QPixmap::fromImage(image));
 				this->previewButton_->setIconSize(previewButton_->size());
 			}
 		}
@@ -1753,14 +1751,14 @@ namespace unreal
 		, profile_(profile)
 	{
 		mainWidget_ = new DraggableListWindow;
-		mainWidget_->setIconSize(QSize(100, 100));
+		mainWidget_->setIconSize(QSize(80, 80));
 		mainWidget_->setStyleSheet("background:transparent;");
-		mainWidget_->setSpacing(5);
+		mainWidget_->setSpacing(4);
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addWidget(mainWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(0, 10, 0, 5);
+		mainLayout_->setContentsMargins(0, 8, 0, 4);
 
 		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(mainWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
@@ -1814,7 +1812,7 @@ namespace unreal
 		{
 			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(mainWidget_->iconSize() + QSize(10, 50));
+			item->setSizeHint(mainWidget_->iconSize() + QSize(9, 40));
 
 			auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
 			if (material)
@@ -1854,7 +1852,7 @@ namespace unreal
 
 					colorTexture->unmap();
 
-					item->setIcon(QIcon(QPixmap::fromImage(image).scaled(mainWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+					item->setIcon(QIcon(QPixmap::fromImage(image)));
 				}
 			}
 			else
@@ -1862,7 +1860,7 @@ namespace unreal
 				if (package.contains("preview"))
 				{
 					auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
-					item->setIcon(QIcon(QPixmap(filepath).scaled(mainWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+					item->setIcon(QIcon(QPixmap(filepath)));
 				}
 
 				if (package.contains("name"))
@@ -1911,15 +1909,14 @@ namespace unreal
 		this->setObjectName("MaterialAssetPanel");
 
 		mainWidget_ = new DraggableListWindow;
-		mainWidget_->setIconSize(QSize(100, 100));
-		mainWidget_->setSelectionMode(QListWidget::NoSelection);
+		mainWidget_->setIconSize(QSize(80, 80));
 		mainWidget_->setStyleSheet("background:transparent;");
-		mainWidget_->setSpacing(5);
+		mainWidget_->setSpacing(4);
 
 		mainLayout_ = new QVBoxLayout(this);
 		mainLayout_->addWidget(mainWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(0, 10, 0, 5);
+		mainLayout_->setContentsMargins(0, 8, 0, 4);
 
 		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(mainWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
@@ -1975,12 +1972,12 @@ namespace unreal
 		{
 			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(mainWidget_->iconSize() + QSize(10, 50));
+			item->setSizeHint(mainWidget_->iconSize() + QSize(9, 40));
 			
 			if (package.contains("preview"))
 			{
 				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
-				item->setIcon(QIcon(QPixmap(filepath).scaled(mainWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+				item->setIcon(QIcon(QPixmap(filepath)));
 			}
 
 			if (package.contains("name"))
@@ -2046,7 +2043,7 @@ namespace unreal
 		this->setObjectName("MaterialDock");
 		this->setWindowTitle(tr("Material"));
 		this->setMouseTracking(true);
-		this->setFixedWidth(360);
+		this->setFixedWidth(290);
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
 		auto oldTitleBar = this->titleBarWidget();
@@ -2056,25 +2053,25 @@ namespace unreal
 		title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Material Library"));
-		title_->setContentsMargins(0, 10, 0, 10);
+		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
-		headerLine->setObjectName("Separator");
+		headerLine->setObjectName("HSeparator");
 		headerLine->setFrameShape(QFrame::HLine);
 		headerLine->setFrameShadow(QFrame::Sunken);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 10, 0, 10);
+		headerLine->setContentsMargins(0, 8, 0, 8);
 
 		auto topLayout_ = new QVBoxLayout();
 		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
 		topLayout_->addWidget(headerLine);
-		topLayout_->setContentsMargins(5, 0, 5, 0);
+		topLayout_->setContentsMargins(4, 0, 4, 0);
 		
 		materialList_ = new MaterialListPanel(behaviour, profile);
-		materialList_->mainWidget_->setFixedWidth(360);
+		materialList_->mainWidget_->setFixedWidth(290);
 
 		materialAssetList_ = new MaterialAssetPanel(behaviour, profile);
-		materialAssetList_->mainWidget_->setFixedWidth(360);
+		materialAssetList_->mainWidget_->setFixedWidth(290);
 
 		modifyWidget_ = new MaterialEditWindow(behaviour);
 		modifyWidget_->hide();
@@ -2096,7 +2093,7 @@ namespace unreal
 		mainLayout_->addLayout(topLayout_);
 		mainLayout_->addWidget(headerLine);
 		mainLayout_->addWidget(widget_);
-		mainLayout_->setContentsMargins(0, 10, 0, 10);
+		mainLayout_->setContentsMargins(0, 8, 0, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setLayout(mainLayout_);
