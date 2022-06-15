@@ -69,8 +69,6 @@ SET(WIDGETS_LIST
 	${SOURCE_PATH}/widgets/spoiler.cpp
 	${SOURCE_PATH}/widgets/ucombobox.h
 	${SOURCE_PATH}/widgets/ucombobox.cpp
-	${SOURCE_PATH}/widgets/ulabel.h
-	${SOURCE_PATH}/widgets/ulabel.cpp
 	${SOURCE_PATH}/widgets/udockwidget.h
 	${SOURCE_PATH}/widgets/udockwidget.cpp
 	${SOURCE_PATH}/widgets/utranslatable.h

@@ -33,7 +33,7 @@ namespace unreal
     void
     UDoubleSpinLine::setupUI()
     {
-        label_ = new ULabel(this);
+        label_ = new QLabel(this);
         label_->setText("label");
 		doublespinbox_ = new UDoubleSpinBox(this);
 		doublespinbox_->setRange(0, 100);

@@ -29,14 +29,14 @@ namespace unreal
 	void
 	SettingMainPlaneGeneral::setupUI()
 	{
-		infoLabel = new ULabel(this);
+		infoLabel = new QLabel(this);
 		infoLabel->setText(tr("Version"));
 
 		infoButton = new UPushButton(this);
 		infoButton->setText(tr("Check Updates"));
 		infoButton->setFixedSize(190, 35);
 
-		versionLabel = new ULabel(this);
+		versionLabel = new QLabel(this);
 		versionLabel->setText(tr("Current Version: ") + QString::fromStdString(UNREAL_VERSION));
 
 		layout_ = new QVBoxLayout(this);

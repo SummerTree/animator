@@ -16,7 +16,6 @@
 #include <qspinbox.h>
 #include <QTranslator>
 
-#include "../widgets/ulabel.h"
 #include "../widgets/ucombobox.h"
 #include "../widgets/upanel.h"
 #include "../widgets/upushbutton.h"
@@ -35,9 +34,9 @@ namespace unreal
 		void retranslate() override;
 		void setupUI();
 
-		ULabel* infoLabel;
+		QLabel* infoLabel;
 		UPushButton* infoButton;
-		ULabel* versionLabel;
+		QLabel* versionLabel;
 
 	private:
 		QVBoxLayout* layout_;

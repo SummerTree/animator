@@ -311,6 +311,30 @@ QSpinBox::down-button{
 	height: 0px;
 	width: 0px;
 }
+unreal--UPushButton {
+	background: rgb(250,250,250);
+	border:2px solid rgb(242,83,106);
+	border-radius:4px;
+	color: rgb(48,48,50);
+}
+unreal--UPushButton:hover{
+	background: rgb(240,240,240);
+}
+unreal--UDoubleSpinBox {
+	color: rgb(48,48,50);
+	background: rgb(241,242,248);
+	border: 1px solid rgb(242,83,106);
+	border-radius:5px;
+	max-width: 90px;
+}
+unreal--UDoubleSpinBox::up-button{
+	height: 0px;
+	width: 0px;
+}
+unreal--UDoubleSpinBox::down-button{
+	height: 0px;
+	width: 0px;
+}
 QWidget#SplashWindow{
 	min-width:500px;
 	max-width:500px;
@@ -686,32 +710,6 @@ QWidget#EnvironmentWidget unreal--UDoubleSpinBox {
 QWidget#CameraWidget unreal--UDoubleSpinBox {
 	min-width: 90px;
 	max-width: 90px;
-}
-unreal--ULabel {
-	color: rgb(48,48,50);
-}
-unreal--UPushButton {
-	background: rgb(250,250,250);
-	border:2px solid rgb(242,83,106);
-	border-radius:4px;
-	color: rgb(48,48,50);
-}
-unreal--UPushButton:hover{
-	background: rgb(240,240,240);
-}
-unreal--UDoubleSpinBox {
-	color: rgb(48,48,50);
-	background: rgb(241,242,248);
-	border: 1px solid rgb(242,83,106);
-	border-radius:5px;
-}
-unreal--UDoubleSpinBox::up-button{
-	height: 0px;
-	width: 0px;
-}
-unreal--UDoubleSpinBox::down-button{
-	height: 0px;
-	width: 0px;
 }
 QWidget#RecordDock QLineEdit{
 	max-width:60;

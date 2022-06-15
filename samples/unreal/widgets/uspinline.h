@@ -7,7 +7,6 @@
 #include <QHBoxLayout>
 
 #include "uspinbox.h"
-#include "ulabel.h"
 
 namespace unreal
 {
@@ -31,7 +30,7 @@ namespace unreal
 		void onEnable();
     public:
         SpinBox* spinbox_;
-        ULabel* label_;
+        QLabel* label_;
         QHBoxLayout* layout_;
 	};
 }

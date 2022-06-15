@@ -23,7 +23,6 @@
 #include "../widgets/draggable_button.h"
 #include "../widgets/uspinbox.h"
 #include "../widgets/udoublespinbox.h"
-#include "../widgets/ulabel.h"
 #include "../widgets/udoublespinline.h"
 
 

@@ -15,7 +15,7 @@ namespace unreal
     void
     USpinLine::setupUI()
     {
-        label_ = new ULabel(this);
+        label_ = new QLabel(this);
         label_->setText("label");
         spinbox_ = new SpinBox(this);
         spinbox_->setRange(0, 100);

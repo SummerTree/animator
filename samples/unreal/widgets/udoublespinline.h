@@ -7,7 +7,6 @@
 #include <QHBoxLayout>
 
 #include "udoublespinbox.h"
-#include "ulabel.h"
 
 namespace unreal
 {
@@ -29,7 +28,7 @@ namespace unreal
 		void valueChanged(double value);
     public:
         UDoubleSpinBox* doublespinbox_;
-        ULabel* label_;
+        QLabel* label_;
         QHBoxLayout* layout_;
 	};
 }

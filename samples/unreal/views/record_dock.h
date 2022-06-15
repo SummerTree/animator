@@ -21,7 +21,6 @@
 
 #include "../widgets/uspinbox.h"
 #include "../widgets/udoublespinbox.h"
-#include "../widgets/ulabel.h"
 #include "../widgets/ucombobox.h"
 #include "../widgets/udockwidget.h"
 #include "../widgets/upushbutton.h"

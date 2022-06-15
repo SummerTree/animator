@@ -39,7 +39,7 @@ namespace unreal
 		resetButton_->setContentsMargins(0, 0, 10, 0);
 		resetButton_->installEventFilter(this);
 
-		labelIntensity_ = new ULabel();
+		labelIntensity_ = new QLabel();
 		labelIntensity_->setText(tr("Intensity"));
 
 		intensitySpinBox_ = new UDoubleSpinBox();
@@ -66,7 +66,7 @@ namespace unreal
 		layoutIntensity_->addWidget(intensitySpinBox_, 0, Qt::AlignRight);
 		layoutIntensity_->setContentsMargins(22, 5, 21, 0);
 
-		labelSize_ = new ULabel();
+		labelSize_ = new QLabel();
 		labelSize_->setText(tr("Size"));
 
 		sizeSpinBox_ = new UDoubleSpinBox();
@@ -92,7 +92,7 @@ namespace unreal
 		layoutSize_->addWidget(sizeSpinBox_, 0, Qt::AlignRight);
 		layoutSize_->setContentsMargins(22, 5, 21, 0);
 
-		labelRotationX_ = new ULabel();
+		labelRotationX_ = new QLabel();
 		labelRotationX_->setText(tr("Rotation X"));
 
 		editRotationX_ = new UDoubleSpinBox();
@@ -119,7 +119,7 @@ namespace unreal
 		layoutRotationX_->addWidget(editRotationX_, 0, Qt::AlignRight);
 		layoutRotationX_->setContentsMargins(22, 5, 21, 0);
 
-		labelRotationY_ = new ULabel();
+		labelRotationY_ = new QLabel();
 		labelRotationY_->setText(tr("Rotation Y"));
 
 		editRotationY_ = new UDoubleSpinBox();
@@ -146,7 +146,7 @@ namespace unreal
 		layoutRotationY_->addWidget(editRotationY_, 0, Qt::AlignRight);
 		layoutRotationY_->setContentsMargins(22, 5, 21, 0);
 
-		labelRotationZ_ = new ULabel();
+		labelRotationZ_ = new QLabel();
 		labelRotationZ_->setText(tr("Rotation Z"));
 
 		editRotationZ_ = new UDoubleSpinBox();
