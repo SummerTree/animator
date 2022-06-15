@@ -647,21 +647,30 @@ namespace unreal
 	RecordDock::mode1Event(bool checked)
 	{
 		if (checked)
+		{
 			profile_->encodeModule->encodeMode = EncodeMode::H264;
+			crfSpinbox->setVisible(true);
+		}
 	}
 
 	void
 	RecordDock::mode2Event(bool checked)
 	{
 		if (checked)
+		{
 			profile_->encodeModule->encodeMode = EncodeMode::H265;
+			crfSpinbox->setVisible(true);
+		}
 	}
-
+	
 	void
 	RecordDock::mode3Event(bool checked)
 	{
 		if (checked)
+		{
 			profile_->encodeModule->encodeMode = EncodeMode::Frame;
+			crfSpinbox->setVisible(false);
+		}
 	}
 
 	void
