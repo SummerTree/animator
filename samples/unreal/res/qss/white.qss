@@ -792,6 +792,20 @@ QWidget#RecordDock QPushButton#mode3:checked{
 	color: rgb(255,255,255);
 	background:rgb(242,83,106);
 }
+QWidget#RecordDock QPushButton#ratio{
+	min-width:65;
+	min-height:25;
+	border:1px solid #a0a0a0;
+	border-radius:5px;
+	color: rgb(48,48,50);
+	font-size:16px;
+	font-family: "Microsoft YaHei";
+}
+QWidget#RecordDock QPushButton#ratio:checked{
+	border:0px;
+	color: rgb(255,255,255);
+	background:rgb(242,83,106);
+}
 QWidget#RecordDock QLineEdit{
 	max-width:60;
 	max-height:25;

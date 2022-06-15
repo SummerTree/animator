@@ -32,19 +32,80 @@ namespace unreal
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 		headerLine->setContentsMargins(0, 10, 0, 10);
 
+		videoRatio_ = new QLabel(this);
+		videoRatio_->setText(tr("Ratio"));
+
+		ratio1_ = new QPushButton();
+		ratio1_->setObjectName("ratio");
+		ratio1_->setText(tr("16:9"));
+		ratio1_->setCheckable(true);
+		ratio1_->installEventFilter(this);
+		
+		ratio2_ = new QPushButton();
+		ratio2_->setObjectName("ratio");
+		ratio2_->setText(tr("9:16"));
+		ratio2_->setCheckable(true);
+		ratio2_->installEventFilter(this);
+
+		ratio3_ = new QPushButton();
+		ratio3_->setObjectName("ratio");
+		ratio3_->setText(tr("4:3"));
+		ratio3_->setCheckable(true);
+		ratio3_->installEventFilter(this);
+
+		ratio4_ = new QPushButton();
+		ratio4_->setObjectName("ratio");
+		ratio4_->setText(tr("3:4"));
+		ratio4_->setCheckable(true);
+		ratio4_->installEventFilter(this);
+
+		ratioGroup_ = new QButtonGroup();
+		ratioGroup_->addButton(ratio1_, 0);
+		ratioGroup_->addButton(ratio2_, 1);
+		ratioGroup_->addButton(ratio3_, 2);
+		ratioGroup_->addButton(ratio4_, 3);
+
+		videoRatioLayout_ = new QHBoxLayout();
+		videoRatioLayout_->addStretch();
+		videoRatioLayout_->addWidget(ratio1_, 0, Qt::AlignLeft);
+		videoRatioLayout_->addWidget(ratio2_, 0, Qt::AlignVCenter);
+		videoRatioLayout_->addWidget(ratio3_, 0, Qt::AlignVCenter);
+		videoRatioLayout_->addWidget(ratio4_, 0, Qt::AlignRight);
+		videoRatioLayout_->addStretch();
+		videoRatioLayout_->setContentsMargins(0, 0, 0, 0);
+
 		resolutionLabel = new QLabel(this);
 		resolutionLabel->setText(tr("Resolution"));
 
-		resolutionCombo = new QComboBox(this);
-		resolutionCombo->addItem("720*480");
-		resolutionCombo->addItem("800*480");
-		resolutionCombo->addItem("1024*576");
-		resolutionCombo->addItem("1280x720");
-		resolutionCombo->addItem("1920x1080");
-		resolutionCombo->addItem("540x960");
-		resolutionCombo->addItem("720x1280");
-		resolutionCombo->addItem("1080x1920");
-		resolutionCombo->installEventFilter(this);
+		resolution1_ = new QPushButton();
+		resolution1_->setObjectName("ratio");
+		resolution1_->setText(tr("16:9"));
+		resolution1_->setCheckable(true);
+		resolution1_->installEventFilter(this);
+
+		resolution2_ = new QPushButton();
+		resolution2_->setObjectName("ratio");
+		resolution2_->setText(tr("9:16"));
+		resolution2_->setCheckable(true);
+		resolution2_->installEventFilter(this);
+
+		resolution3_ = new QPushButton();
+		resolution3_->setObjectName("ratio");
+		resolution3_->setText(tr("4:3"));
+		resolution3_->setCheckable(true);
+		resolution3_->installEventFilter(this);
+
+		resolution4_ = new QPushButton();
+		resolution4_->setObjectName("ratio");
+		resolution4_->setText(tr("3:4"));
+		resolution4_->setCheckable(true);
+		resolution4_->installEventFilter(this);
+
+		resolutionGroup_ = new QButtonGroup();
+		resolutionGroup_->addButton(resolution1_, 0);
+		resolutionGroup_->addButton(resolution2_, 1);
+		resolutionGroup_->addButton(resolution3_, 2);
+		resolutionGroup_->addButton(resolution4_, 3);
 
 		quality_ = new QLabel();
 		quality_->setText(tr("Render Pipeline"));
@@ -62,12 +123,18 @@ namespace unreal
 		select2_->setCheckable(true);
 		select2_->installEventFilter(this);
 
-		group_ = new QButtonGroup();
-		group_->addButton(select1_, 0);
-		group_->addButton(select2_, 1);
+		selectGroup_ = new QButtonGroup();
+		selectGroup_->addButton(select1_, 0);
+		selectGroup_->addButton(select2_, 1);
 
-		videoRatio_ = new QLabel();
-		videoRatio_->setText(tr("Frame Per Second"));
+		auto selectLayout_ = new QHBoxLayout();
+		selectLayout_->addWidget(select1_, 0, Qt::AlignRight);
+		selectLayout_->addWidget(select2_, 0, Qt::AlignLeft);
+		selectLayout_->setSpacing(0);
+		selectLayout_->setContentsMargins(0, 0, 0, 0);
+
+		videoFps_ = new QLabel();
+		videoFps_->setText(tr("Frame Per Second"));
 
 		speed1_ = new QPushButton();
 		speed1_->setObjectName("speed1");
@@ -100,7 +167,6 @@ namespace unreal
 		speedGroup_->addButton(speed3_, 2);
 		speedGroup_->addButton(speed4_, 3);
 
-		// output video type
 		encodeType_ = new QLabel();
 		encodeType_->setText(tr("Encode Type"));
 
@@ -127,6 +193,23 @@ namespace unreal
 		modeGroup_->addButton(mode1_, 0);
 		modeGroup_->addButton(mode2_, 1);
 		modeGroup_->addButton(mode3_, 2);
+
+		auto encodeLayout_ = new QHBoxLayout();
+		encodeLayout_->addStretch();
+		encodeLayout_->addWidget(mode1_, 0, Qt::AlignLeft);
+		encodeLayout_->addWidget(mode2_, 0, Qt::AlignVCenter);
+		encodeLayout_->addWidget(mode3_, 0, Qt::AlignRight);
+		encodeLayout_->addStretch();
+		encodeLayout_->setContentsMargins(0, 0, 0, 0);
+
+		videoFpsLayout_ = new QHBoxLayout();
+		videoFpsLayout_->addStretch();
+		videoFpsLayout_->addWidget(speed1_, 0, Qt::AlignRight);
+		videoFpsLayout_->addWidget(speed2_, 0, Qt::AlignVCenter);
+		videoFpsLayout_->addWidget(speed3_, 0, Qt::AlignVCenter);
+		videoFpsLayout_->addWidget(speed4_, 0, Qt::AlignLeft);
+		videoFpsLayout_->addStretch();
+		videoFpsLayout_->setContentsMargins(0, 0, 0, 0);
 		
 		frame_ = new QLabel();
 		frame_->setText(tr("Play:"));
@@ -183,38 +266,21 @@ namespace unreal
 		recordButton_->setText(tr("Start Render"));
 		recordButton_->setContentsMargins(0, 0, 0, 0);
 		
-		auto selectLayout_ = new QHBoxLayout();
-		selectLayout_->addWidget(select1_, 0, Qt::AlignRight);
-		selectLayout_->addWidget(select2_, 0, Qt::AlignLeft);
-		selectLayout_->setSpacing(0);
-		selectLayout_->setContentsMargins(0, 0, 0, 0);
-
-		videoRatioLayout_ = new QHBoxLayout();
-		videoRatioLayout_->addStretch();
-		videoRatioLayout_->addWidget(speed1_, 0, Qt::AlignRight);
-		videoRatioLayout_->addWidget(speed2_, 0, Qt::AlignVCenter);
-		videoRatioLayout_->addWidget(speed3_, 0, Qt::AlignVCenter);
-		videoRatioLayout_->addWidget(speed4_, 0, Qt::AlignLeft);
-		videoRatioLayout_->addStretch();
-		videoRatioLayout_->setContentsMargins(0, 0, 0, 0);
-
-		auto encodeLayout_ = new QHBoxLayout();
-		encodeLayout_->addStretch();
-		encodeLayout_->addWidget(mode1_, 0, Qt::AlignLeft);
-		encodeLayout_->addWidget(mode2_, 0, Qt::AlignVCenter);
-		encodeLayout_->addWidget(mode3_, 0, Qt::AlignRight);
-		encodeLayout_->addStretch();
-		encodeLayout_->setContentsMargins(0, 0, 0, 0);
-
 		auto videoLayout = new QVBoxLayout;
-		videoLayout->addSpacing(10);
-		videoLayout->addWidget(resolutionLabel);
-		videoLayout->addWidget(resolutionCombo);
-		videoLayout->addWidget(quality_);
-		videoLayout->addLayout(selectLayout_);
 		videoLayout->addSpacing(10);
 		videoLayout->addWidget(videoRatio_);
 		videoLayout->addLayout(videoRatioLayout_);
+		videoLayout->addSpacing(10);
+		videoLayout->addWidget(resolutionLabel);
+		videoLayout->addWidget(resolution1_);
+		videoLayout->addWidget(resolution2_);
+		videoLayout->addWidget(resolution3_);
+		videoLayout->addWidget(resolution4_);
+		videoLayout->addWidget(quality_);
+		videoLayout->addLayout(selectLayout_);
+		videoLayout->addSpacing(10);
+		videoLayout->addWidget(videoFps_);
+		videoLayout->addLayout(videoFpsLayout_);
 		videoLayout->addSpacing(10);
 		videoLayout->addWidget(encodeType_);
 		videoLayout->addLayout(encodeLayout_);
@@ -247,28 +313,86 @@ namespace unreal
 
 		profile_->cameraModule->framebufferSize += [this](const octoon::math::uint2& framebufferSize)
 		{
-			resolutionCombo->blockSignals(true);
-
-			if (framebufferSize.x == 720 && framebufferSize.y == 480)
-				resolutionCombo->setCurrentIndex(0);
-			else if (framebufferSize.x == 800 && framebufferSize.y == 480)
-				resolutionCombo->setCurrentIndex(1);
-			else if (framebufferSize.x == 1024 && framebufferSize.y == 576)
-				resolutionCombo->setCurrentIndex(2);
-			else if (framebufferSize.x == 1280 && framebufferSize.y == 720)
-				resolutionCombo->setCurrentIndex(3);
-			else if (framebufferSize.x == 1920 && framebufferSize.y == 1080)
-				resolutionCombo->setCurrentIndex(4);
-			else if (framebufferSize.x == 540 && framebufferSize.y == 960)
-				resolutionCombo->setCurrentIndex(5);
-			else if (framebufferSize.x == 720 && framebufferSize.y == 1280)
-				resolutionCombo->setCurrentIndex(6);
-			else if (framebufferSize.x == 1080 && framebufferSize.y == 1920)
-				resolutionCombo->setCurrentIndex(7);
-			else
-				throw std::runtime_error("resolution not found");
-
-			resolutionCombo->blockSignals(false);
+			if (framebufferSize == octoon::math::uint2(1280, 720))
+			{
+				ratio1_->setChecked(true);
+				resolution1_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(720, 1280))
+			{
+				ratio2_->setChecked(true);
+				resolution1_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(1280, 960))
+			{
+				ratio3_->setChecked(true);
+				resolution1_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(960, 1280))
+			{
+				ratio4_->setChecked(true);
+				resolution1_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(1920, 1080))
+			{
+				ratio1_->setChecked(true);
+				resolution2_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(1080, 1920))
+			{
+				ratio2_->setChecked(true);
+				resolution2_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(1600, 1200))
+			{
+				ratio3_->setChecked(true);
+				resolution2_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(1200, 1600))
+			{
+				ratio4_->setChecked(true);
+				resolution2_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(2560, 1440))
+			{
+				ratio1_->setChecked(true);
+				resolution3_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(1440, 2560))
+			{
+				ratio2_->setChecked(true);
+				resolution3_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(3200, 2400))
+			{
+				ratio3_->setChecked(true);
+				resolution3_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(2400, 3200))
+			{
+				ratio4_->setChecked(true);
+				resolution3_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(3840, 2160))
+			{
+				ratio1_->setChecked(true);
+				resolution4_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(2160, 3840))
+			{
+				ratio2_->setChecked(true);
+				resolution4_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(4000, 3000))
+			{
+				ratio3_->setChecked(true);
+				resolution4_->setChecked(true);
+			}
+			else if (framebufferSize == octoon::math::uint2(3000, 4000))
+			{
+				ratio4_->setChecked(true);
+				resolution4_->setChecked(true);
+			}
 		};
 
 		profile_->offlineModule->bounces += [this](std::uint32_t value)
@@ -344,6 +468,14 @@ namespace unreal
 				recordButton_->setText(tr("Start Render"));
 		};
 
+		connect(ratio1_, SIGNAL(toggled(bool)), this, SLOT(onRatioEvent(bool)));
+		connect(ratio2_, SIGNAL(toggled(bool)), this, SLOT(onRatioEvent(bool)));
+		connect(ratio3_, SIGNAL(toggled(bool)), this, SLOT(onRatioEvent(bool)));
+		connect(ratio4_, SIGNAL(toggled(bool)), this, SLOT(onRatioEvent(bool)));
+		connect(resolution1_, SIGNAL(toggled(bool)), this, SLOT(onResolutionEvent(bool)));
+		connect(resolution2_, SIGNAL(toggled(bool)), this, SLOT(onResolutionEvent(bool)));
+		connect(resolution3_, SIGNAL(toggled(bool)), this, SLOT(onResolutionEvent(bool)));
+		connect(resolution4_, SIGNAL(toggled(bool)), this, SLOT(onResolutionEvent(bool)));
 		connect(select1_, SIGNAL(toggled(bool)), this, SLOT(select1Event(bool)));
 		connect(select2_, SIGNAL(toggled(bool)), this, SLOT(select2Event(bool)));
 		connect(speed1_, SIGNAL(toggled(bool)), this, SLOT(speed1Event(bool)));
@@ -360,11 +492,94 @@ namespace unreal
 		connect(bouncesSpinbox_, SIGNAL(valueChanged(int)), this, SLOT(onBouncesChanged(int)));
 		connect(crfSpinbox, SIGNAL(valueChanged(double)), this, SLOT(onCrfChanged(double)));
 		connect(recordButton_, SIGNAL(clicked(bool)), this, SLOT(recordEvent(bool)));
-		connect(resolutionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(onResolutionCombo(int)));
 	}
 
 	RecordDock::~RecordDock() noexcept
 	{
+	}
+
+	void
+	RecordDock::onRatioEvent(bool)
+	{
+		if (ratio1_->isChecked())
+		{
+			resolution1_->setText("1280*720");
+			resolution2_->setText("1920*1080");
+			resolution3_->setText("2560*1440");
+			resolution4_->setText("3840*2160");
+		}
+		if (ratio2_->isChecked())
+		{
+			resolution1_->setText("720*1280");
+			resolution2_->setText("1080*1920");
+			resolution3_->setText("1440*2560");
+			resolution4_->setText("2160*3840");
+		}
+		if (ratio3_->isChecked())
+		{
+			resolution1_->setText("1280*960");
+			resolution2_->setText("1600*1200");
+			resolution3_->setText("3200*2400");
+			resolution4_->setText("4000*3000");
+		}
+		if (ratio4_->isChecked())
+		{
+			resolution1_->setText("960*1280");
+			resolution2_->setText("1200*1600");
+			resolution3_->setText("2400*3200");
+			resolution4_->setText("3000*4000");
+		}
+
+		this->onResolutionEvent(true);
+	}
+
+	void
+	RecordDock::onResolutionEvent(bool)
+	{
+		if (resolution1_->isChecked())
+		{
+			if (resolution1_->text() == "1280*720")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(1280, 720);
+			else if (resolution1_->text() == "720*1280")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(720, 1280);
+			else if (resolution1_->text() == "1280*960")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(1280, 960);
+			else if (resolution1_->text() == "960*1280")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(960, 1280);
+		}
+		else if (resolution2_->isChecked())
+		{
+			if (resolution2_->text() == "1920*1080")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(1920, 1080);
+			if (resolution2_->text() == "1080*1920")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(1080, 1920);
+			if (resolution2_->text() == "1600*1200")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(1600, 1200);
+			if (resolution2_->text() == "1200*1600")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(1200, 1600);
+		}
+		else if (resolution3_->isChecked())
+		{
+			if (resolution3_->text() == "2560*1440")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(2560, 1440);
+			if (resolution3_->text() == "1440*2560")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(1440, 2560);
+			if (resolution3_->text() == "3200*2400")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(3200, 2400);
+			if (resolution3_->text() == "2400*3200")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(2400, 3200);
+		}
+		else if (resolution4_->isChecked())
+		{
+			if (resolution4_->text() == "3840*2160")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(3840, 2160);
+			if (resolution4_->text() == "2160*3840")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(2160, 3840);
+			if (resolution4_->text() == "4000*3000")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(4000, 3000);
+			if (resolution4_->text() == "3000*4000")
+				profile_->cameraModule->framebufferSize = octoon::math::uint2(3000, 4000);
+		}
 	}
 
 	void
@@ -518,26 +733,15 @@ namespace unreal
 	}
 
 	void
-	RecordDock::onResolutionCombo(int index)
-	{
-		switch (resolutionCombo->currentIndex())
-		{
-		case 0: profile_->cameraModule->framebufferSize = octoon::math::uint2(720, 480); break;
-		case 1: profile_->cameraModule->framebufferSize = octoon::math::uint2(800, 480); break;
-		case 2: profile_->cameraModule->framebufferSize = octoon::math::uint2(1024, 576); break;
-		case 3: profile_->cameraModule->framebufferSize = octoon::math::uint2(1280, 720); break;
-		case 4: profile_->cameraModule->framebufferSize = octoon::math::uint2(1920, 1080); break;
-		case 5: profile_->cameraModule->framebufferSize = octoon::math::uint2(540, 960); break;
-		case 6: profile_->cameraModule->framebufferSize = octoon::math::uint2(720, 1280); break;
-		case 7:  profile_->cameraModule->framebufferSize = octoon::math::uint2(1080, 1920); break;
-		}
-	}
-
-	void
 	RecordDock::showEvent(QShowEvent* event)
 	{
 		startFrame_->setValue(0);
 		endFrame_->setValue(profile_->playerModule->endFrame);
+		denoiseButton_->setCheckState(profile_->recordModule->denoise ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+		sppSpinbox_->setValue(profile_->offlineModule->spp);
+		crfSpinbox->doublespinbox_->setValue(profile_->encodeModule->crf);
+		bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
+		profile_->cameraModule->framebufferSize.submit();
 
 		if (profile_->recordModule->active)
 			recordButton_->setText(tr("Stop Render"));
@@ -565,31 +769,6 @@ namespace unreal
 			mode2_->click();
 		else if (profile_->encodeModule->encodeMode == EncodeMode::Frame)
 			mode3_->click();
-
-		auto& framebufferSize = profile_->cameraModule->framebufferSize.getValue();
-		if (framebufferSize.x == 720 && framebufferSize.y == 480)
-			resolutionCombo->setCurrentIndex(0);
-		else if (framebufferSize.x == 800 && framebufferSize.y == 480)
-			resolutionCombo->setCurrentIndex(1);
-		else if (framebufferSize.x == 1024 && framebufferSize.y == 576)
-			resolutionCombo->setCurrentIndex(2);
-		else if (framebufferSize.x == 1280 && framebufferSize.y == 720)
-			resolutionCombo->setCurrentIndex(3);
-		else if (framebufferSize.x == 1920 && framebufferSize.y == 1080)
-			resolutionCombo->setCurrentIndex(4);
-		else if (framebufferSize.x == 540 && framebufferSize.y == 960)
-			resolutionCombo->setCurrentIndex(5);
-		else if (framebufferSize.x == 720 && framebufferSize.y == 1280)
-			resolutionCombo->setCurrentIndex(6);
-		else if (framebufferSize.x == 1080 && framebufferSize.y == 1920)
-			resolutionCombo->setCurrentIndex(7);
-		else
-			throw std::runtime_error("resolution not found");
-
-		denoiseButton_->setCheckState(profile_->recordModule->denoise ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
-		sppSpinbox_->setValue(profile_->offlineModule->spp);
-		crfSpinbox->doublespinbox_->setValue(profile_->encodeModule->crf);
-		bouncesSpinbox_->setValue(profile_->offlineModule->bounces);
 	}
 
 	void

@@ -945,167 +945,196 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="36"/>
+        <location filename="../views/record_dock.cpp" line="78"/>
         <source>Resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="54"/>
+        <location filename="../views/record_dock.cpp" line="115"/>
         <source>Ultra Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="70"/>
+        <location filename="../views/record_dock.cpp" line="137"/>
         <source>Frame Per Second</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="74"/>
+        <location filename="../views/record_dock.cpp" line="141"/>
         <source>24</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="80"/>
+        <location filename="../views/record_dock.cpp" line="147"/>
         <source>25</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="86"/>
+        <location filename="../views/record_dock.cpp" line="153"/>
         <source>30</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="93"/>
+        <location filename="../views/record_dock.cpp" line="160"/>
         <source>60</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="115"/>
+        <location filename="../views/record_dock.cpp" line="181"/>
         <source>H265</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="109"/>
+        <location filename="../views/record_dock.cpp" line="175"/>
         <source>H264</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="105"/>
-        <source>Encode Type</source>
+        <location filename="../views/record_dock.cpp" line="36"/>
+        <source>Ratio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="132"/>
-        <source>Play:</source>
+        <location filename="../views/record_dock.cpp" line="40"/>
+        <location filename="../views/record_dock.cpp" line="82"/>
+        <source>16:9</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="135"/>
-        <source>Start</source>
+        <location filename="../views/record_dock.cpp" line="46"/>
+        <location filename="../views/record_dock.cpp" line="88"/>
+        <source>9:16</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="138"/>
-        <source>- End</source>
+        <location filename="../views/record_dock.cpp" line="52"/>
+        <location filename="../views/record_dock.cpp" line="94"/>
+        <source>4:3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="155"/>
-        <source>Denoise:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="167"/>
-        <source>Recursion depth per pixel:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/record_dock.cpp" line="169"/>
-        <source>Sample number per pixel:</source>
+        <location filename="../views/record_dock.cpp" line="58"/>
+        <location filename="../views/record_dock.cpp" line="100"/>
+        <source>3:4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/record_dock.cpp" line="171"/>
+        <source>Encode Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="215"/>
+        <source>Play:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="218"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="221"/>
+        <source>- End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="238"/>
+        <source>Denoise:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="250"/>
+        <source>Recursion depth per pixel:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="252"/>
+        <source>Sample number per pixel:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/record_dock.cpp" line="254"/>
         <source>Constant Rate Factor (CRF):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="183"/>
-        <location filename="../views/record_dock.cpp" line="333"/>
-        <location filename="../views/record_dock.cpp" line="344"/>
-        <location filename="../views/record_dock.cpp" line="545"/>
+        <location filename="../views/record_dock.cpp" line="266"/>
+        <location filename="../views/record_dock.cpp" line="457"/>
+        <location filename="../views/record_dock.cpp" line="468"/>
+        <location filename="../views/record_dock.cpp" line="749"/>
         <source>Start Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="230"/>
+        <location filename="../views/record_dock.cpp" line="296"/>
         <source>Render Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="495"/>
+        <location filename="../views/record_dock.cpp" line="710"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="495"/>
+        <location filename="../views/record_dock.cpp" line="710"/>
         <source>Start frame must be less than end frame.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="501"/>
+        <location filename="../views/record_dock.cpp" line="716"/>
         <source>Save Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="501"/>
+        <location filename="../views/record_dock.cpp" line="716"/>
         <source>MP4 Files (*.mp4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="501"/>
+        <location filename="../views/record_dock.cpp" line="716"/>
         <source>New Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="503"/>
+        <location filename="../views/record_dock.cpp" line="718"/>
         <source>Save Image Sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="503"/>
+        <location filename="../views/record_dock.cpp" line="718"/>
         <source>PNG Files (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="335"/>
-        <location filename="../views/record_dock.cpp" line="342"/>
-        <location filename="../views/record_dock.cpp" line="543"/>
+        <location filename="../views/record_dock.cpp" line="459"/>
+        <location filename="../views/record_dock.cpp" line="466"/>
+        <location filename="../views/record_dock.cpp" line="747"/>
         <source>Stop Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="50"/>
+        <location filename="../views/record_dock.cpp" line="111"/>
         <source>Render Pipeline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="61"/>
+        <location filename="../views/record_dock.cpp" line="122"/>
         <source>Realtime Render</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="121"/>
+        <location filename="../views/record_dock.cpp" line="187"/>
         <source>Images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="510"/>
+        <location filename="../views/record_dock.cpp" line="725"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/record_dock.cpp" line="510"/>
+        <location filename="../views/record_dock.cpp" line="725"/>
         <source>Failed to create file</source>
         <translation type="unfinished"></translation>
     </message>

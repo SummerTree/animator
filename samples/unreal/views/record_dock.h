@@ -44,6 +44,8 @@ namespace unreal
 		bool eventFilter(QObject* watched, QEvent* event);
 
 	  private Q_SLOTS:
+		void onRatioEvent(bool);
+		void onResolutionEvent(bool);
 		void recordEvent(bool);
 		void select1Event(bool checked);
 		void select2Event(bool checked);
@@ -61,11 +63,11 @@ namespace unreal
 		void onSppChanged(int);
 		void onBouncesChanged(int);
 		void onCrfChanged(double);
-		void onResolutionCombo(int index);
 
 	  public:
-		QLabel* quality_;
+		QLabel* videoFps_;
 		QLabel* videoRatio_;
+		QLabel* quality_;
 		QLabel* frame_;
 		QLabel* encodeType_;
 		QLabel* sppLabel;
@@ -76,10 +78,21 @@ namespace unreal
 		QLabel* denoiseLabel_;
 		QLabel* resolutionLabel;
 
-		QComboBox* resolutionCombo;
-		QButtonGroup* group_;
+		QButtonGroup* selectGroup_;
 		QButtonGroup* speedGroup_;
 		QButtonGroup* modeGroup_;
+		QButtonGroup* ratioGroup_;
+		QButtonGroup* resolutionGroup_;
+
+		QPushButton* ratio1_;
+		QPushButton* ratio2_;
+		QPushButton* ratio3_;
+		QPushButton* ratio4_;
+
+		QPushButton* resolution1_;
+		QPushButton* resolution2_;
+		QPushButton* resolution3_;
+		QPushButton* resolution4_;
 
 		QPushButton* select1_;
 		QPushButton* select2_;
@@ -104,7 +117,9 @@ namespace unreal
 		UDoubleSpinLine* crfSpinbox;
 
 		QHBoxLayout* videoRatioLayout_;
+		QHBoxLayout* videoFpsLayout_;
 		QHBoxLayout* frameLayout_;
+		QVBoxLayout* resolutionLayout_;
 		QVBoxLayout* mainLayout_;
 
 		QWidget* mainWidget_;

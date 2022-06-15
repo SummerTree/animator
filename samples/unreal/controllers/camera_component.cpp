@@ -168,7 +168,20 @@ namespace unreal
 			if (camera)
 			{
 				auto cameraComponent = camera->getComponent<octoon::FilmCameraComponent>();
-				cameraComponent->setupFramebuffers(size.x, size.y, 0, octoon::GraphicsFormat::R32G32B32SFloat);
+				if (cameraComponent)
+				{
+					auto framebuffer = cameraComponent->getFramebuffer();
+					if (framebuffer)
+					{
+						if (framebuffer->getFramebufferDesc().getWidth() == size.x &&
+							framebuffer->getFramebufferDesc().getHeight() == size.y)
+						{
+							return;
+						}
+					}
+
+					cameraComponent->setupFramebuffers(size.x, size.y, 0, octoon::GraphicsFormat::R32G32B32SFloat);
+				}
 			}
 		};
 
