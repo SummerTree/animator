@@ -72,6 +72,7 @@ namespace unreal
 		QLabel* bouncesLabel_;
 		QLabel* crfLabel;
 		QLabel* startLabel_;
+		QLabel* middleLabel_;
 		QLabel* endLabel_;
 		QLabel* denoiseLabel_;
 		QLabel* resolutionLabel;

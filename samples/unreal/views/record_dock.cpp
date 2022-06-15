@@ -213,8 +213,11 @@ namespace unreal
 		startLabel_ = new QLabel();
 		startLabel_->setText(tr("Start"));
 
+		middleLabel_ = new QLabel();
+		middleLabel_->setText(tr("-"));
+
 		endLabel_ = new QLabel();
-		endLabel_->setText(tr("- End"));
+		endLabel_->setText(tr("End"));
 
 		startFrame_ = new QSpinBox();
 		startFrame_->setObjectName("Start");
@@ -250,12 +253,12 @@ namespace unreal
 		crfSpinbox = UDoubleSpinLine::create(this, tr("Constant Rate Factor (CRF):"), 0.0f, 63.0f, 0);
 
 		frameLayout_ = new QHBoxLayout();
-		frameLayout_->addSpacing(20);
 		frameLayout_->addWidget(startLabel_, 0, Qt::AlignLeft);
 		frameLayout_->addWidget(startFrame_, 0, Qt::AlignLeft);
-		frameLayout_->addWidget(endLabel_, 0, Qt::AlignLeft);
-		frameLayout_->addWidget(endFrame_, 0, Qt::AlignLeft);
-		frameLayout_->addStretch();
+		frameLayout_->addWidget(middleLabel_, 0, Qt::AlignCenter);
+		frameLayout_->addWidget(endLabel_, 0, Qt::AlignRight);
+		frameLayout_->addWidget(endFrame_, 0, Qt::AlignRight);
+		frameLayout_->setContentsMargins(20, 0, 20, 0);
 
 		recordButton_ = new QPushButton();
 		recordButton_->setObjectName("Render");
