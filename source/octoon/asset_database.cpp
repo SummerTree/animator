@@ -6,6 +6,7 @@
 #include <octoon/pmx_loader.h>
 #include <octoon/obj_loader.h>
 #include <octoon/ass_loader.h>
+#include <octoon/fbx_loader.h>
 #include <octoon/texture/texture.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/animation/animation.h>
@@ -560,6 +561,16 @@ namespace octoon
 				return model;
 			}
 		}
+		else if (ext == ".fbx")
+		{
+			auto model = FBXLoader::load(path);
+			if (model)
+			{
+				assetPathList_[model] = (char*)path.u8string().c_str();
+				assetGuidList_[model] = make_guid();
+				return model;
+			}
+		}
 		else if (ext == ".abc")
 		{
 			auto model = std::make_shared<GameObject>();
@@ -652,6 +663,32 @@ namespace octoon
 				if (ext == u8".pmx")
 				{
 					auto gameObject = PMXLoader::load(filepath, PMXLoadFlagBits::AllBit);
+					if (gameObject)
+					{
+						packageList_[uuid] = package;
+						assetList_[gameObject] = package;
+						assetPathList_[gameObject] = path;
+						assetGuidList_[gameObject] = uuid;
+
+						return gameObject;
+					}
+				}
+				else if (ext == u8".obj")
+				{
+					auto gameObject = OBJLoader::load(filepath);
+					if (gameObject)
+					{
+						packageList_[uuid] = package;
+						assetList_[gameObject] = package;
+						assetPathList_[gameObject] = path;
+						assetGuidList_[gameObject] = uuid;
+
+						return gameObject;
+					}
+				}
+				else if (ext == u8".fbx")
+				{
+					auto gameObject = FBXLoader::load(filepath);
 					if (gameObject)
 					{
 						packageList_[uuid] = package;

@@ -1,25 +1,15 @@
 #include <octoon/obj_loader.h>
+#include <octoon/asset_database.h>
 #include <octoon/material/mesh_standard_material.h>
-#include <octoon/transform_component.h>
-#include <octoon/point_light_component.h>
-#include <octoon/film_camera_component.h>
 #include <octoon/mesh_filter_component.h>
 #include <octoon/mesh_renderer_component.h>
 #include <tiny_obj_loader.h>
 #include <fstream>
 #include <set>
 #include <unordered_map>
-#include <octoon/asset_database.h>
 
 namespace octoon
 {
-	struct Index
-	{
-		std::uint32_t v;
-		std::uint32_t n;
-		std::uint32_t uv;
-	};
-
 	OBJLoader::OBJLoader() noexcept
 	{
 	}
