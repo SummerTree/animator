@@ -304,7 +304,7 @@ namespace unreal
 		this->intensitySlider->installEventFilter(this);
 
 		this->intensitySpinBox = new UDoubleSpinBox;
-		this->intensitySpinBox->setMaximum(10.0f);
+		this->intensitySpinBox->setMaximum(20.0f);
 		this->intensitySpinBox->setSingleStep(0.1f);
 		this->intensitySpinBox->setAlignment(Qt::AlignRight);
 		this->intensitySpinBox->setValue(0.0f);
@@ -750,7 +750,7 @@ namespace unreal
 	void
 	EnvironmentDock::intensitySliderEvent(int value)
 	{
-		this->profile_->environmentLightModule->intensity = value / 10.0f;
+		this->profile_->environmentLightModule->intensity = value / 20.0f;
 	}
 
 	void
@@ -796,7 +796,7 @@ namespace unreal
 		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
 
 		this->intensitySpinBox->setValue(profile_->environmentLightModule->intensity);
-		this->intensitySlider->setValue(profile_->environmentLightModule->intensity * 10.0f);
+		this->intensitySlider->setValue(profile_->environmentLightModule->intensity * 20.0f);
 
 		this->horizontalRotationSpinBox->setValue(profile_->environmentLightModule->offset.getValue().x);
 		this->horizontalRotationSlider->setValue(profile_->environmentLightModule->offset.getValue().x * 100.0f);

@@ -16,7 +16,13 @@ namespace octoon
 
 		float metallic;
 		float roughness;
+		float specular;
+		float anisotropic;
 		float ior;
+		float clearcoat;
+		float clearcoatgloss;
+		float subsurface;
+		float spectrans;
 
 		std::string albedoTex;
 		std::string metallicRoughnessTex;
@@ -87,8 +93,14 @@ namespace octoon
 					material.emission = math::float3::Zero;
 					material.metallic = 0;
 					material.roughness = 0;
+					material.specular = 0.5;
 					material.materialType = 0.0f;
 					material.ior = 1.5f;
+					material.clearcoat = 0.0f;
+					material.clearcoatgloss = 0.0f;
+					material.anisotropic = 0.0f;
+					material.subsurface = 0.0f;
+					material.spectrans = 0.0f;
 
 					char albedoTexName[100] = "None";
 					char normalTexName[100] = "None";
@@ -106,9 +118,14 @@ namespace octoon
 						sscanf(line, " metallic %f", &material.metallic);
 						sscanf(line, " roughness %f", &material.roughness);
 						sscanf(line, " ior %f", &material.ior);
-						//sscanf(line, " transmittance %f", &material.transmittance);
+						sscanf(line, " specular %f", &material.specular);
+						sscanf(line, " clearcoat %f", &material.clearcoat);
+						sscanf(line, " clearcoatgloss %f", &material.clearcoatgloss);
+						sscanf(line, " anisotropic %f", &material.anisotropic);
+						sscanf(line, " subsurface %f", &material.subsurface);
+						sscanf(line, " spectrans %f", &material.spectrans);
 
-						sscanf(line, " albedoTexture %s", albedoTexName);
+						sscanf(line, " albedotexture %s", albedoTexName);
 						sscanf(line, " metallicRoughnessTexture %s", metallicRoughnessTexName);
 						sscanf(line, " normalTexture %s", normalTexName);
 					}
@@ -123,9 +140,13 @@ namespace octoon
 						standard->setColor(material.albedo);
 						standard->setEmissive(material.emission);
 						standard->setRoughness(material.roughness);
+						standard->setSpecular(material.specular);
 						standard->setMetalness(material.metallic);
+						standard->setAnisotropy(material.anisotropic);
 						standard->setRefractionRatio(material.ior);
-						standard->setTransmission(material.materialType);
+						standard->setClearCoat(material.clearcoat);
+						standard->setClearCoatRoughness(1.0f - material.clearcoatgloss);
+						standard->setTransmission(material.spectrans);
 
 						if (!material.albedoTex.empty())
 						{

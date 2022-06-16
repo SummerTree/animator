@@ -1653,11 +1653,6 @@ $20 (Original cost $40)</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="323"/>
-        <source>All Files(*.pmm *.pmx *.abc *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../views/toplevel_bar.cpp" line="336"/>
         <source>Failed to import resource: </source>
         <translation></translation>
@@ -1708,6 +1703,11 @@ $20 (Original cost $40)</source>
         <location filename="../views/toplevel_bar.cpp" line="54"/>
         <source>Import Resource File(.pmm, .pmx, .wav)</source>
         <translation>加载资源文件(.pmm, .pmx, .wav)</translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="323"/>
+        <source>All Files(*.pmm *.pmx *.abc *.vmd *.ass);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="620"/>

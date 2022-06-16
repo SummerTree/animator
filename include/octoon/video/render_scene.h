@@ -19,6 +19,9 @@ namespace octoon
 		void setDirty(bool dirty) noexcept;
 		bool isDirty() const noexcept;
 
+		void setSceneDirty(bool dirty) noexcept;
+		bool isSceneDirty() const noexcept;
+
 		void setGlobalIllumination(bool enable) noexcept;
 		bool getGlobalIllumination() const noexcept;
 
@@ -45,6 +48,7 @@ namespace octoon
 		RenderScene& operator=(const RenderScene&) = delete;
 
 	private:
+		bool dirty_;
 		bool enableGlobalIllumination_;
 
 		Camera* mainCamera_;

@@ -1513,11 +1513,6 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/toplevel_bar.cpp" line="323"/>
-        <source>All Files(*.pmm *.pmx *.abc *.vmd);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../views/toplevel_bar.cpp" line="336"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
@@ -1536,6 +1531,11 @@ $20 (Original cost $40)</source>
         <location filename="../views/toplevel_bar.cpp" line="46"/>
         <location filename="../views/toplevel_bar.cpp" line="361"/>
         <source>Save Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/toplevel_bar.cpp" line="323"/>
+        <source>All Files(*.pmm *.pmx *.abc *.vmd *.ass);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

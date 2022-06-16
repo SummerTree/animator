@@ -163,6 +163,7 @@ namespace octoon
 	void 
 	Renderer::endFrameRendering(const std::shared_ptr<RenderScene>& scene, const std::vector<Camera*>& camera) noexcept
 	{
+		scene->setSceneDirty(false);
 	}
 
 	void

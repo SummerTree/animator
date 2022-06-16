@@ -5,6 +5,7 @@ namespace octoon
 	RenderScene::RenderScene() noexcept
 		: mainCamera_(nullptr)
 		, enableGlobalIllumination_(false)
+		, dirty_(true)
 	{
 	}
 
@@ -27,6 +28,8 @@ namespace octoon
 	void
 	RenderScene::setDirty(bool dirty) noexcept
 	{
+		dirty_ = dirty;
+
 		for (auto& it : cameras_)
 			it->setDirty(dirty);
 		for (auto& it : lights_)
@@ -51,6 +54,9 @@ namespace octoon
 	bool
 	RenderScene::isDirty() const noexcept
 	{
+		if (dirty_)
+			return true;
+
 		for (auto& it : cameras_)
 		{
 			if (it->isDirty())
@@ -86,6 +92,18 @@ namespace octoon
 		}
 
 		return false;
+	}
+
+	void
+	RenderScene::setSceneDirty(bool dirty) noexcept
+	{
+		dirty_ = dirty;
+	}
+
+	bool
+	RenderScene::isSceneDirty() const noexcept
+	{
+		return dirty_;
 	}
 
 	void
@@ -194,6 +212,8 @@ namespace octoon
 			this->addLight(object->downcast<Light>());
 		else if (object->isA<Geometry>())
 			this->addGeometry(object->downcast<Geometry>());
+
+		dirty_ = true;
 	}
 
 	void
@@ -207,6 +227,8 @@ namespace octoon
 			this->removeLight(object->downcast<Light>());
 		else if (object->isA<Geometry>())
 			this->removeGeometry(object->downcast<Geometry>());
+
+		dirty_ = true;
 	}
 
 	void
