@@ -224,16 +224,6 @@ namespace octoon
 				return previewPath;
 			};
 
-			auto writeFloat2 = [](const math::float2& v)
-			{
-				return nlohmann::json({ v.x, v.y });
-			};
-
-			auto writeFloat3 = [](const math::float3& v)
-			{
-				return nlohmann::json({ v.x, v.y, v.z });
-			};
-
 			auto standardMaterial = material->downcast<MeshStandardMaterial>();
 
 			nlohmann::json package;
@@ -257,9 +247,9 @@ namespace octoon
 			package["lightMapIntensity"] = standardMaterial->getLightMapIntensity();
 			package["emissiveIntensity"] = standardMaterial->getEmissiveIntensity();
 			package["gamma"] = standardMaterial->getGamma();
-			package["offset"] = writeFloat2(standardMaterial->getOffset());
-			package["repeat"] = writeFloat2(standardMaterial->getRepeat());
-			package["normalScale"] = writeFloat2(standardMaterial->getNormalScale());
+			package["offset"] = standardMaterial->getOffset().to_array();
+			package["repeat"] = standardMaterial->getRepeat().to_array();
+			package["normalScale"] = standardMaterial->getNormalScale().to_array();
 			package["color"] = standardMaterial->getColor().to_array();
 			package["emissive"] = standardMaterial->getEmissive().to_array();
 			package["subsurfaceColor"] = standardMaterial->getSubsurfaceColor().to_array();
@@ -913,17 +903,17 @@ namespace octoon
 				auto subsurfaceColor = package.find("subsurfaceColor");
 
 				if (offset != package.end() && (*offset).is_array())
-					material->setOffset(math::float2((*offset)[0].get<nlohmann::json::number_float_t>(), (*offset)[1].get<nlohmann::json::number_float_t>()));
+					material->setOffset(math::float2((*offset).get<std::array<float, 2>>()));
 				if (repeat != package.end() && (*repeat).is_array())
-					material->setRepeat(math::float2((*repeat)[0].get<nlohmann::json::number_float_t>(), (*repeat)[1].get<nlohmann::json::number_float_t>()));
+					material->setRepeat(math::float2((*repeat).get<std::array<float, 2>>()));
 				if (normalScale != package.end() && (*normalScale).is_array())
-					material->setNormalScale(math::float2((*normalScale)[0].get<nlohmann::json::number_float_t>(), (*normalScale)[1].get<nlohmann::json::number_float_t>()));
+					material->setNormalScale(math::float2((*normalScale).get<std::array<float, 2>>()));
 				if (color != package.end() && (*color).is_array())
-					material->setColor(math::float3((*color)[0].get<nlohmann::json::number_float_t>(), (*color)[1].get<nlohmann::json::number_float_t>(), (*color)[2].get<nlohmann::json::number_float_t>()));
+					material->setColor(math::float3((*color).get<std::array<float, 3>>()));
 				if (emissive != package.end() && (*emissive).is_array())
-					material->setEmissive(math::float3((*emissive)[0].get<nlohmann::json::number_float_t>(), (*emissive)[1].get<nlohmann::json::number_float_t>(), (*emissive)[2].get<nlohmann::json::number_float_t>()));
+					material->setEmissive(math::float3((*emissive).get<std::array<float, 3>>()));
 				if (subsurfaceColor != package.end() && (*subsurfaceColor).is_array())
-					material->setSubsurfaceColor(math::float3((*subsurfaceColor)[0].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[1].get<nlohmann::json::number_float_t>(), (*subsurfaceColor)[2].get<nlohmann::json::number_float_t>()));
+					material->setSubsurfaceColor(math::float3((*subsurfaceColor).get<std::array<float, 3>>()));
 
 				this->assetList_[material] = package;
 				this->assetGuidList_[material] = uuid;
