@@ -94,7 +94,7 @@ namespace unreal
 
 			this->sendMessage("editor:project:open");
 		}
-		else if (ext == u8".pmx" || ext == u8".abc")
+		else if (ext == u8".pmx" || ext == u8".abc" || ext == u8".obj")
 		{
 			entitiesComponent_->importModel(path);
 

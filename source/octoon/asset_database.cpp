@@ -4,6 +4,7 @@
 #include <octoon/runtime/string.h>
 #include <octoon/vmd_loader.h>
 #include <octoon/pmx_loader.h>
+#include <octoon/obj_loader.h>
 #include <octoon/ass_loader.h>
 #include <octoon/texture/texture.h>
 #include <octoon/material/mesh_standard_material.h>
@@ -543,6 +544,15 @@ namespace octoon
 		{
 			auto model = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
 			if (model)
+			{
+				assetPathList_[model] = (char*)path.u8string().c_str();
+				assetGuidList_[model] = make_guid();
+				return model;
+			}
+		}
+		else if (ext == ".obj")
+		{
+			for (auto& model : OBJLoader::load(path))
 			{
 				assetPathList_[model] = (char*)path.u8string().c_str();
 				assetGuidList_[model] = make_guid();

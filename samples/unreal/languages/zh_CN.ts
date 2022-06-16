@@ -1706,7 +1706,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/toplevel_bar.cpp" line="323"/>
-        <source>All Files(*.pmm *.pmx *.abc *.vmd *.ass);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd)</source>
+        <source>All Files(*.pmm *.pmx *.abc *.obj *.vmd *.scene);; PMM Files (*.pmm);; PMX Files (*.pmx);; Abc Files (*.abc);; VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
