@@ -489,16 +489,20 @@ namespace unreal
 					auto name = texture->getName();
 					auto width = texture->width();
 					auto height = texture->height();
-					auto size = width * height * 3;
-					auto pixels = std::make_unique<std::uint8_t[]>(size);
-					
-					float* data_ = (float*)texture->data();
+					auto data_ = (float*)texture->data();
+					auto bytesPerLine = (width * 24 + 31) / 32 * 4;
+					auto pixels = std::make_unique<std::uint8_t[]>(height * bytesPerLine);
 
-					for (std::size_t i = 0; i < size; i += 3)
+					for (std::size_t y = 0; y < height; y++)
 					{
-						pixels[i] = std::clamp<float>(std::pow(data_[i], 1.0f / 2.2f) * 255.0f, 0, 255);
-						pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
-						pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
+						for (std::size_t x = 0; x < width; x++)
+						{
+							auto src = (y * width + x) * 3;
+							auto dest = y * bytesPerLine + x * 3;
+							pixels[dest] = std::clamp<float>(std::pow(data_[src], 1.0f / 2.2f) * 255.0f, 0, 255);
+							pixels[dest + 1] = std::clamp<float>(std::pow(data_[src + 1], 1.0f / 2.2f) * 255.0f, 0, 255);
+							pixels[dest + 2] = std::clamp<float>(std::pow(data_[src + 2], 1.0f / 2.2f) * 255.0f, 0, 255);
+						}
 					}
 
 					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
@@ -582,8 +586,9 @@ namespace unreal
 		{
 			auto srcWidth = this->previewImage_->width();
 			auto srcHeight = this->previewImage_->height();
+			auto bytesPerLine = (srcWidth * 24 + 31) / 32 * 4;
 			auto offset = this->profile_->environmentLightModule->offset.getValue();
-			auto pixels = QImage(srcWidth, srcHeight, QImage::Format::Format_RGB888);
+			auto pixels = std::make_unique<std::uint8_t[]>(bytesPerLine * srcHeight);
 
 			for (std::size_t y = 0; y < srcHeight; y++)
 			{
@@ -597,18 +602,16 @@ namespace unreal
 					u -= std::floor(u);
 					auto ui = int(u * srcWidth);
 
-					auto dst = (y * srcWidth + x) * 3;
+					auto dst = y * bytesPerLine + x * 3;
 					auto pixel = this->previewImage_->pixelColor(ui, vi);
 
-					auto r = std::clamp<float>(pixel.redF() * c.red(), 0, 255);
-					auto g = std::clamp<float>(pixel.greenF() * c.green(), 0, 255);
-					auto b = std::clamp<float>(pixel.blueF() * c.blue(), 0, 255);
-
-					pixels.setPixelColor(x, y, QColor(r, g, b));
+					pixels[dst] = std::clamp<float>(pixel.redF() * c.red(), 0, 255);
+					pixels[dst + 1] = std::clamp<float>(pixel.greenF() * c.green(), 0, 255);
+					pixels[dst + 2] = std::clamp<float>(pixel.blueF() * c.blue(), 0, 255);
 				}
 			}
 
-			previewButton_->setIcon(QPixmap::fromImage(std::move(pixels)));
+			previewButton_->setIcon(QPixmap::fromImage(QImage(pixels.get(), srcWidth, srcHeight, QImage::Format::Format_RGB888)));
 		}
 		else
 		{
