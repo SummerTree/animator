@@ -587,36 +587,6 @@ namespace octoon
 	}
 
 	std::shared_ptr<RttiObject>
-	AssetDatabase::loadAssetAtPath(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false)
-	{
-		auto ext = path.extension().string();
-		if (ext == ".pmx")
-		{
-			auto model = PMXLoader::load(path, flags);
-			if (model)
-			{
-				assetPathList_[model] = (char*)path.u8string().c_str();
-				assetGuidList_[model] = make_guid();
-				return model;
-			}
-		}
-		else if (ext == ".abc")
-		{
-			auto model = std::make_shared<GameObject>();
-			if (model)
-			{
-				model->addComponent<MeshAnimationComponent>(path.string());
-				assetPathList_[model] = (char*)path.u8string().c_str();
-				assetGuidList_[model] = make_guid();
-
-				return model;
-			}
-		}
-
-		return nullptr;
-	}
-
-	std::shared_ptr<RttiObject>
 	AssetDatabase::loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false)
 	{
 		if (type.isDerivedFrom(Texture::getRtti()))

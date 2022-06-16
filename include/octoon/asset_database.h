@@ -42,7 +42,6 @@ namespace octoon
 		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) const noexcept(false);
 
 		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path, std::string_view uuid) noexcept(false);
-		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false);
 		std::shared_ptr<RttiObject> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
 
 		template<typename T>
