@@ -277,7 +277,7 @@ namespace unreal
 		this->thumbnail = new QToolButton;
 		this->thumbnail->setObjectName("Thumbnail ");
 		this->thumbnail->setIcon(QIcon::fromTheme(":res/icons/append2.png"));
-		this->thumbnail->setIconSize(QSize(48, 48));
+		this->thumbnail->setIconSize(QSize(38, 38));
 		this->thumbnail->setToolTip(tr("Open"));
 		this->thumbnail->installEventFilter(this);
 
