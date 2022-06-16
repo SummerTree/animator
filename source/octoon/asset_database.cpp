@@ -587,15 +587,14 @@ namespace octoon
 				auto uuid = package["uuid"].get<std::string>();
 				auto filepath = std::filesystem::path((char8_t*)path.c_str());
 
-				bool generateMipmap = false;
-				if (package.find("mipmap") != package.end())
-					generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
-
 				auto texture = this->loadAssetAtPath<Texture>(filepath, uuid);
 				if (texture)
 				{
-					if (generateMipmap)
-						texture->setMipLevel(8);
+					if (package.contains("mipmap"))
+					{
+						if (package["mipmap"].get<nlohmann::json::boolean_t>())
+							texture->setMipLevel(8);
+					}
 
 					texture->apply();
 
