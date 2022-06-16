@@ -391,7 +391,7 @@ namespace unreal
 	}
 
 	void
-	UnrealBehaviour::onDrop(const std::any& data) noexcept
+	UnrealBehaviour::onDrop(const std::any& data) noexcept(false)
 	{
 		if (data.type() == typeid(std::vector<const char*>))
 		{

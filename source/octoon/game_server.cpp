@@ -375,7 +375,7 @@ namespace octoon
 	}
 
 	void
-	GameServer::sendMessage(std::string_view event, const std::any& data) noexcept
+	GameServer::sendMessage(std::string_view event, const std::any& data) noexcept(false)
 	{
 		dispatchEvents_[std::string(event)].call_all_slots(data);
 	}

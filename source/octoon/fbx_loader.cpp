@@ -34,6 +34,23 @@ namespace octoon
 	std::shared_ptr<GameObject>
 	FBXLoader::load(std::istream& stream) noexcept(false)
 	{
+		if (stream.good())
+		{
+			stream.seekg(0, std::ios_base::end);
+			std::size_t size = stream.tellg();
+			stream.seekg(0, std::ios_base::beg);
+
+			if (size > 0)
+			{
+				auto content = std::make_unique<ofbx::u8[]>(size);
+				stream.read((char*)content.get(), size);
+
+				auto scene = ofbx::load(content.get(), size, (ofbx::u64)ofbx::LoadFlags::TRIANGULATE);
+				if (!scene)
+					throw std::runtime_error(ofbx::getError());
+			}
+		}
+
 		return nullptr;
 	}
 

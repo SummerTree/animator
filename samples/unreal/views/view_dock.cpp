@@ -4,6 +4,7 @@
 #include <qmessagebox.h>
 #include <qmimedata.h>
 #include <qapplication.h>
+#include <spdlog/spdlog.h>
 
 namespace unreal
 {
@@ -148,40 +149,50 @@ namespace unreal
 	void
 	ViewDock::dropEvent(QDropEvent* event) noexcept
 	{
-		if (gameApp_)
+		try
 		{
-			auto urls = event->mimeData()->urls();
-			if (!urls.isEmpty())
+			if (gameApp_)
 			{
-				std::vector<QByteArray> utf8bytes;
-				for (auto& it : urls)
-					utf8bytes.push_back(it.path().toUtf8());
-
-				if (!utf8bytes.empty())
+				auto urls = event->mimeData()->urls();
+				if (!urls.isEmpty())
 				{
-					std::vector<char*> utf8s;
-					for (auto& it : utf8bytes)
-						utf8s.push_back(it.data() + 1);
+					std::vector<QByteArray> utf8bytes;
+					for (auto& it : urls)
+						utf8bytes.push_back(it.path().toUtf8());
 
-					gameApp_->doWindowDrop((octoon::WindHandle)this->winId(), (std::uint32_t)utf8s.size(), (const char**)utf8s.data());
-				}
-
-				event->accept();
-			}
-			else
-			{
-				auto lightData = event->mimeData()->data("object/light");
-				if (!lightData.isEmpty())
-				{
-					auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-					auto lightComponent = behaviour->getComponent<LightComponent>();
-
-					if (!lightComponent->createLight((LightType)lightData.toInt()))
+					if (!utf8bytes.empty())
 					{
-						QMessageBox::critical(this, tr("Error"), tr("Unsupported light type."));
+						std::vector<char*> utf8s;
+						for (auto& it : utf8bytes)
+							utf8s.push_back(it.data() + 1);
+
+						gameApp_->doWindowDrop((octoon::WindHandle)this->winId(), (std::uint32_t)utf8s.size(), (const char**)utf8s.data());
+					}
+
+					event->accept();
+				}
+				else
+				{
+					auto lightData = event->mimeData()->data("object/light");
+					if (!lightData.isEmpty())
+					{
+						auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+						auto lightComponent = behaviour->getComponent<LightComponent>();
+
+						if (!lightComponent->createLight((LightType)lightData.toInt()))
+						{
+							QMessageBox::critical(this, tr("Error"), tr("Unsupported light type."));
+						}
 					}
 				}
 			}
+		}
+		catch (const std::exception& e)
+		{
+			spdlog::error("Function dropEvent raised exception: " + std::string(e.what()));
+
+			QCoreApplication::processEvents();
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 	}
 

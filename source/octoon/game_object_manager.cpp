@@ -88,7 +88,7 @@ namespace octoon
 	}
 
 	void
-	GameObjectManager::sendMessage(std::string_view event, const std::any& data) noexcept
+	GameObjectManager::sendMessage(std::string_view event, const std::any& data) noexcept(false)
 	{
 		auto it = dispatchEvents_.find(event);
 		if (it != dispatchEvents_.end())

@@ -60,7 +60,7 @@ namespace octoon
 	}
 
 	void
-	GameBaseFeature::onInputEvent(const std::any& data) noexcept
+	GameBaseFeature::onInputEvent(const std::any& data) noexcept(false)
 	{
 		assert(data.type() == typeid(input::InputEvent));
 

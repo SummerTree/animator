@@ -1585,17 +1585,18 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::ViewDock</name>
     <message>
-        <location filename="../views/view_dock.cpp" line="11"/>
+        <location filename="../views/view_dock.cpp" line="12"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="181"/>
+        <location filename="../views/view_dock.cpp" line="184"/>
+        <location filename="../views/view_dock.cpp" line="195"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="181"/>
+        <location filename="../views/view_dock.cpp" line="184"/>
         <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>
