@@ -227,7 +227,6 @@ namespace octoon
 		else if (ext == u8".hdr")
 		{
 			auto texture = std::make_shared<Texture>();
-
 			if (texture->load(path))
 			{
 				texture->setName((char*)path.u8string().c_str());
@@ -241,7 +240,6 @@ namespace octoon
 		else if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
 			auto texture = std::make_shared<Texture>();
-
 			if (texture->load(path))
 			{
 				texture->setName((char*)path.u8string().c_str());

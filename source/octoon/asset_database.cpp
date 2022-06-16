@@ -515,7 +515,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<RttiObject>
-	AssetDatabase::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
+	AssetDatabase::loadAssetAtPath(const std::filesystem::path& path, std::string_view uuid) noexcept(false)
 	{
 		auto ext = path.extension().string();
 		for (auto& it : ext)
@@ -527,7 +527,7 @@ namespace octoon
 			if (motion)
 			{
 				assetPathList_[motion] = (char*)path.u8string().c_str();
-				assetGuidList_[motion] = make_guid();
+				assetGuidList_[motion] = uuid;
 				return motion;
 			}
 		}
@@ -537,7 +537,7 @@ namespace octoon
 			if (texture)
 			{
 				assetPathList_[texture] = (char*)path.u8string().c_str();
-				assetGuidList_[texture] = make_guid();
+				assetGuidList_[texture] = uuid;
 				return texture;
 			}
 		}
@@ -547,7 +547,7 @@ namespace octoon
 			if (model)
 			{
 				assetPathList_[model] = (char*)path.u8string().c_str();
-				assetGuidList_[model] = make_guid();
+				assetGuidList_[model] = uuid;
 				return model;
 			}
 		}
@@ -557,7 +557,7 @@ namespace octoon
 			if (model)
 			{
 				assetPathList_[model] = (char*)path.u8string().c_str();
-				assetGuidList_[model] = make_guid();
+				assetGuidList_[model] = uuid;
 				return model;
 			}
 		}
@@ -567,7 +567,7 @@ namespace octoon
 			if (model)
 			{
 				assetPathList_[model] = (char*)path.u8string().c_str();
-				assetGuidList_[model] = make_guid();
+				assetGuidList_[model] = uuid;
 				return model;
 			}
 		}
@@ -578,7 +578,7 @@ namespace octoon
 			{
 				model->addComponent<MeshAnimationComponent>(path);
 				assetPathList_[model] = (char*)path.u8string().c_str();
-				assetGuidList_[model] = make_guid();
+				assetGuidList_[model] = uuid;
 				return model;
 			}
 		}
@@ -631,7 +631,7 @@ namespace octoon
 				if (package.find("mipmap") != package.end())
 					generateMipmap = package["mipmap"].get<nlohmann::json::boolean_t>();
 
-				auto texture = std::make_shared<Texture>(filepath);
+				auto texture = this->loadAssetAtPath<Texture>(filepath, uuid);
 				if (texture)
 				{
 					if (generateMipmap)
@@ -641,10 +641,26 @@ namespace octoon
 
 					packageList_[uuid] = package;
 					assetList_[texture] = package;
-					assetPathList_[texture] = path;
-					assetGuidList_[texture] = uuid;
 
 					return texture;
+				}
+			}
+		}
+		else if (type.isDerivedFrom(Animation::getRtti()))
+		{
+			if (package.contains("path") && package.contains("uuid"))
+			{
+				auto uuid = package["uuid"].get<std::string>();
+				auto path = package["path"].get<std::string>();
+				auto filepath = std::filesystem::path((char8_t*)path.c_str());
+
+				auto motion = this->loadAssetAtPath<Animation>(filepath, uuid);
+				if (motion)
+				{
+					packageList_[uuid] = package;
+					assetList_[motion] = package;
+
+					return motion;
 				}
 			}
 		}
@@ -660,41 +676,13 @@ namespace octoon
 				for (auto& it : ext)
 					it = (char)std::tolower(it);
 
-				if (ext == u8".pmx")
+				if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
 				{
-					auto gameObject = PMXLoader::load(filepath, PMXLoadFlagBits::AllBit);
+					auto gameObject = this->loadAssetAtPath<GameObject>(filepath, uuid);
 					if (gameObject)
 					{
 						packageList_[uuid] = package;
 						assetList_[gameObject] = package;
-						assetPathList_[gameObject] = path;
-						assetGuidList_[gameObject] = uuid;
-
-						return gameObject;
-					}
-				}
-				else if (ext == u8".obj")
-				{
-					auto gameObject = OBJLoader::load(filepath);
-					if (gameObject)
-					{
-						packageList_[uuid] = package;
-						assetList_[gameObject] = package;
-						assetPathList_[gameObject] = path;
-						assetGuidList_[gameObject] = uuid;
-
-						return gameObject;
-					}
-				}
-				else if (ext == u8".fbx")
-				{
-					auto gameObject = FBXLoader::load(filepath);
-					if (gameObject)
-					{
-						packageList_[uuid] = package;
-						assetList_[gameObject] = package;
-						assetPathList_[gameObject] = path;
-						assetGuidList_[gameObject] = uuid;
 
 						return gameObject;
 					}
@@ -726,26 +714,6 @@ namespace octoon
 						assetGuidList_[gameObject] = uuid;
 						return gameObject;
 					}
-				}
-			}
-		}
-		else if (type.isDerivedFrom(Animation::getRtti()))
-		{
-			if (package.contains("path") && package.contains("uuid"))
-			{
-				auto uuid = package["uuid"].get<std::string>();
-				auto path = package["path"].get<std::string>();
-				auto filepath = std::filesystem::path((char8_t*)path.c_str());
-
-				auto motion = VMDLoader::load(filepath);
-				if (motion)
-				{
-					packageList_[uuid] = package;
-					assetList_[motion] = package;
-					assetPathList_[motion] = path;
-					assetGuidList_[motion] = uuid;
-
-					return motion;
 				}
 			}
 		}

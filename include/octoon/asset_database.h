@@ -10,6 +10,7 @@
 #include <octoon/light/environment_light.h>
 #include <octoon/camera/perspective_camera.h>
 #include <octoon/video/renderer.h>
+#include <octoon/runtime/uuid.h>
 #include <filesystem>
 #include <set>
 
@@ -40,14 +41,14 @@ namespace octoon
 		nlohmann::json getPackage(std::string_view uuid, const std::filesystem::path& outputPath) noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) const noexcept(false);
 
-		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path) noexcept(false);
+		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path, std::string_view uuid) noexcept(false);
 		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false);
 		std::shared_ptr<RttiObject> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
 
 		template<typename T>
-		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
+		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& path, std::string_view uuid = make_guid()) noexcept(false)
 		{
-			auto asset = loadAssetAtPath(path);
+			auto asset = loadAssetAtPath(path, uuid);
 			if (asset)
 				return asset->downcast_pointer<T>();
 			return nullptr;
