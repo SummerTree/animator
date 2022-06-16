@@ -45,6 +45,7 @@ namespace octoon
 
 	public:
 		ConfigManager(std::string_view deviceName, const std::filesystem::path& cachePath) noexcept(false);
+		~ConfigManager();
 
 		void setOutput(OutputType type, Output* output);
 		Output* getOutput(OutputType type) const;
@@ -85,9 +86,8 @@ namespace octoon
 		std::uint32_t framebufferWidth_;
 		std::uint32_t framebufferHeight_;
 
-		void* colorFramebuffer_;
-		void* normalFramebuffer_;
-		void* albedoFramebuffer_;
+		std::filesystem::path cachePath_;
+		std::string currentRenderDeviceName;
 
 		std::unique_ptr<Output> colorImage_;
 		std::unique_ptr<Output> normalImage_;
@@ -101,9 +101,6 @@ namespace octoon
 
 		std::vector<Config> configs_;
 		std::array<Output*, static_cast<std::size_t>(OutputType::kMax)> outputs_;
-
-		std::filesystem::path cachePath_;
-		std::string currentRenderDeviceName;
 	};
 }
 

@@ -47,6 +47,22 @@ namespace octoon
 		this->init();
 	}
 
+	ConfigManager::~ConfigManager()
+	{
+		this->colorImage_.reset();
+		this->normalImage_.reset();
+		this->albedoImage_.reset();
+
+		for (auto& it : configs_)
+		{
+			it.pipeline.reset();
+			it.controller.reset();
+			it.factory.reset();
+		}
+
+		this->configs_.clear();
+	}
+
 	void
 	ConfigManager::init()
 	{
