@@ -161,4 +161,11 @@ namespace unreal
 
 		writer["scene"] = sceneJson;
 	}
+
+	void
+	EntitiesModule::disconnect() noexcept
+	{
+		this->enable.disconnect();
+		this->objects.disconnect();
+	}
 }

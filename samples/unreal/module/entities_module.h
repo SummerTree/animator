@@ -17,6 +17,8 @@ namespace unreal
 		virtual void load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false) override;
 		virtual void save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false) override;
 
+		void disconnect() noexcept override;
+
 	private:
 		EntitiesModule(const EntitiesModule&) = delete;
 		EntitiesModule& operator=(const EntitiesModule&) = delete;

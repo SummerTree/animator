@@ -19,7 +19,7 @@
 
 namespace unreal
 {
-	constexpr auto imageFormat = "All Files(*.jpeg *.jpg *.png *.tga );; JPEG Files (*.jpeg *.jpg);; PNG Files (*.png);; TGA Files (*.tga)";
+	constexpr auto imageFormat = "All Files(*.jpeg *.jpg *.png *.tga *.bmp);; JPEG Files (*.jpeg *.jpg);; PNG Files (*.png);; TGA Files (*.tga);; BMP Files (*.bmp)";
 
 	class DoubleSpinBox final : public QDoubleSpinBox
 	{

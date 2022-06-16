@@ -27,4 +27,12 @@ namespace unreal
 	SelectorModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
 	{
 	}
+
+	void
+	SelectorModule::disconnect() noexcept
+	{
+		this->enable.disconnect();
+		this->selectedItem_.disconnect();
+		this->selectedItemHover_.disconnect();
+	}
 }
