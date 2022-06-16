@@ -96,10 +96,11 @@ namespace unreal
 		}
 		else if (ext == u8".pmx" || ext == u8".abc" || ext == u8".obj" || ext == u8".fbx")
 		{
-			entitiesComponent_->importModel(path);
-
-			playerComponent_->updateTimeLength();
-			playerComponent_->reset();
+			if (entitiesComponent_->importModel(path))
+			{
+				playerComponent_->updateTimeLength();
+				playerComponent_->reset();
+			}
 		}
 		else if (ext == u8".ogg" || ext == u8".mp3" || ext == u8".wav" || ext == u8".flac")
 		{
