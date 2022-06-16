@@ -1,5 +1,4 @@
 #include "model_dock.h"
-#include "../widgets/upushbutton.h"
 #include "../widgets/draggable_list_widget.h"
 
 #include <qpainter.h>

@@ -32,7 +32,7 @@ namespace unreal
 		infoLabel = new QLabel(this);
 		infoLabel->setText(tr("Version"));
 
-		infoButton = new UPushButton(this);
+		infoButton = new QPushButton(this);
 		infoButton->setText(tr("Check Updates"));
 		infoButton->setFixedSize(152, 28);
 

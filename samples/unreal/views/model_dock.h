@@ -12,8 +12,6 @@
 #include "unreal_profile.h"
 #include "unreal_behaviour.h"
 
-#include "../widgets/upushbutton.h"
-
 namespace unreal
 {
 	class ModelDock final : public QDockWidget

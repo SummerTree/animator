@@ -18,7 +18,6 @@
 #include <QTranslator>
 
 #include "../widgets/upanel.h"
-#include "../widgets/upushbutton.h"
 
 #include "title_bar.h"
 #include "unreal_behaviour.h"
@@ -35,7 +34,7 @@ namespace unreal
 		void setupUI();
 
 		QLabel* infoLabel;
-		UPushButton* infoButton;
+		QPushButton* infoButton;
 		QLabel* versionLabel;
 
 	private:

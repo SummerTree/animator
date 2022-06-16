@@ -9,7 +9,6 @@
 #include <qlabel.h>
 
 #include "../widgets/spoiler.h"
-#include "../widgets/upushbutton.h"
 
 #include "unreal_profile.h"
 #include "unreal_behaviour.h"

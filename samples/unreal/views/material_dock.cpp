@@ -1,7 +1,6 @@
 #include "material_dock.h"
 #include <octoon/material_importer.h>
 #include "../widgets/draggable_list_widget.h"
-#include "../widgets/upushbutton.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qevent.h>
@@ -346,7 +345,7 @@ namespace unreal
 			if (flags & CreateFlags::SpoilerBit)
 			{
 				this->spoiler = new Spoiler(name);
-				this->spoiler->setFixedWidth(340);
+				this->spoiler->setFixedWidth(290);
 				this->spoiler->setContentLayout(*this->mainLayout);
 			}
 		}
@@ -361,7 +360,7 @@ namespace unreal
 			if (flags & CreateFlags::SpoilerBit)
 			{
 				this->spoiler = new Spoiler(name);
-				this->spoiler->setFixedWidth(340);
+				this->spoiler->setFixedWidth(290);
 				this->spoiler->setContentLayout(*mapLayout);
 			}
 		}
@@ -1785,37 +1784,19 @@ namespace unreal
 				item->setText(metrics.elidedText(item->toolTip(), Qt::ElideRight, mainWidget_->iconSize().width()));
 
 				auto colorTexture = octoon::AssetDatabase::instance()->createMaterialPreview(material);
-				auto width = colorTexture->getTextureDesc().getWidth();
-				auto height = colorTexture->getTextureDesc().getHeight();
-
-				std::uint8_t* pixels;
-				if (colorTexture->map(0, 0, width, height, 0, (void**)&pixels))
+				if (colorTexture)
 				{
-					QImage image(width, height, QImage::Format_RGB888);
+					auto width = colorTexture->getTextureDesc().getWidth();
+					auto height = colorTexture->getTextureDesc().getHeight();
 
-					constexpr auto size = 16;
-
-					for (std::uint32_t y = 0; y < height; y++)
+					std::uint8_t* pixels;
+					if (colorTexture->map(0, 0, width, height, 0, (void**)&pixels))
 					{
-						for (std::uint32_t x = 0; x < width; x++)
-						{
-							auto n = (y * height + x) * 4;
+						QImage image(pixels, width, height, QImage::Format_RGBA8888);
+						item->setIcon(QPixmap::fromImage(image));
 
-							std::uint8_t u = x / size % 2;
-							std::uint8_t v = y / size % 2;
-							std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
-
-							auto r = octoon::math::lerp(bg, pixels[n], pixels[n + 3] / 255.f);
-							auto g = octoon::math::lerp(bg, pixels[n + 1], pixels[n + 3] / 255.f);
-							auto b = octoon::math::lerp(bg, pixels[n + 2], pixels[n + 3] / 255.f);
-
-							image.setPixelColor((int)x, (int)y, QColor::fromRgb(r, g, b));
-						}
+						colorTexture->unmap();
 					}
-
-					colorTexture->unmap();
-
-					item->setIcon(QIcon(QPixmap::fromImage(image)));
 				}
 			}
 			else
@@ -1844,15 +1825,7 @@ namespace unreal
 	{
 		auto package = octoon::MaterialImporter::instance()->getPackage(uuid);
 		if (package.is_object())
-		{
-			try
-			{
-				this->addItem(package);
-			}
-			catch (...)
-			{
-			}
-		}
+			this->addItem(package);
 	}
 
 	void
@@ -1861,7 +1834,15 @@ namespace unreal
 		mainWidget_->clear();
 
 		for (auto& it : octoon::MaterialImporter::instance()->getSceneList())
-			this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
+		{
+			try
+			{
+				this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
+			}
+			catch (...)
+			{
+			}
+		}
 	}
 
 	MaterialAssetPanel::MaterialAssetPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
@@ -2038,12 +2019,12 @@ namespace unreal
 		materialAssetList_->mainWidget_->setFixedWidth(290);
 
 		modifyWidget_ = new MaterialEditWindow(behaviour);
+		modifyWidget_->setFixedWidth(290);
 		modifyWidget_->hide();
-
+		
 		auto sceneLayout_ = new QVBoxLayout();
 		sceneLayout_->addWidget(materialList_, 0, Qt::AlignTop | Qt::AlignCenter);
 		sceneLayout_->addWidget(modifyWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
-		sceneLayout_->addStretch();
 		sceneLayout_->setContentsMargins(0, 0, 0, 0);
 
 		auto sceneWidget_ = new QWidget;

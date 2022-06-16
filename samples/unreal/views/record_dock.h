@@ -1,8 +1,6 @@
 #ifndef UNREAL_RECORD_DOCK_H_
 #define UNREAL_RECORD_DOCK_H_
 
-#include "unreal_behaviour.h"
-#include "../widgets/spoiler.h"
 #include <QComboBox>
 #include <octoon/game_object.h>
 #include <optional>
@@ -19,17 +17,17 @@
 #include <qtimer.h>
 #include <qtoolbutton.h>
 
-#include "../widgets/uspinbox.h"
-#include "../widgets/udoublespinbox.h"
-#include "../widgets/udockwidget.h"
-#include "../widgets/upushbutton.h"
-#include "../widgets/uspinline.h"
-#include "../widgets/udoublespinline.h"
+#include "unreal_behaviour.h"
 
+#include "../widgets/spoiler.h"
+#include "../widgets/uspinbox.h"
+#include "../widgets/uspinline.h"
+#include "../widgets/udoublespinbox.h"
+#include "../widgets/udoublespinline.h"
 
 namespace unreal
 {
-	class RecordDock final : public UDockWidget
+	class RecordDock final : public QDockWidget
 	{
 		Q_OBJECT
 	  public:

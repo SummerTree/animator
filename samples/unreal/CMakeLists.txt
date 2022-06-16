@@ -77,8 +77,6 @@ SET(WIDGETS_LIST
 	${SOURCE_PATH}/widgets/uspinbox.cpp
 	${SOURCE_PATH}/widgets/udoublespinbox.h
 	${SOURCE_PATH}/widgets/udoublespinbox.cpp
-	${SOURCE_PATH}/widgets/upushbutton.h
-	${SOURCE_PATH}/widgets/upushbutton.cpp
 	${SOURCE_PATH}/widgets/uspinline.h
 	${SOURCE_PATH}/widgets/uspinline.cpp
 	${SOURCE_PATH}/widgets/udoublespinline.h
