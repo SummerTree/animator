@@ -53,7 +53,10 @@ namespace unreal
 	ViewDock::mouseMoveEvent(QMouseEvent* e) noexcept
 	{
 		if (gameApp_->isOpen())
-			gameApp_->doWindowMouseMotion((octoon::WindHandle)this->winId(), e->pos().x(), e->pos().y());
+		{
+			auto dpi = QApplication::primaryScreen()->devicePixelRatio();
+			gameApp_->doWindowMouseMotion((octoon::WindHandle)this->winId(), e->pos().x() * dpi, e->pos().y() * dpi);
+		}
 	}
 
 	void
@@ -61,12 +64,14 @@ namespace unreal
 	{
 		if (gameApp_->isOpen())
 		{
+			auto dpi = QApplication::primaryScreen()->devicePixelRatio();
+
 			if (e->button() == Qt::LeftButton)
-				gameApp_->doWindowMouseButtonDown((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x(), e->y());
+				gameApp_->doWindowMouseButtonDown((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x() * dpi, e->y() * dpi);
 			else if (e->button() == Qt::RightButton)
-				gameApp_->doWindowMouseButtonDown((octoon::WindHandle)this->winId(), octoon::input::InputButton::Right, e->x(), e->y());
+				gameApp_->doWindowMouseButtonDown((octoon::WindHandle)this->winId(), octoon::input::InputButton::Right, e->x() * dpi, e->y() * dpi);
 			else if (e->button() == Qt::MiddleButton)
-				gameApp_->doWindowMouseButtonDown((octoon::WindHandle)this->winId(), octoon::input::InputButton::Middle, e->x(), e->y());
+				gameApp_->doWindowMouseButtonDown((octoon::WindHandle)this->winId(), octoon::input::InputButton::Middle, e->x() * dpi, e->y() * dpi);
 		}
 	}
 
@@ -75,12 +80,14 @@ namespace unreal
 	{
 		if (gameApp_->isOpen())
 		{
+			auto dpi = QApplication::primaryScreen()->devicePixelRatio();
+
 			if (e->button() == Qt::LeftButton)
-				gameApp_->doWindowMouseButtonUp((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x(), e->y());
+				gameApp_->doWindowMouseButtonUp((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x() * dpi, e->y() * dpi);
 			else if (e->button() == Qt::RightButton)
-				gameApp_->doWindowMouseButtonUp((octoon::WindHandle)this->winId(), octoon::input::InputButton::Right, e->x(), e->y());
+				gameApp_->doWindowMouseButtonUp((octoon::WindHandle)this->winId(), octoon::input::InputButton::Right, e->x() * dpi, e->y() * dpi);
 			else if (e->button() == Qt::MiddleButton)
-				gameApp_->doWindowMouseButtonUp((octoon::WindHandle)this->winId(), octoon::input::InputButton::Middle, e->x(), e->y());
+				gameApp_->doWindowMouseButtonUp((octoon::WindHandle)this->winId(), octoon::input::InputButton::Middle, e->x() * dpi, e->y() * dpi);
 		}
 	}
 
@@ -89,12 +96,14 @@ namespace unreal
 	{
 		if (gameApp_->isOpen())
 		{
+			auto dpi = QApplication::primaryScreen()->devicePixelRatio();
+
 			if (e->button() == Qt::LeftButton)
-				gameApp_->doWindowMouseButtonDoubleClick((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x(), e->y());
+				gameApp_->doWindowMouseButtonDoubleClick((octoon::WindHandle)this->winId(), octoon::input::InputButton::Left, e->x() * dpi, e->y() * dpi);
 			else if (e->button() == Qt::RightButton)
-				gameApp_->doWindowMouseButtonDoubleClick((octoon::WindHandle)this->winId(), octoon::input::InputButton::Right, e->x(), e->y());
+				gameApp_->doWindowMouseButtonDoubleClick((octoon::WindHandle)this->winId(), octoon::input::InputButton::Right, e->x() * dpi, e->y() * dpi);
 			else if (e->button() == Qt::MiddleButton)
-				gameApp_->doWindowMouseButtonDoubleClick((octoon::WindHandle)this->winId(), octoon::input::InputButton::Middle, e->x(), e->y());
+				gameApp_->doWindowMouseButtonDoubleClick((octoon::WindHandle)this->winId(), octoon::input::InputButton::Middle, e->x() * dpi, e->y() * dpi);
 		}
 	}
 
@@ -130,7 +139,10 @@ namespace unreal
 	ViewDock::dragMoveEvent(QDragMoveEvent *e) noexcept
 	{
 		if (gameApp_->isOpen())
-			gameApp_->doWindowMouseMotion((octoon::WindHandle)this->winId(), e->pos().x(), e->pos().y());
+		{
+			auto dpi = QApplication::primaryScreen()->devicePixelRatio();
+			gameApp_->doWindowMouseMotion((octoon::WindHandle)this->winId(), e->pos().x() * dpi, e->pos().y() * dpi);
+		}
 	}
 
 	void
