@@ -94,7 +94,7 @@ namespace unreal
 			if (package.contains("preview"))
 			{
 				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
-				item->setIcon(QIcon(QPixmap(filepath).scaled(listWidget_->iconSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+				item->setIcon(QIcon(QPixmap(filepath)));
 			}
 
 			if (package.contains("name"))

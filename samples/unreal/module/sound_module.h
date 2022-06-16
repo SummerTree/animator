@@ -12,10 +12,12 @@ namespace unreal
 		SoundModule() noexcept;
 		virtual ~SoundModule() noexcept;
 
-		virtual void reset() noexcept override;
+		void reset() noexcept override;
 
-		virtual void load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept override;
-		virtual void save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept override;
+		void load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept override;
+		void save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept override;
+
+		void disconnect() noexcept override;
 
 	private:
 		SoundModule(const SoundModule&) = delete;

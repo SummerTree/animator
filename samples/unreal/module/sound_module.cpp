@@ -37,4 +37,13 @@ namespace unreal
 		writer["volume"] = this->volume.getValue();
 		writer["filepath"] = (char*)this->filepath.getValue().u8string().c_str();
 	}
+
+	void
+	SoundModule::disconnect() noexcept
+	{
+		this->enable.disconnect();
+		this->volume.disconnect();
+		this->filepath.disconnect();
+		this->sound.disconnect();
+	}
 }

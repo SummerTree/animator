@@ -34,6 +34,7 @@ namespace unreal
 
 	UnrealProfile::~UnrealProfile() noexcept
 	{
+		this->reset();
 	}
 
 	void

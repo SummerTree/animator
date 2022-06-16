@@ -67,11 +67,12 @@ namespace unreal
 		importButton_ = new QToolButton;
 		importButton_->setText(tr("Import"));
 		importButton_->setFixedSize(48, 24);
-
+		
 		mainWidget_ = new QListWidget;
 		mainWidget_->setResizeMode(QListView::Fixed);
 		mainWidget_->setViewMode(QListView::IconMode);
 		mainWidget_->setMovement(QListView::Static);
+		mainWidget_->setIconSize(QSize(85, 85));
 		mainWidget_->setDefaultDropAction(Qt::DropAction::MoveAction);
 		mainWidget_->setStyleSheet("background:transparent;");
 		mainWidget_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -111,45 +112,27 @@ namespace unreal
 	MaterialListDialog::addItem(std::string_view uuid) noexcept
 	{
 		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
-		if (!package.is_null())
+		if (package.is_object())
 		{
-			QLabel* imageLabel = new QLabel;
-			imageLabel->setFixedSize(QSize(100, 100));
+			auto item = std::make_unique<QListWidgetItem>();
+			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
+			item->setSizeHint(mainWidget_->iconSize() + QSize(10, 40));
 
-			QLabel* nameLabel = new QLabel();
-			nameLabel->setFixedHeight(24);
-
-			QVBoxLayout* widgetLayout = new QVBoxLayout;
-			widgetLayout->addWidget(imageLabel, 0, Qt::AlignCenter);
-			widgetLayout->addWidget(nameLabel, 0, Qt::AlignCenter);
-			widgetLayout->setSpacing(0);
-			widgetLayout->setContentsMargins(0, 0, 0, 0);
-
-			QWidget* widget = new QWidget;
-			widget->setLayout(widgetLayout);
-
-			QListWidgetItem* item = new QListWidgetItem;
-			item->setData(Qt::UserRole, QString::fromStdString(std::string(uuid)));
-			item->setSizeHint(QSize(imageLabel->width(), imageLabel->height() + nameLabel->height()) + QSize(8, 8));
-
-			mainWidget_->addItem(item);
-			mainWidget_->setItemWidget(item, widget);
-
-			if (package.find("preview") != package.end())
+			if (package.contains("preview"))
 			{
 				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
-				imageLabel->setPixmap(QPixmap(filepath).scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+				item->setIcon(QIcon(QPixmap(filepath)));
 			}
 
-			if (package.find("name") != package.end())
+			if (package.contains("name"))
 			{
-				QFontMetrics metrics(nameLabel->font());
-
+				QFontMetrics metrics(mainWidget_->font());
 				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
-				nameLabel->setText(metrics.elidedText(name, Qt::ElideRight, imageLabel->width()));
-				nameLabel->setToolTip(name);
-				imageLabel->setToolTip(name);
+				item->setText(metrics.elidedText(name, Qt::ElideRight, mainWidget_->iconSize().width()));
+				item->setToolTip(name);
 			}
+
+			mainWidget_->addItem(item.release());
 		}
 	}
 
@@ -1367,32 +1350,12 @@ namespace unreal
 			std::uint8_t* pixels;
 			if (colorTexture->map(0, 0, width, height, 0, (void**)&pixels))
 			{
-				QImage image(width, height, QImage::Format_RGB888);
-
-				constexpr auto size = 16;
-
-				for (std::uint32_t y = 0; y < height; y++)
-				{
-					for (std::uint32_t x = 0; x < width; x++)
-					{
-						auto n = (y * height + x) * 4;
-
-						std::uint8_t u = x / size % 2;
-						std::uint8_t v = y / size % 2;
-						std::uint8_t bg = (u == 0 && v == 0 || u == v) ? 200u : 255u;
-
-						auto r = octoon::math::lerp(bg, pixels[n], pixels[n + 3] / 255.f);
-						auto g = octoon::math::lerp(bg, pixels[n + 1], pixels[n + 3] / 255.f);
-						auto b = octoon::math::lerp(bg, pixels[n + 2], pixels[n + 3] / 255.f);
-
-						image.setPixelColor((int)x, (int)y, QColor::fromRgb(r, g, b));
-					}
-				}
-
-				colorTexture->unmap();
+				QImage image(pixels, width, height, QImage::Format_RGBA8888);
 
 				this->previewButton_->setIcon(QPixmap::fromImage(image));
 				this->previewButton_->setIconSize(previewButton_->size());
+
+				colorTexture->unmap();
 			}
 		}
 	}
@@ -2165,7 +2128,7 @@ namespace unreal
 	void
 	MaterialDock::resizeEvent(QResizeEvent* e) noexcept
 	{
-		modifyWidget_->resize(widget_->size());
+		modifyWidget_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
 		materialList_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
 		materialAssetList_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
 	}
@@ -2174,7 +2137,7 @@ namespace unreal
 	MaterialDock::showEvent(QShowEvent* event) noexcept
 	{
 		modifyWidget_->hide();
-		modifyWidget_->resize(widget_->size());
+		modifyWidget_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
 
 		materialList_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
 		materialList_->show();
@@ -2224,7 +2187,9 @@ namespace unreal
 
 					selectedItem_ = item;
 					materialList_->hide();
+
 					modifyWidget_->setMaterial(material);
+					modifyWidget_->resize(widget_->size().width(), widget_->size().height() - widget_->tabBar()->height());
 					modifyWidget_->show();
 				}
 			}
