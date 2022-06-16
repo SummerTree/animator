@@ -522,7 +522,27 @@ namespace octoon
 				for (auto& it : ext)
 					it = (char)std::tolower(it);
 
-				if (ext == ".abc")
+				if (ext == ".pmx")
+				{
+					for (auto& index : modelAsset_->getIndexList())
+					{
+						if (index == uuid)
+						{
+							if (!AssetDatabase::instance()->needUpdate(uuid))
+								return modelAsset_->getPackage(uuid);
+						}
+					}
+
+					auto package = this->importAsset(assetPath);
+					if (package.is_object())
+					{
+						AssetDatabase::instance()->removeUpdateList(uuid);
+						modelAsset_->addIndex(package["uuid"].get<std::string>());
+						assetPackageCache_[gameObject] = package;
+						return package;
+					}
+				}
+				else if (ext == ".abc")
 				{
 					nlohmann::json package;
 					package["uuid"] = uuid;
@@ -569,20 +589,26 @@ namespace octoon
 				}
 				else
 				{
-					for (auto& index : modelAsset_->getIndexList())
-					{
-						if (index == uuid)
-						{
-							if (!AssetDatabase::instance()->needUpdate(uuid))
-								return modelAsset_->getPackage(uuid);
-						}
-					}
+					nlohmann::json package;
+					package["uuid"] = uuid;
+					package["path"] = assetPath;
 
-					auto package = this->importAsset(assetPath);
 					if (package.is_object())
 					{
+						auto modelPath = this->modelAsset_->getAssertPath();
+						auto packagePath = std::filesystem::path(modelPath).append(uuid).append("package.json");
+
+						std::filesystem::create_directories(packagePath.parent_path());
+
+						std::ofstream ifs(packagePath, std::ios_base::binary);
+						if (ifs)
+						{
+							auto dump = package.dump();
+							ifs.write(dump.c_str(), dump.size());
+						}
+
 						AssetDatabase::instance()->removeUpdateList(uuid);
-						modelAsset_->addIndex(package["uuid"].get<std::string>());
+						modelAsset_->addIndex(uuid);
 						assetPackageCache_[gameObject] = package;
 						return package;
 					}
