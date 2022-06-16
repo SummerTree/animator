@@ -73,8 +73,6 @@ namespace unreal
 		void onUpdate() noexcept override;
 		void onLateUpdate() noexcept override;
 
-		void onDrop(const std::any& data) noexcept(false);
-
 		void onMouseDown(const std::any& event) noexcept;
 		void onMouseMotion(const std::any& event) noexcept;
 		void onMouseUp(const std::any& event) noexcept;

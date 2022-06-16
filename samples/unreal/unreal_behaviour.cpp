@@ -316,7 +316,6 @@ namespace unreal
 				gameObjectManager->addMessageListener("feature:input:mousemove", std::bind(&UnrealBehaviour::onMouseMotion, this, std::placeholders::_1));
 				gameObjectManager->addMessageListener("feature:input:mousedown", std::bind(&UnrealBehaviour::onMouseDown, this, std::placeholders::_1));
 				gameObjectManager->addMessageListener("feature:input:mouseup", std::bind(&UnrealBehaviour::onMouseUp, this, std::placeholders::_1));
-				gameObjectManager->addMessageListener("feature:input:drop", std::bind(&UnrealBehaviour::onDrop, this, std::placeholders::_1));
 				gameObjectManager->addMessageListener("feature:input:resize", std::bind(&UnrealBehaviour::onResize, this, std::placeholders::_1));
 			}
 		}
@@ -352,7 +351,6 @@ namespace unreal
 				gameObjectManager->removeMessageListener("feature:input:mousemove", std::bind(&UnrealBehaviour::onMouseMotion, this, std::placeholders::_1));
 				gameObjectManager->removeMessageListener("feature:input:mousedown", std::bind(&UnrealBehaviour::onMouseDown, this, std::placeholders::_1));
 				gameObjectManager->removeMessageListener("feature:input:mouseup", std::bind(&UnrealBehaviour::onMouseUp, this, std::placeholders::_1));
-				gameObjectManager->removeMessageListener("feature:input:drop", std::bind(&UnrealBehaviour::onDrop, this, std::placeholders::_1));
 			}
 		}
 
@@ -387,20 +385,6 @@ namespace unreal
 		{
 			if (it->getActive())
 				it->onLateUpdate();
-		}
-	}
-
-	void
-	UnrealBehaviour::onDrop(const std::any& data) noexcept(false)
-	{
-		if (data.type() == typeid(std::vector<const char*>))
-		{
-			auto files = std::any_cast<std::vector<const char*>>(data);
-			for (auto& path : files)
-			{
-				if (!this->open(path))
-					this->load(path);
-			}
 		}
 	}
 

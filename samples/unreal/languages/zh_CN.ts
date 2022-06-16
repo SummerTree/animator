@@ -1724,13 +1724,13 @@ $20 (Original cost $40)</source>
         <translation>相机</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="184"/>
-        <location filename="../views/view_dock.cpp" line="195"/>
+        <location filename="../views/view_dock.cpp" line="182"/>
+        <location filename="../views/view_dock.cpp" line="194"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="184"/>
+        <location filename="../views/view_dock.cpp" line="182"/>
         <source>Unsupported light type.</source>
         <translation>不支持的光源类型。</translation>
     </message>

@@ -151,37 +151,36 @@ namespace unreal
 	{
 		try
 		{
-			if (gameApp_)
+			if (behaviour_ && !profile_->playerModule->isPlaying)
 			{
-				auto urls = event->mimeData()->urls();
-				if (!urls.isEmpty())
+				auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
+				if (behaviour)
 				{
-					std::vector<QByteArray> utf8bytes;
-					for (auto& it : urls)
-						utf8bytes.push_back(it.path().toUtf8());
-
-					if (!utf8bytes.empty())
+					auto urls = event->mimeData()->urls();
+					if (!urls.isEmpty())
 					{
-						std::vector<char*> utf8s;
-						for (auto& it : utf8bytes)
-							utf8s.push_back(it.data() + 1);
-
-						gameApp_->doWindowDrop((octoon::WindHandle)this->winId(), (std::uint32_t)utf8s.size(), (const char**)utf8s.data());
-					}
-
-					event->accept();
-				}
-				else
-				{
-					auto lightData = event->mimeData()->data("object/light");
-					if (!lightData.isEmpty())
-					{
-						auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-						auto lightComponent = behaviour->getComponent<LightComponent>();
-
-						if (!lightComponent->createLight((LightType)lightData.toInt()))
+						for (auto& it : urls)
 						{
-							QMessageBox::critical(this, tr("Error"), tr("Unsupported light type."));
+							std::filesystem::path path(it.toLocalFile().toStdWString());
+							if (std::filesystem::is_directory(path))
+								behaviour->open(path);
+							else
+								behaviour->load(path);
+						}
+
+						event->accept();
+					}
+					else
+					{
+						auto lightData = event->mimeData()->data("object/light");
+						if (!lightData.isEmpty())
+						{
+							auto lightComponent = behaviour->getComponent<LightComponent>();
+
+							if (!lightComponent->createLight((LightType)lightData.toInt()))
+							{
+								QMessageBox::critical(this, tr("Error"), tr("Unsupported light type."));
+							}
 						}
 					}
 				}
