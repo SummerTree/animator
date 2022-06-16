@@ -6,7 +6,6 @@
 #include <octoon/film_camera_component.h>
 #include <octoon/mesh_filter_component.h>
 #include <octoon/mesh_renderer_component.h>
-#include <ofbx.h>
 #include <fstream>
 
 namespace octoon
@@ -42,12 +41,9 @@ namespace octoon
 
 			if (size > 0)
 			{
-				auto content = std::make_unique<ofbx::u8[]>(size);
+				auto content = std::make_unique<char>(size);
 				stream.read((char*)content.get(), size);
 
-				auto scene = ofbx::load(content.get(), size, (ofbx::u64)ofbx::LoadFlags::TRIANGULATE);
-				if (!scene)
-					throw std::runtime_error(ofbx::getError());
 			}
 		}
 

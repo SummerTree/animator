@@ -16,7 +16,6 @@ ffmpeg/5.0
 spdlog/1.10.0
 nvcloth/1.1.6
 openal/1.21.1
-openfbx/cci.20210426
 opencl-headers/2022.01.04
 opencl-icd-loader/2022.01.04
 mdl-sdk/2021.01.02@xiahan/stable
