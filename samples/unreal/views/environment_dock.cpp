@@ -253,7 +253,7 @@ namespace unreal
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setObjectName("Preview");
-		this->previewButton_->setIconSize(QSize(210, 105));
+		this->previewButton_->setIconSize(QSize(200, 100));
 		this->previewButton_->setToolTip(tr("Click the select a Preview button to locate each HDRi on your computer"));
 		this->previewButton_->installEventFilter(this);
 
@@ -502,7 +502,9 @@ namespace unreal
 					}
 
 					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-					auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
+					auto dpi = QApplication::primaryScreen()->devicePixelRatio();
+					auto iconSize = previewButton_->iconSize() * dpi;
+					auto previewImage = std::make_shared<QImage>(qimage.scaled(iconSize));
 
 					this->setPreviewImage(QFileInfo(QString::fromStdString(name)).fileName(), previewImage);
 					this->setThumbnailImage(QString::fromStdString(name), *previewImage);
@@ -580,30 +582,33 @@ namespace unreal
 		{
 			auto srcWidth = this->previewImage_->width();
 			auto srcHeight = this->previewImage_->height();
-			auto pixels = std::make_unique<std::uint8_t[]>(srcWidth * srcHeight * 3);
 			auto offset = this->profile_->environmentLightModule->offset.getValue();
+			auto pixels = QImage(srcWidth, srcHeight, QImage::Format::Format_RGB888);
 
 			for (std::size_t y = 0; y < srcHeight; y++)
 			{
+				auto v = y / float(srcHeight - 1) - offset.y;
+				v -= std::floor(v);
+				auto vi = int(v * srcHeight);
+
 				for (std::size_t x = 0; x < srcWidth; x++)
 				{
-					auto u = x / float(srcWidth) - offset.x;
-					auto v = y / float(srcHeight) - offset.y;
+					auto u = x / float(srcWidth - 1) - offset.x;
 					u -= std::floor(u);
-					v -= std::floor(v);
 					auto ui = int(u * srcWidth);
-					auto vi = int(v * srcHeight);
 
 					auto dst = (y * srcWidth + x) * 3;
 					auto pixel = this->previewImage_->pixelColor(ui, vi);
 
-					pixels[dst] = std::clamp<float>(pixel.redF() * c.red(), 0, 255);
-					pixels[dst + 1] = std::clamp<float>(pixel.greenF() * c.green(), 0, 255);
-					pixels[dst + 2] = std::clamp<float>(pixel.blueF() * c.blue(), 0, 255);
+					auto r = std::clamp<float>(pixel.redF() * c.red(), 0, 255);
+					auto g = std::clamp<float>(pixel.greenF() * c.green(), 0, 255);
+					auto b = std::clamp<float>(pixel.blueF() * c.blue(), 0, 255);
+
+					pixels.setPixelColor(x, y, QColor(r, g, b));
 				}
 			}
 
-			previewButton_->setIcon(QPixmap::fromImage(QImage(pixels.get(), srcWidth, srcHeight, QImage::Format::Format_RGB888)));
+			previewButton_->setIcon(QPixmap::fromImage(std::move(pixels)));
 		}
 		else
 		{
@@ -675,30 +680,6 @@ namespace unreal
 
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
 				this->profile_->environmentLightModule->texture = texture;
-
-				auto texel = this->profile_->environmentLightModule->texture.getValue();
-				if (texel)
-				{
-					auto width = texel->width();
-					auto height = texel->height();
-					auto size = width * height * 3;
-					auto pixels = std::make_unique<std::uint8_t[]>(size);
-					float* data_ = (float*)texel->data();
-
-					for (std::size_t i = 0; i < size; i += 3)
-					{
-						pixels[i] = std::clamp<float>(std::pow(data_[i], 1 / 2.2) * 255.0f, 0, 255);
-						pixels[i + 1] = std::clamp<float>(std::pow(data_[i + 1], 1 / 2.2) * 255.0f, 0, 255);
-						pixels[i + 2] = std::clamp<float>(std::pow(data_[i + 2], 1 / 2.2) * 255.0f, 0, 255);
-					}
-
-					QImage qimage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-					auto previewImage = std::make_shared<QImage>(qimage.scaled(previewButton_->iconSize()));
-
-					this->setPreviewImage(QFileInfo(filepath).fileName(), previewImage);
-					this->setThumbnailImage(filepath, *previewImage);
-					this->updatePreviewImage();
-				}
 			}
 		}
 		catch (const std::exception& e)
