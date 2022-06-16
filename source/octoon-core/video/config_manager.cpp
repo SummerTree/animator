@@ -49,6 +49,11 @@ namespace octoon
 
 	ConfigManager::~ConfigManager()
 	{
+		this->colorTexture_.reset();
+		this->normalTexture_.reset();
+		this->albedoTexture_.reset();
+		this->framebuffer_.reset();
+
 		this->colorImage_.reset();
 		this->normalImage_.reset();
 		this->albedoImage_.reset();
