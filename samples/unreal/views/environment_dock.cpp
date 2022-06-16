@@ -449,7 +449,7 @@ namespace unreal
 
 		this->profile_->environmentLightModule->intensity += [this](float value) {
 			intensitySlider->blockSignals(true);
-			intensitySlider->setValue(value * 10.0f);
+			intensitySlider->setValue(value * 5.0f);
 			intensitySlider->blockSignals(false);
 
 			intensitySpinBox->blockSignals(true);
@@ -750,7 +750,7 @@ namespace unreal
 	void
 	EnvironmentDock::intensitySliderEvent(int value)
 	{
-		this->profile_->environmentLightModule->intensity = value / 20.0f;
+		this->profile_->environmentLightModule->intensity = value / 5.0f;
 	}
 
 	void
@@ -796,7 +796,7 @@ namespace unreal
 		this->setColor(QColor::fromRgbF(color.x, color.y, color.z));
 
 		this->intensitySpinBox->setValue(profile_->environmentLightModule->intensity);
-		this->intensitySlider->setValue(profile_->environmentLightModule->intensity * 20.0f);
+		this->intensitySlider->setValue(profile_->environmentLightModule->intensity * 5.0f);
 
 		this->horizontalRotationSpinBox->setValue(profile_->environmentLightModule->offset.getValue().x);
 		this->horizontalRotationSlider->setValue(profile_->environmentLightModule->offset.getValue().x * 100.0f);
