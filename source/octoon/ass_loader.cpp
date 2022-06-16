@@ -1,5 +1,5 @@
 #include <octoon/ass_loader.h>
-#include <octoon/obj_loader.h>
+#include <octoon/asset_database.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/transform_component.h>
 #include <octoon/point_light_component.h>
@@ -272,21 +272,18 @@ namespace octoon
 
 					if (!filename.empty())
 					{
-						auto meshes = OBJLoader::load(filename);
-						if (!meshes.empty())
+						auto mesh = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(filename);
+						if (mesh)
 						{
-							for (auto& mesh : meshes)
-							{
-								mesh->getComponent<TransformComponent>()->setTransform(pos, math::Quaternion::Zero, scale);
+							mesh->getComponent<TransformComponent>()->setTransform(pos, math::Quaternion::Zero, scale);
 
-								auto renderer = mesh->getComponent<MeshRendererComponent>();
-								if (renderer)
-									renderer->setMaterial(material);
-								else
-									mesh->addComponent<MeshRendererComponent>(material);
+							auto renderer = mesh->getComponent<MeshRendererComponent>();
+							if (renderer)
+								renderer->setMaterial(material);
+							else
+								mesh->addComponent<MeshRendererComponent>(material);
 
-								objects.push_back(mesh);
-							}
+							objects.push_back(std::move(mesh));
 						}
 					}
 				}

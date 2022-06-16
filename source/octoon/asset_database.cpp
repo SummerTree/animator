@@ -552,7 +552,8 @@ namespace octoon
 		}
 		else if (ext == ".obj")
 		{
-			for (auto& model : OBJLoader::load(path))
+			auto model = OBJLoader::load(path);
+			if (model)
 			{
 				assetPathList_[model] = (char*)path.u8string().c_str();
 				assetGuidList_[model] = make_guid();
