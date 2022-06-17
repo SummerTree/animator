@@ -41,7 +41,7 @@ namespace octoon
 
 			if (size > 0)
 			{
-				auto content = std::make_unique<char>(size);
+				auto content = std::make_unique<char[]>(size);
 				stream.read((char*)content.get(), size);
 
 			}
