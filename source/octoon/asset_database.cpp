@@ -979,6 +979,12 @@ namespace octoon
 			this->updateList_.erase(it);
 	}
 
+	bool
+	AssetDatabase::clearUpdate() noexcept
+	{
+		this->updateList_.clear();
+	}
+
 	const std::set<std::string>&
 	AssetDatabase::getUpdateList() const noexcept
 	{

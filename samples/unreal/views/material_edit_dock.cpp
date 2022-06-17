@@ -250,6 +250,7 @@ namespace unreal
 
 	MaterialEditWindow::MaterialEditWindow(const octoon::GameObjectPtr& behaviour)
 		: behaviour_(behaviour)
+		, materialListDialog_(nullptr)
 	{
 		backButton_ = new QToolButton;
 		backButton_->setObjectName("back");
