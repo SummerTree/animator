@@ -24,6 +24,7 @@ namespace unreal
 		this->setWindowTitle(tr("AnimatorGo Lite"));
 		this->setDockNestingEnabled(false);
 		this->setTabPosition(Qt::DockWidgetArea::AllDockWidgetAreas, QTabWidget::TabPosition::West);
+		this->resize(1280, 720);
 
 		QImage image(":res/icons/logo.png");
 		auto w = image.width();
@@ -220,10 +221,6 @@ namespace unreal
 				toolDock_->inspectorButton_->setChecked(true);
 				toolDock_->inspectorButton_->blockSignals(false);
 			}			
-		}
-		else
-		{
-			viewDock_->resize(1024, 576);
 		}
 	}
 
@@ -640,7 +637,7 @@ namespace unreal
 				spdlog::debug("finish");
 				
 				this->assetBrowseDock_->modelButton_->click();
-				this->toolDock_->environmentButton_->click();
+				this->toolDock_->inspectorButton_->click();
 
 				this->restoreLayout();
 

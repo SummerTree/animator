@@ -26,18 +26,6 @@ namespace octoon
 	}
 
 	void
-	GraphicsTextureDesc::setName(std::string_view name) noexcept
-	{
-		_name = name;
-	}
-
-	const std::string&
-	GraphicsTextureDesc::getName() const noexcept
-	{
-		return _name;
-	}
-
-	void
 	GraphicsTextureDesc::setWidth(std::uint32_t w) noexcept
 	{
 		_size.x = w;

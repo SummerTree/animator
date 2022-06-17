@@ -19,7 +19,6 @@ namespace unreal
 
 	private Q_SLOTS:
 		void paintEvent(QPaintEvent* e) noexcept override;
-		void showEvent(QShowEvent* event) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
 		void mousePressEvent(QMouseEvent* event) noexcept override;
 		void mouseMoveEvent(QMouseEvent* event) noexcept override;

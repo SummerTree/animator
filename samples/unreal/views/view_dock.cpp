@@ -23,19 +23,11 @@ namespace unreal
 		this->setFocusPolicy(Qt::StrongFocus);
 		this->setContextMenuPolicy(Qt::PreventContextMenu);
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
-
 		this->installEventFilter(this);
 	}
 
 	ViewDock::~ViewDock() noexcept
 	{
-	}
-
-	void
-	ViewDock::showEvent(QShowEvent* event) noexcept
-	{
-		auto& framebufferSize = profile_->cameraModule->framebufferSize.getValue();
-		this->resize(framebufferSize.x, framebufferSize.y);
 	}
 
 	void
