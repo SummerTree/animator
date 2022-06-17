@@ -201,7 +201,7 @@ namespace unreal
 			}
 
 			qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-			qimage = qimage.scaled(this->image->iconSize());
+			qimage = qimage.scaled(this->image->iconSize() * QApplication::primaryScreen()->devicePixelRatio());
 		}
 		break;
 		case octoon::Format::R8G8B8A8SNorm:
@@ -209,7 +209,7 @@ namespace unreal
 		case octoon::Format::R8G8B8A8SRGB:
 		{
 			qimage = QImage(textureData->data(), width, height, QImage::Format::Format_RGBA8888);
-			qimage = qimage.scaled(this->image->iconSize());
+			qimage = qimage.scaled(this->image->iconSize() * QApplication::primaryScreen()->devicePixelRatio());
 		}
 		break;
 		case octoon::Format::B8G8R8SNorm:
@@ -233,7 +233,7 @@ namespace unreal
 			}
 
 			qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGB888);
-			qimage = qimage.scaled(this->image->iconSize());
+			qimage = qimage.scaled(this->image->iconSize() * QApplication::primaryScreen()->devicePixelRatio());
 		}
 		break;
 		case octoon::Format::B8G8R8A8SNorm:
@@ -252,7 +252,7 @@ namespace unreal
 			}
 
 			qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGBA8888);
-			qimage = qimage.scaled(this->image->iconSize());
+			qimage = qimage.scaled(this->image->iconSize() * QApplication::primaryScreen()->devicePixelRatio());
 		}
 		break;
 		default:
@@ -264,7 +264,7 @@ namespace unreal
 
 		this->path->setText(name);
 		this->check->setCheckState(Qt::CheckState::Checked);
-		this->image->setIcon(QIcon(QPixmap::fromImage(qimage)));
+		this->image->setIcon(QPixmap::fromImage(qimage));
 		this->texture = textureData;
 		this->texture->apply();
 
