@@ -361,10 +361,17 @@ namespace octoon
 			{
 				auto fullpath = it.fullpath.u8string();
 
-				if (textureMap.find(fullpath) == textureMap.end())
+				if (!textureMap.contains(fullpath))
 				{
-					textureMap[fullpath] = std::make_shared<Texture>(it.fullpath);
-					textureMap[fullpath]->apply();
+					if (std::filesystem::exists(it.fullpath))
+						continue;
+
+					auto texture = std::make_shared<Texture>();
+					if (texture->load(it.fullpath))
+					{
+						texture->apply();
+						textureMap[fullpath] = std::move(texture);
+					}
 				}
 			}
 			catch (...)
