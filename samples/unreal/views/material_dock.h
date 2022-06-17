@@ -25,58 +25,6 @@
 
 namespace unreal
 {
-	class MaterialListPanel final : public QWidget
-	{
-		Q_OBJECT
-	public:
-		MaterialListPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
-		~MaterialListPanel() noexcept;
-
-		void addItem(std::string_view uuid) noexcept;
-		void addItem(const nlohmann::json& package) noexcept(false);
-
-		void updateItemList();
-
-		void resizeEvent(QResizeEvent* e) noexcept override;
-
-	public Q_SLOTS:
-		void itemClicked(QListWidgetItem* item);
-		void itemSelected(QListWidgetItem* item);
-
-	public:
-		QListWidget* mainWidget_;
-		QVBoxLayout* mainLayout_;
-
-		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<unreal::UnrealProfile> profile_;
-	};
-
-	class MaterialAssetPanel final : public QWidget
-	{
-		Q_OBJECT
-	public:
-		MaterialAssetPanel(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
-		~MaterialAssetPanel() noexcept;
-
-		void addItem(std::string_view uuid) noexcept(false);
-
-		void updateItemList();
-
-		void resizeEvent(QResizeEvent* e) noexcept override;
-		void keyPressEvent(QKeyEvent* event) noexcept;
-
-	public Q_SLOTS:
-		void itemClicked(QListWidgetItem* item);
-		void itemSelected(QListWidgetItem* item);
-
-	public:
-		QListWidget* mainWidget_;
-		QVBoxLayout* mainLayout_;
-		QListWidgetItem* clickedItem_;
-		octoon::GameObjectPtr behaviour_;
-		std::shared_ptr<unreal::UnrealProfile> profile_;
-	};
-
 	class MaterialDock final : public QDockWidget
 	{
 		Q_OBJECT
@@ -84,27 +32,28 @@ namespace unreal
 		MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~MaterialDock() noexcept;
 
-		void addItem(std::string_view uuid) noexcept;
+		void addItem(std::string_view uuid) noexcept(false);
+		void updateItemList() noexcept;
 
 	private:
 		void showEvent(QShowEvent* e) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
-		void closeEvent(QCloseEvent* e) override;
+		void keyPressEvent(QKeyEvent* event) noexcept;
 
 	private Q_SLOTS:
-		void backEvent();
-		void itemDoubleClicked(QListWidgetItem* item);
 		void importClickEvent();
+		void itemClicked(QListWidgetItem* item);
+		void itemSelected(QListWidgetItem* item);
+		bool eventFilter(QObject* watched, QEvent* event);
 
 	private:
 		QLabel* title_;
+		QVBoxLayout* topLayout_;
 		QVBoxLayout* materialLayout_;
 		QVBoxLayout* mainLayout_;
-		MaterialListPanel* materialList_;
-		MaterialAssetPanel* materialAssetList_;
-		MaterialEditWindow* modifyWidget_;
+		QListWidget* listWidget_;
+		QListWidgetItem* clickedItem_;
 		QScrollArea* modifyMaterialArea_;
-		QTabWidget* widget_;
 		QWidget* mainWidget_;
 		QListWidgetItem* selectedItem_;
 		octoon::GameObjectPtr behaviour_;

@@ -24,7 +24,6 @@ namespace unreal
 		auto title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Camera Editor"));
-		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("HLine");
@@ -32,7 +31,13 @@ namespace unreal
 		headerLine->setFrameShape(QFrame::NoFrame);
 		headerLine->setFrameShadow(QFrame::Plain);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 8, 0, 8);
+
+		auto titleLayout_ = new QVBoxLayout();
+		titleLayout_->addWidget(title_, 0, Qt::AlignLeft);
+		titleLayout_->addSpacing(8);
+		titleLayout_->addWidget(headerLine);
+		titleLayout_->setSpacing(0);
+		titleLayout_->setContentsMargins(4, 8, 4, 0);
 
 		fovSpinbox_ = UDoubleSpinLine::create(this, tr("fov:"), 1.0f, 120.0f, 1.0f, 60.0f);
 		fovSpinbox_->doublespinbox_->setSuffix(u8"бу");
@@ -105,24 +110,23 @@ namespace unreal
 		animtionLayout->addStretch();
 		animtionLayout->setContentsMargins(0, 0, 0, 0);
 
-		auto topLayout_ = new QVBoxLayout;
-		topLayout_->addWidget(fovSpinbox_);
-		topLayout_->addWidget(fovSlider);
-		topLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
-		topLayout_->addLayout(dofLayout_);
-		topLayout_->addWidget(apertureSpinbox_);
-		topLayout_->addWidget(focalLengthSpinbox_);
-		topLayout_->addWidget(focusDistanceSpinbox_);
-		topLayout_->addLayout(focusTargetLayout);
-		topLayout_->addLayout(animtionLayout);
-		topLayout_->setContentsMargins(8, 0, 8, 0);
+		auto contextLayout_ = new QVBoxLayout;
+		contextLayout_->addWidget(fovSpinbox_);
+		contextLayout_->addWidget(fovSlider);
+		contextLayout_->addWidget(dofInfoLabel_, 0, Qt::AlignLeft);
+		contextLayout_->addLayout(dofLayout_);
+		contextLayout_->addWidget(apertureSpinbox_);
+		contextLayout_->addWidget(focalLengthSpinbox_);
+		contextLayout_->addWidget(focusDistanceSpinbox_);
+		contextLayout_->addLayout(focusTargetLayout);
+		contextLayout_->addLayout(animtionLayout);
+		contextLayout_->setContentsMargins(8, 0, 8, 0);
 
 		mainLayout_ = new QVBoxLayout;
-		mainLayout_->addWidget(title_);
-		mainLayout_->addWidget(headerLine);
-		mainLayout_->addLayout(topLayout_);
+		mainLayout_->addLayout(titleLayout_);
+		mainLayout_->addLayout(contextLayout_);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(8, 8, 8, 8);
+		mainLayout_->setContentsMargins(0, 8, 0, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("CameraWidget");

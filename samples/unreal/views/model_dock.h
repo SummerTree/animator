@@ -42,7 +42,6 @@ namespace unreal
 		QVBoxLayout* mainLayout_;
 
 		QVBoxLayout* topLayout_;
-		QHBoxLayout* bottomLayout_;
 
 		QListWidgetItem* clickedItem_;
 

@@ -19,7 +19,6 @@ namespace unreal
 		auto title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Main Light Editor"));
-		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("HLine");
@@ -27,7 +26,13 @@ namespace unreal
 		headerLine->setFrameShape(QFrame::NoFrame);
 		headerLine->setFrameShadow(QFrame::Plain);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 8, 0, 8);
+
+		auto titleLayout_ = new QVBoxLayout();
+		titleLayout_->addWidget(title_, 0, Qt::AlignLeft);
+		titleLayout_->addSpacing(8);
+		titleLayout_->addWidget(headerLine);
+		titleLayout_->setSpacing(0);
+		titleLayout_->setContentsMargins(4, 8, 4, 0);
 
 		auto color = profile->mainLightModule->color.getValue();
 		
@@ -196,13 +201,17 @@ namespace unreal
 		scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		scrollArea_->setWidgetResizable(true);
 
+		auto contextLayout_ = new QVBoxLayout;
+		contextLayout_->addWidget(scrollArea_);
+		contextLayout_->addStretch();
+		contextLayout_->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
+		contextLayout_->setContentsMargins(8, 0, 8, 0);
+
 		mainLayout_ = new QVBoxLayout();
-		mainLayout_->addWidget(title_);
-		mainLayout_->addWidget(headerLine);
-		mainLayout_->addWidget(scrollArea_);
+		mainLayout_->addLayout(titleLayout_);
+		mainLayout_->addLayout(contextLayout_);
 		mainLayout_->addStretch();
-		mainLayout_->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout_->setContentsMargins(8, 8, 8, 8);
+		mainLayout_->setContentsMargins(0, 8, 0, 8);
 
 		mainWidget_ = new QWidget();
 		mainWidget_->setLayout(mainLayout_);

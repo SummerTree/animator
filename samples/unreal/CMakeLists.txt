@@ -117,6 +117,8 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/material_dock.cpp
 	${SOURCE_PATH}/views/material_edit_dock.h
 	${SOURCE_PATH}/views/material_edit_dock.cpp
+	${SOURCE_PATH}/views/inspector_dock.h
+	${SOURCE_PATH}/views/inspector_dock.cpp
 	${SOURCE_PATH}/views/light_dock.h
 	${SOURCE_PATH}/views/light_dock.cpp
 	${SOURCE_PATH}/views/setting_window.h

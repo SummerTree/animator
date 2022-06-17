@@ -31,7 +31,6 @@ namespace unreal
 		title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Motion Library"));
-		title_->setContentsMargins(0, 8, 0, 8);
 
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("HLine");
@@ -39,20 +38,15 @@ namespace unreal
 		headerLine->setFrameShape(QFrame::NoFrame);
 		headerLine->setFrameShadow(QFrame::Plain);
 		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 8, 0, 8);
 
 		topLayout_ = new QVBoxLayout();
 		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
+		topLayout_->addSpacing(8);
 		topLayout_->addWidget(headerLine);
-		topLayout_->setContentsMargins(4, 0, 4, 0);
-
-		bottomLayout_ = new QHBoxLayout();
-		bottomLayout_->addStretch();
-		bottomLayout_->setSpacing(2);
-		bottomLayout_->setContentsMargins(0, 4, 12, 0);
+		topLayout_->setSpacing(0);
+		topLayout_->setContentsMargins(4, 8, 4, 0);
 
 		listWidget_ = new DraggableListWindow;
-		listWidget_->setFixedWidth(this->width());
 		listWidget_->setIconSize(QSize(80, 80));
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setSpacing(4);
@@ -60,31 +54,17 @@ namespace unreal
 		
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
-		mainLayout_->addWidget(listWidget_, 0, Qt::AlignCenter);
-		mainLayout_->addStretch();
-		mainLayout_->addLayout(bottomLayout_);
+		mainLayout_->addWidget(listWidget_);
 		mainLayout_->setContentsMargins(0, 8, 0, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("MotionWidget");
 		mainWidget_->setLayout(mainLayout_);
-		mainWidget_->installEventFilter(this);
 
 		this->setWidget(mainWidget_);
 
-		/*MotionImporter::instance()->getIndexList() += [this](const nlohmann::json& json)
-		{
-			if (this->isVisible())
-			{
-				listWidget_->clear();
-
-				for (auto& uuid : MotionImporter::instance()->getIndexList())
-					this->addItem(uuid.get<nlohmann::json::string_t>());
-			}
-		};*/
-
-		connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
-		connect(listWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
+		this->connect(listWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
+		this->connect(listWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 	}
 
 	MotionDock::~MotionDock() noexcept
@@ -278,20 +258,15 @@ namespace unreal
 	void
 	MotionDock::resizeEvent(QResizeEvent* e) noexcept
 	{
-		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins() + bottomLayout_->contentsMargins();
-		listWidget_->resize(
-			this->width(),
-			mainWidget_->height() - margins.top() - margins.bottom());
+		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins();
+		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 	}
 
 	void
 	MotionDock::showEvent(QShowEvent* event) noexcept
 	{
-		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins() + bottomLayout_->contentsMargins();
-		listWidget_->resize(
-			this->width(),
-			mainWidget_->height() - margins.top() - margins.bottom());
-
+		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins();
+		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		listWidget_->clear();
 
 		for (auto& uuid : octoon::AssetBundle::instance()->getMotionList())

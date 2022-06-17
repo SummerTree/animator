@@ -30,7 +30,6 @@ namespace unreal
 		this->title_ = new QLabel;
 		this->title_->setObjectName("title");
 		this->title_->setText(tr("Environment Editor"));
-		this->title_->setContentsMargins(0, 8, 0, 8);
 
 		this->headerLine_ = new QFrame;
 		this->headerLine_->setObjectName("HLine");
@@ -38,7 +37,13 @@ namespace unreal
 		this->headerLine_->setFrameShape(QFrame::NoFrame);
 		this->headerLine_->setFrameShadow(QFrame::Plain);
 		this->headerLine_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		this->headerLine_->setContentsMargins(0, 8, 0, 8);
+
+		auto titleLayout_ = new QVBoxLayout();
+		titleLayout_->addWidget(title_, 0, Qt::AlignLeft);
+		titleLayout_->addSpacing(8);
+		titleLayout_->addWidget(headerLine_);
+		titleLayout_->setSpacing(0);
+		titleLayout_->setContentsMargins(4, 8, 4, 0);
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setObjectName("Preview");
@@ -195,15 +200,18 @@ namespace unreal
 		this->spoiler->setContentLayout(*spoilerLayout);
 		this->spoiler->toggleButton.click();
 
+		auto contextLayout_ = new QVBoxLayout;
+		contextLayout_->addWidget(previewButton_, 0, Qt::AlignCenter);
+		contextLayout_->addWidget(previewName_, 0, Qt::AlignCenter);
+		contextLayout_->addWidget(spoiler);
+		contextLayout_->addStretch();
+		contextLayout_->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
+		contextLayout_->setContentsMargins(8, 0, 8, 0);
+
 		auto mainLayout = new QVBoxLayout();
-		mainLayout->addWidget(title_, 0, Qt::AlignLeft);
-		mainLayout->addWidget(headerLine_);
-		mainLayout->addWidget(previewButton_, 0, Qt::AlignCenter);
-		mainLayout->addWidget(previewName_, 0, Qt::AlignCenter);
-		mainLayout->addWidget(spoiler);
-		mainLayout->addStretch();
-		mainLayout->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		mainLayout->setContentsMargins(8, 8, 8, 8);
+		mainLayout->addLayout(titleLayout_);
+		mainLayout->addLayout(contextLayout_);
+		mainLayout->setContentsMargins(0, 8, 0, 8);
 
 		auto mainWidget = new QWidget();
 		mainWidget->setObjectName("EnvironmentWidget");
