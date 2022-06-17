@@ -703,7 +703,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/material_edit_dock.cpp" line="70"/>
         <source> Texture</source>
-        <translation> 纹理</translation>
+        <translation>纹理</translation>
     </message>
     <message>
         <location filename="../views/material_edit_dock.cpp" line="263"/>

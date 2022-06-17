@@ -74,6 +74,7 @@ namespace unreal
 
 			this->titleLayout = new QHBoxLayout;
 			this->titleLayout->addWidget(check, 0, Qt::AlignLeft);
+			this->titleLayout->addSpacing(2);
 			this->titleLayout->addWidget(title, 0, Qt::AlignLeft);
 			this->titleLayout->addStretch();
 			this->titleLayout->setSpacing(0);
