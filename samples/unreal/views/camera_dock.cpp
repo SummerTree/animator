@@ -120,7 +120,7 @@ namespace unreal
 		contextLayout_->addWidget(focusDistanceSpinbox_);
 		contextLayout_->addLayout(focusTargetLayout);
 		contextLayout_->addLayout(animtionLayout);
-		contextLayout_->setContentsMargins(8, 0, 8, 0);
+		contextLayout_->setContentsMargins(16, 0, 16, 0);
 
 		mainLayout_ = new QVBoxLayout;
 		mainLayout_->addLayout(titleLayout_);
