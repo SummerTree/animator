@@ -1,5 +1,6 @@
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
+#include <octoon/vmd_loader.h>
 #include <octoon/mdl_loader.h>
 #include <octoon/io/fstream.h>
 #include <octoon/texture/texture.h>
@@ -206,11 +207,18 @@ namespace octoon
 
 		if (ext == u8".vmd")
 		{
-			auto package = AssetDatabase::instance()->createAsset(path, motionAsset_->getAssertPath());
-			if (package.is_object())
+			auto animation = VMDLoader::load(path);
+			if (animation)
 			{
-				motionAsset_->addIndex(package["uuid"].get<std::string>());
-				return package;
+				if (animation->getName().empty())
+					animation->setName((char*)path.filename().u8string().c_str());
+
+				auto package = AssetDatabase::instance()->createAsset(animation, motionAsset_->getAssertPath());
+				if (package.is_object())
+				{
+					motionAsset_->addIndex(package["uuid"].get<std::string>());
+					return package;
+				}
 			}
 		}
 		else if (ext == u8".pmx")

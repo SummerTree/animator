@@ -65,44 +65,6 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetDatabase::createAsset(const std::filesystem::path& filepath, const std::filesystem::path& path) noexcept(false)
-	{
-		if (std::filesystem::exists(filepath))
-		{
-			auto uuid = make_guid();
-			auto extension = filepath.extension();
-			auto rootPath = std::filesystem::path(path).append(uuid);
-			auto motionPath = std::filesystem::path(rootPath).append(uuid + extension.string());
-			auto packagePath = std::filesystem::path(rootPath).append("package.json");
-
-			std::filesystem::create_directory(path);
-			std::filesystem::create_directory(rootPath);
-			std::filesystem::copy(filepath, motionPath);
-			std::filesystem::permissions(motionPath, std::filesystem::perms::owner_write);
-
-			auto filename = std::filesystem::path(filepath).filename().u8string();
-
-			nlohmann::json package;
-			package["uuid"] = uuid;
-			package["visible"] = true;
-			package["name"] = (char*)filename.substr(0, filename.find_last_of('.')).c_str();
-			package["path"] = (char*)motionPath.u8string().c_str();
-
-			std::ofstream ifs(packagePath, std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			return package;
-		}
-
-		return nlohmann::json();
-	}
-
-	nlohmann::json
 	AssetDatabase::createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& path) noexcept(false)
 	{
 		assert(!path.empty());
@@ -186,7 +148,7 @@ namespace octoon
 		nlohmann::json package;
 		package["uuid"] = uuid;
 		package["visible"] = true;
-		package["name"] = uuid + ".vmd";
+		package["name"] = animation->getName();
 		package["path"] = (char*)motionPath.u8string().c_str();
 
 		std::ofstream ifs(packagePath, std::ios_base::binary);
