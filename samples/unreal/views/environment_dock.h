@@ -60,6 +60,8 @@ namespace unreal
 		QLabel* verticalRotationLabel_;
 		QLabel* title_;
 
+		QFrame* headerLine_;
+
 		QToolButton* previewButton_;
 		QToolButton* colorButton;
 		QToolButton* thumbnail;
@@ -78,14 +80,13 @@ namespace unreal
 
 		QColorDialog* colorSelector_;
 
-		std::unique_ptr<EnvironmentListDialog> environmentListDialog_;
-
 		Spoiler* spoiler;
 
 		octoon::GameObjectPtr behaviour_;
 
 		std::shared_ptr<QImage> previewImage_;
 		std::shared_ptr<unreal::UnrealProfile> profile_;
+		std::unique_ptr<EnvironmentListDialog> environmentListDialog_;
 	};
 }
 

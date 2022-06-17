@@ -1,12 +1,8 @@
 #include "environment_dock.h"
-#include <octoon/environment_light_component.h>
-#include <octoon/texture/texture.h>
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
-#include <octoon/mesh_renderer_component.h>
 
 #include <qapplication.h>
-#include <qdrag.h>
 #include <qevent.h>
 #include <qfiledialog.h>
 #include <qfileinfo.h>
@@ -31,18 +27,18 @@ namespace unreal
 		this->setTitleBarWidget(new QWidget());
 		delete oldTitleBar;
 
-		auto title_ = new QLabel;
-		title_->setObjectName("title");
-		title_->setText(tr("Environment Editor"));
-		title_->setContentsMargins(0, 8, 0, 8);
+		this->title_ = new QLabel;
+		this->title_->setObjectName("title");
+		this->title_->setText(tr("Environment Editor"));
+		this->title_->setContentsMargins(0, 8, 0, 8);
 
-		auto headerLine = new QFrame;
-		headerLine->setObjectName("HLine");
-		headerLine->setFixedHeight(1);
-		headerLine->setFrameShape(QFrame::NoFrame);
-		headerLine->setFrameShadow(QFrame::Plain);
-		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 8, 0, 8);
+		this->headerLine_ = new QFrame;
+		this->headerLine_->setObjectName("HLine");
+		this->headerLine_->setFixedHeight(1);
+		this->headerLine_->setFrameShape(QFrame::NoFrame);
+		this->headerLine_->setFrameShadow(QFrame::Plain);
+		this->headerLine_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+		this->headerLine_->setContentsMargins(0, 8, 0, 8);
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setObjectName("Preview");
@@ -201,7 +197,7 @@ namespace unreal
 
 		auto mainLayout = new QVBoxLayout();
 		mainLayout->addWidget(title_, 0, Qt::AlignLeft);
-		mainLayout->addWidget(headerLine);
+		mainLayout->addWidget(headerLine_);
 		mainLayout->addWidget(previewButton_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(previewName_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(spoiler);

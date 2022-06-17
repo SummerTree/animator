@@ -193,79 +193,79 @@
 <context>
     <name>unreal::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="26"/>
+        <location filename="../views/environment_dock.cpp" line="22"/>
         <source>Environment Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="36"/>
+        <location filename="../views/environment_dock.cpp" line="32"/>
         <source>Environment Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="50"/>
+        <location filename="../views/environment_dock.cpp" line="46"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="55"/>
-        <location filename="../views/environment_dock.cpp" line="313"/>
+        <location filename="../views/environment_dock.cpp" line="51"/>
+        <location filename="../views/environment_dock.cpp" line="309"/>
         <source>Untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="74"/>
+        <location filename="../views/environment_dock.cpp" line="70"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="78"/>
+        <location filename="../views/environment_dock.cpp" line="74"/>
         <source>Thumbnail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="82"/>
+        <location filename="../views/environment_dock.cpp" line="78"/>
         <source>Toggle Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="90"/>
+        <location filename="../views/environment_dock.cpp" line="86"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="108"/>
+        <location filename="../views/environment_dock.cpp" line="104"/>
         <source>Horizontal Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="126"/>
+        <location filename="../views/environment_dock.cpp" line="122"/>
         <source>Vertical Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="145"/>
+        <location filename="../views/environment_dock.cpp" line="141"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="198"/>
+        <location filename="../views/environment_dock.cpp" line="194"/>
         <source>Attribute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="453"/>
-        <location filename="../views/environment_dock.cpp" line="486"/>
+        <location filename="../views/environment_dock.cpp" line="449"/>
+        <location filename="../views/environment_dock.cpp" line="482"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="467"/>
+        <location filename="../views/environment_dock.cpp" line="463"/>
         <source>Import Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="467"/>
+        <location filename="../views/environment_dock.cpp" line="463"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
