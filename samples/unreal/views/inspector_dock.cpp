@@ -209,7 +209,7 @@ namespace unreal
 			{
 				auto hit = data_.value();
 				auto hitObject = hit.object.lock();
-
+				
 				if (selectedObject_.expired() || selectedObject_.lock() != hitObject)
 				{
 					octoon::MaterialImporter::instance()->clear();
