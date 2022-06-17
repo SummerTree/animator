@@ -297,13 +297,12 @@ namespace unreal
 		videoLayout->addWidget(sppSpinbox_);
 		videoLayout->addWidget(bouncesSpinbox_);
 		videoLayout->addStretch();
-		videoLayout->addWidget(recordButton_, 0, Qt::AlignCenter);
+		videoLayout->addWidget(recordButton_, 0, Qt::AlignCenter | Qt::AlignBottom);
 		videoLayout->setContentsMargins(16, 0, 16, 0);
 
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(titleLayout_);
 		mainLayout_->addLayout(videoLayout);
-		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(0, 12, 0, 8);
 
 		mainWidget_ = new QWidget;
