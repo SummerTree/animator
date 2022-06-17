@@ -33,6 +33,74 @@ namespace unreal
 
 		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(mainWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
+
+		profile->selectorModule->selectedItem_ += [this](const std::optional<octoon::RaycastHit>& data_) {
+			if (this->isVisible())
+			{
+				if (!data_.has_value())
+				{
+					selectedObject_.reset();
+					octoon::MaterialImporter::instance()->clear();
+					this->updateItemList();
+					return;
+				}
+
+				if (data_.value().object.expired())
+				{
+					selectedObject_.reset();
+					octoon::MaterialImporter::instance()->clear();
+					this->updateItemList();
+					return;
+				}
+
+				auto hit = data_.value();
+				auto hitObject = hit.object.lock();
+
+				if (selectedObject_.expired() || selectedObject_.lock() != hitObject)
+				{
+					octoon::MaterialImporter::instance()->clear();
+
+					auto renderComponent = hitObject->getComponent<octoon::MeshRendererComponent>();
+					if (renderComponent)
+					{
+						for (auto& mat : renderComponent->getMaterials())
+							octoon::MaterialImporter::instance()->addMaterial(mat);
+					}
+					else
+					{
+						auto smr = hitObject->getComponent<octoon::SkinnedMeshRendererComponent>();
+						if (smr)
+						{
+							for (auto& mat : smr->getMaterials())
+								octoon::MaterialImporter::instance()->addMaterial(mat);
+						}
+					}
+
+					this->updateItemList();
+
+					selectedObject_ = hitObject;
+				}
+
+				auto& sceneList = octoon::MaterialImporter::instance()->getSceneList();
+				if (hit.mesh < sceneList.size())
+				{
+					auto uuid = sceneList[hit.mesh];
+					if (!uuid.empty())
+					{
+						auto count = this->mainWidget_->count();
+						for (int i = 0; i < count; i++)
+						{
+							auto item = this->mainWidget_->item(hit.mesh);
+							if (item->data(Qt::UserRole).toString().toStdString() == uuid)
+							{
+								this->mainWidget_->setCurrentItem(item);
+								break;
+							}
+						}
+					}
+				}
+			}
+		};
 	}
 
 	MaterialListPanel::~MaterialListPanel() noexcept
@@ -203,58 +271,6 @@ namespace unreal
 
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(backEvent()));
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
-
-		profile->selectorModule->selectedItem_ += [this](const std::optional<octoon::RaycastHit>& data_) {
-			if (materialList_->isVisible() && data_.has_value() && !data_.value().object.expired())
-			{
-				auto hit = data_.value();
-				auto hitObject = hit.object.lock();
-				
-				if (selectedObject_.expired() || selectedObject_.lock() != hitObject)
-				{
-					octoon::MaterialImporter::instance()->clear();
-
-					auto renderComponent = hitObject->getComponent<octoon::MeshRendererComponent>();
-					if (renderComponent)
-					{
-						for (auto& mat : renderComponent->getMaterials())
-							octoon::MaterialImporter::instance()->addMaterial(mat);
-					}
-					else
-					{
-						auto smr = hitObject->getComponent<octoon::SkinnedMeshRendererComponent>();
-						if (smr)
-						{
-							for (auto& mat : smr->getMaterials())
-								octoon::MaterialImporter::instance()->addMaterial(mat);
-						}
-					}
-
-					materialList_->updateItemList();
-
-					selectedObject_ = hitObject;
-				}
-
-				auto& sceneList = octoon::MaterialImporter::instance()->getSceneList();
-				if (hit.mesh < sceneList.size())
-				{
-					auto uuid = sceneList[hit.mesh];
-					if (!uuid.empty())
-					{
-						auto count = this->materialList_->mainWidget_->count();
-						for (int i = 0; i < count; i++)
-						{
-							auto item = this->materialList_->mainWidget_->item(hit.mesh);
-							if (item->data(Qt::UserRole).toString().toStdString() == uuid)
-							{
-								this->materialList_->mainWidget_->setCurrentItem(item);
-								break;
-							}
-						}
-					}
-				}
-			}
-		};
 	}
 
 	InspectorDock::~InspectorDock() noexcept

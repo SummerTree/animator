@@ -48,6 +48,8 @@ namespace unreal
 		QVBoxLayout* mainLayout_;
 
 		octoon::GameObjectPtr behaviour_;
+		octoon::GameObjectWeakPtr selectedObject_;
+
 		std::shared_ptr<unreal::UnrealProfile> profile_;
 	};
 
@@ -78,7 +80,6 @@ namespace unreal
 		QWidget* mainWidget_;
 		QListWidgetItem* selectedItem_;
 		octoon::GameObjectPtr behaviour_;
-		octoon::GameObjectWeakPtr selectedObject_;
 		std::shared_ptr<UnrealProfile> profile_;
 	};
 }
