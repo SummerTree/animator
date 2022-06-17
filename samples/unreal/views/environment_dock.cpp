@@ -43,7 +43,7 @@ namespace unreal
 		titleLayout_->addSpacing(8);
 		titleLayout_->addWidget(headerLine_);
 		titleLayout_->setSpacing(0);
-		titleLayout_->setContentsMargins(4, 8, 4, 0);
+		titleLayout_->setContentsMargins(4, 0, 4, 0);
 
 		this->previewButton_ = new QToolButton();
 		this->previewButton_->setObjectName("Preview");
@@ -211,7 +211,7 @@ namespace unreal
 		auto mainLayout = new QVBoxLayout();
 		mainLayout->addLayout(titleLayout_);
 		mainLayout->addLayout(contextLayout_);
-		mainLayout->setContentsMargins(0, 8, 0, 8);
+		mainLayout->setContentsMargins(0, 12, 0, 8);
 
 		auto mainWidget = new QWidget();
 		mainWidget->setObjectName("EnvironmentWidget");

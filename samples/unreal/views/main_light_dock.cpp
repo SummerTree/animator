@@ -32,7 +32,7 @@ namespace unreal
 		titleLayout_->addSpacing(8);
 		titleLayout_->addWidget(headerLine);
 		titleLayout_->setSpacing(0);
-		titleLayout_->setContentsMargins(4, 8, 4, 0);
+		titleLayout_->setContentsMargins(4, 0, 4, 0);
 
 		auto color = profile->mainLightModule->color.getValue();
 		
@@ -211,7 +211,7 @@ namespace unreal
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(titleLayout_);
 		mainLayout_->addLayout(contextLayout_);
-		mainLayout_->setContentsMargins(0, 8, 0, 8);
+		mainLayout_->setContentsMargins(0, 12, 0, 8);
 
 		mainWidget_ = new QWidget();
 		mainWidget_->setObjectName("MainLightWidget");

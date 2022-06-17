@@ -23,7 +23,7 @@ namespace unreal
 		, profile_(profile)
 	{
 		mainWidget_ = new DraggableListWindow;
-		mainWidget_->setIconSize(QSize(75, 75));
+		mainWidget_->setIconSize(QSize(74, 74));
 		mainWidget_->setStyleSheet("background:transparent;");
 		mainWidget_->setSpacing(4);
 
@@ -183,7 +183,7 @@ namespace unreal
 		titleLayout_->addSpacing(8);
 		titleLayout_->addWidget(headerLine_);
 		titleLayout_->setSpacing(0);
-		titleLayout_->setContentsMargins(4, 8, 4, 0);
+		titleLayout_->setContentsMargins(4, 0, 4, 0);
 		
 		materialList_ = new MaterialListPanel(behaviour, profile);
 
@@ -194,7 +194,7 @@ namespace unreal
 		mainLayout_->addLayout(titleLayout_);
 		mainLayout_->addWidget(materialList_);
 		mainLayout_->addWidget(modifyWidget_);
-		mainLayout_->setContentsMargins(0, 8, 0, 8);
+		mainLayout_->setContentsMargins(0, 12, 0, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setLayout(mainLayout_);

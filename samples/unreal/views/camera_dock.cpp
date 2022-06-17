@@ -37,7 +37,7 @@ namespace unreal
 		titleLayout_->addSpacing(8);
 		titleLayout_->addWidget(headerLine_);
 		titleLayout_->setSpacing(0);
-		titleLayout_->setContentsMargins(4, 8, 4, 0);
+		titleLayout_->setContentsMargins(4, 0, 4, 0);
 
 		fovSpinbox_ = UDoubleSpinLine::create(this, tr("fov:"), 1.0f, 120.0f, 1.0f, 60.0f);
 		fovSpinbox_->doublespinbox_->setSuffix(u8"бу");
@@ -126,7 +126,7 @@ namespace unreal
 		mainLayout_->addLayout(titleLayout_);
 		mainLayout_->addLayout(contextLayout_);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(0, 8, 0, 8);
+		mainLayout_->setContentsMargins(0, 12, 0, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("CameraWidget");

@@ -36,7 +36,7 @@ namespace unreal
 		titleLayout_->addSpacing(8);
 		titleLayout_->addWidget(headerLine_);
 		titleLayout_->setSpacing(0);
-		titleLayout_->setContentsMargins(4, 8, 4, 0);
+		titleLayout_->setContentsMargins(4, 0, 4, 0);
 
 		videoRatio_ = new QLabel(this);
 		videoRatio_->setText(tr("Ratio"));
@@ -304,7 +304,7 @@ namespace unreal
 		mainLayout_->addLayout(titleLayout_);
 		mainLayout_->addLayout(videoLayout);
 		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(0, 8, 0, 8);
+		mainLayout_->setContentsMargins(0, 12, 0, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("RecordWidget");
