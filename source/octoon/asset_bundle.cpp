@@ -111,7 +111,10 @@ namespace octoon
 				auto uuid = std::string(uuid_);
 				auto it = this->assetCache_.find(uuid);
 				if (it != this->assetCache_.end())
-					return (*it).second->downcast_pointer<Material>();
+				{
+					if (!(*it).second.expired())
+						return (*it).second.lock()->downcast_pointer<Material>();
+				}
 
 				auto asset = AssetDatabase::instance()->loadAssetAtPackage<Material>(package);
 				if (asset)
@@ -128,7 +131,10 @@ namespace octoon
 				auto uuid = std::string(uuid_);
 				auto it = this->assetCache_.find(uuid);
 				if (it != this->assetCache_.end())
-					return (*it).second->downcast_pointer<GameObject>();
+				{
+					if (!(*it).second.expired())
+						return (*it).second.lock()->downcast_pointer<GameObject>();
+				}
 			
 				auto asset = AssetDatabase::instance()->loadAssetAtPackage<GameObject>(package);
 				if (asset)
@@ -145,7 +151,10 @@ namespace octoon
 				auto uuid = std::string(uuid_);
 				auto it = this->assetCache_.find(uuid);
 				if (it != this->assetCache_.end())
-					return (*it).second->downcast_pointer<Animation>();
+				{
+					if (!(*it).second.expired())
+						return (*it).second.lock()->downcast_pointer<Animation>();
+				}
 
 				auto asset = AssetDatabase::instance()->loadAssetAtPackage<Animation>(package);
 				if (asset)
@@ -165,7 +174,10 @@ namespace octoon
 				auto uuid = std::string(uuid_);
 				auto it = this->assetCache_.find(uuid);
 				if (it != this->assetCache_.end())
-					return (*it).second->downcast_pointer<Texture>();
+				{
+					if (!(*it).second.expired())
+						return (*it).second.lock()->downcast_pointer<Texture>();
+				}
 
 				auto asset = AssetDatabase::instance()->loadAssetAtPackage<Texture>(package);
 				if (asset)

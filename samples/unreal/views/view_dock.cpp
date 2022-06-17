@@ -118,6 +118,30 @@ namespace unreal
 	void
 	ViewDock::keyPressEvent(QKeyEvent* event) noexcept
 	{
+		if (event->key() == Qt::Key_Delete)
+		{
+			if (profile_->selectorModule->selectedItem_.getValue().has_value())
+			{
+				if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this model?")) == QMessageBox::Yes)
+				{
+					auto item = profile_->selectorModule->selectedItem_.getValue().value().object.lock();
+					auto& items = profile_->entitiesModule->objects.getValue();
+					
+					for (auto it = items.begin(); it != items.end(); ++it)
+					{
+						if (*it == item)
+						{
+							items.erase(it);
+							break;
+						}
+					}
+
+					profile_->selectorModule->selectedItem_ = std::nullopt;
+					profile_->selectorModule->selectedItemHover_ = std::nullopt;
+				}
+			}
+		}
+
 		if (gameApp_->isOpen())
 			gameApp_->doWindowKeyDown((octoon::WindHandle)this->winId(), KeyCodetoInputKey(event->key()), 0, 0);
 	}

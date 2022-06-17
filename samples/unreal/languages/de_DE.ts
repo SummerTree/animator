@@ -1590,13 +1590,23 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="182"/>
-        <location filename="../views/view_dock.cpp" line="194"/>
+        <location filename="../views/view_dock.cpp" line="125"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/view_dock.cpp" line="125"/>
+        <source>Are you sure you want to delete this model?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/view_dock.cpp" line="206"/>
+        <location filename="../views/view_dock.cpp" line="218"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="182"/>
+        <location filename="../views/view_dock.cpp" line="206"/>
         <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -68,7 +68,7 @@ namespace octoon
 		std::unique_ptr<AssetImporter> materialAsset_;
 		std::unique_ptr<AssetImporter> hdriAsset_;
 
-		std::map<std::string, std::shared_ptr<RttiObject>> assetCache_;
+		std::map<std::string, std::weak_ptr<RttiObject>> assetCache_;
 		std::map<std::weak_ptr<RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<RttiObject>>> assetPackageCache_;
 
 		std::vector<std::shared_ptr<AssetBundle>> assetBundles_;
