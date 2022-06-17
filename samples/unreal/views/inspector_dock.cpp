@@ -261,6 +261,11 @@ namespace unreal
 
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(backEvent()));
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
+
+		profile->selectorModule->selectedItem_ += [this](const std::optional<octoon::RaycastHit>& data_) {
+			if (!data_.has_value() || data_.value().object.expired())
+				this->backEvent();
+		};
 	}
 
 	InspectorDock::~InspectorDock() noexcept
