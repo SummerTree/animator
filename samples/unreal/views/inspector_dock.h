@@ -61,7 +61,6 @@ namespace unreal
 	private:
 		void showEvent(QShowEvent* e) noexcept override;
 		void resizeEvent(QResizeEvent* e) noexcept override;
-		void closeEvent(QCloseEvent* e) override;
 
 	private Q_SLOTS:
 		void backEvent();
@@ -69,14 +68,17 @@ namespace unreal
 
 	private:
 		QLabel* title_;
+		QFrame* headerLine_;
 		QVBoxLayout* materialLayout_;
 		QVBoxLayout* mainLayout_;
+		QVBoxLayout* titleLayout_;
 		MaterialListPanel* materialList_;
 		MaterialEditWindow* modifyWidget_;
 		QScrollArea* modifyMaterialArea_;
 		QWidget* mainWidget_;
 		QListWidgetItem* selectedItem_;
 		octoon::GameObjectPtr behaviour_;
+		octoon::GameObjectWeakPtr selectedObject_;
 		std::shared_ptr<UnrealProfile> profile_;
 	};
 }

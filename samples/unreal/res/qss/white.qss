@@ -56,6 +56,9 @@ QToolButton#material{
 QToolButton#camera{
 	qproperty-icon: url(":res/icons/camera.png");
 }
+QToolButton#eye{
+	qproperty-icon: url(":res/icons/eye.png");
+}
 QToolButton#setting{
 	qproperty-icon: url(":res/icons/setting.png");
 }
@@ -508,7 +511,8 @@ QWidget#MainLightWidget QToolButton#Reset {
 QWidget#MainLightDock, 
 QWidget#EnvironmentDock,
 QWidget#RecordDock,
-QWidget#CameraDock{
+QWidget#CameraDock,
+QWidget#InspectorDock{
 	min-width:272;
 	max-width:272;
 }

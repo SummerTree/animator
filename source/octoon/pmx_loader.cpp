@@ -21,6 +21,7 @@
 #include <octoon/rotation_link_component.h>
 #include <octoon/rotation_link_limit_component.h>
 #include <octoon/cloth_component.h>
+#include <octoon/asset_database.h>
 
 #include <octoon/io/fstream.h>
 
@@ -366,8 +367,8 @@ namespace octoon
 					if (!std::filesystem::exists(it.fullpath))
 						continue;
 
-					auto texture = std::make_shared<Texture>();
-					if (texture->load(it.fullpath))
+					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(it.fullpath);
+					if (texture)
 					{
 						texture->apply();
 						textureMap[fullpath] = std::move(texture);

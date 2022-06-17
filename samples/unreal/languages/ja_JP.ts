@@ -422,18 +422,14 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::InspectorDock</name>
     <message>
-        <location filename="../views/inspector_dock.cpp" line="163"/>
-        <location filename="../views/inspector_dock.cpp" line="305"/>
-        <source>Material</source>
+        <location filename="../views/inspector_dock.cpp" line="162"/>
+        <location filename="../views/inspector_dock.cpp" line="172"/>
+        <location filename="../views/inspector_dock.cpp" line="292"/>
+        <source>Inspector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/inspector_dock.cpp" line="174"/>
-        <source>Material Library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/inspector_dock.cpp" line="320"/>
+        <location filename="../views/inspector_dock.cpp" line="307"/>
         <source>Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
@@ -512,48 +508,49 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="291"/>
-        <location filename="../views/main_dock.cpp" line="319"/>
-        <location filename="../views/main_dock.cpp" line="347"/>
-        <location filename="../views/main_dock.cpp" line="375"/>
-        <location filename="../views/main_dock.cpp" line="402"/>
-        <location filename="../views/main_dock.cpp" line="429"/>
-        <location filename="../views/main_dock.cpp" line="456"/>
-        <location filename="../views/main_dock.cpp" line="483"/>
-        <location filename="../views/main_dock.cpp" line="541"/>
-        <location filename="../views/main_dock.cpp" line="612"/>
-        <location filename="../views/main_dock.cpp" line="639"/>
+        <location filename="../views/main_dock.cpp" line="303"/>
+        <location filename="../views/main_dock.cpp" line="331"/>
+        <location filename="../views/main_dock.cpp" line="359"/>
+        <location filename="../views/main_dock.cpp" line="387"/>
+        <location filename="../views/main_dock.cpp" line="414"/>
+        <location filename="../views/main_dock.cpp" line="441"/>
+        <location filename="../views/main_dock.cpp" line="468"/>
+        <location filename="../views/main_dock.cpp" line="495"/>
+        <location filename="../views/main_dock.cpp" line="553"/>
+        <location filename="../views/main_dock.cpp" line="582"/>
+        <location filename="../views/main_dock.cpp" line="653"/>
+        <location filename="../views/main_dock.cpp" line="680"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="496"/>
+        <location filename="../views/main_dock.cpp" line="508"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="496"/>
+        <location filename="../views/main_dock.cpp" line="508"/>
         <source>All Files(*.pmx *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="499"/>
-        <location filename="../views/main_dock.cpp" line="500"/>
+        <location filename="../views/main_dock.cpp" line="511"/>
+        <location filename="../views/main_dock.cpp" line="512"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="499"/>
+        <location filename="../views/main_dock.cpp" line="511"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="541"/>
+        <location filename="../views/main_dock.cpp" line="553"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="613"/>
+        <location filename="../views/main_dock.cpp" line="654"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1326,6 +1323,16 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/tool_dock.cpp" line="42"/>
         <source>Open Camera Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="48"/>
+        <source>Inspector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/tool_dock.cpp" line="49"/>
+        <source>Open Inspector Panel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

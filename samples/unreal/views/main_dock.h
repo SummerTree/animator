@@ -27,6 +27,7 @@
 #include "views/record_dock.h"
 #include "views/camera_dock.h"
 #include "views/motion_dock.h"
+#include "views/inspector_dock.h"
 
 namespace unreal
 {
@@ -57,12 +58,13 @@ namespace unreal
 		void onCameraSignal() noexcept;
 		void onMotionSignal() noexcept;
 		void onImportSignal() noexcept;
+		void onInspectorSignal() noexcept;
 
 		void open() noexcept(false);
 		void update() noexcept;
 
 		QDockWidget* assetDock() noexcept;
-		QDockWidget* visableDock() noexcept;
+		QDockWidget* toolDock() noexcept;
 
 	private:
 		bool init_flag;
@@ -89,6 +91,7 @@ namespace unreal
 		std::unique_ptr<ModelDock> modelDock_;
 		std::unique_ptr<CameraDock> cameraDock_;
 		std::unique_ptr<MotionDock> motionDock_;
+		std::unique_ptr<InspectorDock> inspectorDock_;
 
 		std::shared_ptr<QTranslator> translator_;
 	};

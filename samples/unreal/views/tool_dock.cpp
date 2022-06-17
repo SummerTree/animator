@@ -42,12 +42,20 @@ namespace unreal
 		cameraButton_->setToolTip(tr("Open Camera Panel"));
 		cameraButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		cameraButton_->setCheckable(true);
+
+		inspectorButton_ = new QToolButton;
+		inspectorButton_->setObjectName("eye");
+		inspectorButton_->setText(tr("Inspector"));
+		inspectorButton_->setToolTip(tr("Open Inspector Panel"));
+		inspectorButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		inspectorButton_->setCheckable(true);
 		
 		auto buttonGroup_ = new QButtonGroup();
 		buttonGroup_->addButton(sunButton_, 0);
 		buttonGroup_->addButton(environmentButton_, 1);
 		buttonGroup_->addButton(cameraButton_, 2);
 		buttonGroup_->addButton(videoButton_, 3);
+		buttonGroup_->addButton(inspectorButton_, 3);
 
 		auto layout = new QVBoxLayout;
 		layout->setContentsMargins(0, 0, 0, 0);
@@ -55,6 +63,7 @@ namespace unreal
 		layout->addWidget(environmentButton_, 0, Qt::AlignCenter);
 		layout->addWidget(cameraButton_, 0, Qt::AlignCenter);
 		layout->addWidget(videoButton_, 0, Qt::AlignCenter);
+		layout->addWidget(inspectorButton_, 0, Qt::AlignCenter);
 		layout->addStretch();
 		layout->setSpacing(0);
 		layout->setContentsMargins(0, 0, 0, 0);
@@ -69,6 +78,7 @@ namespace unreal
 		this->connect(sunButton_, SIGNAL(clicked()), this, SLOT(sunEvent()));
 		this->connect(environmentButton_, SIGNAL(clicked()), this, SLOT(environmentEvent()));
 		this->connect(cameraButton_, SIGNAL(clicked()), this, SLOT(cameraEvent()));
+		this->connect(inspectorButton_, SIGNAL(clicked()), this, SLOT(inspectorEvent()));
 
 		spdlog::debug("create tool dock");
 	}
@@ -99,5 +109,11 @@ namespace unreal
 	ToolDock::cameraEvent() noexcept
 	{
 		emit cameraSignal();
+	}
+
+	void
+	ToolDock::inspectorEvent() noexcept
+	{
+		emit inspectorSignal();
 	}
 }

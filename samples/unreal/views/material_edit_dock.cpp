@@ -115,7 +115,7 @@ namespace unreal
 			this->slider->setMinimum(0);
 			this->slider->setMaximum(100);
 			this->slider->setValue(0);
-			this->slider->setFixedWidth(206);
+			this->slider->setMinimumWidth(206);
 
 			this->spinBox = new DoubleSpinBox;
 			this->spinBox->setFixedWidth(40);
@@ -1194,47 +1194,47 @@ namespace unreal
 
 		auto colorMap = material_->getColorMap();
 		if (colorMap)
-			this->setAlbedoMap(QString::fromStdString(colorMap->getName()));
+			this->setAlbedoMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(colorMap)));
 
 		auto opacityMap = material_->getOpacityMap();
 		if (opacityMap)
-			this->setOpacityMap(QString::fromStdString(opacityMap->getName()));
+			this->setOpacityMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(opacityMap)));
 
 		auto normalMap = material_->getNormalMap();
 		if (normalMap)
-			this->setNormalMap(QString::fromStdString(normalMap->getName()));
+			this->setNormalMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(normalMap)));
 
 		auto roughnessMap = material_->getRoughnessMap();
 		if (roughnessMap)
-			this->setRoughnessMap(QString::fromStdString(roughnessMap->getName()));
+			this->setRoughnessMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(roughnessMap)));
 
 		auto metalnessMap = material_->getMetalnessMap();
 		if (metalnessMap)
-			this->setMetalnessMap(QString::fromStdString(metalnessMap->getName()));
+			this->setMetalnessMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(metalnessMap)));
 
 		auto sheenMap = material_->getSheenMap();
 		if (sheenMap)
-			this->setSheenMap(QString::fromStdString(sheenMap->getName()));
+			this->setSheenMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(sheenMap)));
 
 		auto clearcoatMap = material_->getClearCoatMap();
 		if (clearcoatMap)
-			this->setClearCoatMap(QString::fromStdString(clearcoatMap->getName()));
+			this->setClearCoatMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(clearcoatMap)));
 
 		auto clearcoatRoughnessMap = material_->getClearCoatRoughnessMap();
 		if (clearcoatRoughnessMap)
-			this->setClearCoatRoughnessMap(QString::fromStdString(clearcoatRoughnessMap->getName()));
+			this->setClearCoatRoughnessMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(clearcoatRoughnessMap)));
 
 		auto subsurfaceMap = material_->getSubsurfaceMap();
 		if (subsurfaceMap)
-			this->setSubsurfaceMap(QString::fromStdString(subsurfaceMap->getName()));
+			this->setSubsurfaceMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(subsurfaceMap)));
 
 		auto subsurfaceColorMap = material_->getSubsurfaceColorMap();
 		if (subsurfaceColorMap)
-			this->setSubsurfaceColorMap(QString::fromStdString(subsurfaceColorMap->getName()));
+			this->setSubsurfaceColorMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(subsurfaceColorMap)));
 
 		auto emissiveColorMap = material_->getEmissiveMap();
 		if (emissiveColorMap)
-			this->setEmissiveMap(QString::fromStdString(emissiveColorMap->getName()));
+			this->setEmissiveMap(QString::fromStdString(octoon::AssetDatabase::instance()->getAssetPath(emissiveColorMap)));
 	}
 
 	void

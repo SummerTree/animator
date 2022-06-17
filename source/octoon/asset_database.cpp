@@ -523,8 +523,8 @@ namespace octoon
 		}
 		else if (ext == ".hdr" || ext == ".bmp" || ext == ".tga" || ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".dds")
 		{
-			auto texture = std::make_shared<Texture>(path);
-			if (texture)
+			auto texture = std::make_shared<Texture>();
+			if (texture->load(path))
 			{
 				assetPathList_[texture] = (char*)path.u8string().c_str();
 				assetGuidList_[texture] = uuid;

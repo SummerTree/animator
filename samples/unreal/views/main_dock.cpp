@@ -49,6 +49,7 @@ namespace unreal
 		materialDock_ = std::make_unique<MaterialDock>(behaviour_, profile_);
 		modelDock_ = std::make_unique<ModelDock>(behaviour_, profile_);
 		motionDock_ = std::make_unique<MotionDock>(behaviour_, profile_);
+		inspectorDock_ = std::make_unique<InspectorDock>(behaviour_, profile_);
 		statusBar_ = std::make_unique<StatusBar>(behaviour_, profile_);
 
 		this->addToolBar(toplevelDock_.get());
@@ -65,6 +66,7 @@ namespace unreal
 		this->splitDockWidget(toolDock_.get(), recordDock_.get(), Qt::Orientation::Horizontal);
 		this->splitDockWidget(toolDock_.get(), environmentDock_.get(), Qt::Orientation::Horizontal);
 		this->splitDockWidget(toolDock_.get(), cameraDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(toolDock_.get(), inspectorDock_.get(), Qt::Orientation::Horizontal);		
 
 		this->setCentralWidget(viewDock_.get());
 		this->setStatusBar(statusBar_.get());
@@ -75,6 +77,7 @@ namespace unreal
 		materialDock_->hide();
 		recordDock_->hide();
 		cameraDock_->hide();
+		inspectorDock_->hide();
 		modelDock_->hide();
 		motionDock_->hide();
 
@@ -90,6 +93,7 @@ namespace unreal
 		this->connect(toolDock_.get(), &ToolDock::recordSignal, this, &MainDock::onRecordSignal);
 		this->connect(toolDock_.get(), &ToolDock::environmentSignal, this, &MainDock::onEnvironmentSignal);
 		this->connect(toolDock_.get(), &ToolDock::cameraSignal, this, &MainDock::onCameraSignal);
+		this->connect(toolDock_.get(), &ToolDock::inspectorSignal, this, &MainDock::onInspectorSignal);
 
 		timer.start();
 
@@ -112,7 +116,8 @@ namespace unreal
 		this->removeDockWidget(recordDock_.get());
 		this->removeDockWidget(assetBrowseDock_.get());
 		this->removeDockWidget(cameraDock_.get());
-		
+		this->removeDockWidget(inspectorDock_.get());
+
 		this->setStatusBar(nullptr);
 		this->setCentralWidget(nullptr);
 		
@@ -127,6 +132,7 @@ namespace unreal
 		recordDock_.reset();
 		assetBrowseDock_.reset();
 		cameraDock_.reset();
+		inspectorDock_.reset();
 		motionDock_.reset();
 		statusBar_.reset();
 
@@ -208,6 +214,12 @@ namespace unreal
 				toolDock_->cameraButton_->setChecked(true);
 				toolDock_->cameraButton_->blockSignals(false);
 			}
+			if (inspectorDock_->isVisible())
+			{
+				toolDock_->inspectorButton_->blockSignals(true);
+				toolDock_->inspectorButton_->setChecked(true);
+				toolDock_->inspectorButton_->blockSignals(false);
+			}			
 		}
 		else
 		{
@@ -272,7 +284,7 @@ namespace unreal
 		{
 			if (recordDock_->isHidden())
 			{
-				auto widget = this->visableDock();
+				auto widget = this->toolDock();
 				if (widget)
 				{
 					this->tabifyDockWidget(widget, recordDock_.get());
@@ -328,7 +340,7 @@ namespace unreal
 		{
 			if (mainLightDock_->isHidden())
 			{
-				auto widget = this->visableDock();
+				auto widget = this->toolDock();
 				if (widget)
 				{
 					this->tabifyDockWidget(widget, mainLightDock_.get());
@@ -356,7 +368,7 @@ namespace unreal
 		{
 			if (environmentDock_->isHidden())
 			{
-				auto widget = this->visableDock();
+				auto widget = this->toolDock();
 				if (widget)
 				{
 					this->tabifyDockWidget(widget, environmentDock_.get());
@@ -437,7 +449,7 @@ namespace unreal
 		{
 			if (cameraDock_->isHidden())
 			{
-				auto widget = this->visableDock();
+				auto widget = this->toolDock();
 				if (widget)
 				{
 					this->tabifyDockWidget(widget, cameraDock_.get());
@@ -544,6 +556,33 @@ namespace unreal
 		spdlog::debug("Exited importEvent");
 	}
 
+	void
+	MainDock::onInspectorSignal() noexcept
+	{
+		try
+		{
+			if (inspectorDock_->isHidden())
+			{
+				auto widget = this->toolDock();
+				if (widget)
+				{
+					this->tabifyDockWidget(widget, inspectorDock_.get());
+					widget->hide();
+				}
+
+				inspectorDock_->show();
+			}
+			else
+			{
+				inspectorDock_->close();
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::information(this, tr("Error"), e.what());
+		}
+	}
+
 	QDockWidget*
 	MainDock::assetDock() noexcept
 	{
@@ -560,7 +599,7 @@ namespace unreal
 	}
 
 	QDockWidget*
-	MainDock::visableDock() noexcept
+	MainDock::toolDock() noexcept
 	{
 		if (recordDock_->isVisible())
 			return recordDock_.get();
@@ -570,6 +609,8 @@ namespace unreal
 			return environmentDock_.get();
 		if (cameraDock_->isVisible())
 			return cameraDock_.get();
+		if (inspectorDock_->isVisible())
+			return inspectorDock_.get();
 
 		return nullptr;
 	}

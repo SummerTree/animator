@@ -23,14 +23,13 @@ namespace unreal
 		, profile_(profile)
 	{
 		mainWidget_ = new DraggableListWindow;
-		mainWidget_->setIconSize(QSize(80, 80));
+		mainWidget_->setIconSize(QSize(75, 75));
 		mainWidget_->setStyleSheet("background:transparent;");
 		mainWidget_->setSpacing(4);
 
 		mainLayout_ = new QVBoxLayout(this);
-		mainLayout_->addWidget(mainWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
-		mainLayout_->addStretch();
-		mainLayout_->setContentsMargins(0, 8, 0, 4);
+		mainLayout_->addWidget(mainWidget_);
+		mainLayout_->setContentsMargins(0, 0, 0, 0);
 
 		connect(mainWidget_, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemClicked(QListWidgetItem*)));
 		connect(mainWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
@@ -84,7 +83,7 @@ namespace unreal
 		{
 			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(mainWidget_->iconSize() + QSize(9, 40));
+			item->setSizeHint(mainWidget_->iconSize() + QSize(8, 35));
 
 			auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
 			if (material)
@@ -160,9 +159,8 @@ namespace unreal
 		, profile_(profile)
 	{
 		this->setObjectName("InspectorDock");
-		this->setWindowTitle(tr("Material"));
+		this->setWindowTitle(tr("Inspector"));
 		this->setMouseTracking(true);
-		this->setFixedWidth(290);
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
 		auto oldTitleBar = this->titleBarWidget();
@@ -171,41 +169,31 @@ namespace unreal
 
 		title_ = new QLabel;
 		title_->setObjectName("title");
-		title_->setText(tr("Material Library"));
-		title_->setContentsMargins(0, 8, 0, 8);
+		title_->setText(tr("Inspector"));
 
-		auto headerLine = new QFrame;
-		headerLine->setObjectName("HLine");
-		headerLine->setFixedHeight(1);
-		headerLine->setFrameShape(QFrame::NoFrame);
-		headerLine->setFrameShadow(QFrame::Plain);
-		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-		headerLine->setContentsMargins(0, 8, 0, 8);
+		headerLine_ = new QFrame;
+		headerLine_->setObjectName("HLine");
+		headerLine_->setFixedHeight(1);
+		headerLine_->setFrameShape(QFrame::NoFrame);
+		headerLine_->setFrameShadow(QFrame::Plain);
+		headerLine_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-		auto topLayout_ = new QVBoxLayout();
-		topLayout_->addWidget(title_, 0, Qt::AlignLeft);
-		topLayout_->addWidget(headerLine);
-		topLayout_->setContentsMargins(4, 0, 4, 0);
+		titleLayout_ = new QVBoxLayout();
+		titleLayout_->addWidget(title_, 0, Qt::AlignLeft);
+		titleLayout_->addSpacing(8);
+		titleLayout_->addWidget(headerLine_);
+		titleLayout_->setSpacing(0);
+		titleLayout_->setContentsMargins(4, 8, 4, 0);
 		
 		materialList_ = new MaterialListPanel(behaviour, profile);
-		materialList_->mainWidget_->setFixedWidth(290);
 
 		modifyWidget_ = new MaterialEditWindow(behaviour);
-		modifyWidget_->setFixedWidth(290);
 		modifyWidget_->hide();
 		
-		auto sceneLayout_ = new QVBoxLayout();
-		sceneLayout_->addWidget(materialList_, 0, Qt::AlignTop | Qt::AlignCenter);
-		sceneLayout_->addWidget(modifyWidget_, 0, Qt::AlignTop | Qt::AlignCenter);
-		sceneLayout_->setContentsMargins(0, 0, 0, 0);
-
-		auto sceneWidget_ = new QWidget;
-		sceneWidget_->setLayout(sceneLayout_);
-
 		mainLayout_ = new QVBoxLayout;
-		mainLayout_->addLayout(topLayout_);
-		mainLayout_->addWidget(headerLine);
-		mainLayout_->addWidget(sceneWidget_);
+		mainLayout_->addLayout(titleLayout_);
+		mainLayout_->addWidget(materialList_);
+		mainLayout_->addWidget(modifyWidget_);
 		mainLayout_->setContentsMargins(0, 8, 0, 8);
 
 		mainWidget_ = new QWidget;
@@ -216,40 +204,52 @@ namespace unreal
 		connect(modifyWidget_->backButton_, SIGNAL(clicked()), this, SLOT(backEvent()));
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
-		profile->selectorModule->selectedItem_ += [this](std::optional<octoon::RaycastHit> data_) {
+		profile->selectorModule->selectedItem_ += [this](const std::optional<octoon::RaycastHit>& data_) {
 			if (data_.has_value() && materialList_->isVisible())
 			{
-				auto hit = data_.value();
-				if (!hit.object.lock())
+				if (!data_.has_value())
+					return;
+				if (data_.value().object.expired())
 					return;
 
-				octoon::Materials materials;
-				auto renderComponent = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
-				if (renderComponent)
-					materials = renderComponent->getMaterials();
-				else
+				auto hit = data_.value();
+				auto hitObject = hit.object.lock();
+
+				if (selectedObject_.expired() || selectedObject_.lock() != hitObject)
 				{
-					auto smr = hit.object.lock()->getComponent<octoon::SkinnedMeshRendererComponent>();
-					if (smr)
-						materials = smr->getMaterials();
-				}
+					octoon::MaterialImporter::instance()->clear();
 
-				bool dirty = false;
-				for (auto& mat : materials)
-					dirty |= octoon::MaterialImporter::instance()->addMaterial(mat);
+					auto renderComponent = hitObject->getComponent<octoon::MeshRendererComponent>();
+					if (renderComponent)
+					{
+						for (auto& mat : renderComponent->getMaterials())
+							octoon::MaterialImporter::instance()->addMaterial(mat);
+					}
+					else
+					{
+						auto smr = hitObject->getComponent<octoon::SkinnedMeshRendererComponent>();
+						if (smr)
+						{
+							for (auto& mat : smr->getMaterials())
+								octoon::MaterialImporter::instance()->addMaterial(mat);
+						}
+					}
 
-				if (dirty)
 					materialList_->updateItemList();
 
-				if (hit.mesh < materials.size())
+					selectedObject_ = hitObject;
+				}
+
+				auto& sceneList = octoon::MaterialImporter::instance()->getSceneList();
+				if (hit.mesh < sceneList.size())
 				{
-					auto uuid = octoon::MaterialImporter::instance()->getAssetGuid(materials[hit.mesh]);
+					auto uuid = sceneList[hit.mesh];
 					if (!uuid.empty())
 					{
 						auto count = this->materialList_->mainWidget_->count();
 						for (int i = 0; i < count; i++)
 						{
-							auto item = this->materialList_->mainWidget_->item(i);
+							auto item = this->materialList_->mainWidget_->item(hit.mesh);
 							if (item->data(Qt::UserRole).toString().toStdString() == uuid)
 							{
 								this->materialList_->mainWidget_->setCurrentItem(item);
@@ -269,30 +269,25 @@ namespace unreal
 	void
 	InspectorDock::resizeEvent(QResizeEvent* e) noexcept
 	{
-		modifyWidget_->resize(this->size().width(), this->size().height());
-		materialList_->resize(this->size().width(), this->size().height());
+		QMargins margins = mainLayout_->contentsMargins() + titleLayout_->contentsMargins();
+
+		modifyWidget_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
+		materialList_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 	}
 
 	void
 	InspectorDock::showEvent(QShowEvent* event) noexcept
 	{
-		modifyWidget_->hide();
-		modifyWidget_->resize(this->size().width(), this->size().height());
+		QMargins margins = mainLayout_->contentsMargins() + titleLayout_->contentsMargins();
 
-		materialList_->resize(this->size().width(), this->size().height());
+		modifyWidget_->hide();
+		modifyWidget_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
+
+		materialList_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		materialList_->show();
 		materialList_->updateItemList();
 
 		profile_->selectorModule->selectedItem_.submit();
-	}
-
-	void
-	InspectorDock::closeEvent(QCloseEvent* event)
-	{
-		if (profile_->playerModule->isPlaying)
-			event->ignore();
-		else
-			event->accept();
 	}
 
 	void
@@ -301,8 +296,7 @@ namespace unreal
 		modifyWidget_->hide();
 		materialList_->show();
 		materialList_->updateItemList();
-		materialList_->resize(this->size().width(), this->size().height());
-		this->setWindowTitle(tr("Material"));
+		title_->setText(tr("Inspector"));
 	}
 
 	void
@@ -317,7 +311,7 @@ namespace unreal
 				auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(uuid));
 				if (material)
 				{
-					this->setWindowTitle(tr("Material Properties"));
+					title_->setText(tr("Material Properties"));
 
 					octoon::AssetDatabase::instance()->addUpdateList(uuid);
 
@@ -325,7 +319,6 @@ namespace unreal
 					materialList_->hide();
 
 					modifyWidget_->setMaterial(material);
-					modifyWidget_->resize(this->size().width(), this->size().height());
 					modifyWidget_->show();
 				}
 			}

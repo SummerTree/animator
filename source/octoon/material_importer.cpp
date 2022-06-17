@@ -13,13 +13,16 @@ namespace octoon
 	{
 	}
 
-	nlohmann::json&
-	MaterialImporter::getSceneList() noexcept
+	void
+	MaterialImporter::clear() noexcept(false)
 	{
-		return this->sceneList_;
+		this->materialMap_.clear();
+		this->sceneList_.clear();
+		this->assetGuidList_.clear();
+		this->packageList_.clear();
 	}
 
-	const nlohmann::json&
+	const std::vector<nlohmann::json>&
 	MaterialImporter::getSceneList() const noexcept
 	{
 		return this->sceneList_;
@@ -44,8 +47,8 @@ namespace octoon
 	std::shared_ptr<Material>
 	MaterialImporter::getMaterial(std::string_view uuid) noexcept(false)
 	{
-		if (materials_.contains(std::string(uuid)))
-			return materials_[std::string(uuid)];
+		if (materialMap_.contains(std::string(uuid)))
+			return materialMap_[std::string(uuid)];
 
 		return nullptr;
 	}
@@ -73,7 +76,7 @@ namespace octoon
 			package["color"] = standard->getColor().to_array();
 
 			this->sceneList_.push_back(uuid);
-			this->materials_[uuid] = mat;
+			this->materialMap_[uuid] = mat;
 			this->assetGuidList_[mat] = uuid;
 			this->packageList_[uuid] = package;
 

@@ -29,18 +29,21 @@ namespace unreal
 		void sunEvent() noexcept;
 		void environmentEvent() noexcept;
 		void cameraEvent() noexcept;
+		void inspectorEvent() noexcept;
 
 	Q_SIGNALS:
 		void sunSignal();
 		void recordSignal();
 		void environmentSignal();
 		void cameraSignal();
+		void inspectorSignal();
 
 	public:
 		QToolButton* videoButton_;
 		QToolButton* sunButton_;
 		QToolButton* environmentButton_;
 		QToolButton* cameraButton_;
+		QToolButton* inspectorButton_;
 
 		octoon::GameObjectPtr behaviour_;
 		std::shared_ptr<UnrealProfile> profile_;
