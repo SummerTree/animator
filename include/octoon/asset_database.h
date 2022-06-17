@@ -65,7 +65,7 @@ namespace octoon
 		bool needUpdate(std::string_view uuid) const noexcept;
 		void addUpdateList(std::string_view uuid) noexcept(false);
 		void removeUpdateList(std::string_view uuid) noexcept(false);
-		bool clearUpdate() noexcept;
+		void clearUpdate() noexcept;
 		const std::set<std::string>& getUpdateList() const noexcept;
 
 		std::shared_ptr<GraphicsTexture> createMaterialPreview(const std::shared_ptr<Material>& material);

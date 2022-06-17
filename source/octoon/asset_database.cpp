@@ -979,7 +979,7 @@ namespace octoon
 			this->updateList_.erase(it);
 	}
 
-	bool
+	void
 	AssetDatabase::clearUpdate() noexcept
 	{
 		this->updateList_.clear();
