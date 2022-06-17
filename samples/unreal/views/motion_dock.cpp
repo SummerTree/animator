@@ -44,7 +44,7 @@ namespace unreal
 		topLayout_->addSpacing(8);
 		topLayout_->addWidget(headerLine);
 		topLayout_->setSpacing(0);
-		topLayout_->setContentsMargins(4, 8, 4, 0);
+		topLayout_->setContentsMargins(0, 8, 0, 0);
 
 		listWidget_ = new DraggableListWindow;
 		listWidget_->setIconSize(QSize(80, 80));
@@ -55,7 +55,7 @@ namespace unreal
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(topLayout_);
 		mainLayout_->addWidget(listWidget_);
-		mainLayout_->setContentsMargins(0, 8, 0, 8);
+		mainLayout_->setContentsMargins(4, 8, 4, 8);
 
 		mainWidget_ = new QWidget;
 		mainWidget_->setObjectName("MotionWidget");
