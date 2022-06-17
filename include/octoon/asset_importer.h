@@ -40,13 +40,12 @@ namespace octoon
 		}
 
 		virtual void saveAssets() const noexcept(false);
-
 		virtual void clearCache() noexcept;
 
 	private:
 		nlohmann::json getPackageIndices(const std::filesystem::path& path) noexcept(false);
 
-	protected:
+	private:
 		std::filesystem::path assertPath_;
 
 		nlohmann::json indexList_;
