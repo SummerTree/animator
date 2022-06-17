@@ -499,6 +499,12 @@ QWidget#MainLightDock QScrollBar, QWidget#MaterialDock QScrollBar
     padding-top:7px;
     padding-bottom:7px;
 }
+QWidget#MainLightWidget QToolButton#Reset {
+	width:48;
+	height:24;
+	color: rgb(255,255,255);
+	background-color:rgb(242,83,106);
+}
 QWidget#MainLightDock, 
 QWidget#EnvironmentDock,
 QWidget#RecordDock,

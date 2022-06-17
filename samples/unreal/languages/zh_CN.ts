@@ -591,32 +591,32 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">主光源编辑</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="44"/>
+        <location filename="../views/main_light_dock.cpp" line="45"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="49"/>
+        <location filename="../views/main_light_dock.cpp" line="50"/>
         <source>Intensity</source>
         <translation>光照强度</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="76"/>
+        <location filename="../views/main_light_dock.cpp" line="77"/>
         <source>Size</source>
         <translation>光源大小</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="102"/>
+        <location filename="../views/main_light_dock.cpp" line="103"/>
         <source>Rotation X</source>
         <translation>旋转X轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="129"/>
+        <location filename="../views/main_light_dock.cpp" line="130"/>
         <source>Rotation Y</source>
         <translation>旋转Y轴</translation>
     </message>
     <message>
-        <location filename="../views/main_light_dock.cpp" line="156"/>
+        <location filename="../views/main_light_dock.cpp" line="157"/>
         <source>Rotation Z</source>
         <translation>旋转Z轴</translation>
     </message>

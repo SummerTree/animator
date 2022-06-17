@@ -41,6 +41,7 @@ namespace unreal
 		colorDialog_->installEventFilter(this);
 
 		resetButton_ = new QToolButton();
+		resetButton_->setObjectName("Reset");
 		resetButton_->setText(tr("Reset"));
 		resetButton_->setContentsMargins(0, 0, 8, 0);
 		resetButton_->installEventFilter(this);
@@ -210,10 +211,10 @@ namespace unreal
 		mainLayout_ = new QVBoxLayout();
 		mainLayout_->addLayout(titleLayout_);
 		mainLayout_->addLayout(contextLayout_);
-		mainLayout_->addStretch();
 		mainLayout_->setContentsMargins(0, 8, 0, 8);
 
 		mainWidget_ = new QWidget();
+		mainWidget_->setObjectName("MainLightWidget");
 		mainWidget_->setLayout(mainLayout_);
 		
 		this->setWidget(mainWidget_);
