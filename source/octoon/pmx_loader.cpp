@@ -363,7 +363,7 @@ namespace octoon
 
 				if (!textureMap.contains(fullpath))
 				{
-					if (std::filesystem::exists(it.fullpath))
+					if (!std::filesystem::exists(it.fullpath))
 						continue;
 
 					auto texture = std::make_shared<Texture>();
