@@ -184,7 +184,23 @@ namespace unreal
 		case octoon::Format::R8G8B8UNorm:
 		case octoon::Format::R8G8B8SRGB:
 		{
-			qimage = QImage(textureData->data(), width, height, QImage::Format::Format_RGB888);
+			auto data_ = textureData->data();
+			auto bytesPerLine = (width * 24 + 31) / 32 * 4;
+			auto pixels = std::make_unique<std::uint8_t[]>(height * bytesPerLine);
+
+			for (std::size_t y = 0; y < height; y++)
+			{
+				for (std::size_t x = 0; x < width; x++)
+				{
+					auto src = (y * width + x) * 3;
+					auto dest = y * bytesPerLine + x * 3;
+					pixels[dest] = data_[src];
+					pixels[dest + 1] = data_[src + 1];
+					pixels[dest + 2] = data_[src + 2];
+				}
+			}
+
+			qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGB888);
 			qimage = qimage.scaled(this->image->iconSize());
 		}
 		break;
@@ -201,13 +217,19 @@ namespace unreal
 		case octoon::Format::B8G8R8SRGB:
 		{
 			auto data_ = textureData->data();
-			auto size = width * height * 3;
-			auto pixels = std::make_unique<std::uint8_t[]>(size);
+			auto bytesPerLine = (width * 24 + 31) / 32 * 4;
+			auto pixels = std::make_unique<std::uint8_t[]>(height * bytesPerLine);
 
-			for (std::size_t i = 0; i < size; i += 3) {
-				pixels[i] = data_[i + 2];
-				pixels[i + 1] = data_[i + 1];
-				pixels[i + 2] = data_[i];
+			for (std::size_t y = 0; y < height; y++)
+			{
+				for (std::size_t x = 0; x < width; x++)
+				{
+					auto src = (y * width + x) * 3;
+					auto dest = y * bytesPerLine + x * 3;
+					pixels[dest] = data_[src + 2];
+					pixels[dest + 1] = data_[src + 1];
+					pixels[dest + 2] = data_[src];
+				}
 			}
 
 			qimage = QImage(pixels.get(), width, height, QImage::Format::Format_RGB888);
