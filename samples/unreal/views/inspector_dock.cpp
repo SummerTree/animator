@@ -205,13 +205,8 @@ namespace unreal
 		connect(materialList_->mainWidget_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
 
 		profile->selectorModule->selectedItem_ += [this](const std::optional<octoon::RaycastHit>& data_) {
-			if (data_.has_value() && materialList_->isVisible())
+			if (materialList_->isVisible() && data_.has_value() && data_.value().object.expired())
 			{
-				if (!data_.has_value())
-					return;
-				if (data_.value().object.expired())
-					return;
-
 				auto hit = data_.value();
 				auto hitObject = hit.object.lock();
 

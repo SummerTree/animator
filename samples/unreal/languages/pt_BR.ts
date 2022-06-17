@@ -424,12 +424,12 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/inspector_dock.cpp" line="162"/>
         <location filename="../views/inspector_dock.cpp" line="172"/>
-        <location filename="../views/inspector_dock.cpp" line="292"/>
+        <location filename="../views/inspector_dock.cpp" line="294"/>
         <source>Inspector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/inspector_dock.cpp" line="307"/>
+        <location filename="../views/inspector_dock.cpp" line="309"/>
         <source>Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
