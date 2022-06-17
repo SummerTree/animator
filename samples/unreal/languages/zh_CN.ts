@@ -444,7 +444,7 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/inspector_dock.cpp" line="220"/>
         <location filename="../views/inspector_dock.cpp" line="230"/>
-        <location filename="../views/inspector_dock.cpp" line="305"/>
+        <location filename="../views/inspector_dock.cpp" line="311"/>
         <source>Inspector</source>
         <translation type="unfinished">监视器</translation>
     </message>
@@ -457,7 +457,7 @@ $20 (Original cost $40)</source>
         <translation type="obsolete">材质库</translation>
     </message>
     <message>
-        <location filename="../views/inspector_dock.cpp" line="320"/>
+        <location filename="../views/inspector_dock.cpp" line="326"/>
         <source>Material Properties</source>
         <translation type="unfinished">材质属性</translation>
     </message>
@@ -706,116 +706,116 @@ $20 (Original cost $40)</source>
         <translation>纹理</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="263"/>
+        <location filename="../views/material_edit_dock.cpp" line="264"/>
         <source>material</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="265"/>
+        <location filename="../views/material_edit_dock.cpp" line="266"/>
         <source>Base Color</source>
         <translation>基本颜色</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="266"/>
+        <location filename="../views/material_edit_dock.cpp" line="267"/>
         <source>Opacity</source>
         <translation>透明度</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="267"/>
+        <location filename="../views/material_edit_dock.cpp" line="268"/>
         <source>Normal</source>
         <translation>法线</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="268"/>
+        <location filename="../views/material_edit_dock.cpp" line="269"/>
         <source>Roughness</source>
         <translation>粗糙度</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="269"/>
+        <location filename="../views/material_edit_dock.cpp" line="270"/>
         <source>Metal</source>
         <translation>金属程度</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="270"/>
+        <location filename="../views/material_edit_dock.cpp" line="271"/>
         <source>Specular</source>
         <translation>反射率</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="271"/>
+        <location filename="../views/material_edit_dock.cpp" line="272"/>
         <source>Anisotropy</source>
         <translation>各向异性</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="272"/>
+        <location filename="../views/material_edit_dock.cpp" line="273"/>
         <source>Cloth</source>
         <translation>布料程度</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="273"/>
-        <location filename="../views/material_edit_dock.cpp" line="321"/>
+        <location filename="../views/material_edit_dock.cpp" line="274"/>
+        <location filename="../views/material_edit_dock.cpp" line="322"/>
         <source>Clear Coat</source>
         <translation>清漆</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="274"/>
+        <location filename="../views/material_edit_dock.cpp" line="275"/>
         <source>Clear Coat Roughness</source>
         <translation>清漆粗超度</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="275"/>
+        <location filename="../views/material_edit_dock.cpp" line="276"/>
         <source>Subsurface</source>
         <translation>次表面</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="276"/>
+        <location filename="../views/material_edit_dock.cpp" line="277"/>
         <source>Subsurface Color</source>
         <translation>次表面散射颜色</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="277"/>
-        <location filename="../views/material_edit_dock.cpp" line="327"/>
+        <location filename="../views/material_edit_dock.cpp" line="278"/>
+        <location filename="../views/material_edit_dock.cpp" line="328"/>
         <source>Refraction</source>
         <translation>折射程度</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="278"/>
+        <location filename="../views/material_edit_dock.cpp" line="279"/>
         <source>Refraction Ior</source>
         <translation>折射率</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="279"/>
+        <location filename="../views/material_edit_dock.cpp" line="280"/>
         <source>Emissive</source>
         <translation>自发光</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="324"/>
+        <location filename="../views/material_edit_dock.cpp" line="325"/>
         <source>Subsurface Scattering</source>
         <translation>次表面散射</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="331"/>
+        <location filename="../views/material_edit_dock.cpp" line="332"/>
         <source>Receive Shadow</source>
         <translation>接受阴影</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="337"/>
+        <location filename="../views/material_edit_dock.cpp" line="338"/>
         <source>Other</source>
         <translation>其它</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="851"/>
-        <location filename="../views/material_edit_dock.cpp" line="859"/>
-        <location filename="../views/material_edit_dock.cpp" line="867"/>
-        <location filename="../views/material_edit_dock.cpp" line="875"/>
-        <location filename="../views/material_edit_dock.cpp" line="883"/>
-        <location filename="../views/material_edit_dock.cpp" line="891"/>
-        <location filename="../views/material_edit_dock.cpp" line="899"/>
-        <location filename="../views/material_edit_dock.cpp" line="907"/>
-        <location filename="../views/material_edit_dock.cpp" line="915"/>
-        <location filename="../views/material_edit_dock.cpp" line="923"/>
-        <location filename="../views/material_edit_dock.cpp" line="931"/>
-        <location filename="../views/material_edit_dock.cpp" line="939"/>
-        <location filename="../views/material_edit_dock.cpp" line="947"/>
+        <location filename="../views/material_edit_dock.cpp" line="852"/>
+        <location filename="../views/material_edit_dock.cpp" line="860"/>
+        <location filename="../views/material_edit_dock.cpp" line="868"/>
+        <location filename="../views/material_edit_dock.cpp" line="876"/>
+        <location filename="../views/material_edit_dock.cpp" line="884"/>
+        <location filename="../views/material_edit_dock.cpp" line="892"/>
+        <location filename="../views/material_edit_dock.cpp" line="900"/>
+        <location filename="../views/material_edit_dock.cpp" line="908"/>
+        <location filename="../views/material_edit_dock.cpp" line="916"/>
+        <location filename="../views/material_edit_dock.cpp" line="924"/>
+        <location filename="../views/material_edit_dock.cpp" line="932"/>
+        <location filename="../views/material_edit_dock.cpp" line="940"/>
+        <location filename="../views/material_edit_dock.cpp" line="948"/>
         <source>Open Image</source>
         <translation>打开图像</translation>
     </message>

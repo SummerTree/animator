@@ -79,7 +79,10 @@ namespace unreal
 		QScrollArea* modifyMaterialArea_;
 		QWidget* mainWidget_;
 		QListWidgetItem* selectedItem_;
+
 		octoon::GameObjectPtr behaviour_;
+		octoon::GameObjectWeakPtr selectedObject_;
+
 		std::shared_ptr<UnrealProfile> profile_;
 	};
 }
