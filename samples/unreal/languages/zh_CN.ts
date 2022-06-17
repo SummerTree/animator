@@ -636,7 +636,7 @@ $20 (Original cost $40)</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="38"/>
+        <location filename="../views/material_dock.cpp" line="37"/>
         <source>Material Library</source>
         <translation type="unfinished">材质库</translation>
     </message>
@@ -653,38 +653,38 @@ $20 (Original cost $40)</source>
         <translation type="vanished">材质属性</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="82"/>
+        <location filename="../views/material_dock.cpp" line="81"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="82"/>
+        <location filename="../views/material_dock.cpp" line="81"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished">NVIDIA MDL Files (*.mdl)</translation>
     </message>
     <message>
+        <location filename="../views/material_dock.cpp" line="86"/>
         <location filename="../views/material_dock.cpp" line="87"/>
-        <location filename="../views/material_dock.cpp" line="88"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="87"/>
+        <location filename="../views/material_dock.cpp" line="86"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="198"/>
+        <location filename="../views/material_dock.cpp" line="197"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="198"/>
+        <location filename="../views/material_dock.cpp" line="197"/>
         <source>Are you sure you want to delete this material?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="214"/>
+        <location filename="../views/material_dock.cpp" line="213"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
