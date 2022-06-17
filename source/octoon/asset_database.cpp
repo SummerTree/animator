@@ -322,6 +322,41 @@ namespace octoon
 	}
 
 	nlohmann::json
+	AssetDatabase::createAsset(const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& path) noexcept(false)
+	{
+		assert(!path.empty());
+
+		auto uuid = this->getAssetGuid(gameObject);
+		auto rootPath = std::filesystem::path(path).append(uuid);
+		auto modelPath = std::filesystem::path(rootPath).append(uuid + ".pmx");
+		auto packagePath = std::filesystem::path(rootPath).append("package.json");
+
+		std::filesystem::create_directories(rootPath);
+
+		PMXLoader::save(*gameObject, modelPath);
+		std::filesystem::permissions(modelPath, std::filesystem::perms::owner_write);
+
+		nlohmann::json package;
+		package["uuid"] = uuid;
+		package["visible"] = true;
+		package["name"] = uuid + ".pmx";
+		package["path"] = (char*)modelPath.u8string().c_str();
+
+		std::ofstream ifs(packagePath, std::ios_base::binary);
+		if (ifs)
+		{
+			auto dump = package.dump();
+			ifs.write(dump.c_str(), dump.size());
+			ifs.close();
+		}
+
+		this->assetGuidList_[gameObject] = std::string(uuid);
+		this->packageList_[std::string(uuid)] = package;
+
+		return package;
+	}
+
+	nlohmann::json
 	AssetDatabase::createAsset(const PMX& pmx, const std::filesystem::path& path) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
