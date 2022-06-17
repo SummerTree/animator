@@ -24,9 +24,6 @@ namespace octoon
 
 		const std::vector<nlohmann::json>& getSceneList() const noexcept;
 
-		std::string getAssetGuid(const std::shared_ptr<const octoon::Material>& asset) noexcept;
-		std::string getAssetGuid(const std::shared_ptr<const octoon::Material>& asset) const noexcept;
-
 	private:
 		MaterialImporter(const MaterialImporter&) = delete;
 		MaterialImporter& operator=(const MaterialImporter&) = delete;

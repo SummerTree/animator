@@ -28,22 +28,6 @@ namespace octoon
 		return this->sceneList_;
 	}
 
-	std::string
-	MaterialImporter::getAssetGuid(const std::shared_ptr<const octoon::Material>& asset) noexcept
-	{
-		if (assetGuidList_.contains(asset))
-			return assetGuidList_.at(asset);
-		return std::string();
-	}
-
-	std::string
-	MaterialImporter::getAssetGuid(const std::shared_ptr<const octoon::Material>& asset) const noexcept
-	{
-		if (assetGuidList_.contains(asset))
-			return assetGuidList_.at(asset);
-		return std::string();
-	}
-
 	std::shared_ptr<Material>
 	MaterialImporter::getMaterial(std::string_view uuid) noexcept(false)
 	{
