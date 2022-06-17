@@ -12,9 +12,8 @@
 <context>
     <name>unreal::AssetBrowseDock</name>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="27"/>
         <source>Material</source>
-        <translation type="unfinished">材质</translation>
+        <translation type="obsolete">材质</translation>
     </message>
     <message>
         <location filename="../views/asset_browse_dock.cpp" line="28"/>
@@ -22,14 +21,28 @@
         <translation type="unfinished">打开材质库</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="35"/>
         <source>Model</source>
-        <translation type="unfinished">模型</translation>
+        <translation type="obsolete">模型</translation>
+    </message>
+    <message>
+        <location filename="../views/asset_browse_dock.cpp" line="27"/>
+        <source>Material Library</source>
+        <translation type="unfinished">材质库</translation>
+    </message>
+    <message>
+        <location filename="../views/asset_browse_dock.cpp" line="35"/>
+        <source>Model Library</source>
+        <translation type="unfinished">模型库</translation>
     </message>
     <message>
         <location filename="../views/asset_browse_dock.cpp" line="36"/>
         <source>Open Model Panel</source>
         <translation type="unfinished">打开模型库</translation>
+    </message>
+    <message>
+        <location filename="../views/asset_browse_dock.cpp" line="42"/>
+        <source>Motion Library</source>
+        <translation type="unfinished">动作库</translation>
     </message>
     <message>
         <location filename="../views/asset_browse_dock.cpp" line="49"/>
@@ -43,8 +56,8 @@
     </message>
     <message>
         <location filename="../views/asset_browse_dock.cpp" line="62"/>
-        <source>Import</source>
-        <translation type="unfinished">导入</translation>
+        <source>Import Library</source>
+        <translation type="unfinished">导入库</translation>
     </message>
     <message>
         <location filename="../views/asset_browse_dock.cpp" line="63"/>
@@ -58,9 +71,8 @@
         <translation type="unfinished">设置</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dock.cpp" line="42"/>
         <source>Motion</source>
-        <translation type="unfinished">动作</translation>
+        <translation type="obsolete">动作</translation>
     </message>
     <message>
         <location filename="../views/asset_browse_dock.cpp" line="43"/>
@@ -193,79 +205,79 @@
 <context>
     <name>unreal::EnvironmentDock</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="234"/>
+        <location filename="../views/environment_dock.cpp" line="26"/>
         <source>Environment Light</source>
         <translation>环境光</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="244"/>
+        <location filename="../views/environment_dock.cpp" line="36"/>
         <source>Environment Editor</source>
         <translation type="unfinished">环境光编辑</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="257"/>
+        <location filename="../views/environment_dock.cpp" line="50"/>
         <source>Click the select a Preview button to locate each HDRi on your computer</source>
         <translation>单击预览按钮以显示所有可替换的HDR图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="262"/>
-        <location filename="../views/environment_dock.cpp" line="520"/>
+        <location filename="../views/environment_dock.cpp" line="55"/>
+        <location filename="../views/environment_dock.cpp" line="313"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="281"/>
+        <location filename="../views/environment_dock.cpp" line="74"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="285"/>
+        <location filename="../views/environment_dock.cpp" line="78"/>
         <source>Thumbnail</source>
         <translation>环境贴图</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="289"/>
+        <location filename="../views/environment_dock.cpp" line="82"/>
         <source>Toggle Background</source>
         <translation>显示背景</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="297"/>
+        <location filename="../views/environment_dock.cpp" line="90"/>
         <source>Intensity</source>
         <translation>亮度</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="315"/>
+        <location filename="../views/environment_dock.cpp" line="108"/>
         <source>Horizontal Rotation</source>
         <translation>水平旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="333"/>
+        <location filename="../views/environment_dock.cpp" line="126"/>
         <source>Vertical Rotation</source>
         <translation>垂直旋转</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="352"/>
+        <location filename="../views/environment_dock.cpp" line="145"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="405"/>
+        <location filename="../views/environment_dock.cpp" line="198"/>
         <source>Attribute</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="660"/>
-        <location filename="../views/environment_dock.cpp" line="693"/>
+        <location filename="../views/environment_dock.cpp" line="453"/>
+        <location filename="../views/environment_dock.cpp" line="486"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="674"/>
+        <location filename="../views/environment_dock.cpp" line="467"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="674"/>
+        <location filename="../views/environment_dock.cpp" line="467"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
@@ -273,22 +285,22 @@
 <context>
     <name>unreal::EnvironmentListDialog</name>
     <message>
-        <location filename="../views/environment_dock.cpp" line="28"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="234"/>
         <source>Environment Resource</source>
         <translation>环境资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="34"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="240"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="38"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="244"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="42"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="248"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
@@ -297,38 +309,38 @@
         <translation type="vanished">加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="115"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="321"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="115"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="321"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="120"/>
-        <location filename="../views/environment_dock.cpp" line="121"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="326"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="327"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="120"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="326"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="211"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation>确定要删除此图像吗?</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="211"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
         <source>Info</source>
         <translation type="unfinished">提示</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="225"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="431"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
@@ -593,17 +605,17 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialAssetPanel</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="1963"/>
+        <location filename="../views/material_dock.cpp" line="273"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1963"/>
+        <location filename="../views/material_dock.cpp" line="273"/>
         <source>Are you sure you want to delete this material?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1979"/>
+        <location filename="../views/material_dock.cpp" line="289"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
@@ -611,49 +623,49 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialDock</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="1988"/>
-        <location filename="../views/material_dock.cpp" line="2150"/>
+        <location filename="../views/material_dock.cpp" line="298"/>
+        <location filename="../views/material_dock.cpp" line="460"/>
         <source>Material</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1999"/>
+        <location filename="../views/material_dock.cpp" line="309"/>
         <source>Material Library</source>
         <translation type="unfinished">材质库</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2034"/>
+        <location filename="../views/material_dock.cpp" line="344"/>
         <source>Library</source>
         <translation>材质库</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2035"/>
+        <location filename="../views/material_dock.cpp" line="345"/>
         <source>Scene</source>
         <translation>场景</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2165"/>
+        <location filename="../views/material_dock.cpp" line="475"/>
         <source>Material Properties</source>
         <translation>材质属性</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2190"/>
+        <location filename="../views/material_dock.cpp" line="500"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2190"/>
+        <location filename="../views/material_dock.cpp" line="500"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished">NVIDIA MDL Files (*.mdl)</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2195"/>
-        <location filename="../views/material_dock.cpp" line="2196"/>
+        <location filename="../views/material_dock.cpp" line="505"/>
+        <location filename="../views/material_dock.cpp" line="506"/>
         <source>Loading...</source>
         <translation type="unfinished">加载中...</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="2195"/>
+        <location filename="../views/material_dock.cpp" line="505"/>
         <source>Cancel</source>
         <translation type="unfinished">取消</translation>
     </message>
@@ -661,121 +673,121 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialEditWindow</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="276"/>
+        <location filename="../views/material_edit_dock.cpp" line="70"/>
         <source> Texture</source>
         <translation> 纹理</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="469"/>
+        <location filename="../views/material_edit_dock.cpp" line="262"/>
         <source>material</source>
         <translation>材质</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="471"/>
+        <location filename="../views/material_edit_dock.cpp" line="264"/>
         <source>Base Color</source>
         <translation>基本颜色</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="472"/>
+        <location filename="../views/material_edit_dock.cpp" line="265"/>
         <source>Opacity</source>
         <translation>透明度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="473"/>
+        <location filename="../views/material_edit_dock.cpp" line="266"/>
         <source>Normal</source>
         <translation>法线</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="474"/>
+        <location filename="../views/material_edit_dock.cpp" line="267"/>
         <source>Roughness</source>
         <translation>粗糙度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="475"/>
+        <location filename="../views/material_edit_dock.cpp" line="268"/>
         <source>Metal</source>
         <translation>金属程度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="476"/>
+        <location filename="../views/material_edit_dock.cpp" line="269"/>
         <source>Specular</source>
         <translation>反射率</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="477"/>
+        <location filename="../views/material_edit_dock.cpp" line="270"/>
         <source>Anisotropy</source>
         <translation>各向异性</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="478"/>
+        <location filename="../views/material_edit_dock.cpp" line="271"/>
         <source>Cloth</source>
         <translation>布料程度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="479"/>
-        <location filename="../views/material_dock.cpp" line="527"/>
+        <location filename="../views/material_edit_dock.cpp" line="272"/>
+        <location filename="../views/material_edit_dock.cpp" line="320"/>
         <source>Clear Coat</source>
         <translation>清漆</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="480"/>
+        <location filename="../views/material_edit_dock.cpp" line="273"/>
         <source>Clear Coat Roughness</source>
         <translation>清漆粗超度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="481"/>
+        <location filename="../views/material_edit_dock.cpp" line="274"/>
         <source>Subsurface</source>
         <translation>次表面</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="482"/>
+        <location filename="../views/material_edit_dock.cpp" line="275"/>
         <source>Subsurface Color</source>
         <translation>次表面散射颜色</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="483"/>
-        <location filename="../views/material_dock.cpp" line="533"/>
+        <location filename="../views/material_edit_dock.cpp" line="276"/>
+        <location filename="../views/material_edit_dock.cpp" line="326"/>
         <source>Refraction</source>
         <translation>折射程度</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="484"/>
+        <location filename="../views/material_edit_dock.cpp" line="277"/>
         <source>Refraction Ior</source>
         <translation>折射率</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="485"/>
+        <location filename="../views/material_edit_dock.cpp" line="278"/>
         <source>Emissive</source>
         <translation>自发光</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="530"/>
+        <location filename="../views/material_edit_dock.cpp" line="323"/>
         <source>Subsurface Scattering</source>
         <translation>次表面散射</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="537"/>
+        <location filename="../views/material_edit_dock.cpp" line="330"/>
         <source>Receive Shadow</source>
         <translation>接受阴影</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="543"/>
+        <location filename="../views/material_edit_dock.cpp" line="336"/>
         <source>Other</source>
         <translation>其它</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="1057"/>
-        <location filename="../views/material_dock.cpp" line="1065"/>
-        <location filename="../views/material_dock.cpp" line="1073"/>
-        <location filename="../views/material_dock.cpp" line="1081"/>
-        <location filename="../views/material_dock.cpp" line="1089"/>
-        <location filename="../views/material_dock.cpp" line="1097"/>
-        <location filename="../views/material_dock.cpp" line="1105"/>
-        <location filename="../views/material_dock.cpp" line="1113"/>
-        <location filename="../views/material_dock.cpp" line="1121"/>
-        <location filename="../views/material_dock.cpp" line="1129"/>
-        <location filename="../views/material_dock.cpp" line="1137"/>
-        <location filename="../views/material_dock.cpp" line="1145"/>
-        <location filename="../views/material_dock.cpp" line="1153"/>
+        <location filename="../views/material_edit_dock.cpp" line="850"/>
+        <location filename="../views/material_edit_dock.cpp" line="858"/>
+        <location filename="../views/material_edit_dock.cpp" line="866"/>
+        <location filename="../views/material_edit_dock.cpp" line="874"/>
+        <location filename="../views/material_edit_dock.cpp" line="882"/>
+        <location filename="../views/material_edit_dock.cpp" line="890"/>
+        <location filename="../views/material_edit_dock.cpp" line="898"/>
+        <location filename="../views/material_edit_dock.cpp" line="906"/>
+        <location filename="../views/material_edit_dock.cpp" line="914"/>
+        <location filename="../views/material_edit_dock.cpp" line="922"/>
+        <location filename="../views/material_edit_dock.cpp" line="930"/>
+        <location filename="../views/material_edit_dock.cpp" line="938"/>
+        <location filename="../views/material_edit_dock.cpp" line="946"/>
         <source>Open Image</source>
         <translation>打开图像</translation>
     </message>
@@ -783,58 +795,58 @@ $20 (Original cost $40)</source>
 <context>
     <name>unreal::MaterialListDialog</name>
     <message>
-        <location filename="../views/material_dock.cpp" line="54"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="27"/>
         <source>Material Resource</source>
         <translation>材质资源</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="59"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="32"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="63"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="36"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="67"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="40"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="141"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="114"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="141"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="114"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation>NVIDIA MDL Files (*.mdl)</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="146"/>
-        <location filename="../views/material_dock.cpp" line="147"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="119"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="120"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="146"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="119"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="197"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="170"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="197"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="170"/>
         <source>Are you sure you want to delete this material?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="213"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="186"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>

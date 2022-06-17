@@ -24,7 +24,7 @@ namespace unreal
 
 		materialButton_ = new QToolButton;
 		materialButton_->setObjectName("material");
-		materialButton_->setText(tr("Material"));
+		materialButton_->setText(tr("Material Library"));
 		materialButton_->setToolTip(tr("Open Material Panel"));
 		materialButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		materialButton_->setCheckable(true);
@@ -32,14 +32,14 @@ namespace unreal
 		
 		modelButton_ = new QToolButton;
 		modelButton_->setObjectName("model");
-		modelButton_->setText(tr("Model"));
+		modelButton_->setText(tr("Model Library"));
 		modelButton_->setToolTip(tr("Open Model Panel"));
 		modelButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		modelButton_->setCheckable(true);
 
 		motionButton_ = new QToolButton;
 		motionButton_->setObjectName("motion");
-		motionButton_->setText(tr("Motion"));
+		motionButton_->setText(tr("Motion Library"));
 		motionButton_->setToolTip(tr("Open Motion Panel"));
 		motionButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		motionButton_->setCheckable(true);
@@ -59,7 +59,7 @@ namespace unreal
 
 		importButton_ = new QToolButton;
 		importButton_->setObjectName("import");
-		importButton_->setText(tr("Import"));
+		importButton_->setText(tr("Import Library"));
 		importButton_->setToolTip(tr("Import Resource File(.pmm, .pmx)"));
 		importButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 		importButton_->installEventFilter(this);

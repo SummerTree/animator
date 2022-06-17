@@ -85,6 +85,10 @@ SET(WIDGETS_LIST
 SOURCE_GROUP("launcher\\widgets" FILES ${WIDGETS_LIST})
 
 SET(VIEWS_LIST
+	${SOURCE_PATH}/views/asset_browse_dock.h
+	${SOURCE_PATH}/views/asset_browse_dock.cpp
+	${SOURCE_PATH}/views/asset_browse_dialog.h
+	${SOURCE_PATH}/views/asset_browse_dialog.cpp
 	${SOURCE_PATH}/views/splash_screen.h
 	${SOURCE_PATH}/views/splash_screen.cpp
 	${SOURCE_PATH}/views/main_dock.h
@@ -111,10 +115,10 @@ SET(VIEWS_LIST
 	${SOURCE_PATH}/views/camera_dock.cpp
 	${SOURCE_PATH}/views/material_dock.h
 	${SOURCE_PATH}/views/material_dock.cpp
+	${SOURCE_PATH}/views/material_edit_dock.h
+	${SOURCE_PATH}/views/material_edit_dock.cpp
 	${SOURCE_PATH}/views/light_dock.h
 	${SOURCE_PATH}/views/light_dock.cpp
-	${SOURCE_PATH}/views/asset_browse_dock.h
-	${SOURCE_PATH}/views/asset_browse_dock.cpp
 	${SOURCE_PATH}/views/setting_window.h
 	${SOURCE_PATH}/views/setting_window.cpp
 	${SOURCE_PATH}/views/title_bar.h
