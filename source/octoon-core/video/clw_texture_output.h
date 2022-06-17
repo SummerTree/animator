@@ -10,6 +10,7 @@ namespace octoon
 	{
 	public:
 		ClwTextureOutput(CLWContext context, std::uint32_t texture, std::uint32_t w, std::uint32_t h);
+		~ClwTextureOutput();
 
 		void syncData(CLWKernel& copyKernel);
 

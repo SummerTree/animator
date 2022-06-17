@@ -23,25 +23,25 @@ namespace octoon
 	}
 
 	std::unique_ptr<Output>
-	ClwRenderFactory::createOutput(std::uint32_t w, std::uint32_t h) const
+	ClwRenderFactory::createOutput(std::uint32_t w, std::uint32_t h)
 	{
 		return std::make_unique<ClwOutput>(context_, w, h);
 	}
 
 	std::unique_ptr<Output>
-	ClwRenderFactory::createTextureOutput(std::uint32_t texture, std::uint32_t w, std::uint32_t h) const
+	ClwRenderFactory::createTextureOutput(std::uint32_t texture, std::uint32_t w, std::uint32_t h)
 	{
 		return std::make_unique<ClwTextureOutput>(context_, texture, w, h);
 	}
 
 	std::unique_ptr<SceneController>
-	ClwRenderFactory::createSceneController() const
+	ClwRenderFactory::createSceneController()
 	{
 		return std::make_unique<ClwSceneController>(context_, intersector_, &programManager_);
 	}
 
 	std::unique_ptr<Pipeline>
-	ClwRenderFactory::createPipeline() const
+	ClwRenderFactory::createPipeline()
 	{
 		return std::make_unique<MonteCarloRenderer>(context_, &programManager_, std::make_unique<PathTracingEstimator>(context_, intersector_, &programManager_));
 	}

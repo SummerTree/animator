@@ -79,8 +79,15 @@ public:
     }
     
 private:
-    void RetainObject()  { if (object_) Retain(object_); }
-    void ReleaseObject() { if (object_) Release(object_); }
+    void RetainObject()
+    {
+        if (object_) Retain(object_);
+    }
+
+    void ReleaseObject()
+    {
+        if (object_) Release(object_);
+    }
     
     T object_ = nullptr;
 };

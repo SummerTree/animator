@@ -2,7 +2,7 @@
 
 namespace octoon
 {
-    ClwClass::ClwClass(CLWContext context, const CLProgramManager *program_manager, std::string const& cl_file, std::string const& opts)
+    ClwClass::ClwClass(CLWContext context, CLProgramManager *program_manager, std::string const& cl_file, std::string const& opts)
         : context_(context)
         , programManager_(program_manager)
     {

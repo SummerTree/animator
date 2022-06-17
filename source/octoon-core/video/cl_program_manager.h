@@ -17,21 +17,22 @@ namespace octoon
     public:
         explicit CLProgramManager(const std::filesystem::path& cache_path);
 
-        std::uint32_t CreateProgramFromFile(CLWContext context, std::string_view fname) const;
-        std::uint32_t CreateProgramFromSource(CLWContext context, std::string_view name, std::string_view source) const;
+        std::uint32_t CreateProgramFromFile(CLWContext context, std::string_view fname) noexcept(false);
+        std::uint32_t CreateProgramFromSource(CLWContext context, std::string_view name, std::string_view source) noexcept(false);
 
-        void LoadHeader(const std::string &header) const;
-        void AddHeader(const std::string &header, const std::string &source) const;
+        void LoadHeader(const std::string &header) noexcept(false);
+        void AddHeader(const std::string &header, const std::string &source) noexcept(false);
         const std::string& ReadHeader(const std::string &header) const;
 
-        CLWProgram GetProgram(std::uint32_t id, const std::string &opts) const;
-        void CompileProgram(std::uint32_t id, const std::string &opts) const;
+        CLWProgram GetProgram(std::uint32_t id, const std::string &opts) noexcept(false);
+        void CompileProgram(std::uint32_t id, const std::string &opts) noexcept(false);
 
     private:
-        mutable std::filesystem::path cachePath_;
-        mutable std::map<uint32_t, CLProgram> programs_;
-        mutable std::map<std::string, std::string> headers_;
         static std::uint32_t nextProgramId_;
+
+        std::filesystem::path cachePath_;
+        std::map<uint32_t, CLProgram> programs_;
+        std::map<std::string, std::string> headers_;
     };
 }
 

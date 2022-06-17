@@ -3,7 +3,7 @@
 
 namespace octoon
 {
-	PathTracingEstimator::PathTracingEstimator(CLWContext context, std::shared_ptr<RadeonRays::IntersectionApi> intersector, const CLProgramManager* programManager)
+	PathTracingEstimator::PathTracingEstimator(CLWContext context, std::shared_ptr<RadeonRays::IntersectionApi> intersector, CLProgramManager* programManager)
 		: ClwClass(context, programManager, "../../system/Kernels/CL/rtx_path_estimator.cl", "")
 		, renderData_(std::make_unique<RenderData>())
 		, intersector_(intersector)

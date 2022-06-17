@@ -16,7 +16,7 @@ namespace octoon
     {
     public:
         CLProgram() = default;
-        CLProgram(const CLProgramManager *program_manager, uint32_t id, CLWContext context, std::string_view program_name, const std::filesystem::path& cache_path);
+        CLProgram(CLProgramManager *program_manager, uint32_t id, CLWContext context, std::string_view program_name, const std::filesystem::path& cache_path);
 
         bool isDirty() const { return isDirty_; }
         void setDirty() { isDirty_ = true; }
@@ -37,7 +37,7 @@ namespace octoon
         std::string getFilenameHash(std::string const& opts) const;
 
     private:
-        const CLProgramManager* programManager_;
+        CLProgramManager* programManager_;
 
         std::string programName_;
         std::string compiledSource_;

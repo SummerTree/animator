@@ -19,11 +19,11 @@ namespace octoon
 		ClwRenderFactory(CLWContext context, const std::filesystem::path& cache_path) noexcept;
 		virtual ~ClwRenderFactory() noexcept;
 
-		virtual std::unique_ptr<Output> createOutput(std::uint32_t w, std::uint32_t h) const override;
-		virtual std::unique_ptr<Output> createTextureOutput(std::uint32_t texture, std::uint32_t w, std::uint32_t h) const override;
+		virtual std::unique_ptr<Output> createOutput(std::uint32_t w, std::uint32_t h) override;
+		virtual std::unique_ptr<Output> createTextureOutput(std::uint32_t texture, std::uint32_t w, std::uint32_t h) override;
 
-		virtual std::unique_ptr<SceneController> createSceneController() const override;
-		virtual std::unique_ptr<Pipeline> createPipeline() const override;
+		virtual std::unique_ptr<SceneController> createSceneController() override;
+		virtual std::unique_ptr<Pipeline> createPipeline() override;
 
 	private:
 		ClwRenderFactory(ClwRenderFactory const&) = delete;

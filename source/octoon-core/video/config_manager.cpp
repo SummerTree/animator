@@ -60,8 +60,8 @@ namespace octoon
 
 		for (auto& it : configs_)
 		{
-			it.pipeline.reset();
 			it.controller.reset();
+			it.pipeline.reset();
 			it.factory.reset();
 		}
 
@@ -526,7 +526,6 @@ namespace octoon
 			context->setFramebuffer(nullptr);
 			context->clearFramebuffer(0, ClearFlagBits::AllBit, mainCamera->getClearColor(), 1.0f, 0);
 			context->blitFramebuffer(framebuffer_, viewport, nullptr, math::float4(framebufferX, framebufferY, framebufferX + framebufferWidth, framebufferY + framebufferHeight), mode);
-			context->discardFramebuffer(framebuffer_, ClearFlagBits::AllBit);
 		}
 	}
 

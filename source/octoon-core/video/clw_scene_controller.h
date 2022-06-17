@@ -41,7 +41,6 @@ namespace octoon
 		CLWContext context_;
 		const CLProgramManager* programManager_;
 		std::shared_ptr<RadeonRays::IntersectionApi> api_;
-		std::unordered_map<void*, std::int32_t> textureToOffset_;
 		std::unordered_map<void*, ClwScene::Material> materialidToOffset_;
 		std::unordered_map<std::shared_ptr<RenderScene>, std::unique_ptr<ClwScene>> sceneCache_;
 

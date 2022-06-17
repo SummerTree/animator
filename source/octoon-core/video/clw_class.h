@@ -17,7 +17,7 @@ namespace octoon
     class ClwClass
     {
     public:
-        ClwClass(CLWContext context, const CLProgramManager *program_manager, std::string const& cl_file, std::string const& opts = "");
+        ClwClass(CLWContext context, CLProgramManager *program_manager, std::string const& cl_file, std::string const& opts = "");
         virtual ~ClwClass() = default;
 
         CLWContext getContext() const;
@@ -32,7 +32,7 @@ namespace octoon
         void addCommonOptions(std::string& opts) const;
 
         CLWContext context_;
-        const CLProgramManager *programManager_;
+        CLProgramManager *programManager_;
         std::uint32_t programId_;
         std::string defaultOpts_;
     };

@@ -70,7 +70,7 @@ namespace octoon
 			out.write((char*)&data[0], data.size());
 	}
 
-	CLProgram::CLProgram(const CLProgramManager* program_manager, uint32_t id, CLWContext context, std::string_view program_name, const std::filesystem::path& cache_path)
+	CLProgram::CLProgram(CLProgramManager* program_manager, uint32_t id, CLWContext context, std::string_view program_name, const std::filesystem::path& cache_path)
 		: programManager_(program_manager)
 		, programName_(program_name)
 		, cachePath_(cache_path)

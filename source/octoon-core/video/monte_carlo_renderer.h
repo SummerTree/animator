@@ -12,7 +12,7 @@ namespace octoon
 	class MonteCarloRenderer : public Pipeline, protected ClwClass
 	{
 	public:
-		MonteCarloRenderer(CLWContext context, const CLProgramManager* programManager, std::unique_ptr<PathTracingEstimator> estimator) noexcept;
+		MonteCarloRenderer(CLWContext context, CLProgramManager* programManager, std::unique_ptr<PathTracingEstimator> estimator) noexcept;
 		virtual ~MonteCarloRenderer() noexcept;
 
 		void setMaxBounces(std::uint32_t num_bounces);

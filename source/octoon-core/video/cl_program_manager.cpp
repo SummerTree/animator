@@ -33,7 +33,7 @@ namespace octoon
 	}
 
 	std::uint32_t
-	CLProgramManager::CreateProgramFromFile(CLWContext context, std::string_view filepath) const
+	CLProgramManager::CreateProgramFromFile(CLWContext context, std::string_view filepath) noexcept(false)
 	{
 		std::regex delimiter("\\\\");
 
@@ -57,7 +57,7 @@ namespace octoon
 	}
 
 	std::uint32_t
-	CLProgramManager::CreateProgramFromSource(CLWContext context, std::string_view name, std::string_view source) const
+	CLProgramManager::CreateProgramFromSource(CLWContext context, std::string_view name, std::string_view source) noexcept(false)
 	{
 		CLProgram prg(this, nextProgramId_++, context, name, cachePath_);
 		prg.setSource(source);
@@ -66,7 +66,7 @@ namespace octoon
 	}
 
 	void
-	CLProgramManager::AddHeader(const std::string& header, const std::string& source) const
+	CLProgramManager::AddHeader(const std::string& header, const std::string& source) noexcept(false)
 	{
 		std::string currect_header_code = headers_[header];
 		if (currect_header_code != source)
@@ -84,7 +84,7 @@ namespace octoon
 	}
 
 	void
-	CLProgramManager::LoadHeader(const std::string& header) const
+	CLProgramManager::LoadHeader(const std::string& header) noexcept(false)
 	{
 		std::string header_source = ReadFile(header);
 		AddHeader(header, header_source);
@@ -93,18 +93,18 @@ namespace octoon
 	const std::string&
 	CLProgramManager::ReadHeader(const std::string& header) const
 	{
-		return headers_[header];
+		return headers_.at(header);
 	}
 
 	CLWProgram
-	CLProgramManager::GetProgram(uint32_t id, const std::string& opts) const
+	CLProgramManager::GetProgram(uint32_t id, const std::string& opts) noexcept(false)
 	{
 		CLProgram& program = programs_[id];
 		return program.getCLWProgram(opts);
 	}
 
 	void
-	CLProgramManager::CompileProgram(uint32_t id, const std::string& opts) const
+	CLProgramManager::CompileProgram(uint32_t id, const std::string& opts) noexcept(false)
 	{
 		CLProgram& program = programs_[id];
 		program.compile(opts);

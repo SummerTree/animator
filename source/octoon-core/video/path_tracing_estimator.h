@@ -60,7 +60,7 @@ namespace octoon
             }
         };
 	public:
-		PathTracingEstimator(CLWContext context, std::shared_ptr<RadeonRays::IntersectionApi> api, const CLProgramManager* programManager);
+		PathTracingEstimator(CLWContext context, std::shared_ptr<RadeonRays::IntersectionApi> api, CLProgramManager* programManager);
 		virtual ~PathTracingEstimator() override;
 
         void setWorkBufferSize(std::size_t size);

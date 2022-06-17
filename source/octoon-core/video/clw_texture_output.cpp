@@ -9,6 +9,11 @@ namespace octoon
 		objects_.push_back(image_);
 	}
 
+	ClwTextureOutput::~ClwTextureOutput()
+	{
+		objects_.clear();
+	}
+
 	void
 	ClwTextureOutput::syncData(CLWKernel& copyKernel)
 	{
