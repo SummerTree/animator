@@ -150,21 +150,33 @@ namespace octoon
 
 						if (!material.albedoTex.empty())
 						{
-							standard->setColorMap(std::make_shared<Texture>(material.albedoTex));
-							standard->getColorMap()->apply();
+							auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.albedoTex);
+							if (texture)
+							{
+								texture->apply();
+								standard->setColorMap(std::move(texture));
+							}
 						}
 
 						if (!material.normalmapTex.empty())
 						{
-							standard->setNormalMap(std::make_shared<Texture>(material.normalmapTex));
-							standard->getNormalMap()->apply();
+							auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.normalmapTex);
+							if (texture)
+							{
+								texture->apply();
+								standard->setNormalMap(std::move(texture));
+							}
 						}
 
 						if (!material.metallicRoughnessTex.empty())
 						{
-							standard->setMetalness(1.0f);
-							standard->setMetalnessMap(std::make_shared<Texture>(material.metallicRoughnessTex));
-							standard->getMetalnessMap()->apply();
+							auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.metallicRoughnessTex);
+							if (texture)
+							{
+								texture->apply();
+								standard->setMetalness(1.0f);
+								standard->setMetalnessMap(std::move(texture));
+							}
 						}
 
 						materialMap[name] = standard;
