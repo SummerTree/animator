@@ -126,8 +126,8 @@ namespace octoon
 						sscanf(line, " spectrans %f", &material.spectrans);
 
 						sscanf(line, " albedotexture %s", albedoTexName);
-						sscanf(line, " metallicRoughnessTexture %s", metallicRoughnessTexName);
-						sscanf(line, " normalTexture %s", normalTexName);
+						sscanf(line, " metallicroughnesstexture %s", metallicRoughnessTexName);
+						sscanf(line, " normaltexture %s", normalTexName);
 					}
 
 					if (strcmp(albedoTexName, "None") != 0) material.albedoTex = path + albedoTexName;
@@ -168,7 +168,7 @@ namespace octoon
 							}
 						}
 
-						if (!material.metallicRoughnessTex.empty())
+						/*if (!material.metallicRoughnessTex.empty())
 						{
 							auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.metallicRoughnessTex);
 							if (texture)
@@ -177,7 +177,7 @@ namespace octoon
 								standard->setMetalness(1.0f);
 								standard->setMetalnessMap(std::move(texture));
 							}
-						}
+						}*/
 
 						materialMap[name] = standard;
 					}
