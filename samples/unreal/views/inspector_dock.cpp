@@ -35,24 +35,8 @@ namespace unreal
 		connect(mainWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 
 		profile->selectorModule->selectedItem_ += [this](const std::optional<octoon::RaycastHit>& data_) {
-			if (this->isVisible())
+			if (this->isVisible() && data_.has_value() && !data_.value().object.expired())
 			{
-				if (!data_.has_value())
-				{
-					selectedObject_.reset();
-					octoon::MaterialImporter::instance()->clear();
-					this->updateItemList();
-					return;
-				}
-
-				if (data_.value().object.expired())
-				{
-					selectedObject_.reset();
-					octoon::MaterialImporter::instance()->clear();
-					this->updateItemList();
-					return;
-				}
-
 				auto hit = data_.value();
 				auto hitObject = hit.object.lock();
 
@@ -99,6 +83,12 @@ namespace unreal
 						}
 					}
 				}
+			}
+			else
+			{
+				selectedObject_.reset();
+				octoon::MaterialImporter::instance()->clear();
+				this->updateItemList();
 			}
 		};
 	}
