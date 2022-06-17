@@ -58,6 +58,9 @@ namespace unreal
 		QLabel* focusDistanceName_;
 		QLabel* focusDistanceLabel_;
 		QLabel* dofLabel_;
+		QLabel* title_;
+
+		QFrame* headerLine_;
 
 		QCheckBox* dofButton_;
 		QToolButton* focusTargetButton_;

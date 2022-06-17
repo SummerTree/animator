@@ -74,6 +74,9 @@ namespace unreal
 		QLabel* endLabel_;
 		QLabel* denoiseLabel_;
 		QLabel* resolutionLabel;
+		QLabel* title_;
+
+		QFrame* headerLine_;
 
 		QButtonGroup* selectGroup_;
 		QButtonGroup* speedGroup_;

@@ -20,21 +20,21 @@ namespace unreal
 		this->setTitleBarWidget(new QWidget());
 		delete oldTitleBar;
 
-		auto title_ = new QLabel;
+		title_ = new QLabel;
 		title_->setObjectName("title");
 		title_->setText(tr("Video Editor"));
 
-		auto headerLine = new QFrame;
-		headerLine->setObjectName("HLine");
-		headerLine->setFixedHeight(1);
-		headerLine->setFrameShape(QFrame::NoFrame);
-		headerLine->setFrameShadow(QFrame::Plain);
-		headerLine->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+		headerLine_ = new QFrame;
+		headerLine_->setObjectName("HLine");
+		headerLine_->setFixedHeight(1);
+		headerLine_->setFrameShape(QFrame::NoFrame);
+		headerLine_->setFrameShadow(QFrame::Plain);
+		headerLine_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
 		auto titleLayout_ = new QVBoxLayout();
 		titleLayout_->addWidget(title_, 0, Qt::AlignLeft);
 		titleLayout_->addSpacing(8);
-		titleLayout_->addWidget(headerLine);
+		titleLayout_->addWidget(headerLine_);
 		titleLayout_->setSpacing(0);
 		titleLayout_->setContentsMargins(4, 8, 4, 0);
 
