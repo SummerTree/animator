@@ -378,7 +378,7 @@ INLINE void Disney_ApplyShadingNormal(DifferentialGeometry* dg, TEXTURE_ARG_LIST
 {
 	if (dg->mat.disney.normal_map_idx != -1)
 	{
-		float3 shading_normal = Texture_Sample2D(dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.normal_map_idx)).xyz;
+		float3 shading_normal = Texture_Sample2D(dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.normal_map_idx)).xyz * 2.0f - make_float3(1.f, 1.f, 1.f);
 		dg->n = normalize(shading_normal.z * dg->n + shading_normal.x * dg->dpdu + shading_normal.y * dg->dpdv);
 		dg->dpdv = normalize(cross(dg->n, dg->dpdu));
 		dg->dpdu = normalize(cross(dg->dpdv, dg->n));

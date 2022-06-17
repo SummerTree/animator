@@ -587,7 +587,7 @@ namespace octoon
 			auto& material = materials[i];
 			material.offset = 0;
 			material.shadow = mat->getReceiveShadow();
-			material.flags = ClwScene::BxdfFlags::kBxdfFlagsDiffuse | ClwScene::BxdfFlags::kBxdfFlagsBrdf;
+			material.flags = ClwScene::BxdfFlags::kBxdfFlagsDiffuse;
 			material.disney.base_color = RadeonRays::float3(mat->getColor().x, mat->getColor().y, mat->getColor().z);
 			material.disney.base_color_map_idx = GetTextureIndex(textureCollector, mat->getColorMap());
 			material.disney.opacity = mat->getOpacity();
@@ -619,6 +619,9 @@ namespace octoon
 			material.disney.emissive_map_idx = GetTextureIndex(textureCollector, mat->getEmissiveMap());
 			material.disney.refraction_ior = mat->getRefractionRatio();
 			material.disney.transmission = mat->getTransmission();
+
+			if (mat->getTransmission() == 0)
+				material.flags |= ClwScene::BxdfFlags::kBxdfFlagsBrdf;
 
 			this->materialidToOffset_[mat] = material;
 		}

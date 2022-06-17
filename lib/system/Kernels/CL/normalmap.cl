@@ -26,49 +26,34 @@ THE SOFTWARE.
 #include <../../system/Kernels/CL/texture.cl>
 #include <../../system/Kernels/CL/payload.cl>
 
-void DifferentialGeometry_ApplyNormalMap(DifferentialGeometry* diffgeo, TEXTURE_ARG_LIST)
+void DifferentialGeometry_ApplyNormalMap(DifferentialGeometry* dg, TEXTURE_ARG_LIST)
 {
-    int nmapidx = diffgeo->mat.nmapidx;
+    int nmapidx = dg->mat.disney.normal_map_idx;
     if (nmapidx != -1)
     {
         // Now n, dpdu, dpdv is orthonormal basis
-        float3 mappednormal = 2.f * Texture_Sample2D(diffgeo->uv, TEXTURE_ARGS_IDX(nmapidx)).xyz - make_float3(1.f, 1.f, 1.f);
+        float3 mappednormal = 2.f * Texture_Sample2D(dg->uv, TEXTURE_ARGS_IDX(nmapidx)).xyz - make_float3(1.f, 1.f, 1.f);
 
         // Return mapped version
-        diffgeo->n = normalize(mappednormal.z *  diffgeo->n + mappednormal.x * diffgeo->dpdu + mappednormal.y * diffgeo->dpdv);
-        diffgeo->dpdv = normalize(cross(diffgeo->n, diffgeo->dpdu));
-        diffgeo->dpdu = normalize(cross(diffgeo->dpdv, diffgeo->n));
+        dg->n = normalize(mappednormal.z *  dg->n + mappednormal.x * dg->dpdu + mappednormal.y * dg->dpdv);
+        dg->dpdv = normalize(cross(dg->n, dg->dpdu));
+        dg->dpdu = normalize(cross(dg->dpdv, dg->n));
     }
 }
 
-void DifferentialGeometry_ApplyBumpMap(DifferentialGeometry* diffgeo, TEXTURE_ARG_LIST)
+void DifferentialGeometry_ApplyBumpMap(DifferentialGeometry* dg, TEXTURE_ARG_LIST)
 {
-    int nmapidx = diffgeo->mat.nmapidx;
+    int nmapidx = dg->mat.disney.normal_map_idx;
     if (nmapidx != -1)
     {
         // Now n, dpdu, dpdv is orthonormal basis
-        float3 mappednormal = 2.f * Texture_SampleBump(diffgeo->uv, TEXTURE_ARGS_IDX(nmapidx)) - make_float3(1.f, 1.f, 1.f);
+        float3 mappednormal = 2.f * Texture_SampleBump(dg->uv, TEXTURE_ARGS_IDX(nmapidx)) - make_float3(1.f, 1.f, 1.f);
 
         // Return mapped version
-        diffgeo->n = normalize(mappednormal.z * diffgeo->n + mappednormal.x * diffgeo->dpdu + mappednormal.y * diffgeo->dpdv);
-        diffgeo->dpdv = normalize(cross(diffgeo->n, diffgeo->dpdu));
-        diffgeo->dpdu = normalize(cross(diffgeo->dpdv, diffgeo->n));
+        dg->n = normalize(mappednormal.z * dg->n + mappednormal.x * dg->dpdu + mappednormal.y * dg->dpdv);
+        dg->dpdv = normalize(cross(dg->n, dg->dpdu));
+        dg->dpdu = normalize(cross(dg->dpdv, dg->n));
     }
 }
-
-void DifferentialGeometry_ApplyBumpNormalMap(DifferentialGeometry* diffgeo, TEXTURE_ARG_LIST)
-{
-    int bump_flag = diffgeo->mat.bump_flag;
-    if (bump_flag)
-    {
-        DifferentialGeometry_ApplyBumpMap(diffgeo, TEXTURE_ARGS);
-    }
-    else
-    {
-        DifferentialGeometry_ApplyNormalMap(diffgeo, TEXTURE_ARGS);
-    }
-}
-
-
 
 #endif // NORMALMAP_CL
