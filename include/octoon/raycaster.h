@@ -15,12 +15,12 @@ namespace octoon
 
 	inline bool operator==(const RaycastHit& a, const RaycastHit& b)
 	{
-		return a.object.lock() == a.object.lock() && a.mesh == b.mesh;
+		return a.mesh == b.mesh && a.distance == a.distance && a.point == b.point && a.object.lock() == a.object.lock();
 	}
 
 	inline bool operator!=(const RaycastHit& a, const RaycastHit& b)
 	{
-		return a.object.lock() != a.object.lock() || a.mesh != b.mesh;
+		return !(a == b);
 	}
 
 	class OCTOON_EXPORT Raycaster final

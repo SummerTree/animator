@@ -45,7 +45,7 @@ namespace unreal
 		{
 			model->selectedItem_ = selected;
 
-			if (selected)
+			if (selected.has_value())
 				this->captureEvent();
 		}
 	}

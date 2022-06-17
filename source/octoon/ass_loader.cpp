@@ -272,18 +272,19 @@ namespace octoon
 
 					if (!filename.empty())
 					{
-						auto mesh = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(filename);
-						if (mesh)
+						auto model = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(filename);
+						if (model)
 						{
-							mesh->getComponent<TransformComponent>()->setTransform(pos, math::Quaternion::Zero, scale);
+							model->setName(meshName);
+							model->getComponent<TransformComponent>()->setTransform(pos, math::Quaternion::Zero, scale);
 
-							auto renderer = mesh->getComponent<MeshRendererComponent>();
+							auto renderer = model->getComponent<MeshRendererComponent>();
 							if (renderer)
 								renderer->setMaterial(material);
 							else
-								mesh->addComponent<MeshRendererComponent>(material);
+								model->addComponent<MeshRendererComponent>(material);
 
-							objects.push_back(std::move(mesh));
+							objects.push_back(std::move(model));
 						}
 					}
 				}
