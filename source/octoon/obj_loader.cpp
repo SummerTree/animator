@@ -134,12 +134,12 @@ namespace octoon
 
 					indexOffset += numFaceVertices;
 				}
-
-				std::uint32_t idx = 0;
-
-				for (auto& index : vertexSet)
-					vertexMap[index] = idx++;
 			}
+
+			std::uint32_t idx = 0;
+
+			for (auto& index : vertexSet)
+				vertexMap[index] = idx++;
 
 			auto vertices = math::float3s(vertexSet.size());
 			auto normals = math::float3s(vertexSet.size());

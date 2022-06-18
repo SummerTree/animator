@@ -1010,11 +1010,58 @@ namespace octoon
 		}
 		else
 		{
-			if (!image.create(format, info.width, info.height, info.depth * faceCount, info.mip_level, info10.arraySize))
+			if (!image.create(format, info.width, info.height, info.depth * faceCount, 1, info10.arraySize))
 				return false;
 
 			if (!stream.read((char*)image.data(), image.size()))
 				return false;
+
+			switch (format)
+			{
+			case Format::B8G8R8SRGB:
+			case Format::B8G8R8UNorm:
+			case Format::B8G8R8SNorm:
+			{
+				auto data = (char*)image.data();
+
+				for (std::uint32_t y = 0; y < info.height / 2; y++)
+				{
+					for (std::uint32_t x = 0; x < info.width; x++)
+					{
+						auto src = (y * info.width + x) * 3;
+						auto dst = ((info.height - y - 1) * info.width + x) * 3;
+
+						std::swap(data[src], data[dst]);
+						std::swap(data[src + 1], data[dst + 1]);
+						std::swap(data[src + 2], data[dst + 2]);
+					}
+				}
+			}
+			break;
+			case Format::B8G8R8A8SRGB:
+			case Format::B8G8R8A8SNorm:
+			case Format::B8G8R8A8UNorm:
+			{
+				auto data = (char*)image.data();
+
+				for (std::uint32_t y = 0; y < info.height / 2; y++)
+				{
+					for (std::uint32_t x = 0; x < info.width; x++)
+					{
+						auto src = (y * info.width + x) * 4;
+						auto dst = ((info.height - y - 1) * info.width + x) * 4;
+
+						std::swap(data[src], data[dst]);
+						std::swap(data[src + 1], data[dst + 1]);
+						std::swap(data[src + 2], data[dst + 2]);
+						std::swap(data[src + 3], data[dst + 3]);
+					}
+				}
+			}
+			break;
+			default:
+				break;
+			}
 		}
 
 		return true;
