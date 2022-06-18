@@ -231,17 +231,20 @@ namespace octoon
 					return mat->isDirty();
 				});
 
-			bool should_update_lights = false;
-			for (auto& light : scene->getLights())
+			bool should_update_lights = scene->isSceneDirty();
+			if (!should_update_lights)
 			{
-				if (light->isDirty())
+				for (auto& light : scene->getLights())
 				{
-					should_update_lights = true;
-					break;
+					if (light->isDirty())
+					{
+						should_update_lights = true;
+						break;
+					}
 				}
 			}
 
-			bool should_update_shapes = should_update_materials;
+			bool should_update_shapes = scene->isSceneDirty() | should_update_materials;
 			if (!should_update_shapes)
 			{
 				std::size_t num_geometries = 0;
