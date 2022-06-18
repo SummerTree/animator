@@ -217,20 +217,20 @@ namespace octoon
 						light.area = 4.0f * math::PI * light.radius * light.radius;
 					}
 
-					if (light.type.empty())
+					/*if (light.type.empty())
 					{
 						auto object = std::make_shared<GameObject>();
 						object->getComponent<TransformComponent>()->setTranslate(light.position);
 						auto pointLight = object->addComponent<PointLightComponent>();
 						pointLight->setColor(light.emission);
 						objects.emplace_back(std::move(object));
-					}
+					}*/
 				}
 
-				if (strstr(line, "Camera"))
+				if (strstr(line, "camera"))
 				{
-					math::float3 position;
-					math::float3 lookAt;
+					math::float3 position = math::float3::Zero;
+					math::float3 lookAt = math::float3::UnitZ;
 					float fov = 45;
 					float aperture = 0, focalDist = 1;
 
@@ -240,21 +240,21 @@ namespace octoon
 							break;
 
 						sscanf(line, " position %f %f %f", &position.x, &position.y, &position.z);
-						sscanf(line, " lookAt %f %f %f", &lookAt.x, &lookAt.y, &lookAt.z);
+						sscanf(line, " lookat %f %f %f", &lookAt.x, &lookAt.y, &lookAt.z);
 						sscanf(line, " aperture %f ", &aperture);
 						sscanf(line, " focaldist %f", &focalDist);
 						sscanf(line, " fov %f", &fov);
 					}
 
 					auto object = std::make_shared<GameObject>();
-					object->getComponent<TransformComponent>()->setTransform(math::makeLookatLH(position, lookAt, math::float3::UnitY));
+					object->getComponent<TransformComponent>()->setTransform(math::inverse(math::makeLookatLH(position, lookAt, math::float3::UnitY)));
 
 					auto filmCamera = object->addComponent<FilmCameraComponent>();
 					filmCamera->setFov(fov);
 					filmCamera->setAperture(aperture);
 					filmCamera->setFocusDistance(focalDist);
 
-					//objects.emplace_back(std::move(object));
+					objects.emplace_back(std::move(object));
 				}
 
 				if (strstr(line, "mesh"))

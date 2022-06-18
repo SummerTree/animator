@@ -185,6 +185,38 @@ namespace unreal
 			}
 		};
 
+		this->getModel()->camera += [this](const octoon::GameObjectPtr& camera)
+		{
+			if (camera)
+			{
+				if (!camera->getComponent<octoon::FirstPersonCameraComponent>())
+					camera->addComponent<octoon::FirstPersonCameraComponent>();
+
+				auto cameraComponent = camera->getComponent<octoon::FilmCameraComponent>();
+				if (cameraComponent)
+				{
+					cameraComponent->setCameraType(octoon::CameraType::Main);
+					cameraComponent->setClearFlags(octoon::ClearFlagBits::AllBit);
+					cameraComponent->setClearColor(octoon::math::float4(0.6f, 0.6f, 0.64f, 1.0f));
+
+					auto size = this->getModel()->framebufferSize.getValue();
+					auto framebuffer = cameraComponent->getFramebuffer();
+					if (framebuffer)
+					{
+						if (framebuffer->getFramebufferDesc().getWidth() == size.x &&
+							framebuffer->getFramebufferDesc().getHeight() == size.y)
+						{
+							return;
+						}
+					}
+
+					cameraComponent->setupFramebuffers(size.x, size.y, 0, octoon::GraphicsFormat::R32G32B32SFloat);
+				}
+
+				this->update();
+			}
+		};
+
 		this->getContext()->profile->playerModule->isPlaying += [this](bool value)
 		{
 			this->update();

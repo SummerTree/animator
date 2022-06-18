@@ -17,7 +17,7 @@ namespace unreal
 	{
 		octoon::GameObjects objects;
 
-		auto stream = octoon::io::ifstream(path.u8string());
+		auto stream = octoon::io::ifstream(path);
 		auto pmm = octoon::PMMFile::load(stream).value();
 
 		for (auto& it : pmm.model)
