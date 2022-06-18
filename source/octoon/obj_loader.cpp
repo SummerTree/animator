@@ -136,10 +136,10 @@ namespace octoon
 				}
 			}
 
-			std::uint32_t idx = 0;
+			std::uint32_t vertexCounter = 0;
 
 			for (auto& index : vertexSet)
-				vertexMap[index] = idx++;
+				vertexMap[index] = vertexCounter++;
 
 			auto vertices = math::float3s(vertexSet.size());
 			auto normals = math::float3s(vertexSet.size());
@@ -253,7 +253,9 @@ namespace octoon
 
 			auto meshRender = object->addComponent<MeshRendererComponent>();
 			meshRender->setGlobalIllumination(true);
-			meshRender->setMaterials(std::move(shapesMaterials));
+
+			for (std::size_t i = 0; i < shapesMaterials.size(); i++)
+				meshRender->setMaterial(shapesMaterials[i] ? shapesMaterials[i] : std::make_shared<MeshStandardMaterial>(), i);
 
 			return object;
 		}

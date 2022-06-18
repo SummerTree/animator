@@ -455,15 +455,20 @@ namespace octoon
 			gameObject->setName(node->GetName());
 			gameObject->addComponent<MeshFilterComponent>(std::move(mesh));
 
+			auto meshRenderer = gameObject->addComponent<MeshRendererComponent>();
+			meshRenderer->setGlobalIllumination(true);
+
 			if (fbxMesh->GetElementMaterialCount() > 0)
 			{
 				std::vector<std::shared_ptr<Material>> materials;
 				LoadMaterial(fbxMesh, materials, root);
-				gameObject->addComponent<MeshRendererComponent>(materials)->setGlobalIllumination(true);
+
+				for (std::size_t i = 0; i < materials.size(); i++)
+					meshRenderer->setMaterial(materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>(), i);
 			}
 			else
 			{
-				gameObject->addComponent<MeshRendererComponent>(std::make_shared<MeshStandardMaterial>())->setGlobalIllumination(true);
+				meshRenderer->setMaterial(std::make_shared<MeshStandardMaterial>());
 			}
 
 			auto translation = node->LclTranslation.Get();
