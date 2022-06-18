@@ -128,12 +128,15 @@ vec3 SphereNormal(vec2 uv)
 	normal.x = -sin(uv.y * PI) * sin(uv.x * PI2);
 	normal.y = cos(uv.y * PI);
 	normal.z = sin(uv.y * PI) * cos(uv.x * PI2);
-	return normal;
+	return normalize(normal);
 }
 
 vec4 textureLatlongUV(sampler2D texture, vec3 L, float mipLevel)
 {
-	vec2 uv = vec2((atan(L.x, L.z) * RECIPROCAL_PI * 0.5f + 0.5f), acos(L.y) * RECIPROCAL_PI);
+	float phi = atan(L.x, L.z);
+	float r = sqrt(L.x*L.x + L.y*L.y + L.z*L.z);
+	phi = phi >= 0 ? phi : phi + 2 * PI;
+	vec2 uv = vec2(phi * RECIPROCAL_PI * 0.5f + 0.5f, acos(L.y / r) * RECIPROCAL_PI);
 	return textureLod(texture, uv, mipLevel);
 }
 
@@ -197,12 +200,15 @@ vec3 SphereNormal(vec2 uv)
 	normal.x = -sin(uv.y * PI) * sin(uv.x * PI2);
 	normal.y = cos(uv.y * PI);
 	normal.z = sin(uv.y * PI) * cos(uv.x * PI2);
-	return normal;
+	return normalize(normal);
 }
 
 vec4 textureLatlongUV(sampler2D texture, vec3 L, float mipLevel)
 {
-	vec2 uv = vec2((atan(L.x, L.z) * RECIPROCAL_PI * 0.5f + 0.5f), acos(L.y) * RECIPROCAL_PI);
+	float phi = atan(L.x, L.z);
+	float r = sqrt(L.x*L.x + L.y*L.y + L.z*L.z);
+	phi = phi >= 0 ? phi : phi + 2 * PI;
+	vec2 uv = vec2(phi * RECIPROCAL_PI * 0.5f + 0.5f, acos(L.y / r) * RECIPROCAL_PI);
 	return textureLod(texture, uv, mipLevel);
 }
 
