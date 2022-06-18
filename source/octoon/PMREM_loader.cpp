@@ -147,14 +147,15 @@ float D_GGX(float nh, float roughness)
 
 void main()
 {
-    vec3 N = SphereNormal(vUv);    
+	const uint SAMPLE_COUNT = 256u;
+
+    vec3 N = SphereNormal(vUv);
     vec3 R = N;
     vec3 V = R;
 
-    const uint SAMPLE_COUNT = 256u;
-    float totalWeight = 0.0;   
-    vec3 prefilteredColor = vec3(0.0);     
-    for(uint i = 0u; i < SAMPLE_COUNT; ++i)
+    vec4 prefilteredColor = vec4(0.0);
+
+    for (uint i = 0u; i < SAMPLE_COUNT; ++i)
     {
         vec2 Xi = Hammersley(i, SAMPLE_COUNT);
         vec3 H  = ImportanceSampleGGX(Xi, N, roughness);
@@ -173,21 +174,41 @@ void main()
 			float fMipBias = 1.0f;
 			float fMipLevel = roughness == 0.0f ? 0.0f : max(0.5f * log2(fOmegaS / fOmegaP) + fMipBias, 0.0f);
 
-            prefilteredColor += textureLatlongUV(environmentMap, L, fMipLevel).rgb * NdotL;
-            totalWeight += NdotL;
+            prefilteredColor.rgb += textureLatlongUV(environmentMap, L, fMipLevel).rgb * NdotL;
+            prefilteredColor.a += NdotL;
         }
     }
-    prefilteredColor = prefilteredColor / totalWeight;
 
-    fragColor = vec4(prefilteredColor, 1.0);
+    fragColor = vec4(prefilteredColor.rgb / prefilteredColor.a, 1.0);
 })";
 
 constexpr auto copy_frag = R"(
+#define PI 3.14159265359
+#define PI2 6.28318530718
+#define RECIPROCAL_PI 0.31830988618
+
 in vec2 vUv;
+
 uniform sampler2D environmentMap;
+
+vec3 SphereNormal(vec2 uv)
+{
+	vec3 normal;
+	normal.x = -sin(uv.y * PI) * sin(uv.x * PI2);
+	normal.y = cos(uv.y * PI);
+	normal.z = sin(uv.y * PI) * cos(uv.x * PI2);
+	return normal;
+}
+
+vec4 textureLatlongUV(sampler2D texture, vec3 L, float mipLevel)
+{
+	vec2 uv = vec2((atan(L.x, L.z) * RECIPROCAL_PI * 0.5f + 0.5f), acos(L.y) * RECIPROCAL_PI);
+	return textureLod(texture, uv, mipLevel);
+}
+
 void main()
 {
-	fragColor = texture(environmentMap, vUv);
+	fragColor = textureLatlongUV(environmentMap, SphereNormal(vUv), 0);
 }
 )";
 
@@ -236,11 +257,6 @@ void main()
 					throw runtime_error::create("createFramebuffer() failed");
 			}
 
-			auto irradiance = std::make_shared<Material>(std::make_shared<Shader>(pmrem_vert, irradiance_frag));
-			irradiance->set("environmentMap", environmentMap);
-			irradiance->setDepthEnable(false);
-			irradiance->setDepthWriteEnable(false);
-
 			auto radiance = std::make_shared<Material>(std::make_shared<Shader>(pmrem_vert, radiance_frag));
 			radiance->set("environmentMap", environmentMap);
 			radiance->set("environmentSize", (float)environmentMap->width() * environmentMap->height());
@@ -251,10 +267,6 @@ void main()
 			copyMaterial->set("environmentMap", environmentMap);
 			copyMaterial->setDepthEnable(false);
 			copyMaterial->setDepthWriteEnable(false);
-
-			Geometry irradianceGeometry;
-			irradianceGeometry.setMesh(std::make_shared<PlaneMesh>(2.0f, 2.0f));
-			irradianceGeometry.setMaterial(irradiance);
 
 			Geometry radianceGeometry;
 			radianceGeometry.setMesh(std::make_shared<PlaneMesh>(2.0f, 2.0f));
