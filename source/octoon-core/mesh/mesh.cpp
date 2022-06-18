@@ -690,10 +690,11 @@ namespace octoon
 					auto& b = _vertices.at(f2);
 					auto& c = _vertices.at(f3);
 
-					auto edge1 = c - b;
-					auto edge2 = a - b;
+					auto edge1 = a - b;
+					auto edge2 = a - c;
 
-					auto n(math::normalize(math::cross(edge1, edge2)));
+					auto angle = std::acos(math::dot(edge1, edge2));
+					auto n = math::normalize(math::cross(edge1, edge2)) * angle;
 
 					_normals[f1] += n;
 					_normals[f2] += n;
