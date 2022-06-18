@@ -250,7 +250,10 @@ namespace octoon
 
 			auto object = std::make_shared<GameObject>();
 			object->addComponent<MeshFilterComponent>(std::move(mesh));
-			object->addComponent<MeshRendererComponent>(std::move(shapesMaterials));
+
+			auto meshRender = object->addComponent<MeshRendererComponent>();
+			meshRender->setGlobalIllumination(true);
+			meshRender->setMaterials(std::move(shapesMaterials));
 
 			return object;
 		}

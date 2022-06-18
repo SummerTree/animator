@@ -19,13 +19,7 @@ namespace unreal
 			if (it->getComponent<octoon::CameraComponent>())
 				profile.cameraModule->camera = it;
 			else
-			{
-				auto renderer = it->getComponent<octoon::MeshRendererComponent>();
-				if (renderer)
-					renderer->setGlobalIllumination(true);
-
 				profile.entitiesModule->objects.getValue().push_back(it);
-			}
 		}
 	}
 }
