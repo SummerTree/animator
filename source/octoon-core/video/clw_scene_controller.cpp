@@ -158,6 +158,9 @@ namespace octoon
 			for (std::size_t i = 0; i < geometry->getMaterials().size(); ++i)
 			{
 				auto& mat = geometry->getMaterial(i);
+				if (!mat)
+					continue;
+
 				if (mat->isInstanceOf<MeshStandardMaterial>())
 				{
 					auto standard = mat->downcast<MeshStandardMaterial>();
