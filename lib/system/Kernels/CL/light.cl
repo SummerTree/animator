@@ -109,7 +109,7 @@ float3 EnvironmentLight_GetLe(// Light
 
     if (tex == -1)
     {
-        return 0.f;
+        return light->intensity;
     }
 
     return light->intensity * Texture_SampleEnvMap(normalize(*wo), TEXTURE_ARGS_IDX(tex), light->offset, light->ibl_mirror_x);
