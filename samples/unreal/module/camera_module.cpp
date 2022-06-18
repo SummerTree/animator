@@ -80,6 +80,8 @@ namespace unreal
 		this->focusDistance.disconnect();
 		this->translate.disconnect();
 		this->rotation.disconnect();
+		this->framebufferSize.disconnect();
 		this->animation.disconnect();
+		this->camera.disconnect();
 	}
 }
