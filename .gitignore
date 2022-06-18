@@ -20,3 +20,4 @@ document/OctoonAPI/OctoonAPI.chm
 document/OctoonAPI/*.tmp
 /lib/system/materials
 /lib/system/hdris
+/redist
