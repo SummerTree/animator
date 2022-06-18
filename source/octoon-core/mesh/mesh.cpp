@@ -686,19 +686,16 @@ namespace octoon
 					std::uint32_t f2 = indices[i + 1];
 					std::uint32_t f3 = indices[i + 2];
 
-					auto& a = _vertices.at(f1);
-					auto& b = _vertices.at(f2);
-					auto& c = _vertices.at(f3);
+					auto& v1 = _vertices.at(f1);
+					auto& v2 = _vertices.at(f2);
+					auto& v3 = _vertices.at(f3);
+					
+					auto n = math::normalize(math::cross(v1 - v2, v1 - v3));
 
-					auto edge1 = a - b;
-					auto edge2 = a - c;
-
-					auto angle = std::acos(math::dot(edge1, edge2));
-					auto n = math::normalize(math::cross(edge1, edge2)) * math::surfaceArea(math::Triangle(a, b, c));
-
-					_normals[f1] += n;
-					_normals[f2] += n;
-					_normals[f3] += n;
+					// https://www.bytehazard.com/articles/vertnorm.html
+					_normals[f1] += n * std::acos(math::dot(math::normalize(v1 - v2), math::normalize(v1 - v3)));
+					_normals[f2] += n * std::acos(math::dot(math::normalize(v2 - v1), math::normalize(v2 - v3)));
+					_normals[f3] += n * std::acos(math::dot(math::normalize(v3 - v1), math::normalize(v3 - v2)));
 				}
 			}
 
