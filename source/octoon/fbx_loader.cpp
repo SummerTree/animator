@@ -141,6 +141,9 @@ namespace octoon
 		material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sNormalMap, root));
 		material->setEmissiveMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sEmissive, root));
 
+		if (!material->getNormalMap())
+			material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sBump, root));
+
 		if (surfaceMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
 			auto phongMaterial = FbxCast<FbxSurfacePhong>(surfaceMaterial);
