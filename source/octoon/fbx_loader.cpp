@@ -156,6 +156,7 @@ namespace octoon
 			auto reflection = phongMaterial->Reflection.Get();
 			auto reflectionfactor = phongMaterial->ReflectionFactor.Get();
 
+			material->setRoughness(std::sqrt(2.0f / ((float)shininess + 2.0f)));
 			material->setColor(math::float3((float)diffuse[0], (float)diffuse[1], (float)diffuse[2]) * (float)diffuseFactor);
 			material->setEmissive(math::float3((float)emissive[0], (float)emissive[1], (float)emissive[2]));
 			material->setEmissiveIntensity((float)emissiveFactor);
