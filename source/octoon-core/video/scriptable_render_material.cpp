@@ -333,7 +333,7 @@ vec4 textureCubeUV(sampler2D texture, vec3 reflectedDirection, float roughness )
 vec4 textureLatlongUV(sampler2D texture, vec3 reflectedDirection, vec2 offset, float roughness)
 {
 	vec2 uv = vec2((atan(reflectedDirection.x, reflectedDirection.z) * RECIPROCAL_PI * 0.5f + 0.5f), acos(reflectedDirection.y) * RECIPROCAL_PI);
-	return LinearToLinear(textureLod(texture, uv + offset, roughness * 7));
+	return LinearToLinear(textureLod(texture, uv + vec2(-offset.x, offset.y), roughness * 7));
 }
 
 )";

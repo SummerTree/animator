@@ -694,7 +694,7 @@ namespace octoon
 					auto edge2 = a - c;
 
 					auto angle = std::acos(math::dot(edge1, edge2));
-					auto n = math::normalize(math::cross(edge1, edge2)) * angle;
+					auto n = math::normalize(math::cross(edge1, edge2)) * math::surfaceArea(math::Triangle(a, b, c));
 
 					_normals[f1] += n;
 					_normals[f2] += n;
