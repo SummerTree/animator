@@ -24,9 +24,9 @@ namespace octoon
 		float subsurface;
 		float spectrans;
 
-		std::string albedoTex;
-		std::string metallicRoughnessTex;
-		std::string normalmapTex;
+		std::filesystem::path albedoTex;
+		std::filesystem::path metallicRoughnessTex;
+		std::filesystem::path normalmapTex;
 	};
 
 	struct ASS_Light
@@ -61,12 +61,12 @@ namespace octoon
 	}
 
 	GameObjects
-	ASSLoader::load(std::string_view filepath) noexcept(false)
+	ASSLoader::load(const std::filesystem::path& path) noexcept(false)
 	{
 		static constexpr int kMaxLineLength = 2048;
 
-		FILE* file = fopen(std::string(filepath).c_str(), "r");
-
+		FILE* file = _wfopen(path.wstring().c_str(), L"r");
+		
 		GameObjects objects;
 		if (!file)
 			return objects;
@@ -74,7 +74,6 @@ namespace octoon
 		try
 		{
 			std::map<std::string, std::shared_ptr<MeshStandardMaterial>> materialMap;
-			std::string path = std::string(filepath.substr(0, filepath.find_last_of("/\\"))) + "/";
 
 			char line[kMaxLineLength];
 			auto defaultMaterial = std::make_shared<MeshStandardMaterial>();
@@ -130,9 +129,11 @@ namespace octoon
 						sscanf(line, " normaltexture %s", normalTexName);
 					}
 
-					if (strcmp(albedoTexName, "None") != 0) material.albedoTex = path + albedoTexName;
-					if (strcmp(metallicRoughnessTexName, "None") != 0) material.metallicRoughnessTex = path + metallicRoughnessTexName;
-					if (strcmp(normalTexName, "None") != 0) material.normalmapTex = path + normalTexName;
+					auto parent_path = path.parent_path();
+
+					if (strcmp(albedoTexName, "None") != 0) material.albedoTex = parent_path.append(albedoTexName);
+					if (strcmp(metallicRoughnessTexName, "None") != 0) material.metallicRoughnessTex = parent_path.append(metallicRoughnessTexName);
+					if (strcmp(normalTexName, "None") != 0) material.normalmapTex = parent_path.append(normalTexName);
 
 					if (materialMap.find(name) == materialMap.end())
 					{
@@ -247,6 +248,7 @@ namespace octoon
 
 					auto object = std::make_shared<GameObject>();
 					object->getComponent<TransformComponent>()->setTransform(math::makeLookatLH(position, lookAt, math::float3::UnitY));
+
 					auto filmCamera = object->addComponent<FilmCameraComponent>();
 					filmCamera->setFov(fov);
 					filmCamera->setAperture(aperture);
@@ -257,7 +259,7 @@ namespace octoon
 
 				if (strstr(line, "mesh"))
 				{
-					std::string filename;
+					std::filesystem::path filepath;
 					math::float3 pos = math::float3::Zero;
 					math::float3 scale = math::float3::One;
 					std::shared_ptr<MeshStandardMaterial> material;
@@ -276,15 +278,15 @@ namespace octoon
 
 						char fileName[2048];
 						if (sscanf(line, " file %s", fileName) == 1)
-							filename = path + fileName;
+							filepath = path.parent_path().append(fileName);
 
 						if (sscanf(line, " material %s", matName) == 1)
 							material = materialMap.find(matName) != materialMap.end() ? materialMap[matName] : defaultMaterial;
 					}
 
-					if (!filename.empty())
+					if (std::filesystem::exists(filepath))
 					{
-						auto model = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(filename);
+						auto model = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(filepath);
 						if (model)
 						{
 							model->setName(meshName);

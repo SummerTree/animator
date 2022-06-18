@@ -246,6 +246,7 @@ namespace octoon
 			}
 
 			mesh->computeBoundingBox();
+			mesh->computeVertexNormals();
 
 			auto object = std::make_shared<GameObject>();
 			object->addComponent<MeshFilterComponent>(std::move(mesh));

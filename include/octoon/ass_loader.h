@@ -3,6 +3,7 @@
 
 #include <octoon/io/iostream.h>
 #include <octoon/game_object.h>
+#include <filesystem>
 
 namespace octoon
 {
@@ -15,7 +16,7 @@ namespace octoon
 		static bool doCanRead(io::istream& stream) noexcept;
 		static bool doCanRead(const char* type) noexcept;
 
-		static GameObjects load(std::string_view filepath) noexcept(false);
+		static GameObjects load(const std::filesystem::path& filepath) noexcept(false);
 
 	private:
 		ASSLoader(const ASSLoader&) = delete;

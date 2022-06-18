@@ -14,7 +14,7 @@ namespace unreal
 	void
 	AssLoader::load(UnrealProfile& profile, const std::filesystem::path& path) noexcept(false)
 	{
-		for (auto& it : octoon::ASSLoader::load(path.string()))
+		for (auto& it : octoon::ASSLoader::load(path))
 		{
 			if (it->getComponent<octoon::CameraComponent>())
 				profile.cameraModule->camera = it;

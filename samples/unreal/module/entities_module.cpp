@@ -86,9 +86,9 @@ namespace unreal
 							materials[index] = std::move(material);
 						}
 
-						auto smr = object->getComponent<octoon::SkinnedMeshRendererComponent>();
-						if (smr)
-							smr->setMaterials(std::move(materials));
+						auto meshRenderer = object->getComponent<octoon::MeshRendererComponent>();
+						if (meshRenderer)
+							meshRenderer->setMaterials(std::move(materials));
 					}
 
 					objects_.push_back(std::move(object));
@@ -136,10 +136,10 @@ namespace unreal
 					}
 				}
 
-				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
-				if (smr)
+				auto meshRenderer = it->getComponent<octoon::MeshRendererComponent>();
+				if (meshRenderer)
 				{
-					auto& materials = smr->getMaterials();
+					auto& materials = meshRenderer->getMaterials();
 
 					for (std::size_t i = 0; i < materials.size(); i++)
 					{
