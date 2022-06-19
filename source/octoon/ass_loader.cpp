@@ -294,9 +294,14 @@ namespace octoon
 
 							auto renderer = model->getComponent<MeshRendererComponent>();
 							if (renderer)
-								renderer->setMaterial(material);
+							{
+								for (std::size_t i = 0; i < renderer->getNumMaterials(); i++)
+									renderer->setMaterial(material, i);
+							}
 							else
+							{
 								model->addComponent<MeshRendererComponent>(material);
+							}
 
 							objects.push_back(std::move(model));
 						}
