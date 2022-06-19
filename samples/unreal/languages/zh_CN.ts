@@ -752,7 +752,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/material_edit_dock.cpp" line="300"/>
-        <location filename="../views/material_edit_dock.cpp" line="348"/>
+        <location filename="../views/material_edit_dock.cpp" line="347"/>
         <source>Clear Coat</source>
         <translation>清漆</translation>
     </message>
@@ -773,7 +773,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/material_edit_dock.cpp" line="304"/>
-        <location filename="../views/material_edit_dock.cpp" line="354"/>
+        <location filename="../views/material_edit_dock.cpp" line="353"/>
         <source>Refraction</source>
         <translation>折射程度</translation>
     </message>
@@ -788,34 +788,34 @@ $20 (Original cost $40)</source>
         <translation>自发光</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="351"/>
+        <location filename="../views/material_edit_dock.cpp" line="350"/>
         <source>Subsurface Scattering</source>
         <translation>次表面散射</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="358"/>
+        <location filename="../views/material_edit_dock.cpp" line="357"/>
         <source>Receive Shadow</source>
         <translation>接受阴影</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="364"/>
+        <location filename="../views/material_edit_dock.cpp" line="363"/>
         <source>Other</source>
         <translation>其它</translation>
     </message>
     <message>
-        <location filename="../views/material_edit_dock.cpp" line="878"/>
-        <location filename="../views/material_edit_dock.cpp" line="886"/>
-        <location filename="../views/material_edit_dock.cpp" line="894"/>
-        <location filename="../views/material_edit_dock.cpp" line="902"/>
-        <location filename="../views/material_edit_dock.cpp" line="910"/>
-        <location filename="../views/material_edit_dock.cpp" line="918"/>
-        <location filename="../views/material_edit_dock.cpp" line="926"/>
-        <location filename="../views/material_edit_dock.cpp" line="934"/>
-        <location filename="../views/material_edit_dock.cpp" line="942"/>
-        <location filename="../views/material_edit_dock.cpp" line="950"/>
-        <location filename="../views/material_edit_dock.cpp" line="958"/>
-        <location filename="../views/material_edit_dock.cpp" line="966"/>
-        <location filename="../views/material_edit_dock.cpp" line="974"/>
+        <location filename="../views/material_edit_dock.cpp" line="877"/>
+        <location filename="../views/material_edit_dock.cpp" line="885"/>
+        <location filename="../views/material_edit_dock.cpp" line="893"/>
+        <location filename="../views/material_edit_dock.cpp" line="901"/>
+        <location filename="../views/material_edit_dock.cpp" line="909"/>
+        <location filename="../views/material_edit_dock.cpp" line="917"/>
+        <location filename="../views/material_edit_dock.cpp" line="925"/>
+        <location filename="../views/material_edit_dock.cpp" line="933"/>
+        <location filename="../views/material_edit_dock.cpp" line="941"/>
+        <location filename="../views/material_edit_dock.cpp" line="949"/>
+        <location filename="../views/material_edit_dock.cpp" line="957"/>
+        <location filename="../views/material_edit_dock.cpp" line="965"/>
+        <location filename="../views/material_edit_dock.cpp" line="973"/>
         <source>Open Image</source>
         <translation>打开图像</translation>
     </message>

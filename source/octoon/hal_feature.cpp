@@ -134,6 +134,9 @@ namespace octoon
 	void
 	GraphicsFeature::onDeactivate() noexcept
 	{
+		context_.reset();
+		swapchain_.reset();
+		device_.reset();
 	}
 
 	void

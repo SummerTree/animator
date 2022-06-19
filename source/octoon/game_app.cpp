@@ -3,6 +3,8 @@
 #include <octoon/game_listener.h>
 #include <octoon/game_scene.h>
 
+#include <octoon/asset_preview.h>
+
 #include <octoon/runtime/except.h>
 #include <octoon/runtime/rtti_factory.h>
 
@@ -162,6 +164,8 @@ namespace octoon
 	void
 	GameApp::close() noexcept
 	{
+		this->stop();
+
 		if (server_)
 		{
 			this->onMessage("Shutdown : Game Server.");
@@ -356,14 +360,26 @@ namespace octoon
 	GameApp::start() noexcept(false)
 	{
 		assert(this->isOpen());
-		this->setActive(true);
+
+		if (!this->getActive())
+		{
+			this->setActive(true);
+
+			AssetPreview::instance()->open();
+		}
 	}
 
 	void
 	GameApp::stop() noexcept
 	{
 		assert(this->isOpen());
-		this->setActive(false);
+
+		if (this->getActive())
+		{
+			AssetPreview::instance()->close();
+
+			this->setActive(false);
+		}
 	}
 
 	void

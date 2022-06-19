@@ -321,10 +321,9 @@ namespace unreal
 		headerLayout->addStretch();
 
 		QVBoxLayout* previewLayout = new QVBoxLayout;
-		previewLayout->setContentsMargins(0, 0, 0, 0);
-		previewLayout->setSpacing(4);
 		previewLayout->addWidget(previewButton_, 0, Qt::AlignCenter);
 		previewLayout->addWidget(previewNameLabel_, 0, Qt::AlignCenter);
+		previewLayout->setSpacing(4);
 		previewLayout->setContentsMargins(0, 0, 8, 0);
 
 		QWidget* previewWidget = new QWidget;

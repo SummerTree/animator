@@ -626,7 +626,7 @@ namespace unreal
 
 				gameApp_->setGameListener(listener_);
 				gameApp_->open((octoon::WindHandle)viewDock_->winId(), w, h, w, h);
-				gameApp_->setActive(true);
+				gameApp_->start();
 
 				listener_->splash_ = nullptr;
 

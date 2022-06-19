@@ -31,31 +31,12 @@ namespace octoon
 
 	AssetDatabase::~AssetDatabase() noexcept
 	{
-		this->close();
-	}
-
-	void
-	AssetDatabase::open() noexcept(false)
-	{
-		AssetPreview::instance()->open();
-	}
-
-	void
-	AssetDatabase::close() noexcept
-	{
-		assetList_.clear();
-		assetPathList_.clear();
-		assetGuidList_.clear();
-
-		AssetPreview::instance()->close();
 	}
 
 	nlohmann::json
 	AssetDatabase::createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& path) noexcept(false)
 	{
 		assert(!path.empty());
-
-		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
 		auto uuid = this->getAssetGuid(texture);
 		auto filename = std::filesystem::path(this->getAssetPath(texture)).extension().u8string();

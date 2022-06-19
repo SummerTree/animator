@@ -243,7 +243,6 @@ namespace unreal
 		context_->behaviour = this;
 		context_->profile = profile_.get();
 
-		octoon::AssetDatabase::instance()->open();
 		octoon::AssetBundle::instance()->open(profile_->resourceModule->rootPath);
 
 		recordComponent_ = std::make_unique<RecordComponent>();
@@ -354,7 +353,6 @@ namespace unreal
 		}
 
 		octoon::AssetBundle::instance()->close();
-		octoon::AssetDatabase::instance()->close();
 	}
 
 	void
