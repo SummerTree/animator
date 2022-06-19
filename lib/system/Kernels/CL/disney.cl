@@ -45,9 +45,9 @@ INLINE void Disney_PrepareInputs(DifferentialGeometry const* dg, TEXTURE_ARG_LIS
 	shader_data->transparency = 1.f - Texture_GetValue1f(dg->mat.disney.opacity, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.opacity_map_idx)) * color.w;
 	shader_data->metallic = Texture_GetValue1f(dg->mat.disney.metallic, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.metallic_map_idx));
 	shader_data->specular = Texture_GetValue1f(dg->mat.disney.specular, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.specular_map_idx));
+	shader_data->specular_tint = Texture_GetValue1f(dg->mat.disney.specular_tint, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.specular_tint_map_idx));
 	shader_data->anisotropy = Texture_GetValue1f(dg->mat.disney.anisotropy, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.anisotropy_map_idx));
 	shader_data->roughness = Texture_GetValue1f(dg->mat.disney.roughness, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.roughness_map_idx));
-	shader_data->specular_tint = Texture_GetValue1f(dg->mat.disney.specular_tint, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.specular_tint_map_idx));
 	shader_data->sheen_tint = Texture_GetValue1f(dg->mat.disney.sheen_tint, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.sheen_tint_map_idx));
 	shader_data->sheen = Texture_GetValue1f(dg->mat.disney.sheen, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.sheen_map_idx));
 	shader_data->clearcoat_roughness = Texture_GetValue1f(dg->mat.disney.clearcoat_roughness, dg->uv, TEXTURE_ARGS_IDX(dg->mat.disney.clearcoat_roughness_map_idx));
@@ -58,7 +58,8 @@ INLINE void Disney_PrepareInputs(DifferentialGeometry const* dg, TEXTURE_ARG_LIS
 	shader_data->transmission = dg->mat.disney.transmission;
 	shader_data->refraction_ior = dg->mat.disney.refraction_ior;
 	shader_data->diffuseColor = shader_data->base_color * (1.f - shader_data->metallic);
-	shader_data->specularColor = mix(shader_data->specular * 0.1f * mix(WHITE, c_tint, shader_data->specular_tint), shader_data->base_color, shader_data->metallic);
+	shader_data->specularColor = shader_data->specular * 0.1f * mix(WHITE, c_tint, shader_data->specular_tint);
+	shader_data->specularColor = mix(shader_data->specularColor, max(shader_data->specularColor, shader_data->base_color), shader_data->metallic);
 	shader_data->cd_lum = cd_lum;
 	shader_data->cs_lum = dot(shader_data->specularColor, make_float3(0.3f, 0.6f, 0.1f));
 	shader_data->cs_w = shader_data->cs_lum / (shader_data->cs_lum + (1.f - shader_data->metallic) * cd_lum);
