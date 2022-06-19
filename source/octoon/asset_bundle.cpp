@@ -536,11 +536,11 @@ namespace octoon
 			auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
 			if (!assetPath.empty())
 			{
-				auto ext = std::string(assetPath.substr(assetPath.find_last_of('.')));
+				auto ext = assetPath.extension().u8string();
 				for (auto& it : ext)
 					it = (char)std::tolower(it);
 
-				if (ext == ".pmx")
+				if (ext == u8".pmx")
 				{
 					for (auto& index : modelAsset_->getIndexList())
 					{
@@ -560,11 +560,11 @@ namespace octoon
 						return package;
 					}
 				}
-				else if (ext == ".abc")
+				else if (ext == u8".abc")
 				{
 					nlohmann::json package;
 					package["uuid"] = uuid;
-					package["path"] = assetPath;
+					package["path"] = (char*)assetPath.u8string().c_str();
 
 					auto abc = gameObject->getComponent<MeshAnimationComponent>();
 					if (abc)
@@ -609,7 +609,7 @@ namespace octoon
 				{
 					nlohmann::json package;
 					package["uuid"] = uuid;
-					package["path"] = assetPath;
+					package["path"] = (char*)assetPath.u8string().c_str();
 
 					if (package.is_object())
 					{

@@ -367,7 +367,7 @@ namespace octoon
 		}
 	}
 
-	std::string
+	std::filesystem::path
 	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) noexcept
 	{
 		if (assetPathList_.contains(asset))
@@ -375,7 +375,7 @@ namespace octoon
 		return std::string();
 	}
 
-	std::string
+	std::filesystem::path
 	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept
 	{
 		if (assetPathList_.contains(asset))
@@ -466,7 +466,7 @@ namespace octoon
 			auto motion = VMDLoader::load(path);
 			if (motion)
 			{
-				assetPathList_[motion] = (char*)path.u8string().c_str();
+				assetPathList_[motion] = path;
 				assetGuidList_[motion] = uuid;
 				return motion;
 			}
@@ -477,7 +477,7 @@ namespace octoon
 			if (texture->load(path))
 			{
 				texture->setName((char*)path.filename().c_str());
-				assetPathList_[texture] = (char*)path.u8string().c_str();
+				assetPathList_[texture] = path;
 				assetGuidList_[texture] = uuid;
 				return texture;
 			}
@@ -487,7 +487,7 @@ namespace octoon
 			auto model = PMXLoader::load(path, PMXLoadFlagBits::AllBit);
 			if (model)
 			{
-				assetPathList_[model] = (char*)path.u8string().c_str();
+				assetPathList_[model] = path;
 				assetGuidList_[model] = uuid;
 				return model;
 			}
@@ -497,7 +497,7 @@ namespace octoon
 			auto model = OBJLoader::load(path);
 			if (model)
 			{
-				assetPathList_[model] = (char*)path.u8string().c_str();
+				assetPathList_[model] = path;
 				assetGuidList_[model] = uuid;
 				return model;
 			}
@@ -507,7 +507,7 @@ namespace octoon
 			auto model = FBXLoader::load(path);
 			if (model)
 			{
-				assetPathList_[model] = (char*)path.u8string().c_str();
+				assetPathList_[model] = path;
 				assetGuidList_[model] = uuid;
 				return model;
 			}
@@ -518,7 +518,7 @@ namespace octoon
 			if (model)
 			{
 				model->addComponent<MeshAnimationComponent>(path);
-				assetPathList_[model] = (char*)path.u8string().c_str();
+				assetPathList_[model] = path;
 				assetGuidList_[model] = uuid;
 				return model;
 			}
