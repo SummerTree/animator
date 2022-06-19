@@ -12,7 +12,7 @@ namespace octoon
 	OctoonImplementSubClass(Mesh, RttiObject, "Mesh");
 
 	Mesh::Mesh() noexcept
-		: _dirty(true)
+		: dirty_(true)
 	{
 	}
 
@@ -23,19 +23,19 @@ namespace octoon
 	void
 	Mesh::setName(std::string_view name) noexcept
 	{
-		_name = name;
+		name_ = name;
 	}
 
 	const std::string&
 	Mesh::getName() const noexcept
 	{
-		return _name;
+		return name_;
 	}
 
 	std::size_t
 	Mesh::getNumVertices() const noexcept
 	{
-		return _vertices.size();
+		return vertices_.size();
 	}
 
 	std::size_t
@@ -43,7 +43,7 @@ namespace octoon
 	{
 		std::size_t count = 0;
 
-		for (auto& it : _indices)
+		for (auto& it : triangles_)
 			count += it.size();
 
 		return count;
@@ -52,14 +52,14 @@ namespace octoon
 	std::size_t
 	Mesh::getNumSubsets() const noexcept
 	{
-		return _indices.size();
+		return triangles_.size();
 	}
 
 	std::size_t
 	Mesh::getTexcoordNums() const noexcept
 	{
 		std::size_t count = 0;
-		for (auto& it : _texcoords)
+		for (auto& it : texcoords_)
 		{
 			if (!it.empty())
 				count++;
@@ -71,233 +71,227 @@ namespace octoon
 	void
 	Mesh::setVertexArray(const float3s& array) noexcept
 	{
-		_vertices = array;
+		vertices_ = array;
 	}
 
 	void
 	Mesh::setNormalArray(const float3s& array) noexcept
 	{
-		_normals = array;
+		normals_ = array;
 	}
 
 	void
 	Mesh::setColorArray(const float4s& array) noexcept
 	{
-		_colors = array;
+		colors_ = array;
 	}
 
 	void
 	Mesh::setTangentArray(const float4s& array) noexcept
 	{
-		_tangents = array;
+		tangents_ = array;
 	}
 
 	void
 	Mesh::setTexcoordArray(const float2s& array, std::uint8_t n) noexcept
 	{
-		assert(n < sizeof(_texcoords) / sizeof(float2s));
-		_texcoords[n] = array;
+		assert(n < sizeof(texcoords_) / sizeof(float2s));
+		texcoords_[n] = array;
 	}
 
 	void
 	Mesh::setIndicesArray(const uint1s& array, std::size_t n) noexcept
 	{
-		if (_indices.size() <= n)
-			_indices.resize(n + 1);
-		_indices[n] = array;
+		if (triangles_.size() <= n)
+			triangles_.resize(n + 1);
+		triangles_[n] = array;
 	}
 
 	void
 	Mesh::setBindposes(const float4x4s& array) noexcept
 	{
-		_bindposes = array;
+		bindposes_ = array;
 	}
 
 	void
 	Mesh::setWeightArray(const std::vector<VertexWeight>& array) noexcept
 	{
-		_weights = array;
+		weights_ = array;
 	}
 
 	void
 	Mesh::setVertexArray(float3s&& array) noexcept
 	{
-		_vertices = std::move(array);
+		vertices_ = std::move(array);
 	}
 
 	void
 	Mesh::setNormalArray(float3s&& array) noexcept
 	{
-		_normals = std::move(array);
+		normals_ = std::move(array);
 	}
 
 	void
 	Mesh::setColorArray(float4s&& array) noexcept
 	{
-		_colors = std::move(array);
+		colors_ = std::move(array);
 	}
 
 	void
 	Mesh::setTangentArray(float4s&& array) noexcept
 	{
-		_tangents = std::move(array);
+		tangents_ = std::move(array);
 	}
 
 	void
 	Mesh::setTexcoordArray(float2s&& array, std::uint8_t n) noexcept
 	{
-		assert(n < sizeof(_texcoords) / sizeof(float2s));
-		_texcoords[n] = std::move(array);
+		assert(n < sizeof(texcoords_) / sizeof(float2s));
+		texcoords_[n] = std::move(array);
 	}
 
 	void
 	Mesh::setIndicesArray(uint1s&& array, std::size_t n) noexcept
 	{
-		if (_indices.size() <= n)
-			_indices.resize(n + 1);
-		_indices[n] = std::move(array);
+		if (triangles_.size() <= n)
+			triangles_.resize(n + 1);
+		triangles_[n] = std::move(array);
 	}
 
 	void
 	Mesh::setWeightArray(std::vector<VertexWeight>&& array) noexcept
 	{
-		_weights = std::move(array);
+		weights_ = std::move(array);
 	}
 
 	void
 	Mesh::setBindposes(float4x4s&& array) noexcept
 	{
-		_bindposes = std::move(array);
+		bindposes_ = std::move(array);
 	}
 
 	float3s&
 	Mesh::getVertexArray() noexcept
 	{
-		return _vertices;
+		return vertices_;
 	}
 
 	float3s&
 	Mesh::getNormalArray() noexcept
 	{
-		return _normals;
+		return normals_;
 	}
 
 	float4s&
 	Mesh::getTangentArray() noexcept
 	{
-		return _tangents;
+		return tangents_;
 	}
 
 	float4s&
 	Mesh::getColorArray() noexcept
 	{
-		return _colors;
+		return colors_;
 	}
 
 	float2s&
 	Mesh::getTexcoordArray(std::uint8_t n) noexcept
 	{
-		assert(n < sizeof(_texcoords) / sizeof(float2s));
-		return _texcoords[n];
+		assert(n < sizeof(texcoords_) / sizeof(float2s));
+		return texcoords_[n];
 	}
 
 	std::vector<VertexWeight>&
 	Mesh::getWeightArray() noexcept
 	{
-		return _weights;
+		return weights_;
 	}
 
 	uint1s&
 	Mesh::getIndicesArray(std::size_t n) noexcept
 	{
-		return _indices[n];
+		return triangles_[n];
 	}
 
 	float4x4s&
 	Mesh::getBindposes() noexcept
 	{
-		return _bindposes;
+		return bindposes_;
 	}
 
 	const float3s&
 	Mesh::getVertexArray() const noexcept
 	{
-		return _vertices;
+		return vertices_;
 	}
 
 	const float3s&
 	Mesh::getNormalArray() const noexcept
 	{
-		return _normals;
+		return normals_;
 	}
 
 	const float4s&
 	Mesh::getTangentArray() const noexcept
 	{
-		return _tangents;
+		return tangents_;
 	}
 
 	const float4s&
 	Mesh::getColorArray() const noexcept
 	{
-		return _colors;
+		return colors_;
 	}
 
 	const float2s&
 	Mesh::getTexcoordArray(std::uint8_t n) const noexcept
 	{
-		assert(n < sizeof(_texcoords) / sizeof(float2s));
-		return _texcoords[n];
+		assert(n < sizeof(texcoords_) / sizeof(float2s));
+		return texcoords_[n];
 	}
 
 	const std::vector<VertexWeight>&
 	Mesh::getWeightArray() const noexcept
 	{
-		return _weights;
+		return weights_;
 	}
 
 	const float4x4s&
 	Mesh::getBindposes() const noexcept
 	{
-		return _bindposes;
-	}
-
-	const std::vector<Bone>&
-	Mesh::getBoneArray(const std::vector<Bone>& array) const noexcept
-	{
-		return _bones;
+		return bindposes_;
 	}
 
 	const uint1s&
 	Mesh::getIndicesArray(std::size_t n) const noexcept
 	{
-		return _indices[n];
+		return triangles_[n];
 	}
 
 	const BoundingBox&
 	Mesh::getBoundingBox(std::size_t n) const noexcept
 	{
-		if (_boundingBoxs.empty() && n == 0)
-			return _boundingBox;
-		return _boundingBoxs[n];
+		if (boundingBoxs_.empty() && n == 0)
+			return boundingBox_;
+		return boundingBoxs_[n];
 	}
 
 	const BoundingBox&
 	Mesh::getBoundingBoxAll() const noexcept
 	{
-		return _boundingBox;
+		return boundingBox_;
 	}
 
 	void
 	Mesh::setDirty(bool dirty) noexcept
 	{
-		this->_dirty = dirty;
+		this->dirty_ = dirty;
 	}
 
 	bool
 	Mesh::isDirty() const noexcept
 	{
-		return this->_dirty;
+		return this->dirty_;
 	}
 
 	bool
@@ -307,13 +301,13 @@ namespace octoon
 		{
 			if (math::intersect(ray, this->getBoundingBox(i).box()))
 			{
-				auto& indices = this->_indices[i];
+				auto& indices = this->triangles_[i];
 
 				for (std::size_t j = 0; j < indices.size(); j += 3)
 				{
-					auto& v0 = this->_vertices[indices[j]];
-					auto& v1 = this->_vertices[indices[j+1]];
-					auto& v2 = this->_vertices[indices[j+2]];
+					auto& v0 = this->vertices_[indices[j]];
+					auto& v1 = this->vertices_[indices[j+1]];
+					auto& v2 = this->vertices_[indices[j+2]];
 
 					if (math::intersect(ray, math::Triangle(v0, v1, v2), hit.point, hit.distance))
 					{
@@ -337,13 +331,13 @@ namespace octoon
 		if (!math::intersect(ray, this->getBoundingBoxAll().sphere()))
 			return false;
 
-		if (this->_indices.empty())
+		if (this->triangles_.empty())
 		{
-			for (std::size_t i = 0; i < _vertices.size(); i += 3)
+			for (std::size_t i = 0; i < vertices_.size(); i += 3)
 			{
-				auto& v0 = _vertices[i];
-				auto& v1 = _vertices[i + 1];
-				auto& v2 = _vertices[i + 2];
+				auto& v0 = vertices_[i];
+				auto& v1 = vertices_[i + 1];
+				auto& v2 = vertices_[i + 2];
 
 				MeshHit hit;
 				if (math::intersect(ray, math::Triangle(v0, v1, v2), hit.point, hit.distance))
@@ -364,17 +358,17 @@ namespace octoon
 			{
 				if (math::intersect(ray, this->getBoundingBox(i).sphere()))
 				{
-					auto& indices = _indices[i];
+					auto& indices = triangles_[i];
 
-					for (std::size_t j = 0; j < _indices[i].size(); j += 3)
+					for (std::size_t j = 0; j < triangles_[i].size(); j += 3)
 					{
 						std::size_t f1 = indices[j];
 						std::size_t f2 = indices[j + 1];
 						std::size_t f3 = indices[j + 2];
 
-						auto& v0 = _vertices[f1];
-						auto& v1 = _vertices[f2];
-						auto& v2 = _vertices[f3];
+						auto& v0 = vertices_[f1];
+						auto& v1 = vertices_[f2];
+						auto& v2 = vertices_[f3];
 
 						MeshHit hit;
 						if (math::intersect(ray, math::Triangle(v0, v1, v2), hit.point, hit.distance))
@@ -398,15 +392,15 @@ namespace octoon
 	void
 	Mesh::clear() noexcept
 	{
-		_vertices.shrink_to_fit();
-		_normals.shrink_to_fit();
-		_colors.shrink_to_fit();
-		_tangents.shrink_to_fit();
+		vertices_.shrink_to_fit();
+		normals_.shrink_to_fit();
+		colors_.shrink_to_fit();
+		tangents_.shrink_to_fit();
 
-		for (auto& it : _indices)
+		for (auto& it : triangles_)
 			it.shrink_to_fit();
 
-		for (auto& it : _texcoords)
+		for (auto& it : texcoords_)
 			it.shrink_to_fit();
 	}
 
@@ -421,8 +415,8 @@ namespace octoon
 		mesh->setWeightArray(this->getWeightArray());
 		mesh->setTangentArray(this->getTangentArray());
 		mesh->setBindposes(this->getBindposes());
-		mesh->_boundingBox = this->_boundingBox;
-		mesh->_boundingBoxs = this->_boundingBoxs;
+		mesh->boundingBox_ = this->boundingBox_;
+		mesh->boundingBoxs_ = this->boundingBoxs_;
 
 		for (std::uint8_t i = 0; i < TEXTURE_ARRAY_COUNT; i++)
 			mesh->setTexcoordArray(this->getTexcoordArray(i), i);
@@ -438,33 +432,31 @@ namespace octoon
 	{
 		if (!force)
 		{
-			if (_vertices.empty() != mesh._vertices.empty()) return false;
-			if (_normals.empty() != mesh._normals.empty()) return false;
-			if (_colors.empty() != mesh._colors.empty()) return false;
-			if (_tangents.empty() != mesh._tangents.empty()) return false;
-			if (_bindposes.empty() != mesh._bindposes.empty()) return false;
-			if (_indices.empty() != mesh._indices.empty()) return false;
-			if (_bones.empty() != mesh._bones.empty()) return false;
-			if (_weights.empty() != mesh._weights.empty()) return false;
+			if (vertices_.empty() != mesh.vertices_.empty()) return false;
+			if (normals_.empty() != mesh.normals_.empty()) return false;
+			if (colors_.empty() != mesh.colors_.empty()) return false;
+			if (tangents_.empty() != mesh.tangents_.empty()) return false;
+			if (bindposes_.empty() != mesh.bindposes_.empty()) return false;
+			if (triangles_.empty() != mesh.triangles_.empty()) return false;
+			if (weights_.empty() != mesh.weights_.empty()) return false;
 
 			for (std::size_t i = 0; i < TEXTURE_ARRAY_COUNT; i++)
 			{
-				if (_texcoords[i].empty() != mesh._texcoords[i].empty())
+				if (texcoords_[i].empty() != mesh.texcoords_[i].empty())
 					return false;
 			}
 		}
 
-		_vertices.insert(_vertices.end(), mesh._vertices.begin(), mesh._vertices.end());
-		_normals.insert(_normals.end(), mesh._normals.begin(), mesh._normals.end());
-		_colors.insert(_colors.end(), mesh._colors.begin(), mesh._colors.end());
-		_tangents.insert(_tangents.end(), mesh._tangents.begin(), mesh._tangents.end());
-		_bindposes.insert(_bindposes.end(), mesh._bindposes.begin(), mesh._bindposes.end());
-		_indices.insert(_indices.end(), mesh._indices.begin(), mesh._indices.end());
-		_bones.insert(_bones.end(), mesh._bones.begin(), mesh._bones.end());
-		_weights.insert(_weights.end(), mesh._weights.begin(), mesh._weights.end());
+		vertices_.insert(vertices_.end(), mesh.vertices_.begin(), mesh.vertices_.end());
+		normals_.insert(normals_.end(), mesh.normals_.begin(), mesh.normals_.end());
+		colors_.insert(colors_.end(), mesh.colors_.begin(), mesh.colors_.end());
+		tangents_.insert(tangents_.end(), mesh.tangents_.begin(), mesh.tangents_.end());
+		bindposes_.insert(bindposes_.end(), mesh.bindposes_.begin(), mesh.bindposes_.end());
+		triangles_.insert(triangles_.end(), mesh.triangles_.begin(), mesh.triangles_.end());
+		weights_.insert(weights_.end(), mesh.weights_.begin(), mesh.weights_.end());
 
 		for (std::size_t i = 0; i < TEXTURE_ARRAY_COUNT; i++)
-			_texcoords[i].insert(_texcoords[i].end(), mesh._texcoords[i].begin(), mesh._texcoords[i].end());
+			texcoords_[i].insert(texcoords_[i].end(), mesh.texcoords_[i].begin(), mesh.texcoords_[i].end());
 
 		return true;
 	}
@@ -524,16 +516,16 @@ namespace octoon
 			}
 		}
 
-		if (hasVertices) this->_vertices.resize(maxVertices);
-		if (hasNormal)   this->_normals.resize(maxVertices);
-		if (hasTangent)  this->_tangents.resize(maxVertices);
-		if (hasWeight)   this->_weights.resize(maxVertices);
-		if (hasIndices)  this->_indices.resize(maxIndices);
+		if (hasVertices) this->vertices_.resize(maxVertices);
+		if (hasNormal)   this->normals_.resize(maxVertices);
+		if (hasTangent)  this->tangents_.resize(maxVertices);
+		if (hasWeight)   this->weights_.resize(maxVertices);
+		if (hasIndices)  this->triangles_.resize(maxIndices);
 
 		for (std::uint8_t i = 0; i < TEXTURE_ARRAY_COUNT; i++)
 		{
 			if (hasTexcoord[i])
-				this->_texcoords[i].resize(maxVertices);
+				this->texcoords_[i].resize(maxVertices);
 		}
 
 		std::size_t offsetVertices = 0;
@@ -544,16 +536,16 @@ namespace octoon
 			if (!mesh)
 				continue;
 
-			if (hasVertices) std::memcpy(&_vertices[offsetVertices], mesh->_vertices.data(), mesh->_vertices.size());
-			if (hasNormal)   std::memcpy(&_normals[offsetVertices], mesh->_normals.data(), mesh->_normals.size());
-			if (hasTangent)  std::memcpy(&_tangents[offsetVertices], mesh->_tangents.data(), mesh->_tangents.size());
-			if (hasWeight)   std::memcpy(&_weights[offsetVertices], mesh->_weights.data(), mesh->_weights.size());
-			if (hasIndices)  std::memcpy(&_indices[offsetVertices], mesh->_indices.data(), mesh->_indices.size());
+			if (hasVertices) std::memcpy(&vertices_[offsetVertices], mesh->vertices_.data(), mesh->vertices_.size());
+			if (hasNormal)   std::memcpy(&normals_[offsetVertices], mesh->normals_.data(), mesh->normals_.size());
+			if (hasTangent)  std::memcpy(&tangents_[offsetVertices], mesh->tangents_.data(), mesh->tangents_.size());
+			if (hasWeight)   std::memcpy(&weights_[offsetVertices], mesh->weights_.data(), mesh->weights_.size());
+			if (hasIndices)  std::memcpy(&triangles_[offsetVertices], mesh->triangles_.data(), mesh->triangles_.size());
 
 			for (std::uint8_t j = 0; j < TEXTURE_ARRAY_COUNT; j++)
 			{
 				if (hasTexcoord[j])
-					std::memcpy(&_texcoords[j][offsetVertices], mesh->_texcoords[j].data(), mesh->_texcoords[j].size());
+					std::memcpy(&texcoords_[j][offsetVertices], mesh->texcoords_[j].data(), mesh->texcoords_[j].size());
 			}
 
 			offsetVertices += mesh->getNumVertices();
@@ -573,10 +565,10 @@ namespace octoon
 	void
 	Mesh::mergeVertices() noexcept
 	{
-		if (_vertices.empty())
+		if (vertices_.empty())
 			return;
 
-		if (_normals.empty())
+		if (normals_.empty())
 			this->computeVertexNormals();
 
 		std::map<std::pair<float, float>, std::uint32_t> vectorMap;
@@ -584,12 +576,12 @@ namespace octoon
 		float3s changeVertex;
 		float3s changeNormal;
 
-		for (auto& indices : this->_indices)
+		for (auto& indices : this->triangles_)
 		{
 			for (auto& it : indices)
 			{
-				const Vector3& v = (_vertices)[it];
-				const Vector3& n = (_normals)[it];
+				const Vector3& v = (vertices_)[it];
+				const Vector3& n = (normals_)[it];
 
 				float vkey = math::hash_float(v.x, v.y, v.z);
 				float nkey = math::hash_float(n.z, n.y, n.x);
@@ -611,31 +603,31 @@ namespace octoon
 			}
 		}
 
-		_vertices.swap(changeVertex);
-		_normals.swap(changeNormal);
+		vertices_.swap(changeVertex);
+		normals_.swap(changeNormal);
 	}
 
 	void
 	Mesh::computeFaceNormals(std::vector<math::float3s>& faceNormals) noexcept
 	{
-		assert(!_vertices.empty());
+		assert(!vertices_.empty());
 
-		faceNormals.resize(_indices.size());
+		faceNormals.resize(triangles_.size());
 
-		for (std::size_t i = 0; i < _indices.size(); i += 3)
+		for (std::size_t i = 0; i < triangles_.size(); i += 3)
 		{
-			auto& indices = _indices[i];
+			auto& indices = triangles_[i];
 			faceNormals[i].resize(indices.size());
 
-			for (std::size_t j = 0; j < _indices[i].size(); j += 3)
+			for (std::size_t j = 0; j < triangles_[i].size(); j += 3)
 			{
 				std::size_t f1 = indices[j];
 				std::size_t f2 = indices[j + 1];
 				std::size_t f3 = indices[j + 2];
 
-				const Vector3& a = _vertices[f1];
-				const Vector3& b = _vertices[f2];
-				const Vector3& c = _vertices[f3];
+				const Vector3& a = vertices_[f1];
+				const Vector3& b = vertices_[f2];
+				const Vector3& c = vertices_[f3];
 
 				Vector3 edge1 = c - b;
 				Vector3 edge2 = a - b;
@@ -652,33 +644,33 @@ namespace octoon
 	void
 	Mesh::computeVertexNormals() noexcept
 	{
-		assert(!_vertices.empty());
+		assert(!vertices_.empty());
 
-		_normals.resize(_vertices.size());
+		normals_.resize(vertices_.size());
 
-		if (_indices.empty())
+		if (triangles_.empty())
 		{
-			for (std::size_t i = 0; i < _vertices.size(); i += 3)
+			for (std::size_t i = 0; i < vertices_.size(); i += 3)
 			{
-				auto& a = _vertices[i];
-				auto& b = _vertices[i + 1];
-				auto& c = _vertices[i + 2];
+				auto& a = vertices_[i];
+				auto& b = vertices_[i + 1];
+				auto& c = vertices_[i + 2];
 
 				auto ab = a - b;
 				auto ac = a - c;
 
 				auto n = math::normalize(math::cross(ac, ab));
 
-				_normals[i + 0] = n;
-				_normals[i + 1] = n;
-				_normals[i + 2] = n;
+				normals_[i + 0] = n;
+				normals_[i + 1] = n;
+				normals_[i + 2] = n;
 			}
 		}
 		else
 		{
-			std::memset(_normals.data(), 0, _normals.size() * sizeof(float3));
+			std::memset(normals_.data(), 0, normals_.size() * sizeof(float3));
 
-			for (auto& indices : _indices)
+			for (auto& indices : triangles_)
 			{
 				for (std::size_t i = 0; i < indices.size(); i += 3)
 				{
@@ -686,20 +678,20 @@ namespace octoon
 					std::uint32_t f2 = indices[i + 1];
 					std::uint32_t f3 = indices[i + 2];
 
-					auto& v1 = _vertices.at(f1);
-					auto& v2 = _vertices.at(f2);
-					auto& v3 = _vertices.at(f3);
+					auto& v1 = vertices_.at(f1);
+					auto& v2 = vertices_.at(f2);
+					auto& v3 = vertices_.at(f3);
 					
 					auto n = math::normalize(math::cross(v1 - v2, v1 - v3));
 
 					// https://www.bytehazard.com/articles/vertnorm.html
-					_normals[f1] += n * std::acos(math::dot(math::normalize(v1 - v2), math::normalize(v1 - v3)));
-					_normals[f2] += n * std::acos(math::dot(math::normalize(v2 - v1), math::normalize(v2 - v3)));
-					_normals[f3] += n * std::acos(math::dot(math::normalize(v3 - v1), math::normalize(v3 - v2)));
+					normals_[f1] += n * std::acos(math::dot(math::normalize(v1 - v2), math::normalize(v1 - v3)));
+					normals_[f2] += n * std::acos(math::dot(math::normalize(v2 - v1), math::normalize(v2 - v3)));
+					normals_[f3] += n * std::acos(math::dot(math::normalize(v3 - v1), math::normalize(v3 - v2)));
 				}
 			}
 
-			for (auto& it : _normals)
+			for (auto& it : normals_)
 				it = math::normalize(it);
 		}
 	}
@@ -707,10 +699,10 @@ namespace octoon
 	void
 	Mesh::computeVertexNormals(std::size_t n) noexcept
 	{
-		auto& indices = _indices[n];
+		auto& indices = triangles_[n];
 			
 		for (auto& i : indices)
-			_normals[i] = math::float3::Zero;
+			normals_[i] = math::float3::Zero;
 
 		for (std::size_t i = 0; i < indices.size(); i += 3)
 		{
@@ -718,35 +710,35 @@ namespace octoon
 			std::uint32_t f2 = indices[i + 1];
 			std::uint32_t f3 = indices[i + 2];
 
-			auto& a = _vertices.at(f1);
-			auto& b = _vertices.at(f2);
-			auto& c = _vertices.at(f3);
+			auto& a = vertices_.at(f1);
+			auto& b = vertices_.at(f2);
+			auto& c = vertices_.at(f3);
 
 			auto edge1 = c - b;
 			auto edge2 = a - b;
 
 			auto normal = math::normalize(math::cross(edge1, edge2));
 
-			_normals[f1] += normal;
-			_normals[f2] += normal;
-			_normals[f3] += normal;
+			normals_[f1] += normal;
+			normals_[f2] += normal;
+			normals_[f3] += normal;
 		}
 
 		for (auto& i : indices)
-			_normals[i] = math::normalize(_normals[i]);
+			normals_[i] = math::normalize(normals_[i]);
 	}
 
 	void
 	Mesh::computeVertexNormals(const float3s& faceNormals) noexcept
 	{
-		assert(faceNormals.size() == _indices.size());
-		assert(!_vertices.empty() && !_indices.empty());
+		assert(faceNormals.size() == triangles_.size());
+		assert(!vertices_.empty() && !triangles_.empty());
 
 		float3s normal;
-		normal.resize(_vertices.size());
+		normal.resize(vertices_.size());
 		std::memset(normal.data(), 0, normal.size() * sizeof(float3));
 
-		for (auto& indices : _indices)
+		for (auto& indices : triangles_)
 		{
 			for (size_t i = 0; i < indices.size(); i += 3)
 			{
@@ -763,7 +755,7 @@ namespace octoon
 		for (auto& it : normal)
 			it = math::normalize(it);
 
-		_normals.swap(normal);
+		normals_.swap(normal);
 	}
 
 	void
@@ -776,7 +768,7 @@ namespace octoon
 
 		auto getVertex = [&](std::size_t x, std::size_t y) -> Vector3
 		{
-			return (_vertices)[y * width + x];
+			return (vertices_)[y * width + x];
 		};
 
 		for (std::size_t y = 0; y < width; ++y)
@@ -828,7 +820,7 @@ namespace octoon
 					average++;
 				}
 
-				_normals.push_back(math::normalize((lu + ru + ld + rd) / (float)average));
+				normals_.push_back(math::normalize((lu + ru + ld + rd) / (float)average));
 			}
 		}
 	}
@@ -836,12 +828,12 @@ namespace octoon
 	void
 	Mesh::computeTangents(std::uint8_t n) noexcept
 	{
-		assert(!_texcoords[n].empty());
+		assert(!texcoords_[n].empty());
 
-		float3s tan1(_vertices.size(), float3::Zero);
-		float3s tan2(_vertices.size(), float3::Zero);
+		float3s tan1(vertices_.size(), float3::Zero);
+		float3s tan2(vertices_.size(), float3::Zero);
 
-		for (auto& indices : _indices)
+		for (auto& indices : triangles_)
 		{
 			for (std::size_t i = 0; i < indices.size(); i += 3)
 			{
@@ -849,13 +841,13 @@ namespace octoon
 				std::uint32_t f2 = indices[i + 1];
 				std::uint32_t f3 = indices[i + 2];
 
-				auto& v1 = _vertices[f1];
-				auto& v2 = _vertices[f2];
-				auto& v3 = _vertices[f3];
+				auto& v1 = vertices_[f1];
+				auto& v2 = vertices_[f2];
+				auto& v3 = vertices_[f3];
 
-				auto& w1 = _texcoords[n][f1];
-				auto& w2 = _texcoords[n][f2];
-				auto& w3 = _texcoords[n][f3];
+				auto& w1 = texcoords_[n][f1];
+				auto& w2 = texcoords_[n][f2];
+				auto& w3 = texcoords_[n][f3];
 
 				auto x1 = v2.x - v1.x;
 				auto x2 = v3.x - v1.x;
@@ -886,33 +878,33 @@ namespace octoon
 			}
 		}
 
-		_tangents.resize(_normals.size());
+		tangents_.resize(normals_.size());
 
-		for (std::size_t i = 0; i < _normals.size(); i++)
+		for (std::size_t i = 0; i < normals_.size(); i++)
 		{
-			auto& nor = _normals[i];
+			auto& nor = normals_[i];
 			auto& tan = tan1[i];
 
 			float handedness = math::dot(math::cross(nor, tan), tan2[i]) < 0.0f ? 1.0f : -1.0f;
 
-			_tangents[i] = float4(math::normalize(tan - nor * math::dot(nor, tan)), handedness);
+			tangents_[i] = float4(math::normalize(tan - nor * math::dot(nor, tan)), handedness);
 		}
 	}
 
 	void
 	Mesh::computeTangentQuats(float4s& tangentQuat) const noexcept
 	{
-		assert(_tangents.size() > 1);
-		assert(_tangents.size() == _normals.size());
+		assert(tangents_.size() > 1);
+		assert(tangents_.size() == normals_.size());
 
-		tangentQuat.resize(_tangents.size());
+		tangentQuat.resize(tangents_.size());
 
-		std::size_t numTangent = _tangents.size();
+		std::size_t numTangent = tangents_.size();
 		for (std::size_t i = 0; i < numTangent; i++)
 		{
-			auto& normal = _normals[i];
+			auto& normal = normals_[i];
 
-			auto tangent = _tangents[i].xyz();
+			auto tangent = tangents_[i].xyz();
 			auto binormal = math::cross(normal, tangent);
 
 			Quaternion quat;
@@ -921,7 +913,7 @@ namespace octoon
 			if (quat.w < 0.0f)
 				quat = -quat;
 
-			if (_tangents[i].w < 0.0f)
+			if (tangents_[i].w < 0.0f)
 				quat = -quat;
 
 			tangentQuat[i].set(quat.x, quat.y, quat.z, quat.w);
@@ -931,30 +923,30 @@ namespace octoon
 	void
 	Mesh::computeBoundingBox() noexcept
 	{
-		_boundingBox.reset();
-		_boundingBoxs.resize(_indices.size());
+		boundingBox_.reset();
+		boundingBoxs_.resize(triangles_.size());
 
-		if (_indices.empty())
+		if (triangles_.empty())
 		{
-			_boundingBox.encapsulate(_vertices);
+			boundingBox_.encapsulate(vertices_);
 		}
 		else
 		{
-			auto vertices = _vertices.data();
-			auto numSubsets = _indices.size();
+			auto vertices = vertices_.data();
+			auto numSubsets = triangles_.size();
 
 			for (int i = 0; i < numSubsets; i++)
 			{
 				math::AABB aabb;
 
-				for (auto& j : _indices[i])
+				for (auto& j : triangles_[i])
 					aabb.encapsulate(vertices[j]);
 
-				_boundingBoxs[i].set(aabb);
+				boundingBoxs_[i].set(aabb);
 			}
 
 			for (std::size_t i = 0; i < numSubsets; i++)
-				_boundingBox.encapsulate(_boundingBoxs[i]);
+				boundingBox_.encapsulate(boundingBoxs_[i]);
 		}
 	}
 
@@ -962,7 +954,7 @@ namespace octoon
 	Mesh::computeLightMap(std::uint32_t width, std::uint32_t height) noexcept
 	{
 		std::vector<std::uint32_t> totalIndices;
-		std::vector<math::float2> texcoords(this->_vertices.size());
+		std::vector<math::float2> texcoords(this->vertices_.size());
 
 		for (std::size_t i = 0; i < this->getNumSubsets(); i++)
 		{
@@ -977,7 +969,7 @@ namespace octoon
 		std::vector<std::uint32_t> remap(totalIndices.size()); // allocate buffer for each vertex index
 		std::vector<std::uint32_t> outIndices(totalIndices.size()); // allocate buffer for each output uv
 
-		if (uvmapper::lightmappack<std::uint32_t>((float*)this->_vertices.data(), totalIndices.data(), totalIndices.size(), width, height, 4, remap.data(), (float*)uvs.data(), outIndices.data(), count))
+		if (uvmapper::lightmappack<std::uint32_t>((float*)this->vertices_.data(), totalIndices.data(), totalIndices.size(), width, height, 4, remap.data(), (float*)uvs.data(), outIndices.data(), count))
 		{
 			for (std::size_t i = 0; i < count; i++)
 				texcoords[remap[i]] = uvs[i];

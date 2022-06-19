@@ -64,7 +64,6 @@ namespace octoon
 		const std::vector<VertexWeight>& getWeightArray() const noexcept;
 		const math::uint1s& getIndicesArray(std::size_t n = 0) const noexcept;
 
-		const std::vector<Bone>& getBoneArray(const std::vector<Bone>& array) const noexcept;
 		const math::float4x4s& getBindposes() const noexcept;
 
 		std::size_t getNumVertices() const noexcept;
@@ -101,22 +100,22 @@ namespace octoon
 		std::shared_ptr<Mesh> clone() const noexcept;
 
 	private:
-		std::string _name;
-		bool _dirty;
+		bool dirty_;
 
-		math::float3s _vertices;
-		math::float3s _normals;
-		math::float4s _colors;
-		math::float2s _texcoords[TEXTURE_ARRAY_COUNT];
-		math::float4s _tangents;
-		math::float4x4s _bindposes;
-		math::BoundingBox _boundingBox;
+		std::string name_;
 
-		std::vector<Bone> _bones;
-		std::vector<VertexWeight> _weights;
+		math::float3s vertices_;
+		math::float3s normals_;
+		math::float4s colors_;
+		math::float2s texcoords_[TEXTURE_ARRAY_COUNT];
+		math::float4s tangents_;
+		math::float4x4s bindposes_;
+		math::BoundingBox boundingBox_;
 
-		std::vector<math::uint1s> _indices;
-		std::vector<math::BoundingBox> _boundingBoxs;
+		std::vector<VertexWeight> weights_;
+
+		std::vector<math::uint1s> triangles_;
+		std::vector<math::BoundingBox> boundingBoxs_;
 	};
 
 	using MeshPtr = std::shared_ptr<Mesh>;
