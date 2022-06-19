@@ -157,6 +157,8 @@ SET(LOADER_LIST
 	${SOURCE_PATH}/asset_bundle.cpp
 	${HEADER_PATH}/asset_importer.h
 	${SOURCE_PATH}/asset_importer.cpp
+	${HEADER_PATH}/asset_preview.h
+	${SOURCE_PATH}/asset_preview.cpp
 	${HEADER_PATH}/pmx.h
 	${SOURCE_PATH}/pmx.cpp
 	${HEADER_PATH}/pmx_loader.h
@@ -177,8 +179,6 @@ SET(LOADER_LIST
 	${SOURCE_PATH}/audio_loader.cpp
 	${HEADER_PATH}/motion_importer.h
 	${SOURCE_PATH}/motion_importer.cpp
-	${HEADER_PATH}/model_importer.h
-	${SOURCE_PATH}/model_importer.cpp
 	${HEADER_PATH}/material_importer.h
 	${SOURCE_PATH}/material_importer.cpp
 )

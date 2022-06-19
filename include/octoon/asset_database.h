@@ -68,43 +68,17 @@ namespace octoon
 		void clearUpdate() noexcept;
 		const std::set<std::string>& getUpdateList() const noexcept;
 
-		std::shared_ptr<GraphicsTexture> createMaterialPreview(const std::shared_ptr<Material>& material);
-
-	private:
-		void initRenderScene() noexcept(false);
-		void initMaterialScene() noexcept(false);
-
-		void createMaterialPreview(const std::shared_ptr<Material>& material, Texture& texture);
-		void createModelPreview(const std::shared_ptr<Geometry>& geometry, const math::BoundingBox& boundingBox, Texture& texture);
-
 	private:
 		AssetDatabase(const AssetDatabase&) = delete;
 		AssetDatabase& operator=(const AssetDatabase&) = delete;
 
 	private:
-		std::uint32_t previewWidth_;
-		std::uint32_t previewHeight_;
-
 		std::set<std::string> updateList_;
 		std::map<std::string, nlohmann::json> packageList_;
 
 		std::map<std::weak_ptr<const RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<const RttiObject>>> assetList_;
 		std::map<std::weak_ptr<const RttiObject>, std::string, std::owner_less<std::weak_ptr<const RttiObject>>> assetPathList_;
 		std::map<std::weak_ptr<const RttiObject>, std::string, std::owner_less<std::weak_ptr<const RttiObject>>> assetGuidList_;
-
-		std::shared_ptr<PerspectiveCamera> camera_;
-		std::shared_ptr<Geometry> geometry_;
-		std::shared_ptr<DirectionalLight> directionalLight_;
-		std::shared_ptr<EnvironmentLight> environmentLight_;
-		std::shared_ptr<RenderScene> scene_;
-		std::shared_ptr<GraphicsFramebuffer> framebuffer_;
-
-		std::shared_ptr<PerspectiveCamera> materialCamera_;
-		std::shared_ptr<Geometry> materialGeometry_;
-		std::shared_ptr<DirectionalLight> materialDirectionalLight_;
-		std::shared_ptr<EnvironmentLight> materialEnvironmentLight_;
-		std::shared_ptr<RenderScene> materialScene_;
-		std::shared_ptr<GraphicsFramebuffer> materialFramebuffer_;
 	};
 }
 

@@ -3,9 +3,6 @@
 #include "../utils/ass_loader.h"
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
-#include <octoon/motion_importer.h>
-#include <octoon/model_importer.h>
-#include <octoon/material_importer.h>
 #include <filesystem>
 
 namespace unreal

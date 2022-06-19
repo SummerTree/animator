@@ -23,10 +23,9 @@
 #include <octoon/cloth_component.h>
 #include <octoon/asset_database.h>
 
-#include <octoon/io/fstream.h>
-
 #include <set>
 #include <codecvt>
+#include <fstream>
 
 namespace octoon
 {
@@ -1050,7 +1049,7 @@ namespace octoon
 	bool
 	PMXLoader::save(const GameObject& gameObject, const std::filesystem::path& path) noexcept(false)
 	{
-		auto stream = io::ofstream(path, std::ios_base::in | std::ios_base::out);
+		auto stream = std::ofstream(path, std::ios_base::binary);
 		if (stream)
 		{
 			auto pmx = std::make_unique<PMX>();

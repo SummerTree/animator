@@ -1,6 +1,6 @@
 #include "inspector_dock.h"
-#include <octoon/material_importer.h>
 #include "../widgets/draggable_list_widget.h"
+
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qevent.h>
@@ -13,8 +13,12 @@
 #include <qcolordialog.h>
 #include <qtreewidget.h>
 #include <qprogressdialog.h>
-#include <octoon/asset_database.h>
+
 #include <octoon/asset_bundle.h>
+#include <octoon/asset_preview.h>
+#include <octoon/asset_database.h>
+
+#include <octoon/material_importer.h>
 
 namespace unreal
 {
@@ -150,21 +154,9 @@ namespace unreal
 				item->setToolTip(QString::fromStdString(material->getName()));
 				item->setText(metrics.elidedText(item->toolTip(), Qt::ElideRight, mainWidget_->iconSize().width()));
 
-				auto colorTexture = octoon::AssetDatabase::instance()->createMaterialPreview(material);
-				if (colorTexture)
-				{
-					auto width = colorTexture->getTextureDesc().getWidth();
-					auto height = colorTexture->getTextureDesc().getHeight();
-
-					std::uint8_t* pixels;
-					if (colorTexture->map(0, 0, width, height, 0, (void**)&pixels))
-					{
-						QImage image(pixels, width, height, QImage::Format_RGBA8888);
-						item->setIcon(QPixmap::fromImage(image));
-
-						colorTexture->unmap();
-					}
-				}
+				auto texture = octoon::AssetPreview::instance()->getAssetPreview(material);
+				if (texture)
+					item->setIcon(QPixmap::fromImage(QImage(texture->data(), texture->width(), texture->height(), QImage::Format_RGBA8888)));
 			}
 			else
 			{

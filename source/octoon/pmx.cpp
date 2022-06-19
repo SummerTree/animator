@@ -11,7 +11,7 @@
 namespace octoon
 {
 	bool
-	PMX::canRead(io::istream& stream) noexcept
+	PMX::canRead(std::istream& stream) noexcept
 	{
 		PmxHeader header_;
 		if (stream.read((char*)&header_, sizeof(header_)))
@@ -582,7 +582,7 @@ namespace octoon
 	}
 
 	bool
-	PMX::save(io::ostream& stream, const PMX& pmx) noexcept
+	PMX::save(std::ostream& stream, const PMX& pmx) noexcept
 	{
 		if (!stream.write((char*)&pmx.header, sizeof(pmx.header))) return false;
 

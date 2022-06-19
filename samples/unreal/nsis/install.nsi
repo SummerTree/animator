@@ -674,6 +674,8 @@ Section "MainSection" SEC01
   File "..\..\..\lib\LICENSE.imgui.txt"
   File "..\..\..\lib\LICENSE.json.txt"
   File "..\..\..\lib\LICENSE.zlib.txt"
+  SetOutPath "$PROFILE\.animator\HDRi"
+  File "..\..\..\lib\system\hdri\Background_05.hdr"
 SectionEnd
 
 Section -AdditionalIcons

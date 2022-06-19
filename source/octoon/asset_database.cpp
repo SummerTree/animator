@@ -1,5 +1,6 @@
 #include <octoon/asset_database.h>
 #include <octoon/asset_bundle.h>
+#include <octoon/asset_preview.h>
 #include <octoon/runtime/uuid.h>
 #include <octoon/runtime/string.h>
 #include <octoon/vmd_loader.h>
@@ -15,7 +16,6 @@
 #include <octoon/video/renderer.h>
 #include <octoon/mesh/sphere_mesh.h>
 #include <octoon/environment_light_component.h>
-#include <octoon/io/fstream.h>
 
 #include <fstream>
 #include <filesystem>
@@ -26,8 +26,6 @@ namespace octoon
 	OctoonImplementSingleton(AssetDatabase)
 
 	AssetDatabase::AssetDatabase() noexcept
-		: previewWidth_(256)
-		, previewHeight_(256)
 	{
 	}
 
@@ -39,8 +37,7 @@ namespace octoon
 	void
 	AssetDatabase::open() noexcept(false)
 	{
-		this->initMaterialScene();
-		this->initRenderScene();
+		AssetPreview::instance()->open();
 	}
 
 	void
@@ -50,18 +47,7 @@ namespace octoon
 		assetPathList_.clear();
 		assetGuidList_.clear();
 
-		camera_.reset();
-		geometry_.reset();
-		directionalLight_.reset();
-		environmentLight_.reset();
-		scene_.reset();
-		framebuffer_.reset();
-
-		materialCamera_.reset();
-		materialGeometry_.reset();
-		materialDirectionalLight_.reset();
-		materialEnvironmentLight_.reset();
-		materialScene_.reset();
+		AssetPreview::instance()->close();
 	}
 
 	nlohmann::json
@@ -178,11 +164,9 @@ namespace octoon
 		{
 			auto writePreview = [this](const std::shared_ptr<Material>& material, std::filesystem::path path)
 			{
-				Texture texture;
-				auto uuid = make_guid();
-				auto previewPath = std::filesystem::path(path).append(uuid + ".png");
-				this->createMaterialPreview(material, texture);
-				texture.save(previewPath, "png");
+				auto texture = AssetPreview::instance()->getAssetPreview(material);
+				auto previewPath = std::filesystem::path(path).append(make_guid() + ".png");
+				texture->save(previewPath, "png");
 				return previewPath;
 			};
 
@@ -332,7 +316,7 @@ namespace octoon
 		{
 			std::filesystem::create_directories(rootPath);
 
-			io::ofstream stream(modelPath.u8string(), std::ios_base::in | std::ios_base::out);
+			std::ofstream stream(modelPath, std::ios_base::binary);
 			if (stream)
 			{
 				if (!PMX::save(stream, pmx))
@@ -365,32 +349,20 @@ namespace octoon
 			auto minBounding = bound.box().min;
 			auto maxBounding = bound.box().max;
 
-			auto writePreview = [this](const std::shared_ptr<Geometry>& geometry, const math::BoundingBox& boundingBox, std::filesystem::path outputPath)
+			auto writePreview = [this](const PMX& pmx, const math::BoundingBox& boundingBox, std::filesystem::path outputPath)
 			{
-				Texture texture;
+				auto texture = AssetPreview::instance()->getAssetPreview(pmx, boundingBox);
 				auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
-				this->createModelPreview(geometry, boundingBox, texture);
-				texture.save(previewPath, "png");
+				texture->save(previewPath, "png");
 				return previewPath;
 			};
-
-			auto geometry = PMXLoader::loadGeometry(pmx);
-
-			for (auto& v : pmx.bones)
-			{
-				if (std::wcscmp(v.name.name, L"×óÄ¿") == 0 || std::wcscmp(v.name.name, L"ÓÒÄ¿") == 0)
-				{
-					auto position = v.position.y;
-					camera_->setTransform(math::makeLookatRH(math::float3(0, position, 10), math::float3(0, position, 0), -math::float3::UnitY));
-				}
-			}
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
 			package["name"] = cv.to_bytes(pmx.description.japanModelName.data());
 			package["path"] = (char*)modelPath.u8string().c_str();
-			package["preview"] = (char*)writePreview(geometry, bound, rootPath).u8string().c_str();
+			package["preview"] = (char*)writePreview(pmx, bound, rootPath).u8string().c_str();
 			package["bound"][0] = { minBounding.x, minBounding.y, minBounding.z };
 			package["bound"][1] = { maxBounding.x, maxBounding.y, maxBounding.z };
 
@@ -923,40 +895,6 @@ namespace octoon
 		return nullptr;
 	}
 
-	std::shared_ptr<GraphicsTexture>
-	AssetDatabase::createMaterialPreview(const std::shared_ptr<Material>& material)
-	{
-		assert(materialScene_);
-
-		auto renderer = Renderer::instance();
-		if (renderer)
-		{
-			materialGeometry_->setMaterial(material);
-			renderer->render(materialScene_);
-			material->setDirty(true);
-		}
-
-		auto framebufferDesc = materialFramebuffer_->getFramebufferDesc();
-		return framebufferDesc.getColorAttachment(0).getBindingTexture();
-	}
-
-	void
-	AssetDatabase::createMaterialPreview(const std::shared_ptr<Material>& material, Texture& texture)
-	{
-		auto colorTexture = this->createMaterialPreview(material);
-		auto width = colorTexture->getTextureDesc().getWidth();
-		auto height = colorTexture->getTextureDesc().getHeight();
-		
-		std::uint8_t* data;
-		if (colorTexture->map(0, 0, width, height, 0, (void**)&data))
-		{
-			texture.create(Format::R8G8B8A8SRGB, width, height);
-			std::memcpy(texture.data(), data, width * height * 4);
-
-			colorTexture->unmap();
-		}
-	}
-
 	void
 	AssetDatabase::addUpdateList(std::string_view uuid) noexcept(false)
 	{
@@ -987,179 +925,5 @@ namespace octoon
 	AssetDatabase::getUpdateList() const noexcept
 	{
 		return this->updateList_;
-	}
-
-	void
-	AssetDatabase::initMaterialScene() noexcept(false)
-	{
-		auto renderer = Renderer::instance();
-		if (renderer)
-		{
-			std::uint32_t width = previewWidth_;
-			std::uint32_t height = previewHeight_;
-
-			GraphicsTextureDesc textureDesc;
-			textureDesc.setSize(width, height);
-			textureDesc.setTexDim(TextureDimension::Texture2D);
-			textureDesc.setTexFormat(GraphicsFormat::R8G8B8A8UNorm);
-			auto colorTexture = renderer->getGraphicsDevice()->createTexture(textureDesc);
-			if (!colorTexture)
-				throw std::runtime_error("createTexture() failed");
-
-			GraphicsTextureDesc depthTextureDesc;
-			depthTextureDesc.setSize(width, height);
-			depthTextureDesc.setTexDim(TextureDimension::Texture2D);
-			depthTextureDesc.setTexFormat(GraphicsFormat::D16UNorm);
-			auto depthTexture = renderer->getGraphicsDevice()->createTexture(depthTextureDesc);
-			if (!depthTexture)
-				throw std::runtime_error("createTexture() failed");
-
-			GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R8G8B8A8UNorm));
-			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(1, GraphicsImageLayout::DepthStencilAttachmentOptimal, GraphicsFormat::D16UNorm));
-
-			GraphicsFramebufferDesc framebufferDesc;
-			framebufferDesc.setWidth(width);
-			framebufferDesc.setHeight(height);
-			framebufferDesc.setFramebufferLayout(renderer->getGraphicsDevice()->createFramebufferLayout(framebufferLayoutDesc));
-			framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture, 0, 0));
-			framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture, 0, 0));
-
-			materialFramebuffer_ = renderer->getGraphicsDevice()->createFramebuffer(framebufferDesc);
-			if (!materialFramebuffer_)
-				throw std::runtime_error("createFramebuffer() failed");
-
-			materialCamera_ = std::make_shared<PerspectiveCamera>(60.0f, 1.0f, 100.0f);
-			materialCamera_->setClearColor(math::float4::Zero);
-			materialCamera_->setClearFlags(ClearFlagBits::AllBit);
-			materialCamera_->setFramebuffer(materialFramebuffer_);
-			materialCamera_->setTransform(math::makeLookatRH(math::float3(0, 0, 1), math::float3::Zero, math::float3::UnitY));
-
-			materialGeometry_ = std::make_shared<Geometry>();
-			materialGeometry_->setMesh(std::make_shared<SphereMesh>(0.5f));
-
-			math::Quaternion q1;
-			q1.makeRotation(math::float3::UnitX, math::PI / 2.75f);
-			math::Quaternion q2;
-			q2.makeRotation(math::float3::UnitY, math::PI / 4.6f);
-
-			materialDirectionalLight_ = std::make_shared<DirectionalLight>();
-			materialDirectionalLight_->setColor(math::float3(1, 1, 1));
-			materialDirectionalLight_->setTransform(math::float4x4(q1 * q2));
-
-			materialEnvironmentLight_ = std::make_shared<EnvironmentLight>();
-			materialEnvironmentLight_->setEnvironmentMap(PMREMLoader::load("../../system/hdri/Ditch-River_1k.hdr"));
-
-			materialScene_ = std::make_unique<RenderScene>();
-			materialScene_->addRenderObject(materialCamera_.get());
-			materialScene_->addRenderObject(materialDirectionalLight_.get());
-			materialScene_->addRenderObject(materialEnvironmentLight_.get());
-			materialScene_->addRenderObject(materialGeometry_.get());
-		}
-	}
-
-	void
-	AssetDatabase::createModelPreview(const std::shared_ptr<Geometry>& geometry, const math::BoundingBox& boundingBox, Texture& texture)
-	{
-		assert(geometry);
-
-		if (scene_)
-		{
-			auto min = boundingBox.box().min;
-			auto max = boundingBox.box().max;
-
-			auto renderer = Renderer::instance();
-			if (renderer)
-			{
-				geometry_->setMesh(geometry->getMesh());
-				geometry_->setMaterials(geometry->getMaterials());
-
-				Renderer::instance()->render(scene_);
-
-				geometry_->setDirty(true);
-			}
-
-			auto framebufferDesc = framebuffer_->getFramebufferDesc();
-			auto width = framebufferDesc.getWidth();
-			auto height = framebufferDesc.getHeight();
-
-			auto colorTexture = framebufferDesc.getColorAttachment(0).getBindingTexture();
-
-			std::uint8_t* data;
-			if (colorTexture->map(0, 0, framebufferDesc.getWidth(), framebufferDesc.getHeight(), 0, (void**)&data))
-			{
-				texture.create(Format::R8G8B8A8SRGB, width, height);
-				std::memcpy(texture.data(), data, width * height * 4);
-
-				colorTexture->unmap();
-			}
-		}
-	}
-
-	void
-	AssetDatabase::initRenderScene() noexcept(false)
-	{
-		auto renderer = Renderer::instance();
-		if (renderer)
-		{
-			std::uint32_t width = previewWidth_;
-			std::uint32_t height = previewHeight_;
-
-			GraphicsTextureDesc textureDesc;
-			textureDesc.setSize(width, height);
-			textureDesc.setTexDim(TextureDimension::Texture2D);
-			textureDesc.setTexFormat(GraphicsFormat::R8G8B8A8UNorm);
-			auto colorTexture = renderer->getGraphicsDevice()->createTexture(textureDesc);
-			if (!colorTexture)
-				throw std::runtime_error("createTexture() failed");
-
-			GraphicsTextureDesc depthTextureDesc;
-			depthTextureDesc.setSize(width, height);
-			depthTextureDesc.setTexDim(TextureDimension::Texture2D);
-			depthTextureDesc.setTexFormat(GraphicsFormat::D16UNorm);
-			auto depthTexture = renderer->getGraphicsDevice()->createTexture(depthTextureDesc);
-			if (!depthTexture)
-				throw std::runtime_error("createTexture() failed");
-
-			GraphicsFramebufferLayoutDesc framebufferLayoutDesc;
-			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(0, GraphicsImageLayout::ColorAttachmentOptimal, GraphicsFormat::R8G8B8A8UNorm));
-			framebufferLayoutDesc.addComponent(GraphicsAttachmentLayout(1, GraphicsImageLayout::DepthStencilAttachmentOptimal, GraphicsFormat::D16UNorm));
-
-			GraphicsFramebufferDesc framebufferDesc;
-			framebufferDesc.setWidth(width);
-			framebufferDesc.setHeight(height);
-			framebufferDesc.setFramebufferLayout(renderer->getGraphicsDevice()->createFramebufferLayout(framebufferLayoutDesc));
-			framebufferDesc.setDepthStencilAttachment(GraphicsAttachmentBinding(depthTexture, 0, 0));
-			framebufferDesc.addColorAttachment(GraphicsAttachmentBinding(colorTexture, 0, 0));
-
-			framebuffer_ = renderer->getGraphicsDevice()->createFramebuffer(framebufferDesc);
-			if (!framebuffer_)
-				throw std::runtime_error("createFramebuffer() failed");
-
-			camera_ = std::make_shared<PerspectiveCamera>(23.9f, 1.0f, 100.0f);
-			camera_->setClearColor(math::float4::Zero);
-			camera_->setClearFlags(ClearFlagBits::AllBit);
-			camera_->setFramebuffer(framebuffer_);
-
-			geometry_ = std::make_shared<Geometry>();
-			geometry_->setMesh(std::make_shared<SphereMesh>(0.5f));
-
-			math::Quaternion q1;
-			q1.makeRotation(math::float3::UnitX, math::PI / 2.75f);
-			math::Quaternion q2;
-			q2.makeRotation(math::float3::UnitY, math::PI / 4.6f);
-
-			directionalLight_ = std::make_shared<DirectionalLight>();
-			directionalLight_->setColor(math::float3(1, 1, 1));
-			directionalLight_->setTransform(math::float4x4(q1 * q2));
-
-			environmentLight_ = std::make_shared<EnvironmentLight>();
-			environmentLight_->setColor(math::float3::One * 0.9f);
-
-			scene_ = std::make_unique<RenderScene>();
-			scene_->addRenderObject(camera_.get());
-			scene_->addRenderObject(environmentLight_.get());
-			scene_->addRenderObject(geometry_.get());
-		}
 	}
 }
