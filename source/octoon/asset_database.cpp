@@ -178,33 +178,33 @@ namespace octoon
 			mat["scissorTestEnable"] = standardMaterial->getScissorTestEnable();			
 
 			if (standardMaterial->getColorMap())
-				mat["colorMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getColorMap());
+				mat["colorMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getColorMap());
 			if (standardMaterial->getOpacityMap())
-				mat["opacityMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getOpacityMap());
+				mat["opacityMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getOpacityMap());
 			if (standardMaterial->getNormalMap())
-				mat["normalMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getNormalMap());
+				mat["normalMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getNormalMap());
 			if (standardMaterial->getRoughnessMap())
-				mat["roughnessMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getRoughnessMap());
+				mat["roughnessMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getRoughnessMap());
 			if (standardMaterial->getSpecularMap())
-				mat["specularMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getSpecularMap());
+				mat["specularMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getSpecularMap());
 			if (standardMaterial->getMetalnessMap())
-				mat["metalnessMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getMetalnessMap());
+				mat["metalnessMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getMetalnessMap());
 			if (standardMaterial->getEmissiveMap())
-				mat["emissiveMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getEmissiveMap());
+				mat["emissiveMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getEmissiveMap());
 			if (standardMaterial->getAnisotropyMap())
-				mat["anisotropyMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getAnisotropyMap());
+				mat["anisotropyMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getAnisotropyMap());
 			if (standardMaterial->getClearCoatMap())
-				mat["clearCoatMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getClearCoatMap());
+				mat["clearCoatMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getClearCoatMap());
 			if (standardMaterial->getClearCoatRoughnessMap())
-				mat["clearCoatRoughnessMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getClearCoatRoughnessMap());
+				mat["clearCoatRoughnessMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getClearCoatRoughnessMap());
 			if (standardMaterial->getSubsurfaceMap())
-				mat["subsurfaceMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getSubsurfaceMap());
+				mat["subsurfaceMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getSubsurfaceMap());
 			if (standardMaterial->getSubsurfaceColorMap())
-				mat["subsurfaceColorMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getSubsurfaceColorMap());
+				mat["subsurfaceColorMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getSubsurfaceColorMap());
 			if (standardMaterial->getSheenMap())
-				mat["sheenMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getSheenMap());
+				mat["sheenMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getSheenMap());
 			if (standardMaterial->getLightMap())
-				mat["lightMap"] = AssetBundle::instance()->getPackageGuid(standardMaterial->getLightMap());
+				mat["lightMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getLightMap());
 
 			std::filesystem::create_directories(rootPath);
 
@@ -838,37 +838,5 @@ namespace octoon
 		}
 
 		return nullptr;
-	}
-
-	void
-	AssetDatabase::addUpdateList(std::string_view uuid) noexcept(false)
-	{
-		this->updateList_.insert(std::string(uuid));
-	}
-
-	bool
-	AssetDatabase::needUpdate(std::string_view uuid) const noexcept
-	{
-		return this->updateList_.find(std::string(uuid)) != this->updateList_.end();
-	}
-
-	void
-	AssetDatabase::removeUpdateList(std::string_view uuid) noexcept(false)
-	{
-		auto it = this->updateList_.find(std::string(uuid));
-		if (it != this->updateList_.end())
-			this->updateList_.erase(it);
-	}
-
-	void
-	AssetDatabase::clearUpdate() noexcept
-	{
-		this->updateList_.clear();
-	}
-
-	const std::set<std::string>&
-	AssetDatabase::getUpdateList() const noexcept
-	{
-		return this->updateList_;
 	}
 }

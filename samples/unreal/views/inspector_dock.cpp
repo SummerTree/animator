@@ -316,8 +316,9 @@ namespace unreal
 				if (material)
 				{
 					title_->setText(tr("Material Properties"));
-
-					octoon::AssetDatabase::instance()->addUpdateList(uuid);
+					
+					if (profile_->ab)
+						profile_->ab->addUpdateList(uuid);
 
 					selectedItem_ = item;
 					materialList_->hide();

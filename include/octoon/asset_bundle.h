@@ -8,6 +8,7 @@
 #include <octoon/runtime/uuid.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
+#include <set>
 
 namespace octoon
 {
@@ -59,10 +60,16 @@ namespace octoon
 		std::shared_ptr<AssetBundle> loadFromFile(const std::filesystem::path& path) noexcept(false);
 		std::vector<std::shared_ptr<AssetBundle>> getAllLoadedAssetBundles() const noexcept;
 
+		bool needUpdate(std::string_view uuid) const noexcept;
+		void addUpdateList(std::string_view uuid) noexcept(false);
+		void removeUpdateList(std::string_view uuid) noexcept(false);
+		void clearUpdate() noexcept;
+		const std::set<std::string>& getUpdateList() const noexcept;
+
 	private:
 		nlohmann::json importHDRi(const std::filesystem::path& path) noexcept(false);
 		nlohmann::json importTexture(const std::filesystem::path& path) noexcept(false);
-		nlohmann::json importTexture(const std::shared_ptr<Texture>& path, std::string_view ext, std::string_view uuid = make_guid()) noexcept(false);
+		nlohmann::json importTexture(const std::shared_ptr<Texture>& path, std::string_view ext) noexcept(false);
 		nlohmann::json importPMX(const std::filesystem::path& path) noexcept(false);
 		nlohmann::json importVMD(const std::filesystem::path& path) noexcept(false);
 		nlohmann::json importMaterial(const std::filesystem::path& path) noexcept(false);
@@ -84,6 +91,8 @@ namespace octoon
 
 	private:
 		std::filesystem::path assetPath_;
+
+		std::set<std::string> updateList_;
 
 		std::unique_ptr<AssetImporter> modelAsset_;
 		std::unique_ptr<AssetImporter> motionAsset_;

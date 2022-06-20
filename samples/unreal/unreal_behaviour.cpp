@@ -52,7 +52,7 @@ namespace unreal
 		this->profile_->reset();
 
 		octoon::AssetBundle::instance()->unload();
-		octoon::AssetDatabase::instance()->clearUpdate();
+		octoon::AssetBundle::instance()->clearUpdate();
 	}
 
 	bool

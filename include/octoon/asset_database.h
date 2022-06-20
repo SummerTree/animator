@@ -46,12 +46,6 @@ namespace octoon
 			return nullptr;
 		}
 
-		bool needUpdate(std::string_view uuid) const noexcept;
-		void addUpdateList(std::string_view uuid) noexcept(false);
-		void removeUpdateList(std::string_view uuid) noexcept(false);
-		void clearUpdate() noexcept;
-		const std::set<std::string>& getUpdateList() const noexcept;
-
 	private:
 		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
 
@@ -60,8 +54,6 @@ namespace octoon
 		AssetDatabase& operator=(const AssetDatabase&) = delete;
 
 	private:
-		std::set<std::string> updateList_;
-
 		std::map<std::weak_ptr<const RttiObject>, std::string, std::owner_less<std::weak_ptr<const RttiObject>>> assetGuidList_;
 		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> assetPathList_;
 	};
