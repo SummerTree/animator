@@ -610,7 +610,7 @@ namespace octoon
 				if (this != AssetBundle::instance())
 				{
 					if (AssetBundle::instance()->textureAsset_->hasPackage(uuid))
-						return AssetBundle::instance()->getPackage(uuid);
+						return AssetBundle::instance()->textureAsset_->getPackage(uuid);
 				}
 
 				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
@@ -640,7 +640,7 @@ namespace octoon
 				if (this != AssetBundle::instance())
 				{
 					if (AssetBundle::instance()->motionAsset_->hasPackage(uuid))
-						return AssetBundle::instance()->getPackage(uuid);
+						return AssetBundle::instance()->motionAsset_->getPackage(uuid);
 				}
 
 				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
@@ -668,7 +668,7 @@ namespace octoon
 				if (this != AssetBundle::instance())
 				{
 					if (AssetBundle::instance()->materialAsset_->hasPackage(uuid))
-						return AssetBundle::instance()->getPackage(uuid);
+						return AssetBundle::instance()->materialAsset_->getPackage(uuid);
 				}
 
 				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
@@ -696,7 +696,7 @@ namespace octoon
 				if (this != AssetBundle::instance())
 				{
 					if (AssetBundle::instance()->modelAsset_->hasPackage(uuid))
-						return AssetBundle::instance()->getPackage(uuid);
+						return AssetBundle::instance()->modelAsset_->getPackage(uuid);
 				}
 
 				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
