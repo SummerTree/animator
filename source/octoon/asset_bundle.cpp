@@ -74,6 +74,330 @@ namespace octoon
 	}
 
 	nlohmann::json
+	AssetBundle::importAsset(const std::filesystem::path& path) noexcept(false)
+	{
+		auto ext = path.extension().u8string();
+		for (auto& it : ext)
+			it = (char)std::tolower(it);
+
+		if (ext == u8".hdr")
+			return this->importHDRi(path);
+		else if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
+			return this->importTexture(path);
+		else if (ext == u8".pmx")
+			return this->importPMX(path);
+		else if (ext == u8".vmd")
+			return this->importVMD(path);
+		else if (ext == u8".mdl")
+			return this->importMaterial(path);
+
+		return nlohmann::json();
+	}
+
+	nlohmann::json
+	AssetBundle::importAsset(const std::shared_ptr<Texture>& texture, std::string_view ext) noexcept(false)
+	{
+		auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
+		auto rootPath = std::filesystem::path(textureAsset_->getAssertPath()).append(uuid);
+		
+		try
+		{
+			auto outputPath = std::filesystem::path(rootPath).append(uuid + (std::string)ext);
+
+			AssetDatabase::instance()->createAsset(texture, outputPath);
+
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["name"] = texture->getName();
+			package["path"] = (char*)outputPath.u8string().c_str();
+			package["visible"] = true;
+
+			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
+			if (ifs)
+			{
+				auto dump = package.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+			}
+
+			this->textureAsset_->addIndex(std::string(uuid));
+			this->assetGuidList_[texture] = uuid;
+
+			return package;
+		}
+		catch (const std::exception& e)
+		{
+			if (std::filesystem::exists(rootPath))
+				std::filesystem::remove_all(rootPath);
+
+			throw e;
+		}
+	}
+
+	nlohmann::json
+	AssetBundle::importAsset(const std::shared_ptr<Animation>& animation) noexcept(false)
+	{
+		auto uuid = AssetDatabase::instance()->getAssetGuid(animation);
+		auto rootPath = std::filesystem::path(motionAsset_->getAssertPath()).append(uuid);
+
+		try
+		{
+			auto outputPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
+
+			AssetDatabase::instance()->createAsset(animation, outputPath);
+
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["name"] = animation->getName();
+			package["path"] = (char*)outputPath.u8string().c_str();
+			package["visible"] = true;
+
+			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
+			if (ifs)
+			{
+				auto dump = package.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+			}
+
+			this->motionAsset_->addIndex(uuid);
+			this->assetGuidList_[animation] = uuid;
+
+			return package;
+		}
+		catch (const std::exception& e)
+		{
+			if (std::filesystem::exists(rootPath))
+				std::filesystem::remove_all(rootPath);
+
+			throw e;
+		}
+	}
+
+	nlohmann::json
+	AssetBundle::importAsset(const std::shared_ptr<Material>& material) noexcept(false)
+	{
+		auto uuid = AssetDatabase::instance()->getAssetGuid(material);
+		auto rootPath = std::filesystem::path(materialAsset_->getAssertPath()).append(uuid);
+
+		try
+		{
+			auto standardMaterial = material->downcast<MeshStandardMaterial>();
+			if (standardMaterial->getColorMap())
+				this->importAsset(standardMaterial->getColorMap(), ".png");
+			if (standardMaterial->getOpacityMap())
+				this->importAsset(standardMaterial->getOpacityMap(), ".png");
+			if (standardMaterial->getNormalMap())
+				this->importAsset(standardMaterial->getNormalMap(), ".png");
+			if (standardMaterial->getRoughnessMap())
+				this->importAsset(standardMaterial->getRoughnessMap(), ".png");
+			if (standardMaterial->getSpecularMap())
+				this->importAsset(standardMaterial->getSpecularMap(), ".png");
+			if (standardMaterial->getMetalnessMap())
+				this->importAsset(standardMaterial->getMetalnessMap(), ".png");
+			if (standardMaterial->getEmissiveMap())
+				this->importAsset(standardMaterial->getEmissiveMap(), ".png");
+			if (standardMaterial->getAnisotropyMap())
+				this->importAsset(standardMaterial->getAnisotropyMap(), ".png");
+			if (standardMaterial->getClearCoatMap())
+				this->importAsset(standardMaterial->getClearCoatMap(), ".png");
+			if (standardMaterial->getClearCoatRoughnessMap())
+				this->importAsset(standardMaterial->getClearCoatRoughnessMap(), ".png");
+			if (standardMaterial->getSubsurfaceMap())
+				this->importAsset(standardMaterial->getSubsurfaceMap(), ".png");
+			if (standardMaterial->getSubsurfaceColorMap())
+				this->importAsset(standardMaterial->getSubsurfaceColorMap(), ".png");
+			if (standardMaterial->getSheenMap())
+				this->importAsset(standardMaterial->getSheenMap(), ".png");
+			if (standardMaterial->getLightMap())
+				this->importAsset(standardMaterial->getLightMap(), ".png");
+
+			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(material) + ".mat");
+
+			AssetDatabase::instance()->createAsset(material, outputPath);
+
+			auto writePreview = [this](const std::shared_ptr<Material>& material, std::filesystem::path path)
+			{
+				auto texture = AssetPreview::instance()->getAssetPreview(material);
+				auto previewPath = std::filesystem::path(path).append(make_guid() + ".png");
+				AssetDatabase::instance()->createAsset(texture, previewPath);
+				return previewPath;
+			};
+
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["name"] = material->getName();
+			package["path"] = (char*)outputPath.u8string().c_str();
+			package["preview"] = (char*)writePreview(material, rootPath).u8string().c_str();
+			package["visible"] = true;
+
+			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
+			if (ifs)
+			{
+				auto dump = package.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+			}
+
+			this->materialAsset_->addIndex(package["uuid"]);
+			this->assetGuidList_[material] = uuid;
+
+			return package;
+		}
+		catch (const std::exception& e)
+		{
+			if (std::filesystem::exists(rootPath))
+				std::filesystem::remove_all(rootPath);
+
+			throw e;
+		}
+	}
+
+	nlohmann::json
+	AssetBundle::importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false)
+	{
+		auto uuid = AssetDatabase::instance()->getAssetGuid(pmx);
+		auto rootPath = std::filesystem::path(modelAsset_->getAssertPath()).append(uuid);
+
+		try
+		{
+			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(pmx) + ".pmx");
+
+			AssetDatabase::instance()->createAsset(pmx, outputPath);
+
+			math::BoundingBox bound;
+			for (auto& v : pmx->vertices)
+				bound.encapsulate(math::float3(v.position.x, v.position.y, v.position.z));
+
+			auto writePreview = [this](const PMX& pmx, const math::BoundingBox& boundingBox, std::filesystem::path outputPath)
+			{
+				auto texture = AssetPreview::instance()->getAssetPreview(pmx, boundingBox);
+				auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
+				AssetDatabase::instance()->createAsset(texture, previewPath);
+				return previewPath;
+			};
+
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+
+			nlohmann::json package;
+			package["uuid"] = uuid;
+			package["visible"] = true;
+			package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
+			package["path"] = (char*)outputPath.u8string().c_str();
+			package["bound"][0] = bound.box().min.to_array();
+			package["bound"][1] = bound.box().max.to_array();
+			package["preview"] = (char*)writePreview(*pmx, bound, rootPath).u8string().c_str();
+
+			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
+			if (ifs)
+			{
+				auto dump = package.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+			}
+
+			this->modelAsset_->addIndex(uuid);
+			this->assetGuidList_[pmx] = uuid;
+
+			return package;
+		}
+		catch (const std::exception& e)
+		{
+			if (std::filesystem::exists(rootPath))
+				std::filesystem::remove_all(rootPath);
+
+			throw e;
+		}
+	}
+
+	nlohmann::json
+	AssetBundle::importAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false)
+	{
+		auto uuid = AssetDatabase::instance()->getAssetGuid(gameObject);
+		auto rootPath = std::filesystem::path(modelAsset_->getAssertPath()).append(uuid);
+
+		try
+		{
+			auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
+			if (!assetPath.empty())
+			{
+				auto ext = assetPath.extension().u8string();
+				for (auto& it : ext)
+					it = (char)std::tolower(it);
+
+				if (ext == u8".pmx")
+				{
+					return this->importAsset(assetPath);
+				}
+				else if (ext == u8".abc")
+				{
+					nlohmann::json package;
+					package["uuid"] = uuid;
+					package["path"] = (char*)assetPath.u8string().c_str();
+
+					auto abc = gameObject->getComponent<MeshAnimationComponent>();
+					if (abc)
+					{
+						auto& materials = abc->getMaterials();
+
+						for (auto& pair : materials)
+						{
+							auto materialPackage = this->createAsset(pair.second);
+							if (materialPackage.is_object())
+							{
+								nlohmann::json materialJson;
+								materialJson["data"] = materialPackage["uuid"];
+								materialJson["name"] = pair.first;
+
+								package["materials"].push_back(materialJson);
+							}
+						}
+					}
+
+					std::filesystem::create_directories(rootPath);
+
+					std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
+					if (ifs)
+					{
+						auto dump = package.dump();
+						ifs.write(dump.c_str(), dump.size());
+					}
+
+					assetGuidList_[gameObject] = uuid;
+					return package;
+				}
+				else
+				{
+					nlohmann::json package;
+					package["uuid"] = uuid;
+					package["path"] = (char*)assetPath.u8string().c_str();
+
+					std::filesystem::create_directories(rootPath);
+
+					std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
+					if (ifs)
+					{
+						auto dump = package.dump();
+						ifs.write(dump.c_str(), dump.size());
+					}
+
+					assetGuidList_[gameObject] = uuid;
+					return package;
+				}
+			}
+
+			return nlohmann::json();
+		}
+		catch (const std::exception& e)
+		{
+			if (std::filesystem::exists(rootPath))
+				std::filesystem::remove_all(rootPath);
+
+			throw e;
+		}
+	}
+
+	nlohmann::json
 	AssetBundle::importHDRi(const std::filesystem::path& path) noexcept(false)
 	{
 		auto texture = std::make_shared<Texture>();
@@ -82,10 +406,10 @@ namespace octoon
 			texture->setName((char*)path.filename().u8string().c_str());
 			texture->setMipLevel(8);
 
-			auto uuid = make_guid();
+			auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
 
 			auto rootPath = std::filesystem::path(hdriAsset_->getAssertPath()).append(uuid);
-			auto texturePath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(texture) + ".hdr");
+			auto texturePath = std::filesystem::path(rootPath).append(uuid + ".hdr");
 
 			auto width = texture->width();
 			auto height = texture->height();
@@ -135,46 +459,6 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::importTexture(const std::shared_ptr<Texture>& texture, std::string_view ext) noexcept(false)
-	{
-		auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
-		auto rootPath = std::filesystem::path(textureAsset_->getAssertPath()).append(uuid);
-		
-		try
-		{
-			auto outputPath = std::filesystem::path(rootPath).append(uuid + (std::string)ext);
-
-			AssetDatabase::instance()->createAsset(texture, outputPath);
-
-			nlohmann::json package;
-			package["uuid"] = uuid;
-			package["name"] = texture->getName();
-			package["path"] = (char*)outputPath.u8string().c_str();
-			package["visible"] = true;
-
-			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->textureAsset_->addIndex(std::string(uuid));
-			this->assetGuidList_[texture] = uuid;
-
-			return package;
-		}
-		catch (const std::exception& e)
-		{
-			if (std::filesystem::exists(rootPath))
-				std::filesystem::remove_all(rootPath);
-
-			throw e;
-		}
-	}
-
-	nlohmann::json
 	AssetBundle::importTexture(const std::filesystem::path& path) noexcept(false)
 	{
 		auto texture = std::make_shared<Texture>();
@@ -186,7 +470,7 @@ namespace octoon
 
 			texture->setName((char*)path.filename().u8string().c_str());
 
-			return this->importTexture(texture, (char*)ext.c_str());
+			return this->importAsset(texture, (char*)ext.c_str());
 		}
 
 		return nlohmann::json();
@@ -195,71 +479,19 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importPMX(const std::filesystem::path& path) noexcept(false)
 	{
-		auto uuid = make_guid();
-		auto rootPath = std::filesystem::path(modelAsset_->getAssertPath()).append(uuid);
-
-		try
+		auto pmx = std::make_shared<PMX>();
+		if (PMX::load(path, *pmx))
 		{
-			auto pmx = std::make_shared<PMX>();
-
-			if (PMX::load(path, *pmx))
+			if (pmx->description.japanModelLength == 0)
 			{
-				if (pmx->description.japanModelLength == 0)
-				{
-					auto filename = std::filesystem::path(path).filename().wstring();
+				auto filename = std::filesystem::path(path).filename().wstring();
 
-					pmx->description.japanModelName.resize(filename.size() + 1);
-					pmx->description.japanModelLength = static_cast<PmxUInt32>(pmx->description.japanModelName.size() * 2);
-					std::memcpy(pmx->description.japanModelName.data(), filename.data(), pmx->description.japanModelLength);
-				}
-
-				auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(pmx) + ".pmx");
-
-				AssetDatabase::instance()->createAsset(pmx, outputPath);
-
-				math::BoundingBox bound;
-				for (auto& v : pmx->vertices)
-					bound.encapsulate(math::float3(v.position.x, v.position.y, v.position.z));
-
-				auto writePreview = [this](const PMX& pmx, const math::BoundingBox& boundingBox, std::filesystem::path outputPath)
-				{
-					auto texture = AssetPreview::instance()->getAssetPreview(pmx, boundingBox);
-					auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
-					texture->save(previewPath, "png");
-					return previewPath;
-				};
-
-				std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-
-				nlohmann::json package;
-				package["uuid"] = uuid;
-				package["visible"] = true;
-				package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
-				package["path"] = (char*)outputPath.u8string().c_str();
-				package["bound"][0] = bound.box().min.to_array();
-				package["bound"][1] = bound.box().max.to_array();
-				package["preview"] = (char*)writePreview(*pmx, bound, rootPath).u8string().c_str();
-
-				std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-				if (ifs)
-				{
-					auto dump = package.dump();
-					ifs.write(dump.c_str(), dump.size());
-					ifs.close();
-				}
-
-				this->modelAsset_->addIndex(uuid);
-				this->assetGuidList_[pmx] = uuid;
-
-				return package;
+				pmx->description.japanModelName.resize(filename.size() + 1);
+				pmx->description.japanModelLength = static_cast<PmxUInt32>(pmx->description.japanModelName.size() * 2);
+				std::memcpy(pmx->description.japanModelName.data(), filename.data(), pmx->description.japanModelLength);
 			}
-		}
-		catch (const std::exception& e)
-		{
-			if (std::filesystem::exists(rootPath))
-				std::filesystem::remove_all(rootPath);
 
-			throw e;
+			return this->importAsset(pmx);
 		}
 
 		return nlohmann::json();
@@ -268,47 +500,13 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importVMD(const std::filesystem::path& path) noexcept(false)
 	{
-		auto uuid = make_guid();
-		auto rootPath = std::filesystem::path(motionAsset_->getAssertPath()).append(uuid);
-
-		try
+		auto animation = VMDLoader::load(path);
+		if (animation)
 		{
-			auto animation = VMDLoader::load(path);
-			if (animation)
-			{
-				if (animation->getName().empty())
-					animation->setName((char*)path.filename().u8string().c_str());
+			if (animation->getName().empty())
+				animation->setName((char*)path.filename().u8string().c_str());
 
-				auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(animation) + ".vmd");
-
-				AssetDatabase::instance()->createAsset(animation, outputPath);
-
-				nlohmann::json package;
-				package["uuid"] = uuid;
-				package["name"] = animation->getName();
-				package["path"] = (char*)outputPath.u8string().c_str();
-				package["visible"] = true;
-
-				std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-				if (ifs)
-				{
-					auto dump = package.dump();
-					ifs.write(dump.c_str(), dump.size());
-					ifs.close();
-				}
-
-				this->motionAsset_->addIndex(uuid);
-				this->assetGuidList_[animation] = uuid;
-
-				return package;
-			}
-		}
-		catch (const std::exception& e)
-		{
-			if (std::filesystem::exists(rootPath))
-				std::filesystem::remove_all(rootPath);
-
-			throw e;
+			return this->importAsset(animation);
 		}
 
 		return nlohmann::json();
@@ -329,80 +527,9 @@ namespace octoon
 
 				for (auto& material : loader.getMaterials())
 				{
-					auto standardMaterial = material->downcast<MeshStandardMaterial>();
-					if (standardMaterial->getColorMap())
-						this->importTexture(standardMaterial->getColorMap(), ".png");
-					if (standardMaterial->getOpacityMap())
-						this->importTexture(standardMaterial->getOpacityMap(), ".png");
-					if (standardMaterial->getNormalMap())
-						this->importTexture(standardMaterial->getNormalMap(), ".png");
-					if (standardMaterial->getRoughnessMap())
-						this->importTexture(standardMaterial->getRoughnessMap(), ".png");
-					if (standardMaterial->getSpecularMap())
-						this->importTexture(standardMaterial->getSpecularMap(), ".png");
-					if (standardMaterial->getMetalnessMap())
-						this->importTexture(standardMaterial->getMetalnessMap(), ".png");
-					if (standardMaterial->getEmissiveMap())
-						this->importTexture(standardMaterial->getEmissiveMap(), ".png");
-					if (standardMaterial->getAnisotropyMap())
-						this->importTexture(standardMaterial->getAnisotropyMap(), ".png");
-					if (standardMaterial->getClearCoatMap())
-						this->importTexture(standardMaterial->getClearCoatMap(), ".png");
-					if (standardMaterial->getClearCoatRoughnessMap())
-						this->importTexture(standardMaterial->getClearCoatRoughnessMap(), ".png");
-					if (standardMaterial->getSubsurfaceMap())
-						this->importTexture(standardMaterial->getSubsurfaceMap(), ".png");
-					if (standardMaterial->getSubsurfaceColorMap())
-						this->importTexture(standardMaterial->getSubsurfaceColorMap(), ".png");
-					if (standardMaterial->getSheenMap())
-						this->importTexture(standardMaterial->getSheenMap(), ".png");
-					if (standardMaterial->getLightMap())
-						this->importTexture(standardMaterial->getLightMap(), ".png");
-
-					auto uuid = make_guid();
-					auto rootPath = std::filesystem::path(materialAsset_->getAssertPath()).append(uuid);
-
-					try
-					{
-						auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(material) + ".mat");
-
-						AssetDatabase::instance()->createAsset(material, outputPath);
-
-						auto writePreview = [this](const std::shared_ptr<Material>& material, std::filesystem::path path)
-						{
-							auto texture = AssetPreview::instance()->getAssetPreview(material);
-							auto previewPath = std::filesystem::path(path).append(make_guid() + ".png");
-							texture->save(previewPath, "png");
-							return previewPath;
-						};
-
-						nlohmann::json package;
-						package["uuid"] = uuid;
-						package["name"] = material->getName();
-						package["path"] = (char*)outputPath.u8string().c_str();
-						package["preview"] = (char*)writePreview(material, rootPath).u8string().c_str();
-						package["visible"] = true;
-
-						std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-						if (ifs)
-						{
-							auto dump = package.dump();
-							ifs.write(dump.c_str(), dump.size());
-							ifs.close();
-						}
-
+					auto package = this->importAsset(material);
+					if (package.is_object())
 						items.push_back(package["uuid"]);
-
-						this->materialAsset_->addIndex(package["uuid"]);
-						this->assetGuidList_[material] = uuid;
-					}
-					catch (const std::exception& e)
-					{
-						if (std::filesystem::exists(rootPath))
-							std::filesystem::remove_all(rootPath);
-
-						throw e;
-					}
 				}
 
 				materialAsset_->saveAssets();
@@ -415,27 +542,6 @@ namespace octoon
 			materialAsset_->saveAssets();
 			throw e;
 		}
-	}
-
-	nlohmann::json
-	AssetBundle::importAsset(const std::filesystem::path& path) noexcept(false)
-	{
-		auto ext = path.extension().u8string();
-		for (auto& it : ext)
-			it = (char)std::tolower(it);
-
-		if (ext == u8".hdr")
-			return this->importHDRi(path);
-		else if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
-			return this->importTexture(path);
-		else if (ext == u8".pmx")
-			return this->importPMX(path);
-		else if (ext == u8".vmd")
-			return this->importVMD(path);
-		else if (ext == u8".mdl")
-			return this->importMaterial(path);
-
-		return nlohmann::json();
 	}
 
 	std::shared_ptr<RttiObject>
@@ -520,35 +626,12 @@ namespace octoon
 				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
 					return this->getPackage(uuid);
 			}
-			else
-			{
-				uuid = AssetDatabase::instance()->getAssetGuid(texture);
-			}
 
 			auto filepath = AssetDatabase::instance()->getAssetPath(texture);
-			auto rootPath = std::filesystem::path(hdriAsset_->getAssertPath()).append(uuid);
-			auto outputPath = std::filesystem::path(rootPath).append(uuid + (char*)filepath.extension().u8string().c_str());
 
-			AssetDatabase::instance()->createAsset(texture, outputPath);
-
-			nlohmann::json package;
-			package["uuid"] = uuid;
-			package["name"] = texture->getName();
-			package["path"] = (char*)outputPath.u8string().c_str();
-			package["visible"] = true;
-
-			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->removeUpdateList(uuid);
-			hdriAsset_->addIndex(package["uuid"].get<std::string>());
-
-			this->assetGuidList_[texture] = uuid;
+			auto package = this->importAsset(texture, (char*)filepath.extension().u8string().c_str());
+			if (package.is_object())
+				this->removeUpdateList(package["uuid"].get<std::string>());
 
 			return package;
 		}
@@ -573,34 +656,10 @@ namespace octoon
 				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
 					return this->getPackage(uuid);
 			}
-			else
-			{
-				uuid = make_guid();
-			}
 
-			auto rootPath = std::filesystem::path(motionAsset_->getAssertPath()).append(uuid);
-			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(animation) + ".vmd");
-
-			AssetDatabase::instance()->createAsset(animation, outputPath);
-
-			nlohmann::json package;
-			package["uuid"] = uuid;
-			package["name"] = animation->getName();
-			package["path"] = (char*)outputPath.u8string().c_str();
-			package["visible"] = true;
-
-			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->removeUpdateList(uuid);
-			motionAsset_->addIndex(package["uuid"].get<std::string>());
-
-			this->assetGuidList_[animation] = uuid;
+			auto package = this->importAsset(animation);
+			if (package.is_object())
+				this->removeUpdateList(package["uuid"].get<std::string>());
 
 			return package;
 		}
@@ -625,64 +684,10 @@ namespace octoon
 				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
 					return this->getPackage(uuid);
 			}
-			else
-			{
-				uuid = make_guid();
-			}
 
-			auto standardMaterial = material->downcast<MeshStandardMaterial>();
-			if (standardMaterial->getColorMap())
-				this->createAsset(standardMaterial->getColorMap());
-			if (standardMaterial->getOpacityMap())
-				this->createAsset(standardMaterial->getOpacityMap());
-			if (standardMaterial->getNormalMap())
-				this->createAsset(standardMaterial->getNormalMap());
-			if (standardMaterial->getRoughnessMap())
-				this->createAsset(standardMaterial->getRoughnessMap());
-			if (standardMaterial->getSpecularMap())
-				this->createAsset(standardMaterial->getSpecularMap());
-			if (standardMaterial->getMetalnessMap())
-				this->createAsset(standardMaterial->getMetalnessMap());
-			if (standardMaterial->getEmissiveMap())
-				this->createAsset(standardMaterial->getEmissiveMap());
-			if (standardMaterial->getAnisotropyMap())
-				this->createAsset(standardMaterial->getAnisotropyMap());
-			if (standardMaterial->getClearCoatMap())
-				this->createAsset(standardMaterial->getClearCoatMap());
-			if (standardMaterial->getClearCoatRoughnessMap())
-				this->createAsset(standardMaterial->getClearCoatRoughnessMap());
-			if (standardMaterial->getSubsurfaceMap())
-				this->createAsset(standardMaterial->getSubsurfaceMap());
-			if (standardMaterial->getSubsurfaceColorMap())
-				this->createAsset(standardMaterial->getSubsurfaceColorMap());
-			if (standardMaterial->getSheenMap())
-				this->createAsset(standardMaterial->getSheenMap());
-			if (standardMaterial->getLightMap())
-				this->createAsset(standardMaterial->getLightMap());
-
-			auto rootPath = std::filesystem::path(materialAsset_->getAssertPath()).append(uuid);
-			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(material) + ".mat");
-
-			AssetDatabase::instance()->createAsset(material, outputPath);
-
-			nlohmann::json package;
-			package["uuid"] = uuid;
-			package["name"] = material->getName();
-			package["path"] = (char*)outputPath.u8string().c_str();
-			package["visible"] = true;
-
-			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->removeUpdateList(uuid);
-			materialAsset_->addIndex(package["uuid"].get<std::string>());
-
-			this->assetGuidList_[material] = uuid;
+			auto package = this->importAsset(material);
+			if (package.is_object())
+				this->removeUpdateList(package["uuid"].get<std::string>());
 
 			return package;
 		}
@@ -712,93 +717,11 @@ namespace octoon
 				uuid = make_guid();
 			}
 
-			auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
-			if (!assetPath.empty())
-			{
-				auto ext = assetPath.extension().u8string();
-				for (auto& it : ext)
-					it = (char)std::tolower(it);
+			auto package = this->importAsset(gameObject);
+			if (package.is_object())
+				this->removeUpdateList(package["uuid"].get<std::string>());
 
-				if (ext == u8".pmx")
-				{
-					auto package = this->importAsset(assetPath);
-					if (package.is_object())
-					{
-						this->removeUpdateList(uuid);
-
-						assetGuidList_[gameObject] = uuid;
-						return package;
-					}
-				}
-				else if (ext == u8".abc")
-				{
-					auto modelPath = std::filesystem::path(this->modelAsset_->getAssertPath()).append(uuid);
-					auto packagePath = std::filesystem::path(modelPath).append("package.json");
-
-					nlohmann::json package;
-					package["uuid"] = uuid;
-					package["path"] = (char*)assetPath.u8string().c_str();
-
-					auto abc = gameObject->getComponent<MeshAnimationComponent>();
-					if (abc)
-					{
-						auto& materials = abc->getMaterials();
-
-						for (auto& pair : materials)
-						{
-							auto materialPackage = this->createAsset(pair.second);
-							if (materialPackage.is_object())
-							{
-								nlohmann::json materialJson;
-								materialJson["data"] = materialPackage["uuid"];
-								materialJson["name"] = pair.first;
-
-								package["materials"].push_back(materialJson);
-							}
-						}
-					}
-
-					std::filesystem::create_directories(modelPath);
-
-					std::ofstream ifs(packagePath, std::ios_base::binary);
-					if (ifs)
-					{
-						auto dump = package.dump();
-						ifs.write(dump.c_str(), dump.size());
-					}
-
-					this->removeUpdateList(uuid);
-
-					assetGuidList_[gameObject] = uuid;
-					return package;
-				}
-				else
-				{
-					nlohmann::json package;
-					package["uuid"] = uuid;
-					package["path"] = (char*)assetPath.u8string().c_str();
-
-					if (package.is_object())
-					{
-						auto modelPath = this->modelAsset_->getAssertPath();
-						auto packagePath = std::filesystem::path(modelPath).append(uuid).append("package.json");
-
-						std::filesystem::create_directories(packagePath.parent_path());
-
-						std::ofstream ifs(packagePath, std::ios_base::binary);
-						if (ifs)
-						{
-							auto dump = package.dump();
-							ifs.write(dump.c_str(), dump.size());
-						}
-
-						this->removeUpdateList(uuid);
-
-						assetGuidList_[gameObject] = uuid;
-						return package;
-					}
-				}
-			}
+			return package;
 		}
 
 		return nlohmann::json();
@@ -842,7 +765,8 @@ namespace octoon
 	AssetBundle::getPackage(const std::shared_ptr<RttiObject>& asset) noexcept
 	{
 		auto guid = this->getPackageGuid(asset);
-		if (guid.empty()) return nlohmann::json();
+		if (guid.empty())
+			return nlohmann::json();
 		return this->getPackage(guid);
 	}
 

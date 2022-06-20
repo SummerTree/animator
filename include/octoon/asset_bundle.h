@@ -5,6 +5,7 @@
 #include <octoon/texture/texture.h>
 #include <octoon/material/material.h>
 #include <octoon/animation/animation.h>
+#include <octoon/pmx_loader.h>
 #include <octoon/runtime/uuid.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
@@ -23,6 +24,11 @@ namespace octoon
 		void close() noexcept;
 
 		nlohmann::json importAsset(const std::filesystem::path& path) noexcept(false);
+		nlohmann::json importAsset(const std::shared_ptr<Texture>& path, std::string_view ext) noexcept(false);
+		nlohmann::json importAsset(const std::shared_ptr<Animation>& animation) noexcept(false);
+		nlohmann::json importAsset(const std::shared_ptr<Material>& material) noexcept(false);
+		nlohmann::json importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false);
+		nlohmann::json importAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false);
 
 		nlohmann::json createAsset(const std::shared_ptr<Texture>& texture) noexcept(false);
 		nlohmann::json createAsset(const std::shared_ptr<Animation>& animation) noexcept(false);
@@ -69,7 +75,6 @@ namespace octoon
 	private:
 		nlohmann::json importHDRi(const std::filesystem::path& path) noexcept(false);
 		nlohmann::json importTexture(const std::filesystem::path& path) noexcept(false);
-		nlohmann::json importTexture(const std::shared_ptr<Texture>& path, std::string_view ext) noexcept(false);
 		nlohmann::json importPMX(const std::filesystem::path& path) noexcept(false);
 		nlohmann::json importVMD(const std::filesystem::path& path) noexcept(false);
 		nlohmann::json importMaterial(const std::filesystem::path& path) noexcept(false);
