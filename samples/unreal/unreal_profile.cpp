@@ -150,26 +150,26 @@ namespace unreal
 				nlohmann::json json;
 				json["version"] = UNREAL_VERSION;
 
-				auto assetBundle = std::make_shared<octoon::AssetBundle>();
-				assetBundle->open(std::filesystem::path(path_).append("Assets"));
+				if (!this->ab)
+					this->ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).append("Assets"));
 
 				this->path = path_;
-				this->physicsModule->save(json["physics"], assetBundle);
-				this->encodeModule->save(json["encode"], assetBundle);
-				this->playerModule->save(json["time"], assetBundle);
-				this->soundModule->save(json["sound"], assetBundle);
-				this->entitiesModule->save(json["entities"], assetBundle);
-				this->offlineModule->save(json["offline"], assetBundle);
-				this->cameraModule->save(json["camera"], assetBundle);
-				this->recordModule->save(json["canvas"], assetBundle);
-				this->markModule->save(json["mark"], assetBundle);
-				this->mainLightModule->save(json["mainLight"], assetBundle);
-				this->environmentLightModule->save(json["environmentLight"], assetBundle);
-				this->resourceModule->save(json["resource"], assetBundle);
-				this->selectorModule->save(json["drag"], assetBundle);
-				this->gridModule->save(json["grid"], assetBundle);
+				this->physicsModule->save(json["physics"], ab);
+				this->encodeModule->save(json["encode"], ab);
+				this->playerModule->save(json["time"], ab);
+				this->soundModule->save(json["sound"], ab);
+				this->entitiesModule->save(json["entities"], ab);
+				this->offlineModule->save(json["offline"], ab);
+				this->cameraModule->save(json["camera"], ab);
+				this->recordModule->save(json["canvas"], ab);
+				this->markModule->save(json["mark"], ab);
+				this->mainLightModule->save(json["mainLight"], ab);
+				this->environmentLightModule->save(json["environmentLight"], ab);
+				this->resourceModule->save(json["resource"], ab);
+				this->selectorModule->save(json["drag"], ab);
+				this->gridModule->save(json["grid"], ab);
 
-				assetBundle->saveAssets();
+				this->ab->saveAssets();
 
 				auto string = json.dump();
 				stream.write(string.c_str(), string.size());

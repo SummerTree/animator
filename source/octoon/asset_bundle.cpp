@@ -440,27 +440,28 @@ namespace octoon
 	std::shared_ptr<RttiObject>
 	AssetBundle::loadAsset(std::string_view uuid, const Rtti& type) noexcept(false)
 	{
-		std::shared_ptr<RttiObject> asset;
-		if (type.isDerivedFrom(Material::getRtti()))
-			asset = this->loadAssetAtPackage<Material>(materialAsset_->getPackage(uuid));
-		else if (type.isDerivedFrom(GameObject::getRtti()))
-			asset = this->loadAssetAtPackage<GameObject>(modelAsset_->getPackage(uuid));
-		else if (type.isDerivedFrom(Animation::getRtti()))
-			asset = this->loadAssetAtPackage<Animation>(motionAsset_->getPackage(uuid));
+		if (type.isDerivedFrom(Material::getRtti()) && materialAsset_->hasPackage(uuid))
+			return this->loadAssetAtPackage<Material>(materialAsset_->getPackage(uuid));
+		else if (type.isDerivedFrom(GameObject::getRtti()) && modelAsset_->hasPackage(uuid))
+			return this->loadAssetAtPackage<GameObject>(modelAsset_->getPackage(uuid));
+		else if (type.isDerivedFrom(Animation::getRtti()) && motionAsset_->hasPackage(uuid))
+			return this->loadAssetAtPackage<Animation>(motionAsset_->getPackage(uuid));
 		else if (type.isDerivedFrom(Texture::getRtti()))
-			asset = this->loadAssetAtPackage<Texture>(textureAsset_->hasPackage(uuid) ? textureAsset_->getPackage(uuid) : hdriAsset_->getPackage(uuid));
-
-		if (!asset)
 		{
-			for (auto& ab : assetBundles_)
-			{
-				asset = ab->loadAsset(uuid, type);
-				if (asset)
-					return asset;
-			}
+			if (hdriAsset_->hasPackage(uuid))
+				return this->loadAssetAtPackage<Texture>(hdriAsset_->getPackage(uuid));
+			else if (textureAsset_->hasPackage(uuid))
+				return  this->loadAssetAtPackage<Texture>(textureAsset_->getPackage(uuid));
 		}
 
-		return asset;
+		for (auto& ab : assetBundles_)
+		{
+			auto asset = ab->loadAsset(uuid, type);
+			if (asset)
+				return asset;
+		}
+
+		return nullptr;
 	}
 
 	std::shared_ptr<RttiObject>
@@ -506,36 +507,25 @@ namespace octoon
 	{
 		if (texture)
 		{
-			if (this->assetPackageCache_.contains(texture))
-				return this->assetPackageCache_[texture];
-
 			auto uuid = this->getPackageGuid(texture);
 			if (!uuid.empty())
 			{
 				if (this != AssetBundle::instance())
 				{
-					for (auto& index : AssetBundle::instance()->getTextureList())
-					{
-						if (index == uuid)
-							return AssetBundle::instance()->getPackage(uuid);
-					}
+					if (AssetBundle::instance()->textureAsset_->hasPackage(uuid))
+						return AssetBundle::instance()->getPackage(uuid);
 				}
 
-				if (textureAsset_->hasPackage(uuid))
+				if (this->hasPackage(uuid))
 				{
 					if (!AssetDatabase::instance()->needUpdate(uuid))
-						return textureAsset_->getPackage(uuid);
-				}
-
-				if (hdriAsset_->hasPackage(uuid))
-				{
-					if (!AssetDatabase::instance()->needUpdate(uuid))
-						return hdriAsset_->getPackage(uuid);
+						return this->getPackage(uuid);
 				}
 			}
-
-			if (uuid.empty())
+			else
+			{
 				uuid = make_guid();
+			}
 
 			auto filepath = AssetDatabase::instance()->getAssetPath(texture);
 			auto rootPath = std::filesystem::path(hdriAsset_->getAssertPath()).append(uuid);
@@ -560,8 +550,7 @@ namespace octoon
 			AssetDatabase::instance()->removeUpdateList(uuid);
 			hdriAsset_->addIndex(package["uuid"].get<std::string>());
 
-			AssetBundle::instance()->assetGuidList_[texture] = uuid;
-			assetPackageCache_[texture] = package;
+			this->assetGuidList_[texture] = uuid;
 
 			return package;
 		}
@@ -574,9 +563,6 @@ namespace octoon
 	{
 		if (animation)
 		{
-			if (this->assetPackageCache_.contains(animation))
-				return this->assetPackageCache_[animation];
-
 			auto uuid = this->getPackageGuid(animation);
 			if (!uuid.empty())
 			{
@@ -586,15 +572,16 @@ namespace octoon
 						return AssetBundle::instance()->getPackage(uuid);
 				}
 
-				if (motionAsset_->hasPackage(uuid))
+				if (this->hasPackage(uuid))
 				{
 					if (!AssetDatabase::instance()->needUpdate(uuid))
-						return motionAsset_->getPackage(uuid);
+						return this->getPackage(uuid);
 				}
 			}
-
-			if (uuid.empty())
+			else
+			{
 				uuid = make_guid();
+			}
 
 			auto rootPath = std::filesystem::path(motionAsset_->getAssertPath()).append(uuid);
 			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(animation) + ".vmd");
@@ -618,8 +605,7 @@ namespace octoon
 			AssetDatabase::instance()->removeUpdateList(uuid);
 			motionAsset_->addIndex(package["uuid"].get<std::string>());
 
-			AssetBundle::instance()->assetGuidList_[animation] = uuid;
-			assetPackageCache_[animation] = package;
+			this->assetGuidList_[animation] = uuid;
 
 			return package;
 		}
@@ -632,9 +618,6 @@ namespace octoon
 	{
 		if (material)
 		{
-			if (this->assetPackageCache_.contains(material))
-				return this->assetPackageCache_[material];
-
 			auto uuid = this->getPackageGuid(material);
 			if (!uuid.empty())
 			{
@@ -644,14 +627,15 @@ namespace octoon
 						return AssetBundle::instance()->getPackage(uuid);
 				}
 
-				for (auto& index : materialAsset_->getIndexList())
+				if (this->hasPackage(uuid))
 				{
-					if (index == uuid)
-					{
-						if (!AssetDatabase::instance()->needUpdate(uuid))
-							return materialAsset_->getPackage(uuid);
-					}
+					if (!AssetDatabase::instance()->needUpdate(uuid))
+						return this->getPackage(uuid);
 				}
+			}
+			else
+			{
+				uuid = make_guid();
 			}
 
 			auto standardMaterial = material->downcast<MeshStandardMaterial>();
@@ -684,9 +668,6 @@ namespace octoon
 			if (standardMaterial->getLightMap())
 				this->createAsset(standardMaterial->getLightMap());
 
-			if (uuid.empty())
-				uuid = make_guid();
-
 			auto rootPath = std::filesystem::path(materialAsset_->getAssertPath()).append(uuid);
 			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(material) + ".mat");
 
@@ -709,8 +690,7 @@ namespace octoon
 			AssetDatabase::instance()->removeUpdateList(uuid);
 			materialAsset_->addIndex(package["uuid"].get<std::string>());
 
-			AssetBundle::instance()->assetGuidList_[material] = uuid;
-			assetPackageCache_[material] = package;
+			this->assetGuidList_[material] = uuid;
 
 			return package;
 		}
@@ -723,9 +703,6 @@ namespace octoon
 	{
 		if (gameObject)
 		{
-			if (this->assetPackageCache_.contains(gameObject))
-				return this->assetPackageCache_[gameObject];
-
 			auto uuid = this->getPackageGuid(gameObject);
 			if (!uuid.empty())
 			{
@@ -734,6 +711,10 @@ namespace octoon
 					if (AssetBundle::instance()->modelAsset_->hasPackage(uuid))
 						return AssetBundle::instance()->getPackage(uuid);
 				}
+			}
+			else
+			{
+				uuid = make_guid();
 			}
 
 			auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
@@ -760,7 +741,6 @@ namespace octoon
 						AssetDatabase::instance()->removeUpdateList(uuid);
 
 						assetGuidList_[gameObject] = uuid;
-						assetPackageCache_[gameObject] = package;
 						return package;
 					}
 				}
@@ -806,7 +786,6 @@ namespace octoon
 						AssetDatabase::instance()->removeUpdateList(uuid);
 
 						assetGuidList_[gameObject] = uuid;
-						assetPackageCache_[gameObject] = package;
 						return package;
 					}
 				}
@@ -833,7 +812,6 @@ namespace octoon
 						AssetDatabase::instance()->removeUpdateList(uuid);
 
 						assetGuidList_[gameObject] = uuid;
-						assetPackageCache_[gameObject] = package;
 						return package;
 					}
 				}
@@ -935,7 +913,6 @@ namespace octoon
 	AssetBundle::unload() noexcept
 	{
 		this->assetCache_.clear();
-		this->assetPackageCache_.clear();
 		this->assetBundles_.clear();
 	}
 
@@ -973,16 +950,11 @@ namespace octoon
 	std::shared_ptr<AssetBundle>
 	AssetBundle::loadFromFile(const std::filesystem::path& path) noexcept(false)
 	{
-		if (std::filesystem::exists(path))
-		{
-			auto ab = std::make_shared<AssetBundle>();
-			ab->open(path);
-			assetBundles_.push_back(ab);
+		auto ab = std::make_shared<AssetBundle>();
+		ab->open(path);
+		assetBundles_.push_back(ab);
 
-			return ab;
-		}
-
-		return nullptr;
+		return ab;
 	}
 
 	std::vector<std::shared_ptr<AssetBundle>>

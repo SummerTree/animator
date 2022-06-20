@@ -93,7 +93,6 @@ namespace octoon
 
 		std::map<std::string, std::weak_ptr<RttiObject>> assetCache_;
 		std::map<std::weak_ptr<const RttiObject>, std::string, std::owner_less<std::weak_ptr<const RttiObject>>> assetGuidList_;
-		std::map<std::weak_ptr<RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<RttiObject>>> assetPackageCache_;
 
 		std::vector<std::shared_ptr<AssetBundle>> assetBundles_;
 	};
