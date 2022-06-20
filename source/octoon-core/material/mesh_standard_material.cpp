@@ -729,4 +729,9 @@ namespace octoon
 
 		return instance;
 	}
+
+	void
+	MeshStandardMaterial::save(const std::filesystem::path& path)
+	{
+	}
 }

@@ -221,7 +221,7 @@
     </message>
     <message>
         <location filename="../views/environment_dock.cpp" line="56"/>
-        <location filename="../views/environment_dock.cpp" line="317"/>
+        <location filename="../views/environment_dock.cpp" line="321"/>
         <source>Untitled</source>
         <translation>未命名</translation>
     </message>
@@ -266,18 +266,18 @@
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="457"/>
-        <location filename="../views/environment_dock.cpp" line="490"/>
+        <location filename="../views/environment_dock.cpp" line="461"/>
+        <location filename="../views/environment_dock.cpp" line="494"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="471"/>
+        <location filename="../views/environment_dock.cpp" line="475"/>
         <source>Import Image</source>
         <translation>加载图像</translation>
     </message>
     <message>
-        <location filename="../views/environment_dock.cpp" line="471"/>
+        <location filename="../views/environment_dock.cpp" line="475"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>

@@ -33,10 +33,6 @@ namespace unreal
 		{
 			for (auto& it : reader["scene"])
 			{
-				octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit;
-				if (it.find("materials") != it.end())
-					flags = flags & ~octoon::PMXLoadFlagBits::MaterialBit;
-
 				auto object = octoon::AssetBundle::instance()->loadAsset<octoon::GameObject>(it["model"].get<std::string>());
 				if (object)
 				{

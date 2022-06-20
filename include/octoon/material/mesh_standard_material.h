@@ -97,6 +97,8 @@ namespace octoon
 
 		void copy(const MeshStandardMaterial& material);
 
+		void save(const std::filesystem::path& path);
+
 		std::shared_ptr<Material> clone() const noexcept override;
 
 	private:

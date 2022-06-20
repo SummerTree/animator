@@ -3,6 +3,7 @@
 
 #include <octoon/math/math.h>
 #include <octoon/io/iostream.h>
+#include <octoon/runtime/rtti_object.h>
 #include <codecvt>
 #include <filesystem>
 
@@ -459,8 +460,9 @@ namespace octoon
 		std::vector<std::uint8_t> pinVertexIndices;
 	};
 
-	class OCTOON_EXPORT PMX final
+	class OCTOON_EXPORT PMX final : public RttiObject
 	{
+		OctoonDeclareSubClass(PMX, RttiObject)
 	public:
 		PmxHeader header;
 		PmxDescription description;

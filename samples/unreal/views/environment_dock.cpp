@@ -266,19 +266,23 @@ namespace unreal
 		{
 			if (texture && this->isVisible())
 			{
-				auto package = octoon::AssetDatabase::instance()->getPackage(texture);
-				if (package.is_object())
+				auto uuid = octoon::AssetBundle::instance()->getPackageGuid(texture);
+				if (!uuid.empty())
 				{
-					auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
-					if (thumbnailPath->toolTip() != name)
+					auto package = octoon::AssetBundle::instance()->getPackage(uuid);
+					if (package.is_object())
 					{
-						auto previewImage = std::make_shared<QImage>();
-						if (!previewImage->load(QString::fromStdString(package["preview"].get<nlohmann::json::string_t>())))
-							throw std::runtime_error("Cannot generate image for preview");
+						auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
+						if (thumbnailPath->toolTip() != name)
+						{
+							auto previewImage = std::make_shared<QImage>();
+							if (!previewImage->load(QString::fromStdString(package["preview"].get<nlohmann::json::string_t>())))
+								throw std::runtime_error("Cannot generate image for preview");
 
-						this->setPreviewImage(QFileInfo(name).fileName(), previewImage);
-						this->setThumbnailImage(name, *previewImage);
-						this->updatePreviewImage();
+							this->setPreviewImage(QFileInfo(name).fileName(), previewImage);
+							this->setThumbnailImage(name, *previewImage);
+							this->updatePreviewImage();
+						}
 					}
 				}
 				else

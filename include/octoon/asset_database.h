@@ -23,11 +23,11 @@ namespace octoon
 		AssetDatabase() noexcept;
 		virtual ~AssetDatabase() noexcept;
 
-		nlohmann::json createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& outputPath) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& outputPath) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& outputPath) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<GameObject>& object, const std::filesystem::path& outputPath) noexcept(false);
-		nlohmann::json createAsset(const PMX& pmx, const std::filesystem::path& outputPath) noexcept(false);
+		void createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& outputPath) noexcept(false);
+		void createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& outputPath) noexcept(false);
+		void createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& outputPath) noexcept(false);
+		void createAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& outputPath) noexcept(false);
+		void createAsset(const std::shared_ptr<GameObject>& object, const std::filesystem::path& outputPath) noexcept(false);
 
 		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) noexcept;
 		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept;
@@ -35,25 +35,12 @@ namespace octoon
 		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) noexcept;
 		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
-		nlohmann::json getPackage(std::string_view uuid, const std::filesystem::path& outputPath) noexcept;
-		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) const noexcept(false);
-
-		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path, std::string_view uuid) noexcept(false);
-		std::shared_ptr<RttiObject> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
+		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path) noexcept(false);
 
 		template<typename T>
-		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& path, std::string_view uuid = make_guid()) noexcept(false)
+		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
 		{
-			auto asset = loadAssetAtPath(path, uuid);
-			if (asset)
-				return asset->downcast_pointer<T>();
-			return nullptr;
-		}
-
-		template<typename T, typename = std::enable_if_t<std::is_base_of<RttiObject, T>::value>>
-		std::shared_ptr<T> loadAssetAtPackage(const nlohmann::json& package) noexcept(false)
-		{
-			auto asset = loadAssetAtPackage(package, *T::getRtti());
+			auto asset = loadAssetAtPath(path);
 			if (asset)
 				return asset->downcast_pointer<T>();
 			return nullptr;
@@ -66,14 +53,15 @@ namespace octoon
 		const std::set<std::string>& getUpdateList() const noexcept;
 
 	private:
+		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
+
+	private:
 		AssetDatabase(const AssetDatabase&) = delete;
 		AssetDatabase& operator=(const AssetDatabase&) = delete;
 
 	private:
 		std::set<std::string> updateList_;
-		std::map<std::string, nlohmann::json> packageList_;
 
-		std::map<std::weak_ptr<const RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<const RttiObject>>> assetList_;
 		std::map<std::weak_ptr<const RttiObject>, std::string, std::owner_less<std::weak_ptr<const RttiObject>>> assetGuidList_;
 		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> assetPathList_;
 	};

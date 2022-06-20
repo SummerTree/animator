@@ -5,6 +5,7 @@
 #include <octoon/texture/texture.h>
 #include <octoon/material/material.h>
 #include <octoon/animation/animation.h>
+#include <octoon/runtime/uuid.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
 
@@ -20,18 +21,19 @@ namespace octoon
 		void open(const std::filesystem::path& assetPath) noexcept(false);
 		void close() noexcept;
 
-		void unload() noexcept;
-		void saveAssets() noexcept(false);
-
-		nlohmann::json importAsset(const std::filesystem::path& path, bool generateMipmap = false) noexcept(false);
+		nlohmann::json importAsset(const std::filesystem::path& path) noexcept(false);
 
 		nlohmann::json createAsset(const std::shared_ptr<Texture>& texture) noexcept(false);
 		nlohmann::json createAsset(const std::shared_ptr<Animation>& animation) noexcept(false);
 		nlohmann::json createAsset(const std::shared_ptr<Material>& material) noexcept(false);
 		nlohmann::json createAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false);
 
+		bool hasPackage(std::string_view uuid) noexcept;
+
 		nlohmann::json getPackage(std::string_view uuid) noexcept;
-		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) const noexcept(false);
+		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) noexcept;
+
+		std::string getPackageGuid(const std::shared_ptr<RttiObject>& asset) const noexcept;
 
 		nlohmann::json& getModelList() const noexcept;
 		nlohmann::json& getMotionList() const noexcept;
@@ -39,6 +41,8 @@ namespace octoon
 		nlohmann::json& getHDRiList() const noexcept;
 		nlohmann::json& getMaterialList() const noexcept;
 
+		void unload() noexcept;
+		void saveAssets() noexcept(false);
 		void removeAsset(std::string_view uuid) noexcept(false);
 
 		std::shared_ptr<RttiObject> loadAsset(std::string_view uuid, const Rtti& rtti) noexcept(false);
@@ -56,6 +60,25 @@ namespace octoon
 		std::vector<std::shared_ptr<AssetBundle>> getAllLoadedAssetBundles() const noexcept;
 
 	private:
+		nlohmann::json importHDRi(const std::filesystem::path& path) noexcept(false);
+		nlohmann::json importTexture(const std::filesystem::path& path) noexcept(false);
+		nlohmann::json importTexture(const std::shared_ptr<Texture>& path, std::string_view ext, std::string_view uuid = make_guid()) noexcept(false);
+		nlohmann::json importPMX(const std::filesystem::path& path) noexcept(false);
+		nlohmann::json importVMD(const std::filesystem::path& path) noexcept(false);
+		nlohmann::json importMaterial(const std::filesystem::path& path) noexcept(false);
+
+		std::shared_ptr<RttiObject> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
+
+		template<typename T, typename = std::enable_if_t<std::is_base_of<RttiObject, T>::value>>
+		std::shared_ptr<T> loadAssetAtPackage(const nlohmann::json& package) noexcept(false)
+		{
+			auto asset = loadAssetAtPackage(package, *T::getRtti());
+			if (asset)
+				return asset->downcast_pointer<T>();
+			return nullptr;
+		}
+
+	private:
 		AssetBundle(const AssetBundle&) = delete;
 		AssetBundle& operator=(const AssetBundle&) = delete;
 
@@ -69,6 +92,7 @@ namespace octoon
 		std::unique_ptr<AssetImporter> hdriAsset_;
 
 		std::map<std::string, std::weak_ptr<RttiObject>> assetCache_;
+		std::map<std::weak_ptr<const RttiObject>, std::string, std::owner_less<std::weak_ptr<const RttiObject>>> assetGuidList_;
 		std::map<std::weak_ptr<RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<RttiObject>>> assetPackageCache_;
 
 		std::vector<std::shared_ptr<AssetBundle>> assetBundles_;

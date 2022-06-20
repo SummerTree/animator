@@ -17,18 +17,13 @@ namespace octoon
 		virtual void close() noexcept;
 
 		virtual bool hasPackage(std::string_view uuid) const noexcept;
-		virtual bool hasPackage(const std::shared_ptr<RttiObject>& asset) const noexcept;
 
 		virtual nlohmann::json getPackage(std::string_view uuid) noexcept;
-		virtual nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) const noexcept(false);
 
 		virtual void removeAsset(std::string_view uuid) noexcept(false);
 
 		virtual nlohmann::json& getIndexList() noexcept;
 		virtual const nlohmann::json& getIndexList() const noexcept;
-
-		virtual std::string getPackagePath(const std::shared_ptr<RttiObject>& asset) const noexcept;
-		virtual std::string getPackageGuid(const std::shared_ptr<RttiObject>& asset) const noexcept;
 
 		void addIndex(const std::string& uuid)
 		{
@@ -40,7 +35,6 @@ namespace octoon
 		}
 
 		virtual void saveAssets() const noexcept(false);
-		virtual void clearCache() noexcept;
 
 	private:
 		nlohmann::json getPackageIndices(const std::filesystem::path& path) noexcept(false);
@@ -51,9 +45,7 @@ namespace octoon
 		nlohmann::json indexList_;
 
 		std::map<std::string, nlohmann::json> packageList_;
-
-		std::map<std::weak_ptr<RttiObject>, nlohmann::json, std::owner_less<std::weak_ptr<RttiObject>>> assetList_;
-		std::map<std::weak_ptr<RttiObject>, std::string, std::owner_less<std::weak_ptr<RttiObject>>> assetPathList_;
+		std::map<std::string, std::filesystem::path> uuidToPathList_;
 	};
 }
 

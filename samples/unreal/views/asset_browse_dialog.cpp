@@ -337,7 +337,7 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString(), true);
+					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
