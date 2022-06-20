@@ -121,7 +121,6 @@ namespace octoon
 			}
 
 			this->textureAsset_->addIndex(std::string(uuid));
-			this->assetGuidList_[texture] = uuid;
 
 			return package;
 		}
@@ -161,7 +160,6 @@ namespace octoon
 			}
 
 			this->motionAsset_->addIndex(uuid);
-			this->assetGuidList_[animation] = uuid;
 
 			return package;
 		}
@@ -240,7 +238,6 @@ namespace octoon
 			}
 
 			this->materialAsset_->addIndex(package["uuid"]);
-			this->assetGuidList_[material] = uuid;
 
 			return package;
 		}
@@ -297,7 +294,6 @@ namespace octoon
 			}
 
 			this->modelAsset_->addIndex(uuid);
-			this->assetGuidList_[pmx] = uuid;
 
 			return package;
 		}
@@ -363,7 +359,6 @@ namespace octoon
 						ifs.write(dump.c_str(), dump.size());
 					}
 
-					assetGuidList_[gameObject] = uuid;
 					return package;
 				}
 				else
@@ -381,7 +376,6 @@ namespace octoon
 						ifs.write(dump.c_str(), dump.size());
 					}
 
-					assetGuidList_[gameObject] = uuid;
 					return package;
 				}
 			}
@@ -450,7 +444,6 @@ namespace octoon
 			}
 
 			this->hdriAsset_->addIndex(uuid);
-			this->assetGuidList_[texture] = uuid;
 
 			return package;
 		}
@@ -598,10 +591,7 @@ namespace octoon
 				asset = AssetDatabase::instance()->loadAssetAtPath<GameObject>(filepath);
 
 			if (asset)
-			{
 				assetCache_[uuid] = asset;
-				assetGuidList_[asset] = uuid;
-			}
 
 			return asset;
 		}
@@ -614,7 +604,7 @@ namespace octoon
 	{
 		if (texture)
 		{
-			auto uuid = this->getPackageGuid(texture);
+			auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
 			if (!uuid.empty())
 			{
 				if (this != AssetBundle::instance())
@@ -644,7 +634,7 @@ namespace octoon
 	{
 		if (animation)
 		{
-			auto uuid = this->getPackageGuid(animation);
+			auto uuid = AssetDatabase::instance()->getAssetGuid(animation);
 			if (!uuid.empty())
 			{
 				if (this != AssetBundle::instance())
@@ -672,7 +662,7 @@ namespace octoon
 	{
 		if (material)
 		{
-			auto uuid = this->getPackageGuid(material);
+			auto uuid = AssetDatabase::instance()->getAssetGuid(material);
 			if (!uuid.empty())
 			{
 				if (this != AssetBundle::instance())
@@ -700,7 +690,7 @@ namespace octoon
 	{
 		if (gameObject)
 		{
-			auto uuid = this->getPackageGuid(gameObject);
+			auto uuid = AssetDatabase::instance()->getAssetGuid(gameObject);
 			if (!uuid.empty())
 			{
 				if (this != AssetBundle::instance())
@@ -764,26 +754,10 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::getPackage(const std::shared_ptr<RttiObject>& asset) noexcept
 	{
-		auto guid = this->getPackageGuid(asset);
+		auto guid = AssetDatabase::instance()->getAssetGuid(asset);
 		if (guid.empty())
 			return nlohmann::json();
 		return this->getPackage(guid);
-	}
-
-	std::string
-	AssetBundle::getPackageGuid(const std::shared_ptr<RttiObject>& asset) const noexcept
-	{
-		if (assetGuidList_.contains(asset))
-			return assetGuidList_.at(asset);
-
-		for (auto& ab : assetBundles_)
-		{
-			auto uuid = ab->getPackageGuid(asset);
-			if (!uuid.empty())
-				return uuid;
-		}
-
-		return std::string();
 	}
 
 	nlohmann::json&
@@ -820,7 +794,6 @@ namespace octoon
 	AssetBundle::unload() noexcept
 	{
 		this->assetCache_.clear();
-		this->assetBundles_.clear();
 	}
 
 	void
