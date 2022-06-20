@@ -45,6 +45,7 @@ namespace octoon
 		nlohmann::json& getTextureList() const noexcept;
 		nlohmann::json& getHDRiList() const noexcept;
 		nlohmann::json& getMaterialList() const noexcept;
+		nlohmann::json& getPrefabList() const noexcept;
 
 		void unload() noexcept;
 		void saveAssets() noexcept(false);
@@ -100,6 +101,7 @@ namespace octoon
 		std::unique_ptr<AssetImporter> textureAsset_;
 		std::unique_ptr<AssetImporter> materialAsset_;
 		std::unique_ptr<AssetImporter> hdriAsset_;
+		std::unique_ptr<AssetImporter> prefabAsset_;
 
 		std::map<std::string, std::weak_ptr<RttiObject>> assetCache_;
 		std::set<std::weak_ptr<RttiObject>, std::owner_less<std::weak_ptr<const RttiObject>>> updateList_;

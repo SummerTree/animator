@@ -326,7 +326,6 @@ namespace octoon
 
 			nlohmann::json metadata;
 			metadata["uuid"] = this->getAssetGuid(gameObject);
-			metadata["visible"] = true;
 			metadata["name"] = gameObject->getName();
 			metadata["path"] = (char*)path.u8string().c_str();
 
