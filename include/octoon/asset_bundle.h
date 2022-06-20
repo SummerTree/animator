@@ -64,11 +64,11 @@ namespace octoon
 		std::shared_ptr<AssetBundle> loadFromFile(const std::filesystem::path& path) noexcept(false);
 		std::vector<std::shared_ptr<AssetBundle>> getAllLoadedAssetBundles() const noexcept;
 
-		bool needUpdate(std::string_view uuid) const noexcept;
-		void addUpdateList(std::string_view uuid) noexcept(false);
-		void removeUpdateList(std::string_view uuid) noexcept(false);
+		bool needUpdate() const noexcept;
+		bool needUpdate(const std::shared_ptr<RttiObject>& object) const noexcept;
+		void addUpdateList(const std::shared_ptr<RttiObject>& object) noexcept(false);
+		void removeUpdateList(const std::shared_ptr<RttiObject>& object) noexcept(false);
 		void clearUpdate() noexcept;
-		const std::set<std::string>& getUpdateList() const noexcept;
 
 	private:
 		nlohmann::json importHDRi(const std::filesystem::path& path) noexcept(false);
@@ -95,8 +95,6 @@ namespace octoon
 	private:
 		std::filesystem::path assetPath_;
 
-		std::set<std::string> updateList_;
-
 		std::unique_ptr<AssetImporter> modelAsset_;
 		std::unique_ptr<AssetImporter> motionAsset_;
 		std::unique_ptr<AssetImporter> textureAsset_;
@@ -104,6 +102,7 @@ namespace octoon
 		std::unique_ptr<AssetImporter> hdriAsset_;
 
 		std::map<std::string, std::weak_ptr<RttiObject>> assetCache_;
+		std::set<std::weak_ptr<RttiObject>, std::owner_less<std::weak_ptr<const RttiObject>>> updateList_;
 
 		std::vector<std::shared_ptr<AssetBundle>> assetBundles_;
 	};

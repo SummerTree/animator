@@ -318,7 +318,7 @@ namespace unreal
 					title_->setText(tr("Material Properties"));
 					
 					if (profile_->ab)
-						profile_->ab->addUpdateList(uuid);
+						profile_->ab->addUpdateList(material);
 
 					selectedItem_ = item;
 					materialList_->hide();

@@ -613,7 +613,7 @@ namespace octoon
 						return AssetBundle::instance()->textureAsset_->getPackage(uuid);
 				}
 
-				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
+				if (this->hasPackage(uuid) && !this->needUpdate(texture))
 					return this->getPackage(uuid);
 			}
 
@@ -621,7 +621,7 @@ namespace octoon
 
 			auto package = this->importAsset(texture, (char*)filepath.extension().u8string().c_str());
 			if (package.is_object())
-				this->removeUpdateList(package["uuid"].get<std::string>());
+				this->removeUpdateList(texture);
 
 			return package;
 		}
@@ -643,13 +643,13 @@ namespace octoon
 						return AssetBundle::instance()->motionAsset_->getPackage(uuid);
 				}
 
-				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
+				if (this->hasPackage(uuid) && !this->needUpdate(animation))
 					return this->getPackage(uuid);
 			}
 
 			auto package = this->importAsset(animation);
 			if (package.is_object())
-				this->removeUpdateList(package["uuid"].get<std::string>());
+				this->removeUpdateList(animation);
 
 			return package;
 		}
@@ -671,13 +671,13 @@ namespace octoon
 						return AssetBundle::instance()->materialAsset_->getPackage(uuid);
 				}
 
-				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
+				if (this->hasPackage(uuid) && !this->needUpdate(material))
 					return this->getPackage(uuid);
 			}
 
 			auto package = this->importAsset(material);
 			if (package.is_object())
-				this->removeUpdateList(package["uuid"].get<std::string>());
+				this->removeUpdateList(material);
 
 			return package;
 		}
@@ -699,7 +699,7 @@ namespace octoon
 						return AssetBundle::instance()->modelAsset_->getPackage(uuid);
 				}
 
-				if (this->hasPackage(uuid) && !this->needUpdate(uuid))
+				if (this->hasPackage(uuid) && !this->needUpdate(gameObject))
 					return this->getPackage(uuid);
 			}
 			else
@@ -709,7 +709,7 @@ namespace octoon
 
 			auto package = this->importAsset(gameObject);
 			if (package.is_object())
-				this->removeUpdateList(package["uuid"].get<std::string>());
+				this->removeUpdateList(gameObject);
 
 			return package;
 		}
@@ -799,6 +799,16 @@ namespace octoon
 	void
 	AssetBundle::saveAssets() noexcept(false)
 	{
+		for (auto& it : updateList_)
+		{
+			if (!it.expired())
+			{
+				auto item = it.lock();
+				if (item->isInstanceOf<Material>())
+					this->createAsset(item->downcast_pointer<Material>());
+			}
+		}
+
 		if (std::filesystem::exists(assetPath_))
 		{
 			this->modelAsset_->saveAssets();
@@ -844,21 +854,27 @@ namespace octoon
 	}
 
 	void
-	AssetBundle::addUpdateList(std::string_view uuid) noexcept(false)
+	AssetBundle::addUpdateList(const std::shared_ptr<RttiObject>& object) noexcept(false)
 	{
-		this->updateList_.insert(std::string(uuid));
+		this->updateList_.insert(object);
 	}
 
 	bool
-	AssetBundle::needUpdate(std::string_view uuid) const noexcept
+	AssetBundle::needUpdate() const noexcept
 	{
-		return this->updateList_.find(std::string(uuid)) != this->updateList_.end();
+		return !this->updateList_.empty();
+	}
+
+	bool
+	AssetBundle::needUpdate(const std::shared_ptr<RttiObject>& object) const noexcept
+	{
+		return this->updateList_.contains(object);
 	}
 
 	void
-	AssetBundle::removeUpdateList(std::string_view uuid) noexcept(false)
+	AssetBundle::removeUpdateList(const std::shared_ptr<RttiObject>& object) noexcept(false)
 	{
-		auto it = this->updateList_.find(std::string(uuid));
+		auto it = this->updateList_.find(object);
 		if (it != this->updateList_.end())
 			this->updateList_.erase(it);
 	}
@@ -867,11 +883,5 @@ namespace octoon
 	AssetBundle::clearUpdate() noexcept
 	{
 		this->updateList_.clear();
-	}
-
-	const std::set<std::string>&
-	AssetBundle::getUpdateList() const noexcept
-	{
-		return this->updateList_;
 	}
 }
