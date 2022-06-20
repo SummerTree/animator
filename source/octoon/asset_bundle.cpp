@@ -325,7 +325,7 @@ namespace octoon
 				{
 					return this->importAsset(assetPath);
 				}
-				else if (ext == u8".abc")
+				else
 				{
 					nlohmann::json package;
 					package["uuid"] = uuid;
@@ -349,23 +349,6 @@ namespace octoon
 							}
 						}
 					}
-
-					std::filesystem::create_directories(rootPath);
-
-					std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-					if (ifs)
-					{
-						auto dump = package.dump();
-						ifs.write(dump.c_str(), dump.size());
-					}
-
-					return package;
-				}
-				else
-				{
-					nlohmann::json package;
-					package["uuid"] = uuid;
-					package["path"] = (char*)assetPath.u8string().c_str();
 
 					std::filesystem::create_directories(rootPath);
 
