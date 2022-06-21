@@ -1,4 +1,5 @@
 #include <octoon/asset_preview.h>
+#include <octoon/asset_database.h>
 #include <octoon/texture/texture.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/animation/animation.h>
@@ -112,6 +113,21 @@ namespace octoon
 	std::shared_ptr<Texture>
 	AssetPreview::getAssetPreview(const std::shared_ptr<GameObject>& gameObject)
 	{
+		auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
+		if (!assetPath.empty())
+		{
+			auto ext = assetPath.extension().u8string();
+			for (auto& it : ext)
+				it = (char)std::tolower(it);
+
+			if (ext == u8".pmx")
+			{
+				auto pmx = std::make_shared<PMX>();
+				if (PMX::load(assetPath, *pmx))
+					return this->getAssetPreview(*pmx);
+			}
+		}
+
 		return nullptr;
 	}
 

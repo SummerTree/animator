@@ -472,11 +472,7 @@ namespace octoon
 		}
 		else if (ext == ".pmx")
 		{
-			octoon::PMXLoadFlags flags = octoon::PMXLoadFlagBits::AllBit;
-			/*if (it.find("materials") != it.end())
-				flags = flags & ~octoon::PMXLoadFlagBits::MaterialBit;*/
-
-			auto model = PMXLoader::load(path, flags);
+			auto model = PMXLoader::load(path, octoon::PMXLoadFlagBits::AllBit);
 			if (model)
 			{
 				auto metadata = this->loadMetadataAtPath(path);

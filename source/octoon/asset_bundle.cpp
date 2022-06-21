@@ -137,22 +137,11 @@ namespace octoon
 				return items;
 			}
 		}
-		else if (ext == u8".pmx")
+		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
 		{
-			auto pmx = std::make_shared<PMX>();
-			if (PMX::load(path, *pmx))
-			{
-				if (pmx->description.japanModelLength == 0)
-				{
-					auto filename = std::filesystem::path(path).filename().wstring();
-
-					pmx->description.japanModelName.resize(filename.size() + 1);
-					pmx->description.japanModelLength = static_cast<PmxUInt32>(pmx->description.japanModelName.size() * 2);
-					std::memcpy(pmx->description.japanModelName.data(), filename.data(), pmx->description.japanModelLength);
-				}
-
-				return this->importAsset(pmx);
-			}
+			auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(path);
+			if (gameObject)
+				return this->importAsset(gameObject);
 		}
 
 		return nlohmann::json();
@@ -532,6 +521,7 @@ namespace octoon
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
+			package["name"] = gameObject->getName();
 			package["path"] = (char*)outputPath.u8string().c_str();
 			package["preview"] = (char*)writePreview(gameObject, rootPath).u8string().c_str();	
 
@@ -558,22 +548,28 @@ namespace octoon
 	std::shared_ptr<RttiObject>
 	AssetBundle::loadAsset(std::string_view uuid, const Rtti& type) noexcept(false)
 	{
-		if (type.isDerivedFrom(Material::getRtti()) && materialAsset_->hasPackage(uuid))
-			return this->loadAssetAtPackage<Material>(materialAsset_->getPackage(uuid));
-		else if (type.isDerivedFrom(Animation::getRtti()) && motionAsset_->hasPackage(uuid))
-			return this->loadAssetAtPackage<Animation>(motionAsset_->getPackage(uuid));
+		if (type.isDerivedFrom(Material::getRtti()))
+		{
+			if (materialAsset_->hasPackage(uuid))
+				return this->loadAssetAtPackage<Material>(materialAsset_->getPackage(uuid));
+		}
+		else if (type.isDerivedFrom(Animation::getRtti()))
+		{
+			if (motionAsset_->hasPackage(uuid))
+				return this->loadAssetAtPackage<Animation>(motionAsset_->getPackage(uuid));
+		}
 		else if (type.isDerivedFrom(GameObject::getRtti()))
 		{
 			if (modelAsset_->hasPackage(uuid))
 				return this->loadAssetAtPackage(modelAsset_->getPackage(uuid), *PMX::getRtti())->downcast_pointer<GameObject>();
-			else if (prefabAsset_->hasPackage(uuid))
+			if (prefabAsset_->hasPackage(uuid))
 				return this->loadAssetAtPackage<GameObject>(prefabAsset_->getPackage(uuid));
 		}
 		else if (type.isDerivedFrom(Texture::getRtti()))
 		{
 			if (hdriAsset_->hasPackage(uuid))
 				return this->loadAssetAtPackage<Texture>(hdriAsset_->getPackage(uuid));
-			else if (textureAsset_->hasPackage(uuid))
+			if (textureAsset_->hasPackage(uuid))
 				return  this->loadAssetAtPackage<Texture>(textureAsset_->getPackage(uuid));
 		}
 

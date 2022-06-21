@@ -623,10 +623,10 @@ namespace octoon
 	}
 
 	std::shared_ptr<GameObject>
-	PMXLoader::load(const std::filesystem::path& filepath, PMXLoadFlags flags) noexcept(false)
+	PMXLoader::load(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false)
 	{
 		PMX pmx;
-		if (PMX::load(filepath, pmx))
+		if (PMX::load(path, pmx))
 		{
 			if (pmx.numMaterials > 0)
 			{
@@ -637,6 +637,10 @@ namespace octoon
 				{
 					std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 					actor->setName(cv.to_bytes(pmx.description.japanModelName.data()));
+				}
+				else
+				{
+					actor->setName((char*)std::filesystem::path(path).filename().c_str());
 				}
 
 				createBones(pmx, bones);

@@ -216,7 +216,7 @@ namespace unreal
 		listWidget_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::AssetBundle::instance()->getModelList())
+		for (auto& uuid : octoon::AssetBundle::instance()->getPrefabList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 
@@ -227,9 +227,7 @@ namespace unreal
 			event->type() != QEvent::Resize)
 		{
 			if (profile_->playerModule->isPlaying)
-			{
 				return true;
-			}
 		}
 
 		return QWidget::eventFilter(watched, event);
