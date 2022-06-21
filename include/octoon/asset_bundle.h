@@ -27,7 +27,6 @@ namespace octoon
 		nlohmann::json importAsset(const std::shared_ptr<Texture>& path) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<Animation>& animation) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<Material>& material) noexcept(false);
-		nlohmann::json importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false);
 
 		nlohmann::json createAsset(const std::shared_ptr<Texture>& texture) noexcept(false);
@@ -72,11 +71,7 @@ namespace octoon
 		void clearUpdate() noexcept;
 
 	private:
-		nlohmann::json importHDRi(const std::filesystem::path& path) noexcept(false);
-		nlohmann::json importTexture(const std::filesystem::path& path) noexcept(false);
-		nlohmann::json importPMX(const std::filesystem::path& path) noexcept(false);
-		nlohmann::json importVMD(const std::filesystem::path& path) noexcept(false);
-		nlohmann::json importMaterial(const std::filesystem::path& path) noexcept(false);
+		nlohmann::json importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false);
 
 		std::shared_ptr<RttiObject> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
 

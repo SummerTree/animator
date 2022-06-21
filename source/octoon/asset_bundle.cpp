@@ -85,15 +85,75 @@ namespace octoon
 			it = (char)std::tolower(it);
 
 		if (ext == u8".hdr")
-			return this->importHDRi(path);
+		{
+			auto texture = std::make_shared<Texture>();
+			if (texture->load(path))
+			{
+				texture->setName((char*)path.filename().u8string().c_str());
+				texture->setMipLevel(8);
+
+				return this->importAsset(texture);
+			}
+		}
 		else if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
-			return this->importTexture(path);
+		{
+			auto texture = std::make_shared<Texture>();
+			if (texture->load(path))
+			{
+				texture->setName((char*)path.filename().u8string().c_str());
+				return this->importAsset(texture);
+			}
+		}
 		else if (ext == u8".vmd")
-			return this->importVMD(path);
+		{
+			auto animation = VMDLoader::load(path);
+			if (animation)
+			{
+				if (animation->getName().empty())
+					animation->setName((char*)path.filename().u8string().c_str());
+
+				return this->importAsset(animation);
+			}
+		}
 		else if (ext == u8".mdl")
-			return this->importMaterial(path);
+		{
+			std::ifstream stream(path);
+			if (stream)
+			{
+				nlohmann::json items;
+
+				MDLLoader loader;
+				loader.load("resource", stream);
+
+				for (auto& material : loader.getMaterials())
+				{
+					auto package = this->importAsset(material);
+					if (package.is_object())
+						items.push_back(package["uuid"]);
+				}
+
+				materialAsset_->saveAssets();
+
+				return items;
+			}
+		}
 		else if (ext == u8".pmx")
-			return this->importPMX(path);
+		{
+			auto pmx = std::make_shared<PMX>();
+			if (PMX::load(path, *pmx))
+			{
+				if (pmx->description.japanModelLength == 0)
+				{
+					auto filename = std::filesystem::path(path).filename().wstring();
+
+					pmx->description.japanModelName.resize(filename.size() + 1);
+					pmx->description.japanModelLength = static_cast<PmxUInt32>(pmx->description.japanModelName.size() * 2);
+					std::memcpy(pmx->description.japanModelName.data(), filename.data(), pmx->description.japanModelLength);
+				}
+
+				return this->importAsset(pmx);
+			}
+		}
 
 		return nlohmann::json();
 	}
@@ -293,11 +353,20 @@ namespace octoon
 
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
+			auto writePreview = [this](const PMX& pmx, std::filesystem::path outputPath)
+			{
+				auto texture = AssetPreview::instance()->getAssetPreview(pmx);
+				auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
+				AssetDatabase::instance()->createAsset(texture, previewPath);
+				return previewPath;
+			};
+
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
 			package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
 			package["path"] = (char*)outputPath.u8string().c_str();
+			package["preview"] = (char*)writePreview(*pmx, rootPath).u8string().c_str();
 
 			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
 			if (ifs)
@@ -343,8 +412,22 @@ namespace octoon
 
 				if (ext == u8".pmx")
 				{
-					auto package = this->importAsset(assetPath);
-					prefab["model"]["uuid"] = package["uuid"];
+					auto pmx = std::make_shared<PMX>();
+					if (PMX::load(assetPath, *pmx))
+					{
+						if (pmx->description.japanModelLength == 0)
+						{
+							auto filename = std::filesystem::path(assetPath).filename().wstring();
+
+							pmx->description.japanModelName.resize(filename.size() + 1);
+							pmx->description.japanModelLength = static_cast<PmxUInt32>(pmx->description.japanModelName.size() * 2);
+							std::memcpy(pmx->description.japanModelName.data(), filename.data(), pmx->description.japanModelLength);
+						}
+
+						auto package = this->importAsset(pmx);
+
+						prefab["model"]["uuid"] = package["uuid"];
+					}
 				}
 				else
 				{
@@ -468,102 +551,6 @@ namespace octoon
 			if (std::filesystem::exists(rootPath))
 				std::filesystem::remove_all(rootPath);
 
-			throw e;
-		}
-	}
-
-	nlohmann::json
-	AssetBundle::importHDRi(const std::filesystem::path& path) noexcept(false)
-	{
-		auto texture = std::make_shared<Texture>();
-		if (texture->load(path))
-		{
-			texture->setName((char*)path.filename().u8string().c_str());
-			texture->setMipLevel(8);
-
-			return this->importAsset(texture);
-		}
-
-		return nlohmann::json();
-	}
-
-	nlohmann::json
-	AssetBundle::importTexture(const std::filesystem::path& path) noexcept(false)
-	{
-		auto texture = std::make_shared<Texture>();
-		if (texture->load(path))
-		{
-			texture->setName((char*)path.filename().u8string().c_str());
-			return this->importAsset(texture);
-		}
-
-		return nlohmann::json();
-	}
-
-	nlohmann::json
-	AssetBundle::importPMX(const std::filesystem::path& path) noexcept(false)
-	{
-		auto pmx = std::make_shared<PMX>();
-		if (PMX::load(path, *pmx))
-		{
-			if (pmx->description.japanModelLength == 0)
-			{
-				auto filename = std::filesystem::path(path).filename().wstring();
-
-				pmx->description.japanModelName.resize(filename.size() + 1);
-				pmx->description.japanModelLength = static_cast<PmxUInt32>(pmx->description.japanModelName.size() * 2);
-				std::memcpy(pmx->description.japanModelName.data(), filename.data(), pmx->description.japanModelLength);
-			}
-
-			return this->importAsset(pmx);
-		}
-
-		return nlohmann::json();
-	}
-
-	nlohmann::json
-	AssetBundle::importVMD(const std::filesystem::path& path) noexcept(false)
-	{
-		auto animation = VMDLoader::load(path);
-		if (animation)
-		{
-			if (animation->getName().empty())
-				animation->setName((char*)path.filename().u8string().c_str());
-
-			return this->importAsset(animation);
-		}
-
-		return nlohmann::json();
-	}
-
-	nlohmann::json
-	AssetBundle::importMaterial(const std::filesystem::path& path) noexcept(false)
-	{
-		try
-		{
-			nlohmann::json items;
-
-			std::ifstream stream(path);
-			if (stream)
-			{
-				MDLLoader loader;
-				loader.load("resource", stream);
-
-				for (auto& material : loader.getMaterials())
-				{
-					auto package = this->importAsset(material);
-					if (package.is_object())
-						items.push_back(package["uuid"]);
-				}
-
-				materialAsset_->saveAssets();
-			}
-
-			return items;
-		}
-		catch (const std::exception& e)
-		{
-			materialAsset_->saveAssets();
 			throw e;
 		}
 	}
