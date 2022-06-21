@@ -13,26 +13,20 @@ namespace octoon
 		AssetImporter() noexcept;
 		virtual ~AssetImporter() noexcept;
 
-		virtual void open(const std::filesystem::path& indexPath) noexcept(false);
-		virtual void close() noexcept;
+		void open(const std::filesystem::path& indexPath) noexcept(false);
+		void close() noexcept;
 
-		virtual bool hasPackage(std::string_view uuid) const noexcept;
+		void addPackage(const nlohmann::json& uuid);
+		bool hasPackage(std::string_view uuid) const noexcept;
 
-		virtual nlohmann::json getPackage(std::string_view uuid) noexcept;
+		nlohmann::json getPackage(std::string_view uuid) noexcept;
 
-		virtual void removeAsset(std::string_view uuid) noexcept(false);
+		void removeAsset(std::string_view uuid) noexcept(false);
 
-		virtual nlohmann::json& getIndexList() noexcept;
-		virtual const nlohmann::json& getIndexList() const noexcept;
+		nlohmann::json& getIndexList() noexcept;
+		const nlohmann::json& getIndexList() const noexcept;
 
-		void addPackage(const std::string& uuid)
-		{
-			indexList_.push_back(uuid);
-		}
-
-		const std::filesystem::path& getAssertPath() const {
-			return assertPath_;
-		}
+		const std::filesystem::path& getAssertPath() const;
 
 		virtual void saveAssets() const noexcept(false);
 

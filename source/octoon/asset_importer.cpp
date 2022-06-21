@@ -106,6 +106,18 @@ namespace octoon
 	}
 
 	void
+	AssetImporter::addPackage(const nlohmann::json& uuid)
+	{
+		indexList_.push_back(uuid);
+	}
+
+	const std::filesystem::path&
+	AssetImporter::getAssertPath() const
+	{
+		return assertPath_;
+	}
+
+	void
 	AssetImporter::saveAssets() const noexcept(false)
 	{
 		if (!std::filesystem::exists(assertPath_))
