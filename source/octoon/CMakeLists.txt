@@ -177,8 +177,8 @@ SET(LOADER_LIST
 	${SOURCE_PATH}/obj_loader.cpp
 	${HEADER_PATH}/audio_loader.h
 	${SOURCE_PATH}/audio_loader.cpp
-	${HEADER_PATH}/motion_importer.h
-	${SOURCE_PATH}/motion_importer.cpp
+	${HEADER_PATH}/prefab_utility.h
+	${SOURCE_PATH}/prefab_utility.cpp
 	${HEADER_PATH}/material_importer.h
 	${SOURCE_PATH}/material_importer.cpp
 )

@@ -199,12 +199,6 @@ SET(MINIH264E_LIST
 )
 SOURCE_GROUP("launcher\\libs\\minih264e" FILES ${MINIH264E_LIST})
 
-SET(BASE64_LIST 
-	libs/base64/base64.h
-	libs/base64/base64.cpp
-)
-SOURCE_GROUP("launcher\\libs\\base64" FILES ${BASE64_LIST})
-
 SET(QRCODEGEN_LIST 
 	libs/qrcodegen/qrcodegen.h
 	libs/qrcodegen/qrcodegen.c
@@ -243,7 +237,6 @@ ADD_EXECUTABLE(${LIB_OUTNAME}
 	${CONTROLLERS_LIST}
 	${UTILS_LIST}
 	${MINIH264E_LIST}
-	${BASE64_LIST}
 	${OIDN_LIST}
 	${BINDINGS_LIST}
 	${QRCODEGEN_LIST}

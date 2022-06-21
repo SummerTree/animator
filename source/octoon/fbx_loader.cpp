@@ -20,7 +20,7 @@ namespace octoon
 	}
 
 	bool
-	FBXLoader::doCanRead(io::istream& stream) noexcept
+	FBXLoader::doCanRead(std::istream& stream) noexcept
 	{
 		return false;
 	}

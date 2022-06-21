@@ -2,6 +2,7 @@
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_preview.h>
 #include <octoon/runtime/uuid.h>
+#include <octoon/runtime/base64.h>
 #include <octoon/runtime/string.h>
 #include <octoon/vmd_loader.h>
 #include <octoon/pmx_loader.h>
