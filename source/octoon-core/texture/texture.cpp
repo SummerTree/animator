@@ -439,6 +439,9 @@ namespace octoon
 	void
 	Texture::apply() noexcept(false)
 	{
+		if (!this->isDirty())
+			return;
+
 		GraphicsFormat format = GraphicsFormat::Undefined;
 		switch (this->format_)
 		{

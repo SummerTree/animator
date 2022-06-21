@@ -417,6 +417,9 @@ namespace octoon
 			auto motion = VMDLoader::load(path);
 			if (motion)
 			{
+				if (motion->getName().empty())
+					motion->setName((char*)path.filename().u8string().c_str());
+
 				assetPathList_[motion] = path;
 
 				auto metadata = this->loadMetadataAtPath(path);

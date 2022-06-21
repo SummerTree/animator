@@ -40,12 +40,12 @@ namespace octoon
 		this->hdriAsset_ = std::make_unique<AssetImporter>();
 		this->prefabAsset_ = std::make_unique<AssetImporter>();
 
-		this->modelAsset_->open(std::filesystem::path(assetPath).append("Model"));
-		this->motionAsset_->open(std::filesystem::path(assetPath).append("Motion"));
-		this->materialAsset_->open(std::filesystem::path(assetPath).append("Material"));
-		this->textureAsset_->open(std::filesystem::path(assetPath).append("Texture"));
-		this->hdriAsset_->open(std::filesystem::path(assetPath).append("HDRi"));
-		this->prefabAsset_->open(std::filesystem::path(assetPath).append("Prefab"));
+		this->modelAsset_->open(std::filesystem::path(assetPath).append("Models"));
+		this->motionAsset_->open(std::filesystem::path(assetPath).append("Motions"));
+		this->materialAsset_->open(std::filesystem::path(assetPath).append("Materials"));
+		this->textureAsset_->open(std::filesystem::path(assetPath).append("Textures"));
+		this->hdriAsset_->open(std::filesystem::path(assetPath).append("HDRIs"));
+		this->prefabAsset_->open(std::filesystem::path(assetPath).append("Prefabs"));
 	}
 
 	void
@@ -84,36 +84,23 @@ namespace octoon
 		for (auto& it : ext)
 			it = (char)std::tolower(it);
 
-		if (ext == u8".hdr")
+		if (ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
-			auto texture = std::make_shared<Texture>();
-			if (texture->load(path))
-			{
-				texture->setName((char*)path.filename().u8string().c_str());
-				texture->setMipLevel(8);
-
+			auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(path);
+			if (texture)
 				return this->importAsset(texture);
-			}
-		}
-		else if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
-		{
-			auto texture = std::make_shared<Texture>();
-			if (texture->load(path))
-			{
-				texture->setName((char*)path.filename().u8string().c_str());
-				return this->importAsset(texture);
-			}
 		}
 		else if (ext == u8".vmd")
 		{
-			auto animation = VMDLoader::load(path);
+			auto animation = AssetDatabase::instance()->loadAssetAtPath<Animation>(path);
 			if (animation)
-			{
-				if (animation->getName().empty())
-					animation->setName((char*)path.filename().u8string().c_str());
-
 				return this->importAsset(animation);
-			}
+		}
+		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
+		{
+			auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(path);
+			if (gameObject)
+				return this->importAsset(gameObject);
 		}
 		else if (ext == u8".mdl")
 		{
@@ -136,12 +123,6 @@ namespace octoon
 
 				return items;
 			}
-		}
-		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
-		{
-			auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(path);
-			if (gameObject)
-				return this->importAsset(gameObject);
 		}
 
 		return nlohmann::json();
