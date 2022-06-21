@@ -34,21 +34,17 @@ namespace octoon
 		assetPath_ = assetPath;
 
 		this->modelAsset_ = std::make_unique<AssetImporter>();
-		this->modelAsset_->open(std::filesystem::path(assetPath).append("Model"));
-
 		this->motionAsset_ = std::make_unique<AssetImporter>();
-		this->motionAsset_->open(std::filesystem::path(assetPath).append("Motion"));
-
 		this->materialAsset_ = std::make_unique<AssetImporter>();
-		this->materialAsset_->open(std::filesystem::path(assetPath).append("Material"));
-
 		this->textureAsset_ = std::make_unique<AssetImporter>();
-		this->textureAsset_->open(std::filesystem::path(assetPath).append("Texture"));
-
 		this->hdriAsset_ = std::make_unique<AssetImporter>();
-		this->hdriAsset_->open(std::filesystem::path(assetPath).append("HDRi"));
-
 		this->prefabAsset_ = std::make_unique<AssetImporter>();
+
+		this->modelAsset_->open(std::filesystem::path(assetPath).append("Model"));
+		this->motionAsset_->open(std::filesystem::path(assetPath).append("Motion"));
+		this->materialAsset_->open(std::filesystem::path(assetPath).append("Material"));
+		this->textureAsset_->open(std::filesystem::path(assetPath).append("Texture"));
+		this->hdriAsset_->open(std::filesystem::path(assetPath).append("HDRi"));
 		this->prefabAsset_->open(std::filesystem::path(assetPath).append("Prefab"));
 	}
 
@@ -103,14 +99,20 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::importAsset(const std::shared_ptr<Texture>& texture, std::string_view ext) noexcept(false)
+	AssetBundle::importAsset(const std::shared_ptr<Texture>& texture) noexcept(false)
 	{
 		auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
 		auto rootPath = std::filesystem::path(textureAsset_->getAssertPath()).append(uuid);
 		
 		try
 		{
-			auto outputPath = std::filesystem::path(rootPath).append(uuid + (std::string)ext);
+			std::string ext = ".png";
+
+			auto assetPath = AssetDatabase::instance()->getAssetPath(texture);
+			if (!assetPath.empty())
+				ext = assetPath.extension().string();
+
+			auto outputPath = std::filesystem::path(rootPath).append(uuid + ext);
 
 			AssetDatabase::instance()->createAsset(texture, outputPath);
 
@@ -128,7 +130,7 @@ namespace octoon
 				ifs.close();
 			}
 
-			this->textureAsset_->addIndex(std::string(uuid));
+			this->textureAsset_->addIndex(uuid);
 
 			return package;
 		}
@@ -149,7 +151,13 @@ namespace octoon
 
 		try
 		{
-			auto outputPath = std::filesystem::path(rootPath).append(uuid + ".vmd");
+			std::string ext = ".vmd";
+
+			auto assetPath = AssetDatabase::instance()->getAssetPath(animation);
+			if (!assetPath.empty())
+				ext = assetPath.extension().string();
+
+			auto outputPath = std::filesystem::path(rootPath).append(uuid + ext);
 
 			AssetDatabase::instance()->createAsset(animation, outputPath);
 
@@ -190,33 +198,33 @@ namespace octoon
 		{
 			auto standardMaterial = material->downcast<MeshStandardMaterial>();
 			if (standardMaterial->getColorMap())
-				this->importAsset(standardMaterial->getColorMap(), ".png");
+				this->importAsset(standardMaterial->getColorMap());
 			if (standardMaterial->getOpacityMap())
-				this->importAsset(standardMaterial->getOpacityMap(), ".png");
+				this->importAsset(standardMaterial->getOpacityMap());
 			if (standardMaterial->getNormalMap())
-				this->importAsset(standardMaterial->getNormalMap(), ".png");
+				this->importAsset(standardMaterial->getNormalMap());
 			if (standardMaterial->getRoughnessMap())
-				this->importAsset(standardMaterial->getRoughnessMap(), ".png");
+				this->importAsset(standardMaterial->getRoughnessMap());
 			if (standardMaterial->getSpecularMap())
-				this->importAsset(standardMaterial->getSpecularMap(), ".png");
+				this->importAsset(standardMaterial->getSpecularMap());
 			if (standardMaterial->getMetalnessMap())
-				this->importAsset(standardMaterial->getMetalnessMap(), ".png");
+				this->importAsset(standardMaterial->getMetalnessMap());
 			if (standardMaterial->getEmissiveMap())
-				this->importAsset(standardMaterial->getEmissiveMap(), ".png");
+				this->importAsset(standardMaterial->getEmissiveMap());
 			if (standardMaterial->getAnisotropyMap())
-				this->importAsset(standardMaterial->getAnisotropyMap(), ".png");
+				this->importAsset(standardMaterial->getAnisotropyMap());
 			if (standardMaterial->getClearCoatMap())
-				this->importAsset(standardMaterial->getClearCoatMap(), ".png");
+				this->importAsset(standardMaterial->getClearCoatMap());
 			if (standardMaterial->getClearCoatRoughnessMap())
-				this->importAsset(standardMaterial->getClearCoatRoughnessMap(), ".png");
+				this->importAsset(standardMaterial->getClearCoatRoughnessMap());
 			if (standardMaterial->getSubsurfaceMap())
-				this->importAsset(standardMaterial->getSubsurfaceMap(), ".png");
+				this->importAsset(standardMaterial->getSubsurfaceMap());
 			if (standardMaterial->getSubsurfaceColorMap())
-				this->importAsset(standardMaterial->getSubsurfaceColorMap(), ".png");
+				this->importAsset(standardMaterial->getSubsurfaceColorMap());
 			if (standardMaterial->getSheenMap())
-				this->importAsset(standardMaterial->getSheenMap(), ".png");
+				this->importAsset(standardMaterial->getSheenMap());
 			if (standardMaterial->getLightMap())
-				this->importAsset(standardMaterial->getLightMap(), ".png");
+				this->importAsset(standardMaterial->getLightMap());
 
 			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(material) + ".mat");
 
@@ -506,13 +514,8 @@ namespace octoon
 		auto texture = std::make_shared<Texture>();
 		if (texture->load(path))
 		{
-			auto ext = path.extension().u8string();
-			for (auto& it : ext)
-				it = (char)std::tolower(it);
-
 			texture->setName((char*)path.filename().u8string().c_str());
-
-			return this->importAsset(texture, (char*)ext.c_str());
+			return this->importAsset(texture);
 		}
 
 		return nlohmann::json();
@@ -737,9 +740,7 @@ namespace octoon
 					return this->getPackage(uuid);
 			}
 
-			auto filepath = AssetDatabase::instance()->getAssetPath(texture);
-
-			auto package = this->importAsset(texture, (char*)filepath.extension().u8string().c_str());
+			auto package = this->importAsset(texture);
 			if (package.is_object())
 				this->removeUpdateList(texture);
 

@@ -24,7 +24,7 @@ namespace octoon
 		void close() noexcept;
 
 		nlohmann::json importAsset(const std::filesystem::path& path) noexcept(false);
-		nlohmann::json importAsset(const std::shared_ptr<Texture>& path, std::string_view ext) noexcept(false);
+		nlohmann::json importAsset(const std::shared_ptr<Texture>& path) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<Animation>& animation) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<Material>& material) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false);

@@ -134,6 +134,7 @@ namespace octoon
 			auto standardMaterial = material->downcast<MeshStandardMaterial>();
 
 			nlohmann::json mat;
+			mat["type"] = standardMaterial->type_name();
 			mat["name"] = standardMaterial->getName();
 			mat["opacity"] = standardMaterial->getOpacity();
 			mat["smoothness"] = standardMaterial->getSmoothness();
