@@ -25,7 +25,7 @@ namespace octoon
 		virtual nlohmann::json& getIndexList() noexcept;
 		virtual const nlohmann::json& getIndexList() const noexcept;
 
-		void addIndex(const std::string& uuid)
+		void addPackage(const std::string& uuid)
 		{
 			indexList_.push_back(uuid);
 		}

@@ -179,33 +179,33 @@ namespace octoon
 			mat["scissorTestEnable"] = standardMaterial->getScissorTestEnable();			
 
 			if (standardMaterial->getColorMap())
-				mat["colorMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getColorMap());
+				mat["colorMap"] = this->getAssetGuid(standardMaterial->getColorMap());
 			if (standardMaterial->getOpacityMap())
-				mat["opacityMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getOpacityMap());
+				mat["opacityMap"] = this->getAssetGuid(standardMaterial->getOpacityMap());
 			if (standardMaterial->getNormalMap())
-				mat["normalMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getNormalMap());
+				mat["normalMap"] = this->getAssetGuid(standardMaterial->getNormalMap());
 			if (standardMaterial->getRoughnessMap())
-				mat["roughnessMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getRoughnessMap());
+				mat["roughnessMap"] = this->getAssetGuid(standardMaterial->getRoughnessMap());
 			if (standardMaterial->getSpecularMap())
-				mat["specularMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getSpecularMap());
+				mat["specularMap"] = this->getAssetGuid(standardMaterial->getSpecularMap());
 			if (standardMaterial->getMetalnessMap())
-				mat["metalnessMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getMetalnessMap());
+				mat["metalnessMap"] = this->getAssetGuid(standardMaterial->getMetalnessMap());
 			if (standardMaterial->getEmissiveMap())
-				mat["emissiveMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getEmissiveMap());
+				mat["emissiveMap"] = this->getAssetGuid(standardMaterial->getEmissiveMap());
 			if (standardMaterial->getAnisotropyMap())
-				mat["anisotropyMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getAnisotropyMap());
+				mat["anisotropyMap"] = this->getAssetGuid(standardMaterial->getAnisotropyMap());
 			if (standardMaterial->getClearCoatMap())
-				mat["clearCoatMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getClearCoatMap());
+				mat["clearCoatMap"] = this->getAssetGuid(standardMaterial->getClearCoatMap());
 			if (standardMaterial->getClearCoatRoughnessMap())
-				mat["clearCoatRoughnessMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getClearCoatRoughnessMap());
+				mat["clearCoatRoughnessMap"] = this->getAssetGuid(standardMaterial->getClearCoatRoughnessMap());
 			if (standardMaterial->getSubsurfaceMap())
-				mat["subsurfaceMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getSubsurfaceMap());
+				mat["subsurfaceMap"] = this->getAssetGuid(standardMaterial->getSubsurfaceMap());
 			if (standardMaterial->getSubsurfaceColorMap())
-				mat["subsurfaceColorMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getSubsurfaceColorMap());
+				mat["subsurfaceColorMap"] = this->getAssetGuid(standardMaterial->getSubsurfaceColorMap());
 			if (standardMaterial->getSheenMap())
-				mat["sheenMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getSheenMap());
+				mat["sheenMap"] = this->getAssetGuid(standardMaterial->getSheenMap());
 			if (standardMaterial->getLightMap())
-				mat["lightMap"] = AssetDatabase::instance()->getAssetGuid(standardMaterial->getLightMap());
+				mat["lightMap"] = this->getAssetGuid(standardMaterial->getLightMap());
 
 			std::filesystem::create_directories(rootPath);
 
@@ -218,7 +218,7 @@ namespace octoon
 			}
 
 			nlohmann::json metadata;
-			metadata["uuid"] = AssetDatabase::instance()->getAssetGuid(material);
+			metadata["uuid"] = this->getAssetGuid(material);
 			metadata["path"] = (char*)path.u8string().c_str();
 
 			std::ofstream metaFs(metaPath, std::ios_base::binary);
@@ -282,7 +282,7 @@ namespace octoon
 			}
 
 			nlohmann::json metadata;
-			metadata["uuid"] = AssetDatabase::instance()->getAssetGuid(pmx);
+			metadata["uuid"] = this->getAssetGuid(pmx);
 			metadata["visible"] = true;
 			metadata["name"] = cv.to_bytes(pmx->description.japanModelName.data());
 			metadata["path"] = (char*)path.u8string().c_str();

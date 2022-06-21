@@ -190,9 +190,9 @@ namespace octoon
 			}
 
 			if (hdr)
-				this->hdriAsset_->addIndex(uuid);
+				this->hdriAsset_->addPackage(uuid);
 			else
-				this->textureAsset_->addIndex(uuid);
+				this->textureAsset_->addPackage(uuid);
 
 			return package;
 		}
@@ -237,7 +237,7 @@ namespace octoon
 				ifs.close();
 			}
 
-			this->motionAsset_->addIndex(uuid);
+			this->motionAsset_->addPackage(uuid);
 
 			return package;
 		}
@@ -315,7 +315,7 @@ namespace octoon
 				ifs.close();
 			}
 
-			this->materialAsset_->addIndex(package["uuid"]);
+			this->materialAsset_->addPackage(package["uuid"]);
 
 			return package;
 		}
@@ -365,7 +365,7 @@ namespace octoon
 				ifs.close();
 			}
 
-			this->modelAsset_->addIndex(uuid);
+			this->modelAsset_->addPackage(uuid);
 
 			return package;
 		}
@@ -532,7 +532,7 @@ namespace octoon
 				ifs2.write(dump.c_str(), dump.size());
 			}
 
-			this->prefabAsset_->addIndex(uuid);
+			this->prefabAsset_->addPackage(uuid);
 
 			return package;
 		}
