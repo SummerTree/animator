@@ -27,6 +27,8 @@ SET(RUNTIME_LIST
 	${SOURCE_PATH}/string.cpp
 	${HEADER_PATH}/uuid.h
 	${SOURCE_PATH}/uuid.cpp
+	${HEADER_PATH}/base32.h
+	${SOURCE_PATH}/base32.cpp
 	${HEADER_PATH}/base64.h
 	${SOURCE_PATH}/base64.cpp
 	${HEADER_PATH}/sigslot.h
