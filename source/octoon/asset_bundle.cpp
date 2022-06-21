@@ -323,7 +323,7 @@ namespace octoon
 
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
-			auto writePreview = [this](const PMX& pmx, std::filesystem::path outputPath)
+			auto writePreview = [this](const PMX& pmx, const std::filesystem::path& outputPath)
 			{
 				auto texture = AssetPreview::instance()->getAssetPreview(pmx);
 				auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
@@ -486,7 +486,7 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 			}
 
-			auto writePreview = [this](const std::shared_ptr<GameObject>& gameObject, std::filesystem::path outputPath)
+			auto writePreview = [this](const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& outputPath)
 			{
 				auto texture = AssetPreview::instance()->getAssetPreview(gameObject);
 				if (texture)

@@ -284,7 +284,6 @@ namespace octoon
 
 			nlohmann::json metadata;
 			metadata["uuid"] = this->getAssetGuid(pmx);
-			metadata["visible"] = true;
 			metadata["name"] = cv.to_bytes(pmx->description.japanModelName.data());
 			metadata["path"] = (char*)path.u8string().c_str();
 			
