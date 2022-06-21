@@ -368,10 +368,7 @@ namespace octoon
 
 					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(it.fullpath);
 					if (texture)
-					{
-						texture->apply();
 						textureMap[fullpath] = std::move(texture);
-					}
 				}
 			}
 			catch (...)
