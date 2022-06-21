@@ -15,12 +15,12 @@ namespace octoon
 		MDLLoader() noexcept(false);
 		~MDLLoader() noexcept;
 
-		static bool doCanRead(io::istream& stream) noexcept;
+		static bool doCanRead(std::istream& stream) noexcept;
 		static bool doCanRead(const char* type) noexcept;
 
 		void addModulePath(std::string_view modulePath);
 
-		void load(std::string_view moduleName, io::istream& stream) noexcept(false);
+		void load(std::string_view moduleName, std::istream& stream) noexcept(false);
 		void load(std::string_view moduleName, std::string_view source = "", std::string_view target_model = "ue4") noexcept(false);
 
 		void save(io::ostream& stream, const MeshStandardMaterial& material) noexcept(false);

@@ -844,7 +844,7 @@ namespace octoon
 	}
 
 	bool
-	MDLLoader::doCanRead(io::istream& stream) noexcept
+	MDLLoader::doCanRead(std::istream& stream) noexcept
 	{
 		return false;
 	}
@@ -856,9 +856,12 @@ namespace octoon
 	}
 
 	void
-	MDLLoader::load(std::string_view moduleName, io::istream& stream) noexcept(false)
+	MDLLoader::load(std::string_view moduleName, std::istream& stream) noexcept(false)
 	{
-		auto streamsize = stream.size();
+		stream.seekg(0, std::ios_base::end);
+		auto streamsize = stream.tellg();
+		stream.seekg(0, std::ios_base::beg);
+
 		if (streamsize > 0)
 		{
 			const std::string mdlSource(streamsize, '0');

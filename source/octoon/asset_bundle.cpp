@@ -543,7 +543,7 @@ namespace octoon
 		{
 			nlohmann::json items;
 
-			io::ifstream stream(path.u8string());
+			std::ifstream stream(path);
 			if (stream)
 			{
 				MDLLoader loader;
