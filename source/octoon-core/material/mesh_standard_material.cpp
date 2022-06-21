@@ -367,7 +367,7 @@ namespace octoon
 	{
 		this->normalMap_ = map;
 		this->set("normalMap", map);
-		this->set("normalMapEnable", map);
+		this->set("normalMapEnable", map ? true : false);
 	}
 
 	void

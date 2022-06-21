@@ -610,89 +610,33 @@ namespace octoon
 				if (name != mat.end() && (*name).is_string())
 					material->setName((*name).get<std::string>());
 				if (colorMap != mat.end() && (*colorMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*colorMap);
-					if (texture) texture->apply();
-					material->setColorMap(texture);
-				}
+					material->setColorMap(AssetBundle::instance()->loadAsset<Texture>(*colorMap));
 				if (opacityMap != mat.end() && (*opacityMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*opacityMap);
-					if (texture) texture->apply();
-					material->setOpacityMap(texture);
-				}
+					material->setOpacityMap(AssetBundle::instance()->loadAsset<Texture>(*opacityMap));
 				if (normalMap != mat.end() && (*normalMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*normalMap);
-					if (texture) texture->apply();
-					material->setNormalMap(texture);
-				}
+					material->setNormalMap(AssetBundle::instance()->loadAsset<Texture>(*normalMap));
 				if (roughnessMap != mat.end() && (*roughnessMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*roughnessMap);
-					if (texture) texture->apply();
-					material->setRoughnessMap(texture);
-				}
+					material->setRoughnessMap(AssetBundle::instance()->loadAsset<Texture>(*roughnessMap));
 				if (specularMap != mat.end() && (*specularMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*specularMap);
-					if (texture) texture->apply();
-					material->setSpecularMap(texture);
-				}
+					material->setSpecularMap(AssetBundle::instance()->loadAsset<Texture>(*specularMap));
 				if (metalnessMap != mat.end() && (*metalnessMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*metalnessMap);
-					if (texture) texture->apply();
-					material->setMetalnessMap(texture);
-				}
+					material->setMetalnessMap(AssetBundle::instance()->loadAsset<Texture>(*metalnessMap));
 				if (emissiveMap != mat.end() && (*emissiveMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*emissiveMap);
-					if (texture) texture->apply();
-					material->setEmissiveMap(texture);
-				}
+					material->setEmissiveMap(AssetBundle::instance()->loadAsset<Texture>(*emissiveMap));
 				if (anisotropyMap != mat.end() && (*anisotropyMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*anisotropyMap);
-					if (texture) texture->apply();
-					material->setAnisotropyMap(texture);
-				}
+					material->setAnisotropyMap(AssetBundle::instance()->loadAsset<Texture>(*anisotropyMap));
 				if (clearCoatMap != mat.end() && (*clearCoatMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*clearCoatMap);
-					if (texture) texture->apply();
-					material->setClearCoatMap(texture);
-				}
+					material->setClearCoatMap(AssetBundle::instance()->loadAsset<Texture>(*clearCoatMap));
 				if (clearCoatRoughnessMap != mat.end() && (*clearCoatRoughnessMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*clearCoatRoughnessMap);
-					if (texture) texture->apply();
-					material->setClearCoatRoughnessMap(texture);
-				}
+					material->setClearCoatRoughnessMap(AssetBundle::instance()->loadAsset<Texture>(*clearCoatRoughnessMap));
 				if (subsurfaceMap != mat.end() && (*subsurfaceMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*subsurfaceMap);
-					if (texture) texture->apply();
-					material->setSubsurfaceMap(texture);
-				}
+					material->setSubsurfaceMap(AssetBundle::instance()->loadAsset<Texture>(*subsurfaceMap));
 				if (subsurfaceColorMap != mat.end() && (*subsurfaceColorMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*subsurfaceColorMap);
-					if (texture) texture->apply();
-					material->setSubsurfaceColorMap(texture);
-				}
+					material->setSubsurfaceColorMap(AssetBundle::instance()->loadAsset<Texture>(*subsurfaceColorMap));
 				if (sheenMap != mat.end() && (*sheenMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*sheenMap);
-					if (texture) texture->apply();
-					material->setSheenMap(texture);
-				}
+					material->setSheenMap(AssetBundle::instance()->loadAsset<Texture>(*sheenMap));
 				if (lightMap != mat.end() && (*lightMap).is_string())
-				{
-					auto texture = AssetBundle::instance()->loadAsset<Texture>(*lightMap);
-					if (texture) texture->apply();
-					material->setLightMap(texture);
-				}
+					material->setLightMap(AssetBundle::instance()->loadAsset<Texture>(*lightMap));
 
 				auto blendEnable = mat.find("blendEnable");
 				auto blendOp = mat.find("blendOp");
