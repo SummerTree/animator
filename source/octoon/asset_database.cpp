@@ -457,6 +457,9 @@ namespace octoon
 				}
 				else
 				{
+					if (ext == ".hdr")
+						texture->setMipLevel(8);
+
 					assetGuidList_[texture] = make_guid();
 				}
 

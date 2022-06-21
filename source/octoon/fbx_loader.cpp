@@ -486,13 +486,18 @@ namespace octoon
 		return nullptr;
 	}
 
-	void ParseCamera(FbxNode* node)
+	std::shared_ptr<GameObject> ParseCamera(FbxNode* node)
 	{
 		auto camera = node->GetCamera();
 		if (camera)
-		{
 			ParseAnimation(node);
-		}
+		return std::make_shared<GameObject>();
+	}
+
+	std::shared_ptr<GameObject> ParseSkeleton(FbxNode* node)
+	{
+		auto object = std::make_shared<GameObject>();
+		return object;
 	}
 
 	GameObjectPtr ProcessNode(FbxNode* node, const std::filesystem::path& root)
@@ -504,8 +509,14 @@ namespace octoon
 		{
 			switch (attribute->GetAttributeType())
 			{
+			case FbxNodeAttribute::eCamera:
+				object = ParseCamera(node);
+				break;
 			case FbxNodeAttribute::eMesh:
 				object = ParseMesh(node, root);
+				break;
+			case FbxNodeAttribute::eSkeleton:
+				object = ParseSkeleton(node);
 				break;
 			default:
 				object = std::make_shared<GameObject>();
@@ -513,8 +524,11 @@ namespace octoon
 			}
 		}
 
-		for (int j = 0; j < node->GetChildCount(); j++)
-			object->addChild(ProcessNode(node->GetChild(j), root));
+		if (object)
+		{
+			for (int j = 0; j < node->GetChildCount(); j++)
+				object->addChild(ProcessNode(node->GetChild(j), root));
+		}
 
 		return object;
 	}
@@ -534,7 +548,7 @@ namespace octoon
 
 			FbxImporter* importer = FbxImporter::Create(lsdkManager, "");
 
-			if (importer->Initialize(filepath.string().c_str(), -1, lsdkManager->GetIOSettings()))
+			if (importer->Initialize((char*)filepath.u8string().c_str(), -1, lsdkManager->GetIOSettings()))
 			{
 				int major = 0, minor = 0, revision = 0;
 				importer->GetFileVersion(major, minor, revision);

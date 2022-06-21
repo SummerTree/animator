@@ -51,6 +51,34 @@ namespace octoon
 	}
 
 	std::shared_ptr<Texture>
+	AssetPreview::getAssetPreview(const std::shared_ptr<Texture>& texture)
+	{
+		auto width = texture->width();
+		auto height = texture->height();
+		auto data = (float*)texture->data();
+		auto format = texture->format();
+
+		if (format == Format::R32G32B32SFloat)
+		{
+			Texture previewTexutre(Format::R8G8B8SRGB, width, height);
+
+			auto size = width * height * 3;
+			auto pixels = previewTexutre.data();
+
+			for (std::size_t i = 0; i < size; i += 3)
+			{
+				pixels[i] = static_cast<std::uint8_t>(std::clamp(std::pow(data[i], 1.0f / 2.2f) * 255.0f, 0.0f, 255.0f));
+				pixels[i + 1] = static_cast<std::uint8_t>(std::clamp(std::pow(data[i + 1], 1.0f / 2.2f) * 255.0f, 0.0f, 255.0f));
+				pixels[i + 2] = static_cast<std::uint8_t>(std::clamp(std::pow(data[i + 2], 1.0f / 2.2f) * 255.0f, 0.0f, 255.0f));
+			}
+
+			return std::make_shared<Texture>(previewTexutre.resize(256, 128));
+		}
+
+		return nullptr;
+	}
+
+	std::shared_ptr<Texture>
 	AssetPreview::getAssetPreview(const std::shared_ptr<Material>& material)
 	{
 		assert(materialScene_);
@@ -82,7 +110,13 @@ namespace octoon
 	}
 
 	std::shared_ptr<Texture>
-	AssetPreview::getAssetPreview(const PMX& pmx, const math::BoundingBox& boundingBox)
+	AssetPreview::getAssetPreview(const std::shared_ptr<GameObject>& gameObject)
+	{
+		return nullptr;
+	}
+
+	std::shared_ptr<Texture>
+	AssetPreview::getAssetPreview(const PMX& pmx)
 	{
 		assert(scene_);
 		
@@ -96,9 +130,6 @@ namespace octoon
 				camera_->setTransform(math::makeLookatRH(math::float3(0, position, 10), math::float3(0, position, 0), -math::float3::UnitY));
 			}
 		}
-
-		auto min = boundingBox.box().min;
-		auto max = boundingBox.box().max;
 
 		auto renderer = Renderer::instance();
 		if (renderer)

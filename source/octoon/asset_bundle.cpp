@@ -88,12 +88,12 @@ namespace octoon
 			return this->importHDRi(path);
 		else if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 			return this->importTexture(path);
-		else if (ext == u8".pmx")
-			return this->importPMX(path);
 		else if (ext == u8".vmd")
 			return this->importVMD(path);
 		else if (ext == u8".mdl")
 			return this->importMaterial(path);
+		else if (ext == u8".pmx")
+			return this->importPMX(path);
 
 		return nlohmann::json();
 	}
@@ -101,12 +101,13 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importAsset(const std::shared_ptr<Texture>& texture) noexcept(false)
 	{
+		auto hdr = (texture->format() == Format::R32G32B32SFloat) ? true : false;
 		auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
-		auto rootPath = std::filesystem::path(textureAsset_->getAssertPath()).append(uuid);
+		auto rootPath = std::filesystem::path(hdr ? hdriAsset_->getAssertPath() : textureAsset_->getAssertPath()).append(uuid);
 		
 		try
 		{
-			std::string ext = ".png";
+			std::string ext = hdr ? ".hdr" : ".png";
 
 			auto assetPath = AssetDatabase::instance()->getAssetPath(texture);
 			if (!assetPath.empty())
@@ -122,6 +123,15 @@ namespace octoon
 			package["path"] = (char*)outputPath.u8string().c_str();
 			package["visible"] = true;
 
+			auto preview = AssetPreview::instance()->getAssetPreview(texture);
+			if (preview)
+			{
+				auto previewName = AssetDatabase::instance()->getAssetGuid(preview) + ".png";
+				auto previewPath = std::filesystem::path(rootPath).append(previewName);
+				AssetDatabase::instance()->createAsset(preview, previewPath);
+				package["preview"] = (char*)previewPath.u8string().c_str();
+			}
+
 			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
 			if (ifs)
 			{
@@ -130,7 +140,10 @@ namespace octoon
 				ifs.close();
 			}
 
-			this->textureAsset_->addIndex(uuid);
+			if (hdr)
+				this->hdriAsset_->addIndex(uuid);
+			else
+				this->textureAsset_->addIndex(uuid);
 
 			return package;
 		}
@@ -278,18 +291,6 @@ namespace octoon
 
 			AssetDatabase::instance()->createAsset(pmx, outputPath);
 
-			math::BoundingBox bound;
-			for (auto& v : pmx->vertices)
-				bound.encapsulate(math::float3(v.position.x, v.position.y, v.position.z));
-
-			auto writePreview = [this](const PMX& pmx, const math::BoundingBox& boundingBox, std::filesystem::path outputPath)
-			{
-				auto texture = AssetPreview::instance()->getAssetPreview(pmx, boundingBox);
-				auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
-				AssetDatabase::instance()->createAsset(texture, previewPath);
-				return previewPath;
-			};
-
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
 			nlohmann::json package;
@@ -297,9 +298,6 @@ namespace octoon
 			package["visible"] = true;
 			package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
 			package["path"] = (char*)outputPath.u8string().c_str();
-			package["bound"][0] = bound.box().min.to_array();
-			package["bound"][1] = bound.box().max.to_array();
-			package["preview"] = (char*)writePreview(*pmx, bound, rootPath).u8string().c_str();
 
 			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
 			if (ifs)
@@ -378,6 +376,18 @@ namespace octoon
 				}
 			}
 
+			auto meshFilter = gameObject->getComponent<MeshFilterComponent>();
+			if (meshFilter)
+			{
+				auto mesh = meshFilter->getMesh();
+				if (mesh)
+				{
+					auto bound = mesh->getBoundingBoxAll();
+					prefab["meshFilter"]["bound"][0] = bound.box().min.to_array();
+					prefab["meshFilter"]["bound"][1] = bound.box().max.to_array();
+				}					
+			}
+
 			auto meshRenderer = gameObject->getComponent<MeshRendererComponent>();
 			if (meshRenderer)
 			{
@@ -423,10 +433,24 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 			}
 
+			auto writePreview = [this](const std::shared_ptr<GameObject>& gameObject, std::filesystem::path outputPath)
+			{
+				auto texture = AssetPreview::instance()->getAssetPreview(gameObject);
+				if (texture)
+				{
+					auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
+					AssetDatabase::instance()->createAsset(texture, previewPath);
+					return previewPath;
+				}
+
+				return std::filesystem::path();
+			};
+
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
 			package["path"] = (char*)outputPath.u8string().c_str();
+			package["preview"] = (char*)writePreview(gameObject, rootPath).u8string().c_str();	
 
 			std::ofstream ifs2(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
 			if (ifs2)
@@ -457,52 +481,7 @@ namespace octoon
 			texture->setName((char*)path.filename().u8string().c_str());
 			texture->setMipLevel(8);
 
-			auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
-
-			auto rootPath = std::filesystem::path(hdriAsset_->getAssertPath()).append(uuid);
-			auto texturePath = std::filesystem::path(rootPath).append(uuid + ".hdr");
-
-			auto width = texture->width();
-			auto height = texture->height();
-			auto data = (float*)texture->data();
-
-			Texture previewTexutre(Format::R8G8B8SRGB, width, height);
-
-			auto size = width * height * 3;
-			auto pixels = previewTexutre.data();
-
-			for (std::size_t i = 0; i < size; i += 3)
-			{
-				pixels[i] = static_cast<std::uint8_t>(std::clamp(std::pow(data[i], 1.0f / 2.2f) * 255.0f, 0.0f, 255.0f));
-				pixels[i + 1] = static_cast<std::uint8_t>(std::clamp(std::pow(data[i + 1], 1.0f / 2.2f) * 255.0f, 0.0f, 255.0f));
-				pixels[i + 2] = static_cast<std::uint8_t>(std::clamp(std::pow(data[i + 2], 1.0f / 2.2f) * 255.0f, 0.0f, 255.0f));
-			}
-
-			auto preview = std::make_shared<Texture>(previewTexutre.resize(260, 130));
-			auto previewName = AssetDatabase::instance()->getAssetGuid(preview) + ".png";
-			auto previewPath = std::filesystem::path(rootPath).append(previewName);
-
-			AssetDatabase::instance()->createAsset(texture, texturePath);
-			AssetDatabase::instance()->createAsset(preview, previewPath);
-
-			nlohmann::json package;
-			package["uuid"] = uuid;
-			package["name"] = texture->getName();
-			package["path"] = (char*)texturePath.u8string().c_str();
-			package["preview"] = (char*)previewPath.u8string().c_str();
-			package["visible"] = true;
-
-			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->hdriAsset_->addIndex(uuid);
-
-			return package;
+			return this->importAsset(texture);
 		}
 
 		return nlohmann::json();
