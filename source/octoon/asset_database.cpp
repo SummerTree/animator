@@ -2,7 +2,7 @@
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_preview.h>
 #include <octoon/runtime/uuid.h>
-#include <octoon/runtime/base64.h>
+#include <octoon/runtime/md5.h>
 #include <octoon/runtime/string.h>
 #include <octoon/vmd_loader.h>
 #include <octoon/pmx_loader.h>
@@ -53,7 +53,7 @@ namespace octoon
 			std::filesystem::permissions(path, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
-			metadata["uuid"] = AssetDatabase::instance()->getAssetGuid(texture);
+			metadata["uuid"] = this->assetPathToGuid(path);
 			metadata["name"] = texture->getName();
 			metadata["suffix"] = (char*)extension.c_str();
 			metadata["path"] = (char*)path.u8string().c_str();
@@ -97,7 +97,7 @@ namespace octoon
 			std::filesystem::permissions(path, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
-			metadata["uuid"] = AssetDatabase::instance()->getAssetGuid(animation);
+			metadata["uuid"] = this->assetPathToGuid(path);
 			metadata["name"] = animation->getName();
 			metadata["path"] = (char*)path.u8string().c_str();
 
@@ -180,33 +180,33 @@ namespace octoon
 			mat["scissorTestEnable"] = standardMaterial->getScissorTestEnable();			
 
 			if (standardMaterial->getColorMap())
-				mat["colorMap"] = this->getAssetGuid(standardMaterial->getColorMap());
+				mat["colorMap"] = this->assetToGuid(standardMaterial->getColorMap());
 			if (standardMaterial->getOpacityMap())
-				mat["opacityMap"] = this->getAssetGuid(standardMaterial->getOpacityMap());
+				mat["opacityMap"] = this->assetToGuid(standardMaterial->getOpacityMap());
 			if (standardMaterial->getNormalMap())
-				mat["normalMap"] = this->getAssetGuid(standardMaterial->getNormalMap());
+				mat["normalMap"] = this->assetToGuid(standardMaterial->getNormalMap());
 			if (standardMaterial->getRoughnessMap())
-				mat["roughnessMap"] = this->getAssetGuid(standardMaterial->getRoughnessMap());
+				mat["roughnessMap"] = this->assetToGuid(standardMaterial->getRoughnessMap());
 			if (standardMaterial->getSpecularMap())
-				mat["specularMap"] = this->getAssetGuid(standardMaterial->getSpecularMap());
+				mat["specularMap"] = this->assetToGuid(standardMaterial->getSpecularMap());
 			if (standardMaterial->getMetalnessMap())
-				mat["metalnessMap"] = this->getAssetGuid(standardMaterial->getMetalnessMap());
+				mat["metalnessMap"] = this->assetToGuid(standardMaterial->getMetalnessMap());
 			if (standardMaterial->getEmissiveMap())
-				mat["emissiveMap"] = this->getAssetGuid(standardMaterial->getEmissiveMap());
+				mat["emissiveMap"] = this->assetToGuid(standardMaterial->getEmissiveMap());
 			if (standardMaterial->getAnisotropyMap())
-				mat["anisotropyMap"] = this->getAssetGuid(standardMaterial->getAnisotropyMap());
+				mat["anisotropyMap"] = this->assetToGuid(standardMaterial->getAnisotropyMap());
 			if (standardMaterial->getClearCoatMap())
-				mat["clearCoatMap"] = this->getAssetGuid(standardMaterial->getClearCoatMap());
+				mat["clearCoatMap"] = this->assetToGuid(standardMaterial->getClearCoatMap());
 			if (standardMaterial->getClearCoatRoughnessMap())
-				mat["clearCoatRoughnessMap"] = this->getAssetGuid(standardMaterial->getClearCoatRoughnessMap());
+				mat["clearCoatRoughnessMap"] = this->assetToGuid(standardMaterial->getClearCoatRoughnessMap());
 			if (standardMaterial->getSubsurfaceMap())
-				mat["subsurfaceMap"] = this->getAssetGuid(standardMaterial->getSubsurfaceMap());
+				mat["subsurfaceMap"] = this->assetToGuid(standardMaterial->getSubsurfaceMap());
 			if (standardMaterial->getSubsurfaceColorMap())
-				mat["subsurfaceColorMap"] = this->getAssetGuid(standardMaterial->getSubsurfaceColorMap());
+				mat["subsurfaceColorMap"] = this->assetToGuid(standardMaterial->getSubsurfaceColorMap());
 			if (standardMaterial->getSheenMap())
-				mat["sheenMap"] = this->getAssetGuid(standardMaterial->getSheenMap());
+				mat["sheenMap"] = this->assetToGuid(standardMaterial->getSheenMap());
 			if (standardMaterial->getLightMap())
-				mat["lightMap"] = this->getAssetGuid(standardMaterial->getLightMap());
+				mat["lightMap"] = this->assetToGuid(standardMaterial->getLightMap());
 
 			std::filesystem::create_directories(rootPath);
 
@@ -219,7 +219,7 @@ namespace octoon
 			}
 
 			nlohmann::json metadata;
-			metadata["uuid"] = this->getAssetGuid(material);
+			metadata["uuid"] = this->assetPathToGuid(path);
 			metadata["path"] = (char*)path.u8string().c_str();
 
 			std::ofstream metaFs(metaPath, std::ios_base::binary);
@@ -283,7 +283,7 @@ namespace octoon
 			}
 
 			nlohmann::json metadata;
-			metadata["uuid"] = this->getAssetGuid(pmx);
+			metadata["uuid"] = this->assetPathToGuid(path);
 			metadata["visible"] = true;
 			metadata["name"] = cv.to_bytes(pmx->description.japanModelName.data());
 			metadata["path"] = (char*)path.u8string().c_str();
@@ -327,7 +327,7 @@ namespace octoon
 			std::filesystem::permissions(path, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
-			metadata["uuid"] = this->getAssetGuid(gameObject);
+			metadata["uuid"] = this->assetPathToGuid(path);
 			metadata["name"] = gameObject->getName();
 			metadata["path"] = (char*)path.u8string().c_str();
 
@@ -368,24 +368,17 @@ namespace octoon
 	}
 
 	std::string
-	AssetDatabase::getAssetGuid(const std::shared_ptr<const RttiObject>& asset) noexcept
+	AssetDatabase::assetPathToGuid(const std::filesystem::path& path) const noexcept
 	{
-		if (assetGuidList_.contains(asset))
-			return assetGuidList_.at(asset);
-		else
-		{
-			auto guid = make_guid();
-			assetGuidList_[asset] = guid;
-			return guid;
-		}
+		auto str = path.u8string();
+		MD5 hash(str.data(), str.length());
+		return hash.toString();
 	}
 
 	std::string
-	AssetDatabase::getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept
+	AssetDatabase::assetToGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept
 	{
-		if (assetGuidList_.contains(asset))
-			return assetGuidList_.at(asset);
-		return std::string();
+		return this->assetPathToGuid(this->getAssetPath(asset));
 	}
 
 	nlohmann::json
@@ -557,21 +550,6 @@ namespace octoon
 						model->setName(metadata["name"].get<std::string>());
 					if (metadata.contains("uuid"))
 						assetGuidList_[model] = metadata["uuid"].get<std::string>();
-
-					std::unordered_map<std::string, octoon::MaterialPtr> materials;
-
-					if (metadata.contains("materials"))
-					{
-						for (auto& material : metadata["materials"])
-						{
-							auto data = material["data"].get<nlohmann::json::string_t>();
-							auto name = material["name"].get<std::string>();
-							materials[name] = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(data);
-						}
-						
-						alembic->setMaterials(std::move(materials));
-						alembic->setFilePath(path);
-					}
 				}
 				else
 				{

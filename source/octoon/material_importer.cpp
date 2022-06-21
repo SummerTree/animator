@@ -52,7 +52,7 @@ namespace octoon
 		if (!assetGuidList_.contains(mat))
 		{
 			auto standard = mat->downcast_pointer<MeshStandardMaterial>();
-			auto uuid = AssetDatabase::instance()->getAssetGuid(mat);
+			auto uuid = AssetDatabase::instance()->assetToGuid(mat);
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
