@@ -32,8 +32,8 @@ namespace octoon
 		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) noexcept;
 		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
-		std::string assetToGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept;
-		std::string assetPathToGuid(const std::filesystem::path& path) const noexcept;
+		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) noexcept;
+		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
 		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path) noexcept(false);
 

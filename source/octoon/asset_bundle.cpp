@@ -132,7 +132,7 @@ namespace octoon
 	AssetBundle::importAsset(const std::shared_ptr<Texture>& texture) noexcept(false)
 	{
 		auto hdr = (texture->format() == Format::R32G32B32SFloat) ? true : false;
-		auto uuid = AssetDatabase::instance()->assetToGuid(texture);
+		auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
 		auto rootPath = std::filesystem::path(hdr ? hdriAsset_->getAssertPath() : textureAsset_->getAssertPath()).append(uuid);
 		
 		try
@@ -156,7 +156,7 @@ namespace octoon
 			auto preview = AssetPreview::instance()->getAssetPreview(texture);
 			if (preview)
 			{
-				auto previewName = AssetDatabase::instance()->assetToGuid(preview) + ".png";
+				auto previewName = AssetDatabase::instance()->getAssetGuid(preview) + ".png";
 				auto previewPath = std::filesystem::path(rootPath).append(previewName);
 				AssetDatabase::instance()->createAsset(preview, previewPath);
 				package["preview"] = (char*)previewPath.u8string().c_str();
@@ -189,7 +189,7 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importAsset(const std::shared_ptr<Animation>& animation) noexcept(false)
 	{
-		auto uuid = AssetDatabase::instance()->assetToGuid(animation);
+		auto uuid = AssetDatabase::instance()->getAssetGuid(animation);
 		auto rootPath = std::filesystem::path(motionAsset_->getAssertPath()).append(uuid);
 
 		try
@@ -234,7 +234,7 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importAsset(const std::shared_ptr<Material>& material) noexcept(false)
 	{
-		auto uuid = AssetDatabase::instance()->assetToGuid(material);
+		auto uuid = AssetDatabase::instance()->getAssetGuid(material);
 		auto rootPath = std::filesystem::path(materialAsset_->getAssertPath()).append(uuid);
 
 		try
@@ -269,7 +269,7 @@ namespace octoon
 			if (standardMaterial->getLightMap())
 				this->importAsset(standardMaterial->getLightMap());
 
-			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->assetToGuid(material) + ".mat");
+			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(material) + ".mat");
 
 			AssetDatabase::instance()->createAsset(material, outputPath);
 
@@ -312,12 +312,12 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false)
 	{
-		auto uuid = AssetDatabase::instance()->assetToGuid(pmx);
+		auto uuid = AssetDatabase::instance()->getAssetGuid(pmx);
 		auto rootPath = std::filesystem::path(modelAsset_->getAssertPath()).append(uuid);
 
 		try
 		{
-			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->assetToGuid(pmx) + ".pmx");
+			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(pmx) + ".pmx");
 
 			AssetDatabase::instance()->createAsset(pmx, outputPath);
 
@@ -362,12 +362,12 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false)
 	{
-		auto uuid = AssetDatabase::instance()->assetToGuid(gameObject);
+		auto uuid = AssetDatabase::instance()->getAssetGuid(gameObject);
 		auto rootPath = std::filesystem::path(prefabAsset_->getAssertPath()).append(uuid);
 
 		try
 		{
-			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->assetToGuid(gameObject) + ".prefab");
+			auto outputPath = std::filesystem::path(rootPath).append(AssetDatabase::instance()->getAssetGuid(gameObject) + ".prefab");
 
 			std::filesystem::create_directories(rootPath);
 
@@ -670,7 +670,7 @@ namespace octoon
 	{
 		if (texture)
 		{
-			auto uuid = AssetDatabase::instance()->assetToGuid(texture);
+			auto uuid = AssetDatabase::instance()->getAssetGuid(texture);
 			if (!uuid.empty())
 			{
 				if (this != AssetBundle::instance())
@@ -698,7 +698,7 @@ namespace octoon
 	{
 		if (animation)
 		{
-			auto uuid = AssetDatabase::instance()->assetToGuid(animation);
+			auto uuid = AssetDatabase::instance()->getAssetGuid(animation);
 			if (!uuid.empty())
 			{
 				if (this != AssetBundle::instance())
@@ -726,7 +726,7 @@ namespace octoon
 	{
 		if (material)
 		{
-			auto uuid = AssetDatabase::instance()->assetToGuid(material);
+			auto uuid = AssetDatabase::instance()->getAssetGuid(material);
 			if (!uuid.empty())
 			{
 				if (this != AssetBundle::instance())
@@ -754,7 +754,7 @@ namespace octoon
 	{
 		if (gameObject)
 		{
-			auto uuid = AssetDatabase::instance()->assetToGuid(gameObject);
+			auto uuid = AssetDatabase::instance()->getAssetGuid(gameObject);
 			if (!uuid.empty())
 			{
 				if (this != AssetBundle::instance())
@@ -820,7 +820,7 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::getPackage(const std::shared_ptr<RttiObject>& asset) noexcept
 	{
-		auto guid = AssetDatabase::instance()->assetToGuid(asset);
+		auto guid = AssetDatabase::instance()->getAssetGuid(asset);
 		if (guid.empty())
 			return nlohmann::json();
 		return this->getPackage(guid);
