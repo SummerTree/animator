@@ -162,10 +162,10 @@ namespace octoon
 				package["preview"] = (char*)std::filesystem::path(this->assetPath_).append(previewPath.u8string()).u8string().c_str();
 			}
 
-			this->packageList_[uuid] = std::move(package);
+			this->packageList_[uuid] = package;
 			this->assetDatabase_->saveAssets();
 
-			return package;
+			return std::move(package);
 		}
 		catch (const std::exception& e)
 		{
@@ -194,10 +194,10 @@ namespace octoon
 			package["data"] = this->assetDatabase_->getAssetGuid(animation);
 			package["visible"] = true;
 
-			this->packageList_[uuid] = std::move(package);
+			this->packageList_[uuid] = package;
 			this->assetDatabase_->saveAssets();
 
-			return package;
+			return std::move(package);
 		}
 		catch (const std::exception& e)
 		{
@@ -231,10 +231,10 @@ namespace octoon
 				package["preview"] = (char*)std::filesystem::path(this->assetPath_).append(previewPath.u8string()).u8string().c_str();
 			}
 
-			this->packageList_[uuid] = std::move(package);
+			this->packageList_[uuid] = package;
 			this->assetDatabase_->saveAssets();
 
-			return package;
+			return std::move(package);
 		}
 		catch (const std::exception& e)
 		{
@@ -271,10 +271,10 @@ namespace octoon
 			package["data"] = this->assetDatabase_->getAssetGuid(pmx);
 			package["preview"] = (char*)writePreview(*pmx, relativePath).u8string().c_str();
 
-			this->packageList_[uuid] = std::move(package);
+			this->packageList_[uuid] = package;
 			this->assetDatabase_->saveAssets();
 
-			return package;
+			return std::move(package);
 		}
 		catch (const std::exception& e)
 		{
@@ -316,10 +316,10 @@ namespace octoon
 			package["data"] = this->assetDatabase_->getAssetGuid(gameObject);
 			package["preview"] = (char*)writePreview(gameObject, relativePath).u8string().c_str();
 
-			this->packageList_[uuid] = std::move(package);
+			this->packageList_[uuid] = package;
 			this->assetDatabase_->saveAssets();
 
-			return package;
+			return std::move(package);
 		}
 		catch (const std::exception& e)
 		{

@@ -527,13 +527,13 @@ namespace unreal
 								it = (char)std::tolower(it);
 
 							if (ext == L".pmx")
-								this->modelDock_->addItem(package["uuid"].get<nlohmann::json::string_t>());
+								this->modelDock_->addItem(package);
 							else if (ext == L".vmd")
-								this->motionDock_->addItem(package["uuid"].get<nlohmann::json::string_t>());
+								this->motionDock_->addItem(package);
 							else if (ext == L".mdl")
 							{
 								for (auto& it : package)
-									this->materialDock_->addItem(it.get<nlohmann::json::string_t>());
+									this->materialDock_->addItem(it);
 							}
 						}
 					}
