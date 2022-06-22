@@ -208,9 +208,7 @@ namespace octoon
 
 		try
 		{
-			auto outputPath = std::filesystem::path(relativePath).append(uuid + ".mat");
-
-			this->assetDatabase_->createAsset(material, outputPath);
+			this->assetDatabase_->createAsset(material, std::filesystem::path(relativePath).append(uuid + ".mat"));
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
@@ -242,14 +240,12 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false)
 	{
-		auto uuid = this->assetDatabase_->getAssetGuid(pmx);
-		auto rootPath = "Assets/Models/" + uuid;
+		auto uuid = make_guid();
+		auto relativePath = "Assets/Models/" + uuid;
 
 		try
 		{
-			auto outputPath = std::filesystem::path(rootPath).append(this->assetDatabase_->getAssetGuid(pmx) + ".pmx");
-
-			this->assetDatabase_->createAsset(pmx, outputPath);
+			this->assetDatabase_->createAsset(pmx, std::filesystem::path(relativePath).append(uuid + ".pmx"));
 
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
@@ -267,7 +263,7 @@ namespace octoon
 			package["type"] = pmx->type_name();
 			package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
 			package["data"] = this->assetDatabase_->getAssetGuid(pmx);
-			package["preview"] = (char*)writePreview(*pmx, rootPath).u8string().c_str();
+			package["preview"] = (char*)writePreview(*pmx, relativePath).u8string().c_str();
 
 			this->packageList_[uuid] = std::move(package);
 			this->assetDatabase_->saveAssets();
@@ -276,8 +272,8 @@ namespace octoon
 		}
 		catch (const std::exception& e)
 		{
-			if (std::filesystem::exists(rootPath))
-				std::filesystem::remove_all(rootPath);
+			if (std::filesystem::exists(relativePath))
+				std::filesystem::remove_all(relativePath);
 
 			throw e;
 		}
@@ -286,129 +282,12 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false)
 	{
-		auto uuid = this->assetDatabase_->getAssetGuid(gameObject);
-		auto rootPath = "Assets/Prefabs/" + uuid;
+		auto uuid = make_guid();
+		auto relativePath = "Assets/Prefabs/" + uuid;
 
 		try
 		{
-			auto outputPath = std::filesystem::path(rootPath).append(this->assetDatabase_->getAssetGuid(gameObject) + ".prefab");
-
-			std::filesystem::create_directories(rootPath);
-
-			nlohmann::json prefab;
-
-			auto assetPath = AssetLoader::instance()->getAssetPath(gameObject);
-			if (!assetPath.empty())
-			{
-				auto ext = assetPath.extension().u8string();
-				for (auto& it : ext)
-					it = (char)std::tolower(it);
-
-				if (ext == u8".pmx")
-				{
-					auto pmx = std::make_shared<PMX>();
-					if (PMX::load(assetPath, *pmx))
-					{
-						if (pmx->description.japanModelLength == 0)
-						{
-							auto filename = std::filesystem::path(assetPath).filename().wstring();
-
-							pmx->description.japanModelName.resize(filename.size() + 1);
-							pmx->description.japanModelLength = static_cast<PmxUInt32>(pmx->description.japanModelName.size() * 2);
-							std::memcpy(pmx->description.japanModelName.data(), filename.data(), pmx->description.japanModelLength);
-						}
-
-						auto package = this->importAsset(pmx);
-
-						prefab["model"]["uuid"] = package["uuid"];
-					}
-				}
-				else
-				{
-					prefab["model"]["path"] = (char*)assetPath.u8string().c_str();
-				}
-			}
-
-			auto transform = gameObject->getComponent<octoon::TransformComponent>();
-			if (transform)
-				transform->save(prefab["transform"]);
-
-			for (auto& component : gameObject->getComponents())
-			{
-				if (!component->isA<AnimatorComponent>())
-					continue;
-				
-				auto animation = component->downcast<AnimatorComponent>();
-				if (animation->getAnimation())
-				{
-					nlohmann::json  package;// = this->createAsset(animation->getAnimation());
-					if (package.is_object())
-					{
-						nlohmann::json animationJson;
-						animationJson["data"] = package["uuid"].get<std::string>();
-						animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
-
-						prefab["animation"].push_back(animationJson);
-					}
-				}
-			}
-
-			auto meshFilter = gameObject->getComponent<MeshFilterComponent>();
-			if (meshFilter)
-			{
-				auto mesh = meshFilter->getMesh();
-				if (mesh)
-				{
-					auto bound = mesh->getBoundingBoxAll();
-					prefab["meshFilter"]["bound"][0] = bound.box().min.to_array();
-					prefab["meshFilter"]["bound"][1] = bound.box().max.to_array();
-				}					
-			}
-
-			auto meshRenderer = gameObject->getComponent<MeshRendererComponent>();
-			if (meshRenderer)
-			{
-				auto& materials = meshRenderer->getMaterials();
-
-				for (std::size_t i = 0; i < materials.size(); i++)
-				{
-					nlohmann::json  package;// = this->createAsset(materials[i]);
-					if (package.is_object())
-					{
-						nlohmann::json materialJson;
-						materialJson["data"] = package["uuid"].get<std::string>();
-						materialJson["index"] = i;
-
-						prefab["meshRenderer"]["materials"].push_back(materialJson);
-					}
-				}
-			}
-
-			auto abc = gameObject->getComponent<MeshAnimationComponent>();
-			if (abc)
-			{
-				prefab["alembic"]["path"] = (char*)assetPath.u8string().c_str();
-
-				for (auto& pair : abc->getMaterials())
-				{
-					nlohmann::json materialPackage;// = this->createAsset(pair.second);
-					if (materialPackage.is_object())
-					{
-						nlohmann::json materialJson;
-						materialJson["data"] = materialPackage["uuid"];
-						materialJson["name"] = pair.first;
-
-						prefab["alembic"]["materials"].push_back(materialJson);
-					}
-				}
-			}
-
-			std::ofstream ifs(outputPath, std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = prefab.dump();
-				ifs.write(dump.c_str(), dump.size());
-			}
+			this->assetDatabase_->createAsset(gameObject, std::filesystem::path(relativePath).append(uuid + ".prefab"));
 
 			auto writePreview = [this](const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& outputPath)
 			{
@@ -429,7 +308,7 @@ namespace octoon
 			package["type"] = gameObject->type_name();
 			package["name"] = gameObject->getName();
 			package["data"] = this->assetDatabase_->getAssetGuid(gameObject);
-			package["preview"] = (char*)writePreview(gameObject, rootPath).u8string().c_str();	
+			package["preview"] = (char*)writePreview(gameObject, relativePath).u8string().c_str();
 
 			this->packageList_[uuid] = std::move(package);
 			this->assetDatabase_->saveAssets();
@@ -438,8 +317,8 @@ namespace octoon
 		}
 		catch (const std::exception& e)
 		{
-			if (std::filesystem::exists(rootPath))
-				std::filesystem::remove_all(rootPath);
+			if (std::filesystem::exists(relativePath))
+				std::filesystem::remove_all(relativePath);
 
 			throw e;
 		}
@@ -507,74 +386,6 @@ namespace octoon
 		}
 
 		return nullptr;
-
-
-		/*else if (type.isDerivedFrom(GameObject::getRtti()))
-		{
-			std::ifstream ifs(filepath);
-			if (ifs)
-			{
-				auto prefab = nlohmann::json::parse(ifs);
-
-				GameObjectPtr object;
-
-				if (prefab.contains("model"))
-				{
-					auto modelJson = prefab["model"];
-					if (modelJson.contains("uuid"))
-						object = AssetBundle::instance()->loadAsset<GameObject>(modelJson["uuid"].get<std::string>());
-					else if (modelJson.contains("path"))
-						object = this->assetDatabase_->loadAssetAtPath<GameObject>(modelJson["path"].get<std::string>());
-				}
-
-				if (prefab.contains("transform"))
-				{
-					auto transform = object->getComponent<octoon::TransformComponent>();
-					if (transform)
-						transform->load(prefab["transform"]);
-				}
-
-				for (auto& animationJson : prefab["animation"])
-				{
-					if (animationJson.find("data") == animationJson.end())
-						continue;
-
-					auto animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(animationJson["data"].get<std::string>());
-					if (animation)
-					{
-						auto animationType = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
-						if (animationType == 0)
-							object->addComponent<octoon::AnimatorComponent>(std::move(animation), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
-						else
-							object->addComponent<octoon::AnimatorComponent>(std::move(animation));
-					}
-				}
-
-				if (prefab.contains("meshRenderer"))
-				{
-					std::vector<std::shared_ptr<octoon::Material>> materials;
-					materials.resize(prefab["meshRenderer"]["materials"].size());
-
-					for (auto& materialJson : prefab["meshRenderer"]["materials"])
-					{
-						if (materialJson.find("data") == materialJson.end())
-							continue;
-
-						auto data = materialJson["data"].get<nlohmann::json::string_t>();
-						auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-						auto material = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(data);
-
-						materials[index] = std::move(material);
-					}
-
-					auto meshRenderer = object->getComponent<octoon::MeshRendererComponent>();
-					if (meshRenderer)
-						meshRenderer->setMaterials(std::move(materials));
-				}
-
-				asset = object;
-			}
-		}*/
 	}
 
 	bool

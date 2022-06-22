@@ -53,6 +53,7 @@ namespace octoon
 				if (motion->getName().empty())
 					motion->setName((char*)path.filename().u8string().c_str());
 
+				assetPathList_[motion] = path;
 				return motion;
 			}
 		}
@@ -62,6 +63,7 @@ namespace octoon
 			if (texture->load(path))
 			{
 				texture->setName((char*)path.filename().u8string().c_str());
+				assetPathList_[texture] = path;
 				return texture;
 			}
 		}
@@ -69,19 +71,28 @@ namespace octoon
 		{
 			auto model = PMXLoader::load(path, octoon::PMXLoadFlagBits::AllBit);
 			if (model)
+			{
+				assetPathList_[model] = path;
 				return model;
+			}
 		}
 		else if (ext == u8".obj")
 		{
 			auto model = OBJLoader::load(path);
 			if (model)
+			{
+				assetPathList_[model] = path;
 				return model;
+			}
 		}
 		else if (ext == u8".fbx")
 		{
 			auto model = FBXLoader::load(path);
 			if (model)
+			{
+				assetPathList_[model] = path;
 				return model;
+			}
 		}
 		else if (ext == u8".abc")
 		{
@@ -90,7 +101,7 @@ namespace octoon
 			{
 				auto alembic = model->addComponent<MeshAnimationComponent>();
 				alembic->setFilePath(path);
-
+				assetPathList_[model] = path;
 				return model;
 			}
 		}
