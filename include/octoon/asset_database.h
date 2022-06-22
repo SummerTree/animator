@@ -28,6 +28,8 @@ namespace octoon
 		void createAsset(const std::shared_ptr<const PMX>& pmx, const std::filesystem::path& relativePath) noexcept(false);
 		void createAsset(const std::shared_ptr<const GameObject>& object, const std::filesystem::path& relativePath) noexcept(false);
 
+		bool contains(const std::shared_ptr<const RttiObject>& asset) const noexcept;
+
 		void deleteAsset(const std::filesystem::path& relativePath) noexcept(false);
 		void saveAssets() noexcept(false);
 
@@ -38,8 +40,6 @@ namespace octoon
 		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
 		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false);
-
-		bool isPersistent(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
 		template<typename T>
 		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)

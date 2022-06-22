@@ -52,7 +52,7 @@ namespace unreal
 
 		if (this->texture.getValue())
 		{
-			if (!octoon::AssetDatabase::instance()->isPersistent(this->texture.getValue()))
+			if (!octoon::AssetDatabase::instance()->contains(this->texture.getValue()))
 				octoon::AssetDatabase::instance()->createAsset(this->texture.getValue(), "Assets/Environment/Texture.hdr");
 
 			writer["texture"] = octoon::AssetDatabase::instance()->getAssetGuid(this->texture.getValue());

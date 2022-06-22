@@ -236,33 +236,33 @@ namespace octoon
 			mat["stencilEnable"] = standardMaterial->getStencilEnable();
 			mat["scissorTestEnable"] = standardMaterial->getScissorTestEnable();			
 
-			if (standardMaterial->getColorMap() && !this->isPersistent(standardMaterial->getColorMap()))
+			if (standardMaterial->getColorMap() && !this->contains(standardMaterial->getColorMap()))
 				this->createAsset(standardMaterial->getColorMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getOpacityMap() && !this->isPersistent(standardMaterial->getOpacityMap()))
+			if (standardMaterial->getOpacityMap() && !this->contains(standardMaterial->getOpacityMap()))
 				this->createAsset(standardMaterial->getOpacityMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getNormalMap() && !this->isPersistent(standardMaterial->getNormalMap()))
+			if (standardMaterial->getNormalMap() && !this->contains(standardMaterial->getNormalMap()))
 				this->createAsset(standardMaterial->getNormalMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getRoughnessMap() && !this->isPersistent(standardMaterial->getRoughnessMap()))
+			if (standardMaterial->getRoughnessMap() && !this->contains(standardMaterial->getRoughnessMap()))
 				this->createAsset(standardMaterial->getRoughnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSpecularMap() && !this->isPersistent(standardMaterial->getSpecularMap()))
+			if (standardMaterial->getSpecularMap() && !this->contains(standardMaterial->getSpecularMap()))
 				this->createAsset(standardMaterial->getSpecularMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getMetalnessMap() && !this->isPersistent(standardMaterial->getMetalnessMap()))
+			if (standardMaterial->getMetalnessMap() && !this->contains(standardMaterial->getMetalnessMap()))
 				this->createAsset(standardMaterial->getMetalnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getEmissiveMap() && !this->isPersistent(standardMaterial->getEmissiveMap()))
+			if (standardMaterial->getEmissiveMap() && !this->contains(standardMaterial->getEmissiveMap()))
 				this->createAsset(standardMaterial->getEmissiveMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getAnisotropyMap() && !this->isPersistent(standardMaterial->getAnisotropyMap()))
+			if (standardMaterial->getAnisotropyMap() && !this->contains(standardMaterial->getAnisotropyMap()))
 				this->createAsset(standardMaterial->getAnisotropyMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getClearCoatMap() && !this->isPersistent(standardMaterial->getClearCoatMap()))
+			if (standardMaterial->getClearCoatMap() && !this->contains(standardMaterial->getClearCoatMap()))
 				this->createAsset(standardMaterial->getClearCoatMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getClearCoatRoughnessMap() && !this->isPersistent(standardMaterial->getClearCoatRoughnessMap()))
+			if (standardMaterial->getClearCoatRoughnessMap() && !this->contains(standardMaterial->getClearCoatRoughnessMap()))
 				this->createAsset(standardMaterial->getClearCoatRoughnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSubsurfaceMap() && !this->isPersistent(standardMaterial->getSubsurfaceMap()))
+			if (standardMaterial->getSubsurfaceMap() && !this->contains(standardMaterial->getSubsurfaceMap()))
 				this->createAsset(standardMaterial->getSubsurfaceMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSubsurfaceColorMap() && !this->isPersistent(standardMaterial->getSubsurfaceColorMap()))
+			if (standardMaterial->getSubsurfaceColorMap() && !this->contains(standardMaterial->getSubsurfaceColorMap()))
 				this->createAsset(standardMaterial->getSubsurfaceColorMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSheenMap() && !this->isPersistent(standardMaterial->getSheenMap()))
+			if (standardMaterial->getSheenMap() && !this->contains(standardMaterial->getSheenMap()))
 				this->createAsset(standardMaterial->getSheenMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getLightMap() && !this->isPersistent(standardMaterial->getLightMap()))
+			if (standardMaterial->getLightMap() && !this->contains(standardMaterial->getLightMap()))
 				this->createAsset(standardMaterial->getLightMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
 
 			if (standardMaterial->getColorMap())
@@ -437,7 +437,7 @@ namespace octoon
 				auto animation = component->downcast<AnimatorComponent>();
 				if (animation->getAnimation())
 				{
-					if (!this->isPersistent(animation->getAnimation()))
+					if (!this->contains(animation->getAnimation()))
 						this->createAsset(animation->getAnimation(), std::filesystem::path(rootPath).append(make_guid() + ".vmd"));
 
 					nlohmann::json animationJson;
@@ -467,7 +467,7 @@ namespace octoon
 
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
-					if (!this->isPersistent(materials[i]))
+					if (!this->contains(materials[i]))
 						this->createAsset(materials[i], std::filesystem::path(rootPath).append(make_guid() + ".mat"));
 
 					nlohmann::json materialJson;
@@ -485,7 +485,7 @@ namespace octoon
 
 				for (auto& pair : abc->getMaterials())
 				{
-					if (!this->isPersistent(pair.second))
+					if (!this->contains(pair.second))
 						this->createAsset(pair.second, std::filesystem::path(rootPath).append(make_guid() + ".mat"));
 
 					nlohmann::json materialJson;
@@ -648,7 +648,7 @@ namespace octoon
 	}
 
 	bool
-	AssetDatabase::isPersistent(const std::shared_ptr<const RttiObject>& asset) const noexcept
+	AssetDatabase::contains(const std::shared_ptr<const RttiObject>& asset) const noexcept
 	{
 		auto it = objectPathList_.find(asset);
 		if (it != objectPathList_.end())
