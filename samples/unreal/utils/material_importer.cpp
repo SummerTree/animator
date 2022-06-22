@@ -1,7 +1,7 @@
-#include <octoon/material_importer.h>
+#include "material_importer.h"
 #include <octoon/asset_database.h>
 
-namespace octoon
+namespace unreal
 {
 	OctoonImplementSingleton(MaterialImporter)
 
@@ -28,7 +28,7 @@ namespace octoon
 		return this->sceneList_;
 	}
 
-	std::shared_ptr<Material>
+	std::shared_ptr<octoon::Material>
 	MaterialImporter::getMaterial(std::string_view uuid) noexcept(false)
 	{
 		if (materialMap_.contains(std::string(uuid)))
@@ -47,12 +47,12 @@ namespace octoon
 	}
 
 	bool
-	MaterialImporter::addMaterial(const std::shared_ptr<Material>& mat)
+	MaterialImporter::addMaterial(const std::shared_ptr<octoon::Material>& mat)
 	{
 		if (!assetGuidList_.contains(mat))
 		{
-			auto standard = mat->downcast_pointer<MeshStandardMaterial>();
-			auto uuid = AssetDatabase::instance()->getAssetGuid(mat);
+			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
+			auto uuid = octoon::AssetDatabase::instance()->getAssetGuid(mat);
 
 			nlohmann::json package;
 			package["uuid"] = uuid;

@@ -405,7 +405,7 @@ namespace octoon
 	{
 		auto it = this->packageList_.find(uuid);
 		if (it != this->packageList_.end())
-			return *(it);
+			return (*it).second;
 		return nlohmann::json();
 	}
 

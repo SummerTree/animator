@@ -1,5 +1,6 @@
 #include "inspector_dock.h"
 #include "../widgets/draggable_list_widget.h"
+#include "../utils/material_importer.h"
 
 #include <qfiledialog.h>
 #include <qmessagebox.h>
@@ -17,8 +18,6 @@
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_preview.h>
 #include <octoon/asset_database.h>
-
-#include <octoon/material_importer.h>
 
 namespace unreal
 {
@@ -46,13 +45,13 @@ namespace unreal
 
 				if (selectedObject_.expired() || selectedObject_.lock() != hitObject)
 				{
-					octoon::MaterialImporter::instance()->clear();
+					MaterialImporter::instance()->clear();
 
 					auto renderComponent = hitObject->getComponent<octoon::MeshRendererComponent>();
 					if (renderComponent)
 					{
 						for (auto& mat : renderComponent->getMaterials())
-							octoon::MaterialImporter::instance()->addMaterial(mat);
+							MaterialImporter::instance()->addMaterial(mat);
 					}
 					else
 					{
@@ -60,7 +59,7 @@ namespace unreal
 						if (smr)
 						{
 							for (auto& mat : smr->getMaterials())
-								octoon::MaterialImporter::instance()->addMaterial(mat);
+								MaterialImporter::instance()->addMaterial(mat);
 						}
 					}
 
@@ -69,7 +68,7 @@ namespace unreal
 					selectedObject_ = hitObject;
 				}
 
-				auto& sceneList = octoon::MaterialImporter::instance()->getSceneList();
+				auto& sceneList = MaterialImporter::instance()->getSceneList();
 				if (hit.mesh < sceneList.size())
 				{
 					auto uuid = sceneList[hit.mesh];
@@ -91,7 +90,7 @@ namespace unreal
 			else
 			{
 				selectedObject_.reset();
-				octoon::MaterialImporter::instance()->clear();
+				MaterialImporter::instance()->clear();
 				this->updateItemList();
 			}
 		};
@@ -126,7 +125,7 @@ namespace unreal
 			if (selectedItem)
 			{
 				auto uuid = item->data(Qt::UserRole).toString().toStdString();
-				auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(uuid));
+				auto material = MaterialImporter::instance()->getMaterial(std::string_view(uuid));
 				if (material)
 				{
 					auto hit = selectedItem.value();
@@ -147,7 +146,7 @@ namespace unreal
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
 			item->setSizeHint(mainWidget_->iconSize() + QSize(8, 35));
 
-			auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
+			auto material = MaterialImporter::instance()->getMaterial(std::string_view(package["uuid"].get<nlohmann::json::string_t>()));
 			if (material)
 			{
 				QFontMetrics metrics(item->font());
@@ -182,7 +181,7 @@ namespace unreal
 	void 
 	MaterialListPanel::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::MaterialImporter::instance()->getPackage((std::string)uuid);
+		auto package = MaterialImporter::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 			this->addItem(package);
 	}
@@ -192,7 +191,7 @@ namespace unreal
 	{
 		mainWidget_->clear();
 
-		for (auto& it : octoon::MaterialImporter::instance()->getSceneList())
+		for (auto& it : MaterialImporter::instance()->getSceneList())
 		{
 			try
 			{
@@ -312,7 +311,7 @@ namespace unreal
 			if (behaviour)
 			{
 				auto uuid = item->data(Qt::UserRole).toString().toStdString();
-				auto material = octoon::MaterialImporter::instance()->getMaterial(std::string_view(uuid));
+				auto material = MaterialImporter::instance()->getMaterial(std::string_view(uuid));
 				if (material)
 				{
 					title_->setText(tr("Material Properties"));

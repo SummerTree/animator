@@ -5,9 +5,9 @@
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/runtime/singleton.h>
 
-namespace octoon
+namespace unreal
 {
-	class OCTOON_EXPORT MaterialImporter final
+	class MaterialImporter final
 	{
 		OctoonDeclareSingleton(MaterialImporter)
 	public:
@@ -32,7 +32,7 @@ namespace octoon
 		std::vector<nlohmann::json> sceneList_;
 		std::map<std::string, nlohmann::json> packageList_;
 		std::map<std::string, std::shared_ptr<octoon::Material>> materialMap_;
-		std::map<std::weak_ptr<const Material>, std::string, std::owner_less<std::weak_ptr<const Material>>> assetGuidList_;
+		std::map<std::weak_ptr<const octoon::Material>, std::string, std::owner_less<std::weak_ptr<const octoon::Material>>> assetGuidList_;
 	};
 }
 

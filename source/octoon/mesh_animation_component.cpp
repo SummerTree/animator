@@ -4,7 +4,6 @@
 #include <octoon/transform_component.h>
 #include <octoon/timer_feature.h>
 #include <octoon/material/mesh_standard_material.h>
-#include <octoon/material_importer.h>
 #include <octoon/asset_database.h>
 #include <octoon/asset_bundle.h>
 

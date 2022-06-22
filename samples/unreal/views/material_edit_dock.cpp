@@ -18,8 +18,6 @@
 #include <octoon/asset_preview.h>
 #include <octoon/asset_database.h>
 
-#include <octoon/material_importer.h>
-
 namespace unreal
 {
 	constexpr auto imageFormat = "All Files(*.jpeg *.jpg *.png *.tga *.bmp);; JPEG Files (*.jpeg *.jpg);; PNG Files (*.png);; TGA Files (*.tga);; BMP Files (*.bmp)";
@@ -829,8 +827,6 @@ namespace unreal
 			auto material = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(uuid);
 			if (material)
 			{
-				octoon::MaterialImporter::instance()->addMaterial(this->material_->clone());
-
 				this->material_->copy(*material->downcast_pointer<octoon::MeshStandardMaterial>());
 
 				this->updateMaterial();

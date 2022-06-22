@@ -22,7 +22,7 @@ namespace unreal
 		MotionDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~MotionDock() noexcept;
 
-		void addItem(std::string_view uuid) noexcept;
+		void addItem(const nlohmann::json& package) noexcept;
 
 	public Q_SLOTS:
 		void importClickEvent();

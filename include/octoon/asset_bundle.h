@@ -8,7 +8,6 @@
 #include <octoon/pmx_loader.h>
 #include <octoon/runtime/uuid.h>
 #include <octoon/runtime/singleton.h>
-#include <octoon/asset_importer.h>
 #include <octoon/asset_database.h>
 #include <set>
 

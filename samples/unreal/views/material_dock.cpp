@@ -1,5 +1,4 @@
 #include "material_dock.h"
-#include <octoon/material_importer.h>
 #include "../widgets/draggable_list_widget.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>

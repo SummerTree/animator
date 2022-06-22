@@ -5,9 +5,9 @@
 #include <octoon/runtime/singleton.h>
 #include <filesystem>
 
-namespace octoon
+namespace unreal
 {
-	class OCTOON_EXPORT AssetImporter final
+	class AssetImporter final
 	{
 	public:
 		AssetImporter() noexcept;

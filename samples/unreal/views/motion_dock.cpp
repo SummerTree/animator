@@ -72,35 +72,31 @@ namespace unreal
 	}
 
 	void 
-	MotionDock::addItem(std::string_view uuid) noexcept
+	MotionDock::addItem(const nlohmann::json& package) noexcept
 	{
-		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
-		if (package.is_object())
+		auto item = std::make_unique<QListWidgetItem>();
+		item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
+		item->setSizeHint(listWidget_->iconSize() + QSize(9, 40));
+
+		if (package.contains("preview"))
 		{
-			auto item = std::make_unique<QListWidgetItem>();
-			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(listWidget_->iconSize() + QSize(9, 40));
-
-			if (package.contains("preview"))
-			{
-				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
-				item->setIcon(QIcon(QPixmap(filepath)));
-			}
-			else
-			{
-				item->setIcon(QIcon(QPixmap(":res/icons/dance2.png")));
-			}
-
-			if (package.contains("name"))
-			{
-				QFontMetrics metrics(mainWidget_->font());
-				auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
-				item->setText(metrics.elidedText(name, Qt::ElideRight, listWidget_->iconSize().width()));
-				item->setToolTip(name);
-			}
-
-			listWidget_->addItem(item.release());
+			auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+			item->setIcon(QIcon(QPixmap(filepath)));
 		}
+		else
+		{
+			item->setIcon(QIcon(QPixmap(":res/icons/dance2.png")));
+		}
+
+		if (package.contains("name"))
+		{
+			QFontMetrics metrics(mainWidget_->font());
+			auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
+			item->setText(metrics.elidedText(name, Qt::ElideRight, listWidget_->iconSize().width()));
+			item->setToolTip(name);
+		}
+
+		listWidget_->addItem(item.release());
 	}
 
 	void
@@ -269,8 +265,8 @@ namespace unreal
 		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::AssetBundle::instance()->getPackageList<octoon::Animation>())
-			this->addItem(uuid.get<nlohmann::json::string_t>());
+		for (auto& package : octoon::AssetBundle::instance()->getPackageList<octoon::Animation>())
+			this->addItem(package);
 	}
 
 	bool
