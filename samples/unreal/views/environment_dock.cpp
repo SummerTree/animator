@@ -206,7 +206,7 @@ namespace unreal
 		contextLayout_->addWidget(spoiler);
 		contextLayout_->addStretch();
 		contextLayout_->addWidget(resetButton_, 0, Qt::AlignBottom | Qt::AlignRight);
-		contextLayout_->setContentsMargins(8, 0, 8, 0);
+		contextLayout_->setContentsMargins(8, 4, 8, 0);
 
 		auto mainLayout = new QVBoxLayout();
 		mainLayout->addLayout(titleLayout_);
