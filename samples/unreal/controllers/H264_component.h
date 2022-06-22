@@ -4,6 +4,7 @@
 #include "module/encode_module.h"
 #include "unreal_component.h"
 #include <octoon/math/vector3.h>
+#include <filesystem>
 
 struct x264_t;
 struct x264_picture_t;

@@ -25,7 +25,7 @@ namespace unreal
 	}
 
 	void 
-	EntitiesModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false)
+	EntitiesModule::load(nlohmann::json& reader) noexcept(false)
 	{
 		if (reader.contains("scene"))
 		{
@@ -33,7 +33,8 @@ namespace unreal
 
 			for (auto& it : reader["scene"])
 			{
-				auto object = octoon::AssetBundle::instance()->loadAsset<octoon::GameObject>(it.get<std::string>());
+				auto uuid = it.get<std::string>();
+				auto object = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(std::filesystem::path("Assets").append(uuid).append(uuid + ".prefab"));
 				if (object)
 					objects_.push_back(std::move(object));
 			}
@@ -43,15 +44,15 @@ namespace unreal
 	}
 
 	void 
-	EntitiesModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false)
+	EntitiesModule::save(nlohmann::json& writer) noexcept(false)
 	{
 		nlohmann::json sceneJson;
 
 		for (auto& it : this->objects.getValue())
 		{
-			auto package = ab->createAsset(it);
-			if (package.is_object())
-				sceneJson.push_back(package["uuid"].get<std::string>());
+			auto uuid = octoon::make_guid();
+			octoon::AssetDatabase::instance()->createAsset(it, std::filesystem::path("Assets").append(uuid).append(uuid + ".prefab"));
+			sceneJson.push_back(uuid);
 		}
 
 		writer["scene"] = std::move(sceneJson);

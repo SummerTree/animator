@@ -151,14 +151,6 @@ SET(IO_FEATURES_LIST
 SOURCE_GROUP("system\\io" FILES ${IO_FEATURES_LIST})
 
 SET(LOADER_LIST
-	${HEADER_PATH}/asset_database.h
-	${SOURCE_PATH}/asset_database.cpp
-	${HEADER_PATH}/asset_bundle.h
-	${SOURCE_PATH}/asset_bundle.cpp
-	${HEADER_PATH}/asset_importer.h
-	${SOURCE_PATH}/asset_importer.cpp
-	${HEADER_PATH}/asset_preview.h
-	${SOURCE_PATH}/asset_preview.cpp
 	${HEADER_PATH}/pmx.h
 	${SOURCE_PATH}/pmx.cpp
 	${HEADER_PATH}/pmx_loader.h
@@ -177,12 +169,26 @@ SET(LOADER_LIST
 	${SOURCE_PATH}/obj_loader.cpp
 	${HEADER_PATH}/audio_loader.h
 	${SOURCE_PATH}/audio_loader.cpp
-	${HEADER_PATH}/prefab_utility.h
-	${SOURCE_PATH}/prefab_utility.cpp
 	${HEADER_PATH}/material_importer.h
 	${SOURCE_PATH}/material_importer.cpp
 )
 SOURCE_GROUP("system\\loader" FILES ${LOADER_LIST})
+
+SET(EDITOR_LIST
+	${HEADER_PATH}/asset_database.h
+	${SOURCE_PATH}/asset_database.cpp
+	${HEADER_PATH}/asset_loader.h
+	${SOURCE_PATH}/asset_loader.cpp
+	${HEADER_PATH}/asset_bundle.h
+	${SOURCE_PATH}/asset_bundle.cpp
+	${HEADER_PATH}/asset_importer.h
+	${SOURCE_PATH}/asset_importer.cpp
+	${HEADER_PATH}/asset_preview.h
+	${SOURCE_PATH}/asset_preview.cpp
+	${HEADER_PATH}/prefab_utility.h
+	${SOURCE_PATH}/prefab_utility.cpp
+)
+SOURCE_GROUP("system\\editor" FILES ${EDITOR_LIST})
 
 SET(PHYSICS_FEATURES_LIST
 	${HEADER_PATH}/physics_feature.h
@@ -245,6 +251,7 @@ SOURCE_GROUP("system\\animation" FILES ${ANIMATION_FEATURES_LIST})
 LIST(APPEND OCTOON_LIST ${GAMEBASE_LIST})
 LIST(APPEND OCTOON_LIST ${HELPER_LIST})
 LIST(APPEND OCTOON_LIST ${LOADER_LIST})
+LIST(APPEND OCTOON_LIST ${EDITOR_LIST})
 
 IF(OCTOON_FEATURE_IO_ENABLE)
 	LIST(APPEND OCTOON_LIST ${IO_FEATURES_LIST})

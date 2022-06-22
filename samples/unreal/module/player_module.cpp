@@ -29,7 +29,7 @@ namespace unreal
 	}
 
 	void 
-	PlayerModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	PlayerModule::load(nlohmann::json& reader) noexcept
 	{
 		if (reader["finish"].is_boolean())
 			this->finish = reader["finish"].get<nlohmann::json::boolean_t>();
@@ -42,7 +42,7 @@ namespace unreal
 	}
 
 	void 
-	PlayerModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	PlayerModule::save(nlohmann::json& writer) noexcept
 	{
 		writer["finish"] = this->finish.getValue();
 		writer["playFps"] = this->playFps.getValue();

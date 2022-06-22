@@ -12,10 +12,14 @@ namespace octoon
 		MD5();
 		MD5(const void* input, size_t length);
 		MD5(const std::string& str);
+		MD5(const std::u8string& str);
 		MD5(std::ifstream& in);
+
 		void update(const void* input, size_t length);
 		void update(const std::string& str);
+		void update(const std::u8string& str);
 		void update(std::ifstream& in);
+
 		const byte* digest();
 		std::string toString();
 		void reset();

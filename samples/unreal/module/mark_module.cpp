@@ -23,12 +23,12 @@ namespace unreal
 	}
 
 	void 
-	MarkModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	MarkModule::load(nlohmann::json& reader) noexcept
 	{
 	}
 
 	void 
-	MarkModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	MarkModule::save(nlohmann::json& writer) noexcept
 	{
 	}
 }

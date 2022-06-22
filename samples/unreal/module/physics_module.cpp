@@ -23,7 +23,7 @@ namespace unreal
 	}
 
 	void 
-	PhysicsModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	PhysicsModule::load(nlohmann::json& reader) noexcept
 	{
 		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
@@ -40,7 +40,7 @@ namespace unreal
 	}
 
 	void 
-	PhysicsModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	PhysicsModule::save(nlohmann::json& writer) noexcept
 	{
 		writer["enable"] = this->enable.getValue();
 		writer["gravity"] = this->gravity.getValue().to_array();

@@ -4,6 +4,7 @@
 #include "module/encode_module.h"
 #include "unreal_component.h"
 #include <octoon/math/vector3.h>
+#include <filesystem>
 
 struct x265_param;
 struct x265_encoder;

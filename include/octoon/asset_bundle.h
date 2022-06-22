@@ -9,6 +9,7 @@
 #include <octoon/runtime/uuid.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_importer.h>
+#include <octoon/asset_database.h>
 #include <set>
 
 namespace octoon
@@ -90,6 +91,7 @@ namespace octoon
 
 	private:
 		std::filesystem::path assetPath_;
+		std::unique_ptr<AssetDatabase> assetDatabase_;
 
 		std::unique_ptr<AssetImporter> modelAsset_;
 		std::unique_ptr<AssetImporter> motionAsset_;

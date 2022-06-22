@@ -44,7 +44,7 @@ namespace unreal
 	}
 
 	void 
-	ClientModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	ClientModule::load(nlohmann::json& reader) noexcept
 	{
 		if (reader.find("autoLogin") != reader.end())
 			this->autoLogin = reader["autoLogin"];
@@ -58,7 +58,7 @@ namespace unreal
 	}
 
 	void 
-	ClientModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	ClientModule::save(nlohmann::json& writer) noexcept
 	{
 		writer["autoLogin"] = this->autoLogin;
 		writer["username"] = this->username;

@@ -1,7 +1,6 @@
 #ifndef OCTOON_ASSET_DATABASE_H_
 #define OCTOON_ASSET_DATABASE_H_
 
-#include <octoon/asset_importer.h>
 #include <octoon/pmx_loader.h>
 #include <octoon/texture/texture.h>
 #include <octoon/material/mesh_standard_material.h>
@@ -23,24 +22,28 @@ namespace octoon
 		AssetDatabase() noexcept;
 		virtual ~AssetDatabase() noexcept;
 
-		void createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& outputPath) noexcept(false);
-		void createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& outputPath) noexcept(false);
-		void createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& outputPath) noexcept(false);
-		void createAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& outputPath) noexcept(false);
-		void createAsset(const std::shared_ptr<GameObject>& object, const std::filesystem::path& outputPath) noexcept(false);
+		void open(const std::filesystem::path& assetPath) noexcept(false);
+		void close() noexcept;
 
-		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) noexcept;
+		void createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<GameObject>& object, const std::filesystem::path& relativePath) noexcept(false);
+
+		void deleteAsset(const std::filesystem::path& relativePath) noexcept(false);
+
 		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
-		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) noexcept;
+		std::string getAssetGuid(const std::filesystem::path& relativePath) const noexcept;
 		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
-		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path) noexcept(false);
+		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false);
 
 		template<typename T>
-		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
+		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
 		{
-			auto asset = loadAssetAtPath(path);
+			auto asset = loadAssetAtPath(relativePath);
 			if (asset)
 				return asset->downcast_pointer<T>();
 			return nullptr;
@@ -54,7 +57,9 @@ namespace octoon
 		AssetDatabase& operator=(const AssetDatabase&) = delete;
 
 	private:
-		std::map<std::weak_ptr<const RttiObject>, std::string, std::owner_less<std::weak_ptr<const RttiObject>>> assetGuidList_;
+		std::filesystem::path assetPath_;
+
+		std::map<std::filesystem::path, std::string> assetGuidList_;
 		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> assetPathList_;
 	};
 }

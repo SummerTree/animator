@@ -20,7 +20,7 @@ namespace unreal
 	}
 
 	void 
-	SoundModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	SoundModule::load(nlohmann::json& reader) noexcept
 	{
 		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
@@ -31,7 +31,7 @@ namespace unreal
 	}
 
 	void 
-	SoundModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	SoundModule::save(nlohmann::json& writer) noexcept
 	{
 		writer["enable"] = this->enable.getValue();
 		writer["volume"] = this->volume.getValue();

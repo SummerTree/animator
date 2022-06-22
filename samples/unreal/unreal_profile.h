@@ -5,6 +5,7 @@
 #include <string>
 #include <filesystem>
 #include <octoon/asset_bundle.h>
+#include <octoon/asset_database.h>
 
 #include "module/encode_module.h"
 #include "module/physics_module.h"

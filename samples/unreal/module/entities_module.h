@@ -14,8 +14,8 @@ namespace unreal
 
 		virtual void reset() noexcept override;
 
-		virtual void load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false) override;
-		virtual void save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept(false) override;
+		virtual void load(nlohmann::json& reader) noexcept(false) override;
+		virtual void save(nlohmann::json& writer) noexcept(false) override;
 
 		void disconnect() noexcept override;
 

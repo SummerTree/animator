@@ -1,8 +1,9 @@
 #include <octoon/asset_database.h>
 #include <octoon/asset_bundle.h>
+#include <octoon/asset_loader.h>
 #include <octoon/asset_preview.h>
 #include <octoon/runtime/uuid.h>
-#include <octoon/runtime/base64.h>
+#include <octoon/runtime/md5.h>
 #include <octoon/runtime/string.h>
 #include <octoon/vmd_loader.h>
 #include <octoon/pmx_loader.h>
@@ -32,14 +33,31 @@ namespace octoon
 
 	AssetDatabase::~AssetDatabase() noexcept
 	{
+		this->close();
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& path) noexcept(false)
+	AssetDatabase::open(const std::filesystem::path& assetPath) noexcept(false)
+	{
+		assetPath_ = assetPath;
+
+		if (!std::filesystem::exists(assetPath_))
+			std::filesystem::create_directories(assetPath_);
+	}
+
+	void
+	AssetDatabase::close() noexcept
+	{
+		assetPath_.clear();
+	}
+
+	void
+	AssetDatabase::createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(texture);
-		assert(!path.empty());
+		assert(!relativePath.empty());
 
+		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
 		auto extension = path.extension();
@@ -53,10 +71,9 @@ namespace octoon
 			std::filesystem::permissions(path, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
-			metadata["uuid"] = AssetDatabase::instance()->getAssetGuid(texture);
+			metadata["uuid"] = MD5(relativePath.u8string()).toString();
 			metadata["name"] = texture->getName();
 			metadata["suffix"] = (char*)extension.c_str();
-			metadata["path"] = (char*)path.u8string().c_str();
 			metadata["mipmap"] = texture->getMipLevel();
 
 			std::ofstream ifs(metaPath, std::ios_base::binary);
@@ -80,10 +97,11 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& path) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!path.empty());
+		assert(!relativePath.empty());
 
+		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
 		auto extension = path.extension();
@@ -97,9 +115,8 @@ namespace octoon
 			std::filesystem::permissions(path, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
-			metadata["uuid"] = AssetDatabase::instance()->getAssetGuid(animation);
+			metadata["uuid"] = MD5(relativePath.u8string()).toString();
 			metadata["name"] = animation->getName();
-			metadata["path"] = (char*)path.u8string().c_str();
 
 			std::ofstream ifs(metaPath, std::ios_base::binary);
 			if (ifs)
@@ -122,12 +139,14 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& path) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& relativePath) noexcept(false)
 	{
+		assert(!relativePath.empty());
+
+		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
 		auto extension = path.extension();
-
 		auto metaPath = std::filesystem::path(rootPath).append(filename.u8string().substr(0, filename.u8string().find_last_of('.')) + u8".metadata");
 
 		try
@@ -219,8 +238,7 @@ namespace octoon
 			}
 
 			nlohmann::json metadata;
-			metadata["uuid"] = this->getAssetGuid(material);
-			metadata["path"] = (char*)path.u8string().c_str();
+			metadata["uuid"] = MD5(relativePath.u8string()).toString();
 
 			std::ofstream metaFs(metaPath, std::ios_base::binary);
 			if (metaFs)
@@ -243,10 +261,11 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& path) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
+		assert(!relativePath.empty());
 
+		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
 		auto extension = path.extension();
@@ -283,9 +302,8 @@ namespace octoon
 			}
 
 			nlohmann::json metadata;
-			metadata["uuid"] = this->getAssetGuid(pmx);
-			metadata["name"] = cv.to_bytes(pmx->description.japanModelName.data());
-			metadata["path"] = (char*)path.u8string().c_str();
+			metadata["uuid"] = MD5(path.string()).toString();
+			metadata["name"] = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>().to_bytes(pmx->description.japanModelName.data());
 			
 			std::ofstream ifs(metaPath, std::ios_base::binary);
 			if (ifs)
@@ -307,12 +325,11 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& path) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!path.empty());
+		assert(!relativePath.empty());
 
-		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-
+		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
 		auto extension = path.extension();
@@ -326,9 +343,8 @@ namespace octoon
 			std::filesystem::permissions(path, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
-			metadata["uuid"] = this->getAssetGuid(gameObject);
+			metadata["uuid"] = MD5(relativePath.u8string()).toString();
 			metadata["name"] = gameObject->getName();
-			metadata["path"] = (char*)path.u8string().c_str();
 
 			std::ofstream ifs(metaPath, std::ios_base::binary);
 			if (ifs)
@@ -350,40 +366,48 @@ namespace octoon
 		}
 	}
 
-	std::filesystem::path
-	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) noexcept
+	void
+	AssetDatabase::deleteAsset(const std::filesystem::path& relativePath) noexcept(false)
 	{
-		if (assetPathList_.contains(asset))
-			return assetPathList_.at(asset);
-		return std::string();
+		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
+		if (std::filesystem::is_directory(path))
+			std::filesystem::remove_all(path);
+		else
+		{
+			auto parent_path = path.parent_path();
+			auto filename = path.filename().string();
+			auto uuid = filename.substr(0, filename.find_last_of('.'));
+			auto metadata = std::filesystem::path(parent_path).append(uuid + ".metadata");
+
+			std::filesystem::remove(path);
+			std::filesystem::remove(metadata);
+		}
 	}
 
 	std::filesystem::path
 	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept
 	{
-		if (assetPathList_.contains(asset))
-			return assetPathList_.at(asset);
-		return std::string();
+		auto it = assetPathList_.find(asset);
+		if (it != assetPathList_.end())
+			return (*it).second;
+		return  std::filesystem::path();
 	}
 
 	std::string
-	AssetDatabase::getAssetGuid(const std::shared_ptr<const RttiObject>& asset) noexcept
+	AssetDatabase::getAssetGuid(const std::filesystem::path& relativePath) const noexcept
 	{
-		if (assetGuidList_.contains(asset))
-			return assetGuidList_.at(asset);
-		else
-		{
-			auto guid = make_guid();
-			assetGuidList_[asset] = guid;
-			return guid;
-		}
+		auto it = assetGuidList_.find(relativePath);
+		if (it != assetGuidList_.end())
+			return (*it).second;
+		return std::string();
 	}
 
 	std::string
 	AssetDatabase::getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept
 	{
-		if (assetGuidList_.contains(asset))
-			return assetGuidList_.at(asset);
+		auto path = this->getAssetPath(asset);
+		if (!path.empty())
+			return this->getAssetGuid(path);
 		return std::string();
 	}
 
@@ -406,47 +430,46 @@ namespace octoon
 	}
 
 	std::shared_ptr<RttiObject>
-	AssetDatabase::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
+	AssetDatabase::loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
-		auto ext = path.extension().string();
+		auto ext = relativePath.extension().u8string();
 		for (auto& it : ext)
 			it = (char)std::tolower(it);
 
-		if (ext == ".vmd")
+		auto fullPath = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
+		if (ext == u8".vmd")
 		{
-			auto motion = VMDLoader::load(path);
+			auto motion = AssetLoader::instance()->loadAssetAtPath<Animation>(fullPath);
 			if (motion)
 			{
 				if (motion->getName().empty())
-					motion->setName((char*)path.filename().u8string().c_str());
+					motion->setName((char*)fullPath.filename().c_str());
 
-				assetPathList_[motion] = path;
+				assetPathList_[motion] = relativePath;
 
-				auto metadata = this->loadMetadataAtPath(path);
+				auto metadata = this->loadMetadataAtPath(fullPath);
 				if (metadata.is_object())
 				{
 					if (metadata.contains("name"))
 						motion->setName(metadata["name"].get<std::string>());
 
 					if (metadata.contains("uuid"))
-						assetGuidList_[motion] = metadata["uuid"].get<std::string>();
+						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
 				}
 				else
 				{
-					assetGuidList_[motion] = make_guid();
+					assetGuidList_[relativePath] = make_guid();
 				}
 
 				return motion;
 			}
 		}
-		else if (ext == ".hdr" || ext == ".bmp" || ext == ".tga" || ext == ".jpg" || ext == ".png" || ext == ".jpeg" || ext == ".dds")
+		else if (ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
-			auto texture = std::make_shared<Texture>();
-			if (texture->load(path))
+			auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(fullPath);
+			if (texture)
 			{
-				texture->setName((char*)path.filename().u8string().c_str());
-
-				auto metadata = this->loadMetadataAtPath(path);
+				auto metadata = this->loadMetadataAtPath(fullPath);
 				if (metadata.is_object())
 				{
 					if (metadata.contains("name"))
@@ -456,136 +479,75 @@ namespace octoon
 						texture->setMipLevel(metadata["mipmap"].get<nlohmann::json::number_integer_t>());
 
 					if (metadata.contains("uuid"))
-						assetGuidList_[texture] = metadata["uuid"].get<std::string>();
+						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
 				}
 				else
 				{
-					if (ext == ".hdr")
+					if (ext == u8".hdr")
 						texture->setMipLevel(8);
 
-					assetGuidList_[texture] = make_guid();
+					assetGuidList_[relativePath] = make_guid();
 				}
 
 				texture->apply();
 
-				assetPathList_[texture] = path;
+				assetPathList_[texture] = relativePath;
 
 				return texture;
 			}
 		}
-		else if (ext == ".pmx")
+		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
 		{
-			auto model = PMXLoader::load(path, octoon::PMXLoadFlagBits::AllBit);
+			auto model = AssetLoader::instance()->loadAssetAtPath<GameObject>(fullPath);
 			if (model)
 			{
-				auto metadata = this->loadMetadataAtPath(path);
+				auto metadata = this->loadMetadataAtPath(fullPath);
 				if (metadata.is_object())
 				{
 					if (metadata.contains("name"))
 						model->setName(metadata["name"].get<std::string>());
 					if (metadata.contains("uuid"))
-						assetGuidList_[model] = metadata["uuid"].get<std::string>();
+						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
 				}
 				else
 				{
-					assetGuidList_[model] = make_guid();
+					assetGuidList_[relativePath] = make_guid();
 				}
 
-				assetPathList_[model] = path;
+				assetPathList_[model] = relativePath;
 
 				return model;
 			}
 		}
-		else if (ext == ".obj")
+		else if (ext == u8".abc")
 		{
-			auto model = OBJLoader::load(path);
-			if (model)
-			{
-				auto metadata = this->loadMetadataAtPath(path);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("name"))
-						model->setName(metadata["name"].get<std::string>());
-					if (metadata.contains("uuid"))
-						assetGuidList_[model] = metadata["uuid"].get<std::string>();
-				}
-				else
-				{
-					assetGuidList_[model] = make_guid();
-				}
-
-				assetPathList_[model] = path;
-
-				return model;
-			}
-		}
-		else if (ext == ".fbx")
-		{
-			auto model = FBXLoader::load(path);
-			if (model)
-			{
-				auto metadata = this->loadMetadataAtPath(path);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("name"))
-						model->setName(metadata["name"].get<std::string>());
-					if (metadata.contains("uuid"))
-						assetGuidList_[model] = metadata["uuid"].get<std::string>();
-				}
-				else
-				{
-					assetGuidList_[model] = make_guid();
-				}
-
-				assetPathList_[model] = path;
-
-				return model;
-			}
-		}
-		else if (ext == ".abc")
-		{
-			auto model = std::make_shared<GameObject>();
+			auto model = AssetLoader::instance()->loadAssetAtPath<GameObject>(fullPath);
 			if (model)
 			{
 				auto alembic = model->addComponent<MeshAnimationComponent>();
+				alembic->setFilePath(fullPath);
 
-				auto metadata = this->loadMetadataAtPath(path);
+				auto metadata = this->loadMetadataAtPath(fullPath);
 				if (metadata.is_object())
 				{
 					if (metadata.contains("name"))
 						model->setName(metadata["name"].get<std::string>());
 					if (metadata.contains("uuid"))
-						assetGuidList_[model] = metadata["uuid"].get<std::string>();
-
-					std::unordered_map<std::string, octoon::MaterialPtr> materials;
-
-					if (metadata.contains("materials"))
-					{
-						for (auto& material : metadata["materials"])
-						{
-							auto data = material["data"].get<nlohmann::json::string_t>();
-							auto name = material["name"].get<std::string>();
-							materials[name] = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(data);
-						}
-						
-						alembic->setMaterials(std::move(materials));
-						alembic->setFilePath(path);
-					}
+						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();					
 				}
 				else
 				{
-					alembic->setFilePath(path);
-					assetGuidList_[model] = make_guid();
+					assetGuidList_[relativePath] = make_guid();
 				}
 
-				assetPathList_[model] = path;
+				assetPathList_[model] = relativePath;
 
 				return model;
 			}
 		}
-		else if (ext == ".mat")
+		else if (ext == u8".mat")
 		{
-			std::ifstream ifs(path);
+			std::ifstream ifs(fullPath);
 			if (ifs)
 			{
 				auto mat = nlohmann::json::parse(ifs);
@@ -766,18 +728,18 @@ namespace octoon
 				if (subsurfaceColor != mat.end() && (*subsurfaceColor).is_array())
 					material->setSubsurfaceColor(math::float3((*subsurfaceColor).get<std::array<float, 3>>()));
 
-				auto metadata = this->loadMetadataAtPath(path);
+				auto metadata = this->loadMetadataAtPath(fullPath);
 				if (metadata.is_object())
 				{
 					if (metadata.contains("uuid"))
-						assetGuidList_[material] = metadata["uuid"].get<std::string>();
+						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
 				}
 				else
 				{
-					assetGuidList_[material] = make_guid();
+					assetGuidList_[relativePath] = make_guid();
 				}
 
-				assetPathList_[material] = path;
+				assetPathList_[material] = relativePath;
 
 				return material;
 			}

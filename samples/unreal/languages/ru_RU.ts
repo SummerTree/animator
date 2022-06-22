@@ -71,103 +71,103 @@
 <context>
     <name>unreal::CameraDock</name>
     <message>
-        <location filename="../views/camera_dock.cpp" line="17"/>
+        <location filename="../views/camera_dock.cpp" line="18"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="42"/>
+        <location filename="../views/camera_dock.cpp" line="43"/>
         <source>fov:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="54"/>
+        <location filename="../views/camera_dock.cpp" line="55"/>
         <source>* The following parameters take effect on rendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="58"/>
+        <location filename="../views/camera_dock.cpp" line="59"/>
         <source>Depth Of Filed:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="70"/>
+        <location filename="../views/camera_dock.cpp" line="71"/>
         <source>Aperture:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="71"/>
+        <location filename="../views/camera_dock.cpp" line="72"/>
         <source>f/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="74"/>
+        <location filename="../views/camera_dock.cpp" line="75"/>
         <source>Focal Length (35mmfilm):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="77"/>
+        <location filename="../views/camera_dock.cpp" line="78"/>
         <source>Focus Distance:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="75"/>
+        <location filename="../views/camera_dock.cpp" line="76"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="26"/>
+        <location filename="../views/camera_dock.cpp" line="27"/>
         <source>Camera Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="78"/>
+        <location filename="../views/camera_dock.cpp" line="79"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="81"/>
-        <location filename="../views/camera_dock.cpp" line="209"/>
-        <location filename="../views/camera_dock.cpp" line="259"/>
-        <location filename="../views/camera_dock.cpp" line="326"/>
+        <location filename="../views/camera_dock.cpp" line="82"/>
+        <location filename="../views/camera_dock.cpp" line="210"/>
+        <location filename="../views/camera_dock.cpp" line="260"/>
+        <location filename="../views/camera_dock.cpp" line="327"/>
         <source>Target: Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="86"/>
+        <location filename="../views/camera_dock.cpp" line="87"/>
         <source>Drag and drop this icon onto the target model to enable autofocus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="91"/>
-        <location filename="../views/camera_dock.cpp" line="275"/>
+        <location filename="../views/camera_dock.cpp" line="92"/>
+        <location filename="../views/camera_dock.cpp" line="276"/>
         <source>Load Animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="97"/>
+        <location filename="../views/camera_dock.cpp" line="98"/>
         <source>Uninstall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="201"/>
-        <location filename="../views/camera_dock.cpp" line="322"/>
+        <location filename="../views/camera_dock.cpp" line="202"/>
+        <location filename="../views/camera_dock.cpp" line="323"/>
         <source>Target: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="203"/>
-        <location filename="../views/camera_dock.cpp" line="321"/>
+        <location filename="../views/camera_dock.cpp" line="204"/>
+        <location filename="../views/camera_dock.cpp" line="322"/>
         <source>Auto-measuring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="275"/>
+        <location filename="../views/camera_dock.cpp" line="276"/>
         <source>VMD Files (*.vmd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="287"/>
+        <location filename="../views/camera_dock.cpp" line="288"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>

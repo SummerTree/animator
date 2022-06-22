@@ -1,6 +1,7 @@
 #ifndef UNREAL_SOUND_MODULE_H_
 #define UNREAL_SOUND_MODULE_H_
 
+#include <filesystem>
 #include <unreal_model.h>
 #include <octoon/game_object.h>
 
@@ -14,8 +15,8 @@ namespace unreal
 
 		void reset() noexcept override;
 
-		void load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept override;
-		void save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept override;
+		void load(nlohmann::json& reader) noexcept override;
+		void save(nlohmann::json& writer) noexcept override;
 
 		void disconnect() noexcept override;
 

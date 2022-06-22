@@ -71,6 +71,12 @@ namespace octoon
 		update(str);
 	}
 
+	MD5::MD5(const std::u8string& str)
+	{
+		reset();
+		update(str);
+	}
+
 	MD5::MD5(std::ifstream& in)
 	{
 		reset();
@@ -109,6 +115,12 @@ namespace octoon
 
 	void
 	MD5::update(const std::string& str)
+	{
+		update((const byte*)str.c_str(), str.length());
+	}
+
+	void
+	MD5::update(const std::u8string& str)
 	{
 		update((const byte*)str.c_str(), str.length());
 	}

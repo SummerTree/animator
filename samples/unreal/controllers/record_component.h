@@ -3,6 +3,7 @@
 
 #include <unreal_component.h>
 #include "module/record_module.h"
+#include <filesystem>
 
 typedef struct OIDNFilterImpl* OIDNFilter;
 typedef struct OIDNDeviceImpl* OIDNDevice;

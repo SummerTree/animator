@@ -1,7 +1,8 @@
 #include "camera_dock.h"
 #include <octoon/io/fstream.h>
-#include <octoon/asset_database.h>
 #include <octoon/asset_bundle.h>
+#include <octoon/asset_loader.h>
+#include <octoon/asset_database.h>
 #include <qapplication.h>
 #include <qevent.h>
 #include <qfiledialog.h>
@@ -275,7 +276,7 @@ namespace unreal
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Load Animation"), "", tr("VMD Files (*.vmd)"));
 			if (!filepath.isEmpty())
 			{
-				this->profile_->cameraModule->animation = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Animation>(filepath.toStdWString());
+				this->profile_->cameraModule->animation = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::Animation>(filepath.toStdWString());
 
 				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
 				if (behaviour)

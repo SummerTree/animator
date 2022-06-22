@@ -1,8 +1,5 @@
 #include "camera_module.h"
-#include <octoon/vmd_loader.h>
-#include <octoon/io/fstream.h>
-#include <octoon/motion_importer.h>
-#include <octoon/asset_bundle.h>
+#include <octoon/asset_database.h>
 
 namespace unreal
 {
@@ -30,7 +27,7 @@ namespace unreal
 	}
 
 	void 
-	CameraModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	CameraModule::load(nlohmann::json& reader) noexcept
 	{
 		if (reader.contains("useDepthOfFiled"))
 			this->useDepthOfFiled = reader["useDepthOfFiled"].get<nlohmann::json::boolean_t>();
@@ -47,11 +44,11 @@ namespace unreal
 		if (reader["rotation"].is_array())
 			this->rotation = octoon::math::float3(reader["rotation"].get<std::array<float, 3>>());
 		if (reader["animation"].is_string())
-			this->animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(reader["animation"].get<std::string>());
+			this->animation = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Animation>("Assets/Camera/Camera.vmd");
 	}
 
 	void 
-	CameraModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	CameraModule::save(nlohmann::json& writer) noexcept
 	{
 		writer["useDepthOfFiled"] = this->useDepthOfFiled.getValue();
 		writer["fov"] = this->fov.getValue();
@@ -63,9 +60,8 @@ namespace unreal
 
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
 		{
-			auto package = ab->createAsset(this->animation.getValue());
-			if (package.is_object())
-				writer["animation"] = package["uuid"].get<std::string>();
+			octoon::AssetDatabase::instance()->createAsset(this->animation.getValue(), "Assets/Camera/Camera.vmd");
+			writer["animation"] = octoon::AssetDatabase::instance()->getAssetGuid("Assets/Camera/Camera.vmd");
 		}
 	}
 

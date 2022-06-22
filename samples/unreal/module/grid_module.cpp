@@ -17,14 +17,14 @@ namespace unreal
 	}
 
 	void 
-	GridModule::load(nlohmann::json& reader, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	GridModule::load(nlohmann::json& reader) noexcept
 	{
 		if (reader["enable"].is_boolean())
 			this->enable = reader["enable"].get<nlohmann::json::boolean_t>();
 	}
 
 	void 
-	GridModule::save(nlohmann::json& writer, std::shared_ptr<octoon::AssetBundle>& ab) noexcept
+	GridModule::save(nlohmann::json& writer) noexcept
 	{
 		writer["enable"] = this->enable.getValue();
 	}

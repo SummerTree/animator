@@ -86,38 +86,40 @@ namespace unreal
 			auto json = nlohmann::json::parse(stream);
 
 			this->path = path_;
-			this->ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).append("Assets"));
+			this->ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_));
+
+			octoon::AssetDatabase::instance()->open(path_);
 
 			if (json.contains("version") && json["physics"].is_string())
 				this->version = json["version"].get<std::string>();
 			if (json.contains("physics") && json["physics"].is_object())
-				this->physicsModule->load(json["physics"], this->ab);
+				this->physicsModule->load(json["physics"]);
 			if (json.contains("encode") && json["encode"].is_object())
-				this->encodeModule->load(json["encode"], this->ab);
+				this->encodeModule->load(json["encode"]);
 			if (json.contains("time") && json["time"].is_object())
-				this->playerModule->load(json["time"], this->ab);
+				this->playerModule->load(json["time"]);
 			if (json.contains("sound") && json["sound"].is_object())
-				this->soundModule->load(json["sound"], this->ab);
+				this->soundModule->load(json["sound"]);
 			if (json.contains("entities") && json["entities"].is_object())
-				this->entitiesModule->load(json["entities"], this->ab);
+				this->entitiesModule->load(json["entities"]);
 			if (json.contains("offline") && json["offline"].is_object())
-				this->offlineModule->load(json["offline"], this->ab);
+				this->offlineModule->load(json["offline"]);
 			if (json.contains("canvas") && json["canvas"].is_object())
-				this->recordModule->load(json["canvas"], this->ab);
+				this->recordModule->load(json["canvas"]);
 			if (json.contains("camera") && json["camera"].is_object())
-				this->cameraModule->load(json["camera"], this->ab);
+				this->cameraModule->load(json["camera"]);
 			if (json.contains("mark") && json["mark"].is_object())
-				this->markModule->load(json["mark"], this->ab);
+				this->markModule->load(json["mark"]);
 			if (json.contains("mainLight") && json["mainLight"].is_object())
-				this->mainLightModule->load(json["mainLight"], this->ab);
+				this->mainLightModule->load(json["mainLight"]);
 			if (json.contains("environmentLight") && json["environmentLight"].is_object())
-				this->environmentLightModule->load(json["environmentLight"], this->ab);
+				this->environmentLightModule->load(json["environmentLight"]);
 			if (json.contains("resource") && json["resource"].is_object())
-				this->resourceModule->load(json["resource"], this->ab);
+				this->resourceModule->load(json["resource"]);
 			if (json.contains("drag") && json["drag"].is_object())
-				this->selectorModule->load(json["drag"], this->ab);
+				this->selectorModule->load(json["drag"]);
 			if (json.contains("grid") && json["grid"].is_object())
-				this->gridModule->load(json["grid"], this->ab);
+				this->gridModule->load(json["grid"]);
 
 			this->ab->unload();
 		}
@@ -151,23 +153,25 @@ namespace unreal
 				json["version"] = UNREAL_VERSION;
 
 				if (!this->ab)
-					this->ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_).append("Assets"));
+					this->ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_));
+
+				octoon::AssetDatabase::instance()->open(path_);
 
 				this->path = path_;
-				this->physicsModule->save(json["physics"], ab);
-				this->encodeModule->save(json["encode"], ab);
-				this->playerModule->save(json["time"], ab);
-				this->soundModule->save(json["sound"], ab);
-				this->entitiesModule->save(json["entities"], ab);
-				this->offlineModule->save(json["offline"], ab);
-				this->cameraModule->save(json["camera"], ab);
-				this->recordModule->save(json["canvas"], ab);
-				this->markModule->save(json["mark"], ab);
-				this->mainLightModule->save(json["mainLight"], ab);
-				this->environmentLightModule->save(json["environmentLight"], ab);
-				this->resourceModule->save(json["resource"], ab);
-				this->selectorModule->save(json["drag"], ab);
-				this->gridModule->save(json["grid"], ab);
+				this->physicsModule->save(json["physics"]);
+				this->encodeModule->save(json["encode"]);
+				this->playerModule->save(json["time"]);
+				this->soundModule->save(json["sound"]);
+				this->entitiesModule->save(json["entities"]);
+				this->offlineModule->save(json["offline"]);
+				this->cameraModule->save(json["camera"]);
+				this->recordModule->save(json["canvas"]);
+				this->markModule->save(json["mark"]);
+				this->mainLightModule->save(json["mainLight"]);
+				this->environmentLightModule->save(json["environmentLight"]);
+				this->resourceModule->save(json["resource"]);
+				this->selectorModule->save(json["drag"]);
+				this->gridModule->save(json["grid"]);
 
 				this->ab->saveAssets();
 

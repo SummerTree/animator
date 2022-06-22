@@ -1,6 +1,5 @@
 #include "pmm_loader.h"
-#include <octoon/runtime/uuid.h>
-#include <octoon/asset_database.h>
+#include <octoon/asset_loader.h>
 
 namespace unreal
 {
@@ -22,7 +21,7 @@ namespace unreal
 
 		for (auto& it : pmm.model)
 		{
-			auto object = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(it.path);
+			auto object = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::GameObject>(it.path);
 			if (object)
 			{
 				auto boneClip = std::make_shared<octoon::AnimationClip>();
@@ -45,7 +44,7 @@ namespace unreal
 					auto motion = std::make_shared<octoon::Animation>(std::move(boneClip), "Motion");
 					object->addComponent<octoon::AnimatorComponent>(std::move(motion), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
 				}
-
+			
 				objects.emplace_back(std::move(object));
 			}
 			else

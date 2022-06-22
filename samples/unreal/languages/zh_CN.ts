@@ -83,103 +83,103 @@
 <context>
     <name>unreal::CameraDock</name>
     <message>
-        <location filename="../views/camera_dock.cpp" line="17"/>
+        <location filename="../views/camera_dock.cpp" line="18"/>
         <source>Camera</source>
         <translation>相机</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="26"/>
+        <location filename="../views/camera_dock.cpp" line="27"/>
         <source>Camera Editor</source>
         <translation type="unfinished">相机编辑</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="42"/>
+        <location filename="../views/camera_dock.cpp" line="43"/>
         <source>fov:</source>
         <translation>视野角：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="54"/>
+        <location filename="../views/camera_dock.cpp" line="55"/>
         <source>* The following parameters take effect on rendering</source>
         <translation>* 以下参数仅渲染时生效</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="58"/>
+        <location filename="../views/camera_dock.cpp" line="59"/>
         <source>Depth Of Filed:</source>
         <translation>开启景深：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="70"/>
+        <location filename="../views/camera_dock.cpp" line="71"/>
         <source>Aperture:</source>
         <translation>光圈大小：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="71"/>
+        <location filename="../views/camera_dock.cpp" line="72"/>
         <source>f/</source>
         <translation>f/</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="74"/>
+        <location filename="../views/camera_dock.cpp" line="75"/>
         <source>Focal Length (35mmfilm):</source>
         <translation>等效焦距(35mmfilm)：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="77"/>
+        <location filename="../views/camera_dock.cpp" line="78"/>
         <source>Focus Distance:</source>
         <translation>焦点距离：</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="75"/>
+        <location filename="../views/camera_dock.cpp" line="76"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="78"/>
+        <location filename="../views/camera_dock.cpp" line="79"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="81"/>
-        <location filename="../views/camera_dock.cpp" line="209"/>
-        <location filename="../views/camera_dock.cpp" line="259"/>
-        <location filename="../views/camera_dock.cpp" line="326"/>
+        <location filename="../views/camera_dock.cpp" line="82"/>
+        <location filename="../views/camera_dock.cpp" line="210"/>
+        <location filename="../views/camera_dock.cpp" line="260"/>
+        <location filename="../views/camera_dock.cpp" line="327"/>
         <source>Target: Empty</source>
         <translation>目标：无</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="86"/>
+        <location filename="../views/camera_dock.cpp" line="87"/>
         <source>Drag and drop this icon onto the target model to enable autofocus</source>
         <translation>拖拽图标至目标模型以启用自动对焦</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="91"/>
-        <location filename="../views/camera_dock.cpp" line="275"/>
+        <location filename="../views/camera_dock.cpp" line="92"/>
+        <location filename="../views/camera_dock.cpp" line="276"/>
         <source>Load Animation</source>
         <translation>加载动画</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="97"/>
+        <location filename="../views/camera_dock.cpp" line="98"/>
         <source>Uninstall</source>
         <translation>卸载</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="201"/>
-        <location filename="../views/camera_dock.cpp" line="322"/>
+        <location filename="../views/camera_dock.cpp" line="202"/>
+        <location filename="../views/camera_dock.cpp" line="323"/>
         <source>Target: %1</source>
         <translation>目标: %1</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="203"/>
-        <location filename="../views/camera_dock.cpp" line="321"/>
+        <location filename="../views/camera_dock.cpp" line="204"/>
+        <location filename="../views/camera_dock.cpp" line="322"/>
         <source>Auto-measuring</source>
         <translation>自动测量</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="275"/>
+        <location filename="../views/camera_dock.cpp" line="276"/>
         <source>VMD Files (*.vmd)</source>
         <translation>VMD 文件 (*.vmd)</translation>
     </message>
     <message>
-        <location filename="../views/camera_dock.cpp" line="287"/>
+        <location filename="../views/camera_dock.cpp" line="288"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
