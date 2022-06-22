@@ -39,7 +39,6 @@ namespace unreal
 		nlohmann::json indexList_;
 
 		std::map<std::string, nlohmann::json> packageList_;
-		std::map<std::string, std::filesystem::path> uuidToPathList_;
 	};
 }
 
