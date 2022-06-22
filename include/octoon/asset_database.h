@@ -39,6 +39,8 @@ namespace octoon
 
 		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false);
 
+		bool isPersistent(const std::shared_ptr<const RttiObject>& asset) const noexcept;
+
 		template<typename T>
 		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
 		{

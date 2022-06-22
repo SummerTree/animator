@@ -50,9 +50,13 @@ namespace unreal
 
 		for (auto& it : this->objects.getValue())
 		{
-			auto uuid = octoon::make_guid();
-			octoon::AssetDatabase::instance()->createAsset(it, std::filesystem::path("Assets/Models").append(uuid).append(uuid + ".prefab"));
-			sceneJson.push_back(uuid);
+			if (!octoon::AssetDatabase::instance()->isPersistent(it))
+			{
+				auto uuid = octoon::make_guid();
+				octoon::AssetDatabase::instance()->createAsset(it, std::filesystem::path("Assets/Models").append(uuid).append(uuid + ".prefab"));
+			}
+
+			sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(it));
 		}
 
 		writer["scene"] = std::move(sceneJson);

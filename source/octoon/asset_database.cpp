@@ -236,33 +236,33 @@ namespace octoon
 			mat["stencilEnable"] = standardMaterial->getStencilEnable();
 			mat["scissorTestEnable"] = standardMaterial->getScissorTestEnable();			
 
-			if (standardMaterial->getColorMap() && this->getAssetPath(standardMaterial->getColorMap()).empty())
+			if (standardMaterial->getColorMap() && !this->isPersistent(standardMaterial->getColorMap()))
 				this->createAsset(standardMaterial->getColorMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getOpacityMap() && this->getAssetPath(standardMaterial->getOpacityMap()).empty())
+			if (standardMaterial->getOpacityMap() && !this->isPersistent(standardMaterial->getOpacityMap()))
 				this->createAsset(standardMaterial->getOpacityMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getNormalMap() && this->getAssetPath(standardMaterial->getNormalMap()).empty())
+			if (standardMaterial->getNormalMap() && !this->isPersistent(standardMaterial->getNormalMap()))
 				this->createAsset(standardMaterial->getNormalMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getRoughnessMap() && this->getAssetPath(standardMaterial->getRoughnessMap()).empty())
+			if (standardMaterial->getRoughnessMap() && !this->isPersistent(standardMaterial->getRoughnessMap()))
 				this->createAsset(standardMaterial->getRoughnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSpecularMap() && this->getAssetPath(standardMaterial->getSpecularMap()).empty())
+			if (standardMaterial->getSpecularMap() && !this->isPersistent(standardMaterial->getSpecularMap()))
 				this->createAsset(standardMaterial->getSpecularMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getMetalnessMap() && this->getAssetPath(standardMaterial->getMetalnessMap()).empty())
+			if (standardMaterial->getMetalnessMap() && !this->isPersistent(standardMaterial->getMetalnessMap()))
 				this->createAsset(standardMaterial->getMetalnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getEmissiveMap() && this->getAssetPath(standardMaterial->getEmissiveMap()).empty())
+			if (standardMaterial->getEmissiveMap() && !this->isPersistent(standardMaterial->getEmissiveMap()))
 				this->createAsset(standardMaterial->getEmissiveMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getAnisotropyMap() && this->getAssetPath(standardMaterial->getAnisotropyMap()).empty())
+			if (standardMaterial->getAnisotropyMap() && !this->isPersistent(standardMaterial->getAnisotropyMap()))
 				this->createAsset(standardMaterial->getAnisotropyMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getClearCoatMap() && this->getAssetPath(standardMaterial->getClearCoatMap()).empty())
+			if (standardMaterial->getClearCoatMap() && !this->isPersistent(standardMaterial->getClearCoatMap()))
 				this->createAsset(standardMaterial->getClearCoatMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getClearCoatRoughnessMap() && this->getAssetPath(standardMaterial->getClearCoatRoughnessMap()).empty())
+			if (standardMaterial->getClearCoatRoughnessMap() && !this->isPersistent(standardMaterial->getClearCoatRoughnessMap()))
 				this->createAsset(standardMaterial->getClearCoatRoughnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSubsurfaceMap() && this->getAssetPath(standardMaterial->getSubsurfaceMap()).empty())
+			if (standardMaterial->getSubsurfaceMap() && !this->isPersistent(standardMaterial->getSubsurfaceMap()))
 				this->createAsset(standardMaterial->getSubsurfaceMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSubsurfaceColorMap() && this->getAssetPath(standardMaterial->getSubsurfaceColorMap()).empty())
+			if (standardMaterial->getSubsurfaceColorMap() && !this->isPersistent(standardMaterial->getSubsurfaceColorMap()))
 				this->createAsset(standardMaterial->getSubsurfaceColorMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSheenMap() && this->getAssetPath(standardMaterial->getSheenMap()).empty())
+			if (standardMaterial->getSheenMap() && !this->isPersistent(standardMaterial->getSheenMap()))
 				this->createAsset(standardMaterial->getSheenMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getLightMap() && this->getAssetPath(standardMaterial->getLightMap()).empty())
+			if (standardMaterial->getLightMap() && !this->isPersistent(standardMaterial->getLightMap()))
 				this->createAsset(standardMaterial->getLightMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
 
 			if (standardMaterial->getColorMap())
@@ -596,11 +596,7 @@ namespace octoon
 	{
 		auto it = objectPathList_.find(asset);
 		if (it != objectPathList_.end())
-		{
-			auto path = (*it).second;
-			if (std::filesystem::exists(std::filesystem::path(this->assetPath_).append(path.u8string())))
-				return path;
-		}
+			return (*it).second;
 
 		return std::filesystem::path();
 	}
@@ -639,6 +635,19 @@ namespace octoon
 		}
 
 		return nlohmann::json();
+	}
+
+	bool
+	AssetDatabase::isPersistent(const std::shared_ptr<const RttiObject>& asset) const noexcept
+	{
+		auto it = objectPathList_.find(asset);
+		if (it != objectPathList_.end())
+		{
+			auto path = (*it).second;
+			return std::filesystem::exists(std::filesystem::path(this->assetPath_).append(path.u8string()));
+		}
+
+		return false;
 	}
 
 	std::shared_ptr<RttiObject>

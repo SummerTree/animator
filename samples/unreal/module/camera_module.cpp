@@ -60,7 +60,9 @@ namespace unreal
 
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
 		{
-			octoon::AssetDatabase::instance()->createAsset(this->animation.getValue(), "Assets/Camera/Camera.vmd");
+			if (!octoon::AssetDatabase::instance()->isPersistent(this->animation.getValue()))
+				octoon::AssetDatabase::instance()->createAsset(this->animation.getValue(), "Assets/Camera/Camera.vmd");
+
 			writer["animation"] = octoon::AssetDatabase::instance()->getAssetGuid("Assets/Camera/Camera.vmd");
 		}
 	}
