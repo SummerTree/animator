@@ -31,6 +31,7 @@ namespace octoon
 		void deleteAsset(const std::filesystem::path& relativePath) noexcept(false);
 		void saveAssets() noexcept(false);
 
+		std::filesystem::path getAssetPath(const std::string& uuid) const noexcept;
 		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
 		std::string getAssetGuid(const std::filesystem::path& relativePath) const noexcept;
@@ -65,7 +66,8 @@ namespace octoon
 		std::set<std::weak_ptr<const RttiObject>, std::owner_less<std::weak_ptr<const RttiObject>>> dirtyList_;
 
 		std::map<std::filesystem::path, std::string> assetGuidList_;
-		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> assetPathList_;
+		std::map<std::string, std::filesystem::path> assetPathList_;
+		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> objectPathList_;
 	};
 }
 

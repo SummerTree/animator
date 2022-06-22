@@ -165,7 +165,7 @@ namespace unreal
 				this->resourceModule->save(json["resource"]);
 				this->selectorModule->save(json["drag"]);
 				this->gridModule->save(json["grid"]);
-
+				
 				octoon::AssetDatabase::instance()->saveAssets();
 
 				auto string = json.dump();

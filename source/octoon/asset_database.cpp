@@ -43,6 +43,26 @@ namespace octoon
 
 		if (!std::filesystem::exists(assetPath_))
 			std::filesystem::create_directories(assetPath_);
+
+		std::ifstream ifs(std::filesystem::path(this->assetPath_).append("Library").append("AssetDb.json"), std::ios_base::binary);
+		if (ifs)
+		{
+			try
+			{
+				auto assetDb = nlohmann::json::parse(ifs);
+				for (auto it = assetDb.begin(); it != assetDb.end(); ++it)
+				{
+					auto uuid = it.key();
+					auto path = std::filesystem::path((char8_t*)it.value().get<std::string>().c_str());
+
+					assetGuidList_[path] = uuid;
+					assetPathList_[uuid] = path;
+				}
+			}
+			catch (...)
+			{
+			}
+		}
 	}
 
 	void
@@ -57,6 +77,7 @@ namespace octoon
 		assert(texture);
 		assert(!relativePath.empty());
 
+		auto uuid = MD5(relativePath.u8string()).toString();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
@@ -71,7 +92,7 @@ namespace octoon
 			std::filesystem::permissions(path, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
-			metadata["uuid"] = MD5(relativePath.u8string()).toString();
+			metadata["uuid"] = uuid;
 			metadata["name"] = texture->getName();
 			metadata["suffix"] = (char*)extension.c_str();
 			metadata["mipmap"] = texture->getMipLevel();
@@ -83,6 +104,11 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 			}
+
+			assetGuidList_[relativePath] = uuid;
+			assetPathList_[uuid] = relativePath;
+
+			objectPathList_[texture] = relativePath;
 		}
 		catch (const std::exception& e)
 		{
@@ -101,6 +127,7 @@ namespace octoon
 	{
 		assert(!relativePath.empty());
 
+		auto uuid = MD5(relativePath.u8string()).toString();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
@@ -115,7 +142,7 @@ namespace octoon
 			std::filesystem::permissions(path, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
-			metadata["uuid"] = MD5(relativePath.u8string()).toString();
+			metadata["uuid"] = uuid;
 			metadata["name"] = animation->getName();
 
 			std::ofstream ifs(metaPath, std::ios_base::binary);
@@ -125,6 +152,11 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 			}
+
+			assetGuidList_[relativePath] = uuid;
+			assetPathList_[uuid] = relativePath;
+
+			objectPathList_[animation] = relativePath;
 		}
 		catch (const std::exception& e)
 		{
@@ -143,6 +175,8 @@ namespace octoon
 	{
 		assert(!relativePath.empty());
 
+		auto uuid = MD5(relativePath.u8string()).toString();
+		auto parentPath = relativePath.parent_path();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
@@ -198,6 +232,35 @@ namespace octoon
 			mat["stencilEnable"] = standardMaterial->getStencilEnable();
 			mat["scissorTestEnable"] = standardMaterial->getScissorTestEnable();			
 
+			if (standardMaterial->getColorMap() && this->getAssetPath(standardMaterial->getColorMap()).empty())
+				this->createAsset(standardMaterial->getColorMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getOpacityMap() && this->getAssetPath(standardMaterial->getOpacityMap()).empty())
+				this->createAsset(standardMaterial->getOpacityMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getNormalMap() && this->getAssetPath(standardMaterial->getNormalMap()).empty())
+				this->createAsset(standardMaterial->getNormalMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getRoughnessMap() && this->getAssetPath(standardMaterial->getRoughnessMap()).empty())
+				this->createAsset(standardMaterial->getRoughnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getSpecularMap() && this->getAssetPath(standardMaterial->getSpecularMap()).empty())
+				this->createAsset(standardMaterial->getSpecularMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getMetalnessMap() && this->getAssetPath(standardMaterial->getMetalnessMap()).empty())
+				this->createAsset(standardMaterial->getMetalnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getEmissiveMap() && this->getAssetPath(standardMaterial->getEmissiveMap()).empty())
+				this->createAsset(standardMaterial->getEmissiveMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getAnisotropyMap() && this->getAssetPath(standardMaterial->getAnisotropyMap()).empty())
+				this->createAsset(standardMaterial->getAnisotropyMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getClearCoatMap() && this->getAssetPath(standardMaterial->getClearCoatMap()).empty())
+				this->createAsset(standardMaterial->getClearCoatMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getClearCoatRoughnessMap() && this->getAssetPath(standardMaterial->getClearCoatRoughnessMap()).empty())
+				this->createAsset(standardMaterial->getClearCoatRoughnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getSubsurfaceMap() && this->getAssetPath(standardMaterial->getSubsurfaceMap()).empty())
+				this->createAsset(standardMaterial->getSubsurfaceMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getSubsurfaceColorMap() && this->getAssetPath(standardMaterial->getSubsurfaceColorMap()).empty())
+				this->createAsset(standardMaterial->getSubsurfaceColorMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getSheenMap() && this->getAssetPath(standardMaterial->getSheenMap()).empty())
+				this->createAsset(standardMaterial->getSheenMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+			if (standardMaterial->getLightMap() && this->getAssetPath(standardMaterial->getLightMap()).empty())
+				this->createAsset(standardMaterial->getLightMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
+
 			if (standardMaterial->getColorMap())
 				mat["colorMap"] = this->getAssetGuid(standardMaterial->getColorMap());
 			if (standardMaterial->getOpacityMap())
@@ -238,7 +301,7 @@ namespace octoon
 			}
 
 			nlohmann::json metadata;
-			metadata["uuid"] = MD5(relativePath.u8string()).toString();
+			metadata["uuid"] = uuid;
 
 			std::ofstream metaFs(metaPath, std::ios_base::binary);
 			if (metaFs)
@@ -247,6 +310,11 @@ namespace octoon
 				metaFs.write(dump.c_str(), dump.size());
 				metaFs.close();
 			}
+
+			assetGuidList_[relativePath] = uuid;
+			assetPathList_[uuid] = relativePath;
+
+			objectPathList_[material] = relativePath;
 		}
 		catch (const std::exception& e)
 		{
@@ -265,6 +333,7 @@ namespace octoon
 	{
 		assert(!relativePath.empty());
 
+		auto uuid = MD5(relativePath.u8string()).toString();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
@@ -302,7 +371,7 @@ namespace octoon
 			}
 
 			nlohmann::json metadata;
-			metadata["uuid"] = MD5(path.string()).toString();
+			metadata["uuid"] = uuid;
 			metadata["name"] = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>().to_bytes(pmx->description.japanModelName.data());
 			
 			std::ofstream ifs(metaPath, std::ios_base::binary);
@@ -311,6 +380,11 @@ namespace octoon
 				auto dump = metadata.dump();
 				ifs.write(dump.c_str(), dump.size());
 			}
+
+			assetGuidList_[relativePath] = uuid;
+			assetPathList_[uuid] = relativePath;
+
+			objectPathList_[pmx] = relativePath;
 		}
 		catch (const std::exception& e)
 		{
@@ -329,6 +403,7 @@ namespace octoon
 	{
 		assert(!relativePath.empty());
 
+		auto uuid = MD5(relativePath.u8string()).toString();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		auto rootPath = path.parent_path();
 		auto filename = path.filename();
@@ -343,7 +418,7 @@ namespace octoon
 			std::filesystem::permissions(path, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
-			metadata["uuid"] = MD5(relativePath.u8string()).toString();
+			metadata["uuid"] = uuid;
 			metadata["name"] = gameObject->getName();
 
 			std::ofstream ifs(metaPath, std::ios_base::binary);
@@ -353,6 +428,11 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 			}
+
+			assetGuidList_[relativePath] = uuid;
+			assetPathList_[uuid] = relativePath;
+
+			objectPathList_[gameObject] = relativePath;
 		}
 		catch (const std::exception& e)
 		{
@@ -374,10 +454,15 @@ namespace octoon
 			std::filesystem::remove_all(path);
 		else
 		{
+			auto uuid = this->getAssetGuid(relativePath);
+
+			assetGuidList_.erase(assetGuidList_.find(relativePath));
+			assetPathList_.erase(assetPathList_.find(uuid));
+
 			auto parent_path = path.parent_path();
-			auto filename = path.filename().string();
-			auto uuid = filename.substr(0, filename.find_last_of('.'));
-			auto metadata = std::filesystem::path(parent_path).append(uuid + ".metadata");
+			auto filepath = path.filename().string();
+			auto filename = filepath.substr(0, filepath.find_last_of('.'));
+			auto metadata = std::filesystem::path(parent_path).append(filename + ".metadata");
 
 			std::filesystem::remove(path);
 			std::filesystem::remove(metadata);
@@ -387,6 +472,22 @@ namespace octoon
 	void
 	AssetDatabase::saveAssets() noexcept(false)
 	{
+		nlohmann::json assetDb;
+
+		for (auto& it : assetPathList_)
+			assetDb[it.first] = (char*)it.second.u8string().c_str();
+
+		auto assetRoot = std::filesystem::path(this->assetPath_).append("Library");
+		std::filesystem::create_directories(assetRoot);
+
+		std::ofstream ifs(std::filesystem::path(assetRoot).append("AssetDb.json"), std::ios_base::binary);
+		if (ifs)
+		{
+			auto dump = assetDb.dump();
+			ifs.write(dump.c_str(), dump.size());
+			ifs.close();
+		}
+
 		for (auto& it : dirtyList_)
 		{
 			if (!it.expired())
@@ -399,12 +500,21 @@ namespace octoon
 	}
 
 	std::filesystem::path
-	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept
+	AssetDatabase::getAssetPath(const std::string& uuid) const noexcept
 	{
-		auto it = assetPathList_.find(asset);
+		auto it = assetPathList_.find(uuid);
 		if (it != assetPathList_.end())
 			return (*it).second;
-		return  std::filesystem::path();
+		return std::filesystem::path();
+	}
+
+	std::filesystem::path
+	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept
+	{
+		auto it = objectPathList_.find(asset);
+		if (it != objectPathList_.end())
+			return (*it).second;
+		return std::filesystem::path();
 	}
 
 	std::string
@@ -459,7 +569,7 @@ namespace octoon
 				if (motion->getName().empty())
 					motion->setName((char*)fullPath.filename().c_str());
 
-				assetPathList_[motion] = relativePath;
+				objectPathList_[motion] = relativePath;
 
 				auto metadata = this->loadMetadataAtPath(fullPath);
 				if (metadata.is_object())
@@ -505,7 +615,7 @@ namespace octoon
 
 				texture->apply();
 
-				assetPathList_[texture] = relativePath;
+				objectPathList_[texture] = relativePath;
 
 				return texture;
 			}
@@ -528,7 +638,7 @@ namespace octoon
 					assetGuidList_[relativePath] = make_guid();
 				}
 
-				assetPathList_[model] = relativePath;
+				objectPathList_[model] = relativePath;
 
 				return model;
 			}
@@ -554,7 +664,7 @@ namespace octoon
 					assetGuidList_[relativePath] = make_guid();
 				}
 
-				assetPathList_[model] = relativePath;
+				objectPathList_[model] = relativePath;
 
 				return model;
 			}
@@ -586,33 +696,33 @@ namespace octoon
 				if (name != mat.end() && (*name).is_string())
 					material->setName((*name).get<std::string>());
 				if (colorMap != mat.end() && (*colorMap).is_string())
-					material->setColorMap(AssetBundle::instance()->loadAsset<Texture>(*colorMap));
+					material->setColorMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*colorMap)));
 				if (opacityMap != mat.end() && (*opacityMap).is_string())
-					material->setOpacityMap(AssetBundle::instance()->loadAsset<Texture>(*opacityMap));
+					material->setOpacityMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*opacityMap)));
 				if (normalMap != mat.end() && (*normalMap).is_string())
-					material->setNormalMap(AssetBundle::instance()->loadAsset<Texture>(*normalMap));
+					material->setNormalMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*normalMap)));
 				if (roughnessMap != mat.end() && (*roughnessMap).is_string())
-					material->setRoughnessMap(AssetBundle::instance()->loadAsset<Texture>(*roughnessMap));
+					material->setRoughnessMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*roughnessMap)));
 				if (specularMap != mat.end() && (*specularMap).is_string())
-					material->setSpecularMap(AssetBundle::instance()->loadAsset<Texture>(*specularMap));
+					material->setSpecularMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*specularMap)));
 				if (metalnessMap != mat.end() && (*metalnessMap).is_string())
-					material->setMetalnessMap(AssetBundle::instance()->loadAsset<Texture>(*metalnessMap));
+					material->setMetalnessMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*metalnessMap)));
 				if (emissiveMap != mat.end() && (*emissiveMap).is_string())
-					material->setEmissiveMap(AssetBundle::instance()->loadAsset<Texture>(*emissiveMap));
+					material->setEmissiveMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*emissiveMap)));
 				if (anisotropyMap != mat.end() && (*anisotropyMap).is_string())
-					material->setAnisotropyMap(AssetBundle::instance()->loadAsset<Texture>(*anisotropyMap));
+					material->setAnisotropyMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*anisotropyMap)));
 				if (clearCoatMap != mat.end() && (*clearCoatMap).is_string())
-					material->setClearCoatMap(AssetBundle::instance()->loadAsset<Texture>(*clearCoatMap));
+					material->setClearCoatMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*clearCoatMap)));
 				if (clearCoatRoughnessMap != mat.end() && (*clearCoatRoughnessMap).is_string())
-					material->setClearCoatRoughnessMap(AssetBundle::instance()->loadAsset<Texture>(*clearCoatRoughnessMap));
+					material->setClearCoatRoughnessMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*clearCoatRoughnessMap)));
 				if (subsurfaceMap != mat.end() && (*subsurfaceMap).is_string())
-					material->setSubsurfaceMap(AssetBundle::instance()->loadAsset<Texture>(*subsurfaceMap));
+					material->setSubsurfaceMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*subsurfaceMap)));
 				if (subsurfaceColorMap != mat.end() && (*subsurfaceColorMap).is_string())
-					material->setSubsurfaceColorMap(AssetBundle::instance()->loadAsset<Texture>(*subsurfaceColorMap));
+					material->setSubsurfaceColorMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*subsurfaceColorMap)));
 				if (sheenMap != mat.end() && (*sheenMap).is_string())
-					material->setSheenMap(AssetBundle::instance()->loadAsset<Texture>(*sheenMap));
+					material->setSheenMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*sheenMap)));
 				if (lightMap != mat.end() && (*lightMap).is_string())
-					material->setLightMap(AssetBundle::instance()->loadAsset<Texture>(*lightMap));
+					material->setLightMap(this->loadAssetAtPath<Texture>(this->getAssetPath(*lightMap)));
 
 				auto blendEnable = mat.find("blendEnable");
 				auto blendOp = mat.find("blendOp");
@@ -753,7 +863,7 @@ namespace octoon
 					assetGuidList_[relativePath] = make_guid();
 				}
 
-				assetPathList_[material] = relativePath;
+				objectPathList_[material] = relativePath;
 
 				return material;
 			}

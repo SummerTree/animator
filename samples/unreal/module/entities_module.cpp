@@ -34,7 +34,7 @@ namespace unreal
 			for (auto& it : reader["scene"])
 			{
 				auto uuid = it.get<std::string>();
-				auto object = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(std::filesystem::path("Assets").append(uuid).append(uuid + ".prefab"));
+				auto object = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(std::filesystem::path("Assets/Models").append(uuid).append(uuid + ".prefab"));
 				if (object)
 					objects_.push_back(std::move(object));
 			}
@@ -51,7 +51,7 @@ namespace unreal
 		for (auto& it : this->objects.getValue())
 		{
 			auto uuid = octoon::make_guid();
-			octoon::AssetDatabase::instance()->createAsset(it, std::filesystem::path("Assets").append(uuid).append(uuid + ".prefab"));
+			octoon::AssetDatabase::instance()->createAsset(it, std::filesystem::path("Assets/Models").append(uuid).append(uuid + ".prefab"));
 			sceneJson.push_back(uuid);
 		}
 

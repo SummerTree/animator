@@ -177,7 +177,7 @@ namespace octoon
 			for (auto& it : indexSet)
 				json += it;
 
-			indexList_ = json;
+			indexList = json;
 			this->saveAssets();
 		}
 

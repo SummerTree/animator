@@ -173,6 +173,8 @@ namespace octoon
 			else
 				this->textureAsset_->addPackage(uuid);
 
+			this->assetDatabase_->saveAssets();
+
 			return package;
 		}
 		catch (const std::exception& e)
@@ -210,6 +212,7 @@ namespace octoon
 			}
 
 			this->motionAsset_->addPackage(uuid);
+			this->assetDatabase_->saveAssets();
 
 			return package;
 		}
@@ -223,61 +226,30 @@ namespace octoon
 	nlohmann::json
 	AssetBundle::importAsset(const std::shared_ptr<Material>& material) noexcept(false)
 	{
-		auto uuid = this->assetDatabase_->getAssetGuid(material);
-		auto rootPath = std::filesystem::path(materialAsset_->getAssertPath()).append(uuid);
+		auto uuid = make_guid();
+		auto relativePath = "Assets/Materials/" + uuid;
 
 		try
 		{
-			auto standardMaterial = material->downcast<MeshStandardMaterial>();
-			if (standardMaterial->getColorMap())
-				this->importAsset(standardMaterial->getColorMap());
-			if (standardMaterial->getOpacityMap())
-				this->importAsset(standardMaterial->getOpacityMap());
-			if (standardMaterial->getNormalMap())
-				this->importAsset(standardMaterial->getNormalMap());
-			if (standardMaterial->getRoughnessMap())
-				this->importAsset(standardMaterial->getRoughnessMap());
-			if (standardMaterial->getSpecularMap())
-				this->importAsset(standardMaterial->getSpecularMap());
-			if (standardMaterial->getMetalnessMap())
-				this->importAsset(standardMaterial->getMetalnessMap());
-			if (standardMaterial->getEmissiveMap())
-				this->importAsset(standardMaterial->getEmissiveMap());
-			if (standardMaterial->getAnisotropyMap())
-				this->importAsset(standardMaterial->getAnisotropyMap());
-			if (standardMaterial->getClearCoatMap())
-				this->importAsset(standardMaterial->getClearCoatMap());
-			if (standardMaterial->getClearCoatRoughnessMap())
-				this->importAsset(standardMaterial->getClearCoatRoughnessMap());
-			if (standardMaterial->getSubsurfaceMap())
-				this->importAsset(standardMaterial->getSubsurfaceMap());
-			if (standardMaterial->getSubsurfaceColorMap())
-				this->importAsset(standardMaterial->getSubsurfaceColorMap());
-			if (standardMaterial->getSheenMap())
-				this->importAsset(standardMaterial->getSheenMap());
-			if (standardMaterial->getLightMap())
-				this->importAsset(standardMaterial->getLightMap());
-
-			auto outputPath = std::filesystem::path(rootPath).append(this->assetDatabase_->getAssetGuid(material) + ".mat");
+			auto outputPath = std::filesystem::path(relativePath).append(uuid + ".mat");
 
 			this->assetDatabase_->createAsset(material, outputPath);
-
-			auto writePreview = [this](const std::shared_ptr<Material>& material, std::filesystem::path path)
-			{
-				auto texture = AssetPreview::instance()->getAssetPreview(material);
-				auto previewPath = std::filesystem::path(path).append(make_guid() + ".png");
-				this->assetDatabase_->createAsset(texture, previewPath);
-				return previewPath;
-			};
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["name"] = material->getName();
 			package["path"] = (char*)outputPath.u8string().c_str();
-			package["preview"] = (char*)writePreview(material, rootPath).u8string().c_str();
 			package["visible"] = true;
 
-			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
+			auto preview = AssetPreview::instance()->getAssetPreview(material);
+			if (preview)
+			{
+				auto previewPath = std::filesystem::path(relativePath).append(make_guid() + ".png");
+				this->assetDatabase_->createAsset(preview, previewPath);
+				package["preview"] = (char*)std::filesystem::path(this->assetPath_).append(previewPath.u8string()).u8string().c_str();
+			}
+
+			std::ofstream ifs(std::filesystem::path(this->assetPath_).append(relativePath).append("package.json"), std::ios_base::binary);
 			if (ifs)
 			{
 				auto dump = package.dump();
@@ -285,15 +257,14 @@ namespace octoon
 				ifs.close();
 			}
 
-			this->materialAsset_->addPackage(package["uuid"]);
+			this->materialAsset_->addPackage(uuid);
+			this->assetDatabase_->saveAssets();
 
 			return package;
 		}
 		catch (const std::exception& e)
 		{
-			if (std::filesystem::exists(rootPath))
-				std::filesystem::remove_all(rootPath);
-
+			this->assetDatabase_->deleteAsset(relativePath);
 			throw e;
 		}
 	}
@@ -336,6 +307,7 @@ namespace octoon
 			}
 
 			this->modelAsset_->addPackage(uuid);
+			this->assetDatabase_->saveAssets();
 
 			return package;
 		}
@@ -503,6 +475,7 @@ namespace octoon
 			}
 
 			this->prefabAsset_->addPackage(uuid);
+			this->assetDatabase_->saveAssets();
 
 			return package;
 		}
@@ -642,7 +615,7 @@ namespace octoon
 					}
 
 					asset = object;
-				}				
+				}
 			}
 
 			if (asset)

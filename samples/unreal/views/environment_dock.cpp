@@ -1,6 +1,7 @@
 #include "environment_dock.h"
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
+#include <octoon/asset_loader.h>
 
 #include <qapplication.h>
 #include <qevent.h>
@@ -475,7 +476,7 @@ namespace unreal
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
 			if (!filepath.isEmpty())
 			{
-				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdWString());
+				auto texture = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdWString());
 				if (texture)
 				{
 					texture->setMipLevel(8);
