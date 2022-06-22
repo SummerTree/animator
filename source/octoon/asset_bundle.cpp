@@ -83,23 +83,29 @@ namespace octoon
 		for (auto& it : ext)
 			it = (char)std::tolower(it);
 
-		if (ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
+		if (ext == u8".hdr")
 		{
 			auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(path);
 			if (texture)
-				return this->importAsset(texture);
+				return this->importAsset(texture, "Assets/HDRis");
+		}
+		if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
+		{
+			auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(path);
+			if (texture)
+				return this->importAsset(texture, "Assets/HDRis");
 		}
 		else if (ext == u8".vmd")
 		{
 			auto animation = AssetLoader::instance()->loadAssetAtPath<Animation>(path);
 			if (animation)
-				return this->importAsset(animation);
+				return this->importAsset(animation, "Assets/Motions");
 		}
 		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
 		{
 			auto gameObject = AssetLoader::instance()->loadAssetAtPath<GameObject>(path);
 			if (gameObject)
-				return this->importAsset(gameObject);
+				return this->importAsset(gameObject, "Assets/Models");
 		}
 		else if (ext == u8".mdl")
 		{
@@ -113,7 +119,7 @@ namespace octoon
 
 				for (auto& material : loader.getMaterials())
 				{
-					auto package = this->importAsset(material);
+					auto package = this->importAsset(material, "Assets/Materials");
 					if (package.is_object())
 						items.push_back(package["uuid"]);
 				}
@@ -128,11 +134,11 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::importAsset(const std::shared_ptr<Texture>& texture) noexcept(false)
+	AssetBundle::importAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& relativeFolder) noexcept(false)
 	{
 		auto hdr = (texture->format() == Format::R32G32B32SFloat) ? true : false;
 		auto uuid = make_guid();
-		auto relativePath = (hdr ? "Assets/HDRis/" : "Assets/Textures/") + uuid;
+		auto relativePath = std::filesystem::path(relativeFolder).append(uuid);
 		
 		try
 		{
@@ -169,10 +175,10 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::importAsset(const std::shared_ptr<Animation>& animation) noexcept(false)
+	AssetBundle::importAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& relativeFolder) noexcept(false)
 	{
 		auto uuid = make_guid();
-		auto relativePath = "Assets/Motions/" + uuid;
+		auto relativePath = std::filesystem::path(relativeFolder).append(uuid);
 
 		try
 		{
@@ -201,10 +207,10 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::importAsset(const std::shared_ptr<Material>& material) noexcept(false)
+	AssetBundle::importAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& relativeFolder) noexcept(false)
 	{
 		auto uuid = make_guid();
-		auto relativePath = "Assets/Materials/" + uuid;
+		auto relativePath = std::filesystem::path(relativeFolder).append(uuid);
 
 		try
 		{
@@ -238,10 +244,10 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false)
+	AssetBundle::importAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& relativeFolder) noexcept(false)
 	{
 		auto uuid = make_guid();
-		auto relativePath = "Assets/Models/" + uuid;
+		auto relativePath = std::filesystem::path(relativeFolder).append(uuid);
 
 		try
 		{
@@ -280,10 +286,10 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::importAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false)
+	AssetBundle::importAsset(const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& relativeFolder) noexcept(false)
 	{
 		auto uuid = make_guid();
-		auto relativePath = "Assets/Prefabs/" + uuid;
+		auto relativePath = std::filesystem::path(relativeFolder).append(uuid);
 
 		try
 		{
