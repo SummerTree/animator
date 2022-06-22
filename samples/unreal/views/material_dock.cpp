@@ -114,7 +114,7 @@ namespace unreal
 	void
 	MaterialDock::addItem(std::string_view uuid) noexcept(false)
 	{
-		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
+		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			auto item = std::make_unique<QListWidgetItem>();

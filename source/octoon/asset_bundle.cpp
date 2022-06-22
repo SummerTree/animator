@@ -20,6 +20,8 @@ namespace octoon
 {
 	OctoonImplementSingleton(AssetBundle)
 
+	std::vector<std::shared_ptr<AssetBundle>> AssetBundle::assetBundles_;
+
 	AssetBundle::AssetBundle() noexcept
 	{
 	}
@@ -37,32 +39,25 @@ namespace octoon
 		this->assetDatabase_ = std::make_unique<AssetDatabase>();
 		this->assetDatabase_->open(assetPath);
 
-		this->modelAsset_ = std::make_unique<AssetImporter>();
-		this->motionAsset_ = std::make_unique<AssetImporter>();
-		this->materialAsset_ = std::make_unique<AssetImporter>();
-		this->textureAsset_ = std::make_unique<AssetImporter>();
-		this->hdriAsset_ = std::make_unique<AssetImporter>();
-		this->prefabAsset_ = std::make_unique<AssetImporter>();
-
-		this->modelAsset_->open(std::filesystem::path(assetPath).append("Assets/Models"));
-		this->motionAsset_->open(std::filesystem::path(assetPath).append("Assets/Motions"));
-		this->materialAsset_->open(std::filesystem::path(assetPath).append("Assets/Materials"));
-		this->textureAsset_->open(std::filesystem::path(assetPath).append("Assets/Textures"));
-		this->hdriAsset_->open(std::filesystem::path(assetPath).append("Assets/HDRIs"));
-		this->prefabAsset_->open(std::filesystem::path(assetPath).append("Assets/Prefabs"));
+		std::ifstream ifs(std::filesystem::path(this->assetPath_).append("Library").append("AssetBundle.json"), std::ios_base::binary);
+		if (ifs)
+		{
+			try
+			{
+				auto assetDb = nlohmann::json::parse(ifs);
+				for (auto it = assetDb.begin(); it != assetDb.end(); ++it)
+					packageList_[it.key()] = it.value();
+			}
+			catch (...)
+			{
+			}
+		}
 	}
 
 	void
 	AssetBundle::close() noexcept
 	{
 		this->unload();
-
-		modelAsset_->close();
-		motionAsset_->close();
-		materialAsset_->close();
-		textureAsset_->close();
-		hdriAsset_->close();
-		prefabAsset_->close();
 
 		if (this != AssetBundle::instance())
 		{
@@ -123,7 +118,7 @@ namespace octoon
 						items.push_back(package["uuid"]);
 				}
 
-				materialAsset_->saveAssets();
+				this->saveAssets();
 
 				return items;
 			}
@@ -148,8 +143,9 @@ namespace octoon
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
+			package["type"] = texture->type_name();
 			package["name"] = texture->getName();
-			package["path"] = (char*)outputPath.u8string().c_str();
+			package["data"] = this->assetDatabase_->getAssetGuid(texture);
 			package["visible"] = true;
 
 			auto preview = AssetPreview::instance()->getAssetPreview(texture);
@@ -160,19 +156,7 @@ namespace octoon
 				package["preview"] = (char*)std::filesystem::path(this->assetPath_).append(previewPath.u8string()).u8string().c_str();
 			}
 
-			std::ofstream ifs(std::filesystem::path(this->assetPath_).append(relativePath).append("package.json"), std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			if (hdr)
-				this->hdriAsset_->addPackage(uuid);
-			else
-				this->textureAsset_->addPackage(uuid);
-
+			this->packageList_[uuid] = std::move(package);
 			this->assetDatabase_->saveAssets();
 
 			return package;
@@ -199,19 +183,12 @@ namespace octoon
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
+			package["type"] = animation->type_name();
 			package["name"] = animation->getName();
-			package["path"] = (char*)outputPath.u8string().c_str();
+			package["data"] = this->assetDatabase_->getAssetGuid(animation);
 			package["visible"] = true;
 
-			std::ofstream ifs(std::filesystem::path(this->assetPath_).append(relativePath).append("package.json"), std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->motionAsset_->addPackage(uuid);
+			this->packageList_[uuid] = std::move(package);
 			this->assetDatabase_->saveAssets();
 
 			return package;
@@ -237,8 +214,9 @@ namespace octoon
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
+			package["type"] = material->type_name();
 			package["name"] = material->getName();
-			package["path"] = (char*)outputPath.u8string().c_str();
+			package["data"] = this->assetDatabase_->getAssetGuid(material);
 			package["visible"] = true;
 
 			auto preview = AssetPreview::instance()->getAssetPreview(material);
@@ -249,15 +227,7 @@ namespace octoon
 				package["preview"] = (char*)std::filesystem::path(this->assetPath_).append(previewPath.u8string()).u8string().c_str();
 			}
 
-			std::ofstream ifs(std::filesystem::path(this->assetPath_).append(relativePath).append("package.json"), std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->materialAsset_->addPackage(uuid);
+			this->packageList_[uuid] = std::move(package);
 			this->assetDatabase_->saveAssets();
 
 			return package;
@@ -273,7 +243,7 @@ namespace octoon
 	AssetBundle::importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false)
 	{
 		auto uuid = this->assetDatabase_->getAssetGuid(pmx);
-		auto rootPath = std::filesystem::path(modelAsset_->getAssertPath()).append(uuid);
+		auto rootPath = "Assets/Models/" + uuid;
 
 		try
 		{
@@ -294,19 +264,12 @@ namespace octoon
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
+			package["type"] = pmx->type_name();
 			package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
-			package["path"] = (char*)outputPath.u8string().c_str();
+			package["data"] = this->assetDatabase_->getAssetGuid(pmx);
 			package["preview"] = (char*)writePreview(*pmx, rootPath).u8string().c_str();
 
-			std::ofstream ifs(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = package.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			this->modelAsset_->addPackage(uuid);
+			this->packageList_[uuid] = std::move(package);
 			this->assetDatabase_->saveAssets();
 
 			return package;
@@ -324,7 +287,7 @@ namespace octoon
 	AssetBundle::importAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false)
 	{
 		auto uuid = this->assetDatabase_->getAssetGuid(gameObject);
-		auto rootPath = std::filesystem::path(prefabAsset_->getAssertPath()).append(uuid);
+		auto rootPath = "Assets/Prefabs/" + uuid;
 
 		try
 		{
@@ -378,7 +341,7 @@ namespace octoon
 				auto animation = component->downcast<AnimatorComponent>();
 				if (animation->getAnimation())
 				{
-					auto package = this->createAsset(animation->getAnimation());
+					nlohmann::json  package;// = this->createAsset(animation->getAnimation());
 					if (package.is_object())
 					{
 						nlohmann::json animationJson;
@@ -409,7 +372,7 @@ namespace octoon
 
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
-					auto package = this->createAsset(materials[i]);
+					nlohmann::json  package;// = this->createAsset(materials[i]);
 					if (package.is_object())
 					{
 						nlohmann::json materialJson;
@@ -428,7 +391,7 @@ namespace octoon
 
 				for (auto& pair : abc->getMaterials())
 				{
-					auto materialPackage = this->createAsset(pair.second);
+					nlohmann::json materialPackage;// = this->createAsset(pair.second);
 					if (materialPackage.is_object())
 					{
 						nlohmann::json materialJson;
@@ -463,18 +426,12 @@ namespace octoon
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
+			package["type"] = gameObject->type_name();
 			package["name"] = gameObject->getName();
-			package["path"] = (char*)outputPath.u8string().c_str();
+			package["data"] = this->assetDatabase_->getAssetGuid(gameObject);
 			package["preview"] = (char*)writePreview(gameObject, rootPath).u8string().c_str();	
 
-			std::ofstream ifs2(std::filesystem::path(rootPath).append("package.json"), std::ios_base::binary);
-			if (ifs2)
-			{
-				auto dump = package.dump();
-				ifs2.write(dump.c_str(), dump.size());
-			}
-
-			this->prefabAsset_->addPackage(uuid);
+			this->packageList_[uuid] = std::move(package);
 			this->assetDatabase_->saveAssets();
 
 			return package;
@@ -489,38 +446,28 @@ namespace octoon
 	}
 
 	std::shared_ptr<RttiObject>
-	AssetBundle::loadAsset(std::string_view uuid, const Rtti& type) noexcept(false)
+	AssetBundle::loadAsset(const std::string& uuid, const Rtti& type) noexcept(false)
 	{
-		if (type.isDerivedFrom(Material::getRtti()))
+		if (packageList_.contains(uuid))
 		{
-			if (materialAsset_->hasPackage(uuid))
-				return this->loadAssetAtPackage<Material>(materialAsset_->getPackage(uuid));
-		}
-		else if (type.isDerivedFrom(Animation::getRtti()))
-		{
-			if (motionAsset_->hasPackage(uuid))
-				return this->loadAssetAtPackage<Animation>(motionAsset_->getPackage(uuid));
-		}
-		else if (type.isDerivedFrom(GameObject::getRtti()))
-		{
-			if (modelAsset_->hasPackage(uuid))
-				return this->loadAssetAtPackage(modelAsset_->getPackage(uuid), *PMX::getRtti())->downcast_pointer<GameObject>();
-			if (prefabAsset_->hasPackage(uuid))
-				return this->loadAssetAtPackage<GameObject>(prefabAsset_->getPackage(uuid));
-		}
-		else if (type.isDerivedFrom(Texture::getRtti()))
-		{
-			if (hdriAsset_->hasPackage(uuid))
-				return this->loadAssetAtPackage<Texture>(hdriAsset_->getPackage(uuid));
-			if (textureAsset_->hasPackage(uuid))
-				return  this->loadAssetAtPackage<Texture>(textureAsset_->getPackage(uuid));
+			if (type.isDerivedFrom(Material::getRtti()))
+				return this->loadAssetAtPackage<Material>(packageList_.at(uuid));
+			else if (type.isDerivedFrom(Animation::getRtti()))
+				return this->loadAssetAtPackage<Animation>(packageList_.at(uuid));
+			else if (type.isDerivedFrom(GameObject::getRtti()))
+				return this->loadAssetAtPackage<GameObject>(packageList_.at(uuid));
+			else if (type.isDerivedFrom(Texture::getRtti()))
+				return this->loadAssetAtPackage<Texture>(packageList_.at(uuid));
 		}
 
-		for (auto& ab : assetBundles_)
+		if (this == AssetBundle::instance())
 		{
-			auto asset = ab->loadAsset(uuid, type);
-			if (asset)
-				return asset;
+			for (auto& ab : assetBundles_)
+			{
+				auto asset = ab->loadAsset(uuid, type);
+				if (asset)
+					return asset;
+			}
 		}
 
 		return nullptr;
@@ -529,7 +476,7 @@ namespace octoon
 	std::shared_ptr<RttiObject>
 	AssetBundle::loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false)
 	{
-		if (package.is_object() && package.contains("uuid") && package.contains("path"))
+		if (package.is_object() && package.contains("uuid") && package.contains("data"))
 		{
 			auto uuid = package["uuid"].get<std::string>();
 			if (this->assetCache_.contains(uuid))
@@ -539,84 +486,19 @@ namespace octoon
 					return it.lock();
 			}
 
-			auto path = package["path"].get<std::string>();
-			auto filepath = std::filesystem::path((char8_t*)path.c_str());
+			auto data = package["data"].get<std::string>();
 
 			std::shared_ptr<RttiObject> asset;
 			if (type.isDerivedFrom(Texture::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<Texture>(filepath);
+				asset = this->assetDatabase_->loadAssetAtPath<Texture>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(Animation::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<Animation>(filepath);
+				asset = this->assetDatabase_->loadAssetAtPath<Animation>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(Material::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<Material>(filepath);
+				asset = this->assetDatabase_->loadAssetAtPath<Material>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(PMX::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<GameObject>(filepath);
+				asset = this->assetDatabase_->loadAssetAtPath<GameObject>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(GameObject::getRtti()))
-			{
-				std::ifstream ifs(filepath);
-				if (ifs)
-				{
-					auto prefab = nlohmann::json::parse(ifs);
-					
-					GameObjectPtr object;
-
-					if (prefab.contains("model"))
-					{
-						auto modelJson = prefab["model"];
-						if (modelJson.contains("uuid"))
-							object = AssetBundle::instance()->loadAsset<GameObject>(modelJson["uuid"].get<std::string>());
-						else if (modelJson.contains("path"))
-							object = this->assetDatabase_->loadAssetAtPath<GameObject>(modelJson["path"].get<std::string>());
-					}
-
-					if (prefab.contains("transform"))
-					{
-						auto transform = object->getComponent<octoon::TransformComponent>();
-						if (transform)
-							transform->load(prefab["transform"]);
-					}
-
-					for (auto& animationJson : prefab["animation"])
-					{
-						if (animationJson.find("data") == animationJson.end())
-							continue;
-
-						auto animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(animationJson["data"].get<std::string>());
-						if (animation)
-						{
-							auto animationType = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
-							if (animationType == 0)
-								object->addComponent<octoon::AnimatorComponent>(std::move(animation), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
-							else
-								object->addComponent<octoon::AnimatorComponent>(std::move(animation));
-						}
-					}
-
-					if (prefab.contains("meshRenderer"))
-					{
-						std::vector<std::shared_ptr<octoon::Material>> materials;
-						materials.resize(prefab["meshRenderer"]["materials"].size());
-
-						for (auto& materialJson : prefab["meshRenderer"]["materials"])
-						{
-							if (materialJson.find("data") == materialJson.end())
-								continue;
-
-							auto data = materialJson["data"].get<nlohmann::json::string_t>();
-							auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-							auto material = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(data);
-
-							materials[index] = std::move(material);
-						}
-
-						auto meshRenderer = object->getComponent<octoon::MeshRendererComponent>();
-						if (meshRenderer)
-							meshRenderer->setMaterials(std::move(materials));
-					}
-
-					asset = object;
-				}
-			}
+				asset = this->assetDatabase_->loadAssetAtPath<GameObject>(this->assetDatabase_->getAssetPath(data));
 
 			if (asset)
 				assetCache_[uuid] = asset;
@@ -625,157 +507,88 @@ namespace octoon
 		}
 
 		return nullptr;
-	}
 
-	nlohmann::json
-	AssetBundle::createAsset(const std::shared_ptr<Texture>& texture) noexcept(false)
-	{
-		if (texture)
+
+		/*else if (type.isDerivedFrom(GameObject::getRtti()))
 		{
-			auto uuid = this->assetDatabase_->getAssetGuid(texture);
-			if (!uuid.empty())
+			std::ifstream ifs(filepath);
+			if (ifs)
 			{
-				if (this != AssetBundle::instance())
+				auto prefab = nlohmann::json::parse(ifs);
+
+				GameObjectPtr object;
+
+				if (prefab.contains("model"))
 				{
-					if (AssetBundle::instance()->textureAsset_->hasPackage(uuid))
-						return AssetBundle::instance()->textureAsset_->getPackage(uuid);
+					auto modelJson = prefab["model"];
+					if (modelJson.contains("uuid"))
+						object = AssetBundle::instance()->loadAsset<GameObject>(modelJson["uuid"].get<std::string>());
+					else if (modelJson.contains("path"))
+						object = this->assetDatabase_->loadAssetAtPath<GameObject>(modelJson["path"].get<std::string>());
 				}
 
-				if (this->hasPackage(uuid) && !AssetDatabase::instance()->isDirty(texture))
-					return this->getPackage(uuid);
-			}
-
-			auto package = this->importAsset(texture);
-			if (package.is_object())
-				AssetDatabase::instance()->setDirty(texture, false);
-
-			return package;
-		}
-
-		return nlohmann::json();
-	}
-
-	nlohmann::json
-	AssetBundle::createAsset(const std::shared_ptr<Animation>& animation) noexcept(false)
-	{
-		if (animation)
-		{
-			auto uuid = this->assetDatabase_->getAssetGuid(animation);
-			if (!uuid.empty())
-			{
-				if (this != AssetBundle::instance())
+				if (prefab.contains("transform"))
 				{
-					if (AssetBundle::instance()->motionAsset_->hasPackage(uuid))
-						return AssetBundle::instance()->motionAsset_->getPackage(uuid);
+					auto transform = object->getComponent<octoon::TransformComponent>();
+					if (transform)
+						transform->load(prefab["transform"]);
 				}
 
-				if (this->hasPackage(uuid) && !AssetDatabase::instance()->isDirty(animation))
-					return this->getPackage(uuid);
-			}
-
-			auto package = this->importAsset(animation);
-			if (package.is_object())
-				AssetDatabase::instance()->setDirty(animation, false);
-
-			return package;
-		}
-
-		return nlohmann::json();
-	}
-
-	nlohmann::json
-	AssetBundle::createAsset(const std::shared_ptr<Material>& material) noexcept(false)
-	{
-		if (material)
-		{
-			auto uuid = this->assetDatabase_->getAssetGuid(material);
-			if (!uuid.empty())
-			{
-				if (this != AssetBundle::instance())
+				for (auto& animationJson : prefab["animation"])
 				{
-					if (AssetBundle::instance()->materialAsset_->hasPackage(uuid))
-						return AssetBundle::instance()->materialAsset_->getPackage(uuid);
+					if (animationJson.find("data") == animationJson.end())
+						continue;
+
+					auto animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(animationJson["data"].get<std::string>());
+					if (animation)
+					{
+						auto animationType = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
+						if (animationType == 0)
+							object->addComponent<octoon::AnimatorComponent>(std::move(animation), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+						else
+							object->addComponent<octoon::AnimatorComponent>(std::move(animation));
+					}
 				}
 
-				if (this->hasPackage(uuid) && !AssetDatabase::instance()->isDirty(material))
-					return this->getPackage(uuid);
-			}
-
-			auto package = this->importAsset(material);
-			if (package.is_object())
-				AssetDatabase::instance()->setDirty(material, false);
-
-			return package;
-		}
-
-		return nlohmann::json();
-	}
-
-	nlohmann::json
-	AssetBundle::createAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false)
-	{
-		if (gameObject)
-		{
-			auto uuid = this->assetDatabase_->getAssetGuid(gameObject);
-			if (!uuid.empty())
-			{
-				if (this != AssetBundle::instance())
+				if (prefab.contains("meshRenderer"))
 				{
-					if (AssetBundle::instance()->modelAsset_->hasPackage(uuid))
-						return AssetBundle::instance()->modelAsset_->getPackage(uuid);
+					std::vector<std::shared_ptr<octoon::Material>> materials;
+					materials.resize(prefab["meshRenderer"]["materials"].size());
+
+					for (auto& materialJson : prefab["meshRenderer"]["materials"])
+					{
+						if (materialJson.find("data") == materialJson.end())
+							continue;
+
+						auto data = materialJson["data"].get<nlohmann::json::string_t>();
+						auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
+						auto material = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(data);
+
+						materials[index] = std::move(material);
+					}
+
+					auto meshRenderer = object->getComponent<octoon::MeshRendererComponent>();
+					if (meshRenderer)
+						meshRenderer->setMaterials(std::move(materials));
 				}
 
-				if (this->hasPackage(uuid) && !AssetDatabase::instance()->isDirty(gameObject))
-					return this->getPackage(uuid);
+				asset = object;
 			}
-			else
-			{
-				uuid = make_guid();
-			}
-
-			auto package = this->importAsset(gameObject);
-			if (package.is_object())
-				AssetDatabase::instance()->setDirty(gameObject, false);
-
-			return package;
-		}
-
-		return nlohmann::json();
+		}*/
 	}
 
 	bool
-	AssetBundle::hasPackage(std::string_view uuid) noexcept
+	AssetBundle::hasPackage(const std::string& uuid) noexcept
 	{
-		if (this->modelAsset_->hasPackage(uuid))
-			return true;
-		if (this->motionAsset_->hasPackage(uuid))
-			return true;
-		if (this->materialAsset_->hasPackage(uuid))
-			return true;
-		if (this->textureAsset_->hasPackage(uuid))
-			return true;
-		if (this->hdriAsset_->hasPackage(uuid))
-			return true;
-		if (this->prefabAsset_->hasPackage(uuid))
-			return true;
-		return false;
+		return this->packageList_.contains(uuid);
 	}
 
 	nlohmann::json
-	AssetBundle::getPackage(std::string_view uuid) noexcept
+	AssetBundle::getPackage(const std::string& uuid) noexcept
 	{
-		if (this->modelAsset_->hasPackage(uuid))
-			return this->modelAsset_->getPackage(uuid);
-		if (this->motionAsset_->hasPackage(uuid))
-			return this->motionAsset_->getPackage(uuid);
-		if (this->materialAsset_->hasPackage(uuid))
-			return this->materialAsset_->getPackage(uuid);
-		if (this->textureAsset_->hasPackage(uuid))
-			return this->textureAsset_->getPackage(uuid);
-		if (this->hdriAsset_->hasPackage(uuid))
-			return this->hdriAsset_->getPackage(uuid);
-		if (this->prefabAsset_->hasPackage(uuid))
-			return this->prefabAsset_->getPackage(uuid);
+		auto it = this->packageList_.find(uuid);
+		if (it != this->packageList_.end())
+			return *(it);
 		return nlohmann::json();
 	}
 
@@ -788,40 +601,58 @@ namespace octoon
 		return this->getPackage(guid);
 	}
 
-	nlohmann::json&
+	const nlohmann::json&
 	AssetBundle::getModelList() const noexcept
 	{
-		return modelAsset_->getIndexList();
+		auto it = packageList_.find("type");
+		if (it != packageList_.end())
+			return (*it).second;
+		return nlohmann::json();
 	}
 
-	nlohmann::json&
+	const nlohmann::json&
 	AssetBundle::getMotionList() const noexcept
 	{
-		return motionAsset_->getIndexList();
+		auto it = packageList_.find("type");
+		if (it != packageList_.end())
+			return (*it).second;
+		return nlohmann::json();
 	}
 
-	nlohmann::json&
+	const nlohmann::json&
 	AssetBundle::getTextureList() const noexcept
 	{
-		return textureAsset_->getIndexList();
+		auto it = packageList_.find("type");
+		if (it != packageList_.end())
+			return (*it).second;
+		return nlohmann::json();
 	}
 
-	nlohmann::json&
+	const nlohmann::json&
 	AssetBundle::getHDRiList() const noexcept
 	{
-		return hdriAsset_->getIndexList();
+		auto it = packageList_.find("type");
+		if (it != packageList_.end())
+			return (*it).second;
+		return nlohmann::json();
 	}
 
-	nlohmann::json&
+	const nlohmann::json&
 	AssetBundle::getMaterialList() const noexcept
 	{
-		return materialAsset_->getIndexList();
+		auto it = packageList_.find("type");
+		if (it != packageList_.end())
+			return (*it).second;
+		return nlohmann::json();
 	}
 
-	nlohmann::json&
+	const nlohmann::json&
 	AssetBundle::getPrefabList() const noexcept
 	{
-		return prefabAsset_->getIndexList();
+		auto it = packageList_.find("type");
+		if (it != packageList_.end())
+			return (*it).second;
+		return nlohmann::json();
 	}
 
 	void
@@ -833,35 +664,34 @@ namespace octoon
 	void
 	AssetBundle::saveAssets() noexcept(false)
 	{
-		if (std::filesystem::exists(assetPath_))
+		nlohmann::json bundleDb;
+
+		for (auto& it : this->packageList_)
+			bundleDb[it.first] = it.second;
+
+		auto bundleRoot = std::filesystem::path(this->assetPath_).append("Library");
+		std::filesystem::create_directories(bundleRoot);
+
+		std::ofstream ifs(std::filesystem::path(bundleRoot).append("AssetBundle.json"), std::ios_base::binary);
+		if (ifs)
 		{
-			this->modelAsset_->saveAssets();
-			this->motionAsset_->saveAssets();
-			this->materialAsset_->saveAssets();
-			this->textureAsset_->saveAssets();
-			this->hdriAsset_->saveAssets();
-			this->prefabAsset_->saveAssets();
+			auto dump = bundleDb.dump();
+			ifs.write(dump.c_str(), dump.size());
+			ifs.close();
 		}
 
-		for (auto& ab : assetBundles_)
-			ab->saveAssets();
+		if (this == AssetBundle::instance())
+		{
+			for (auto& ab : assetBundles_)
+				ab->saveAssets();
+		}
 	}
 
 	void
-	AssetBundle::removeAsset(std::string_view uuid) noexcept(false)
+	AssetBundle::removeAsset(const std::string& uuid) noexcept(false)
 	{
-		if (this->modelAsset_->hasPackage(uuid))
-			this->modelAsset_->removeAsset(uuid);
-		if (this->motionAsset_->hasPackage(uuid))
-			this->motionAsset_->removeAsset(uuid);
-		if (this->materialAsset_->hasPackage(uuid))
-			this->materialAsset_->removeAsset(uuid);
-		if (this->textureAsset_->hasPackage(uuid))
-			this->textureAsset_->removeAsset(uuid);
-		if (this->hdriAsset_->hasPackage(uuid))
-			this->hdriAsset_->removeAsset(uuid);
-		if (this->prefabAsset_->hasPackage(uuid))
-			this->prefabAsset_->removeAsset(uuid);
+		if (this->hasPackage(uuid))
+			this->assetDatabase_->deleteAsset(this->assetDatabase_->getAssetPath(uuid));
 	}
 
 	std::shared_ptr<AssetBundle>

@@ -30,31 +30,26 @@ namespace octoon
 		nlohmann::json importAsset(const std::shared_ptr<Material>& material) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false);
 
-		nlohmann::json createAsset(const std::shared_ptr<Texture>& texture) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<Animation>& animation) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<Material>& material) noexcept(false);
-		nlohmann::json createAsset(const std::shared_ptr<GameObject>& gameObject) noexcept(false);
+		bool hasPackage(const std::string& uuid) noexcept;
 
-		bool hasPackage(std::string_view uuid) noexcept;
-
-		nlohmann::json getPackage(std::string_view uuid) noexcept;
+		nlohmann::json getPackage(const std::string& uuid) noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) noexcept;
 
-		nlohmann::json& getModelList() const noexcept;
-		nlohmann::json& getMotionList() const noexcept;
-		nlohmann::json& getTextureList() const noexcept;
-		nlohmann::json& getHDRiList() const noexcept;
-		nlohmann::json& getMaterialList() const noexcept;
-		nlohmann::json& getPrefabList() const noexcept;
+		const nlohmann::json& getModelList() const noexcept;
+		const nlohmann::json& getMotionList() const noexcept;
+		const nlohmann::json& getTextureList() const noexcept;
+		const nlohmann::json& getHDRiList() const noexcept;
+		const nlohmann::json& getMaterialList() const noexcept;
+		const nlohmann::json& getPrefabList() const noexcept;
 
 		void unload() noexcept;
 		void saveAssets() noexcept(false);
-		void removeAsset(std::string_view uuid) noexcept(false);
+		void removeAsset(const std::string& uuid) noexcept(false);
 
-		std::shared_ptr<RttiObject> loadAsset(std::string_view uuid, const Rtti& rtti) noexcept(false);
+		std::shared_ptr<RttiObject> loadAsset(const std::string& uuid, const Rtti& rtti) noexcept(false);
 		
 		template<typename T, typename = std::enable_if_t<std::is_base_of<RttiObject, T>::value>>
-		std::shared_ptr<T> loadAsset(std::string_view uuid) noexcept(false)
+		std::shared_ptr<T> loadAsset(const std::string& uuid) noexcept(false)
 		{
 			auto asset = loadAsset(uuid, *T::getRtti());
 			if (asset)
@@ -87,16 +82,10 @@ namespace octoon
 		std::filesystem::path assetPath_;
 		std::unique_ptr<AssetDatabase> assetDatabase_;
 
-		std::unique_ptr<AssetImporter> modelAsset_;
-		std::unique_ptr<AssetImporter> motionAsset_;
-		std::unique_ptr<AssetImporter> textureAsset_;
-		std::unique_ptr<AssetImporter> materialAsset_;
-		std::unique_ptr<AssetImporter> hdriAsset_;
-		std::unique_ptr<AssetImporter> prefabAsset_;
-
+		std::map<std::string, nlohmann::json> packageList_;
 		std::map<std::string, std::weak_ptr<RttiObject>> assetCache_;
 
-		std::vector<std::shared_ptr<AssetBundle>> assetBundles_;
+		static std::vector<std::shared_ptr<AssetBundle>> assetBundles_;
 	};
 }
 

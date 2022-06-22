@@ -75,7 +75,7 @@ namespace octoon
 	AssetDatabase::createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(texture);
-		assert(!relativePath.empty());
+		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
 		auto uuid = MD5(relativePath.u8string()).toString();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
@@ -125,7 +125,7 @@ namespace octoon
 	void
 	AssetDatabase::createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!relativePath.empty());
+		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
 		auto uuid = MD5(relativePath.u8string()).toString();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
@@ -173,7 +173,7 @@ namespace octoon
 	void
 	AssetDatabase::createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!relativePath.empty());
+		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
 		auto uuid = MD5(relativePath.u8string()).toString();
 		auto parentPath = relativePath.parent_path();
@@ -331,7 +331,7 @@ namespace octoon
 	void
 	AssetDatabase::createAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!relativePath.empty());
+		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
 		auto uuid = MD5(relativePath.u8string()).toString();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
@@ -401,7 +401,7 @@ namespace octoon
 	void
 	AssetDatabase::createAsset(const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!relativePath.empty());
+		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
 		auto uuid = MD5(relativePath.u8string()).toString();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());

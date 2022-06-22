@@ -182,7 +182,7 @@ namespace unreal
 	void 
 	MaterialListPanel::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::MaterialImporter::instance()->getPackage(uuid);
+		auto package = octoon::MaterialImporter::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 			this->addItem(package);
 	}

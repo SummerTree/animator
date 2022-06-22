@@ -77,7 +77,7 @@ namespace unreal
 	void 
 	ModelDock::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
+		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			auto item = std::make_unique<QListWidgetItem>();
@@ -182,7 +182,7 @@ namespace unreal
 			return;
 		
 		auto uuid = item->data(Qt::UserRole).toString().toStdString();
-		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
+		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);

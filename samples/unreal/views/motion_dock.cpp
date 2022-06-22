@@ -74,7 +74,7 @@ namespace unreal
 	void 
 	MotionDock::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::AssetBundle::instance()->getPackage(uuid);
+		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			auto item = std::make_unique<QListWidgetItem>();
@@ -199,7 +199,7 @@ namespace unreal
 			QCoreApplication::processEvents();
 
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto package = octoon::AssetBundle::instance()->getPackage(uuid);
+			auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
 			if (package.is_object())
 			{
 				auto animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(uuid);
