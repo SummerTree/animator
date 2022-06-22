@@ -225,7 +225,7 @@ namespace unreal
 
 		try
 		{
-			if (!profile_->path.empty() || (this->profile_->ab && this->profile_->ab->needUpdate()))
+			if (!profile_->path.empty() || octoon::AssetDatabase::instance()->isDirty())
 			{
 				if (QMessageBox::question(this, tr("Info"), tr("Do you want to discard your local changes?")) == QMessageBox::No)
 					return;
@@ -480,7 +480,7 @@ namespace unreal
 			auto behaviour = behaviour_->getComponent<unreal::UnrealBehaviour>();
 			if (behaviour)
 			{
-				if (!profile_->path.empty() || (this->profile_->ab && this->profile_->ab->needUpdate()))
+				if (!profile_->path.empty() || octoon::AssetDatabase::instance()->isDirty())
 				{
 					if (QMessageBox::question(this, tr("Info"), tr("Do you want to discard your local changes?")) == QMessageBox::Yes)
 						behaviour->reset();

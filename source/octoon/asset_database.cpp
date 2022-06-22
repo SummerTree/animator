@@ -384,6 +384,20 @@ namespace octoon
 		}
 	}
 
+	void
+	AssetDatabase::saveAssets() noexcept(false)
+	{
+		for (auto& it : dirtyList_)
+		{
+			if (!it.expired())
+			{
+				/*auto item = it.lock();
+				if (item->isInstanceOf<Material>())
+					this->createAsset(item->downcast_pointer<Material>());*/
+			}
+		}
+	}
+
 	std::filesystem::path
 	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept
 	{
@@ -396,7 +410,7 @@ namespace octoon
 	std::string
 	AssetDatabase::getAssetGuid(const std::filesystem::path& relativePath) const noexcept
 	{
-		auto it = assetGuidList_.find(relativePath);
+		auto it = assetGuidList_.find(relativePath.u8string());
 		if (it != assetGuidList_.end())
 			return (*it).second;
 		return std::string();
@@ -533,7 +547,7 @@ namespace octoon
 					if (metadata.contains("name"))
 						model->setName(metadata["name"].get<std::string>());
 					if (metadata.contains("uuid"))
-						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();					
+						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
 				}
 				else
 				{
@@ -746,5 +760,36 @@ namespace octoon
 		}
 
 		return nullptr;
+	}
+
+	void
+	AssetDatabase::setDirty(const std::shared_ptr<RttiObject>& object, bool dirty) noexcept(false)
+	{
+		if (dirty)
+			this->dirtyList_.insert(object);
+		else
+		{
+			auto it = this->dirtyList_.find(object);
+			if (it != this->dirtyList_.end())
+				this->dirtyList_.erase(it);
+		}
+	}
+
+	bool
+	AssetDatabase::isDirty() const noexcept
+	{
+		return !this->dirtyList_.empty();
+	}
+
+	bool
+	AssetDatabase::isDirty(const std::shared_ptr<RttiObject>& object) const noexcept
+	{
+		return this->dirtyList_.contains(object);
+	}
+
+	void
+	AssetDatabase::clearUpdate() noexcept
+	{
+		this->dirtyList_.clear();
 	}
 }

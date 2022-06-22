@@ -5,13 +5,10 @@
 #include <octoon/texture/texture.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/animation/animation.h>
-#include <octoon/light/directional_light.h>
-#include <octoon/light/environment_light.h>
-#include <octoon/camera/perspective_camera.h>
 #include <octoon/video/renderer.h>
-#include <octoon/runtime/uuid.h>
 #include <filesystem>
 #include <set>
+#include <map>
 
 namespace octoon
 {
@@ -32,6 +29,7 @@ namespace octoon
 		void createAsset(const std::shared_ptr<GameObject>& object, const std::filesystem::path& relativePath) noexcept(false);
 
 		void deleteAsset(const std::filesystem::path& relativePath) noexcept(false);
+		void saveAssets() noexcept(false);
 
 		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept;
 
@@ -49,6 +47,11 @@ namespace octoon
 			return nullptr;
 		}
 
+		bool isDirty() const noexcept;
+		bool isDirty(const std::shared_ptr<RttiObject>& object) const noexcept;
+		void setDirty(const std::shared_ptr<RttiObject>& object, bool dirty = true) noexcept(false);
+		void clearUpdate() noexcept;
+
 	private:
 		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
 
@@ -58,6 +61,8 @@ namespace octoon
 
 	private:
 		std::filesystem::path assetPath_;
+
+		std::set<std::weak_ptr<const RttiObject>, std::owner_less<std::weak_ptr<const RttiObject>>> dirtyList_;
 
 		std::map<std::filesystem::path, std::string> assetGuidList_;
 		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> assetPathList_;

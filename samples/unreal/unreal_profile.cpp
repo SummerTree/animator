@@ -74,7 +74,6 @@ namespace unreal
 		this->resourceModule->reset();
 		this->selectorModule->reset();
 		this->gridModule->reset();
-		this->ab.reset();
 	}
 
 	void
@@ -86,7 +85,6 @@ namespace unreal
 			auto json = nlohmann::json::parse(stream);
 
 			this->path = path_;
-			this->ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_));
 
 			octoon::AssetDatabase::instance()->open(path_);
 
@@ -120,8 +118,6 @@ namespace unreal
 				this->selectorModule->load(json["drag"]);
 			if (json.contains("grid") && json["grid"].is_object())
 				this->gridModule->load(json["grid"]);
-
-			this->ab->unload();
 		}
 		else
 		{
@@ -152,9 +148,6 @@ namespace unreal
 				nlohmann::json json;
 				json["version"] = UNREAL_VERSION;
 
-				if (!this->ab)
-					this->ab = octoon::AssetBundle::instance()->loadFromFile(std::filesystem::path(path_));
-
 				octoon::AssetDatabase::instance()->open(path_);
 
 				this->path = path_;
@@ -173,7 +166,7 @@ namespace unreal
 				this->selectorModule->save(json["drag"]);
 				this->gridModule->save(json["grid"]);
 
-				this->ab->saveAssets();
+				octoon::AssetDatabase::instance()->saveAssets();
 
 				auto string = json.dump();
 				stream.write(string.c_str(), string.size());

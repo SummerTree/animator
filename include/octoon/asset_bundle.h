@@ -65,12 +65,6 @@ namespace octoon
 		std::shared_ptr<AssetBundle> loadFromFile(const std::filesystem::path& path) noexcept(false);
 		std::vector<std::shared_ptr<AssetBundle>> getAllLoadedAssetBundles() const noexcept;
 
-		bool needUpdate() const noexcept;
-		bool needUpdate(const std::shared_ptr<RttiObject>& object) const noexcept;
-		void addUpdateList(const std::shared_ptr<RttiObject>& object) noexcept(false);
-		void removeUpdateList(const std::shared_ptr<RttiObject>& object) noexcept(false);
-		void clearUpdate() noexcept;
-
 	private:
 		nlohmann::json importAsset(const std::shared_ptr<PMX>& pmx) noexcept(false);
 
@@ -101,7 +95,6 @@ namespace octoon
 		std::unique_ptr<AssetImporter> prefabAsset_;
 
 		std::map<std::string, std::weak_ptr<RttiObject>> assetCache_;
-		std::set<std::weak_ptr<RttiObject>, std::owner_less<std::weak_ptr<const RttiObject>>> updateList_;
 
 		std::vector<std::shared_ptr<AssetBundle>> assetBundles_;
 	};

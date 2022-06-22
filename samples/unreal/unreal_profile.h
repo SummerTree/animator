@@ -46,7 +46,6 @@ namespace unreal
 		std::filesystem::path path;
 
 		std::string version;
-		std::shared_ptr<octoon::AssetBundle> ab;
 		std::shared_ptr<RecordModule> recordModule;
 		std::shared_ptr<SoundModule> soundModule;
 		std::shared_ptr<EntitiesModule> entitiesModule;
