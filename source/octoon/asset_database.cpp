@@ -437,7 +437,8 @@ namespace octoon
 				auto animation = component->downcast<AnimatorComponent>();
 				if (animation->getAnimation())
 				{
-					this->createAsset(animation->getAnimation(), std::filesystem::path(rootPath).append(make_guid() + ".vmd"));
+					if (!this->isPersistent(animation->getAnimation()))
+						this->createAsset(animation->getAnimation(), std::filesystem::path(rootPath).append(make_guid() + ".vmd"));
 
 					nlohmann::json animationJson;
 					animationJson["data"] = this->getAssetGuid(animation->getAnimation());
@@ -466,7 +467,8 @@ namespace octoon
 
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
-					this->createAsset(materials[i], std::filesystem::path(rootPath).append(make_guid() + ".mat"));
+					if (!this->isPersistent(materials[i]))
+						this->createAsset(materials[i], std::filesystem::path(rootPath).append(make_guid() + ".mat"));
 
 					nlohmann::json materialJson;
 					materialJson["data"] = this->getAssetGuid(materials[i]);
@@ -483,7 +485,8 @@ namespace octoon
 
 				for (auto& pair : abc->getMaterials())
 				{
-					this->createAsset(pair.second, std::filesystem::path(rootPath).append(make_guid() + ".mat"));
+					if (!this->isPersistent(pair.second))
+						this->createAsset(pair.second, std::filesystem::path(rootPath).append(make_guid() + ".mat"));
 
 					nlohmann::json materialJson;
 					materialJson["data"] = this->getAssetGuid(pair.second);
