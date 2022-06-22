@@ -668,7 +668,7 @@ namespace octoon
 				}
 				else
 				{
-					assetGuidList_[relativePath] = make_guid();
+					assetGuidList_[relativePath] = MD5(relativePath.u8string()).toString();
 				}
 
 				objectPathList_[motion] = relativePath;
@@ -699,7 +699,7 @@ namespace octoon
 					if (ext == u8".hdr")
 						texture->setMipLevel(8);
 
-					assetGuidList_[relativePath] = make_guid();
+					assetGuidList_[relativePath] = MD5(relativePath.u8string()).toString();
 				}
 
 				texture->apply();
@@ -725,7 +725,7 @@ namespace octoon
 				}
 				else
 				{
-					assetGuidList_[relativePath] = make_guid();
+					assetGuidList_[relativePath] = MD5(relativePath.u8string()).toString();
 				}
 
 				objectPathList_[model] = relativePath;
@@ -752,7 +752,7 @@ namespace octoon
 				}
 				else
 				{
-					assetGuidList_[relativePath] = make_guid();
+					assetGuidList_[relativePath] = MD5(relativePath.u8string()).toString();
 				}
 
 				objectPathList_[model] = relativePath;
@@ -952,7 +952,7 @@ namespace octoon
 				}
 				else
 				{
-					assetGuidList_[relativePath] = make_guid();
+					assetGuidList_[relativePath] = MD5(relativePath.u8string()).toString();
 				}
 
 				objectPathList_[material] = relativePath;
@@ -1030,7 +1030,7 @@ namespace octoon
 				}
 				else
 				{
-					assetGuidList_[relativePath] = make_guid();
+					assetGuidList_[relativePath] = MD5(relativePath.u8string()).toString();
 				}
 
 				objectPathList_[object] = relativePath;
