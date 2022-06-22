@@ -76,7 +76,7 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& relativePath) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<const Texture>& texture, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(texture);
 		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
@@ -127,7 +127,7 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& relativePath) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<const Animation>& animation, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
@@ -175,7 +175,7 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& relativePath) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<const Material>& material, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
@@ -333,7 +333,7 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& relativePath) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<const PMX>& pmx, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
@@ -403,7 +403,7 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& relativePath) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<const GameObject>& gameObject, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
@@ -558,6 +558,23 @@ namespace octoon
 	void
 	AssetDatabase::saveAssets() noexcept(false)
 	{
+		for (auto& it : dirtyList_)
+		{
+			if (!it.expired())
+			{
+				auto item = it.lock();
+
+				if (item->isInstanceOf<Texture>())
+					this->createAsset(item->downcast_pointer<Texture>(), this->getAssetPath(item));
+				else if (item->isInstanceOf<Material>())
+					this->createAsset(item->downcast_pointer<Material>(), this->getAssetPath(item));
+				else if (item->isInstanceOf<Animation>())
+					this->createAsset(item->downcast_pointer<Animation>(), this->getAssetPath(item));
+				else if (item->isInstanceOf<GameObject>())
+					this->createAsset(item->downcast_pointer<GameObject>(), this->getAssetPath(item));
+			}
+		}
+
 		nlohmann::json assetDb;
 
 		for (auto& it : assetPathList_)
@@ -572,16 +589,6 @@ namespace octoon
 			auto dump = assetDb.dump();
 			ifs.write(dump.c_str(), dump.size());
 			ifs.close();
-		}
-
-		for (auto& it : dirtyList_)
-		{
-			if (!it.expired())
-			{
-				/*auto item = it.lock();
-				if (item->isInstanceOf<Material>())
-					this->createAsset(item->downcast_pointer<Material>());*/
-			}
 		}
 	}
 

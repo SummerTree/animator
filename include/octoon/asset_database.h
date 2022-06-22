@@ -22,11 +22,11 @@ namespace octoon
 		void open(const std::filesystem::path& assetPath) noexcept(false);
 		void close() noexcept;
 
-		void createAsset(const std::shared_ptr<Texture>& texture, const std::filesystem::path& relativePath) noexcept(false);
-		void createAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& relativePath) noexcept(false);
-		void createAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& relativePath) noexcept(false);
-		void createAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& relativePath) noexcept(false);
-		void createAsset(const std::shared_ptr<GameObject>& object, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<const Texture>& texture, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<const Animation>& animation, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<const Material>& material, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<const PMX>& pmx, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<const GameObject>& object, const std::filesystem::path& relativePath) noexcept(false);
 
 		void deleteAsset(const std::filesystem::path& relativePath) noexcept(false);
 		void saveAssets() noexcept(false);
