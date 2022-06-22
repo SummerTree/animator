@@ -558,11 +558,11 @@ namespace octoon
 	void
 	AssetDatabase::saveAssets() noexcept(false)
 	{
-		for (auto& it : dirtyList_)
+		for (auto it = dirtyList_.begin(); it != dirtyList_.end(); ++it)
 		{
-			if (!it.expired())
+			if (!(*it).expired())
 			{
-				auto item = it.lock();
+				auto item = (*it).lock();
 
 				if (item->isInstanceOf<Texture>())
 					this->createAsset(item->downcast_pointer<Texture>(), this->getAssetPath(item));
@@ -573,6 +573,8 @@ namespace octoon
 				else if (item->isInstanceOf<GameObject>())
 					this->createAsset(item->downcast_pointer<GameObject>(), this->getAssetPath(item));
 			}
+
+			dirtyList_.erase(it);
 		}
 
 		nlohmann::json assetDb;
