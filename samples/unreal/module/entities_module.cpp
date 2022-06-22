@@ -50,7 +50,7 @@ namespace unreal
 
 		for (auto& it : this->objects.getValue())
 		{
-			if (!octoon::AssetDatabase::instance()->isPersistent(it))
+			if (!octoon::AssetDatabase::instance()->contains(it))
 			{
 				auto uuid = octoon::make_guid();
 				octoon::AssetDatabase::instance()->createAsset(it, std::filesystem::path("Assets/Models").append(uuid).append(uuid + ".prefab"));
