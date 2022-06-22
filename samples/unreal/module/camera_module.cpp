@@ -44,7 +44,7 @@ namespace unreal
 		if (reader["rotation"].is_array())
 			this->rotation = octoon::math::float3(reader["rotation"].get<std::array<float, 3>>());
 		if (reader["animation"].is_string())
-			this->animation = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Animation>("Assets/Camera/Camera.vmd");
+			this->animation = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Animation>(octoon::AssetDatabase::instance()->getAssetPath(reader["animation"].get<std::string>()));
 	}
 
 	void 
@@ -63,7 +63,7 @@ namespace unreal
 			if (!octoon::AssetDatabase::instance()->isPersistent(this->animation.getValue()))
 				octoon::AssetDatabase::instance()->createAsset(this->animation.getValue(), "Assets/Camera/Camera.vmd");
 
-			writer["animation"] = octoon::AssetDatabase::instance()->getAssetGuid("Assets/Camera/Camera.vmd");
+			writer["animation"] = octoon::AssetDatabase::instance()->getAssetGuid(this->animation.getValue());
 		}
 	}
 

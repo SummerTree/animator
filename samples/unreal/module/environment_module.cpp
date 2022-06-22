@@ -37,7 +37,7 @@ namespace unreal
 		if (reader["offset"].is_array())
 			this->offset = octoon::math::float2(reader["offset"].get<std::array<float, 2>>());
 		if (reader["texture"].is_string())
-			this->texture = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>("Assets/Environment/Texture.hdr");
+			this->texture = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(octoon::AssetDatabase::instance()->getAssetPath(reader["texture"].get<std::string>()));
 	}
 
 	void 
@@ -55,7 +55,7 @@ namespace unreal
 			if (!octoon::AssetDatabase::instance()->isPersistent(this->texture.getValue()))
 				octoon::AssetDatabase::instance()->createAsset(this->texture.getValue(), "Assets/Environment/Texture.hdr");
 
-			writer["texture"] = octoon::AssetDatabase::instance()->getAssetGuid("Assets/Environment/Texture.hdr");
+			writer["texture"] = octoon::AssetDatabase::instance()->getAssetGuid(this->texture.getValue());
 		}
 	}
 
