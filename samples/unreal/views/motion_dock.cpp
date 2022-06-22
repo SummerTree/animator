@@ -269,7 +269,7 @@ namespace unreal
 		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::AssetBundle::instance()->getMotionList())
+		for (auto& uuid : octoon::AssetBundle::instance()->getPackageList<octoon::Animation>())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

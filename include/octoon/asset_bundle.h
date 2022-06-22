@@ -36,12 +36,13 @@ namespace octoon
 		nlohmann::json getPackage(const std::string& uuid) noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) noexcept;
 
-		const nlohmann::json& getModelList() const noexcept;
-		const nlohmann::json& getMotionList() const noexcept;
-		const nlohmann::json& getTextureList() const noexcept;
-		const nlohmann::json& getHDRiList() const noexcept;
-		const nlohmann::json& getMaterialList() const noexcept;
-		const nlohmann::json& getPrefabList() const noexcept;
+		nlohmann::json getPackageList(const Rtti& rtti) const noexcept(false);
+
+		template<typename T>
+		nlohmann::json getPackageList() const noexcept
+		{
+			return getPackageList(*T::getRtti());
+		}
 
 		void unload() noexcept;
 		void saveAssets() noexcept(false);

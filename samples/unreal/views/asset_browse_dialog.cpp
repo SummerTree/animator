@@ -219,7 +219,7 @@ namespace unreal
 		{
 			mainWidget_->clear();
 
-			for (auto& uuid : octoon::AssetBundle::instance()->getMaterialList())
+			for (auto& uuid : octoon::AssetBundle::instance()->getPackageList<octoon::Material>())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}
 	}
@@ -288,9 +288,8 @@ namespace unreal
 	}
 
 	void
-	EnvironmentListDialog::addItem(std::string_view uuid) noexcept(false)
+	EnvironmentListDialog::addItem(const nlohmann::json& package) noexcept(false)
 	{
-		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			auto item = std::make_unique<QListWidgetItem>();
@@ -339,7 +338,7 @@ namespace unreal
 
 					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
 					if (!package.is_null())
-						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
+						this->addItem(package);
 				}
 
 				octoon::AssetBundle::instance()->saveAssets();
@@ -393,11 +392,11 @@ namespace unreal
 	{
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::AssetBundle::instance()->getHDRiList())
+		for (auto& package : octoon::AssetBundle::instance()->getPackageList<octoon::Texture>())
 		{
 			try
 			{
-				this->addItem(uuid.get<nlohmann::json::string_t>());
+				this->addItem(package);
 			}
 			catch (...)
 			{

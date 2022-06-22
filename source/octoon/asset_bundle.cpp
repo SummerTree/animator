@@ -418,58 +418,21 @@ namespace octoon
 		return this->getPackage(guid);
 	}
 
-	const nlohmann::json&
-	AssetBundle::getModelList() const noexcept
+	nlohmann::json
+	AssetBundle::getPackageList(const Rtti& rtti) const noexcept(false)
 	{
-		auto it = packageList_.find("type");
-		if (it != packageList_.end())
-			return (*it).second;
-		return nlohmann::json();
-	}
+		nlohmann::json result;
 
-	const nlohmann::json&
-	AssetBundle::getMotionList() const noexcept
-	{
-		auto it = packageList_.find("type");
-		if (it != packageList_.end())
-			return (*it).second;
-		return nlohmann::json();
-	}
+		for (auto& package : packageList_)
+		{
+			if (package.second.contains("type"))
+			{
+				if (package.second["type"] == rtti.type_name())
+					result.push_back(package.second);
+			}
+		}
 
-	const nlohmann::json&
-	AssetBundle::getTextureList() const noexcept
-	{
-		auto it = packageList_.find("type");
-		if (it != packageList_.end())
-			return (*it).second;
-		return nlohmann::json();
-	}
-
-	const nlohmann::json&
-	AssetBundle::getHDRiList() const noexcept
-	{
-		auto it = packageList_.find("type");
-		if (it != packageList_.end())
-			return (*it).second;
-		return nlohmann::json();
-	}
-
-	const nlohmann::json&
-	AssetBundle::getMaterialList() const noexcept
-	{
-		auto it = packageList_.find("type");
-		if (it != packageList_.end())
-			return (*it).second;
-		return nlohmann::json();
-	}
-
-	const nlohmann::json&
-	AssetBundle::getPrefabList() const noexcept
-	{
-		auto it = packageList_.find("type");
-		if (it != packageList_.end())
-			return (*it).second;
-		return nlohmann::json();
+		return result;
 	}
 
 	void

@@ -144,7 +144,7 @@ namespace unreal
 	{
 		listWidget_->clear();
 
-		for (auto& it : octoon::AssetBundle::instance()->getMaterialList())
+		for (auto& it : octoon::AssetBundle::instance()->getPackageList<octoon::Material>())
 		{
 			try
 			{

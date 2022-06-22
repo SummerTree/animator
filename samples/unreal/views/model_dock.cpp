@@ -216,7 +216,7 @@ namespace unreal
 		listWidget_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::AssetBundle::instance()->getPrefabList())
+		for (auto& uuid : octoon::AssetBundle::instance()->getPackageList<octoon::GameObject>())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

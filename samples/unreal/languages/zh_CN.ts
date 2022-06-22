@@ -309,38 +309,38 @@
         <translation type="vanished">加载图像</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="321"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="320"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="321"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="320"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
+        <location filename="../views/asset_browse_dialog.cpp" line="325"/>
         <location filename="../views/asset_browse_dialog.cpp" line="326"/>
-        <location filename="../views/asset_browse_dialog.cpp" line="327"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="326"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="325"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="416"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation>确定要删除此图像吗?</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="416"/>
         <source>Info</source>
         <translation type="unfinished">提示</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="431"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="430"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>

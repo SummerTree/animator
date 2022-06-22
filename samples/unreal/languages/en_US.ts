@@ -293,38 +293,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="321"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="320"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="321"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="320"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../views/asset_browse_dialog.cpp" line="325"/>
         <location filename="../views/asset_browse_dialog.cpp" line="326"/>
-        <location filename="../views/asset_browse_dialog.cpp" line="327"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="326"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="325"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="416"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="416"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="431"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="430"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>

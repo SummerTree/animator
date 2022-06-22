@@ -61,7 +61,7 @@ namespace unreal
 		EnvironmentListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~EnvironmentListDialog() noexcept;
 
-		void addItem(std::string_view uuid) noexcept(false);
+		void addItem(const nlohmann::json& package) noexcept(false);
 
 	private:
 		void resizeEvent(QResizeEvent* e) noexcept override;
