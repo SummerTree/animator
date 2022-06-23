@@ -217,7 +217,7 @@ namespace unreal
 		listWidget_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : AssetLibrary::instance()->getModelList())
+		for (auto& uuid : AssetLibrary::instance()->getPrefabList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

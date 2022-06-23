@@ -273,58 +273,63 @@
 <context>
     <name>unreal::EnvironmentListDialog</name>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="235"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="236"/>
         <source>Environment Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="241"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="242"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="245"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="246"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="249"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="247"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/asset_browse_dialog.cpp" line="251"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="321"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="323"/>
         <source>HDRi Files (*.hdr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="321"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="323"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="326"/>
-        <location filename="../views/asset_browse_dialog.cpp" line="327"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="328"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="329"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="326"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="328"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="419"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="419"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="431"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="433"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -644,17 +649,17 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="197"/>
+        <location filename="../views/material_dock.cpp" line="196"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="197"/>
+        <location filename="../views/material_dock.cpp" line="196"/>
         <source>Are you sure you want to delete this material?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/material_dock.cpp" line="213"/>
+        <location filename="../views/material_dock.cpp" line="212"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -799,43 +804,48 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="41"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="39"/>
+        <source>ESC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../views/asset_browse_dialog.cpp" line="42"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="115"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="116"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="115"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="116"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="120"/>
         <location filename="../views/asset_browse_dialog.cpp" line="121"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="122"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="120"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="121"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="171"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="172"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="171"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="172"/>
         <source>Are you sure you want to delete this material?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="187"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="188"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>

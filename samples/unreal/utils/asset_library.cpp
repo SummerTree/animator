@@ -33,50 +33,90 @@ namespace unreal
 		std::ifstream textureLib(std::filesystem::path(libraryPath).append("TextureDB.json"), std::ios_base::binary);
 		if (textureLib)
 		{
-			try {
-				this->textureList_ = nlohmann::json::parse(textureLib);
+			try
+			{
+				this->textureDb_ = nlohmann::json::parse(textureLib);
+				for (auto& package : this->textureDb_)
+				{
+					auto it = package.find("uuid");
+					if (it != package.end())
+						this->packageCache_[(*it).get<std::string>()] = package;
+				}
 			}
-			catch (...){
+			catch (...)
+			{
 			}
 		}
 
 		std::ifstream environmentLib(std::filesystem::path(libraryPath).append("EnvironmentDB.json"), std::ios_base::binary);
 		if (environmentLib)
 		{
-			try {
-				this->hdriList_ = nlohmann::json::parse(environmentLib);
+			try
+			{
+				this->hdriDb_ = nlohmann::json::parse(environmentLib);
+				for (auto& package : this->hdriDb_)
+				{
+					auto it = package.find("uuid");
+					if (it != package.end())
+						this->packageCache_[(*it).get<std::string>()] = package;
+				}
 			}
-			catch (...) {
+			catch (...)
+			{
 			}
 		}
 
 		std::ifstream motionLib(std::filesystem::path(libraryPath).append("MotionDB.json"), std::ios_base::binary);
 		if (motionLib)
 		{
-			try {
-				this->motionList_ = nlohmann::json::parse(motionLib);
+			try
+			{
+				this->motionDb_ = nlohmann::json::parse(motionLib);
+				for (auto& package : this->motionDb_)
+				{
+					auto it = package.find("uuid");
+					if (it != package.end())
+						this->packageCache_[(*it).get<std::string>()] = package;
+				}
 			}
-			catch (...) {
+			catch (...)
+			{
 			}
 		}
 
 		std::ifstream materialLib(std::filesystem::path(libraryPath).append("MaterialDB.json"), std::ios_base::binary);
 		if (materialLib)
 		{
-			try {
-				this->materialList_ = nlohmann::json::parse(materialLib);
+			try
+			{
+				this->materialDb_ = nlohmann::json::parse(materialLib);
+				for (auto& package : this->materialDb_)
+				{
+					auto it = package.find("uuid");
+					if (it != package.end())
+						this->packageCache_[(*it).get<std::string>()] = package;
+				}
 			}
-			catch (...) {
+			catch (...)
+			{
 			}
 		}
 
 		std::ifstream prefabLib(std::filesystem::path(libraryPath).append("PrefabDB.json"), std::ios_base::binary);
 		if (prefabLib)
 		{
-			try {
-				this->prefabList_ = nlohmann::json::parse(prefabLib);
+			try
+			{
+				this->prefabDb_ = nlohmann::json::parse(prefabLib);
+				for (auto& package : this->prefabDb_)
+				{
+					auto it = package.find("uuid");
+					if (it != package.end())
+						this->packageCache_[(*it).get<std::string>()] = package;
+				}
 			}
-			catch (...) {
+			catch (...)
+			{
 			}
 		}
 	}
@@ -130,9 +170,7 @@ namespace unreal
 				loader.load("resource", stream);
 
 				for (auto& material : loader.getMaterials())
-				{
-					this->importAsset(material, "Assets/Materials");
-				}
+					items.push_back(this->importAsset(material, "Assets/Materials"));
 
 				this->saveAssets();
 
@@ -160,8 +198,7 @@ namespace unreal
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["type"] = texture->type_name();
-			package["name"] = texture->getName();
-			package["filename"] = (char*)filename.u8string().c_str();
+			package["name"] = (char*)filename.u8string().c_str();
 			package["data"] = this->assetDatabase_->getAssetGuid(texture);
 			package["visible"] = true;
 
@@ -174,11 +211,12 @@ namespace unreal
 			}
 
 			if (hdr)
-				this->hdriList_[uuid] = package; 
+				this->hdriDb_.push_back(package);
 			else
-				this->textureList_[uuid] = package;
+				this->textureDb_.push_back(package);
 
-			this->assetDatabase_->saveAssets();
+			this->packageCache_[uuid] = package;
+			this->saveAssets();
 
 			return std::move(package);
 		}
@@ -193,7 +231,7 @@ namespace unreal
 	AssetLibrary::importAsset(const std::shared_ptr<octoon::Animation>& animation, const std::filesystem::path& relativeFolder, const std::filesystem::path& filename) noexcept(false)
 	{
 		auto uuid = octoon::make_guid();
-		auto relativePath = std::filesystem::path(relativeFolder).append(uuid);
+		auto relativePath = std::filesystem::path(relativeFolder).append(uuid.substr(0, 2));
 
 		try
 		{
@@ -205,13 +243,14 @@ namespace unreal
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["type"] = animation->type_name();
-			package["name"] = animation->getName();
-			package["filename"] = (char*)filename.u8string().c_str();
+			package["name"] = (char*)filename.u8string().c_str();
 			package["data"] = this->assetDatabase_->getAssetGuid(animation);
 			package["visible"] = true;
 
-			this->motionList_.push_back(package);
-			this->assetDatabase_->saveAssets();
+			this->motionDb_.push_back(package);
+			this->packageCache_[uuid] = package;
+
+			this->saveAssets();
 
 			return std::move(package);
 		}
@@ -247,8 +286,10 @@ namespace unreal
 				package["preview"] = (char*)std::filesystem::path(this->assetPath_).append(previewPath.u8string()).u8string().c_str();
 			}
 
-			this->materialList_.push_back(package);
-			this->assetDatabase_->saveAssets();
+			this->materialDb_.push_back(package);
+			this->packageCache_[uuid] = package;
+
+			this->saveAssets();
 
 			return std::move(package);
 		}
@@ -286,9 +327,6 @@ namespace unreal
 			package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
 			package["data"] = this->assetDatabase_->getAssetGuid(pmx);
 			package["preview"] = (char*)writePreview(*pmx, relativePath).u8string().c_str();
-
-			this->modelList_.push_back(package);
-			this->assetDatabase_->saveAssets();
 
 			return std::move(package);
 		}
@@ -333,8 +371,10 @@ namespace unreal
 			package["data"] = this->assetDatabase_->getAssetGuid(gameObject);
 			package["preview"] = (char*)writePreview(gameObject, relativePath).u8string().c_str();
 
-			this->prefabList_.push_back(package);
-			this->assetDatabase_->saveAssets();
+			this->prefabDb_.push_back(package);
+			this->packageCache_[uuid] = package;
+
+			this->saveAssets();
 
 			return std::move(package);
 		}
@@ -350,27 +390,16 @@ namespace unreal
 	std::shared_ptr<octoon::RttiObject>
 	AssetLibrary::loadAsset(const std::string& uuid, const octoon::Rtti& type) noexcept(false)
 	{
-		if (type.isDerivedFrom(octoon::Material::getRtti()))
+		if (packageCache_.contains(uuid))
 		{
-			if (materialList_.contains(uuid))
-				return this->loadAssetAtPackage<octoon::Material>(materialList_.at(uuid));
-		}
-		else if (type.isDerivedFrom(octoon::Animation::getRtti()))
-		{
-			if (motionList_.contains(uuid))
-				return this->loadAssetAtPackage<octoon::Animation>(motionList_.at(uuid));
-		}
-		else if (type.isDerivedFrom(octoon::GameObject::getRtti()))
-		{
-			if (prefabList_.contains(uuid))
-				return this->loadAssetAtPackage<octoon::GameObject>(prefabList_.at(uuid));
-		}
-		else if (type.isDerivedFrom(octoon::Texture::getRtti()))
-		{
-			if (hdriList_.contains(uuid))
-				return this->loadAssetAtPackage<octoon::Texture>(hdriList_.at(uuid));
-			if (textureList_.contains(uuid))
-				return this->loadAssetAtPackage<octoon::Texture>(textureList_.at(uuid));
+			if (type.isDerivedFrom(octoon::Material::getRtti()))
+				return this->loadAssetAtPackage<octoon::Material>(packageCache_.at(uuid));
+			else if (type.isDerivedFrom(octoon::Animation::getRtti()))
+				return this->loadAssetAtPackage<octoon::Animation>(packageCache_.at(uuid));
+			else if (type.isDerivedFrom(octoon::GameObject::getRtti()))
+				return this->loadAssetAtPackage<octoon::GameObject>(packageCache_.at(uuid));
+			else if (type.isDerivedFrom(octoon::Texture::getRtti()))
+				return this->loadAssetAtPackage<octoon::Texture>(packageCache_.at(uuid));
 		}
 
 		return nullptr;
@@ -406,7 +435,7 @@ namespace unreal
 			if (asset)
 			{
 				assetCache_[uuid] = asset;
-				packageCache_[asset] = uuid;
+				assetGuidCache_[asset] = uuid;
 			}
 
 			return asset;
@@ -418,30 +447,22 @@ namespace unreal
 	bool
 	AssetLibrary::hasPackage(const std::string& uuid) noexcept
 	{
-		if (materialList_.contains(uuid)) return true;
-		if (motionList_.contains(uuid)) return true;
-		if (prefabList_.contains(uuid)) return true;
-		if (hdriList_.contains(uuid)) return true;
-		if (textureList_.contains(uuid)) return true;
-		return false;
+		return packageCache_.contains(uuid);
 	}
 
 	nlohmann::json
 	AssetLibrary::getPackage(const std::string& uuid) const noexcept
 	{
-		if (materialList_.contains(uuid)) return materialList_.at(uuid);
-		if (motionList_.contains(uuid)) return motionList_.at(uuid);
-		if (prefabList_.contains(uuid)) return prefabList_.at(uuid);
-		if (hdriList_.contains(uuid)) return hdriList_.at(uuid);
-		if (textureList_.contains(uuid)) return textureList_.at(uuid);
+		if (packageCache_.contains(uuid))
+			return packageCache_.at(uuid);
 		return nlohmann::json();
 	}
 
 	nlohmann::json
 	AssetLibrary::getPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept
 	{
-		if (packageCache_.contains(asset))
-			return this->getPackage(packageCache_.at(asset));
+		if (assetGuidCache_.contains(asset))
+			return this->getPackage(assetGuidCache_.at(asset));
 		return nlohmann::json();
 	}
 
@@ -463,7 +484,7 @@ namespace unreal
 		std::ofstream textureStream(std::filesystem::path(libraryPath).append("TextireDB.json"), std::ios_base::binary);
 		if (textureStream)
 		{
-			auto dump = textureList_.dump();
+			auto dump = textureDb_.dump();
 			textureStream.write(dump.c_str(), dump.size());
 			textureStream.close();
 		}
@@ -471,7 +492,7 @@ namespace unreal
 		std::ofstream materialStream(std::filesystem::path(libraryPath).append("MaterialDB.json"), std::ios_base::binary);
 		if (materialStream)
 		{
-			auto dump = materialList_.dump();
+			auto dump = materialDb_.dump();
 			materialStream.write(dump.c_str(), dump.size());
 			materialStream.close();
 		}
@@ -479,15 +500,15 @@ namespace unreal
 		std::ofstream environmentStream(std::filesystem::path(libraryPath).append("EnvironmentDB.json"), std::ios_base::binary);
 		if (environmentStream)
 		{
-			auto dump = hdriList_.dump();
+			auto dump = hdriDb_.dump();
 			environmentStream.write(dump.c_str(), dump.size());
 			environmentStream.close();
 		}
 
-		std::ofstream animationStream(std::filesystem::path(libraryPath).append("AnimationDB.json"), std::ios_base::binary);
+		std::ofstream animationStream(std::filesystem::path(libraryPath).append("MotionDB.json"), std::ios_base::binary);
 		if (animationStream)
 		{
-			auto dump = motionList_.dump();
+			auto dump = motionDb_.dump();
 			animationStream.write(dump.c_str(), dump.size());
 			animationStream.close();
 		}
@@ -495,7 +516,7 @@ namespace unreal
 		std::ofstream prefabStream(std::filesystem::path(libraryPath).append("PrefabDB.json"), std::ios_base::binary);
 		if (prefabStream)
 		{
-			auto dump = prefabList_.dump();
+			auto dump = prefabDb_.dump();
 			prefabStream.write(dump.c_str(), dump.size());
 			prefabStream.close();
 		}
@@ -512,38 +533,32 @@ namespace unreal
 	}
 
 	const nlohmann::json&
-	AssetLibrary::getModelList() const noexcept
-	{
-		return modelList_;
-	}
-
-	const nlohmann::json&
 	AssetLibrary::getMotionList() const noexcept
 	{
-		return motionList_;
+		return motionDb_;
 	}
 
 	const nlohmann::json&
 	AssetLibrary::getTextureList() const noexcept
 	{
-		return textureList_;
+		return textureDb_;
 	}
 
 	const nlohmann::json&
 	AssetLibrary::getHDRiList() const noexcept
 	{
-		return hdriList_;
+		return hdriDb_;
 	}
 
 	const nlohmann::json&
 	AssetLibrary::getMaterialList() const noexcept
 	{
-		return materialList_;
+		return materialDb_;
 	}
 
 	const nlohmann::json&
 	AssetLibrary::getPrefabList() const noexcept
 	{
-		return prefabList_;
+		return prefabDb_;
 	}
 }

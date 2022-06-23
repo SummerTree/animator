@@ -112,9 +112,8 @@ namespace unreal
 	}
 
 	void
-	MaterialDock::addItem(std::string_view uuid) noexcept(false)
+	MaterialDock::addItem(const nlohmann::json& package) noexcept(false)
 	{
-		auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			auto item = std::make_unique<QListWidgetItem>();
@@ -148,7 +147,7 @@ namespace unreal
 		{
 			try
 			{
-				this->addItem(std::string_view(it.get<nlohmann::json::string_t>()));
+				this->addItem(it);
 			}
 			catch (...)
 			{

@@ -27,7 +27,6 @@ namespace unreal
 		nlohmann::json getPackage(const std::string& uuid) const noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept;
 
-		const nlohmann::json& getModelList() const noexcept;
 		const nlohmann::json& getMotionList() const noexcept;
 		const nlohmann::json& getTextureList() const noexcept;
 		const nlohmann::json& getHDRiList() const noexcept;
@@ -70,18 +69,18 @@ namespace unreal
 		}
 
 	private:
-		nlohmann::json modelList_;
-		nlohmann::json motionList_;
-		nlohmann::json textureList_;
-		nlohmann::json hdriList_;
-		nlohmann::json materialList_;
-		nlohmann::json prefabList_;
+		nlohmann::json motionDb_;
+		nlohmann::json textureDb_;
+		nlohmann::json hdriDb_;
+		nlohmann::json materialDb_;
+		nlohmann::json prefabDb_;
 
 		std::filesystem::path assetPath_;
 
 		std::unique_ptr<octoon::AssetDatabase> assetDatabase_;
 		std::map<std::string, std::weak_ptr<octoon::RttiObject>> assetCache_;
-		std::map<std::weak_ptr<octoon::RttiObject>, std::string, std::owner_less<std::weak_ptr<octoon::RttiObject>>> packageCache_;
+		std::map<std::string, nlohmann::json> packageCache_;
+		std::map<std::weak_ptr<octoon::RttiObject>, std::string, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetGuidCache_;
 	};
 }
 

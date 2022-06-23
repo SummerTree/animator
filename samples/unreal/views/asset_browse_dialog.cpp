@@ -36,6 +36,7 @@ namespace unreal
 		closeButton_ = new QToolButton;
 		closeButton_->setText(tr("Close"));
 		closeButton_->setFixedSize(40, 24);
+		closeButton_->setShortcut(tr("ESC"));
 
 		importButton_ = new QToolButton;
 		importButton_->setText(tr("Import"));
@@ -243,6 +244,7 @@ namespace unreal
 		closeButton_ = new QToolButton;
 		closeButton_->setObjectName("Close");
 		closeButton_->setText(tr("Close"));
+		closeButton_->setShortcut(tr("ESC"));
 
 		importButton_ = new QToolButton;
 		importButton_->setObjectName("Import");

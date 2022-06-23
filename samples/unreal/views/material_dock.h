@@ -32,7 +32,7 @@ namespace unreal
 		MaterialDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
 		~MaterialDock() noexcept;
 
-		void addItem(std::string_view uuid) noexcept(false);
+		void addItem(const nlohmann::json& package) noexcept(false);
 		void updateItemList() noexcept;
 
 	private:
