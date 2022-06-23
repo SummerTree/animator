@@ -55,13 +55,21 @@ namespace octoon
 			try
 			{
 				auto assetDb = nlohmann::json::parse(ifs);
+
 				for (auto it = assetDb.begin(); it != assetDb.end(); ++it)
 				{
 					auto uuid = it.key();
 					auto path = std::filesystem::path((char8_t*)it.value().get<std::string>().c_str());
 
-					assetGuidList_[path] = uuid;
-					assetPathList_[uuid] = path;
+					if (std::filesystem::exists(path))
+					{
+						assetGuidList_[path] = uuid;
+						assetPathList_[uuid] = path;
+					}
+					else
+					{
+						it = assetDb.erase(it);
+					}					
 				}
 			}
 			catch (...)
@@ -560,7 +568,10 @@ namespace octoon
 		nlohmann::json assetDb;
 
 		for (auto& it : assetPathList_)
-			assetDb[it.first] = (char*)it.second.u8string().c_str();
+		{
+			if (std::filesystem::exists(it.second))
+				assetDb[it.first] = (char*)it.second.u8string().c_str();
+		}
 
 		auto assetRoot = std::filesystem::path(this->assetPath_).append("Library");
 		std::filesystem::create_directories(assetRoot);
