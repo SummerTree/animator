@@ -28,6 +28,15 @@ namespace unreal
 		copyrightInfo->setText(tr("2022 AnimatorGo-Softwares (R). All Rights Reserved."));
 		copyrightInfo->setAlignment(Qt::AlignLeft);
 
+		auto splitLine = new QFrame;
+		splitLine->setObjectName("VLine");
+		splitLine->setLineWidth(1);
+		splitLine->setFixedHeight(90);
+		splitLine->setFrameShape(QFrame::VLine);
+		splitLine->setFrameShadow(QFrame::Plain);
+		splitLine->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+		splitLine->setContentsMargins(0, 8, 0, 8);
+
 		vlayout = new QVBoxLayout(widget);
 		vlayout->addWidget(englishName);
 		vlayout->addWidget(copyrightInfo);
@@ -36,10 +45,12 @@ namespace unreal
 		hlayout = new QHBoxLayout();
 		hlayout->addStretch(0);
 		hlayout->addWidget(logo, 0, Qt::AlignRight);
+		hlayout->addSpacing(4);
+		hlayout->addWidget(splitLine);
 		hlayout->addWidget(widget, 0, Qt::AlignLeft);
 		hlayout->addStretch(0);
-		hlayout->setContentsMargins(12, 0, 0, 12);
-		hlayout->setSpacing(8);
+		hlayout->setContentsMargins(0, 0, 0, 0);
+		hlayout->setSpacing(12);
 
 		versionInfo = new QLabel(this);
 		versionInfo->setObjectName("version");

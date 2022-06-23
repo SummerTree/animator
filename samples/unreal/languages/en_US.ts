@@ -1247,12 +1247,12 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="46"/>
+        <location filename="../views/splash_screen.cpp" line="57"/>
         <source>Version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="51"/>
+        <location filename="../views/splash_screen.cpp" line="62"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
