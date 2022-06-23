@@ -1,5 +1,5 @@
-#ifndef UNREAL_MODEL_DOCK_H_
-#define UNREAL_MODEL_DOCK_H_
+#ifndef UNREAL_TEXTURE_DOCK_H_
+#define UNREAL_TEXTURE_DOCK_H_
 
 #include <qdockwidget.h>
 #include <qcheckbox.h>
@@ -14,14 +14,15 @@
 
 namespace unreal
 {
-	class ModelDock final : public QDockWidget
+	class TextureDock final : public QDockWidget
 	{
 		Q_OBJECT
 	public:
-		ModelDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
-		~ModelDock() noexcept;
+		TextureDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile) noexcept(false);
+		~TextureDock() noexcept;
 
 		void addItem(const nlohmann::json& package) noexcept;
+		void updateItems() noexcept;
 
 	public Q_SLOTS:
 		void importClickEvent();

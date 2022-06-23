@@ -54,7 +54,7 @@ namespace unreal
 		}
 
 	private:
-		nlohmann::json importAsset(const std::shared_ptr<octoon::Texture>& texture, const std::filesystem::path& relativeFolder, const std::filesystem::path& filename) noexcept(false);
+		nlohmann::json importAsset(const std::shared_ptr<octoon::Texture>& texture, const std::filesystem::path& relativeFolder) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<octoon::Animation>& animation, const std::filesystem::path& relativeFolder, const std::filesystem::path& filename) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<octoon::Material>& material, const std::filesystem::path& relativeFolder) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<octoon::GameObject>& gameObject, const std::filesystem::path& relativeFolder, const std::filesystem::path& filename) noexcept(false);

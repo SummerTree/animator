@@ -32,6 +32,9 @@ QToolButton:hover{
 QToolButton#folderPlus{
 	qproperty-icon: url(":res/icons/folderPlus.png");
 }
+QToolButton#images{
+	qproperty-icon: url(":res/icons/images.png");
+}
 QToolButton#back{
 	qproperty-icon: url(":res/icons/back.png");
 }

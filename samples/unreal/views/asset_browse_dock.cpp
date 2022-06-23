@@ -30,6 +30,14 @@ namespace unreal
 		materialButton_->setCheckable(true);
 		materialButton_->click();
 		
+		textureButton_ = new QToolButton;
+		textureButton_->setObjectName("images");
+		textureButton_->setText(tr("Texture Library"));
+		textureButton_->setToolTip(tr("Open Texture Panel"));
+		textureButton_->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		textureButton_->setCheckable(true);
+		textureButton_->click();
+
 		modelButton_ = new QToolButton;
 		modelButton_->setObjectName("model");
 		modelButton_->setText(tr("Model Library"));
@@ -66,12 +74,14 @@ namespace unreal
 
 		buttonGroup_ = new QButtonGroup();
 		buttonGroup_->addButton(materialButton_, 0);
-		buttonGroup_->addButton(modelButton_, 1);
-		buttonGroup_->addButton(motionButton_, 2);
-		buttonGroup_->addButton(lightButton_, 2);
+		buttonGroup_->addButton(textureButton_, 1);
+		buttonGroup_->addButton(modelButton_, 2);
+		buttonGroup_->addButton(motionButton_, 3);
+		buttonGroup_->addButton(lightButton_, 4);
 
 		auto mainLayout = new QVBoxLayout;
 		mainLayout->addWidget(materialButton_, 0, Qt::AlignCenter);
+		mainLayout->addWidget(textureButton_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(modelButton_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(motionButton_, 0, Qt::AlignCenter);
 		mainLayout->addWidget(lightButton_, 0, Qt::AlignCenter);
@@ -88,6 +98,7 @@ namespace unreal
 		this->setWidget(mainWidget);
 
 		this->connect(materialButton_, SIGNAL(clicked()), this, SLOT(materialEvent()));
+		this->connect(textureButton_, SIGNAL(clicked()), this, SLOT(textureEvent()));
 		this->connect(modelButton_, SIGNAL(clicked()), this, SLOT(modelEvent()));
 		this->connect(motionButton_, SIGNAL(clicked()), this, SLOT(motionEvent()));
 		this->connect(lightButton_, SIGNAL(clicked()), this, SLOT(lightEvent()));
@@ -103,6 +114,12 @@ namespace unreal
 	AssetBrowseDock::materialEvent() noexcept
 	{
 		emit materialSignal();
+	}
+
+	void
+	AssetBrowseDock::textureEvent() noexcept
+	{
+		emit textureSignal();
 	}
 
 	void

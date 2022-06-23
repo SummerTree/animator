@@ -75,6 +75,11 @@ namespace octoon
 
 			return std::make_shared<Texture>(previewTexutre.resize(256, 128));
 		}
+		else
+		{
+			auto ratio = height / (float)width;
+			return std::make_shared<Texture>(texture->resize(256, std::uint32_t(256 * ratio)));
+		}
 
 		return nullptr;
 	}

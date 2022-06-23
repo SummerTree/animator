@@ -334,6 +334,10 @@ namespace octoon
 		{
 		case Format::B8G8R8SRGB:
 		case Format::R8G8B8SRGB:
+		case Format::B8G8R8UNorm:
+		case Format::R8G8B8UNorm:
+		case Format::B8G8R8SNorm:
+		case Format::R8G8B8SNorm:
 		{
 			for (std::uint32_t y = 0; y < height; ++y)
 			{
@@ -354,6 +358,10 @@ namespace octoon
 		break;
 		case Format::B8G8R8A8SRGB:
 		case Format::R8G8B8A8SRGB:
+		case Format::B8G8R8A8SNorm:
+		case Format::R8G8B8A8SNorm:
+		case Format::B8G8R8A8UNorm:
+		case Format::R8G8B8A8UNorm:
 		{
 			for (std::uint32_t y = 0; y < height; ++y)
 			{

@@ -948,16 +948,22 @@ namespace octoon
 						auto& param_name = it.first;
 						auto& param = it.second;
 
-						std::stringstream file_name;
+						std::stringstream filePath;
+						std::stringstream fileName;
+
 						if (param.texture)
-							file_name << "cache/textures/" << simple_name << "-" << param_name << ".png";
+						{
+							filePath << "cache/textures/" << simple_name << "-" << param_name << ".png";
+							fileName << simple_name.substr(0, simple_name.find_last_of('(')) << '-' << param_name;
+						}
 
 						if (param_name == "base_color")
 						{
 							if (param.texture)
 							{
 								material->setColor(math::float3(1.0f, 1.0f, 1.0f));
-								material->setColorMap(std::make_shared<Texture>(file_name.str()));
+								material->setColorMap(std::make_shared<Texture>(filePath.str()));
+								material->getColorMap()->setName(fileName.str());
 								material->getColorMap()->apply();
 							}
 							else
@@ -975,7 +981,8 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setOpacity(1.0f);
-								material->setOpacityMap(std::make_shared<Texture>(file_name.str()));
+								material->setOpacityMap(std::make_shared<Texture>(filePath.str()));
+								material->getOpacityMap()->setName(fileName.str());
 								material->getOpacityMap()->apply();
 							}
 							else if (param.value)
@@ -996,7 +1003,8 @@ namespace octoon
 						{
 							if (param.texture)
 							{
-								material->setNormalMap(std::make_shared<Texture>(file_name.str()));
+								material->setNormalMap(std::make_shared<Texture>(filePath.str()));
+								material->getNormalMap()->setName(fileName.str());
 								material->getNormalMap()->apply();
 							}
 						}
@@ -1005,7 +1013,8 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setRoughness(1.0f);
-								material->setRoughnessMap(std::make_shared<Texture>(file_name.str()));
+								material->setRoughnessMap(std::make_shared<Texture>(filePath.str()));
+								material->getRoughnessMap()->setName(fileName.str());
 								material->getRoughnessMap()->apply();
 							}
 							else if (param.value)
@@ -1021,7 +1030,8 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setMetalness(1.0f);
-								material->setMetalnessMap(std::make_shared<Texture>(file_name.str()));
+								material->setMetalnessMap(std::make_shared<Texture>(filePath.str()));
+								material->getMetalnessMap()->setName(fileName.str());
 								material->getMetalnessMap()->apply();
 							}
 							else if (param.value)
@@ -1037,7 +1047,8 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setAnisotropy(1.0f);
-								material->setAnisotropyMap(std::make_shared<Texture>(file_name.str()));
+								material->setAnisotropyMap(std::make_shared<Texture>(filePath.str()));
+								material->getAnisotropyMap()->setName(fileName.str());
 								material->getAnisotropyMap()->apply();
 							}
 							else if (param.value)
@@ -1053,7 +1064,8 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setSpecular(1.0f);
-								material->setSpecularMap(std::make_shared<Texture>(file_name.str()));
+								material->setSpecularMap(std::make_shared<Texture>(filePath.str()));
+								material->getSpecularMap()->setName(fileName.str());
 								material->getSpecularMap()->apply();
 							}
 							else if (param.value)
@@ -1069,7 +1081,8 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setClearCoat(1.0f);
-								material->setClearCoatMap(std::make_shared<Texture>(file_name.str()));
+								material->setClearCoatMap(std::make_shared<Texture>(filePath.str()));
+								material->getClearCoatMap()->setName(fileName.str());
 								material->getClearCoatMap()->apply();
 							}
 							else if (param.value)
@@ -1085,7 +1098,8 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setClearCoatRoughness(1.0f);
-								material->setClearCoatRoughnessMap(std::make_shared<Texture>(file_name.str()));
+								material->setClearCoatRoughnessMap(std::make_shared<Texture>(filePath.str()));
+								material->getClearCoatRoughnessMap()->setName(fileName.str());
 								material->getClearCoatRoughnessMap()->apply();
 							}
 							else if (param.value)
@@ -1101,7 +1115,8 @@ namespace octoon
 							if (param.texture)
 							{
 								material->setEmissive(math::float3(1.0f, 1.0f, 1.0f));
-								material->setEmissiveMap(std::make_shared<Texture>(file_name.str()));
+								material->setEmissiveMap(std::make_shared<Texture>(filePath.str()));
+								material->getEmissiveMap()->setName(fileName.str());
 								material->getEmissiveMap()->apply();
 							}
 							else if (param.value)

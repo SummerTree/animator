@@ -1,4 +1,4 @@
-#include "model_dock.h"
+#include "texture_dock.h"
 #include "../utils/asset_library.h"
 #include "../widgets/draggable_list_widget.h"
 
@@ -18,13 +18,13 @@
 
 namespace unreal
 {
-	ModelDock::ModelDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
+	TextureDock::TextureDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)
 		: behaviour_(behaviour)
 		, profile_(profile)
 		, clickedItem_(nullptr)
 	{
-		this->setWindowTitle(tr("Model Library"));
-		this->setObjectName("ModelDock");
+		this->setWindowTitle(tr("Texture Library"));
+		this->setObjectName("TextureDock");
 		this->setFixedWidth(290);
 		this->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		
@@ -34,7 +34,7 @@ namespace unreal
 
 		title_ = new QLabel;
 		title_->setObjectName("title");
-		title_->setText(tr("Model Library"));
+		title_->setText(tr("Texture Library"));
 
 		auto headerLine = new QFrame;
 		headerLine->setObjectName("HLine");
@@ -62,7 +62,7 @@ namespace unreal
 		mainLayout_->setContentsMargins(0, 12, 0, 8);
 		
 		mainWidget_ = new QWidget;
-		mainWidget_->setObjectName("ModelWidget");
+		mainWidget_->setObjectName("TextureWidget");
 		mainWidget_->setLayout(mainLayout_);
 		
 		this->setWidget(mainWidget_);
@@ -71,12 +71,12 @@ namespace unreal
 		this->connect(listWidget_, SIGNAL(itemSelected(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 	}
 
-	ModelDock::~ModelDock() noexcept
+	TextureDock::~TextureDock() noexcept
 	{
 	}
 
 	void 
-	ModelDock::addItem(const nlohmann::json& package) noexcept
+	TextureDock::addItem(const nlohmann::json& package) noexcept
 	{
 		if (package.is_object())
 		{
@@ -88,10 +88,6 @@ namespace unreal
 			{
 				auto filepath = QString::fromStdWString(AssetLibrary::instance()->getAssetPath(package["preview"].get<std::string>(), true).wstring());
 				item->setIcon(QIcon(QPixmap(filepath)));
-			}
-			else
-			{
-				item->setIcon(QIcon(QPixmap(":res/icons/model.png")));
 			}
 
 			if (package.contains("name"))
@@ -107,13 +103,20 @@ namespace unreal
 	}
 
 	void
-	ModelDock::keyPressEvent(QKeyEvent * event) noexcept
+	TextureDock::updateItems() noexcept
+	{
+		for (auto& package : AssetLibrary::instance()->getTextureList())
+			this->addItem(package);
+	}
+
+	void
+	TextureDock::keyPressEvent(QKeyEvent * event) noexcept
 	{
 		try
 		{
 			if (event->key() == Qt::Key_Delete)
 			{
-				if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this model?")) == QMessageBox::Yes)
+				if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this texture?")) == QMessageBox::Yes)
 				{
 					if (clickedItem_)
 					{
@@ -134,7 +137,7 @@ namespace unreal
 	}
 
 	void
-	ModelDock::importClickEvent()
+	TextureDock::importClickEvent()
 	{
 		QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("PMX Files (*.pmx)"));
 		if (!filepaths.isEmpty())
@@ -170,58 +173,62 @@ namespace unreal
 	}
 
 	void
-	ModelDock::itemClicked(QListWidgetItem* item)
+	TextureDock::itemClicked(QListWidgetItem* item)
 	{
 		clickedItem_ = item;
 	}
 
 	void
-	ModelDock::itemSelected(QListWidgetItem* item)
+	TextureDock::itemSelected(QListWidgetItem* item)
 	{
 		if (!item)
 			return;
 		
 		auto uuid = item->data(Qt::UserRole).toString().toStdString();
-		auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
-		if (package.is_object())
+		if (uuid.empty())
+			return;
+
+		auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+		if (behaviour)
 		{
-			QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
-			dialog.setWindowTitle(tr("Loading..."));
-			dialog.setWindowModality(Qt::WindowModal);
-			dialog.setLabelText(package["name"].is_string() ? QString::fromUtf8(package["name"].get<nlohmann::json::string_t>()) : tr("Unknown-name"));
-			dialog.setValue(0);
-			dialog.show();
-
-			QCoreApplication::processEvents();
-
-			auto model = AssetLibrary::instance()->loadAsset<octoon::GameObject>(uuid);
-			if (model)
-				this->profile_->entitiesModule->objects.getValue().push_back(model);
-
-			dialog.setValue(1);
+			auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
+			if (selectedItem)
+			{
+				auto texture = AssetLibrary::instance()->loadAsset<octoon::Texture>(uuid);
+				if (texture)
+				{
+					auto hit = selectedItem.value();
+					auto meshRenderer = hit.object.lock()->getComponent<octoon::MeshRendererComponent>();
+					if (meshRenderer)
+					{
+						auto material = meshRenderer->getMaterial(hit.mesh);
+						if (material)
+							material->downcast_pointer<octoon::MeshStandardMaterial>()->setColorMap(std::move(texture));
+					}
+				}
+			}
 		}
 	}
 
 	void
-	ModelDock::resizeEvent(QResizeEvent* e) noexcept
+	TextureDock::resizeEvent(QResizeEvent* e) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins();
 		listWidget_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 	}
 
 	void
-	ModelDock::showEvent(QShowEvent* event) noexcept
+	TextureDock::showEvent(QShowEvent* event) noexcept
 	{
 		QMargins margins = mainLayout_->contentsMargins() + topLayout_->contentsMargins();
 		listWidget_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		listWidget_->clear();
 
-		for (auto& package : AssetLibrary::instance()->getPrefabList())
-			this->addItem(package);
+		this->updateItems();
 	}
 
 	bool
-	ModelDock::eventFilter(QObject* watched, QEvent* event)
+	TextureDock::eventFilter(QObject* watched, QEvent* event)
 	{
 		if (event->type() != QEvent::Paint &&
 			event->type() != QEvent::Resize)

@@ -49,6 +49,7 @@ namespace unreal
 		environmentDock_ = std::make_unique<EnvironmentDock>(behaviour_, profile_);
 		cameraDock_ = std::make_unique<CameraDock>(behaviour_, profile_);
 		materialDock_ = std::make_unique<MaterialDock>(behaviour_, profile_);
+		textureDock_ = std::make_unique<TextureDock>(behaviour_, profile_);
 		modelDock_ = std::make_unique<ModelDock>(behaviour_, profile_);
 		motionDock_ = std::make_unique<MotionDock>(behaviour_, profile_);
 		inspectorDock_ = std::make_unique<InspectorDock>(behaviour_, profile_);
@@ -63,6 +64,7 @@ namespace unreal
 		this->splitDockWidget(assetBrowseDock_.get(), motionDock_.get(), Qt::Orientation::Horizontal);
 		this->splitDockWidget(assetBrowseDock_.get(), modelDock_.get(), Qt::Orientation::Horizontal);
 		this->splitDockWidget(assetBrowseDock_.get(), lightDock_.get(), Qt::Orientation::Horizontal);
+		this->splitDockWidget(assetBrowseDock_.get(), textureDock_.get(), Qt::Orientation::Horizontal);		
 
 		this->splitDockWidget(toolDock_.get(), mainLightDock_.get(), Qt::Orientation::Horizontal);
 		this->splitDockWidget(toolDock_.get(), recordDock_.get(), Qt::Orientation::Horizontal);
@@ -77,6 +79,7 @@ namespace unreal
 		mainLightDock_->hide();
 		environmentDock_->hide();
 		materialDock_->hide();
+		textureDock_->hide();
 		recordDock_->hide();
 		cameraDock_->hide();
 		inspectorDock_->hide();
@@ -87,6 +90,7 @@ namespace unreal
 
 		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::lightSignal, this, &MainDock::onLightSignal);
 		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::materialSignal, this, &MainDock::onMaterialSignal);
+		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::textureSignal, this, &MainDock::onTextureSignal); 
 		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::modelSignal, this, &MainDock::onModelSignal);
 		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::motionSignal, this, &MainDock::onMotionSignal);
 		this->connect(assetBrowseDock_.get(), &AssetBrowseDock::importSignal, this, &MainDock::onImportSignal);
@@ -114,6 +118,7 @@ namespace unreal
 		this->removeDockWidget(mainLightDock_.get());
 		this->removeDockWidget(environmentDock_.get());
 		this->removeDockWidget(materialDock_.get());
+		this->removeDockWidget(textureDock_.get());
 		this->removeDockWidget(modelDock_.get());
 		this->removeDockWidget(recordDock_.get());
 		this->removeDockWidget(assetBrowseDock_.get());
@@ -130,6 +135,7 @@ namespace unreal
 		mainLightDock_.reset();
 		environmentDock_.reset();
 		materialDock_.reset();
+		textureDock_.reset();
 		modelDock_.reset();
 		recordDock_.reset();
 		assetBrowseDock_.reset();
@@ -191,7 +197,13 @@ namespace unreal
 				assetBrowseDock_->materialButton_->setChecked(true);
 				assetBrowseDock_->materialButton_->blockSignals(false);
 			}
-			
+			if (textureDock_->isVisible())
+			{
+				assetBrowseDock_->textureButton_->blockSignals(true);
+				assetBrowseDock_->textureButton_->setChecked(true);
+				assetBrowseDock_->textureButton_->blockSignals(false);
+			}
+						
 			if (recordDock_->isVisible())
 			{
 				toolDock_->videoButton_->blockSignals(true);
@@ -414,6 +426,33 @@ namespace unreal
 	}
 
 	void
+	MainDock::onTextureSignal() noexcept
+	{
+		try
+		{
+			if (textureDock_->isHidden())
+			{
+				auto widget = this->assetDock();
+				if (widget)
+				{
+					this->tabifyDockWidget(widget, textureDock_.get());
+					widget->hide();
+				}
+
+				textureDock_->show();
+			}
+			else
+			{
+				textureDock_->close();
+			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::critical(this, tr("Error"), e.what());
+		}
+	}
+
+	void
 	MainDock::onModelSignal() noexcept
 	{
 		try
@@ -531,10 +570,14 @@ namespace unreal
 								this->modelDock_->addItem(package);
 							else if (ext == L".vmd")
 								this->motionDock_->addItem(package);
+							else if (ext == L".bmp" || ext == L".tga" || ext == L".jpg" || ext == L".png" || ext == L".jpeg" || ext == L".dds")
+								this->textureDock_->addItem(package);
 							else if (ext == L".mdl")
 							{
 								for (auto& it : package)
 									this->materialDock_->addItem(it);
+
+								this->textureDock_->updateItems();
 							}
 						}
 					}
@@ -592,6 +635,8 @@ namespace unreal
 			return motionDock_.get();
 		if (materialDock_->isVisible())
 			return materialDock_.get();
+		if (textureDock_->isVisible())
+			return textureDock_.get();
 
 		return nullptr;
 	}

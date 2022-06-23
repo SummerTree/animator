@@ -30,6 +30,7 @@ namespace unreal
 	private Q_SLOTS:
 		void lightEvent() noexcept;
 		void materialEvent() noexcept;
+		void textureEvent() noexcept;
 		void modelEvent() noexcept;
 		void motionEvent() noexcept;
 		void settingsEvent() noexcept;
@@ -39,6 +40,7 @@ namespace unreal
 		void lightSignal();
 		void modelSignal();
 		void materialSignal();
+		void textureSignal();
 		void motionSignal();
 		void importSignal();
 
@@ -46,6 +48,7 @@ namespace unreal
 		QToolButton* materialButton_;
 		QToolButton* modelButton_;
 		QToolButton* motionButton_;
+		QToolButton* textureButton_;
 		QToolButton* lightButton_;
 		QToolButton* importButton_;
 		QToolButton* settingsButton_;
