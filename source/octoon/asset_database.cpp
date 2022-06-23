@@ -388,9 +388,17 @@ namespace octoon
 
 			nlohmann::json prefab;
 
-			auto modelPath = AssetLoader::instance()->getAssetPath(gameObject);
-			if (!modelPath.empty())
-				prefab["model"] = (char*)modelPath.u8string().c_str();
+			if (!this->contains(gameObject))
+			{
+				auto modelPath = AssetLoader::instance()->getAssetPath(gameObject);
+				if (!modelPath.empty())
+				{
+					auto outputPath = std::filesystem::path(relativePath.parent_path()).append(octoon::make_guid()).append(modelPath.filename().wstring());
+					this->importAsset(modelPath, outputPath);
+				}
+			}
+
+			prefab["model"] = this->getAssetGuid(gameObject);
 
 			auto transform = gameObject->getComponent<TransformComponent>();
 			if (transform)
@@ -576,28 +584,32 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createFolder(const std::filesystem::path& assetFolder) noexcept(false)
+	AssetDatabase::createFolder(const std::filesystem::path& assetFolder_) noexcept(false)
 	{
-		auto path = assetFolder.wstring();
+		auto relativePath = std::filesystem::path(assetFolder_).make_preferred();
+		auto path = relativePath.wstring();
+
+		std::filesystem::create_directories(std::filesystem::path(this->assetPath_).append(path));
+
+		auto folderPath = std::filesystem::path(this->assetPath_).append(path + L".metadata");
+		if (!std::filesystem::exists(folderPath))
+			this->createMetadataAtPath(relativePath);
+
 		auto offset = path.find_first_of(std::filesystem::path::preferred_separator);
+		if (offset > 0 && offset < path.size())
+		{
+			auto folder = path.substr(0, offset);
+			if (folder == L"Assets")
+				offset = path.find_first_of(std::filesystem::path::preferred_separator, offset + 1);
+		}
 
 		while (offset > 0 && offset < path.size())
 		{
-			auto folder = std::filesystem::path(this->assetPath_).append(path.substr(0, offset));
-			if (!std::filesystem::exists(folder))
-			{
-				std::filesystem::create_directory(folder);
+			auto metaPath = std::filesystem::path(this->assetPath_).append(path.substr(0, offset) + L".metadata");
+			if (!std::filesystem::exists(metaPath))
 				this->createMetadataAtPath(path.substr(0, offset));
-			}
 
 			offset = path.find_first_of(std::filesystem::path::preferred_separator, offset + 1);
-		}
-		
-		auto folderPath = std::filesystem::path(this->assetPath_).append(assetFolder.wstring());
-		if (!std::filesystem::exists(folderPath))
-		{
-			std::filesystem::create_directory(folderPath);
-			this->createMetadataAtPath(assetFolder);
 		}
 	}
 
@@ -705,6 +717,8 @@ namespace octoon
 	std::shared_ptr<RttiObject>
 	AssetDatabase::loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
+		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
+
 		auto ext = relativePath.extension().u8string();
 		for (auto& it : ext)
 			it = (char)std::tolower(it);

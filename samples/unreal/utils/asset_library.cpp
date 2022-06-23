@@ -157,20 +157,14 @@ namespace unreal
 				return this->importAsset(animation, "Assets/Motions");
 			}
 		}
-		else if (ext == u8".pmx")
+		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
 		{
 			auto modelPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(path.filename().wstring());
 			this->assetDatabase_->importAsset(path, modelPath);
 
-			auto gameObject = this->assetDatabase_->loadAssetAtPath<octoon::GameObject>(path);
+			auto gameObject = this->assetDatabase_->loadAssetAtPath<octoon::GameObject>(modelPath);
 			if (gameObject)
 				return this->importAsset(gameObject, "Assets/Prefabs", modelPath.parent_path());
-		}
-		else if (ext == u8".obj" || ext == u8".fbx")
-		{
-			auto gameObject = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::GameObject>(path);
-			if (gameObject)
-				return this->importAsset(gameObject, "Assets/Prefabs", path.filename());
 		}
 		else if (ext == u8".mdl")
 		{
@@ -580,8 +574,7 @@ namespace unreal
 
 		if (package.contains("model"))
 		{
-			auto uuid = package["model"].get<std::string>();
-			auto folderPath = this->getAssetPath(uuid);
+			auto folderPath = this->getAssetPath(package["model"].get<std::string>());
 			if (this->assetDatabase_)
 				this->assetDatabase_->deleteFolder(folderPath);
 		}
