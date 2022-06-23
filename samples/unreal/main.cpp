@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 #endif
 
 	QFile styleSheet(":res/qss/white.qss");
-	
+
 	if (styleSheet.open(QIODevice::ReadOnly))
 	{
 		QApplication app(argc, argv);
