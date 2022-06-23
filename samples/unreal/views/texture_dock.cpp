@@ -51,7 +51,7 @@ namespace unreal
 		topLayout_->setContentsMargins(4, 0, 4, 0);
 
 		listWidget_ = new DraggableListWindow;
-		listWidget_->setIconSize(QSize(120, 120));
+		listWidget_->setIconSize(QSize(80, 80));
 		listWidget_->setStyleSheet("background:transparent;");
 		listWidget_->setSpacing(4);
 		listWidget_->installEventFilter(this);
@@ -82,7 +82,7 @@ namespace unreal
 		{
 			auto item = std::make_unique<QListWidgetItem>();
 			item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-			item->setSizeHint(listWidget_->iconSize() + QSize(16, 40));
+			item->setSizeHint(listWidget_->iconSize() + QSize(9, 40));
 
 			if (package.contains("preview"))
 			{
