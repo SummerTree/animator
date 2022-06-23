@@ -50,7 +50,7 @@ namespace unreal
 		hlayout->addWidget(widget, 0, Qt::AlignLeft);
 		hlayout->addStretch(0);
 		hlayout->setContentsMargins(0, 0, 0, 0);
-		hlayout->setSpacing(12);
+		hlayout->setSpacing(8);
 
 		versionInfo = new QLabel(this);
 		versionInfo->setObjectName("version");
