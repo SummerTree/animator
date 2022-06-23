@@ -2,7 +2,7 @@
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_loader.h>
 #include <octoon/asset_preview.h>
-#include <octoon/runtime/uuid.h>
+#include <octoon/runtime/guid.h>
 #include <octoon/runtime/md5.h>
 #include <octoon/runtime/string.h>
 #include <octoon/vmd_loader.h>
@@ -550,8 +550,11 @@ namespace octoon
 			auto filename = filepath.substr(0, filepath.find_last_of('.'));
 			auto metadata = std::filesystem::path(parent_path).append(filename + ".metadata");
 
-			std::filesystem::remove(path);
-			std::filesystem::remove(metadata);
+			if (std::filesystem::exists(path))
+				std::filesystem::remove(path);
+
+			if (std::filesystem::exists(metadata))
+				std::filesystem::remove(metadata);
 		}
 	}
 

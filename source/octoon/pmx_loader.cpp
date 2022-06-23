@@ -2,7 +2,7 @@
 #include <octoon/pmx.h>
 
 #include <octoon/runtime/string.h>
-#include <octoon/runtime/uuid.h>
+#include <octoon/runtime/guid.h>
 
 #include <octoon/material/mesh_standard_material.h>
 

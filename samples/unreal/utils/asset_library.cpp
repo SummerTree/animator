@@ -1,5 +1,5 @@
 #include "asset_library.h"
-#include <octoon/runtime/uuid.h>
+#include <octoon/runtime/guid.h>
 #include <octoon/asset_loader.h>
 #include <octoon/asset_preview.h>
 #include <octoon/mdl_loader.h>
@@ -197,6 +197,7 @@ namespace unreal
 
 			nlohmann::json package;
 			package["uuid"] = uuid;
+			package["hdr"] = hdr;
 			package["type"] = texture->type_name();
 			package["name"] = (char*)filename.u8string().c_str();
 			package["data"] = this->assetDatabase_->getAssetGuid(texture);
@@ -525,10 +526,72 @@ namespace unreal
 	void
 	AssetLibrary::removeAsset(const std::string& uuid) noexcept(false)
 	{
-		if (this->hasPackage(uuid))
+		auto it = packageCache_.find(uuid);
+		if (it == packageCache_.end())
+			return;
+
+		auto package = (*it).second;
+		packageCache_.erase(it);
+
+		if (package.contains("data"))
 		{
 			if (this->assetDatabase_)
-				this->assetDatabase_->deleteAsset(this->assetDatabase_->getAssetPath(uuid));
+				this->assetDatabase_->deleteAsset(this->assetDatabase_->getAssetPath(package["data"].get<std::string>()));
+		}
+
+		if (package.contains("preview"))
+		{
+			if (this->assetDatabase_)
+				this->assetDatabase_->deleteAsset(this->assetDatabase_->getAssetPath(package["preview"].get<std::string>()));
+		}
+
+		if (package.contains("type"))
+		{
+			auto type = package["type"].get<std::string>();
+			if (type == octoon::Texture::getRtti()->type_name())
+			{
+				auto hdr = package.contains("hdr") ? package["hdr"].get<bool>() : false;
+				if (hdr)
+				{
+					for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
+					{
+						this->hdriDb_.erase(it);
+						break;
+					}
+				}
+				else
+				{
+					for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
+					{
+						this->hdriDb_.erase(it);
+						break;
+					}
+				}
+			}
+			else if (type == octoon::Animation::getRtti()->type_name())
+			{
+				for (auto it = this->motionDb_.begin(); it != this->motionDb_.end(); ++it)
+				{
+					this->motionDb_.erase(it);
+					break;
+				}
+			}
+			else if (type == octoon::Material::getRtti()->type_name())
+			{
+				for (auto it = this->materialDb_.begin(); it != this->materialDb_.end(); ++it)
+				{
+					this->materialDb_.erase(it);
+					break;
+				}
+			}
+			else if (type == octoon::GameObject::getRtti()->type_name())
+			{
+				for (auto it = this->prefabDb_.begin(); it != this->prefabDb_.end(); ++it)
+				{
+					this->prefabDb_.erase(it);
+					break;
+				}
+			}
 		}
 	}
 

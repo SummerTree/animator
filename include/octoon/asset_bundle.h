@@ -6,7 +6,7 @@
 #include <octoon/material/material.h>
 #include <octoon/animation/animation.h>
 #include <octoon/pmx_loader.h>
-#include <octoon/runtime/uuid.h>
+#include <octoon/runtime/guid.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_database.h>
 #include <set>

@@ -1,4 +1,4 @@
-#include <octoon/runtime/uuid.h>
+#include <octoon/runtime/guid.h>
 #include <chrono>
 
 #ifndef OCTOON_BUILD_PLATFORM_EMSCRIPTEN

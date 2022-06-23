@@ -25,8 +25,8 @@ SET(RUNTIME_LIST
 	${SOURCE_PATH}/except.cpp
 	${HEADER_PATH}/string.h
 	${SOURCE_PATH}/string.cpp
-	${HEADER_PATH}/uuid.h
-	${SOURCE_PATH}/uuid.cpp
+	${HEADER_PATH}/guid.h
+	${SOURCE_PATH}/guid.cpp
 	${HEADER_PATH}/base32.h
 	${SOURCE_PATH}/base32.cpp
 	${HEADER_PATH}/base64.h

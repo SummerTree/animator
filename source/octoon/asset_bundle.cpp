@@ -4,7 +4,7 @@
 #include <octoon/asset_database.h>
 #include <octoon/io/fstream.h>
 #include <octoon/texture/texture.h>
-#include <octoon/runtime/uuid.h>
+#include <octoon/runtime/guid.h>
 #include <octoon/mesh_renderer_component.h>
 #include <octoon/skinned_mesh_renderer_component.h>
 #include <octoon/mesh_animation_component.h>

@@ -5,7 +5,6 @@
 #include <octoon/texture/texture.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/animation/animation.h>
-#include <octoon/runtime/uuid.h>
 #include <filesystem>
 
 namespace octoon
