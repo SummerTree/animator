@@ -566,24 +566,17 @@ namespace unreal
 			}
 		};
 
-		if (package.contains("data"))
-			deleteAsset(package["data"].get<std::string>());
-
 		if (package.contains("preview"))
 			deleteAsset(package["preview"].get<std::string>());
-
-		if (package.contains("model"))
-		{
-			auto folderPath = this->getAssetPath(package["model"].get<std::string>());
-			if (this->assetDatabase_)
-				this->assetDatabase_->deleteFolder(folderPath);
-		}
 
 		if (package.contains("type"))
 		{
 			auto type = package["type"].get<std::string>();
 			if (type == octoon::Texture::getRtti()->type_name())
 			{
+				if (package.contains("data"))
+					deleteAsset(package["data"].get<std::string>());
+
 				auto hdr = package.contains("hdr") ? package["hdr"].get<bool>() : false;
 				if (hdr)
 				{
@@ -612,6 +605,9 @@ namespace unreal
 			}
 			else if (type == octoon::Animation::getRtti()->type_name())
 			{
+				if (package.contains("data"))
+					deleteAsset(package["data"].get<std::string>());
+
 				for (auto it = this->motionDb_.begin(); it != this->motionDb_.end(); ++it)
 				{
 					auto uuid_ = (*it)["uuid"].get<std::string>();
@@ -624,6 +620,9 @@ namespace unreal
 			}
 			else if (type == octoon::Material::getRtti()->type_name())
 			{
+				if (package.contains("data"))
+					deleteAsset(package["data"].get<std::string>());
+
 				for (auto it = this->materialDb_.begin(); it != this->materialDb_.end(); ++it)
 				{
 					auto uuid_ = (*it)["uuid"].get<std::string>();
@@ -636,6 +635,23 @@ namespace unreal
 			}
 			else if (type == octoon::GameObject::getRtti()->type_name())
 			{
+				if (package.contains("data"))
+				{
+					auto assetPath = this->assetDatabase_->getAssetPath(package["data"].get<std::string>());
+					if (!assetPath.empty())
+					{
+						deleteAsset(uuid);
+						this->assetDatabase_->deleteFolder(assetPath.parent_path());
+					}
+				}
+
+				if (package.contains("model"))
+				{
+					auto folderPath = this->getAssetPath(package["model"].get<std::string>());
+					if (this->assetDatabase_)
+						this->assetDatabase_->deleteFolder(folderPath);
+				}
+
 				for (auto it = this->prefabDb_.begin(); it != this->prefabDb_.end(); ++it)
 				{
 					auto uuid_ = (*it)["uuid"].get<std::string>();
