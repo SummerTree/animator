@@ -77,18 +77,17 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::importAsset(const std::filesystem::path& diskPath, const std::filesystem::path& relativePath_) noexcept(false)
+	AssetDatabase::importAsset(const std::filesystem::path& diskPath, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(!diskPath.empty());
-		assert(!relativePath_.empty() && relativePath_.compare("Assets") > 0);
+		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
 
 		if (diskPath.empty() || !std::filesystem::exists(diskPath))
 			return;
 
-		if (relativePath_.empty() && relativePath_.compare("Assets") < 0)
+		if (relativePath.empty() && relativePath.compare("Assets") < 0)
 			return;
 
-		auto relativePath = std::filesystem::path(relativePath_).make_preferred();
 		auto rootPath = relativePath.parent_path();
 		auto assetPath = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 
@@ -200,19 +199,7 @@ namespace octoon
 			VMDLoader::save(assetPath, *animation);
 			std::filesystem::permissions(assetPath, std::filesystem::perms::owner_write);
 
-			nlohmann::json metadata;
-			metadata["uuid"] = uuid;
-
-			std::ofstream ifs(metaPath, std::ios_base::binary);
-			if (ifs)
-			{
-				auto dump = metadata.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-			}
-
-			assetGuidList_[relativePath] = uuid;
-			assetPathList_[uuid] = relativePath;
+			this->createMetadataAtPath(relativePath);
 
 			objectPathList_[animation] = relativePath;
 		}
