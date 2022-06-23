@@ -534,12 +534,12 @@ namespace unreal
 	void
 	AssetLibrary::removeAsset(const std::string& uuid) noexcept(false)
 	{
-		auto it = packageCache_.find(uuid);
-		if (it == packageCache_.end())
+		auto cache = packageCache_.find(uuid);
+		if (cache == packageCache_.end())
 			return;
 
-		auto package = (*it).second;
-		packageCache_.erase(it);
+		auto package = (*cache).second;
+		packageCache_.erase(cache);
 
 		auto deleteAsset = [this](const std::string& uuid)
 		{
@@ -575,43 +575,58 @@ namespace unreal
 				auto hdr = package.contains("hdr") ? package["hdr"].get<bool>() : false;
 				if (hdr)
 				{
-					for (auto item = this->hdriDb_.begin(); item != this->hdriDb_.end(); ++item)
+					for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
 					{
-						this->hdriDb_.erase(item);
-						break;
+						if ((*it) == uuid)
+						{
+							this->hdriDb_.erase(it);
+							break;
+						}
 					}
 				}
 				else
 				{
-					for (auto item = this->hdriDb_.begin(); item != this->hdriDb_.end(); ++item)
+					for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
 					{
-						this->hdriDb_.erase(item);
-						break;
+						if ((*it) == uuid)
+						{
+							this->hdriDb_.erase(it);
+							break;
+						}
 					}
 				}
 			}
 			else if (type == octoon::Animation::getRtti()->type_name())
 			{
-				for (auto item = this->motionDb_.begin(); item != this->motionDb_.end(); ++item)
+				for (auto it = this->motionDb_.begin(); it != this->motionDb_.end(); ++it)
 				{
-					this->motionDb_.erase(item);
-					break;
+					if ((*it) == uuid)
+					{
+						this->motionDb_.erase(it);
+						break;
+					}
 				}
 			}
 			else if (type == octoon::Material::getRtti()->type_name())
 			{
-				for (auto item = this->materialDb_.begin(); item != this->materialDb_.end(); ++item)
+				for (auto it = this->materialDb_.begin(); it != this->materialDb_.end(); ++it)
 				{
-					this->materialDb_.erase(item);
-					break;
+					if ((*it) == uuid)
+					{
+						this->materialDb_.erase(it);
+						break;
+					}
 				}
 			}
 			else if (type == octoon::GameObject::getRtti()->type_name())
 			{
-				for (auto item = this->prefabDb_.begin(); item != this->prefabDb_.end(); ++item)
+				for (auto it = this->prefabDb_.begin(); it != this->prefabDb_.end(); ++it)
 				{
-					this->prefabDb_.erase(item);
-					break;
+					if ((*it) == uuid)
+					{
+						this->prefabDb_.erase(it);
+						break;
+					}
 				}
 			}
 		}
