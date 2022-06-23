@@ -275,7 +275,7 @@ namespace unreal
 					if (thumbnailPath->toolTip() != name)
 					{
 						auto previewImage = std::make_shared<QImage>();
-						if (previewImage->load(QString::fromStdString(package["preview"].get<nlohmann::json::string_t>())))
+						if (previewImage->load(QString::fromStdWString(AssetLibrary::instance()->getAssetPath(package["preview"].get<std::string>(), true).wstring())))
 						{
 							this->setPreviewImage(QFileInfo(name).fileName(), previewImage);
 							this->setThumbnailImage(name, *previewImage);

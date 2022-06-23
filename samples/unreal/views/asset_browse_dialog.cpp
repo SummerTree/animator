@@ -94,7 +94,7 @@ namespace unreal
 
 			if (package.contains("preview"))
 			{
-				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+				auto filepath = QString::fromStdWString(AssetLibrary::instance()->getAssetPath(package["preview"].get<std::string>(), true).wstring());
 				item->setIcon(QIcon(QPixmap(filepath)));
 			}
 
@@ -301,7 +301,7 @@ namespace unreal
 
 			if (package.contains("preview"))
 			{
-				auto filepath = QString::fromStdString(package["preview"].get<nlohmann::json::string_t>());
+				auto filepath = QString::fromStdWString(AssetLibrary::instance()->getAssetPath(package["preview"].get<std::string>(), true).wstring());
 				item->setIcon(QIcon(QPixmap(filepath)));
 			}
 

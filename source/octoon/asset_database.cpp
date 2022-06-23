@@ -535,6 +535,12 @@ namespace octoon
 	void
 	AssetDatabase::deleteAsset(const std::filesystem::path& relativePath) noexcept(false)
 	{
+		if (relativePath.empty())
+			return;
+
+		if (relativePath.compare("Assets") < 0)
+			return;
+
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		if (std::filesystem::is_directory(path))
 			std::filesystem::remove_all(path);

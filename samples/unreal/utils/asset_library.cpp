@@ -12,6 +12,7 @@ namespace unreal
 	OctoonImplementSingleton(AssetLibrary)
 
 	AssetLibrary::AssetLibrary() noexcept
+		: dirty_(false)
 	{
 	}
 
@@ -208,7 +209,7 @@ namespace unreal
 			{
 				auto previewPath = std::filesystem::path(relativePath).append(octoon::make_guid() + ".png");
 				this->assetDatabase_->createAsset(preview, previewPath);
-				package["preview"] = (char*)std::filesystem::path(this->assetPath_).append(previewPath.u8string()).u8string().c_str();
+				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
 			}
 
 			if (hdr)
@@ -250,7 +251,6 @@ namespace unreal
 
 			this->motionDb_.push_back(package);
 			this->packageCache_[uuid] = package;
-
 			this->saveAssets();
 
 			return std::move(package);
@@ -284,13 +284,11 @@ namespace unreal
 			{
 				auto previewPath = std::filesystem::path(relativePath).append(octoon::make_guid() + ".png");
 				this->assetDatabase_->createAsset(preview, previewPath);
-				package["preview"] = (char*)std::filesystem::path(this->assetPath_).append(previewPath.u8string()).u8string().c_str();
+				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
 			}
 
 			this->materialDb_.push_back(package);
 			this->packageCache_[uuid] = package;
-
-			this->saveAssets();
 
 			return std::move(package);
 		}
@@ -313,21 +311,20 @@ namespace unreal
 
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
-			auto writePreview = [this](const octoon::PMX& pmx, const std::filesystem::path& outputPath)
-			{
-				auto texture = octoon::AssetPreview::instance()->getAssetPreview(pmx);
-				auto previewPath = std::filesystem::path(outputPath).append(octoon::make_guid() + ".png");
-				this->assetDatabase_->createAsset(texture, previewPath);
-				return previewPath;
-			};
-
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
 			package["type"] = pmx->type_name();
 			package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
 			package["data"] = this->assetDatabase_->getAssetGuid(pmx);
-			package["preview"] = (char*)writePreview(*pmx, relativePath).u8string().c_str();
+
+			auto texture = octoon::AssetPreview::instance()->getAssetPreview(*pmx);
+			if (texture)
+			{
+				auto previewPath = std::filesystem::path(relativePath).append(octoon::make_guid() + ".png");
+				this->assetDatabase_->createAsset(texture, previewPath);
+				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
+			}
 
 			return std::move(package);
 		}
@@ -350,19 +347,6 @@ namespace unreal
 		{
 			this->assetDatabase_->createAsset(gameObject, std::filesystem::path(relativePath).append(uuid + ".prefab"));
 
-			auto writePreview = [this](const std::shared_ptr<octoon::GameObject>& gameObject, const std::filesystem::path& outputPath)
-			{
-				auto texture = octoon::AssetPreview::instance()->getAssetPreview(gameObject);
-				if (texture)
-				{
-					auto previewPath = std::filesystem::path(outputPath).append(octoon::make_guid() + ".png");
-					this->assetDatabase_->createAsset(texture, previewPath);
-					return previewPath;
-				}
-
-				return std::filesystem::path();
-			};
-
 			nlohmann::json package;
 			package["uuid"] = uuid;
 			package["visible"] = true;
@@ -370,7 +354,14 @@ namespace unreal
 			package["name"] = gameObject->getName();
 			package["filename"] = (char*)filename.u8string().c_str();
 			package["data"] = this->assetDatabase_->getAssetGuid(gameObject);
-			package["preview"] = (char*)writePreview(gameObject, relativePath).u8string().c_str();
+
+			auto texture = octoon::AssetPreview::instance()->getAssetPreview(gameObject);
+			if (texture)
+			{
+				auto previewPath = std::filesystem::path(relativePath).append(octoon::make_guid() + ".png");
+				this->assetDatabase_->createAsset(texture, previewPath);
+				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
+			}
 
 			this->prefabDb_.push_back(package);
 			this->packageCache_[uuid] = package;
@@ -467,6 +458,24 @@ namespace unreal
 		return nlohmann::json();
 	}
 
+	std::filesystem::path
+	AssetLibrary::getAssetPath(const std::string& uuid, bool absolutePath) const noexcept
+	{
+		auto path = this->assetDatabase_->getAssetPath(uuid);
+		if (absolutePath && !path.empty())
+			return std::filesystem::path(this->assetPath_).append(path.wstring());
+		return path;
+	}
+
+	std::filesystem::path
+	AssetLibrary::getAssetPath(const std::shared_ptr<const octoon::RttiObject>& asset, bool absolutePath) const noexcept
+	{
+		auto path = this->assetDatabase_->getAssetPath(asset);
+		if (absolutePath && !path.empty())
+			return std::filesystem::path(this->assetPath_).append(path.wstring());
+		return path;
+	}
+
 	void
 	AssetLibrary::unload() noexcept
 	{
@@ -535,14 +544,29 @@ namespace unreal
 
 		if (package.contains("data"))
 		{
-			if (this->assetDatabase_)
-				this->assetDatabase_->deleteAsset(this->assetDatabase_->getAssetPath(package["data"].get<std::string>()));
+			try
+			{
+				if (this->assetDatabase_)
+					this->assetDatabase_->deleteAsset(this->getAssetPath(package["data"].get<std::string>()));
+			}
+			catch (...)
+			{
+			}
 		}
 
 		if (package.contains("preview"))
 		{
-			if (this->assetDatabase_)
-				this->assetDatabase_->deleteAsset(this->assetDatabase_->getAssetPath(package["preview"].get<std::string>()));
+			try
+			{
+				if (this->assetDatabase_)
+				{
+					auto path = this->getAssetPath(package["preview"].get<std::string>());
+					this->assetDatabase_->deleteAsset(path);
+				}
+			}
+			catch (...)
+			{
+			}
 		}
 
 		if (package.contains("type"))

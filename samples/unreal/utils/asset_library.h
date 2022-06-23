@@ -27,6 +27,9 @@ namespace unreal
 		nlohmann::json getPackage(const std::string& uuid) const noexcept;
 		nlohmann::json getPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept;
 
+		std::filesystem::path getAssetPath(const std::string& uuid, bool absolutePath = false) const noexcept;
+		std::filesystem::path getAssetPath(const std::shared_ptr<const octoon::RttiObject>& asset, bool absolutePath = false) const noexcept;
+
 		const nlohmann::json& getMotionList() const noexcept;
 		const nlohmann::json& getTextureList() const noexcept;
 		const nlohmann::json& getHDRiList() const noexcept;
