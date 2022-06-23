@@ -374,14 +374,12 @@ QWidget#SplashWindow{
 }
 QWidget#SplashWindow > QPushButton#logo{
 	qproperty-icon: url(":res/icons/splash.png");
-	qproperty-iconSize: 100px 100px;
+	qproperty-iconSize: 90px 90px;
 	margin: 0 0 0 0;
 	border:0px;
 	background: rgb(250,250,250);
 }
 QWidget#SplashWindow QWidget#text{
-	min-width:240px;
-	max-width:240px;
 	min-height:80px;
 	max-height:80px;
 	background: rgb(250,250,250);

@@ -34,9 +34,11 @@ namespace unreal
 		vlayout->setContentsMargins(0, 12, 0, 0);
 
 		hlayout = new QHBoxLayout();
+		hlayout->addStretch(0);
 		hlayout->addWidget(logo, 0, Qt::AlignRight);
 		hlayout->addWidget(widget, 0, Qt::AlignLeft);
-		hlayout->setContentsMargins(8, 0, 0, 10);
+		hlayout->addStretch(0);
+		hlayout->setContentsMargins(12, 0, 0, 12);
 		hlayout->setSpacing(8);
 
 		versionInfo = new QLabel(this);

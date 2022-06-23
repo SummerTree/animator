@@ -1337,12 +1337,12 @@ $20 (Original cost $40)</source>
         <translation>2022 AnimatorGo ©. 保留所有权利.</translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="44"/>
+        <location filename="../views/splash_screen.cpp" line="46"/>
         <source>Version: </source>
         <translation>版本： </translation>
     </message>
     <message>
-        <location filename="../views/splash_screen.cpp" line="49"/>
+        <location filename="../views/splash_screen.cpp" line="51"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
