@@ -12,7 +12,6 @@ namespace unreal
 	OctoonImplementSingleton(AssetLibrary)
 
 	AssetLibrary::AssetLibrary() noexcept
-		: dirty_(false)
 	{
 	}
 
