@@ -61,15 +61,8 @@ namespace octoon
 					auto uuid = it.key();
 					auto path = std::filesystem::path((char8_t*)it.value().get<std::string>().c_str());
 
-					if (std::filesystem::exists(path))
-					{
-						assetGuidList_[path] = uuid;
-						assetPathList_[uuid] = path;
-					}
-					else
-					{
-						it = assetDb.erase(it);
-					}					
+					assetGuidList_[path] = uuid;
+					assetPathList_[uuid] = path;
 				}
 			}
 			catch (...)
@@ -569,8 +562,9 @@ namespace octoon
 
 		for (auto& it : assetPathList_)
 		{
-			if (std::filesystem::exists(it.second))
-				assetDb[it.first] = (char*)it.second.u8string().c_str();
+			auto path = it.second.u8string();
+			if (std::filesystem::exists(std::filesystem::path(this->assetPath_).append(path)))
+				assetDb[it.first] = (char*)path.c_str();
 		}
 
 		auto assetRoot = std::filesystem::path(this->assetPath_).append("Library");
