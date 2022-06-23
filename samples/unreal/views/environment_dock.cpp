@@ -1,4 +1,5 @@
 #include "environment_dock.h"
+#include "../utils/asset_library.h"
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
 #include <octoon/asset_loader.h>
@@ -267,7 +268,7 @@ namespace unreal
 		{
 			if (texture && this->isVisible())
 			{
-				auto package = octoon::AssetBundle::instance()->getPackage(texture);
+				auto package = AssetLibrary::instance()->getPackage(texture);
 				if (package.is_object())
 				{
 					auto name = QString::fromUtf8(package["name"].get<nlohmann::json::string_t>());
@@ -449,7 +450,7 @@ namespace unreal
 			if (!uuid.empty())
 			{
 				this->profile_->environmentLightModule->color = octoon::math::float3(1, 1, 1);
-				this->profile_->environmentLightModule->texture = octoon::AssetBundle::instance()->loadAsset<octoon::Texture>(uuid);
+				this->profile_->environmentLightModule->texture = AssetLibrary::instance()->loadAsset<octoon::Texture>(uuid);
 			}
 			else
 			{

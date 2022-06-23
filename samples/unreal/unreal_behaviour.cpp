@@ -1,6 +1,7 @@
 #include "unreal_behaviour.h"
 #include "../utils/pmm_loader.h"
 #include "../utils/ass_loader.h"
+#include "../utils/asset_library.h"
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
 #include <filesystem>
@@ -20,7 +21,7 @@ namespace unreal
 
 	UnrealBehaviour::~UnrealBehaviour() noexcept
 	{
-		octoon::AssetBundle::instance()->close();
+		AssetLibrary::instance()->close();
 	}
 
 	bool
@@ -51,7 +52,7 @@ namespace unreal
 	{
 		this->profile_->reset();
 
-		octoon::AssetBundle::instance()->unload();
+		AssetLibrary::instance()->unload();
 		octoon::AssetDatabase::instance()->clearUpdate();
 	}
 
@@ -243,7 +244,7 @@ namespace unreal
 		context_->behaviour = this;
 		context_->profile = profile_.get();
 
-		octoon::AssetBundle::instance()->open(profile_->resourceModule->rootPath);
+		AssetLibrary::instance()->open(profile_->resourceModule->rootPath);
 
 		recordComponent_ = std::make_unique<RecordComponent>();
 		entitiesComponent_ = std::make_unique<EntitiesComponent>();
@@ -352,7 +353,7 @@ namespace unreal
 			}
 		}
 
-		octoon::AssetBundle::instance()->close();
+		AssetLibrary::instance()->close();
 	}
 
 	void

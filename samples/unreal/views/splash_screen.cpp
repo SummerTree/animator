@@ -47,6 +47,7 @@ namespace unreal
 		hlayout->addWidget(logo, 0, Qt::AlignRight);
 		hlayout->addSpacing(4);
 		hlayout->addWidget(splitLine);
+		hlayout->addSpacing(2);
 		hlayout->addWidget(widget, 0, Qt::AlignLeft);
 		hlayout->addStretch(0);
 		hlayout->setContentsMargins(0, 0, 0, 0);

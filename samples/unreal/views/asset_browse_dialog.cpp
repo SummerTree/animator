@@ -1,4 +1,5 @@
 #include "asset_browse_dialog.h"
+#include "../utils/asset_library.h"
 #include <octoon/environment_light_component.h>
 #include <octoon/texture/texture.h>
 #include <octoon/asset_bundle.h>
@@ -83,7 +84,7 @@ namespace unreal
 	void 
 	MaterialListDialog::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
+		auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			auto item = std::make_unique<QListWidgetItem>();
@@ -130,16 +131,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto list = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
+					auto list = AssetLibrary::instance()->importAsset(filepaths[i].toStdWString());
 					for (auto& it : list)
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}
 
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 		}
 	}
@@ -172,11 +173,11 @@ namespace unreal
 					if (clickedItem_)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						octoon::AssetBundle::instance()->removeAsset(uuid.toStdString());
+						AssetLibrary::instance()->removeAsset(uuid.toStdString());
 						mainWidget_->takeItem(mainWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = mainWidget_->currentItem();
-						octoon::AssetBundle::instance()->saveAssets();
+						AssetLibrary::instance()->saveAssets();
 					}
 				}
 			}
@@ -219,7 +220,7 @@ namespace unreal
 		{
 			mainWidget_->clear();
 
-			for (auto& uuid : octoon::AssetBundle::instance()->getPackageList<octoon::Material>())
+			for (auto& uuid : AssetLibrary::instance()->getMaterialList())
 				this->addItem(uuid.get<nlohmann::json::string_t>());
 		}
 	}
@@ -336,16 +337,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
+					auto package = AssetLibrary::instance()->importAsset(filepaths[i].toStdWString());
 					if (!package.is_null())
 						this->addItem(package);
 				}
 
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 		}
 	}
@@ -392,7 +393,7 @@ namespace unreal
 	{
 		listWidget_->clear();
 
-		for (auto& package : octoon::AssetBundle::instance()->getPackageList<octoon::Texture>())
+		for (auto& package : AssetLibrary::instance()->getHDRiList())
 		{
 			try
 			{
@@ -416,11 +417,11 @@ namespace unreal
 					if (QMessageBox::question(this, tr("Info"), tr("Are you sure you want to delete this picture?")) == QMessageBox::Yes)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						octoon::AssetBundle::instance()->removeAsset(uuid.toStdString());
+						AssetLibrary::instance()->removeAsset(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						octoon::AssetBundle::instance()->saveAssets();
+						AssetLibrary::instance()->saveAssets();
 					}
 				}
 			}

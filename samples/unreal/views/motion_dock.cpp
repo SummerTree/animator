@@ -1,4 +1,5 @@
 #include "motion_dock.h"
+#include "../utils/asset_library.h"
 #include "../widgets/draggable_list_widget.h"
 #include <octoon/asset_database.h>
 #include <octoon/asset_bundle.h>
@@ -111,11 +112,11 @@ namespace unreal
 					if (clickedItem_)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						octoon::AssetBundle::instance()->removeAsset(uuid.toStdString());
+						AssetLibrary::instance()->removeAsset(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						octoon::AssetBundle::instance()->saveAssets();
+						AssetLibrary::instance()->saveAssets();
 					}
 				}
 			}
@@ -150,23 +151,23 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
+						auto package = AssetLibrary::instance()->importAsset(filepaths[i].toStdWString());
 						if (!package.is_null())
 							this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 					}
 				}
 				else
 				{
-					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[0].toStdWString());
+					auto package = AssetLibrary::instance()->importAsset(filepaths[0].toStdWString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 		}
 	}
@@ -195,10 +196,10 @@ namespace unreal
 			QCoreApplication::processEvents();
 
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
+			auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
 			if (package.is_object())
 			{
-				auto animation = octoon::AssetBundle::instance()->loadAsset<octoon::Animation>(uuid);
+				auto animation = AssetLibrary::instance()->loadAsset<octoon::Animation>(uuid);
 				if (animation)
 				{
 					dialog.setValue(1);
@@ -265,7 +266,7 @@ namespace unreal
 		listWidget_->resize(this->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		listWidget_->clear();
 
-		for (auto& package : octoon::AssetBundle::instance()->getPackageList<octoon::Animation>())
+		for (auto& package : AssetLibrary::instance()->getMotionList())
 			this->addItem(package);
 	}
 

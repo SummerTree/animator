@@ -184,8 +184,8 @@ SET(UTILS_LIST
 	${SOURCE_PATH}/utils/pmm_loader.cpp
 	${SOURCE_PATH}/utils/ass_loader.h
 	${SOURCE_PATH}/utils/ass_loader.cpp
-	${SOURCE_PATH}/utils/asset_importer.h
-	${SOURCE_PATH}/utils/asset_importer.cpp
+	${SOURCE_PATH}/utils/asset_library.h
+	${SOURCE_PATH}/utils/asset_library.cpp
 	${SOURCE_PATH}/utils/material_importer.h
 	${SOURCE_PATH}/utils/material_importer.cpp
 )

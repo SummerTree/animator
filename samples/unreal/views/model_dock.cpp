@@ -1,4 +1,5 @@
 #include "model_dock.h"
+#include "../utils/asset_library.h"
 #include "../widgets/draggable_list_widget.h"
 
 #include <qpainter.h>
@@ -77,7 +78,7 @@ namespace unreal
 	void 
 	ModelDock::addItem(std::string_view uuid) noexcept
 	{
-		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
+		auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			auto item = std::make_unique<QListWidgetItem>();
@@ -118,11 +119,11 @@ namespace unreal
 					if (clickedItem_)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						octoon::AssetBundle::instance()->removeAsset(uuid.toStdString());
+						AssetLibrary::instance()->removeAsset(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						octoon::AssetBundle::instance()->saveAssets();
+						AssetLibrary::instance()->saveAssets();
 					}
 				}
 			}
@@ -155,16 +156,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
+					auto package = AssetLibrary::instance()->importAsset(filepaths[i].toStdWString());
 					if (!package.is_null())
 						this->addItem(package["uuid"].get<nlohmann::json::string_t>());
 				}
 
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 		}
 	}
@@ -182,7 +183,7 @@ namespace unreal
 			return;
 		
 		auto uuid = item->data(Qt::UserRole).toString().toStdString();
-		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
+		auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 1, this);
@@ -194,7 +195,7 @@ namespace unreal
 
 			QCoreApplication::processEvents();
 
-			auto model = octoon::AssetBundle::instance()->loadAsset<octoon::GameObject>(uuid);
+			auto model = AssetLibrary::instance()->loadAsset<octoon::GameObject>(uuid);
 			if (model)
 				this->profile_->entitiesModule->objects.getValue().push_back(model);
 
@@ -216,7 +217,7 @@ namespace unreal
 		listWidget_->resize(mainWidget_->width(), mainWidget_->height() - margins.top() - margins.bottom() - title_->height());
 		listWidget_->clear();
 
-		for (auto& uuid : octoon::AssetBundle::instance()->getPackageList<octoon::GameObject>())
+		for (auto& uuid : AssetLibrary::instance()->getModelList())
 			this->addItem(uuid.get<nlohmann::json::string_t>());
 	}
 

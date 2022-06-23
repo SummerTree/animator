@@ -1,4 +1,5 @@
 #include "material_dock.h"
+#include "../utils/asset_library.h"
 #include "../widgets/draggable_list_widget.h"
 #include <qfiledialog.h>
 #include <qmessagebox.h>
@@ -96,16 +97,16 @@ namespace unreal
 					if (dialog.wasCanceled())
 						break;
 
-					auto list = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
+					auto list = AssetLibrary::instance()->importAsset(filepaths[i].toStdWString());
 					for (auto& it : list)
 						this->addItem(it.get<nlohmann::json::string_t>());
 				}
 
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 			catch (...)
 			{
-				octoon::AssetBundle::instance()->saveAssets();
+				AssetLibrary::instance()->saveAssets();
 			}
 		}
 	}
@@ -113,7 +114,7 @@ namespace unreal
 	void
 	MaterialDock::addItem(std::string_view uuid) noexcept(false)
 	{
-		auto package = octoon::AssetBundle::instance()->getPackage((std::string)uuid);
+		auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			auto item = std::make_unique<QListWidgetItem>();
@@ -143,7 +144,7 @@ namespace unreal
 	{
 		listWidget_->clear();
 
-		for (auto& it : octoon::AssetBundle::instance()->getPackageList<octoon::Material>())
+		for (auto& it : AssetLibrary::instance()->getMaterialList())
 		{
 			try
 			{
@@ -174,7 +175,7 @@ namespace unreal
 			if (selectedItem)
 			{
 				auto uuid = item->data(Qt::UserRole).toString().toStdString();
-				auto material = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(uuid);
+				auto material = AssetLibrary::instance()->loadAsset<octoon::Material>(uuid);
 				if (material)
 				{
 					auto hit = selectedItem.value();
@@ -198,11 +199,11 @@ namespace unreal
 					if (clickedItem_)
 					{
 						auto uuid = clickedItem_->data(Qt::UserRole).toString();
-						octoon::AssetBundle::instance()->removeAsset(uuid.toStdString());
+						AssetLibrary::instance()->removeAsset(uuid.toStdString());
 						listWidget_->takeItem(listWidget_->row(clickedItem_));
 						delete clickedItem_;
 						clickedItem_ = listWidget_->currentItem();
-						octoon::AssetBundle::instance()->saveAssets();
+						AssetLibrary::instance()->saveAssets();
 					}
 				}
 			}

@@ -2,8 +2,6 @@
 #include <octoon/asset_loader.h>
 #include <octoon/asset_preview.h>
 #include <octoon/asset_database.h>
-#include <octoon/vmd_loader.h>
-#include <octoon/mdl_loader.h>
 #include <octoon/io/fstream.h>
 #include <octoon/texture/texture.h>
 #include <octoon/runtime/uuid.h>
@@ -74,63 +72,6 @@ namespace octoon
 		{
 			assetBundles_.clear();
 		}
-	}
-
-	nlohmann::json
-	AssetBundle::importAsset(const std::filesystem::path& path) noexcept(false)
-	{
-		auto ext = path.extension().u8string();
-		for (auto& it : ext)
-			it = (char)std::tolower(it);
-
-		if (ext == u8".hdr")
-		{
-			auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(path);
-			if (texture)
-				return this->importAsset(texture, "Assets/HDRis");
-		}
-		if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
-		{
-			auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(path);
-			if (texture)
-				return this->importAsset(texture, "Assets/HDRis");
-		}
-		else if (ext == u8".vmd")
-		{
-			auto animation = AssetLoader::instance()->loadAssetAtPath<Animation>(path);
-			if (animation)
-				return this->importAsset(animation, "Assets/Motions");
-		}
-		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
-		{
-			auto gameObject = AssetLoader::instance()->loadAssetAtPath<GameObject>(path);
-			if (gameObject)
-				return this->importAsset(gameObject, "Assets/Models");
-		}
-		else if (ext == u8".mdl")
-		{
-			std::ifstream stream(path);
-			if (stream)
-			{
-				nlohmann::json items;
-
-				MDLLoader loader;
-				loader.load("resource", stream);
-
-				for (auto& material : loader.getMaterials())
-				{
-					auto package = this->importAsset(material, "Assets/Materials");
-					if (package.is_object())
-						items.push_back(package["uuid"]);
-				}
-
-				this->saveAssets();
-
-				return items;
-			}
-		}
-
-		return nlohmann::json();
 	}
 
 	nlohmann::json

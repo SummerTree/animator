@@ -1,5 +1,6 @@
 ﻿#include "main_dock.h"
 #include "unreal_behaviour.h"
+#include "utils/asset_library.h"
 #include <qdockwidget.h>
 #include <qmessagebox.h>
 #include <qsettings.h>
@@ -519,7 +520,7 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = octoon::AssetBundle::instance()->importAsset(filepaths[i].toStdWString());
+						auto package = AssetLibrary::instance()->importAsset(filepaths[i].toStdWString());
 						if (!package.is_null())
 						{
 							auto ext = std::filesystem::path(filepaths[i].toStdWString()).extension().wstring();
@@ -538,7 +539,7 @@ namespace unreal
 						}
 					}
 
-					octoon::AssetBundle::instance()->saveAssets();
+					AssetLibrary::instance()->saveAssets();
 				}
 			}
 		}

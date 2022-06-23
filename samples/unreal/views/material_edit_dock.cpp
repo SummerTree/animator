@@ -1,4 +1,5 @@
 #include "material_dock.h"
+#include "../utils/asset_library.h"
 #include "../widgets/draggable_list_widget.h"
 
 #include <qfiledialog.h>
@@ -824,7 +825,7 @@ namespace unreal
 		if (materialComponent)
 		{
 			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto material = octoon::AssetBundle::instance()->loadAsset<octoon::Material>(uuid);
+			auto material = AssetLibrary::instance()->loadAsset<octoon::Material>(uuid);
 			if (material)
 			{
 				this->material_->copy(*material->downcast_pointer<octoon::MeshStandardMaterial>());
