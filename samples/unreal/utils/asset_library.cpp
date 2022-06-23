@@ -611,7 +611,8 @@ namespace unreal
 				{
 					for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
 					{
-						if ((*it) == uuid)
+						auto uuid_ = (*it)["uuid"].get<std::string>();
+						if (uuid_ == uuid)
 						{
 							this->hdriDb_.erase(it);
 							break;
@@ -622,7 +623,8 @@ namespace unreal
 				{
 					for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
 					{
-						if ((*it) == uuid)
+						auto uuid_ = (*it)["uuid"].get<std::string>();
+						if (uuid_ == uuid)
 						{
 							this->hdriDb_.erase(it);
 							break;
@@ -634,7 +636,8 @@ namespace unreal
 			{
 				for (auto it = this->motionDb_.begin(); it != this->motionDb_.end(); ++it)
 				{
-					if ((*it) == uuid)
+					auto uuid_ = (*it)["uuid"].get<std::string>();
+					if (uuid_ == uuid)
 					{
 						this->motionDb_.erase(it);
 						break;
@@ -645,7 +648,8 @@ namespace unreal
 			{
 				for (auto it = this->materialDb_.begin(); it != this->materialDb_.end(); ++it)
 				{
-					if ((*it) == uuid)
+					auto uuid_ = (*it)["uuid"].get<std::string>();
+					if (uuid_ == uuid)
 					{
 						this->materialDb_.erase(it);
 						break;
@@ -656,7 +660,8 @@ namespace unreal
 			{
 				for (auto it = this->prefabDb_.begin(); it != this->prefabDb_.end(); ++it)
 				{
-					if ((*it) == uuid)
+					auto uuid_ = (*it)["uuid"].get<std::string>();
+					if (uuid_ == uuid)
 					{
 						this->prefabDb_.erase(it);
 						break;
