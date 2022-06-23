@@ -24,9 +24,10 @@ namespace unreal
 	AssetLibrary::open(const std::filesystem::path& path) noexcept(false)
 	{
 		this->assetPath_ = path;
+		this->assetPath_.make_preferred();
 
 		this->assetDatabase_ = std::make_unique<octoon::AssetDatabase>();
-		this->assetDatabase_->open(path);
+		this->assetDatabase_->open(this->assetPath_);
 
 		auto libraryPath = std::filesystem::path(path).append("Library");
 
@@ -151,13 +152,25 @@ namespace unreal
 		{
 			auto animation = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::Animation>(path);
 			if (animation)
-				return this->importAsset(animation, "Assets/Motions", path.filename());
+			{
+				animation->setName((char*)path.filename().u8string().c_str());
+				return this->importAsset(animation, "Assets/Motions");
+			}
 		}
-		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
+		else if (ext == u8".pmx")
+		{
+			auto modelPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(path.filename().wstring());
+			this->assetDatabase_->importAsset(path, modelPath);
+
+			auto gameObject = this->assetDatabase_->loadAssetAtPath<octoon::GameObject>(path);
+			if (gameObject)
+				return this->importAsset(gameObject, "Assets/Prefabs", modelPath.parent_path());
+		}
+		else if (ext == u8".obj" || ext == u8".fbx")
 		{
 			auto gameObject = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::GameObject>(path);
 			if (gameObject)
-				return this->importAsset(gameObject, "Assets/Models", path.filename());
+				return this->importAsset(gameObject, "Assets/Prefabs", path.filename());
 		}
 		else if (ext == u8".mdl")
 		{
@@ -169,8 +182,10 @@ namespace unreal
 				octoon::MDLLoader loader;
 				loader.load("resource", stream);
 
+				auto materialPath = std::filesystem::path("Assets").append("Materials");
+
 				for (auto& material : loader.getMaterials())
-					items.push_back(this->importAsset(material, "Assets/Materials"));
+					items.push_back(this->importAsset(material, materialPath));
 
 				this->saveAssets();
 
@@ -207,7 +222,7 @@ namespace unreal
 			if (preview)
 			{
 				auto uuid = octoon::make_guid();
-				auto previewPath = std::filesystem::path("Assets/Thumbnails").append(uuid.substr(0, 2)).append(uuid + ".png");
+				auto previewPath = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2)).append(uuid + ".png");
 				this->assetDatabase_->createAsset(preview, previewPath);
 				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
 			}
@@ -230,7 +245,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	AssetLibrary::importAsset(const std::shared_ptr<octoon::Animation>& animation, const std::filesystem::path& relativeFolder, const std::filesystem::path& filename) noexcept(false)
+	AssetLibrary::importAsset(const std::shared_ptr<octoon::Animation>& animation, const std::filesystem::path& relativeFolder) noexcept(false)
 	{
 		auto guid = octoon::make_guid();
 		auto relativePath = std::filesystem::path(relativeFolder).append(guid.substr(0, 2));
@@ -245,7 +260,7 @@ namespace unreal
 			nlohmann::json package;
 			package["uuid"] = guid;
 			package["type"] = animation->type_name();
-			package["name"] = (char*)filename.u8string().c_str();
+			package["name"] = animation->getName();
 			package["data"] = this->assetDatabase_->getAssetGuid(animation);
 			package["visible"] = true;
 
@@ -270,35 +285,36 @@ namespace unreal
 
 		try
 		{
+			auto texturePath = std::filesystem::path("Assets/Textures");
 			auto standardMaterial = material->downcast<octoon::MeshStandardMaterial>();
 			if (standardMaterial->getColorMap() && !this->assetDatabase_->contains(standardMaterial->getColorMap()))
-				this->importAsset(standardMaterial->getColorMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getColorMap(), texturePath);
 			if (standardMaterial->getOpacityMap() && !this->assetDatabase_->contains(standardMaterial->getOpacityMap()))
-				this->importAsset(standardMaterial->getOpacityMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getOpacityMap(), texturePath);
 			if (standardMaterial->getNormalMap() && !this->assetDatabase_->contains(standardMaterial->getNormalMap()))
-				this->importAsset(standardMaterial->getNormalMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getNormalMap(), texturePath);
 			if (standardMaterial->getRoughnessMap() && !this->assetDatabase_->contains(standardMaterial->getRoughnessMap()))
-				this->importAsset(standardMaterial->getRoughnessMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getRoughnessMap(), texturePath);
 			if (standardMaterial->getSpecularMap() && !this->assetDatabase_->contains(standardMaterial->getSpecularMap()))
-				this->importAsset(standardMaterial->getSpecularMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getSpecularMap(), texturePath);
 			if (standardMaterial->getMetalnessMap() && !this->assetDatabase_->contains(standardMaterial->getMetalnessMap()))
-				this->importAsset(standardMaterial->getMetalnessMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getMetalnessMap(), texturePath);
 			if (standardMaterial->getEmissiveMap() && !this->assetDatabase_->contains(standardMaterial->getEmissiveMap()))
-				this->importAsset(standardMaterial->getEmissiveMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getEmissiveMap(), texturePath);
 			if (standardMaterial->getAnisotropyMap() && !this->assetDatabase_->contains(standardMaterial->getAnisotropyMap()))
-				this->importAsset(standardMaterial->getAnisotropyMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getAnisotropyMap(), texturePath);
 			if (standardMaterial->getClearCoatMap() && !this->assetDatabase_->contains(standardMaterial->getClearCoatMap()))
-				this->importAsset(standardMaterial->getClearCoatMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getClearCoatMap(), texturePath);
 			if (standardMaterial->getClearCoatRoughnessMap() && !this->assetDatabase_->contains(standardMaterial->getClearCoatRoughnessMap()))
-				this->importAsset(standardMaterial->getClearCoatRoughnessMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getClearCoatRoughnessMap(), texturePath);
 			if (standardMaterial->getSubsurfaceMap() && !this->assetDatabase_->contains(standardMaterial->getSubsurfaceMap()))
-				this->importAsset(standardMaterial->getSubsurfaceMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getSubsurfaceMap(), texturePath);
 			if (standardMaterial->getSubsurfaceColorMap() && !this->assetDatabase_->contains(standardMaterial->getSubsurfaceColorMap()))
-				this->importAsset(standardMaterial->getSubsurfaceColorMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getSubsurfaceColorMap(), texturePath);
 			if (standardMaterial->getSheenMap() && !this->assetDatabase_->contains(standardMaterial->getSheenMap()))
-				this->importAsset(standardMaterial->getSheenMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getSheenMap(), texturePath);
 			if (standardMaterial->getLightMap() && !this->assetDatabase_->contains(standardMaterial->getLightMap()))
-				this->importAsset(standardMaterial->getLightMap(), "Assets/Textures");
+				this->importAsset(standardMaterial->getLightMap(), texturePath);
 
 			this->assetDatabase_->createAsset(material, std::filesystem::path(relativePath).append(guid + ".mat"));
 
@@ -331,46 +347,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	AssetLibrary::importAsset(const std::shared_ptr<octoon::PMX>& pmx, const std::filesystem::path& relativeFolder) noexcept(false)
-	{
-		auto guid = octoon::make_guid();
-		auto relativePath = std::filesystem::path(relativeFolder).append(guid);
-
-		try
-		{
-			this->assetDatabase_->createAsset(pmx, std::filesystem::path(relativePath).append(guid + ".pmx"));
-
-			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-
-			nlohmann::json package;
-			package["uuid"] = guid;
-			package["visible"] = true;
-			package["type"] = pmx->type_name();
-			package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
-			package["data"] = this->assetDatabase_->getAssetGuid(pmx);
-
-			auto texture = octoon::AssetPreview::instance()->getAssetPreview(*pmx);
-			if (texture)
-			{
-				auto uuid = octoon::make_guid();
-				auto previewPath = std::filesystem::path("Assets/Thumbnails").append(uuid.substr(0, 2)).append(uuid + ".png");
-				this->assetDatabase_->createAsset(texture, previewPath);
-				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
-			}
-
-			return std::move(package);
-		}
-		catch (const std::exception& e)
-		{
-			if (std::filesystem::exists(relativePath))
-				std::filesystem::remove_all(relativePath);
-
-			throw e;
-		}
-	}
-
-	nlohmann::json
-	AssetLibrary::importAsset(const std::shared_ptr<octoon::GameObject>& gameObject, const std::filesystem::path& relativeFolder, const std::filesystem::path& filename) noexcept(false)
+	AssetLibrary::importAsset(const std::shared_ptr<octoon::GameObject>& gameObject, const std::filesystem::path& relativeFolder, const std::filesystem::path& modelPath) noexcept(false)
 	{
 		auto guid = octoon::make_guid();
 		auto relativePath = std::filesystem::path(relativeFolder).append(guid);
@@ -384,7 +361,7 @@ namespace unreal
 			package["visible"] = true;
 			package["type"] = gameObject->type_name();
 			package["name"] = gameObject->getName();
-			package["filename"] = (char*)filename.u8string().c_str();
+			package["model"] = this->assetDatabase_->getAssetGuid(modelPath);
 			package["data"] = this->assetDatabase_->getAssetGuid(gameObject);
 
 			auto texture = octoon::AssetPreview::instance()->getAssetPreview(gameObject);
@@ -600,6 +577,14 @@ namespace unreal
 
 		if (package.contains("preview"))
 			deleteAsset(package["preview"].get<std::string>());
+
+		if (package.contains("model"))
+		{
+			auto uuid = package["model"].get<std::string>();
+			auto folderPath = this->getAssetPath(uuid);
+			if (this->assetDatabase_)
+				this->assetDatabase_->deleteFolder(folderPath);
+		}
 
 		if (package.contains("type"))
 		{

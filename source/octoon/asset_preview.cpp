@@ -81,8 +81,6 @@ namespace octoon
 			auto ratio = height / (float)width;
 			return std::make_shared<Texture>(texture->resize(256, std::uint32_t(256 * ratio)));
 		}
-
-		return nullptr;
 	}
 
 	std::shared_ptr<Texture>

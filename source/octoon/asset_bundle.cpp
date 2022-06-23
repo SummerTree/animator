@@ -185,48 +185,6 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::importAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& relativeFolder) noexcept(false)
-	{
-		auto uuid = make_guid();
-		auto relativePath = std::filesystem::path(relativeFolder).append(uuid);
-
-		try
-		{
-			this->assetDatabase_->createAsset(pmx, std::filesystem::path(relativePath).append(uuid + ".pmx"));
-
-			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-
-			auto writePreview = [this](const PMX& pmx, const std::filesystem::path& outputPath)
-			{
-				auto texture = AssetPreview::instance()->getAssetPreview(pmx);
-				auto previewPath = std::filesystem::path(outputPath).append(make_guid() + ".png");
-				this->assetDatabase_->createAsset(texture, previewPath);
-				return previewPath;
-			};
-
-			nlohmann::json package;
-			package["uuid"] = uuid;
-			package["visible"] = true;
-			package["type"] = pmx->type_name();
-			package["name"] = cv.to_bytes(pmx->description.japanModelName.data());
-			package["data"] = this->assetDatabase_->getAssetGuid(pmx);
-			package["preview"] = (char*)writePreview(*pmx, relativePath).u8string().c_str();
-
-			this->packageList_[uuid] = package;
-			this->assetDatabase_->saveAssets();
-
-			return std::move(package);
-		}
-		catch (const std::exception& e)
-		{
-			if (std::filesystem::exists(relativePath))
-				std::filesystem::remove_all(relativePath);
-
-			throw e;
-		}
-	}
-
-	nlohmann::json
 	AssetBundle::importAsset(const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& relativeFolder) noexcept(false)
 	{
 		auto uuid = make_guid();

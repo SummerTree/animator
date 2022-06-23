@@ -27,7 +27,6 @@ namespace octoon
 		nlohmann::json importAsset(const std::shared_ptr<Animation>& animation, const std::filesystem::path& relativeFolder) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<Material>& material, const std::filesystem::path& relativeFolder) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<GameObject>& gameObject, const std::filesystem::path& relativeFolder) noexcept(false);
-		nlohmann::json importAsset(const std::shared_ptr<PMX>& pmx, const std::filesystem::path& relativeFolder) noexcept(false);
 
 		bool hasPackage(const std::string& uuid) noexcept;
 
