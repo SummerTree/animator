@@ -35,7 +35,7 @@ namespace unreal
 		splitLine->setFrameShape(QFrame::VLine);
 		splitLine->setFrameShadow(QFrame::Plain);
 		splitLine->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-		splitLine->setContentsMargins(0, 8, 0, 8);
+		splitLine->setContentsMargins(0, 0, 0, 0);
 
 		vlayout = new QVBoxLayout(widget);
 		vlayout->addWidget(englishName);
