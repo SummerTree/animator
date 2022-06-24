@@ -283,43 +283,29 @@ namespace unreal
 		try
 		{
 			auto texturePath = std::filesystem::path("Assets/Textures");
-			auto standardMaterial = material->downcast<octoon::MeshStandardMaterial>();
-			if (standardMaterial->getColorMap() && !this->assetDatabase_->contains(standardMaterial->getColorMap()))
-				this->importAsset(standardMaterial->getColorMap(), texturePath);
-			if (standardMaterial->getOpacityMap() && !this->assetDatabase_->contains(standardMaterial->getOpacityMap()))
-				this->importAsset(standardMaterial->getOpacityMap(), texturePath);
-			if (standardMaterial->getNormalMap() && !this->assetDatabase_->contains(standardMaterial->getNormalMap()))
-				this->importAsset(standardMaterial->getNormalMap(), texturePath);
-			if (standardMaterial->getRoughnessMap() && !this->assetDatabase_->contains(standardMaterial->getRoughnessMap()))
-				this->importAsset(standardMaterial->getRoughnessMap(), texturePath);
-			if (standardMaterial->getSpecularMap() && !this->assetDatabase_->contains(standardMaterial->getSpecularMap()))
-				this->importAsset(standardMaterial->getSpecularMap(), texturePath);
-			if (standardMaterial->getMetalnessMap() && !this->assetDatabase_->contains(standardMaterial->getMetalnessMap()))
-				this->importAsset(standardMaterial->getMetalnessMap(), texturePath);
-			if (standardMaterial->getEmissiveMap() && !this->assetDatabase_->contains(standardMaterial->getEmissiveMap()))
-				this->importAsset(standardMaterial->getEmissiveMap(), texturePath);
-			if (standardMaterial->getAnisotropyMap() && !this->assetDatabase_->contains(standardMaterial->getAnisotropyMap()))
-				this->importAsset(standardMaterial->getAnisotropyMap(), texturePath);
-			if (standardMaterial->getClearCoatMap() && !this->assetDatabase_->contains(standardMaterial->getClearCoatMap()))
-				this->importAsset(standardMaterial->getClearCoatMap(), texturePath);
-			if (standardMaterial->getClearCoatRoughnessMap() && !this->assetDatabase_->contains(standardMaterial->getClearCoatRoughnessMap()))
-				this->importAsset(standardMaterial->getClearCoatRoughnessMap(), texturePath);
-			if (standardMaterial->getSubsurfaceMap() && !this->assetDatabase_->contains(standardMaterial->getSubsurfaceMap()))
-				this->importAsset(standardMaterial->getSubsurfaceMap(), texturePath);
-			if (standardMaterial->getSubsurfaceColorMap() && !this->assetDatabase_->contains(standardMaterial->getSubsurfaceColorMap()))
-				this->importAsset(standardMaterial->getSubsurfaceColorMap(), texturePath);
-			if (standardMaterial->getSheenMap() && !this->assetDatabase_->contains(standardMaterial->getSheenMap()))
-				this->importAsset(standardMaterial->getSheenMap(), texturePath);
-			if (standardMaterial->getLightMap() && !this->assetDatabase_->contains(standardMaterial->getLightMap()))
-				this->importAsset(standardMaterial->getLightMap(), texturePath);
+			auto materialPath = std::filesystem::path(relativePath).append(guid + ".mat");
 
-			this->assetDatabase_->createAsset(material, std::filesystem::path(relativePath).append(guid + ".mat"));
+			for (auto& it : material->getMaterialParams())
+			{
+				switch (it.type)
+				{
+				case octoon::PropertyTypeInfo::PropertyTypeInfoTexture:
+				{
+					auto texture = material->get<std::shared_ptr<octoon::Texture>>(it.key);
+					if (texture && !this->assetDatabase_->contains(texture))
+						this->importAsset(texture, texturePath);
+				}
+				break;
+				}
+			}
+
+			this->assetDatabase_->createAsset(material, materialPath);
 
 			nlohmann::json package;
 			package["uuid"] = guid;
 			package["type"] = material->type_name();
 			package["name"] = material->getName();
-			package["data"] = this->assetDatabase_->getAssetGuid(material);
+			package["data"] = this->assetDatabase_->getAssetGuid(materialPath);
 			package["visible"] = true;
 
 			auto preview = octoon::AssetPreview::instance()->getAssetPreview(material);
