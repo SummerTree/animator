@@ -326,8 +326,8 @@ namespace octoon
 	MeshStandardMaterial::setColorMap(const std::shared_ptr<Texture>& map) noexcept
 	{
 		this->colorMap_ = map;
-		this->set("map", map);
-		this->set("mapEnable", map ? true : false);
+		this->set("colorMap", map);
+		this->set("colorMapEnable", map ? true : false);
 	}
 
 	void

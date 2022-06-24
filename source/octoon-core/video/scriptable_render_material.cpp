@@ -459,27 +459,27 @@ static const char* uv2_vertex = R"(
 static const char* uv2_pars_fragment = R"(
 	in vec2 vUv2;
 )";
-static const char* map_fragment = R"(
-#ifdef USE_MAP
-	vec4 texelColor = texture2D( map, vUv );
+static const char* colormap_pars_fragment = R"(
+#ifdef USE_COLORMAP
+	uniform sampler2D colorMap;
+#endif
+)";
+static const char* colormap_fragment = R"(
+#ifdef USE_COLORMAP
+	vec4 texelColor = texture2D( colorMap, vUv );
 	texelColor = GammaToLinear( texelColor, gamma);
 	diffuseColor *= texelColor;
 #endif
 )";
-static const char* map_pars_fragment = R"(
-#ifdef USE_MAP
-	uniform sampler2D map;
-#endif
-)";
-static const char* map_particle_pars_fragment = R"(
-#ifdef USE_MAP
+static const char* colormap_particle_pars_fragment = R"(
+#ifdef USE_COLORMAP
 	uniform vec4 offsetRepeat;
-	uniform sampler2D map;
+	uniform sampler2D colorMap;
 #endif
 )";
-static const char* map_particle_fragment = R"(
-#ifdef USE_MAP
-	vec4 mapTexel = texture2D( map, vec2( gl_PointCoord.x, 1.0 - gl_PointCoord.y ) * offsetRepeat.zw + offsetRepeat.xy );
+static const char* colormap_particle_fragment = R"(
+#ifdef USE_COLORMAP
+	vec4 mapTexel = texture2D( colorMap, vec2( gl_PointCoord.x, 1.0 - gl_PointCoord.y ) * offsetRepeat.zw + offsetRepeat.xy );
 	diffuseColor *= GammaToLinear(mapTexel);
 #endif
 )";
@@ -2109,10 +2109,10 @@ static std::unordered_map<std::string, std::string_view> ShaderChunk = {
 	{"begin_vertex", begin_vertex },
 	{"project_vertex", project_vertex },
 	{"worldpos_vertex", worldpos_vertex },
-	{"map_fragment", map_fragment },
-	{"map_pars_fragment", map_pars_fragment },
-	{"map_particle_pars_fragment", map_particle_pars_fragment },
-	{"map_particle_fragment", map_particle_fragment },
+	{"map_fragment", colormap_fragment },
+	{"map_pars_fragment", colormap_pars_fragment },
+	{"map_particle_pars_fragment", colormap_particle_pars_fragment },
+	{"map_particle_fragment", colormap_particle_fragment },
 	{"premultiplied_alpha_fragment", premultiplied_alpha_fragment },
 	{"tonemapping_pars_fragment", tonemapping_pars_fragment },
 	{"tonemapping_fragment", tonemapping_fragment },
@@ -2357,7 +2357,7 @@ namespace octoon
 		{
 			auto standard = material->downcast<MeshStandardMaterial>();
 			if (standard->getColorMap())
-				fragmentShader += "#define USE_MAP\n";
+				fragmentShader += "#define USE_COLORMAP\n";
 			if (standard->getOpacityMap())
 				fragmentShader += "#define USE_OPACITYMAP\n";			
 			if (standard->getNormalMap())
@@ -2382,8 +2382,8 @@ namespace octoon
 		else
 		{
 			std::shared_ptr<Texture> texture;
-			if (material->get("map", texture) && texture)
-				fragmentShader += "#define USE_MAP\n";
+			if (material->get("colorMap", texture) && texture)
+				fragmentShader += "#define USE_COLORMAP\n";
 			if (material->get("opacityMap", texture) && texture)
 				fragmentShader += "#define USE_OPACITYMAP\n";
 		}

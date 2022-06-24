@@ -523,50 +523,50 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="313"/>
-        <location filename="../views/main_dock.cpp" line="341"/>
-        <location filename="../views/main_dock.cpp" line="369"/>
-        <location filename="../views/main_dock.cpp" line="397"/>
-        <location filename="../views/main_dock.cpp" line="424"/>
-        <location filename="../views/main_dock.cpp" line="451"/>
-        <location filename="../views/main_dock.cpp" line="478"/>
-        <location filename="../views/main_dock.cpp" line="505"/>
-        <location filename="../views/main_dock.cpp" line="532"/>
-        <location filename="../views/main_dock.cpp" line="594"/>
-        <location filename="../views/main_dock.cpp" line="623"/>
-        <location filename="../views/main_dock.cpp" line="696"/>
-        <location filename="../views/main_dock.cpp" line="723"/>
+        <location filename="../views/main_dock.cpp" line="311"/>
+        <location filename="../views/main_dock.cpp" line="339"/>
+        <location filename="../views/main_dock.cpp" line="367"/>
+        <location filename="../views/main_dock.cpp" line="395"/>
+        <location filename="../views/main_dock.cpp" line="422"/>
+        <location filename="../views/main_dock.cpp" line="449"/>
+        <location filename="../views/main_dock.cpp" line="476"/>
+        <location filename="../views/main_dock.cpp" line="503"/>
+        <location filename="../views/main_dock.cpp" line="530"/>
+        <location filename="../views/main_dock.cpp" line="592"/>
+        <location filename="../views/main_dock.cpp" line="621"/>
+        <location filename="../views/main_dock.cpp" line="694"/>
+        <location filename="../views/main_dock.cpp" line="721"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="545"/>
+        <location filename="../views/main_dock.cpp" line="543"/>
         <source>Import Resource</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="545"/>
+        <location filename="../views/main_dock.cpp" line="543"/>
         <source>All Files(*.pmx *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="548"/>
-        <location filename="../views/main_dock.cpp" line="549"/>
+        <location filename="../views/main_dock.cpp" line="546"/>
+        <location filename="../views/main_dock.cpp" line="547"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="548"/>
+        <location filename="../views/main_dock.cpp" line="546"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="594"/>
+        <location filename="../views/main_dock.cpp" line="592"/>
         <source>Failed to import resource: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="697"/>
+        <location filename="../views/main_dock.cpp" line="695"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
