@@ -54,13 +54,15 @@ namespace unreal
 
 		for (auto& it : this->objects.getValue())
 		{
-			if (!octoon::AssetDatabase::instance()->contains(it))
+			if (octoon::AssetDatabase::instance()->contains(it))
+				sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(it));
+			else
 			{
 				auto uuid = octoon::make_guid();
-				octoon::AssetDatabase::instance()->createAsset(it, std::filesystem::path("Assets/Models").append(uuid).append(uuid + ".prefab"));
+				auto path = std::filesystem::path("Assets/Models").append(uuid).append(uuid + ".prefab");
+				octoon::AssetDatabase::instance()->createAsset(it, path);
+				sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(path));
 			}
-
-			sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(it));
 		}
 
 		writer["scene"] = std::move(sceneJson);

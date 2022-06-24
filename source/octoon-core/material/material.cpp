@@ -394,6 +394,27 @@ namespace octoon
 	}
 
 	bool
+	Material::get(std::string_view key, bool& value) const noexcept
+	{
+		assert(key.size());
+
+		MaterialParam prop;
+		if (this->get(key, prop))
+		{
+			if (prop.type == PropertyTypeInfoBool)
+			{
+				if (prop.length == sizeof(int))
+				{
+					std::memcpy(&value, prop.data, prop.length);
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	bool
 	Material::get(std::string_view key, int& value) const noexcept
 	{
 		assert(key.size());

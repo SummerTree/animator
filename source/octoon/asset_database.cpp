@@ -225,6 +225,8 @@ namespace octoon
 
 		try
 		{
+			this->createFolder(relativePath.parent_path());
+
 			nlohmann::json mat;
 			mat["type"] = material->type_name();
 			mat["name"] = material->getName();
@@ -248,89 +250,53 @@ namespace octoon
 			mat["stencilEnable"] = material->getStencilEnable();
 			mat["scissorTestEnable"] = material->getScissorTestEnable();
 
-			auto standardMaterial = material->downcast<MeshStandardMaterial>();
-			mat["opacity"] = standardMaterial->getOpacity();
-			mat["smoothness"] = standardMaterial->getSmoothness();
-			mat["roughness"] = standardMaterial->getRoughness();
-			mat["metalness"] = standardMaterial->getMetalness();
-			mat["anisotropy"] = standardMaterial->getAnisotropy();
-			mat["sheen"] = standardMaterial->getSheen();
-			mat["specular"] = standardMaterial->getSpecular();
-			mat["refractionRatio"] = standardMaterial->getRefractionRatio();
-			mat["clearCoat"] = standardMaterial->getClearCoat();
-			mat["clearCoatRoughness"] = standardMaterial->getClearCoatRoughness();
-			mat["subsurface"] = standardMaterial->getSubsurface();
-			mat["reflectionRatio"] = standardMaterial->getReflectionRatio();
-			mat["transmission"] = standardMaterial->getTransmission();
-			mat["lightMapIntensity"] = standardMaterial->getLightMapIntensity();
-			mat["emissiveIntensity"] = standardMaterial->getEmissiveIntensity();
-			mat["gamma"] = standardMaterial->getGamma();
-			mat["offset"] = standardMaterial->getOffset().to_array();
-			mat["repeat"] = standardMaterial->getRepeat().to_array();
-			mat["normalScale"] = standardMaterial->getNormalScale().to_array();
-			mat["color"] = standardMaterial->getColor().to_array();
-			mat["emissive"] = standardMaterial->getEmissive().to_array();
-			mat["subsurfaceColor"] = standardMaterial->getSubsurfaceColor().to_array();
-
-			if (standardMaterial->getColorMap() && !this->contains(standardMaterial->getColorMap()))
-				this->createAsset(standardMaterial->getColorMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getOpacityMap() && !this->contains(standardMaterial->getOpacityMap()))
-				this->createAsset(standardMaterial->getOpacityMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getNormalMap() && !this->contains(standardMaterial->getNormalMap()))
-				this->createAsset(standardMaterial->getNormalMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getRoughnessMap() && !this->contains(standardMaterial->getRoughnessMap()))
-				this->createAsset(standardMaterial->getRoughnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSpecularMap() && !this->contains(standardMaterial->getSpecularMap()))
-				this->createAsset(standardMaterial->getSpecularMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getMetalnessMap() && !this->contains(standardMaterial->getMetalnessMap()))
-				this->createAsset(standardMaterial->getMetalnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getEmissiveMap() && !this->contains(standardMaterial->getEmissiveMap()))
-				this->createAsset(standardMaterial->getEmissiveMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getAnisotropyMap() && !this->contains(standardMaterial->getAnisotropyMap()))
-				this->createAsset(standardMaterial->getAnisotropyMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getClearCoatMap() && !this->contains(standardMaterial->getClearCoatMap()))
-				this->createAsset(standardMaterial->getClearCoatMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getClearCoatRoughnessMap() && !this->contains(standardMaterial->getClearCoatRoughnessMap()))
-				this->createAsset(standardMaterial->getClearCoatRoughnessMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSubsurfaceMap() && !this->contains(standardMaterial->getSubsurfaceMap()))
-				this->createAsset(standardMaterial->getSubsurfaceMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSubsurfaceColorMap() && !this->contains(standardMaterial->getSubsurfaceColorMap()))
-				this->createAsset(standardMaterial->getSubsurfaceColorMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getSheenMap() && !this->contains(standardMaterial->getSheenMap()))
-				this->createAsset(standardMaterial->getSheenMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-			if (standardMaterial->getLightMap() && !this->contains(standardMaterial->getLightMap()))
-				this->createAsset(standardMaterial->getLightMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
-
-			if (standardMaterial->getColorMap())
-				mat["colorMap"] = this->getAssetGuid(standardMaterial->getColorMap());
-			if (standardMaterial->getOpacityMap())
-				mat["opacityMap"] = this->getAssetGuid(standardMaterial->getOpacityMap());
-			if (standardMaterial->getNormalMap())
-				mat["normalMap"] = this->getAssetGuid(standardMaterial->getNormalMap());
-			if (standardMaterial->getRoughnessMap())
-				mat["roughnessMap"] = this->getAssetGuid(standardMaterial->getRoughnessMap());
-			if (standardMaterial->getSpecularMap())
-				mat["specularMap"] = this->getAssetGuid(standardMaterial->getSpecularMap());
-			if (standardMaterial->getMetalnessMap())
-				mat["metalnessMap"] = this->getAssetGuid(standardMaterial->getMetalnessMap());
-			if (standardMaterial->getEmissiveMap())
-				mat["emissiveMap"] = this->getAssetGuid(standardMaterial->getEmissiveMap());
-			if (standardMaterial->getAnisotropyMap())
-				mat["anisotropyMap"] = this->getAssetGuid(standardMaterial->getAnisotropyMap());
-			if (standardMaterial->getClearCoatMap())
-				mat["clearCoatMap"] = this->getAssetGuid(standardMaterial->getClearCoatMap());
-			if (standardMaterial->getClearCoatRoughnessMap())
-				mat["clearCoatRoughnessMap"] = this->getAssetGuid(standardMaterial->getClearCoatRoughnessMap());
-			if (standardMaterial->getSubsurfaceMap())
-				mat["subsurfaceMap"] = this->getAssetGuid(standardMaterial->getSubsurfaceMap());
-			if (standardMaterial->getSubsurfaceColorMap())
-				mat["subsurfaceColorMap"] = this->getAssetGuid(standardMaterial->getSubsurfaceColorMap());
-			if (standardMaterial->getSheenMap())
-				mat["sheenMap"] = this->getAssetGuid(standardMaterial->getSheenMap());
-			if (standardMaterial->getLightMap())
-				mat["lightMap"] = this->getAssetGuid(standardMaterial->getLightMap());
-
-			this->createFolder(relativePath.parent_path());
+			for (auto& it : material->getMaterialParams())
+			{
+				switch (it.type)
+				{
+				case PropertyTypeInfo::PropertyTypeInfoFloat:
+					mat[it.key] = material->get<math::float1>(it.key);
+				break;
+				case PropertyTypeInfo::PropertyTypeInfoFloat2:
+					mat[it.key] = material->get<math::float2>(it.key).to_array();
+				break;
+				case PropertyTypeInfo::PropertyTypeInfoFloat3:
+					mat[it.key] = material->get<math::float3>(it.key).to_array();
+				break;
+				case PropertyTypeInfo::PropertyTypeInfoFloat4:
+					mat[it.key] = material->get<math::float4>(it.key).to_array();
+				break;
+				case PropertyTypeInfo::PropertyTypeInfoString:
+					mat[it.key] = material->get<std::string>(it.key);
+				break;
+				case PropertyTypeInfo::PropertyTypeInfoBool:
+					mat[it.key] = material->get<bool>(it.key);
+				break;
+				case PropertyTypeInfo::PropertyTypeInfoInt:
+					mat[it.key] = material->get<int>(it.key);
+				break;
+				case PropertyTypeInfo::PropertyTypeInfoTexture:
+				{
+					auto texture = material->get<std::shared_ptr<Texture>>(it.key);
+					if (texture)
+					{
+						if (!this->contains(texture))
+						{
+							auto texturePath = std::filesystem::path(parentPath).append(make_guid() + ".png");
+							this->createAsset(texture, texturePath);
+							mat[it.key] = this->getAssetGuid(texturePath);
+						}
+						else
+						{
+							mat[it.key] = this->getAssetGuid(texture);
+						}						
+					}
+				}
+				break;
+				default:
+					break;
+				}
+			}
 
 			std::ofstream ifs(assetPath, std::ios_base::binary);
 			if (ifs)

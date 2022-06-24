@@ -60,10 +60,13 @@ namespace unreal
 
 		if (this->animation.getValue() && !this->animation.getValue()->clips.empty())
 		{
-			if (!octoon::AssetDatabase::instance()->contains(this->animation.getValue()))
+			if (octoon::AssetDatabase::instance()->contains(this->animation.getValue()))
+				writer["animation"] = octoon::AssetDatabase::instance()->getAssetGuid(this->animation.getValue());
+			else
+			{
 				octoon::AssetDatabase::instance()->createAsset(this->animation.getValue(), "Assets/Camera/Camera.vmd");
-
-			writer["animation"] = octoon::AssetDatabase::instance()->getAssetGuid(this->animation.getValue());
+				writer["animation"] = octoon::AssetDatabase::instance()->getAssetGuid("Assets/Camera/Camera.vmd");
+			}			
 		}
 	}
 

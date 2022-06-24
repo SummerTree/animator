@@ -155,6 +155,7 @@ namespace octoon
 		bool set(std::string_view key, const std::shared_ptr<GraphicsTexture>& value) noexcept;
 		bool set(const MaterialParam& value) noexcept;
 
+		bool get(std::string_view key, bool& value) const noexcept;
 		bool get(std::string_view key, int& value) const noexcept;
 		bool get(std::string_view key, float& value) const noexcept;
 		bool get(std::string_view key, math::Vector2& value) const noexcept;
@@ -164,6 +165,14 @@ namespace octoon
 		bool get(std::string_view key, std::shared_ptr<Texture>& value) const noexcept;
 		bool get(std::string_view key, std::shared_ptr<GraphicsTexture>& value) const noexcept;
 		bool get(std::string_view key, MaterialParam& out) const noexcept;
+
+		template<typename T>
+		T get(std::string_view key) const noexcept
+		{
+			T value;
+			this->get(key, value);
+			return value;
+		}
 
 		void setDirty(bool dirty) noexcept;
 		bool isDirty() const noexcept;
