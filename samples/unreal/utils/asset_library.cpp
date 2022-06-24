@@ -140,7 +140,10 @@ namespace unreal
 		{
 			auto texture = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::Texture>(path);
 			if (texture)
+			{
+				texture->setMipLevel(8);
 				return this->importAsset(texture, "Assets/Textures");
+			}
 		}
 		if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{

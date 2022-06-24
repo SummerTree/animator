@@ -1,4 +1,5 @@
 #include "material_importer.h"
+#include <octoon/runtime/guid.h>
 #include <octoon/asset_database.h>
 
 namespace unreal
@@ -51,18 +52,18 @@ namespace unreal
 	{
 		if (!assetGuidList_.contains(mat))
 		{
+			auto guid = octoon::make_guid();
 			auto standard = mat->downcast_pointer<octoon::MeshStandardMaterial>();
-			auto uuid = octoon::AssetDatabase::instance()->getAssetGuid(mat);
 
 			nlohmann::json package;
-			package["uuid"] = uuid;
+			package["uuid"] = guid;
 			package["name"] = mat->getName();
 			package["color"] = standard->getColor().to_array();
 
-			this->sceneList_.push_back(uuid);
-			this->materialMap_[uuid] = mat;
-			this->assetGuidList_[mat] = uuid;
-			this->packageList_[uuid] = package;
+			this->sceneList_.push_back(guid);
+			this->materialMap_[guid] = mat;
+			this->assetGuidList_[mat] = guid;
+			this->packageList_[guid] = package;
 
 			return true;
 		}

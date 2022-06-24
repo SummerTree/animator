@@ -49,7 +49,7 @@ namespace octoon
 		if (!std::filesystem::exists(assetPath_))
 			std::filesystem::create_directories(assetPath_);
 
-		std::ifstream ifs(std::filesystem::path(this->assetPath_).append("Library").append("AssetDb.json"), std::ios_base::binary);
+		std::ifstream ifs(std::filesystem::path(this->assetPath_).append("Library/AssetDb.json"), std::ios_base::binary);
 		if (ifs)
 		{
 			try
@@ -81,7 +81,7 @@ namespace octoon
 	AssetDatabase::importAsset(const std::filesystem::path& diskPath, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(!diskPath.empty());
-		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
+		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
 
 		if (diskPath.empty() || !std::filesystem::exists(diskPath))
 			return;
@@ -138,7 +138,7 @@ namespace octoon
 	AssetDatabase::createAsset(const std::shared_ptr<const Texture>& texture, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(texture);
-		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
+		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
 
 		auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 		auto assetPath = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
@@ -187,7 +187,7 @@ namespace octoon
 	AssetDatabase::createAsset(const std::shared_ptr<const Animation>& animation, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(animation);
-		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
+		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
 
 		auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 		auto assetPath = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
@@ -220,7 +220,7 @@ namespace octoon
 	AssetDatabase::createAsset(const std::shared_ptr<const Material>& material, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(material);
-		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
+		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
 
 		auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 		auto parentPath = relativePath.parent_path();
@@ -376,7 +376,7 @@ namespace octoon
 	AssetDatabase::createAsset(const std::shared_ptr<const GameObject>& gameObject, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(gameObject);
-		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
+		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
 
 		auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 		auto rootPath = relativePath.parent_path();
@@ -514,23 +514,21 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::deleteAsset(const std::filesystem::path& relativePath_) noexcept(false)
+	AssetDatabase::deleteAsset(const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!relativePath_.empty() && relativePath_.compare("Assets") > 0);
+		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
 
-		if (relativePath_.empty() || relativePath_.compare("Assets") < 0)
-			return;
-
-		auto relativePath = std::filesystem::path(relativePath_).make_preferred();
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		if (std::filesystem::is_directory(path))
 			std::filesystem::remove_all(path);
 		else
 		{
 			auto uuid = this->getAssetGuid(relativePath);
-
-			assetGuidList_.erase(assetGuidList_.find(relativePath));
-			assetPathList_.erase(assetPathList_.find(uuid));
+			if (!uuid.empty())
+			{
+				assetGuidList_.erase(assetGuidList_.find(relativePath));
+				assetPathList_.erase(assetPathList_.find(uuid));
+			}
 
 			if (std::filesystem::exists(path))
 				std::filesystem::remove(path);
@@ -647,6 +645,7 @@ namespace octoon
 	std::string
 	AssetDatabase::getAssetGuid(const std::filesystem::path& relativePath) const noexcept
 	{
+		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
 		auto it = assetGuidList_.find(relativePath);
 		if (it != assetGuidList_.end())
 			return (*it).second;
