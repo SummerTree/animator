@@ -97,16 +97,37 @@ namespace octoon
 	void
 	MeshRendererComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
 	{
+		GameComponent::load(json, assetDatabase);
+
 		if (json.contains("materials"))
 		{
 			std::vector<std::shared_ptr<octoon::Material>> materials;
 
 			for (auto& it : json["materials"])
 			{
-				auto data = it.get<nlohmann::json::string_t>();
-				auto material = assetDatabase.loadAssetAtPath<octoon::Material>(assetDatabase.getAssetPath(data));
+				if (it.is_object())
+				{
+					auto guid = it["guid"].get<std::string>();
+					auto index = it["index"].get<int>();
 
-				materials.push_back(std::move(material));
+					auto assetPath = assetDatabase.getAssetPath(guid);
+					if (!assetPath.empty())
+					{
+						auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+						if (gameObject)
+						{
+							auto meshRenderer = gameObject->getComponent<MeshRendererComponent>();
+							if (meshRenderer)
+								materials.push_back(meshRenderer->getMaterial(index));
+						}
+					}
+				}
+				else
+				{
+					auto data = it.get<nlohmann::json::string_t>();
+					auto material = assetDatabase.loadAssetAtPath<octoon::Material>(assetDatabase.getAssetPath(data));
+					materials.push_back(std::move(material));
+				}
 			}
 
 			this->setMaterials(std::move(materials));
@@ -116,14 +137,34 @@ namespace octoon
 	void
 	MeshRendererComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
 	{
+		GameComponent::save(json, assetDatabase);
+
+		auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
+
 		auto& materials = this->getMaterials();
 
 		for (std::size_t i = 0; i < materials.size(); i++)
 		{
 			if (!assetDatabase.contains(materials[i]))
-				assetDatabase.createAsset(materials[i], std::filesystem::path("Assets/Materials").append(make_guid() + ".mat"));
-
-			json["materials"].push_back(assetDatabase.getAssetGuid(materials[i]));
+			{
+				if (guid.empty())
+				{
+					auto materialPath = std::filesystem::path("Assets/Materials").append(make_guid() + ".mat");
+					assetDatabase.createAsset(materials[i], materialPath);
+					json["materials"].push_back(assetDatabase.getAssetGuid(materialPath));
+				}
+				else
+				{
+					nlohmann::json asset;
+					asset["guid"] = guid;
+					asset["index"] = i;
+					json["materials"].push_back(std::move(asset));
+				}
+			}
+			else
+			{
+				json["materials"].push_back(assetDatabase.getAssetGuid(materials[i]));
+			}
 		}
 	}
 
