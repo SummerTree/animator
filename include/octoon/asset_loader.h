@@ -35,7 +35,7 @@ namespace octoon
 		AssetLoader& operator=(const AssetLoader&) = delete;
 
 	private:
-		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> assetPathList_;
+		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> pathList_;
 	};
 }
 

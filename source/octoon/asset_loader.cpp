@@ -6,7 +6,6 @@
 #include <octoon/fbx_loader.h>
 #include <octoon/texture/texture.h>
 #include <octoon/mesh_animation_component.h>
-#include <octoon/runtime/md5.h>
 
 namespace octoon
 {
@@ -23,8 +22,8 @@ namespace octoon
 	std::filesystem::path
 	AssetLoader::getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept
 	{
-		auto it = assetPathList_.find(asset);
-		if (it != assetPathList_.end())
+		auto it = pathList_.find(asset);
+		if (it != pathList_.end())
 			return (*it).second;
 		return std::filesystem::path();
 	}
@@ -53,8 +52,8 @@ namespace octoon
 				if (motion->getName().empty())
 					motion->setName((char*)path.filename().u8string().c_str());
 
-				assetPathList_[motion] = path;
-				return motion;
+				pathList_[motion] = path;
+				return std::move(motion);
 			}
 		}
 		else if (ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
@@ -63,8 +62,8 @@ namespace octoon
 			if (texture->load(path))
 			{
 				texture->setName((char*)path.filename().u8string().c_str());
-				assetPathList_[texture] = path;
-				return texture;
+				pathList_[texture] = path;
+				return std::move(texture);
 			}
 		}
 		else if (ext == u8".pmx")
@@ -72,8 +71,8 @@ namespace octoon
 			auto model = PMXLoader::load(path, octoon::PMXLoadFlagBits::AllBit);
 			if (model)
 			{
-				assetPathList_[model] = path;
-				return model;
+				pathList_[model] = path;
+				return std::move(model);
 			}
 		}
 		else if (ext == u8".obj")
@@ -81,8 +80,8 @@ namespace octoon
 			auto model = OBJLoader::load(path);
 			if (model)
 			{
-				assetPathList_[model] = path;
-				return model;
+				pathList_[model] = path;
+				return std::move(model);
 			}
 		}
 		else if (ext == u8".fbx")
@@ -90,8 +89,8 @@ namespace octoon
 			auto model = FBXLoader::load(path);
 			if (model)
 			{
-				assetPathList_[model] = path;
-				return model;
+				pathList_[model] = path;
+				return std::move(model);
 			}
 		}
 		else if (ext == u8".abc")
@@ -101,8 +100,8 @@ namespace octoon
 			{
 				auto alembic = model->addComponent<MeshAnimationComponent>();
 				alembic->setFilePath(path);
-				assetPathList_[model] = path;
-				return model;
+				pathList_[model] = path;
+				return std::move(model);
 			}
 		}
 
