@@ -212,7 +212,7 @@ namespace unreal
 			package["hdr"] = hdr;
 			package["type"] = texture->type_name();
 			package["name"] = texture->getName();
-			package["data"] = this->assetDatabase_->getAssetGuid(texture);
+			package["data"] = this->assetDatabase_->getAssetGuid(outputPath);
 			package["visible"] = true;
 
 			auto preview = octoon::AssetPreview::instance()->getAssetPreview(texture);
@@ -258,7 +258,7 @@ namespace unreal
 			package["uuid"] = guid;
 			package["type"] = animation->type_name();
 			package["name"] = animation->getName();
-			package["data"] = this->assetDatabase_->getAssetGuid(animation);
+			package["data"] = this->assetDatabase_->getAssetGuid(outputPath);
 			package["visible"] = true;
 
 			this->motionDb_.push_back(package);
@@ -351,7 +351,8 @@ namespace unreal
 
 		try
 		{
-			this->assetDatabase_->createAsset(gameObject, std::filesystem::path(relativePath).append(guid + ".prefab"));
+			auto prefabPath = std::filesystem::path(relativePath).append(guid + ".prefab");
+			this->assetDatabase_->createAsset(gameObject, prefabPath);
 
 			nlohmann::json package;
 			package["uuid"] = guid;
@@ -359,7 +360,7 @@ namespace unreal
 			package["type"] = gameObject->type_name();
 			package["name"] = gameObject->getName();
 			package["model"] = this->assetDatabase_->getAssetGuid(modelPath);
-			package["data"] = this->assetDatabase_->getAssetGuid(gameObject);
+			package["data"] = this->assetDatabase_->getAssetGuid(prefabPath);
 
 			auto texture = octoon::AssetPreview::instance()->getAssetPreview(gameObject);
 			if (texture)
