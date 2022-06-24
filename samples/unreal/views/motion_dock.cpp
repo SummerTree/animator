@@ -228,7 +228,7 @@ namespace unreal
 										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
 								}
 
-								animator->setName(package["path"].get<nlohmann::json::string_t>());
+								animator->setName(package["name"].get<nlohmann::json::string_t>());
 								animator->sample();
 
 								if (smr)

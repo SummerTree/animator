@@ -2,6 +2,7 @@
 #include <octoon/skinned_morph_component.h>
 #include <octoon/skinned_texture_component.h>
 #include <octoon/transform_component.h>
+#include <octoon/asset_database.h>
 #include <omp.h>
 
 namespace octoon
@@ -181,6 +182,42 @@ namespace octoon
 		else
 		{
 			needUpdate_ = true;
+		}
+	}
+
+	void
+	SkinnedMeshRendererComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	{
+		MeshRendererComponent::load(json, assetDatabase);
+
+		if (json.contains("bone"))
+		{
+			auto guid = json["bone"]["guid"].get<std::string>();
+
+			auto assetPath = assetDatabase.getAssetPath(guid);
+			if (!assetPath.empty())
+			{
+				auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+				if (gameObject)
+				{
+					auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
+					if (smr)
+						this->setTransforms(smr->getTransforms());
+				}
+			}
+		}
+	}
+
+	void
+	SkinnedMeshRendererComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	{
+		MeshRendererComponent::save(json, assetDatabase);
+
+		if (!this->getTransforms().empty())
+		{
+			auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
+			if (!guid.empty())
+				json["bone"]["guid"] = guid;
 		}
 	}
 

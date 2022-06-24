@@ -23,25 +23,25 @@ namespace octoon
 		void setTransforms(GameObjects&& transforms) noexcept;
 		const GameObjects& getTransforms() const noexcept;
 
-		void setUpdateWhenOffscreen(bool enable) noexcept;
-		bool getUpdateWhenOffscreen() const noexcept;
-
 		void setAutomaticUpdate(bool enable) noexcept;
-		bool getAutomaticUpdate() noexcept;
-
 		void setClothBlendEnable(bool enable) noexcept;
-		bool getClothBlendEnable() const noexcept;
-
 		void setMorphBlendEnable(bool enable) noexcept;
-		bool getMorphBlendEnable() const noexcept;
-
 		void setTextureBlendEnable(bool enable) noexcept;
+		void setUpdateWhenOffscreen(bool enable) noexcept;
+
+		bool getAutomaticUpdate() noexcept;
+		bool getClothBlendEnable() const noexcept;
+		bool getMorphBlendEnable() const noexcept;
 		bool getTextureBlendEnable() const noexcept;
+		bool getUpdateWhenOffscreen() const noexcept;
 
 		const MeshPtr& getSkinnedMesh() const noexcept;
 
 		void updateMeshData(bool force = false) noexcept;
 		void uploadMeshData(const MeshPtr& mesh) noexcept override;
+
+		void load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false) override;
+		void save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false) override;
 
 		GameComponentPtr clone() const noexcept override;
 
