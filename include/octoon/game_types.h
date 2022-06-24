@@ -17,6 +17,8 @@ namespace octoon
 	class GameObjectManager;
 	class GameComponent;
 
+	class AssetDatabase;
+
 	typedef std::shared_ptr<GameScene> GameScenePtr;
 	typedef std::shared_ptr<GameListener> GameListenerPtr;
 	typedef std::shared_ptr<GameObject> GameObjectPtr;

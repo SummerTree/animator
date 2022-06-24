@@ -1,10 +1,10 @@
 #include <octoon/animator_component.h>
 #include <octoon/transform_component.h>
-#include <octoon/solver_component.h>
-#include <octoon/timer_feature.h>
 #include <octoon/rigidbody_component.h>
-#include <iostream>
-#include <codecvt>
+#include <octoon/skinned_mesh_renderer_component.h>
+#include <octoon/asset_database.h>
+#include <octoon/timer_feature.h>
+#include <octoon/runtime/guid.h>
 
 namespace octoon
 {
@@ -214,6 +214,34 @@ namespace octoon
 	{
 		assert(animation_);
 		return animation_->state;
+	}
+
+	void
+	AnimatorComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	{
+		if (json.contains("data"))
+		{
+			auto data = json["data"].get<nlohmann::json::string_t>();
+			auto animation = assetDatabase.loadAssetAtPath<octoon::Animation>(assetDatabase.getAssetPath(data));
+			this->setAnimation(std::move(animation));
+		}
+
+		if (json.contains("avatar"))
+		{
+			auto avatar = json["avatar"].get<nlohmann::json::number_unsigned_t>();
+			if (avatar == 0)
+				this->setAvatar(this->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+		}
+	}
+
+	void
+	AnimatorComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	{
+		if (!assetDatabase.contains(this->getAnimation()))
+			assetDatabase.createAsset(this->getAnimation(), std::filesystem::path("Assets/Motions").append(make_guid() + ".vmd"));
+
+		json["data"] = assetDatabase.getAssetGuid(this->getAnimation());
+		json["avatar"] = this->getAvatar().empty() ? 1 : 0;
 	}
 
 	GameComponentPtr

@@ -2,6 +2,8 @@
 #include <octoon/transform_component.h>
 #include <octoon/video_feature.h>
 #include <octoon/video/renderer.h>
+#include <octoon/asset_database.h>
+#include <octoon/runtime/guid.h>
 
 namespace octoon
 {
@@ -90,6 +92,48 @@ namespace octoon
 	MeshRendererComponent::getGlobalIllumination() const noexcept
 	{
 		return this->globalIllumination_;
+	}
+
+	void
+	MeshRendererComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	{
+		if (json.contains("materials"))
+		{
+			std::vector<std::shared_ptr<octoon::Material>> materials;
+			materials.resize(json["materials"].size());
+
+			for (auto& it : json["materials"])
+			{
+				if (it.contains("data"))
+				{
+					auto data = it["data"].get<nlohmann::json::string_t>();
+					auto index = it["index"].get<nlohmann::json::number_unsigned_t>();
+					auto material = assetDatabase.loadAssetAtPath<octoon::Material>(assetDatabase.getAssetPath(data));
+
+					materials[index] = std::move(material);
+				}
+			}
+
+			this->setMaterials(std::move(materials));
+		}
+	}
+
+	void
+	MeshRendererComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	{
+		auto& materials = this->getMaterials();
+
+		for (std::size_t i = 0; i < materials.size(); i++)
+		{
+			if (!assetDatabase.contains(materials[i]))
+				assetDatabase.createAsset(materials[i], std::filesystem::path("Assets/Materials").append(make_guid() + ".mat"));
+
+			nlohmann::json materialJson;
+			materialJson["data"] = assetDatabase.getAssetGuid(materials[i]);
+			materialJson["index"] = i;
+
+			json["materials"].push_back(materialJson);
+		}
 	}
 
 	GameComponentPtr

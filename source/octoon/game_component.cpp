@@ -303,7 +303,7 @@ namespace octoon
 	}
 
 	void
-	GameComponent::load(const nlohmann::json& json) noexcept(false)
+	GameComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
 	{
 		if (json.contains("active"))
 			setActive(json["active"].get<bool>());
@@ -312,7 +312,7 @@ namespace octoon
 	}
 
 	void
-	GameComponent::save(nlohmann::json& json) noexcept(false)
+	GameComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
 	{
 		json["name"] = name_;
 		json["active"] = active_;

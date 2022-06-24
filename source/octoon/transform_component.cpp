@@ -453,26 +453,26 @@ namespace octoon
 	}
 
 	void
-	TransformComponent::load(const nlohmann::json& json) noexcept(false)
+	TransformComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
 	{
-		GameComponent::load(json);
+		GameComponent::load(json, assetDatabase);
 
 		if (json.contains("translate"))
-			this->setTranslate(math::float3(json["translate"].get<std::array<float, 3>>()));
+			this->setLocalTranslate(math::float3(json["localTranslate"].get<std::array<float, 3>>()));
 		if (json.contains("scale"))
-			this->setScale(math::float3(json["scale"].get<std::array<float, 3>>()));
+			this->setLocalScale(math::float3(json["localScale"].get<std::array<float, 3>>()));
 		if (json.contains("rotation"))
-			this->setQuaternion(math::Quaternion(json["rotation"].get<std::array<float, 4>>()));
+			this->setLocalQuaternion(math::Quaternion(json["localRotation"].get<std::array<float, 4>>()));
 	}
 
 	void
-	TransformComponent::save(nlohmann::json& json) noexcept(false)
+	TransformComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
 	{
-		GameComponent::save(json);
+		GameComponent::save(json, assetDatabase);
 
-		json["translate"] = this->getTranslate().to_array();
-		json["scale"] = this->getScale().to_array();
-		json["rotation"] = this->getQuaternion().to_array();
+		json["localTranslate"] = this->getLocalTranslate().to_array();
+		json["localScale"] = this->getLocalScale().to_array();
+		json["localRotation"] = this->getLocalQuaternion().to_array();
 	}
 
 	GameComponentPtr

@@ -16,7 +16,6 @@ namespace octoon
 	public:
 		GameObject() noexcept;
 		GameObject(std::string_view name) noexcept;
-		explicit GameObject(const nlohmann::json& json) noexcept(false);
 		virtual ~GameObject() noexcept;
 
 		void setName(std::string_view name) noexcept;
@@ -97,8 +96,8 @@ namespace octoon
 		virtual GameScene* getGameScene() noexcept;
 		virtual const GameScene* getGameScene() const noexcept;
 
-		virtual void load(const nlohmann::json& json) noexcept(false) override;
-		virtual void save(nlohmann::json& json) noexcept(false) override;
+		virtual void load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false);
+		virtual void save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false);
 
 		GameObjectPtr clone() const noexcept(false);
 

@@ -40,6 +40,9 @@ namespace octoon
 		const std::shared_ptr<Animation>& getAnimation() const noexcept;
 		const AnimatorStateInfo& getCurrentAnimatorStateInfo() const noexcept override;
 
+		void load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false) override;
+		void save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false) override;
+
 		GameComponentPtr clone() const noexcept;
 
 	private:

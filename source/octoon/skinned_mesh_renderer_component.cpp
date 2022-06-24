@@ -220,10 +220,8 @@ namespace octoon
 		{
 			for (std::size_t i = 0; i < quaternions_.size(); i++)
 			{
-				auto& quat = quaternions_[i];
 				auto transform = transforms_[i]->getComponent<TransformComponent>();
-
-				if (transform->getQuaternion() != quat)
+				if (transform->getQuaternion() != quaternions_[i])
 				{
 					needUpdate_ = true;
 					break;

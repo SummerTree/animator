@@ -370,6 +370,7 @@ namespace octoon
 			this->createFolder(rootPath);
 
 			nlohmann::json prefab;
+			gameObject->save(prefab, *this);
 
 			if (!this->contains(gameObject))
 			{
@@ -385,77 +386,6 @@ namespace octoon
 			else
 			{
 				prefab["model"] = this->getAssetGuid(gameObject);
-			}			
-
-			auto transform = gameObject->getComponent<TransformComponent>();
-			if (transform)
-				transform->save(prefab["transform"]);
-
-			for (auto& component : gameObject->getComponents())
-			{
-				if (!component->isA<AnimatorComponent>())
-					continue;
-
-				auto animation = component->downcast<AnimatorComponent>();
-				if (animation->getAnimation())
-				{
-					if (!this->contains(animation->getAnimation()))
-						this->createAsset(animation->getAnimation(), std::filesystem::path(rootPath).append(make_guid() + ".vmd"));
-
-					nlohmann::json animationJson;
-					animationJson["data"] = this->getAssetGuid(animation->getAnimation());
-					animationJson["type"] = animation->getAvatar().empty() ? 1 : 0;
-
-					prefab["animation"].push_back(animationJson);
-				}
-			}
-
-			auto meshFilter = gameObject->getComponent<MeshFilterComponent>();
-			if (meshFilter)
-			{
-				auto mesh = meshFilter->getMesh();
-				if (mesh)
-				{
-					auto bound = mesh->getBoundingBoxAll();
-					prefab["meshFilter"]["bound"][0] = bound.box().min.to_array();
-					prefab["meshFilter"]["bound"][1] = bound.box().max.to_array();
-				}
-			}
-
-			auto meshRenderer = gameObject->getComponent<MeshRendererComponent>();
-			if (meshRenderer)
-			{
-				auto& materials = meshRenderer->getMaterials();
-
-				for (std::size_t i = 0; i < materials.size(); i++)
-				{
-					if (!this->contains(materials[i]))
-						this->createAsset(materials[i], std::filesystem::path(rootPath).append(make_guid() + ".mat"));
-
-					nlohmann::json materialJson;
-					materialJson["data"] = this->getAssetGuid(materials[i]);
-					materialJson["index"] = i;
-
-					prefab["meshRenderer"]["materials"].push_back(materialJson);
-				}
-			}
-
-			auto abc = gameObject->getComponent<MeshAnimationComponent>();
-			if (abc)
-			{
-				prefab["alembic"]["path"] = (char*)assetPath.u8string().c_str();
-
-				for (auto& pair : abc->getMaterials())
-				{
-					if (!this->contains(pair.second))
-						this->createAsset(pair.second, std::filesystem::path(rootPath).append(make_guid() + ".mat"));
-
-					nlohmann::json materialJson;
-					materialJson["data"] = this->getAssetGuid(pair.second);
-					materialJson["name"] = pair.first;
-
-					prefab["alembic"]["materials"].push_back(materialJson);
-				}
 			}
 
 			std::ofstream ifs(assetPath, std::ios_base::binary);
@@ -970,7 +900,7 @@ namespace octoon
 
 				objectPathList_[material] = relativePath;
 
-				return material;
+				return std::move(material);
 			}
 		}
 		else if (ext == u8".prefab")
@@ -988,60 +918,11 @@ namespace octoon
 						object = this->loadAssetAtPath<GameObject>(path);
 				}
 
-				if (object)
-				{
-					if (prefab.contains("transform"))
-					{
-						auto transform = object->getComponent<octoon::TransformComponent>();
-						if (transform)
-							transform->load(prefab["transform"]);
-					}
+				auto metadata = this->loadMetadataAtPath(relativePath);
+				if (!metadata.is_object())
+					this->createMetadataAtPath(relativePath);
 
-					for (auto& animationJson : prefab["animation"])
-					{
-						if (animationJson.find("data") == animationJson.end())
-							continue;
-
-						auto data = animationJson["data"].get<nlohmann::json::string_t>();
-						auto animation = this->loadAssetAtPath<octoon::Animation>(this->getAssetPath(data));
-						if (animation)
-						{
-							auto animationType = animationJson["type"].get<nlohmann::json::number_unsigned_t>();
-							if (animationType == 0)
-								object->addComponent<octoon::AnimatorComponent>(std::move(animation), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
-							else
-								object->addComponent<octoon::AnimatorComponent>(std::move(animation));
-						}
-					}
-
-					if (prefab.contains("meshRenderer"))
-					{
-						std::vector<std::shared_ptr<octoon::Material>> materials;
-						materials.resize(prefab["meshRenderer"]["materials"].size());
-
-						for (auto& materialJson : prefab["meshRenderer"]["materials"])
-						{
-							if (materialJson.find("data") == materialJson.end())
-								continue;
-
-							auto data = materialJson["data"].get<nlohmann::json::string_t>();
-							auto index = materialJson["index"].get<nlohmann::json::number_unsigned_t>();
-							auto material = this->loadAssetAtPath<octoon::Material>(this->getAssetPath(data));
-
-							materials[index] = std::move(material);
-						}
-
-						auto meshRenderer = object->getComponent<octoon::MeshRendererComponent>();
-						if (meshRenderer)
-							meshRenderer->setMaterials(std::move(materials));
-					}
-
-					auto metadata = this->loadMetadataAtPath(relativePath);
-					if (!metadata.is_object())
-						this->createMetadataAtPath(relativePath);
-
-					objectPathList_[object] = relativePath;
-				}
+				objectPathList_[object] = relativePath;
 
 				return object;
 			}

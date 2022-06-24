@@ -264,8 +264,6 @@ namespace unreal
 	MainDock::onLanguageChanged(QString filename)	
 	{
 		auto app = QApplication::instance();
-		// get all translators
-		auto empty = translator_->isEmpty();
 		if (translator_ && !translator_->isEmpty())
 			app->removeTranslator(translator_.get());
 		

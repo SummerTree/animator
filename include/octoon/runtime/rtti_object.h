@@ -119,15 +119,6 @@ namespace octoon
 			assert(this->isA<T>());
 			return std::dynamic_pointer_cast<const T>(this->shared_from_this());
 		}
-
-		virtual void load(const nlohmann::json& json) noexcept(false)
-		{
-		}
-
-		virtual void save(nlohmann::json& json) noexcept(false)
-		{
-			json["_type"] = this->type_name();
-		}
 	};
 }
 
