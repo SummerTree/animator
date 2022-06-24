@@ -225,11 +225,30 @@ namespace octoon
 
 		try
 		{
-			auto standardMaterial = material->downcast<MeshStandardMaterial>();
-
 			nlohmann::json mat;
-			mat["type"] = standardMaterial->type_name();
-			mat["name"] = standardMaterial->getName();
+			mat["type"] = material->type_name();
+			mat["name"] = material->getName();
+			mat["blendEnable"] = material->getBlendEnable();
+			mat["blendOp"] = material->getBlendOp();
+			mat["blendSrc"] = material->getBlendSrc();
+			mat["blendDest"] = material->getBlendDest();
+			mat["blendAlphaOp"] = material->getBlendAlphaOp();
+			mat["blendAlphaSrc"] = material->getBlendAlphaSrc();
+			mat["blendAlphaDest"] = material->getBlendAlphaDest();
+			mat["colorWriteMask"] = material->getColorWriteMask();
+			mat["depthEnable"] = material->getDepthEnable();
+			mat["depthBiasEnable"] = material->getDepthBiasEnable();
+			mat["depthBoundsEnable"] = material->getDepthBoundsEnable();
+			mat["depthClampEnable"] = material->getDepthClampEnable();
+			mat["depthWriteEnable"] = material->getDepthWriteEnable();
+			mat["depthMin"] = material->getDepthMin();
+			mat["depthMax"] = material->getDepthMax();
+			mat["depthBias"] = material->getDepthBias();
+			mat["depthSlopeScaleBias"] = material->getDepthSlopeScaleBias();
+			mat["stencilEnable"] = material->getStencilEnable();
+			mat["scissorTestEnable"] = material->getScissorTestEnable();
+
+			auto standardMaterial = material->downcast<MeshStandardMaterial>();
 			mat["opacity"] = standardMaterial->getOpacity();
 			mat["smoothness"] = standardMaterial->getSmoothness();
 			mat["roughness"] = standardMaterial->getRoughness();
@@ -252,25 +271,6 @@ namespace octoon
 			mat["color"] = standardMaterial->getColor().to_array();
 			mat["emissive"] = standardMaterial->getEmissive().to_array();
 			mat["subsurfaceColor"] = standardMaterial->getSubsurfaceColor().to_array();
-			mat["blendEnable"] = standardMaterial->getBlendEnable();
-			mat["blendOp"] = standardMaterial->getBlendOp();
-			mat["blendSrc"] = standardMaterial->getBlendSrc();
-			mat["blendDest"] = standardMaterial->getBlendDest();
-			mat["blendAlphaOp"] = standardMaterial->getBlendAlphaOp();
-			mat["blendAlphaSrc"] = standardMaterial->getBlendAlphaSrc();
-			mat["blendAlphaDest"] = standardMaterial->getBlendAlphaDest();
-			mat["colorWriteMask"] = standardMaterial->getColorWriteMask();
-			mat["depthEnable"] = standardMaterial->getDepthEnable();
-			mat["depthBiasEnable"] = standardMaterial->getDepthBiasEnable();
-			mat["depthBoundsEnable"] = standardMaterial->getDepthBoundsEnable();
-			mat["depthClampEnable"] = standardMaterial->getDepthClampEnable();
-			mat["depthWriteEnable"] = standardMaterial->getDepthWriteEnable();
-			mat["depthMin"] = standardMaterial->getDepthMin();
-			mat["depthMax"] = standardMaterial->getDepthMax();
-			mat["depthBias"] = standardMaterial->getDepthBias();
-			mat["depthSlopeScaleBias"] = standardMaterial->getDepthSlopeScaleBias();
-			mat["stencilEnable"] = standardMaterial->getStencilEnable();
-			mat["scissorTestEnable"] = standardMaterial->getScissorTestEnable();			
 
 			if (standardMaterial->getColorMap() && !this->contains(standardMaterial->getColorMap()))
 				this->createAsset(standardMaterial->getColorMap(), std::filesystem::path(parentPath).append(make_guid() + ".png"));
