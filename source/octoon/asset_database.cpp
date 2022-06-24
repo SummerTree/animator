@@ -701,11 +701,19 @@ namespace octoon
 	AssetDatabase::loadMetadataAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
 		auto metaPath = std::filesystem::path(this->assetPath_).append(relativePath.wstring() + L".metadata");
-		if (std::filesystem::exists(metaPath))
+		std::ifstream ifs(metaPath);
+		if (ifs)
 		{
-			std::ifstream ifs(metaPath);
-			if (ifs)
-				return nlohmann::json::parse(ifs);
+			auto metaData = nlohmann::json::parse(ifs);
+
+			if (metaData.contains("uuid"))
+			{
+				auto guid = metaData["uuid"].get<std::string>();
+				assetGuidList_[relativePath] = guid;
+				assetPathList_[std::move(guid)] = (char*)relativePath.c_str();
+
+				return metaData;
+			}
 		}
 
 		return nlohmann::json();
@@ -727,7 +735,7 @@ namespace octoon
 	std::shared_ptr<RttiObject>
 	AssetDatabase::loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!relativePath.empty() && relativePath.compare("Assets") > 0);
+		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
 
 		auto ext = relativePath.extension().u8string();
 		for (auto& it : ext)
@@ -743,21 +751,10 @@ namespace octoon
 					motion->setName((char*)fullPath.filename().c_str());
 
 				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("name"))
-						motion->setName(metadata["name"].get<std::string>());
-
-					if (metadata.contains("uuid"))
-						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
-				}
-				else
-				{
+				if (metadata.is_null())
 					this->createMetadataAtPath(relativePath);
-				}
 
 				objectPathList_[motion] = relativePath;
-				assetPathList_[this->getAssetGuid(relativePath)] = relativePath;
 
 				return motion;
 			}
@@ -770,14 +767,8 @@ namespace octoon
 				auto metadata = this->loadMetadataAtPath(relativePath);
 				if (metadata.is_object())
 				{
-					if (metadata.contains("name"))
-						texture->setName(metadata["name"].get<std::string>());
-
 					if (metadata.contains("mipmap"))
 						texture->setMipLevel(metadata["mipmap"].get<nlohmann::json::number_integer_t>());
-
-					if (metadata.contains("uuid"))
-						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
 				}
 				else
 				{
@@ -790,7 +781,6 @@ namespace octoon
 				texture->apply();
 
 				objectPathList_[texture] = relativePath;
-				assetPathList_[this->getAssetGuid(relativePath)] = relativePath;
 
 				return texture;
 			}
@@ -801,20 +791,10 @@ namespace octoon
 			if (model)
 			{
 				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("name"))
-						model->setName(metadata["name"].get<std::string>());
-					if (metadata.contains("uuid"))
-						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
-				}
-				else
-				{
+				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
-				}
 
 				objectPathList_[model] = relativePath;
-				assetPathList_[this->getAssetGuid(relativePath)] = relativePath;
 
 				return model;
 			}
@@ -828,20 +808,10 @@ namespace octoon
 				alembic->setFilePath(fullPath);
 
 				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("name"))
-						model->setName(metadata["name"].get<std::string>());
-					if (metadata.contains("uuid"))
-						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
-				}
-				else
-				{
+				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
-				}
 
 				objectPathList_[model] = relativePath;
-				assetPathList_[this->getAssetGuid(relativePath)] = relativePath;
 
 				return model;
 			}
@@ -1030,18 +1000,10 @@ namespace octoon
 					material->setSubsurfaceColor(math::float3((*subsurfaceColor).get<std::array<float, 3>>()));
 
 				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("uuid"))
-						assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
-				}
-				else
-				{
+				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
-				}
 
 				objectPathList_[material] = relativePath;
-				assetPathList_[this->getAssetGuid(relativePath)] = relativePath;
 
 				return material;
 			}
@@ -1051,10 +1013,9 @@ namespace octoon
 			std::ifstream ifs(fullPath);
 			if (ifs)
 			{
-				auto prefab = nlohmann::json::parse(ifs);
-
 				GameObjectPtr object;
 
+				auto prefab = nlohmann::json::parse(ifs);
 				if (prefab.contains("model"))
 				{
 					auto path = this->getAssetPath(prefab["model"].get<std::string>());
@@ -1111,18 +1072,10 @@ namespace octoon
 					}
 
 					auto metadata = this->loadMetadataAtPath(relativePath);
-					if (metadata.is_object())
-					{
-						if (metadata.contains("uuid"))
-							assetGuidList_[relativePath] = metadata["uuid"].get<std::string>();
-					}
-					else
-					{
+					if (!metadata.is_object())
 						this->createMetadataAtPath(relativePath);
-					}
 
 					objectPathList_[object] = relativePath;
-					assetPathList_[this->getAssetGuid(relativePath)] = relativePath;
 				}
 
 				return object;
