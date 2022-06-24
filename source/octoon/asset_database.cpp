@@ -43,6 +43,8 @@ namespace octoon
 	void
 	AssetDatabase::open(const std::filesystem::path& assetPath) noexcept(false)
 	{
+		this->close();
+
 		this->assetPath_ = assetPath;
 		this->assetPath_.make_preferred();
 
@@ -78,18 +80,25 @@ namespace octoon
 	AssetDatabase::close() noexcept
 	{
 		assetPath_.clear();
+		dirtyList_.clear();
+		assetGuidList_.clear();
+		assetPathList_.clear();
+		objectCaches_.clear();
+		objectPathList_.clear();
 	}
 
 	void
 	AssetDatabase::importAsset(const std::filesystem::path& diskPath, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(!diskPath.empty());
-		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
 
-		if (diskPath.empty() || !std::filesystem::exists(diskPath))
+		if (relativePath.empty())
 			return;
 
-		if (relativePath.empty() && relativePath.compare("Assets") < 0)
+		if (relativePath.wstring().substr(0, 6) != L"Assets")
+			return;
+
+		if (diskPath.empty() || !std::filesystem::exists(diskPath))
 			return;
 
 		auto rootPath = relativePath.parent_path();
@@ -138,10 +147,10 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<const Texture>& texture, const std::filesystem::path& relativePath) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<const Texture>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(texture);
-		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
+		if (!asset || relativePath.empty() || relativePath.wstring().substr(0, 6) != L"Assets")
+			return;
 
 		auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 		auto assetPath = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
@@ -152,14 +161,14 @@ namespace octoon
 		try
 		{
 			this->createFolder(relativePath.parent_path());
-			texture->save(assetPath, type.c_str());
+			asset->save(assetPath, type.c_str());
 			std::filesystem::permissions(assetPath, std::filesystem::perms::owner_write);
 
 			nlohmann::json metadata;
 			metadata["uuid"] = uuid;
-			metadata["name"] = texture->getName();
+			metadata["name"] = asset->getName();
 			metadata["suffix"] = (char*)extension.c_str();
-			metadata["mipmap"] = texture->getMipLevel();
+			metadata["mipmap"] = asset->getMipLevel();
 
 			std::ofstream ifs(metaPath, std::ios_base::binary);
 			if (ifs)
@@ -172,7 +181,7 @@ namespace octoon
 			assetGuidList_[relativePath] = uuid;
 			assetPathList_[uuid] = relativePath;
 
-			objectPathList_[texture] = relativePath;
+			objectPathList_[asset] = relativePath;
 		}
 		catch (const std::exception& e)
 		{
@@ -187,10 +196,10 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<const Animation>& animation, const std::filesystem::path& relativePath) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<const Animation>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(animation);
-		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
+		if (!asset || relativePath.empty() || relativePath.wstring().substr(0, 6) != L"Assets")
+			return;
 
 		auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 		auto assetPath = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
@@ -200,10 +209,10 @@ namespace octoon
 		{
 			this->createFolder(relativePath.parent_path());
 
-			VMDLoader::save(assetPath, *animation);
+			VMDLoader::save(assetPath, *asset);
 			std::filesystem::permissions(assetPath, std::filesystem::perms::owner_write);
 
-			this->objectPathList_[animation] = relativePath;
+			this->objectPathList_[asset] = relativePath;
 			this->createMetadataAtPath(relativePath);
 		}
 		catch (const std::exception& e)
@@ -219,10 +228,10 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<const Material>& material, const std::filesystem::path& relativePath) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<const Material>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(material);
-		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
+		if (!asset || relativePath.empty() || relativePath.wstring().substr(0, 6) != L"Assets")
+			return;
 
 		auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 		auto assetPath = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
@@ -233,56 +242,56 @@ namespace octoon
 			this->createFolder(relativePath.parent_path());
 
 			nlohmann::json mat;
-			mat["type"] = material->type_name();
-			mat["name"] = material->getName();
-			mat["blendEnable"] = material->getBlendEnable();
-			mat["blendOp"] = material->getBlendOp();
-			mat["blendSrc"] = material->getBlendSrc();
-			mat["blendDest"] = material->getBlendDest();
-			mat["blendAlphaOp"] = material->getBlendAlphaOp();
-			mat["blendAlphaSrc"] = material->getBlendAlphaSrc();
-			mat["blendAlphaDest"] = material->getBlendAlphaDest();
-			mat["colorWriteMask"] = material->getColorWriteMask();
-			mat["depthEnable"] = material->getDepthEnable();
-			mat["depthBiasEnable"] = material->getDepthBiasEnable();
-			mat["depthBoundsEnable"] = material->getDepthBoundsEnable();
-			mat["depthClampEnable"] = material->getDepthClampEnable();
-			mat["depthWriteEnable"] = material->getDepthWriteEnable();
-			mat["depthMin"] = material->getDepthMin();
-			mat["depthMax"] = material->getDepthMax();
-			mat["depthBias"] = material->getDepthBias();
-			mat["depthSlopeScaleBias"] = material->getDepthSlopeScaleBias();
-			mat["stencilEnable"] = material->getStencilEnable();
-			mat["scissorTestEnable"] = material->getScissorTestEnable();
+			mat["type"] = asset->type_name();
+			mat["name"] = asset->getName();
+			mat["blendEnable"] = asset->getBlendEnable();
+			mat["blendOp"] = asset->getBlendOp();
+			mat["blendSrc"] = asset->getBlendSrc();
+			mat["blendDest"] = asset->getBlendDest();
+			mat["blendAlphaOp"] = asset->getBlendAlphaOp();
+			mat["blendAlphaSrc"] = asset->getBlendAlphaSrc();
+			mat["blendAlphaDest"] = asset->getBlendAlphaDest();
+			mat["colorWriteMask"] = asset->getColorWriteMask();
+			mat["depthEnable"] = asset->getDepthEnable();
+			mat["depthBiasEnable"] = asset->getDepthBiasEnable();
+			mat["depthBoundsEnable"] = asset->getDepthBoundsEnable();
+			mat["depthClampEnable"] = asset->getDepthClampEnable();
+			mat["depthWriteEnable"] = asset->getDepthWriteEnable();
+			mat["depthMin"] = asset->getDepthMin();
+			mat["depthMax"] = asset->getDepthMax();
+			mat["depthBias"] = asset->getDepthBias();
+			mat["depthSlopeScaleBias"] = asset->getDepthSlopeScaleBias();
+			mat["stencilEnable"] = asset->getStencilEnable();
+			mat["scissorTestEnable"] = asset->getScissorTestEnable();
 
-			for (auto& it : material->getMaterialParams())
+			for (auto& it : asset->getMaterialParams())
 			{
 				switch (it.type)
 				{
 				case PropertyTypeInfo::PropertyTypeInfoFloat:
-					mat[it.key] = material->get<math::float1>(it.key);
+					mat[it.key] = asset->get<math::float1>(it.key);
 				break;
 				case PropertyTypeInfo::PropertyTypeInfoFloat2:
-					mat[it.key] = material->get<math::float2>(it.key).to_array();
+					mat[it.key] = asset->get<math::float2>(it.key).to_array();
 				break;
 				case PropertyTypeInfo::PropertyTypeInfoFloat3:
-					mat[it.key] = material->get<math::float3>(it.key).to_array();
+					mat[it.key] = asset->get<math::float3>(it.key).to_array();
 				break;
 				case PropertyTypeInfo::PropertyTypeInfoFloat4:
-					mat[it.key] = material->get<math::float4>(it.key).to_array();
+					mat[it.key] = asset->get<math::float4>(it.key).to_array();
 				break;
 				case PropertyTypeInfo::PropertyTypeInfoString:
-					mat[it.key] = material->get<std::string>(it.key);
+					mat[it.key] = asset->get<std::string>(it.key);
 				break;
 				case PropertyTypeInfo::PropertyTypeInfoBool:
-					mat[it.key] = material->get<bool>(it.key);
+					mat[it.key] = asset->get<bool>(it.key);
 				break;
 				case PropertyTypeInfo::PropertyTypeInfoInt:
-					mat[it.key] = material->get<int>(it.key);
+					mat[it.key] = asset->get<int>(it.key);
 				break;
 				case PropertyTypeInfo::PropertyTypeInfoTexture:
 				{
-					auto texture = material->get<std::shared_ptr<Texture>>(it.key);
+					auto texture = asset->get<std::shared_ptr<Texture>>(it.key);
 					if (texture)
 					{
 						if (!this->contains(texture))
@@ -311,7 +320,7 @@ namespace octoon
 				ifs.close();
 			}
 
-			this->objectPathList_[material] = relativePath;
+			this->objectPathList_[asset] = relativePath;
 			this->createMetadataAtPath(relativePath);
 		}
 		catch (const std::exception& e)
@@ -327,10 +336,10 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::createAsset(const std::shared_ptr<const GameObject>& gameObject, const std::filesystem::path& relativePath) noexcept(false)
+	AssetDatabase::createAsset(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(gameObject);
-		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
+		if (!asset || relativePath.empty() || relativePath.wstring().substr(0, 6) != L"Assets")
+			return;
 
 		auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 		auto rootPath = relativePath.parent_path();
@@ -343,24 +352,24 @@ namespace octoon
 
 			nlohmann::json prefab;
 
-			if (!this->contains(gameObject))
+			if (!this->contains(asset))
 			{
-				auto modelPath = AssetLoader::instance()->getAssetPath(gameObject);
+				auto modelPath = AssetLoader::instance()->getAssetPath(asset);
 				if (!modelPath.empty())
 				{
 					auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
 					this->importAsset(modelPath, outputPath);
 
-					objectPathList_[gameObject] = outputPath;
+					objectPathList_[asset] = outputPath;
 					prefab["model"] = this->getAssetGuid(outputPath);
 				}
 			}
 			else
 			{
-				prefab["model"] = this->getAssetGuid(gameObject);
+				prefab["model"] = this->getAssetGuid(asset);
 			}
 
-			gameObject->save(prefab, *this);
+			asset->save(prefab, *this);
 
 			std::ofstream ifs(assetPath, std::ios_base::binary);
 			if (ifs)
@@ -369,7 +378,7 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 			}
 
-			this->objectPathList_[gameObject] = relativePath;
+			this->objectPathList_[asset] = relativePath;
 			this->createMetadataAtPath(relativePath);
 		}
 		catch (const std::exception& e)
@@ -387,7 +396,8 @@ namespace octoon
 	void
 	AssetDatabase::deleteAsset(const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
+		if (relativePath.empty() || relativePath.wstring().substr(0, 6) != L"Assets")
+			return;
 
 		auto path = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 		if (std::filesystem::is_directory(path))
@@ -465,6 +475,9 @@ namespace octoon
 	void
 	AssetDatabase::createFolder(const std::filesystem::path& assetFolder_) noexcept(false)
 	{
+		if (assetFolder_.empty() || assetFolder_.wstring().substr(0, 6) != L"Assets")
+			return;
+
 		auto relativePath = std::filesystem::path(assetFolder_).make_preferred();
 		auto path = relativePath.wstring();
 
@@ -495,6 +508,9 @@ namespace octoon
 	void
 	AssetDatabase::deleteFolder(const std::filesystem::path& assetFolder) noexcept(false)
 	{
+		if (assetFolder.empty() || assetFolder.wstring().substr(0, 6) != L"Assets")
+			return;
+
 		auto folderPath = std::filesystem::path(this->assetPath_).append(assetFolder.wstring());
 		if (std::filesystem::exists(folderPath))
 		{
@@ -516,10 +532,13 @@ namespace octoon
 	std::string
 	AssetDatabase::getAssetGuid(const std::filesystem::path& relativePath) const noexcept
 	{
-		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
-		auto it = assetGuidList_.find(relativePath);
-		if (it != assetGuidList_.end())
-			return (*it).second;
+		if (!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets")
+		{
+			auto it = assetGuidList_.find(relativePath);
+			if (it != assetGuidList_.end())
+				return (*it).second;
+		}
+
 		return std::string();
 	}
 
@@ -605,7 +624,8 @@ namespace octoon
 	std::shared_ptr<Object>
 	AssetDatabase::loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
-		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
+		if (relativePath.empty() || relativePath.wstring().substr(0, 6) != L"Assets")
+			return nullptr;
 		
 		if (objectCaches_.contains(relativePath))
 		{
