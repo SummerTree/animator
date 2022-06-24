@@ -57,7 +57,7 @@ namespace octoon
 		}
 
 		std::shared_ptr<AssetBundle> loadFromFile(const std::filesystem::path& path) noexcept(false);
-		std::vector<std::shared_ptr<AssetBundle>> getAllLoadedAssetBundles() const noexcept;
+		const std::vector<std::shared_ptr<AssetBundle>>& getAllLoadedAssetBundles() const noexcept;
 
 	private:
 		std::shared_ptr<RttiObject> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);

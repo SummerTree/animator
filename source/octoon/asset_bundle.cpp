@@ -383,7 +383,7 @@ namespace octoon
 		return ab;
 	}
 
-	std::vector<std::shared_ptr<AssetBundle>>
+	const std::vector<std::shared_ptr<AssetBundle>>&
 	AssetBundle::getAllLoadedAssetBundles() const noexcept
 	{
 		return assetBundles_;

@@ -34,9 +34,13 @@ namespace unreal
 			for (auto& it : reader["scene"])
 			{
 				auto uuid = it.get<std::string>();
-				auto object = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(std::filesystem::path("Assets/Models").append(uuid).append(uuid + ".prefab"));
-				if (object)
-					objects_.push_back(std::move(object));
+				auto assetPath = octoon::AssetDatabase::instance()->getAssetPath(uuid);
+				if (!assetPath.empty())
+				{
+					auto object = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(assetPath);
+					if (object)
+						objects_.push_back(std::move(object));
+				}
 			}
 
 			this->objects = std::move(objects_);
