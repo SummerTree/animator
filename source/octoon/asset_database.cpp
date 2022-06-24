@@ -168,8 +168,6 @@ namespace octoon
 
 			assetGuidList_[relativePath] = uuid;
 			assetPathList_[uuid] = relativePath;
-
-			objectPathList_[texture] = relativePath;
 		}
 		catch (const std::exception& e)
 		{
@@ -201,8 +199,6 @@ namespace octoon
 			std::filesystem::permissions(assetPath, std::filesystem::perms::owner_write);
 
 			this->createMetadataAtPath(relativePath);
-
-			objectPathList_[animation] = relativePath;
 		}
 		catch (const std::exception& e)
 		{
@@ -344,21 +340,7 @@ namespace octoon
 				ifs.close();
 			}
 
-			nlohmann::json metadata;
-			metadata["uuid"] = uuid;
-
-			std::ofstream metaFs(metaPath, std::ios_base::binary);
-			if (metaFs)
-			{
-				auto dump = metadata.dump();
-				metaFs.write(dump.c_str(), dump.size());
-				metaFs.close();
-			}
-
-			assetGuidList_[relativePath] = uuid;
-			assetPathList_[uuid] = relativePath;
-
-			objectPathList_[material] = relativePath;
+			this->createMetadataAtPath(relativePath);
 		}
 		catch (const std::exception& e)
 		{
@@ -484,8 +466,6 @@ namespace octoon
 			}
 
 			this->createMetadataAtPath(relativePath);
-
-			objectPathList_[gameObject] = relativePath;
 		}
 		catch (const std::exception& e)
 		{
