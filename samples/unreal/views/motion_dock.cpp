@@ -77,7 +77,7 @@ namespace unreal
 	{
 		auto item = std::make_unique<QListWidgetItem>();
 		item->setData(Qt::UserRole, QString::fromStdString(package["uuid"].get<nlohmann::json::string_t>()));
-		item->setSizeHint(listWidget_->iconSize() + QSize(9, 40));
+		item->setSizeHint(listWidget_->iconSize() + QSize(9, 35));
 
 		if (package.contains("preview"))
 		{
