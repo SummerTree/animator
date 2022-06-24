@@ -684,12 +684,16 @@ namespace octoon
 
 		if (json.contains("components"))
 		{
-			for (auto& it : json["components"])
+			auto& components = json["components"];
+
+			for (auto item = components.begin(); item != components.end(); ++item)
 			{
-				auto name = it["type_"].get<std::string>();
-				auto component = RttiFactory::instance()->make_shared<GameComponent>(name);
-				component->load(it, assetDatabase);
-				this->addComponent(std::move(component));
+				for (auto& it : item.value())
+				{
+					auto component = RttiFactory::instance()->make_shared<GameComponent>(item.key());
+					component->load(it, assetDatabase);
+					this->addComponent(std::move(component));
+				}
 			}
 		}
 
@@ -718,11 +722,9 @@ namespace octoon
 				continue;
 			
 			nlohmann::json componentJson;
-			componentJson["type_"] = it->type_name();
-
 			it->save(componentJson, assetDatabase);
 
-			json["components"].push_back(std::move(componentJson));
+			json["components"][it->type_name()].push_back(std::move(componentJson));
 		}
 
 		for (auto& it : children_)
