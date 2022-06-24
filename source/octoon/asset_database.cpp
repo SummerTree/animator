@@ -63,6 +63,9 @@ namespace octoon
 
 					assetGuidList_[path] = uuid;
 					assetPathList_[uuid] = path;
+
+					if (uuid == "f7ab8b4ed1abfb4f302ca8d19244554a")
+						continue;
 				}
 			}
 			catch (...)
@@ -339,7 +342,6 @@ namespace octoon
 			this->createFolder(rootPath);
 
 			nlohmann::json prefab;
-			gameObject->save(prefab, *this);
 
 			if (!this->contains(gameObject))
 			{
@@ -349,6 +351,7 @@ namespace octoon
 					auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
 					this->importAsset(modelPath, outputPath);
 
+					objectPathList_[gameObject] = outputPath;
 					prefab["model"] = this->getAssetGuid(outputPath);
 				}
 			}
@@ -356,6 +359,8 @@ namespace octoon
 			{
 				prefab["model"] = this->getAssetGuid(gameObject);
 			}
+
+			gameObject->save(prefab, *this);
 
 			std::ofstream ifs(assetPath, std::ios_base::binary);
 			if (ifs)
@@ -575,7 +580,7 @@ namespace octoon
 			{
 				auto guid = metaData["uuid"].get<std::string>();
 				assetGuidList_[relativePath] = guid;
-				assetPathList_[std::move(guid)] = (char*)relativePath.c_str();
+				assetPathList_[std::move(guid)] = (char*)relativePath.u8string().c_str();
 
 				return metaData;
 			}
@@ -601,6 +606,13 @@ namespace octoon
 	AssetDatabase::loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
+		
+		if (objectCaches_.contains(relativePath))
+		{
+			auto cache = objectCaches_.at(relativePath);
+			if (!cache.expired())
+				return cache.lock();
+		}
 
 		auto ext = relativePath.extension().u8string();
 		for (auto& it : ext)
@@ -619,6 +631,7 @@ namespace octoon
 				if (metadata.is_null())
 					this->createMetadataAtPath(relativePath);
 
+				objectCaches_[relativePath] = motion;
 				objectPathList_[motion] = relativePath;
 
 				return motion;
@@ -645,6 +658,7 @@ namespace octoon
 
 				texture->apply();
 
+				objectCaches_[relativePath] = texture;
 				objectPathList_[texture] = relativePath;
 
 				return texture;
@@ -659,6 +673,7 @@ namespace octoon
 				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
 
+				objectCaches_[relativePath] = model;
 				objectPathList_[model] = relativePath;
 
 				return model;
@@ -676,6 +691,7 @@ namespace octoon
 				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
 
+				objectCaches_[relativePath] = model;
 				objectPathList_[model] = relativePath;
 
 				return model;
@@ -868,6 +884,7 @@ namespace octoon
 				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
 
+				objectCaches_[relativePath] = material;
 				objectPathList_[material] = relativePath;
 
 				return std::move(material);
@@ -879,24 +896,26 @@ namespace octoon
 			if (ifs)
 			{
 				auto prefab = nlohmann::json::parse(ifs);
-
-				GameObjectPtr object;
 				if (prefab.contains("model"))
 				{
 					auto path = this->getAssetPath(prefab["model"].get<std::string>());
 					if (!path.empty())
-						object = this->loadAssetAtPath<GameObject>(path);
+					{
+						auto cache = this->loadAssetAtPath<GameObject>(path);
+
+						auto object = std::make_shared<GameObject>();
+						object->load(prefab, *this);
+
+						auto metadata = this->loadMetadataAtPath(relativePath);
+						if (!metadata.is_object())
+							this->createMetadataAtPath(relativePath);
+
+						objectCaches_[relativePath] = object;
+						objectPathList_[object] = relativePath;
+
+						return object;
+					}
 				}
-
-				object->load(prefab, *this);
-
-				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (!metadata.is_object())
-					this->createMetadataAtPath(relativePath);
-
-				objectPathList_[object] = relativePath;
-
-				return object;
 			}
 		}
 

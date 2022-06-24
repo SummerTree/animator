@@ -5,6 +5,8 @@
 #include <octoon/asset_database.h>
 #include <fstream>
 
+#include <octoon/transform_component.h>
+
 namespace octoon
 {
 	OctoonImplementSubClass(GameServer, Object, "GameServer")

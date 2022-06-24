@@ -3,6 +3,9 @@
 #include <octoon/game_component.h>
 #include <octoon/game_scene_manager.h>
 #include <octoon/transform_component.h>
+#include <octoon/runtime/guid.h>
+#include <octoon/asset_loader.h>
+#include <octoon/asset_database.h>
 
 namespace octoon
 {
@@ -12,6 +15,7 @@ namespace octoon
 		: active_(true)
 		, raycastEnable_(true)
 		, layer_(0)
+		, attributes_(0)
 	{
 		GameObjectManager::instance()->_instanceObject(this, instance_id_);
 
@@ -42,6 +46,18 @@ namespace octoon
 	GameObject::getName() const noexcept
 	{
 		return name_;
+	}
+
+	void
+	GameObject::setAttributes(ObjectAttributes attributes) noexcept
+	{
+		attributes_ = attributes;
+	}
+
+	ObjectAttributes
+	GameObject::getAttributes() const noexcept
+	{
+		return attributes_;
 	}
 
 	void
@@ -657,24 +673,35 @@ namespace octoon
 	void
 	GameObject::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
 	{
-		this->setName(json["name"].get<std::string>());
-		this->setActive(json["active"].get<bool>());
-		this->setLayer(json["layer"].get<std::uint8_t>());
+		if (json.contains("name"))
+			this->setName(json["name"].get<std::string>());
+		
+		if (json.contains("active"))
+			this->setActive(json["active"].get<bool>());
+		
+		if (json.contains("layer"))
+			this->setLayer(json["layer"].get<std::uint8_t>());
 
-		for (auto& it : json["components"])
+		if (json.contains("components"))
 		{
-			auto name = it.get<std::string>();
-			auto component = RttiFactory::instance()->make_shared<GameComponent>(name);
-			component->load(it[name], assetDatabase);
-			this->addComponent(std::move(component));
+			for (auto& it : json["components"])
+			{
+				auto name = it["type_"].get<std::string>();
+				auto component = RttiFactory::instance()->make_shared<GameComponent>(name);
+				component->load(it, assetDatabase);
+				this->addComponent(std::move(component));
+			}
 		}
 
-		for (auto& it : json["components"])
+		if (json.contains("children"))
 		{
-			auto name = it.get<std::string>();
-			auto object = RttiFactory::instance()->make_shared<GameObject>(name);
-			object->load(it[name], assetDatabase);
-			this->addChild(std::move(object));
+			for (auto& it : json["children"])
+			{
+				auto object = std::make_shared<GameObject>();
+				object->load(it, assetDatabase);
+
+				this->addChild(std::move(object));
+			}
 		}
 	}
 
@@ -686,10 +713,27 @@ namespace octoon
 		json["layer"] = layer_;
 		
 		for (auto& it : components_)
-			it->save(json["components"][it->type_name()], assetDatabase);
+		{
+			if (it->getAttributes() & ObjectAttributeBits::NonSerialized)
+				continue;
+			
+			nlohmann::json componentJson;
+			componentJson["type_"] = it->type_name();
+
+			it->save(componentJson, assetDatabase);
+
+			json["components"].push_back(std::move(componentJson));
+		}
 
 		for (auto& it : children_)
-			it->save(json["children"][it->type_name()], assetDatabase);
+		{
+			if (it->getAttributes() & ObjectAttributeBits::NonSerialized)
+				continue;
+
+			nlohmann::json childrenJson;
+			it->save(childrenJson, assetDatabase);
+			json["children"].push_back(childrenJson);
+		}
 	}
 
 	GameObjectPtr

@@ -26,6 +26,9 @@ namespace octoon
 
 		void uploadMeshData() noexcept;
 
+		void load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false) override;
+		void save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false) override;
+
 		virtual GameComponentPtr clone() const noexcept override;
 
 	private:

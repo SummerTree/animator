@@ -18,6 +18,9 @@ namespace octoon
 		virtual void setName(std::string_view name) noexcept;
 		virtual const std::string& getName() const noexcept;
 
+		void setAttributes(ObjectAttributes attributes) noexcept;
+		ObjectAttributes getAttributes() const noexcept;
+
 		GameObject* getGameObject() noexcept;
 		const GameObject* getGameObject() const noexcept;
 
@@ -113,7 +116,7 @@ namespace octoon
 
 	private:
 		bool active_;
-
+		ObjectAttributes attributes_;
 		std::string name_;
 
 		GameObject* gameObject_;

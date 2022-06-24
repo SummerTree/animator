@@ -2,7 +2,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(TransformComponent, GameComponent, "TransformComponent")
+	OctoonImplementSubClass(TransformComponent, GameComponent, "Transform")
 
 	TransformComponent::TransformComponent() noexcept
 		: scaling_(math::float3::One)

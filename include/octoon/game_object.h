@@ -11,6 +11,16 @@
 
 namespace octoon
 {
+	struct ObjectAttributeBits
+	{
+		enum Flags
+		{
+			NonSerialized = 1
+		};
+	};
+
+	typedef std::uint32_t ObjectAttributes;
+
 	class OCTOON_EXPORT GameObject : public Object
 	{
 		OctoonDeclareSubClass(GameObject, Object)
@@ -18,6 +28,9 @@ namespace octoon
 		GameObject() noexcept;
 		GameObject(std::string_view name) noexcept;
 		virtual ~GameObject() noexcept;
+
+		void setAttributes(ObjectAttributes attributes) noexcept;
+		ObjectAttributes getAttributes() const noexcept;
 
 		void setName(std::string_view name) noexcept;
 		const std::string& getName() const noexcept;
@@ -139,6 +152,8 @@ namespace octoon
 	private:
 		bool active_;
 		bool raycastEnable_;
+
+		ObjectAttributes attributes_;
 
 		std::uint8_t layer_;
 		std::size_t instance_id_;

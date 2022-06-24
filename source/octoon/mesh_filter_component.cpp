@@ -1,4 +1,5 @@
 #include <octoon/mesh_filter_component.h>
+#include <octoon/asset_database.h>
 
 namespace octoon
 {
@@ -83,6 +84,41 @@ namespace octoon
 	MeshFilterComponent::uploadMeshData() noexcept
 	{
 		this->onMeshReplace();
+	}
+
+	void
+	MeshFilterComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	{
+		GameComponent::load(json, assetDatabase);
+
+		if (json.contains("mesh"))
+		{
+			auto guid = json["mesh"]["guid"].get<std::string>();
+
+			auto assetPath = assetDatabase.getAssetPath(guid);
+			if (!assetPath.empty())
+			{
+				auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+				if (gameObject)
+				{
+					auto mf = gameObject->getComponent<MeshFilterComponent>();
+					if (mf)
+						this->setMesh(mf->getMesh());
+				}
+			}
+		}
+	}
+
+	void
+	MeshFilterComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	{
+		GameComponent::save(json, assetDatabase);
+
+		auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
+		if (!guid.empty())
+		{
+			json["mesh"]["guid"] = guid;
+		}
 	}
 
 	GameComponentPtr

@@ -289,7 +289,8 @@ namespace octoon
 		auto& bindposes = skinnedMesh_->getBindposes();
 		auto boneSize = std::min(bindposes.size(), transforms_.size());
 
-		joints_.resize(bindposes.size());
+		if (joints_.size() != bindposes.size())
+			joints_.resize(bindposes.size());
 		
 		for (std::size_t i = 0; i < boneSize; ++i)
 		{
@@ -299,10 +300,7 @@ namespace octoon
 		}
 
 		for (std::size_t i = boneSize; i < joints_.size(); ++i)
-		{
-			quaternions_[i].identity();
 			joints_[i].makeIdentity();
-		}
 	}
 
 	void

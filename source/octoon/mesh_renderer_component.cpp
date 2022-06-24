@@ -100,18 +100,13 @@ namespace octoon
 		if (json.contains("materials"))
 		{
 			std::vector<std::shared_ptr<octoon::Material>> materials;
-			materials.resize(json["materials"].size());
 
 			for (auto& it : json["materials"])
 			{
-				if (it.contains("data"))
-				{
-					auto data = it["data"].get<nlohmann::json::string_t>();
-					auto index = it["index"].get<nlohmann::json::number_unsigned_t>();
-					auto material = assetDatabase.loadAssetAtPath<octoon::Material>(assetDatabase.getAssetPath(data));
+				auto data = it.get<nlohmann::json::string_t>();
+				auto material = assetDatabase.loadAssetAtPath<octoon::Material>(assetDatabase.getAssetPath(data));
 
-					materials[index] = std::move(material);
-				}
+				materials.push_back(std::move(material));
 			}
 
 			this->setMaterials(std::move(materials));
@@ -128,11 +123,7 @@ namespace octoon
 			if (!assetDatabase.contains(materials[i]))
 				assetDatabase.createAsset(materials[i], std::filesystem::path("Assets/Materials").append(make_guid() + ".mat"));
 
-			nlohmann::json materialJson;
-			materialJson["data"] = assetDatabase.getAssetGuid(materials[i]);
-			materialJson["index"] = i;
-
-			json["materials"].push_back(materialJson);
+			json["materials"].push_back(assetDatabase.getAssetGuid(materials[i]));
 		}
 	}
 

@@ -9,6 +9,7 @@ namespace octoon
 	GameComponent::GameComponent() noexcept
 		: active_(true)
 		, gameObject_(nullptr)
+		, attributes_(0)
 	{
 	}
 
@@ -118,6 +119,18 @@ namespace octoon
 	{
 		if (gameObject_)
 			gameObject_->removeComponentDispatchs(this);
+	}
+
+	void
+	GameComponent::setAttributes(ObjectAttributes attributes) noexcept
+	{
+		attributes_ = attributes;
+	}
+
+	ObjectAttributes
+	GameComponent::getAttributes() const noexcept
+	{
+		return attributes_;
 	}
 
 	void
@@ -314,8 +327,10 @@ namespace octoon
 	void
 	GameComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
 	{
-		json["name"] = name_;
-		json["active"] = active_;
+		if (!name_.empty())
+			json["name"] = name_;
+		if (!active_)
+			json["active"] = active_;
 	}
 
 	GameComponentPtr

@@ -9,22 +9,27 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT RttiFactory final : public Singleton<RttiFactory>
+	class OCTOON_EXPORT RttiFactory final
 	{
+		OctoonDeclareSingleton(RttiFactory)
 	public:
 		RttiFactory() = default;
 		~RttiFactory() = default;
 
-		bool open() noexcept;
-
-		bool add(Rtti* rtti) noexcept;
+		void open() noexcept;
+		void add(Rtti* rtti) noexcept;
 
 		Rtti* getRtti(std::string_view name) noexcept;
-
 		const Rtti* getRtti(std::string_view name) const noexcept;
 
 		std::shared_ptr<Object> createInstance(const char*, const Rtti& base) const noexcept(false);
 		std::shared_ptr<Object> createInstance(std::string_view name, const Rtti& base) const noexcept(false);
+
+		template<typename T, typename = std::enable_if_t<std::is_base_of<Object, T>::value>>
+		bool add()
+		{
+			return this->add(T::getRtti());
+		}
 
 		template<typename T>
 		std::shared_ptr<T> make_shared(std::string_view name)
@@ -39,8 +44,8 @@ namespace octoon
 		}
 
 	private:
-		std::vector<Rtti*> rttis_;
-		std::map<std::string, Rtti*, std::less<>> rttiLists_;
+		std::vector<Rtti*> caches_;
+		std::map<std::string, Rtti*, std::less<>> types_;
 	};
 
 	template<typename T, typename = std::enable_if_t<std::is_base_of<Object, T>::value>>

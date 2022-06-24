@@ -97,14 +97,9 @@ namespace octoon
 
 		this->onMessage("Initializing : Game App.");
 		this->onMessage(std::string("Initializing : Local : ") + ::setlocale(LC_ALL, ""));
+
 		this->onMessage("Initializing : RTTI.");
-
-		if (!RttiFactory::instance()->open())
-		{
-			this->onMessage("Could not initialize with RTTI.");
-
-			throw runtime_error::create("Could not initialize with RTTI.");
-		}
+		RttiFactory::instance()->open();
 
 		this->onMessage("Initializing : Game Server.");
 

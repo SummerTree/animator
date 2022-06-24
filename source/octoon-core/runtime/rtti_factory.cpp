@@ -2,29 +2,28 @@
 
 namespace octoon
 {
-	bool
+	OctoonImplementSingleton(RttiFactory)
+
+	void
 	RttiFactory::open() noexcept
 	{
-		for (auto& it : rttis_)
-		{
-			if (it)
-				rttiLists_[it->type_name()] = it;
-		}
-		return true;
+		for (auto& it : caches_)
+			types_[it->type_name()] = it;
+		caches_.clear();
 	}
 
-	bool
+	void
 	RttiFactory::add(Rtti* rtti) noexcept
 	{
-		rttis_.push_back(rtti);
-		return true;
+		assert(rtti);
+		caches_.push_back(rtti);
 	}
 
 	Rtti*
 	RttiFactory::getRtti(std::string_view name) noexcept
 	{
-		auto it = rttiLists_.lower_bound(name);
-		for (; it != rttiLists_.end(); ++it)
+		auto it = types_.lower_bound(name);
+		for (; it != types_.end(); ++it)
 			if ((*it).first == name)
 				return (*it).second;
 		return nullptr;
@@ -33,8 +32,8 @@ namespace octoon
 	const Rtti*
 	RttiFactory::getRtti(std::string_view name) const noexcept
 	{
-		auto it = rttiLists_.lower_bound(name);
-		for (; it != rttiLists_.end(); ++it)
+		auto it = types_.lower_bound(name);
+		for (; it != types_.end(); ++it)
 			if ((*it).first == name)
 				return (*it).second;
 		return nullptr;
