@@ -403,8 +403,7 @@ namespace octoon
 			else
 			{
 				prefab["model"] = this->getAssetGuid(gameObject);
-			}
-			
+			}			
 
 			auto transform = gameObject->getComponent<TransformComponent>();
 			if (transform)
@@ -484,20 +483,7 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 			}
 
-			nlohmann::json metadata;
-			metadata["uuid"] = uuid;
-			metadata["name"] = gameObject->getName();
-
-			std::ofstream metaStream(metaPath, std::ios_base::binary);
-			if (metaStream)
-			{
-				auto dump = metadata.dump();
-				metaStream.write(dump.c_str(), dump.size());
-				metaStream.close();
-			}
-
-			assetGuidList_[relativePath] = uuid;
-			assetPathList_[uuid] = relativePath;
+			this->createMetadataAtPath(relativePath);
 
 			objectPathList_[gameObject] = relativePath;
 		}
