@@ -228,20 +228,45 @@ namespace octoon
 
 		if (json.contains("avatar"))
 		{
-			auto avatar = json["avatar"].get<nlohmann::json::number_unsigned_t>();
-			if (avatar == 0)
-				this->setAvatar(this->getComponent<octoon::SkinnedMeshRendererComponent>()->getTransforms());
+			auto guid = json["avatar"]["guid"].get<std::string>();
+
+			auto assetPath = assetDatabase.getAssetPath(guid);
+			if (!assetPath.empty())
+			{
+				auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+				if (gameObject)
+				{
+					auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
+					if (smr)
+						this->setAvatar(smr->getTransforms());
+				}
+			}
 		}
 	}
 
 	void
 	AnimatorComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
 	{
-		if (!assetDatabase.contains(this->getAnimation()))
-			assetDatabase.createAsset(this->getAnimation(), std::filesystem::path("Assets/Motions").append(make_guid() + ".vmd"));
+		if (this->getAnimation())
+		{
+			if (!assetDatabase.contains(this->getAnimation()))
+			{
+				auto path = std::filesystem::path("Assets/Motions").append(make_guid() + ".vmd");
+				assetDatabase.createAsset(this->getAnimation(), path);
+				json["data"] = assetDatabase.getAssetGuid(path);
+			}
+			else
+			{
+				json["data"] = assetDatabase.getAssetGuid(this->getAnimation());
+			}
+		}
 
-		json["data"] = assetDatabase.getAssetGuid(this->getAnimation());
-		json["avatar"] = this->getAvatar().empty() ? 1 : 0;
+		if (!this->getAvatar().empty())
+		{
+			auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
+			if (!guid.empty())
+				json["avatar"]["guid"] = guid;
+		}
 	}
 
 	GameComponentPtr
