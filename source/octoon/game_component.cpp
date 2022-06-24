@@ -4,7 +4,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GameComponent, RttiObject, "GameComponent")
+	OctoonImplementSubInterface(GameComponent, Object, "GameComponent")
 
 	GameComponent::GameComponent() noexcept
 		: active_(true)

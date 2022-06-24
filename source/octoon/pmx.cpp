@@ -10,7 +10,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(PMX, RttiObject, "PMX")
+	OctoonImplementSubClass(PMX, Object, "PMX")
 
 	bool
 	PMX::canRead(std::istream& stream) noexcept

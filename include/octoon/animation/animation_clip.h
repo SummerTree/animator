@@ -2,14 +2,14 @@
 #define OCTOON_ANIMATION_CLIP_H_
 
 #include <unordered_map>
-#include <octoon/runtime/rtti_object.h>
+#include <octoon/runtime/object.h>
 #include <octoon/animation/animation_curve.h>
 
 namespace octoon
 {
-	class OCTOON_EXPORT AnimationClip final : public RttiObject
+	class OCTOON_EXPORT AnimationClip final : public Object
 	{
-		OctoonDeclareSubClass(AnimationClip, RttiObject)
+		OctoonDeclareSubClass(AnimationClip, Object)
 	public:
 		AnimationClip() noexcept;
 		explicit AnimationClip(std::string_view _name) noexcept;

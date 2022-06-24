@@ -3,7 +3,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(RenderObject, RttiObject, "RenderObject")
+	OctoonImplementSubInterface(RenderObject, Object, "RenderObject")
 
 	RenderListener::RenderListener() noexcept
 	{

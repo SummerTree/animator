@@ -1,22 +1,21 @@
-#ifndef OCTOON_RTTI_OBJECT_H_
-#define OCTOON_RTTI_OBJECT_H_
+#ifndef OCTOON_OBJECT_H_
+#define OCTOON_OBJECT_H_
 
 #include <string>
 #include <memory>
 #include <vector>
 
-#include <octoon/runtime/json.h>
 #include <octoon/runtime/rtti.h>
 #include <octoon/runtime/rtti_macros.h>
 
 namespace octoon
 {
-	class OCTOON_EXPORT RttiObject : public std::enable_shared_from_this<RttiObject>
+	class OCTOON_EXPORT Object : public std::enable_shared_from_this<Object>
 	{
-		OctoonDeclareClass(RttiObject)
+		OctoonDeclareClass(Object)
 	public:
-		RttiObject() = default;
-		virtual ~RttiObject() = default;
+		Object() = default;
+		virtual ~Object() = default;
 
 		bool isInstanceOf(const Rtti* rtti) const noexcept;
 		bool isInstanceOf(const Rtti& rtti) const noexcept;

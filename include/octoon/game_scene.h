@@ -5,9 +5,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameScene final : public RttiObject
+	class OCTOON_EXPORT GameScene final : public Object
 	{
-		OctoonDeclareSubClass(GameScene, RttiObject)
+		OctoonDeclareSubClass(GameScene, Object)
 	public:
 		GameScene() noexcept;
 		GameScene(std::string&& name) noexcept;

@@ -5,9 +5,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameComponent : public RttiObject
+	class OCTOON_EXPORT GameComponent : public Object
 	{
-		OctoonDeclareSubInterface(GameComponent, RttiObject)
+		OctoonDeclareSubInterface(GameComponent, Object)
 	public:
 		GameComponent() noexcept;
 		virtual ~GameComponent() noexcept;

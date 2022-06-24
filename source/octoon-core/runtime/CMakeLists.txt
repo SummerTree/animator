@@ -11,8 +11,8 @@ SET(RUNTIME_LIST
 	${HEADER_PATH}/singleton.h
 	${HEADER_PATH}/rtti.h
 	${SOURCE_PATH}/rtti.cpp
-	${HEADER_PATH}/rtti_object.h
-	${SOURCE_PATH}/rtti_object.cpp
+	${HEADER_PATH}/object.h
+	${SOURCE_PATH}/object.cpp
 	${HEADER_PATH}/rtti_factory.h
 	${SOURCE_PATH}/rtti_factory.cpp
 	${HEADER_PATH}/rtti_macros.h

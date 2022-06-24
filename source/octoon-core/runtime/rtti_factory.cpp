@@ -40,7 +40,7 @@ namespace octoon
 		return nullptr;
 	}
 
-	std::shared_ptr<RttiObject>
+	std::shared_ptr<Object>
 	RttiFactory::createInstance(const char* name, const Rtti& base) const noexcept(false)
 	{
 		assert(name);
@@ -55,7 +55,7 @@ namespace octoon
 		return nullptr;
 	}
 
-	std::shared_ptr<RttiObject>
+	std::shared_ptr<Object>
 	RttiFactory::createInstance(std::string_view name, const Rtti& base) const noexcept(false)
 	{
 		assert(!name.empty());

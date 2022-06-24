@@ -6,7 +6,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(GameObject, RttiObject, "GameObject")
+	OctoonImplementSubClass(GameObject, Object, "GameObject")
 
 	GameObject::GameObject() noexcept
 		: active_(true)

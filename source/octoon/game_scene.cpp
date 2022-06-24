@@ -8,7 +8,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(GameScene, RttiObject, "GameScene")
+	OctoonImplementSubClass(GameScene, Object, "GameScene")
 
 	GameScene::RootObject::RootObject(GameScene* scene) noexcept
 		: scene_(scene)

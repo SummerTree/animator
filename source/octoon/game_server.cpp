@@ -7,7 +7,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(GameServer, RttiObject, "GameServer")
+	OctoonImplementSubClass(GameServer, Object, "GameServer")
 
 	GameServer::GameServer() noexcept
 		: isActived_(false)

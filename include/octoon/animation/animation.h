@@ -13,9 +13,9 @@ namespace octoon
 		float timeLength;
 	};
 
-	class OCTOON_EXPORT Animation final : public RttiObject
+	class OCTOON_EXPORT Animation final : public Object
 	{
-		OctoonDeclareSubClass(Animation, RttiObject)
+		OctoonDeclareSubClass(Animation, Object)
 	public:			
 		Animation() noexcept;
 		Animation(std::shared_ptr<AnimationClip>&& _clip, std::string_view _name) noexcept;

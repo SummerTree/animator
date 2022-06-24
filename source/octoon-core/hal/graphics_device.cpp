@@ -2,7 +2,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GraphicsDevice, RttiObject, "GraphicsDevice")
+	OctoonImplementSubInterface(GraphicsDevice, Object, "GraphicsDevice")
 
 	GraphicsDeviceDesc::GraphicsDeviceDesc() noexcept
 		: _deviceType(GraphicsDeviceType::OpenGL33)

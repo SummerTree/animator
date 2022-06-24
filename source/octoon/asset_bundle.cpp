@@ -229,7 +229,7 @@ namespace octoon
 		}
 	}
 
-	std::shared_ptr<RttiObject>
+	std::shared_ptr<Object>
 	AssetBundle::loadAsset(const std::string& uuid, const Rtti& type) noexcept(false)
 	{
 		if (packageList_.contains(uuid))
@@ -257,7 +257,7 @@ namespace octoon
 		return nullptr;
 	}
 
-	std::shared_ptr<RttiObject>
+	std::shared_ptr<Object>
 	AssetBundle::loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false)
 	{
 		if (package.is_object() && package.contains("uuid") && package.contains("data"))
@@ -272,7 +272,7 @@ namespace octoon
 
 			auto data = package["data"].get<std::string>();
 
-			std::shared_ptr<RttiObject> asset;
+			std::shared_ptr<Object> asset;
 			if (type.isDerivedFrom(Texture::getRtti()))
 				asset = this->assetDatabase_->loadAssetAtPath<Texture>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(Animation::getRtti()))
@@ -309,7 +309,7 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetBundle::getPackage(const std::shared_ptr<RttiObject>& asset) noexcept
+	AssetBundle::getPackage(const std::shared_ptr<Object>& asset) noexcept
 	{
 		auto guid = this->assetDatabase_->getAssetGuid(asset);
 		if (guid.empty())

@@ -386,7 +386,7 @@ namespace unreal
 		}
 	}
 
-	std::shared_ptr<octoon::RttiObject>
+	std::shared_ptr<octoon::Object>
 	AssetLibrary::loadAsset(const std::string& uuid, const octoon::Rtti& type) noexcept(false)
 	{
 		if (packageCache_.contains(uuid))
@@ -404,7 +404,7 @@ namespace unreal
 		return nullptr;
 	}
 
-	std::shared_ptr<octoon::RttiObject>
+	std::shared_ptr<octoon::Object>
 	AssetLibrary::loadAssetAtPackage(const nlohmann::json& package, const octoon::Rtti& type) noexcept(false)
 	{
 		if (package.is_object() && package.contains("uuid") && package.contains("data"))
@@ -419,7 +419,7 @@ namespace unreal
 
 			auto data = package["data"].get<std::string>();
 
-			std::shared_ptr<octoon::RttiObject> asset;
+			std::shared_ptr<octoon::Object> asset;
 			if (type.isDerivedFrom(octoon::Texture::getRtti()))
 				asset = this->assetDatabase_->loadAssetAtPath<octoon::Texture>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(octoon::Animation::getRtti()))
@@ -458,7 +458,7 @@ namespace unreal
 	}
 
 	nlohmann::json
-	AssetLibrary::getPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept
+	AssetLibrary::getPackage(const std::shared_ptr<octoon::Object>& asset) const noexcept
 	{
 		if (assetGuidCache_.contains(asset))
 			return this->getPackage(assetGuidCache_.at(asset));
@@ -475,7 +475,7 @@ namespace unreal
 	}
 
 	std::filesystem::path
-	AssetLibrary::getAssetPath(const std::shared_ptr<const octoon::RttiObject>& asset, bool absolutePath) const noexcept
+	AssetLibrary::getAssetPath(const std::shared_ptr<const octoon::Object>& asset, bool absolutePath) const noexcept
 	{
 		auto path = this->assetDatabase_->getAssetPath(asset);
 		if (absolutePath && !path.empty())

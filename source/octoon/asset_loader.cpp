@@ -20,7 +20,7 @@ namespace octoon
 	}
 
 	std::filesystem::path
-	AssetLoader::getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept
+	AssetLoader::getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept
 	{
 		auto it = pathList_.find(asset);
 		if (it != pathList_.end())
@@ -29,7 +29,7 @@ namespace octoon
 	}
 
 	std::filesystem::path
-	AssetLoader::getAssetExtension(const std::shared_ptr<const RttiObject>& asset, std::string_view defaultExtension) const noexcept
+	AssetLoader::getAssetExtension(const std::shared_ptr<const Object>& asset, std::string_view defaultExtension) const noexcept
 	{
 		auto assetPath = AssetLoader::instance()->getAssetPath(asset);
 		if (!assetPath.empty())
@@ -37,7 +37,7 @@ namespace octoon
 		return defaultExtension;
 	}
 
-	std::shared_ptr<RttiObject>
+	std::shared_ptr<Object>
 	AssetLoader::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
 	{
 		auto ext = path.extension().u8string();

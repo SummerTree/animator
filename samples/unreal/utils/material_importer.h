@@ -4,6 +4,7 @@
 #include <map>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/runtime/singleton.h>
+#include <octoon/runtime/json.h>
 
 namespace unreal
 {

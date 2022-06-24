@@ -3,7 +3,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GameFeature, RttiObject, "GameFeature")
+	OctoonImplementSubInterface(GameFeature, Object, "GameFeature")
 
 	GameFeature::GameFeature() noexcept
 		: isActived_(false)

@@ -3,15 +3,15 @@
 
 #include <octoon/texture/texture_format.h>
 #include <octoon/texture/texture_loader.h>
-#include <octoon/runtime/rtti_object.h>
+#include <octoon/runtime/object.h>
 #include <octoon/hal/graphics_texture.h>
 #include <filesystem>
 
 namespace octoon
 {
-	class OCTOON_EXPORT Texture final : public RttiObject
+	class OCTOON_EXPORT Texture final : public Object
 	{
-		OctoonDeclareSubClass(Texture, RttiObject)
+		OctoonDeclareSubClass(Texture, Object)
 	public:
 		Texture() noexcept;
 		Texture(Format format, std::uint32_t width, std::uint32_t height) noexcept(false);

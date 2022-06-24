@@ -29,7 +29,7 @@ namespace octoon
 		void createAsset(const std::shared_ptr<const Material>& material, const std::filesystem::path& assetPath) noexcept(false);
 		void createAsset(const std::shared_ptr<const GameObject>& object, const std::filesystem::path& assetPath) noexcept(false);
 
-		bool contains(const std::shared_ptr<const RttiObject>& asset) const noexcept;
+		bool contains(const std::shared_ptr<const Object>& asset) const noexcept;
 
 		void deleteAsset(const std::filesystem::path& assetPath) noexcept(false);
 		void saveAssets() noexcept(false);
@@ -38,12 +38,12 @@ namespace octoon
 		void deleteFolder(const std::filesystem::path& assetFolder) noexcept(false);
 
 		std::filesystem::path getAssetPath(const std::string& uuid) const noexcept;
-		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept;
+		std::filesystem::path getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept;
 
 		std::string getAssetGuid(const std::filesystem::path& assetPath) const noexcept;
-		std::string getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept;
+		std::string getAssetGuid(const std::shared_ptr<const Object>& asset) const noexcept;
 
-		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false);
+		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false);
 
 		template<typename T>
 		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false)
@@ -55,8 +55,8 @@ namespace octoon
 		}
 
 		bool isDirty() const noexcept;
-		bool isDirty(const std::shared_ptr<RttiObject>& object) const noexcept;
-		void setDirty(const std::shared_ptr<RttiObject>& object, bool dirty = true) noexcept(false);
+		bool isDirty(const std::shared_ptr<Object>& object) const noexcept;
+		void setDirty(const std::shared_ptr<Object>& object, bool dirty = true) noexcept(false);
 		void clearUpdate() noexcept;
 
 	private:
@@ -71,11 +71,11 @@ namespace octoon
 	private:
 		std::filesystem::path assetPath_;
 
-		std::set<std::weak_ptr<const RttiObject>, std::owner_less<std::weak_ptr<const RttiObject>>> dirtyList_;
+		std::set<std::weak_ptr<const Object>, std::owner_less<std::weak_ptr<const Object>>> dirtyList_;
 
 		std::map<std::filesystem::path, std::string> assetGuidList_;
 		std::map<std::string, std::filesystem::path> assetPathList_;
-		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> objectPathList_;
+		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> objectPathList_;
 	};
 }
 

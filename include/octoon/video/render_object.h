@@ -3,7 +3,7 @@
 
 #include <octoon/math/math.h>
 #include <octoon/runtime/rtti.h>
-#include <octoon/runtime/rtti_object.h>
+#include <octoon/runtime/object.h>
 
 namespace octoon
 {
@@ -22,9 +22,9 @@ namespace octoon
 		virtual void onPostRender(const Camera& camera) noexcept = 0;
 	};
 
-	class OCTOON_EXPORT RenderObject : public RttiObject
+	class OCTOON_EXPORT RenderObject : public Object
 	{
-		OctoonDeclareSubInterface(RenderObject, RttiObject)
+		OctoonDeclareSubInterface(RenderObject, Object)
 	public:
 		RenderObject() noexcept;
 		virtual ~RenderObject() noexcept;

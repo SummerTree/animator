@@ -2,7 +2,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(AnimationClip, RttiObject, "AnimationClip")
+	OctoonImplementSubClass(AnimationClip, Object, "AnimationClip")
 
 	AnimationClip::AnimationClip() noexcept
 		: finish(false)

@@ -25,10 +25,10 @@ namespace unreal
 		nlohmann::json importAsset(const std::filesystem::path& path) noexcept(false);
 		
 		nlohmann::json getPackage(const std::string& uuid) const noexcept;
-		nlohmann::json getPackage(const std::shared_ptr<octoon::RttiObject>& asset) const noexcept;
+		nlohmann::json getPackage(const std::shared_ptr<octoon::Object>& asset) const noexcept;
 
 		std::filesystem::path getAssetPath(const std::string& uuid, bool absolutePath = false) const noexcept;
-		std::filesystem::path getAssetPath(const std::shared_ptr<const octoon::RttiObject>& asset, bool absolutePath = false) const noexcept;
+		std::filesystem::path getAssetPath(const std::shared_ptr<const octoon::Object>& asset, bool absolutePath = false) const noexcept;
 
 		const nlohmann::json& getMotionList() const noexcept;
 		const nlohmann::json& getTextureList() const noexcept;
@@ -42,9 +42,9 @@ namespace unreal
 		void saveAssets() noexcept(false);
 		void removeAsset(const std::string& uuid) noexcept(false);
 
-		std::shared_ptr<octoon::RttiObject> loadAsset(const std::string& uuid, const octoon::Rtti& rtti) noexcept(false);
+		std::shared_ptr<octoon::Object> loadAsset(const std::string& uuid, const octoon::Rtti& rtti) noexcept(false);
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<octoon::RttiObject, T>::value>>
+		template<typename T, typename = std::enable_if_t<std::is_base_of<octoon::Object, T>::value>>
 		std::shared_ptr<T> loadAsset(const std::string& uuid) noexcept(false)
 		{
 			auto asset = loadAsset(uuid, *T::getRtti());
@@ -59,9 +59,9 @@ namespace unreal
 		nlohmann::json importAsset(const std::shared_ptr<octoon::Material>& material, const std::filesystem::path& relativeFolder) noexcept(false);
 		nlohmann::json importAsset(const std::shared_ptr<octoon::GameObject>& gameObject, const std::filesystem::path& relativeFolder, const std::filesystem::path& modelPath) noexcept(false);
 
-		std::shared_ptr<octoon::RttiObject> loadAssetAtPackage(const nlohmann::json& package, const octoon::Rtti& type) noexcept(false);
+		std::shared_ptr<octoon::Object> loadAssetAtPackage(const nlohmann::json& package, const octoon::Rtti& type) noexcept(false);
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<octoon::RttiObject, T>::value>>
+		template<typename T, typename = std::enable_if_t<std::is_base_of<octoon::Object, T>::value>>
 		std::shared_ptr<T> loadAssetAtPackage(const nlohmann::json& package) noexcept(false)
 		{
 			auto asset = loadAssetAtPackage(package, *T::getRtti());
@@ -80,9 +80,9 @@ namespace unreal
 		std::filesystem::path assetPath_;
 
 		std::unique_ptr<octoon::AssetDatabase> assetDatabase_;
-		std::map<std::string, std::weak_ptr<octoon::RttiObject>> assetCache_;
+		std::map<std::string, std::weak_ptr<octoon::Object>> assetCache_;
 		std::map<std::string, nlohmann::json> packageCache_;
-		std::map<std::weak_ptr<octoon::RttiObject>, std::string, std::owner_less<std::weak_ptr<octoon::RttiObject>>> assetGuidCache_;
+		std::map<std::weak_ptr<octoon::Object>, std::string, std::owner_less<std::weak_ptr<octoon::Object>>> assetGuidCache_;
 	};
 }
 

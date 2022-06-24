@@ -2,7 +2,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GraphicsResource, RttiObject, "GraphicsResource")
+	OctoonImplementSubInterface(GraphicsResource, Object, "GraphicsResource")
 
 	GraphicsResource::GraphicsResource() noexcept
 	{

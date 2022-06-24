@@ -2,7 +2,7 @@
 
 namespace octoon
 {
-	OctoonImplementSubClass(Animation, RttiObject, "Animation")
+	OctoonImplementSubClass(Animation, Object, "Animation")
 
 	Animation::Animation() noexcept
 		: name("Default")

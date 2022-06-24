@@ -2,7 +2,7 @@
 #define OCTOON_INPUT_TYPES_H_
 
 #include <octoon/runtime/rtti.h>
-#include <octoon/runtime/rtti_object.h>
+#include <octoon/runtime/object.h>
 
 namespace octoon
 {

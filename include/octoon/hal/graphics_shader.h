@@ -53,7 +53,7 @@ namespace octoon
 		GraphicsShaders _shaders;
 	};
 
-	class OCTOON_EXPORT GraphicsAttribute : public RttiObject
+	class OCTOON_EXPORT GraphicsAttribute : public Object
 	{
 		OctoonDeclareSubInterface(GraphicsAttribute, GraphicsParam)
 	public:
@@ -69,9 +69,9 @@ namespace octoon
 		GraphicsAttribute& operator=(const GraphicsAttribute&) noexcept = delete;
 	};
 
-	class OCTOON_EXPORT GraphicsParam : public RttiObject
+	class OCTOON_EXPORT GraphicsParam : public Object
 	{
-		OctoonDeclareSubInterface(GraphicsParam, RttiObject)
+		OctoonDeclareSubInterface(GraphicsParam, Object)
 	public:
 		GraphicsParam() noexcept = default;
 		virtual ~GraphicsParam() = default;

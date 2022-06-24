@@ -31,7 +31,7 @@ namespace octoon
 		bool hasPackage(const std::string& uuid) noexcept;
 
 		nlohmann::json getPackage(const std::string& uuid) noexcept;
-		nlohmann::json getPackage(const std::shared_ptr<RttiObject>& asset) noexcept;
+		nlohmann::json getPackage(const std::shared_ptr<Object>& asset) noexcept;
 
 		nlohmann::json getPackageList(const Rtti& rtti) const noexcept(false);
 
@@ -45,9 +45,9 @@ namespace octoon
 		void saveAssets() noexcept(false);
 		void removeAsset(const std::string& uuid) noexcept(false);
 
-		std::shared_ptr<RttiObject> loadAsset(const std::string& uuid, const Rtti& rtti) noexcept(false);
+		std::shared_ptr<Object> loadAsset(const std::string& uuid, const Rtti& rtti) noexcept(false);
 		
-		template<typename T, typename = std::enable_if_t<std::is_base_of<RttiObject, T>::value>>
+		template<typename T, typename = std::enable_if_t<std::is_base_of<Object, T>::value>>
 		std::shared_ptr<T> loadAsset(const std::string& uuid) noexcept(false)
 		{
 			auto asset = loadAsset(uuid, *T::getRtti());
@@ -60,9 +60,9 @@ namespace octoon
 		const std::vector<std::shared_ptr<AssetBundle>>& getAllLoadedAssetBundles() const noexcept;
 
 	private:
-		std::shared_ptr<RttiObject> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
+		std::shared_ptr<Object> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
 
-		template<typename T, typename = std::enable_if_t<std::is_base_of<RttiObject, T>::value>>
+		template<typename T, typename = std::enable_if_t<std::is_base_of<Object, T>::value>>
 		std::shared_ptr<T> loadAssetAtPackage(const nlohmann::json& package) noexcept(false)
 		{
 			auto asset = loadAssetAtPackage(package, *T::getRtti());
@@ -80,7 +80,7 @@ namespace octoon
 		std::unique_ptr<AssetDatabase> assetDatabase_;
 
 		std::map<std::string, nlohmann::json> packageList_;
-		std::map<std::string, std::weak_ptr<RttiObject>> assetCache_;
+		std::map<std::string, std::weak_ptr<Object>> assetCache_;
 
 		static std::vector<std::shared_ptr<AssetBundle>> assetBundles_;
 	};

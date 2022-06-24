@@ -16,10 +16,10 @@ namespace octoon
 		AssetLoader() noexcept;
 		virtual ~AssetLoader() noexcept;
 
-		std::filesystem::path getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept;
-		std::filesystem::path getAssetExtension(const std::shared_ptr<const RttiObject>& asset, std::string_view defaultExtension = "") const noexcept;
+		std::filesystem::path getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept;
+		std::filesystem::path getAssetExtension(const std::shared_ptr<const Object>& asset, std::string_view defaultExtension = "") const noexcept;
 
-		std::shared_ptr<RttiObject> loadAssetAtPath(const std::filesystem::path& path) noexcept(false);
+		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& path) noexcept(false);
 
 		template<typename T>
 		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
@@ -35,7 +35,7 @@ namespace octoon
 		AssetLoader& operator=(const AssetLoader&) = delete;
 
 	private:
-		std::map<std::weak_ptr<const RttiObject>, std::filesystem::path, std::owner_less<std::weak_ptr<const RttiObject>>> pathList_;
+		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> pathList_;
 	};
 }
 

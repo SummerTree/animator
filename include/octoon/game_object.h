@@ -3,6 +3,7 @@
 
 #include <octoon/game_types.h>
 #include <octoon/runtime/sigslot.h>
+#include <octoon/runtime/json.h>
 #include <octoon/io/iarchive.h>
 
 #include <any>
@@ -10,9 +11,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameObject : public RttiObject
+	class OCTOON_EXPORT GameObject : public Object
 	{
-		OctoonDeclareSubClass(GameObject, RttiObject)
+		OctoonDeclareSubClass(GameObject, Object)
 	public:
 		GameObject() noexcept;
 		GameObject(std::string_view name) noexcept;

@@ -529,7 +529,7 @@ namespace octoon
 	}
 
 	std::filesystem::path
-	AssetDatabase::getAssetPath(const std::shared_ptr<const RttiObject>& asset) const noexcept
+	AssetDatabase::getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept
 	{
 		auto it = objectPathList_.find(asset);
 		if (it != objectPathList_.end())
@@ -549,7 +549,7 @@ namespace octoon
 	}
 
 	std::string
-	AssetDatabase::getAssetGuid(const std::shared_ptr<const RttiObject>& asset) const noexcept
+	AssetDatabase::getAssetGuid(const std::shared_ptr<const Object>& asset) const noexcept
 	{
 		auto path = this->getAssetPath(asset);
 		if (!path.empty())
@@ -615,7 +615,7 @@ namespace octoon
 	}
 
 	bool
-	AssetDatabase::contains(const std::shared_ptr<const RttiObject>& asset) const noexcept
+	AssetDatabase::contains(const std::shared_ptr<const Object>& asset) const noexcept
 	{
 		auto it = objectPathList_.find(asset);
 		if (it != objectPathList_.end())
@@ -627,7 +627,7 @@ namespace octoon
 		return false;
 	}
 
-	std::shared_ptr<RttiObject>
+	std::shared_ptr<Object>
 	AssetDatabase::loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(!relativePath.empty() && relativePath.wstring().substr(0, 6) == L"Assets");
@@ -932,7 +932,7 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::setDirty(const std::shared_ptr<RttiObject>& object, bool dirty) noexcept(false)
+	AssetDatabase::setDirty(const std::shared_ptr<Object>& object, bool dirty) noexcept(false)
 	{
 		if (dirty)
 			this->dirtyList_.insert(object);
@@ -951,7 +951,7 @@ namespace octoon
 	}
 
 	bool
-	AssetDatabase::isDirty(const std::shared_ptr<RttiObject>& object) const noexcept
+	AssetDatabase::isDirty(const std::shared_ptr<Object>& object) const noexcept
 	{
 		return this->dirtyList_.contains(object);
 	}

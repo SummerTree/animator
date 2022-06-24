@@ -9,9 +9,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT GameServer final : public RttiObject
+	class OCTOON_EXPORT GameServer final : public Object
 	{
-		OctoonDeclareSubClass(GameServer, RttiObject)
+		OctoonDeclareSubClass(GameServer, Object)
 	public:
 		GameServer() noexcept;
 		~GameServer() noexcept;

@@ -1,13 +1,13 @@
 #ifndef OCTOON_RTTI_SINGLETON_H_
 #define OCTOON_RTTI_SINGLETON_H_
 
-#include <octoon/runtime/rtti_object.h>
+#include <octoon/runtime/object.h>
 #include <type_traits>
 
 namespace octoon
 {
 	template<typename T, typename = std::enable_if_t<std::is_class<T>::value>>
-	class RttiSingleton : public RttiObject
+	class RttiSingleton : public Object
 	{
 	public:
 		static T* instance() noexcept
@@ -29,8 +29,8 @@ namespace octoon
 
 	namespace singleton
 	{
-		OCTOON_EXPORT RttiObject* instance(const Rtti* rtti) noexcept;
-		OCTOON_EXPORT RttiObject* instance(const Rtti& rtti) noexcept;
+		OCTOON_EXPORT Object* instance(const Rtti* rtti) noexcept;
+		OCTOON_EXPORT Object* instance(const Rtti& rtti) noexcept;
 	}
 
 	template<typename _Tx, typename _Ty> _Tx* RttiSingleton<_Tx, _Ty>::instance_ = singleton::instance(_Tx::RTTI)->template downcast<_Tx>();

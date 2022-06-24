@@ -11,11 +11,11 @@ namespace octoon
 		RttiFactory::instance()->add(this);
 	}
 
-	std::shared_ptr<RttiObject>
+	std::shared_ptr<Object>
 	Rtti::create() const noexcept(false) //throw(std::bad_alloc)
 	{
 		assert(construct_);
-		return std::shared_ptr<RttiObject>(construct_());
+		return std::shared_ptr<Object>(construct_());
 	}
 
 	const Rtti*

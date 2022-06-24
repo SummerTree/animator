@@ -2,5 +2,5 @@
 
 namespace octoon
 {
-	OctoonImplementSubInterface(GameListener, RttiObject, "GameListener")
+	OctoonImplementSubInterface(GameListener, Object, "GameListener")
 }

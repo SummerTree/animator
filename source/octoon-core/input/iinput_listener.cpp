@@ -4,7 +4,7 @@ namespace octoon
 {
 	namespace input
 	{
-		OctoonImplementSubInterface(IInputListener, RttiObject, "IInputListener")
+		OctoonImplementSubInterface(IInputListener, Object, "IInputListener")
 
 		IInputListener::IInputListener() noexcept
 		{
