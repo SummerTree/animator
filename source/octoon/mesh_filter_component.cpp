@@ -116,9 +116,7 @@ namespace octoon
 
 		auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
 		if (!guid.empty())
-		{
 			json["mesh"]["guid"] = guid;
-		}
 	}
 
 	GameComponentPtr

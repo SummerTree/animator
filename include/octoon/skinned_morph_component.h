@@ -23,6 +23,9 @@ namespace octoon
 		void setIndices(const math::uint1s& indices) noexcept;
 		const math::uint1s& getIndices() const noexcept;
 
+		void load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false) override;
+		void save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false) override;
+
 		GameComponentPtr clone() const noexcept override;
 
 	private:

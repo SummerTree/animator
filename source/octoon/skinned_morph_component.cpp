@@ -1,4 +1,6 @@
 #include <octoon/skinned_morph_component.h>
+#include <octoon/asset_database.h>
+#include <octoon/runtime/base64.h>
 
 namespace octoon
 {
@@ -58,6 +60,79 @@ namespace octoon
 	SkinnedMorphComponent::getIndices() const noexcept
 	{
 		return indices_;
+	}
+
+	void
+	SkinnedMorphComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	{
+		GameComponent::load(json, assetDatabase);
+
+		if (json.contains("data"))
+		{
+			auto& data = json["data"];
+			if (data.contains("guid"))
+			{
+				auto guid = data["guid"].get<std::string>();
+				auto assetPath = assetDatabase.getAssetPath(guid);
+				if (!assetPath.empty())
+				{
+					auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+					if (gameObject)
+					{
+						for (auto& it : gameObject->getComponents())
+						{
+							if (!it->isA<SkinnedMorphComponent>())
+								continue;
+
+							if (it->getName() == this->getName())
+							{
+								auto skinnedMorph = it->downcast<SkinnedMorphComponent>();
+								this->setControl(skinnedMorph->getControl());
+								this->setIndices(skinnedMorph->getIndices());
+								this->setOffsets(skinnedMorph->getOffsets());
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				if (data.contains("control"))
+					this->setControl(data["control"].get<float>());
+
+				if (data.contains("offsets"))
+				{
+					std::vector<char> buffer = base64_decode(data["offests"].get<std::string>());
+					this->offsets_.resize(buffer.size() / sizeof(math::float3));
+					std::memcpy(this->offsets_.data(), buffer.data(), buffer.size());
+				}
+
+				if (data.contains("indices"))
+				{
+					std::vector<char> buffer = base64_decode(data["indices"].get<std::string>());
+					this->indices_.resize(buffer.size() / sizeof(unsigned int));
+					std::memcpy(this->offsets_.data(), buffer.data(), buffer.size());
+				}
+			}
+		}
+	}
+
+	void
+	SkinnedMorphComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	{
+		GameComponent::save(json, assetDatabase);
+
+		auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
+		if (!guid.empty())
+		{
+			json["data"]["guid"] = guid;
+		}
+		else
+		{
+			json["data"]["control"] = this->getControl();
+			json["data"]["offsets"] = base64_encode((unsigned char*)offsets_.data(), offsets_.size() * sizeof(math::float3));
+			json["data"]["indices"] = base64_encode((unsigned char*)indices_.data(), indices_.size() * sizeof(unsigned int));
+		}
 	}
 
 	GameComponentPtr
