@@ -26,8 +26,7 @@ namespace unreal
 		this->assetPath_ = path;
 		this->assetPath_.make_preferred();
 
-		this->assetDatabase_ = std::make_unique<octoon::AssetDatabase>();
-		this->assetDatabase_->open(this->assetPath_);
+		octoon::AssetDatabase::instance()->importPackage(std::filesystem::path(path).append("Assets"));
 
 		auto libraryPath = std::filesystem::path(path).append("Library");
 
@@ -142,14 +141,14 @@ namespace unreal
 			if (texture)
 			{
 				texture->setMipLevel(8);
-				return this->importAsset(texture, "Assets/Textures");
+				return this->importAsset(texture, "Packages/Assets/Textures");
 			}
 		}
 		if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
 			auto texture = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::Texture>(path);
 			if (texture)
-				return this->importAsset(texture, "Assets/Textures");
+				return this->importAsset(texture, "Packages/Assets/Textures");
 		}
 		else if (ext == u8".vmd")
 		{
@@ -157,17 +156,17 @@ namespace unreal
 			if (animation)
 			{
 				animation->setName((char*)path.filename().u8string().c_str());
-				return this->importAsset(animation, "Assets/Motions");
+				return this->importAsset(animation, "Packages/Assets/Motions");
 			}
 		}
 		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
 		{
-			auto modelPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(path.filename().wstring());
-			this->assetDatabase_->importAsset(path, modelPath);
+			auto modelPath = std::filesystem::path("Packages/Assets/Models").append(octoon::make_guid()).append(path.filename().wstring());
+			octoon::AssetDatabase::instance()->importAsset(path, modelPath);
 
-			auto gameObject = this->assetDatabase_->loadAssetAtPath<octoon::GameObject>(modelPath);
+			auto gameObject = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(modelPath);
 			if (gameObject)
-				return this->importAsset(gameObject, "Assets/Prefabs", modelPath.parent_path());
+				return this->importAsset(gameObject, "Packages/Assets/Prefabs", modelPath.parent_path());
 		}
 		else if (ext == u8".mdl")
 		{
@@ -179,7 +178,7 @@ namespace unreal
 				octoon::MDLLoader loader;
 				loader.load("resource", stream);
 
-				auto materialPath = std::filesystem::path("Assets").append("Materials");
+				auto materialPath = std::filesystem::path("Packages/Assets/Materials");
 
 				for (auto& material : loader.getMaterials())
 					items.push_back(this->importAsset(material, materialPath));
@@ -205,26 +204,26 @@ namespace unreal
 			auto ext = octoon::AssetLoader::instance()->getAssetExtension(texture, hdr ? ".hdr" : ".png").string();
 			auto outputPath = std::filesystem::path(relativePath).append(guid + ext);
 
-			this->assetDatabase_->createFolder(relativePath);
-			this->assetDatabase_->createAsset(texture, outputPath);
+			octoon::AssetDatabase::instance()->createFolder(relativePath);
+			octoon::AssetDatabase::instance()->createAsset(texture, outputPath);
 
 			nlohmann::json package;
 			package["uuid"] = guid;
 			package["hdr"] = hdr;
 			package["type"] = texture->type_name();
 			package["name"] = texture->getName();
-			package["data"] = this->assetDatabase_->getAssetGuid(outputPath);
+			package["data"] = octoon::AssetDatabase::instance()->getAssetGuid(outputPath);
 			package["visible"] = true;
 
 			auto preview = octoon::AssetPreview::instance()->getAssetPreview(texture);
 			if (preview)
 			{
 				auto uuid = octoon::make_guid();
-				auto previewFolder = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2));
+				auto previewFolder = std::filesystem::path("Packages/Assets/Thumbnails").append(uuid.substr(0, 2));
 				auto previewPath = std::filesystem::path(previewFolder).append(uuid + ".png");
-				this->assetDatabase_->createFolder(previewFolder);
-				this->assetDatabase_->createAsset(preview, previewPath);
-				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
+				octoon::AssetDatabase::instance()->createFolder(previewFolder);
+				octoon::AssetDatabase::instance()->createAsset(preview, previewPath);
+				package["preview"] = octoon::AssetDatabase::instance()->getAssetGuid(previewPath);
 			}
 
 			if (hdr)
@@ -239,7 +238,7 @@ namespace unreal
 		}
 		catch (const std::exception& e)
 		{
-			this->assetDatabase_->deleteAsset(relativePath);
+			octoon::AssetDatabase::instance()->deleteAsset(relativePath);
 			throw e;
 		}
 	}
@@ -255,14 +254,14 @@ namespace unreal
 			auto ext = octoon::AssetLoader::instance()->getAssetExtension(animation, ".vmd").string();
 			auto outputPath = std::filesystem::path(relativePath).append(guid + ext);
 
-			this->assetDatabase_->createFolder(relativePath);
-			this->assetDatabase_->createAsset(animation, outputPath);
+			octoon::AssetDatabase::instance()->createFolder(relativePath);
+			octoon::AssetDatabase::instance()->createAsset(animation, outputPath);
 
 			nlohmann::json package;
 			package["uuid"] = guid;
 			package["type"] = animation->type_name();
 			package["name"] = animation->getName();
-			package["data"] = this->assetDatabase_->getAssetGuid(outputPath);
+			package["data"] = octoon::AssetDatabase::instance()->getAssetGuid(outputPath);
 			package["visible"] = true;
 
 			this->motionDb_.push_back(package);
@@ -273,7 +272,7 @@ namespace unreal
 		}
 		catch (const std::exception& e)
 		{
-			this->assetDatabase_->deleteAsset(relativePath);
+			octoon::AssetDatabase::instance()->deleteAsset(relativePath);
 			throw e;
 		}
 	}
@@ -296,20 +295,20 @@ namespace unreal
 				case octoon::PropertyTypeInfo::PropertyTypeInfoTexture:
 				{
 					auto texture = material->get<std::shared_ptr<octoon::Texture>>(it.key);
-					if (texture && !this->assetDatabase_->contains(texture))
+					if (texture && !octoon::AssetDatabase::instance()->contains(texture))
 						this->importAsset(texture, texturePath);
 				}
 				break;
 				}
 			}
 
-			this->assetDatabase_->createAsset(material, materialPath);
+			octoon::AssetDatabase::instance()->createAsset(material, materialPath);
 
 			nlohmann::json package;
 			package["uuid"] = guid;
 			package["type"] = material->type_name();
 			package["name"] = material->getName();
-			package["data"] = this->assetDatabase_->getAssetGuid(materialPath);
+			package["data"] = octoon::AssetDatabase::instance()->getAssetGuid(materialPath);
 			package["visible"] = true;
 
 			auto preview = octoon::AssetPreview::instance()->getAssetPreview(material);
@@ -318,9 +317,9 @@ namespace unreal
 				auto uuid = octoon::make_guid();
 				auto previewFolder = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2));
 				auto previewPath = std::filesystem::path(previewFolder).append(uuid + ".png");
-				this->assetDatabase_->createFolder(previewFolder);
-				this->assetDatabase_->createAsset(preview, previewPath);
-				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
+				octoon::AssetDatabase::instance()->createFolder(previewFolder);
+				octoon::AssetDatabase::instance()->createAsset(preview, previewPath);
+				package["preview"] = octoon::AssetDatabase::instance()->getAssetGuid(previewPath);
 			}
 
 			this->materialDb_.push_back(package);
@@ -330,7 +329,7 @@ namespace unreal
 		}
 		catch (const std::exception& e)
 		{
-			this->assetDatabase_->deleteAsset(relativePath);
+			octoon::AssetDatabase::instance()->deleteAsset(relativePath);
 			throw e;
 		}
 	}
@@ -344,15 +343,15 @@ namespace unreal
 		try
 		{
 			auto prefabPath = std::filesystem::path(relativePath).append(guid + ".prefab");
-			this->assetDatabase_->createAsset(gameObject, prefabPath);
+			octoon::AssetDatabase::instance()->createAsset(gameObject, prefabPath);
 
 			nlohmann::json package;
 			package["uuid"] = guid;
 			package["visible"] = true;
 			package["type"] = gameObject->type_name();
 			package["name"] = gameObject->getName();
-			package["model"] = this->assetDatabase_->getAssetGuid(modelPath);
-			package["data"] = this->assetDatabase_->getAssetGuid(prefabPath);
+			package["model"] = octoon::AssetDatabase::instance()->getAssetGuid(modelPath);
+			package["data"] = octoon::AssetDatabase::instance()->getAssetGuid(prefabPath);
 
 			auto preview = octoon::AssetPreview::instance()->getAssetPreview(gameObject);
 			if (preview)
@@ -360,9 +359,9 @@ namespace unreal
 				auto uuid = octoon::make_guid();
 				auto previewFolder = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2));
 				auto previewPath = std::filesystem::path(previewFolder).append(uuid + ".png");
-				this->assetDatabase_->createFolder(previewFolder);
-				this->assetDatabase_->createAsset(preview, previewPath);
-				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
+				octoon::AssetDatabase::instance()->createFolder(previewFolder);
+				octoon::AssetDatabase::instance()->createAsset(preview, previewPath);
+				package["preview"] = octoon::AssetDatabase::instance()->getAssetGuid(previewPath);
 			}
 
 			this->prefabDb_.push_back(package);
@@ -416,13 +415,13 @@ namespace unreal
 
 			std::shared_ptr<octoon::Object> asset;
 			if (type.isDerivedFrom(octoon::Texture::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<octoon::Texture>(this->assetDatabase_->getAssetPath(data));
+				asset = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(octoon::AssetDatabase::instance()->getAssetPath(data));
 			else if (type.isDerivedFrom(octoon::Material::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<octoon::Material>(this->assetDatabase_->getAssetPath(data));
+				asset = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Material>(octoon::AssetDatabase::instance()->getAssetPath(data));
 			else if (type.isDerivedFrom(octoon::Animation::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<octoon::Animation>(this->assetDatabase_->getAssetPath(data));
+				asset = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Animation>(octoon::AssetDatabase::instance()->getAssetPath(data));
 			else if (type.isDerivedFrom(octoon::GameObject::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<octoon::GameObject>(this->assetDatabase_->getAssetPath(data));
+				asset = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(octoon::AssetDatabase::instance()->getAssetPath(data));
 
 			if (asset)
 			{
@@ -461,19 +460,19 @@ namespace unreal
 	std::filesystem::path
 	AssetLibrary::getAssetPath(const std::string& uuid, bool absolutePath) const noexcept
 	{
-		auto path = this->assetDatabase_->getAssetPath(uuid);
-		if (absolutePath && !path.empty())
-			return std::filesystem::path(this->assetPath_).append(path.wstring());
-		return path;
+		auto assetPath = octoon::AssetDatabase::instance()->getAssetPath(uuid);
+		if (absolutePath && !assetPath.empty())
+			return octoon::AssetDatabase::instance()->getAbsolutePath(assetPath);
+		return assetPath;
 	}
 
 	std::filesystem::path
 	AssetLibrary::getAssetPath(const std::shared_ptr<const octoon::Object>& asset, bool absolutePath) const noexcept
 	{
-		auto path = this->assetDatabase_->getAssetPath(asset);
-		if (absolutePath && !path.empty())
-			return std::filesystem::path(this->assetPath_).append(path.wstring());
-		return path;
+		auto assetPath = octoon::AssetDatabase::instance()->getAssetPath(asset);
+		if (absolutePath && !assetPath.empty())
+			return octoon::AssetDatabase::instance()->getAbsolutePath(assetPath);
+		return assetPath;
 	}
 
 	void
@@ -485,8 +484,8 @@ namespace unreal
 	void
 	AssetLibrary::saveAssets() noexcept(false)
 	{
-		if (this->assetDatabase_)
-			this->assetDatabase_->saveAssets();
+		if (octoon::AssetDatabase::instance())
+			octoon::AssetDatabase::instance()->saveAssets();
 
 		auto libraryPath = std::filesystem::path(this->assetPath_).append("Library");
 		std::filesystem::create_directories(libraryPath);
@@ -549,8 +548,8 @@ namespace unreal
 				auto path = this->getAssetPath(uuid);
 				if (!path.empty())
 				{
-					if (this->assetDatabase_)
-						this->assetDatabase_->deleteAsset(path);
+					if (octoon::AssetDatabase::instance())
+						octoon::AssetDatabase::instance()->deleteAsset(path);
 
 					auto parent_path = std::filesystem::path(this->assetPath_).append(path.parent_path().wstring());
 					if (std::filesystem::is_empty(parent_path))
@@ -633,19 +632,19 @@ namespace unreal
 			{
 				if (package.contains("data"))
 				{
-					auto assetPath = this->assetDatabase_->getAssetPath(package["data"].get<std::string>());
+					auto assetPath = octoon::AssetDatabase::instance()->getAssetPath(package["data"].get<std::string>());
 					if (!assetPath.empty())
 					{
 						deleteAsset(uuid);
-						this->assetDatabase_->deleteFolder(assetPath.parent_path());
+						octoon::AssetDatabase::instance()->deleteFolder(assetPath.parent_path());
 					}
 				}
 
 				if (package.contains("model"))
 				{
 					auto folderPath = this->getAssetPath(package["model"].get<std::string>());
-					if (this->assetDatabase_)
-						this->assetDatabase_->deleteFolder(folderPath);
+					if (octoon::AssetDatabase::instance())
+						octoon::AssetDatabase::instance()->deleteFolder(folderPath);
 				}
 
 				for (auto it = this->prefabDb_.begin(); it != this->prefabDb_.end(); ++it)

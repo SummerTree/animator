@@ -79,7 +79,6 @@ namespace unreal
 
 		std::filesystem::path assetPath_;
 
-		std::unique_ptr<octoon::AssetDatabase> assetDatabase_;
 		std::map<std::string, std::weak_ptr<octoon::Object>> assetCache_;
 		std::map<std::string, nlohmann::json> packageCache_;
 		std::map<std::weak_ptr<octoon::Object>, std::string, std::owner_less<std::weak_ptr<octoon::Object>>> assetGuidCache_;
