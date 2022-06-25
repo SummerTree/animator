@@ -519,7 +519,7 @@ namespace octoon
 		else
 		{
 			auto smr = std::make_shared<SkinnedMeshRendererComponent>();
-			smr->setTransforms(bones);
+			smr->setBones(bones);
 			smr->setMorphBlendEnable(true);
 			smr->setTextureBlendEnable(true);
 			smr->setGlobalIllumination(true);
@@ -812,20 +812,20 @@ namespace octoon
 						pmx.textures[it.second] = PmxName(filename);
 					}
 
-					auto transforms = smr->getTransforms();
+					auto transforms = smr->getBones();
 					if (!transforms.empty())
 					{
-						pmx.numBones = smr->getTransforms().size();
+						pmx.numBones = smr->getBones().size();
 						pmx.bones.resize(pmx.numBones);
 
 						std::map<GameObject*, std::size_t> boneMap;
 
 						for (std::size_t i = 0; i < pmx.numBones; i++)
-							boneMap[smr->getTransforms()[i].get()] = i;
+							boneMap[smr->getBones()[i].get()] = i;
 
 						for (std::size_t i = 0; i < pmx.numBones; i++)
 						{
-							auto transform = smr->getTransforms()[i];
+							auto transform = smr->getBones()[i];
 
 							auto& pmxBone = pmx.bones[i];
 							pmxBone.name = transform->getName();
@@ -884,7 +884,7 @@ namespace octoon
 
 						for (std::size_t i = 0; i < pmx.numBones; i++)
 						{
-							auto transform = smr->getTransforms()[i];
+							auto transform = smr->getBones()[i];
 							auto links = transform->getComponent<RotationLinkComponent>();
 							if (links)
 							{
@@ -898,7 +898,7 @@ namespace octoon
 
 						for (std::size_t i = 0; i < pmx.numBones; i++)
 						{
-							auto bone = smr->getTransforms()[i];
+							auto bone = smr->getBones()[i];
 							auto rigibdody = bone->getComponent<RigidbodyComponent>();
 							if (rigibdody)
 							{

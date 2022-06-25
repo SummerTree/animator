@@ -19,32 +19,32 @@ namespace octoon
 	{
 	}
 
-	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent(Materials&& materials, GameObjects&& transforms) noexcept
+	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent(Materials&& materials, GameObjects&& bones) noexcept
 		: SkinnedMeshRendererComponent()
 	{
+		this->setBones(std::move(bones));
 		this->setMaterials(std::move(materials));
-		this->setTransforms(std::move(transforms));
 	}
 
-	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent(MaterialPtr&& material, GameObjects&& transforms) noexcept
+	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent(MaterialPtr&& material, GameObjects&& bones) noexcept
 		: SkinnedMeshRendererComponent()
 	{
+		this->setBones(std::move(bones));
 		this->setMaterial(std::move(material));
-		this->setTransforms(std::move(transforms));
 	}
 
-	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent(const Materials& materials, const GameObjects& transforms) noexcept
+	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent(const Materials& materials, const GameObjects& bones) noexcept
 		: SkinnedMeshRendererComponent()
 	{
+		this->setBones(bones);
 		this->setMaterials(materials);
-		this->setTransforms(transforms);
 	}
 
-	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent(const MaterialPtr& material, const GameObjects& transforms) noexcept
+	SkinnedMeshRendererComponent::SkinnedMeshRendererComponent(const MaterialPtr& material, const GameObjects& bones) noexcept
 		: SkinnedMeshRendererComponent()
 	{
+		this->setBones(bones);
 		this->setMaterial(material);
-		this->setTransforms(transforms);
 	}
 
 	SkinnedMeshRendererComponent::~SkinnedMeshRendererComponent() noexcept
@@ -52,23 +52,23 @@ namespace octoon
 	}
 
 	void
-	SkinnedMeshRendererComponent::setTransforms(const GameObjects& transforms) noexcept
+	SkinnedMeshRendererComponent::setBones(const GameObjects& bones) noexcept
 	{
-		transforms_ = transforms;
-		quaternions_.resize(transforms.size());
+		bones_ = bones;
+		quaternions_.resize(bones.size());
 	}
 
 	void
-	SkinnedMeshRendererComponent::setTransforms(GameObjects&& transforms) noexcept
+	SkinnedMeshRendererComponent::setBones(GameObjects&& bones) noexcept
 	{
-		transforms_ = std::move(transforms);
-		quaternions_.resize(transforms.size());
+		bones_ = std::move(bones);
+		quaternions_.resize(bones.size());
 	}
 
 	const GameObjects&
-	SkinnedMeshRendererComponent::getTransforms() const noexcept
+	SkinnedMeshRendererComponent::getBones() const noexcept
 	{
-		return transforms_;
+		return bones_;
 	}
 
 	void
@@ -202,7 +202,7 @@ namespace octoon
 				{
 					auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
 					if (smr)
-						this->setTransforms(smr->getTransforms());
+						this->setBones(smr->getBones());
 				}
 			}
 		}
@@ -213,7 +213,7 @@ namespace octoon
 	{
 		MeshRendererComponent::save(json, assetDatabase);
 
-		if (!this->getTransforms().empty())
+		if (!this->getBones().empty())
 		{
 			auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
 			if (!guid.empty())
@@ -226,7 +226,7 @@ namespace octoon
 	{
 		auto instance = std::make_shared<SkinnedMeshRendererComponent>();
 		instance->setName(this->getName());
-		instance->setTransforms(this->getTransforms());
+		instance->setBones(this->getBones());
 		instance->setMaterial(this->getMaterial() ? (this->isSharedMaterial() ? this->getMaterial() : this->getMaterial()->clone()) : nullptr, this->isSharedMaterial());
 
 		return instance;
@@ -257,7 +257,7 @@ namespace octoon
 		{
 			for (std::size_t i = 0; i < quaternions_.size(); i++)
 			{
-				auto transform = transforms_[i]->getComponent<TransformComponent>();
+				auto transform = bones_[i]->getComponent<TransformComponent>();
 				if (transform->getQuaternion() != quaternions_[i])
 				{
 					needUpdate_ = true;
@@ -324,14 +324,14 @@ namespace octoon
 	SkinnedMeshRendererComponent::updateJointData() noexcept
 	{
 		auto& bindposes = skinnedMesh_->getBindposes();
-		auto boneSize = std::min(bindposes.size(), transforms_.size());
+		auto boneSize = std::min(bindposes.size(), bones_.size());
 
 		if (joints_.size() != bindposes.size())
 			joints_.resize(bindposes.size());
 		
 		for (std::size_t i = 0; i < boneSize; ++i)
 		{
-			auto transform = transforms_[i]->getComponent<TransformComponent>();
+			auto transform = bones_[i]->getComponent<TransformComponent>();
 			quaternions_[i] = transform->getQuaternion();
 			joints_[i] = math::transformMultiply(transform->getTransform(), bindposes[i]);
 		}

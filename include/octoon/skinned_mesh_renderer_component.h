@@ -13,15 +13,15 @@ namespace octoon
 		OctoonDeclareSubClass(SkinnedMeshRendererComponent, MeshRendererComponent)
 	public:
 		SkinnedMeshRendererComponent() noexcept;
-		SkinnedMeshRendererComponent(Materials&& materials, GameObjects&& transforms) noexcept;
-		SkinnedMeshRendererComponent(MaterialPtr&& material, GameObjects&& transforms) noexcept;
-		SkinnedMeshRendererComponent(const Materials& materials, const GameObjects& transforms) noexcept;
-		SkinnedMeshRendererComponent(const MaterialPtr& material, const GameObjects& transforms) noexcept;
+		SkinnedMeshRendererComponent(Materials&& materials, GameObjects&& bones) noexcept;
+		SkinnedMeshRendererComponent(MaterialPtr&& material, GameObjects&& bones) noexcept;
+		SkinnedMeshRendererComponent(const Materials& materials, const GameObjects& bones) noexcept;
+		SkinnedMeshRendererComponent(const MaterialPtr& material, const GameObjects& bones) noexcept;
 		virtual ~SkinnedMeshRendererComponent() noexcept;
 
-		void setTransforms(const GameObjects& transforms) noexcept;
-		void setTransforms(GameObjects&& transforms) noexcept;
-		const GameObjects& getTransforms() const noexcept;
+		void setBones(const GameObjects& bones) noexcept;
+		void setBones(GameObjects&& bones) noexcept;
+		const GameObjects& getBones() const noexcept;
 
 		void setAutomaticUpdate(bool enable) noexcept;
 		void setClothBlendEnable(bool enable) noexcept;
@@ -78,13 +78,13 @@ namespace octoon
 		bool automaticUpdate_;
 		bool updateWhenOffscreenEnable_;
 
-		GameObjects transforms_;
+		MeshPtr mesh_;
+		MeshPtr skinnedMesh_;
+
+		GameObjects bones_;
 
 		math::float4x4s joints_;
 		GraphicsDataPtr jointData_;
-
-		MeshPtr mesh_;
-		MeshPtr skinnedMesh_;
 
 		std::vector<math::Quaternion> quaternions_;
 		std::vector<class ClothComponent*> clothComponents_;

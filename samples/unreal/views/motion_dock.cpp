@@ -223,7 +223,7 @@ namespace unreal
 								else
 								{
 									if (smr)
-										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getTransforms());
+										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getBones());
 									else
 										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
 								}
@@ -233,7 +233,7 @@ namespace unreal
 
 								if (smr)
 								{
-									for (auto& transform : smr->getTransforms())
+									for (auto& transform : smr->getBones())
 									{
 										auto solver = transform->getComponent<octoon::CCDSolverComponent>();
 										if (solver)

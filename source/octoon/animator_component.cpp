@@ -238,7 +238,7 @@ namespace octoon
 				{
 					auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
 					if (smr)
-						this->setAvatar(smr->getTransforms());
+						this->setAvatar(smr->getBones());
 				}
 			}
 		}
