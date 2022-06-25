@@ -521,15 +521,15 @@ namespace octoon
 		if (it)
 			components.push_back(it);
 
-		for (auto& it : children_)
+		for (auto& child : children_)
 		{
-			for (auto& component : it->components_)
+			for (auto& component : child->components_)
 			{
 				if (component->isA(type))
 					components.push_back(component);
 			}
 
-			it->getComponentsInChildren(type, components);
+			child->getComponentsInChildren(type, components);
 		}
 	}
 
