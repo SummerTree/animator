@@ -65,9 +65,6 @@ namespace octoon
 
 					assetGuidList_[path] = uuid;
 					assetPathList_[uuid] = path;
-
-					if (uuid == "f7ab8b4ed1abfb4f302ca8d19244554a")
-						continue;
 				}
 			}
 			catch (...)
