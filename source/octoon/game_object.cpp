@@ -517,6 +517,10 @@ namespace octoon
 	{
 		assert(type);
 
+		auto it = this->getComponent(type);
+		if (it)
+			components.push_back(it);
+
 		for (auto& it : children_)
 		{
 			for (auto& component : it->components_)
@@ -525,7 +529,7 @@ namespace octoon
 					components.push_back(component);
 			}
 
-			it->getComponentInChildren(type);
+			it->getComponentsInChildren(type, components);
 		}
 	}
 
