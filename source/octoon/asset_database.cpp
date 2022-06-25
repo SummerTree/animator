@@ -154,33 +154,37 @@ namespace octoon
 
 		try
 		{
-			auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 			auto assetPath = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
 			auto extension = assetPath.extension();
 
-			this->createFolder(relativePath.parent_path());
-			asset->save(assetPath, extension.string().substr(extension.string().find_last_of(".") + 1).c_str());
-			std::filesystem::permissions(assetPath, std::filesystem::perms::owner_write);
-
-			nlohmann::json metadata;
-			metadata["uuid"] = uuid;
-			metadata["name"] = asset->getName();
-			metadata["suffix"] = (char*)extension.c_str();
-			metadata["mipmap"] = asset->getMipLevel();
-
-			auto metaPath = assetPath.u8string() + u8".metadata";
-			std::ofstream ifs(metaPath, std::ios_base::binary);
-			if (ifs)
+			if (asset->save(assetPath, extension.string().substr(extension.string().find_last_of(".") + 1).c_str()))
 			{
-				auto dump = metadata.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
+				auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
+
+				nlohmann::json metadata;
+				metadata["uuid"] = uuid;
+				metadata["name"] = asset->getName();
+				metadata["suffix"] = (char*)extension.c_str();
+				metadata["mipmap"] = asset->getMipLevel();
+
+				auto metaPath = assetPath.u8string() + u8".metadata";
+				std::ofstream ifs(metaPath, std::ios_base::binary);
+				if (ifs)
+				{
+					auto dump = metadata.dump();
+					ifs.write(dump.c_str(), dump.size());
+					ifs.close();
+				}
+
+				assetGuidList_[relativePath] = uuid;
+				assetUniques_[uuid] = relativePath;
+
+				objectPathList_[asset] = relativePath;
 			}
-
-			assetGuidList_[relativePath] = uuid;
-			assetUniques_[uuid] = relativePath;
-
-			objectPathList_[asset] = relativePath;
+			else
+			{
+				throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
 		}
 		catch (const std::exception& e)
 		{
@@ -200,14 +204,18 @@ namespace octoon
 
 		try
 		{
-			this->createFolder(relativePath.parent_path());
+			std::ofstream stream(std::filesystem::path(this->assetPath_).append(relativePath.u8string()), io::ios_base::binary);
+			if (stream)
+			{
+				VMDLoader::save(stream, *asset);
 
-			auto assetPath = std::filesystem::path(this->assetPath_).append(relativePath.u8string());
-			VMDLoader::save(assetPath, *asset);
-			std::filesystem::permissions(assetPath, std::filesystem::perms::owner_write);
-
-			this->objectPathList_[asset] = relativePath;
-			this->createMetadataAtPath(relativePath);
+				this->objectPathList_[asset] = relativePath;
+				this->createMetadataAtPath(relativePath);
+			}
+			else
+			{
+				throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
 		}
 		catch (const std::exception& e)
 		{
@@ -227,89 +235,87 @@ namespace octoon
 
 		try
 		{
-			this->createFolder(relativePath.parent_path());
-
-			nlohmann::json mat;
-			mat["type"] = asset->type_name();
-			mat["name"] = asset->getName();
-			mat["blendEnable"] = asset->getBlendEnable();
-			mat["blendOp"] = asset->getBlendOp();
-			mat["blendSrc"] = asset->getBlendSrc();
-			mat["blendDest"] = asset->getBlendDest();
-			mat["blendAlphaOp"] = asset->getBlendAlphaOp();
-			mat["blendAlphaSrc"] = asset->getBlendAlphaSrc();
-			mat["blendAlphaDest"] = asset->getBlendAlphaDest();
-			mat["colorWriteMask"] = asset->getColorWriteMask();
-			mat["depthEnable"] = asset->getDepthEnable();
-			mat["depthBiasEnable"] = asset->getDepthBiasEnable();
-			mat["depthBoundsEnable"] = asset->getDepthBoundsEnable();
-			mat["depthClampEnable"] = asset->getDepthClampEnable();
-			mat["depthWriteEnable"] = asset->getDepthWriteEnable();
-			mat["depthMin"] = asset->getDepthMin();
-			mat["depthMax"] = asset->getDepthMax();
-			mat["depthBias"] = asset->getDepthBias();
-			mat["depthSlopeScaleBias"] = asset->getDepthSlopeScaleBias();
-			mat["stencilEnable"] = asset->getStencilEnable();
-			mat["scissorTestEnable"] = asset->getScissorTestEnable();
-
-			for (auto& it : asset->getMaterialParams())
-			{
-				switch (it.type)
-				{
-				case PropertyTypeInfo::PropertyTypeInfoFloat:
-					mat[it.key] = asset->get<math::float1>(it.key);
-				break;
-				case PropertyTypeInfo::PropertyTypeInfoFloat2:
-					mat[it.key] = asset->get<math::float2>(it.key).to_array();
-				break;
-				case PropertyTypeInfo::PropertyTypeInfoFloat3:
-					mat[it.key] = asset->get<math::float3>(it.key).to_array();
-				break;
-				case PropertyTypeInfo::PropertyTypeInfoFloat4:
-					mat[it.key] = asset->get<math::float4>(it.key).to_array();
-				break;
-				case PropertyTypeInfo::PropertyTypeInfoString:
-					mat[it.key] = asset->get<std::string>(it.key);
-				break;
-				case PropertyTypeInfo::PropertyTypeInfoBool:
-					mat[it.key] = asset->get<bool>(it.key);
-				break;
-				case PropertyTypeInfo::PropertyTypeInfoInt:
-					mat[it.key] = asset->get<int>(it.key);
-				break;
-				case PropertyTypeInfo::PropertyTypeInfoTexture:
-				{
-					auto texture = asset->get<std::shared_ptr<Texture>>(it.key);
-					if (texture)
-					{
-						if (!this->contains(texture))
-						{
-							auto texturePath = std::filesystem::path("Assets/Textures").append(make_guid() + ".png");
-							this->createAsset(texture, texturePath);
-							mat[it.key] = this->getAssetGuid(texturePath);
-						}
-						else
-						{
-							mat[it.key] = this->getAssetGuid(texture);
-						}						
-					}
-				}
-				break;
-				default:
-					break;
-				}
-			}
-
 			std::ofstream ifs(std::filesystem::path(this->assetPath_).append(relativePath.u8string()), std::ios_base::binary);
 			if (ifs)
 			{
+				nlohmann::json mat;
+				mat["type"] = asset->type_name();
+				mat["name"] = asset->getName();
+				mat["blendEnable"] = asset->getBlendEnable();
+				mat["blendOp"] = asset->getBlendOp();
+				mat["blendSrc"] = asset->getBlendSrc();
+				mat["blendDest"] = asset->getBlendDest();
+				mat["blendAlphaOp"] = asset->getBlendAlphaOp();
+				mat["blendAlphaSrc"] = asset->getBlendAlphaSrc();
+				mat["blendAlphaDest"] = asset->getBlendAlphaDest();
+				mat["colorWriteMask"] = asset->getColorWriteMask();
+				mat["depthEnable"] = asset->getDepthEnable();
+				mat["depthBiasEnable"] = asset->getDepthBiasEnable();
+				mat["depthBoundsEnable"] = asset->getDepthBoundsEnable();
+				mat["depthClampEnable"] = asset->getDepthClampEnable();
+				mat["depthWriteEnable"] = asset->getDepthWriteEnable();
+				mat["depthMin"] = asset->getDepthMin();
+				mat["depthMax"] = asset->getDepthMax();
+				mat["depthBias"] = asset->getDepthBias();
+				mat["depthSlopeScaleBias"] = asset->getDepthSlopeScaleBias();
+				mat["stencilEnable"] = asset->getStencilEnable();
+				mat["scissorTestEnable"] = asset->getScissorTestEnable();
+
+				for (auto& it : asset->getMaterialParams())
+				{
+					switch (it.type)
+					{
+					case PropertyTypeInfo::PropertyTypeInfoFloat:
+						mat[it.key] = asset->get<math::float1>(it.key);
+					break;
+					case PropertyTypeInfo::PropertyTypeInfoFloat2:
+						mat[it.key] = asset->get<math::float2>(it.key).to_array();
+					break;
+					case PropertyTypeInfo::PropertyTypeInfoFloat3:
+						mat[it.key] = asset->get<math::float3>(it.key).to_array();
+					break;
+					case PropertyTypeInfo::PropertyTypeInfoFloat4:
+						mat[it.key] = asset->get<math::float4>(it.key).to_array();
+					break;
+					case PropertyTypeInfo::PropertyTypeInfoString:
+						mat[it.key] = asset->get<std::string>(it.key);
+					break;
+					case PropertyTypeInfo::PropertyTypeInfoBool:
+						mat[it.key] = asset->get<bool>(it.key);
+					break;
+					case PropertyTypeInfo::PropertyTypeInfoInt:
+						mat[it.key] = asset->get<int>(it.key);
+					break;
+					case PropertyTypeInfo::PropertyTypeInfoTexture:
+					{
+						auto texture = asset->get<std::shared_ptr<Texture>>(it.key);
+						if (texture)
+						{
+							if (!this->contains(texture))
+							{
+								auto texturePath = std::filesystem::path("Assets/Textures").append(make_guid() + ".png");
+								this->createAsset(texture, texturePath);
+								mat[it.key] = this->getAssetGuid(texturePath);
+							}
+							else
+							{
+								mat[it.key] = this->getAssetGuid(texture);
+							}						
+						}
+					}
+					break;
+					default:
+						break;
+					}
+				}
+
 				auto dump = mat.dump();
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
-			}
 
-			this->objectPathList_[asset] = relativePath;
-			this->createMetadataAtPath(relativePath);
+				this->objectPathList_[asset] = relativePath;
+				this->createMetadataAtPath(relativePath);
+			}
 		}
 		catch (const std::exception& e)
 		{
@@ -329,8 +335,6 @@ namespace octoon
 
 		try
 		{
-			this->createFolder(relativePath.parent_path());
-
 			nlohmann::json prefab;
 
 			if (!this->contains(asset))
@@ -459,7 +463,7 @@ namespace octoon
 
 			std::filesystem::create_directories(std::filesystem::path(this->assetPath_).append(path));
 
-			auto folderPath = std::filesystem::path(this->assetPath_).append(path + L".metadata");
+			auto folderPath = std::filesystem::path(this->assetPath_).append(path).concat(L".metadata");
 			if (!std::filesystem::exists(folderPath))
 				this->createMetadataAtPath(relativePath);
 
@@ -473,7 +477,7 @@ namespace octoon
 
 			while (offset > 0 && offset < path.size())
 			{
-				auto metaPath = std::filesystem::path(this->assetPath_).append(path.substr(0, offset) + L".metadata");
+				auto metaPath = std::filesystem::path(this->assetPath_).append(path.substr(0, offset)).concat(L".metadata");
 				if (!std::filesystem::exists(metaPath))
 					this->createMetadataAtPath(path.substr(0, offset));
 

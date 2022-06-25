@@ -1,7 +1,7 @@
 #ifndef OCTOON_VMD_LOADER_H_
 #define OCTOON_VMD_LOADER_H_
 
-#include <octoon/io/iostream.h>
+#include <iostream>
 #include <octoon/animation/animation.h>
 #include <filesystem>
 
@@ -137,8 +137,8 @@ namespace octoon
 		std::vector<VMDLight> LightLists;
 		std::vector<VMDSelfShadow> SelfShadowLists;
 
-		void load(io::istream& stream) noexcept(false);
-		void save(io::ostream& stream) noexcept(false);
+		void load(std::istream& stream) noexcept(false);
+		void save(std::ostream& stream) noexcept(false);
 
 		bool load(const std::filesystem::path& filepath) noexcept(false);
 		bool save(const std::filesystem::path& filepath) noexcept(false);
@@ -150,13 +150,13 @@ namespace octoon
 		VMDLoader() noexcept;
 		~VMDLoader() noexcept;
 
-		static bool doCanRead(io::istream& stream) noexcept;
+		static bool doCanRead(std::istream& stream) noexcept;
 		static bool doCanRead(const char* type) noexcept;
 
-		static std::shared_ptr<Animation> load(io::istream& stream) noexcept(false);
+		static std::shared_ptr<Animation> load(std::istream& stream) noexcept(false);
 		static std::shared_ptr<Animation> load(const std::filesystem::path& filepath) noexcept(false);
 
-		static void save(io::ostream& stream, const Animation& animation) noexcept(false);
+		static void save(std::ostream& stream, const Animation& animation) noexcept(false);
 		static void save(const std::filesystem::path& filepath, const Animation& animation) noexcept(false);
 
 	private:

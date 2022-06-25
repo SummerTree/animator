@@ -32,17 +32,6 @@ namespace unreal
 		return false;
 	}
 
-	bool
-	CameraComponent::loadAnimation(std::string_view filepath) noexcept(false)
-	{
-		octoon::io::ifstream stream;
-
-		if (stream.open(std::string(filepath)))
-			return this->loadAnimation(octoon::VMDLoader::load(stream));
-
-		return false;
-	}
-
 	void
 	CameraComponent::removeAnimation() noexcept(false)
 	{

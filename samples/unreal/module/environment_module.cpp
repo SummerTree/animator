@@ -56,6 +56,7 @@ namespace unreal
 				writer["texture"] = octoon::AssetDatabase::instance()->getAssetGuid(this->texture.getValue());
 			else
 			{
+				octoon::AssetDatabase::instance()->createFolder("Assets/Environment");
 				octoon::AssetDatabase::instance()->createAsset(this->texture.getValue(), "Assets/Environment/Texture.hdr");
 				writer["texture"] = octoon::AssetDatabase::instance()->getAssetGuid("Assets/Environment/Texture.hdr");
 			}			

@@ -148,7 +148,8 @@ namespace unreal
 				nlohmann::json json;
 				json["version"] = UNREAL_VERSION;
 
-				octoon::AssetDatabase::instance()->open(path_);
+				if (this->path != path_)
+					octoon::AssetDatabase::instance()->open(path_);
 
 				this->path = path_;
 				this->physicsModule->save(json["physics"]);

@@ -52,6 +52,8 @@ namespace unreal
 	{
 		nlohmann::json sceneJson;
 
+		octoon::AssetDatabase::instance()->createFolder("Assets/Prefabs");
+
 		for (auto& it : this->objects.getValue())
 		{
 			if (octoon::AssetDatabase::instance()->contains(it))

@@ -205,6 +205,7 @@ namespace unreal
 			auto ext = octoon::AssetLoader::instance()->getAssetExtension(texture, hdr ? ".hdr" : ".png").string();
 			auto outputPath = std::filesystem::path(relativePath).append(guid + ext);
 
+			this->assetDatabase_->createFolder(relativePath);
 			this->assetDatabase_->createAsset(texture, outputPath);
 
 			nlohmann::json package;
@@ -219,7 +220,9 @@ namespace unreal
 			if (preview)
 			{
 				auto uuid = octoon::make_guid();
-				auto previewPath = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2)).append(uuid + ".png");
+				auto previewFolder = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2));
+				auto previewPath = std::filesystem::path(previewFolder).append(uuid + ".png");
+				this->assetDatabase_->createFolder(previewFolder);
 				this->assetDatabase_->createAsset(preview, previewPath);
 				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
 			}
@@ -252,6 +255,7 @@ namespace unreal
 			auto ext = octoon::AssetLoader::instance()->getAssetExtension(animation, ".vmd").string();
 			auto outputPath = std::filesystem::path(relativePath).append(guid + ext);
 
+			this->assetDatabase_->createFolder(relativePath);
 			this->assetDatabase_->createAsset(animation, outputPath);
 
 			nlohmann::json package;
@@ -312,7 +316,9 @@ namespace unreal
 			if (preview)
 			{
 				auto uuid = octoon::make_guid();
-				auto previewPath = std::filesystem::path("Assets/Thumbnails").append(uuid.substr(0, 2)).append(uuid + ".png");
+				auto previewFolder = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2));
+				auto previewPath = std::filesystem::path(previewFolder).append(uuid + ".png");
+				this->assetDatabase_->createFolder(previewFolder);
 				this->assetDatabase_->createAsset(preview, previewPath);
 				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
 			}
@@ -348,12 +354,14 @@ namespace unreal
 			package["model"] = this->assetDatabase_->getAssetGuid(modelPath);
 			package["data"] = this->assetDatabase_->getAssetGuid(prefabPath);
 
-			auto texture = octoon::AssetPreview::instance()->getAssetPreview(gameObject);
-			if (texture)
+			auto preview = octoon::AssetPreview::instance()->getAssetPreview(gameObject);
+			if (preview)
 			{
 				auto uuid = octoon::make_guid();
-				auto previewPath = std::filesystem::path("Assets/Thumbnails").append(uuid.substr(0, 2)).append(uuid + ".png");
-				this->assetDatabase_->createAsset(texture, previewPath);
+				auto previewFolder = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2));
+				auto previewPath = std::filesystem::path(previewFolder).append(uuid + ".png");
+				this->assetDatabase_->createFolder(previewFolder);
+				this->assetDatabase_->createAsset(preview, previewPath);
 				package["preview"] = this->assetDatabase_->getAssetGuid(previewPath);
 			}
 

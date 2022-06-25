@@ -64,6 +64,7 @@ namespace unreal
 				writer["animation"] = octoon::AssetDatabase::instance()->getAssetGuid(this->animation.getValue());
 			else
 			{
+				octoon::AssetDatabase::instance()->createFolder("Assets/Camera");
 				octoon::AssetDatabase::instance()->createAsset(this->animation.getValue(), "Assets/Camera/Camera.vmd");
 				writer["animation"] = octoon::AssetDatabase::instance()->getAssetGuid("Assets/Camera/Camera.vmd");
 			}			

@@ -10,6 +10,7 @@
 #include <iconv.h>
 #include <map>
 #include <filesystem>
+#include <fstream>
 
 namespace octoon
 {
@@ -74,7 +75,7 @@ namespace octoon
 	}
 
 	void
-	VMD::load(io::istream& stream) noexcept(false)
+	VMD::load(std::istream& stream) noexcept(false)
 	{
 		if (!stream.read((char*)&this->Header, sizeof(this->Header))) {
 			throw runtime_error::create(R"(Cannot read property "Header" from stream)");
@@ -147,7 +148,7 @@ namespace octoon
 	}
 
 	void
-	VMD::save(io::ostream& stream) noexcept(false)
+	VMD::save(std::ostream& stream) noexcept(false)
 	{
 		if (!stream.write((char*)&this->Header, sizeof(this->Header))) {
 			throw runtime_error::create(R"(Cannot write property "Header" from stream)");
@@ -212,7 +213,7 @@ namespace octoon
 	bool
 	VMD::load(const std::filesystem::path& filepath) noexcept(false)
 	{
-		io::ifstream stream(filepath, std::ios_base::binary);
+		std::ifstream stream(filepath, std::ios_base::binary);
 		if (stream)
 		{
 			load(stream);
@@ -225,7 +226,7 @@ namespace octoon
 	bool
 	VMD::save(const std::filesystem::path& filepath) noexcept(false)
 	{
-		io::ofstream stream(filepath, std::ios_base::binary);
+		std::ofstream stream(filepath, std::ios_base::binary);
 		if (stream)
 		{
 			save(stream);
@@ -244,7 +245,7 @@ namespace octoon
 	}
 
 	bool
-	VMDLoader::doCanRead(io::istream& stream) noexcept
+	VMDLoader::doCanRead(std::istream& stream) noexcept
 	{
 		static_assert(sizeof(VMDMotion) == 111, "");
 		static_assert(sizeof(VMDMorph) == 23, "");
@@ -270,7 +271,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<Animation>
-	VMDLoader::load(io::istream& stream) noexcept(false)
+	VMDLoader::load(std::istream& stream) noexcept(false)
 	{
 		VMD vmd;
 		vmd.load(stream);
@@ -397,7 +398,7 @@ namespace octoon
 	}
 
 	void
-	VMDLoader::save(io::ostream& stream, const Animation& animation) noexcept(false)
+	VMDLoader::save(std::ostream& stream, const Animation& animation) noexcept(false)
 	{
 		auto sjis = utf82sjis(animation.name);
 
@@ -570,7 +571,7 @@ namespace octoon
 	std::shared_ptr<Animation>
 	VMDLoader::load(const std::filesystem::path& filepath) noexcept(false)
 	{
-		io::ifstream stream(filepath, std::ios_base::binary);
+		std::ifstream stream(filepath, std::ios_base::binary);
 		if (stream)
 			return load(stream);
 
@@ -580,7 +581,7 @@ namespace octoon
 	void
 	VMDLoader::save(const std::filesystem::path& filepath, const Animation& animation) noexcept(false)
 	{
-		io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
+		std::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		if (stream)
 			save(stream, animation);
 	}

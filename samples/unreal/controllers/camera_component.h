@@ -13,7 +13,6 @@ namespace unreal
 		CameraComponent() noexcept;
 		virtual ~CameraComponent() noexcept;
 
-		bool loadAnimation(std::string_view filepath) noexcept(false);
 		bool loadAnimation(const std::shared_ptr<octoon::Animation>& animation) noexcept(false);
 		void removeAnimation() noexcept(false);
 
