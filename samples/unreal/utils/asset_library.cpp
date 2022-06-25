@@ -378,14 +378,14 @@ namespace unreal
 	{
 		if (packageCache_.contains(uuid))
 		{
-			if (type.isDerivedFrom(octoon::Material::getRtti()))
+			if (type.isDerivedFrom(octoon::Texture::getRtti()))
+				return this->loadAssetAtPackage<octoon::Texture>(packageCache_.at(uuid));
+			else if (type.isDerivedFrom(octoon::Material::getRtti()))
 				return this->loadAssetAtPackage<octoon::Material>(packageCache_.at(uuid));
 			else if (type.isDerivedFrom(octoon::Animation::getRtti()))
 				return this->loadAssetAtPackage<octoon::Animation>(packageCache_.at(uuid));
 			else if (type.isDerivedFrom(octoon::GameObject::getRtti()))
 				return this->loadAssetAtPackage<octoon::GameObject>(packageCache_.at(uuid));
-			else if (type.isDerivedFrom(octoon::Texture::getRtti()))
-				return this->loadAssetAtPackage<octoon::Texture>(packageCache_.at(uuid));
 		}
 
 		return nullptr;
@@ -409,12 +409,10 @@ namespace unreal
 			std::shared_ptr<octoon::Object> asset;
 			if (type.isDerivedFrom(octoon::Texture::getRtti()))
 				asset = this->assetDatabase_->loadAssetAtPath<octoon::Texture>(this->assetDatabase_->getAssetPath(data));
-			else if (type.isDerivedFrom(octoon::Animation::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<octoon::Animation>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(octoon::Material::getRtti()))
 				asset = this->assetDatabase_->loadAssetAtPath<octoon::Material>(this->assetDatabase_->getAssetPath(data));
-			else if (type.isDerivedFrom(octoon::PMX::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<octoon::GameObject>(this->assetDatabase_->getAssetPath(data));
+			else if (type.isDerivedFrom(octoon::Animation::getRtti()))
+				asset = this->assetDatabase_->loadAssetAtPath<octoon::Animation>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(octoon::GameObject::getRtti()))
 				asset = this->assetDatabase_->loadAssetAtPath<octoon::GameObject>(this->assetDatabase_->getAssetPath(data));
 

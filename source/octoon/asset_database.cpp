@@ -64,7 +64,7 @@ namespace octoon
 					auto path = std::filesystem::path((char8_t*)it.value().get<std::string>().c_str());
 
 					assetGuidList_[path] = uuid;
-					assetPathList_[uuid] = path;
+					assetUniques_[uuid] = path;
 				}
 			}
 			catch (...)
@@ -79,7 +79,7 @@ namespace octoon
 		assetPath_.clear();
 		dirtyList_.clear();
 		assetGuidList_.clear();
-		assetPathList_.clear();
+		assetUniques_.clear();
 		objectCaches_.clear();
 		objectPathList_.clear();
 	}
@@ -176,7 +176,7 @@ namespace octoon
 			}
 
 			assetGuidList_[relativePath] = uuid;
-			assetPathList_[uuid] = relativePath;
+			assetUniques_[uuid] = relativePath;
 
 			objectPathList_[asset] = relativePath;
 		}
@@ -405,7 +405,7 @@ namespace octoon
 			if (!uuid.empty())
 			{
 				assetGuidList_.erase(assetGuidList_.find(relativePath));
-				assetPathList_.erase(assetPathList_.find(uuid));
+				assetUniques_.erase(assetUniques_.find(uuid));
 			}
 
 			if (std::filesystem::exists(path))
@@ -441,7 +441,7 @@ namespace octoon
 
 		nlohmann::json assetDb;
 
-		for (auto& it : assetPathList_)
+		for (auto& it : assetUniques_)
 		{
 			auto path = it.second.u8string();
 			if (std::filesystem::exists(std::filesystem::path(this->assetPath_).append(path)))
@@ -463,9 +463,10 @@ namespace octoon
 	std::filesystem::path
 	AssetDatabase::getAssetPath(const std::string& uuid) const noexcept
 	{
-		auto it = assetPathList_.find(uuid);
-		if (it != assetPathList_.end())
-			return (*it).second;
+		auto item = assetUniques_.find(uuid);
+		if (item != assetUniques_.end())
+			return (*item).second;
+
 		return std::filesystem::path();
 	}
 
@@ -559,7 +560,7 @@ namespace octoon
 		metadata["uuid"] = uuid;
 
 		assetGuidList_[relativePath] = uuid;
-		assetPathList_[uuid] = relativePath;
+		assetUniques_[uuid] = relativePath;
 
 		std::ofstream ifs(metaPath, std::ios_base::binary);
 		if (ifs)
@@ -576,7 +577,7 @@ namespace octoon
 		auto relativePath = std::filesystem::path(relativePath_).make_preferred();
 		auto uuid = this->getAssetGuid(relativePath);
 		assetGuidList_.erase(assetGuidList_.find(relativePath));
-		assetPathList_.erase(assetPathList_.find(uuid));
+		assetUniques_.erase(assetUniques_.find(uuid));
 
 		auto metaPath = std::filesystem::path(this->assetPath_).append(relativePath.wstring() + L".metadata");
 		if (std::filesystem::exists(metaPath))
@@ -596,7 +597,7 @@ namespace octoon
 			{
 				auto guid = metaData["uuid"].get<std::string>();
 				assetGuidList_[relativePath] = guid;
-				assetPathList_[std::move(guid)] = (char*)relativePath.u8string().c_str();
+				assetUniques_[std::move(guid)] = (char*)relativePath.u8string().c_str();
 
 				return metaData;
 			}

@@ -16,16 +16,17 @@
 
 namespace octoon
 {
-	OctoonImplementSingleton(AssetBundle)
-
-	std::vector<std::shared_ptr<AssetBundle>> AssetBundle::assetBundles_;
+	std::set<AssetBundle*> AssetBundle::assetBundles_;
 
 	AssetBundle::AssetBundle() noexcept
 	{
+		assetBundles_.insert(this);
 	}
 
 	AssetBundle::~AssetBundle() noexcept
 	{
+		assetBundles_.erase(assetBundles_.find(this));
+
 		this->close();
 	}
 
@@ -57,21 +58,10 @@ namespace octoon
 	{
 		this->unload();
 
-		if (this != AssetBundle::instance())
-		{
-			for (auto it = AssetBundle::instance()->assetBundles_.begin(); it != AssetBundle::instance()->assetBundles_.end(); ++it)
-			{
-				if ((*it).get() == this)
-				{
-					AssetBundle::instance()->assetBundles_.erase(it);
-					break;
-				}
-			}
-		}
-		else
-		{
-			assetBundles_.clear();
-		}
+		this->assetPath_.clear();
+		this->assetDatabase_.reset();
+
+		this->packageList_.clear();
 	}
 
 	nlohmann::json
@@ -244,16 +234,6 @@ namespace octoon
 				return this->loadAssetAtPackage<Texture>(packageList_.at(uuid));
 		}
 
-		if (this == AssetBundle::instance())
-		{
-			for (auto& ab : assetBundles_)
-			{
-				auto asset = ab->loadAsset(uuid, type);
-				if (asset)
-					return asset;
-			}
-		}
-
 		return nullptr;
 	}
 
@@ -358,12 +338,6 @@ namespace octoon
 			ifs.write(dump.c_str(), dump.size());
 			ifs.close();
 		}
-
-		if (this == AssetBundle::instance())
-		{
-			for (auto& ab : assetBundles_)
-				ab->saveAssets();
-		}
 	}
 
 	void
@@ -378,14 +352,22 @@ namespace octoon
 	{
 		auto ab = std::make_shared<AssetBundle>();
 		ab->open(path);
-		assetBundles_.push_back(ab);
 
 		return ab;
 	}
 
-	const std::vector<std::shared_ptr<AssetBundle>>&
-	AssetBundle::getAllLoadedAssetBundles() const noexcept
+	const std::set<AssetBundle*>&
+	AssetBundle::getAllLoadedAssetBundles() noexcept
 	{
 		return assetBundles_;
+	}
+
+	void
+	AssetBundle::unloadAllAssetBundles() noexcept
+	{
+		for (auto it = assetBundles_.begin(); it != assetBundles_.end(); ++it)
+			(*it)->unload();
+
+		assetBundles_.clear();
 	}
 }

@@ -15,7 +15,6 @@ namespace octoon
 {
 	class OCTOON_EXPORT AssetBundle final
 	{
-		OctoonDeclareSingleton(AssetBundle)
 	public:
 		AssetBundle() noexcept;
 		~AssetBundle() noexcept;
@@ -56,8 +55,9 @@ namespace octoon
 			return nullptr;
 		}
 
-		std::shared_ptr<AssetBundle> loadFromFile(const std::filesystem::path& path) noexcept(false);
-		const std::vector<std::shared_ptr<AssetBundle>>& getAllLoadedAssetBundles() const noexcept;
+		static std::shared_ptr<AssetBundle> loadFromFile(const std::filesystem::path& path) noexcept(false);
+		static const std::set<AssetBundle*>& getAllLoadedAssetBundles() noexcept;
+		static void unloadAllAssetBundles() noexcept;
 
 	private:
 		std::shared_ptr<Object> loadAssetAtPackage(const nlohmann::json& package, const Rtti& type) noexcept(false);
@@ -82,7 +82,7 @@ namespace octoon
 		std::map<std::string, nlohmann::json> packageList_;
 		std::map<std::string, std::weak_ptr<Object>> assetCache_;
 
-		static std::vector<std::shared_ptr<AssetBundle>> assetBundles_;
+		static std::set<AssetBundle*> assetBundles_;
 	};
 }
 

@@ -74,7 +74,7 @@ namespace octoon
 		std::set<std::weak_ptr<const Object>, std::owner_less<std::weak_ptr<const Object>>> dirtyList_;
 
 		std::map<std::filesystem::path, std::string> assetGuidList_;
-		std::map<std::string, std::filesystem::path> assetPathList_;
+		std::map<std::string, std::filesystem::path> assetUniques_;
 
 		std::map<std::filesystem::path, std::weak_ptr<Object>> objectCaches_;
 		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> objectPathList_;
