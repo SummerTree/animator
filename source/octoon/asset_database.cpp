@@ -140,15 +140,15 @@ namespace octoon
 		auto filename = diskPath.filename();
 		packagePath_[filename] = diskPath;
 
-		std::ifstream ifs(std::filesystem::path(diskPath).append("package/manifest.json"), std::ios_base::binary);
+		std::ifstream ifs(std::filesystem::path(diskPath).append("manifest.json"), std::ios_base::binary);
 		if (ifs)
 		{
 			auto assetDb = nlohmann::json::parse(ifs);
 
 			for (auto it = assetDb.begin(); it != assetDb.end(); ++it)
 			{
-				auto uuid = it.key();
-				auto path = std::filesystem::path((char8_t*)it.value().get<std::string>().c_str());
+				auto uuid = it.value();
+				auto path = std::filesystem::path((char8_t*)it.key().c_str());
 
 				assetPaths_[path] = uuid;
 				assetUniques_[uuid] = path;
