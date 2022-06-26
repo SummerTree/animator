@@ -587,12 +587,12 @@ namespace unreal
 					}
 					else
 					{
-						for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
+						for (auto it = this->textureDb_.begin(); it != this->textureDb_.end(); ++it)
 						{
 							auto uuid_ = (*it)["uuid"].get<std::string>();
 							if (uuid_ == uuid)
 							{
-								this->hdriDb_.erase(it);
+								this->textureDb_.erase(it);
 								break;
 							}
 						}
