@@ -576,8 +576,7 @@ namespace octoon
 	void
 	AssetDatabase::createMetadataAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
-		auto metaPath = this->getAbsolutePath(relativePath).concat(L".metadata");
-		std::ofstream ifs(metaPath, std::ios_base::binary);
+		std::ofstream ifs(this->getAbsolutePath(relativePath).concat(L".metadata"), std::ios_base::binary);
 		if (ifs)
 		{
 			auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
@@ -591,6 +590,10 @@ namespace octoon
 			auto dump = metadata.dump();
 			ifs.write(dump.c_str(), dump.size());
 			ifs.close();
+		}
+		else
+		{
+			throw std::runtime_error(std::string("Creating metadata at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 		}
 	}
 
