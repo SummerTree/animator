@@ -432,24 +432,53 @@ namespace octoon
 
 		dirtyList_.clear();
 
-		nlohmann::json assetDb;
+		std::map<std::filesystem::path, nlohmann::json> assetDb;
 
 		for (auto& it : assetPaths_)
 		{
-			auto path = it.first.u8string();
-			if (std::filesystem::exists(this->getAbsolutePath(path)))
-				assetDb[(char*)path.c_str()] = it.second;
+			auto relativePath = std::filesystem::path(it.first).make_preferred();
+			if (std::filesystem::exists(this->getAbsolutePath(relativePath)))
+			{
+				auto path = relativePath.wstring();
+				auto offset = path.find_first_of(std::filesystem::path::preferred_separator);
+				if (offset > 0 && offset < path.size())
+				{
+					auto folder = path.substr(0, offset);
+					if (folder == L"Packages")
+						offset = path.find_first_of(std::filesystem::path::preferred_separator, offset + 1);
+				}
+
+				assetDb[path.substr(0, offset)][(char*)it.first.u8string().c_str()] = it.second;
+			}
 		}
 
-		auto assetRoot = std::filesystem::path(this->rootPath_).append("Library");
-		std::filesystem::create_directories(assetRoot);
-
-		std::ofstream ifs(std::filesystem::path(assetRoot).append("AssetDb.json"), std::ios_base::binary);
-		if (ifs)
+		for (auto& it : assetDb)
 		{
-			auto dump = assetDb.dump();
-			ifs.write(dump.c_str(), dump.size());
-			ifs.close();
+			if (it.first == "Assets")
+			{
+				auto assetRoot = std::filesystem::path(this->rootPath_).append("Library");
+				std::filesystem::create_directories(assetRoot);
+
+				std::ofstream ifs(std::filesystem::path(assetRoot).append("AssetDb.json"), std::ios_base::binary);
+				if (ifs)
+				{
+					auto dump = it.second.dump();
+					ifs.write(dump.c_str(), dump.size());
+					ifs.close();
+				}
+			}
+			else
+			{
+				auto absolutePath = this->getAbsolutePath(it.first);
+
+				std::ofstream ifs(std::filesystem::path(absolutePath).append("manifest.json"), std::ios_base::binary);
+				if (ifs)
+				{
+					auto dump = it.second.dump();
+					ifs.write(dump.c_str(), dump.size());
+					ifs.close();
+				}
+			}
 		}
 	}
 
