@@ -307,7 +307,7 @@ namespace unreal
 
 			nlohmann::json package;
 			package["uuid"] = guid;
-			package["type"] = material->type_name();
+			package["type"] = octoon::Material::getRtti()->type_name();
 			package["name"] = material->getName();
 			package["data"] = octoon::AssetDatabase::instance()->getAssetGuid(materialPath);
 			package["visible"] = true;
@@ -344,6 +344,8 @@ namespace unreal
 		try
 		{
 			auto prefabPath = std::filesystem::path(relativePath).append(guid + ".prefab");
+
+			octoon::AssetDatabase::instance()->createFolder(relativePath);
 			octoon::AssetDatabase::instance()->createAsset(gameObject, prefabPath);
 
 			nlohmann::json package;
@@ -535,13 +537,6 @@ namespace unreal
 	void
 	AssetLibrary::removeAsset(const std::string& uuid) noexcept(false)
 	{
-		auto cache = packageCache_.find(uuid);
-		if (cache == packageCache_.end())
-			return;
-
-		auto package = (*cache).second;
-		packageCache_.erase(cache);
-
 		auto deleteAsset = [this](const std::string& uuid)
 		{
 			try
@@ -562,102 +557,109 @@ namespace unreal
 			}
 		};
 
-		if (package.contains("preview"))
-			deleteAsset(package["preview"].get<std::string>());
-
-		if (package.contains("type"))
+		auto cache = packageCache_.find(uuid);
+		if (cache != packageCache_.end())
 		{
-			auto type = package["type"].get<std::string>();
-			if (type == octoon::Texture::getRtti()->type_name())
-			{
-				if (package.contains("data"))
-					deleteAsset(package["data"].get<std::string>());
+			auto package = (*cache).second;
+			if (package.contains("preview"))
+				deleteAsset(package["preview"].get<std::string>());
 
-				auto hdr = package.contains("hdr") ? package["hdr"].get<bool>() : false;
-				if (hdr)
+			if (package.contains("type"))
+			{
+				auto type = package["type"].get<std::string>();
+				if (type == octoon::Texture::getRtti()->type_name())
 				{
-					for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
+					if (package.contains("data"))
+						deleteAsset(package["data"].get<std::string>());
+
+					auto hdr = package.contains("hdr") ? package["hdr"].get<bool>() : false;
+					if (hdr)
+					{
+						for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
+						{
+							auto uuid_ = (*it)["uuid"].get<std::string>();
+							if (uuid_ == uuid)
+							{
+								this->hdriDb_.erase(it);
+								break;
+							}
+						}
+					}
+					else
+					{
+						for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
+						{
+							auto uuid_ = (*it)["uuid"].get<std::string>();
+							if (uuid_ == uuid)
+							{
+								this->hdriDb_.erase(it);
+								break;
+							}
+						}
+					}
+				}
+				else if (type == octoon::Animation::getRtti()->type_name())
+				{
+					if (package.contains("data"))
+						deleteAsset(package["data"].get<std::string>());
+
+					for (auto it = this->motionDb_.begin(); it != this->motionDb_.end(); ++it)
 					{
 						auto uuid_ = (*it)["uuid"].get<std::string>();
 						if (uuid_ == uuid)
 						{
-							this->hdriDb_.erase(it);
+							this->motionDb_.erase(it);
 							break;
 						}
 					}
 				}
-				else
+				else if (type == octoon::Material::getRtti()->type_name())
 				{
-					for (auto it = this->hdriDb_.begin(); it != this->hdriDb_.end(); ++it)
+					if (package.contains("data"))
+						deleteAsset(package["data"].get<std::string>());
+
+					for (auto it = this->materialDb_.begin(); it != this->materialDb_.end(); ++it)
 					{
 						auto uuid_ = (*it)["uuid"].get<std::string>();
 						if (uuid_ == uuid)
 						{
-							this->hdriDb_.erase(it);
+							this->materialDb_.erase(it);
+							break;
+						}
+					}
+				}
+				else if (type == octoon::GameObject::getRtti()->type_name())
+				{
+					if (package.contains("data"))
+					{
+						auto assetPath = octoon::AssetDatabase::instance()->getAssetPath(package["data"].get<std::string>());
+						if (!assetPath.empty())
+						{
+							deleteAsset(uuid);
+							octoon::AssetDatabase::instance()->deleteFolder(assetPath.parent_path());
+						}
+					}
+
+					if (package.contains("model"))
+					{
+						auto folderPath = this->getAssetPath(package["model"].get<std::string>());
+						if (octoon::AssetDatabase::instance())
+							octoon::AssetDatabase::instance()->deleteFolder(folderPath);
+					}
+
+					for (auto it = this->prefabDb_.begin(); it != this->prefabDb_.end(); ++it)
+					{
+						auto uuid_ = (*it)["uuid"].get<std::string>();
+						if (uuid_ == uuid)
+						{
+							this->prefabDb_.erase(it);
 							break;
 						}
 					}
 				}
 			}
-			else if (type == octoon::Animation::getRtti()->type_name())
-			{
-				if (package.contains("data"))
-					deleteAsset(package["data"].get<std::string>());
 
-				for (auto it = this->motionDb_.begin(); it != this->motionDb_.end(); ++it)
-				{
-					auto uuid_ = (*it)["uuid"].get<std::string>();
-					if (uuid_ == uuid)
-					{
-						this->motionDb_.erase(it);
-						break;
-					}
-				}
-			}
-			else if (type == octoon::Material::getRtti()->type_name())
-			{
-				if (package.contains("data"))
-					deleteAsset(package["data"].get<std::string>());
-
-				for (auto it = this->materialDb_.begin(); it != this->materialDb_.end(); ++it)
-				{
-					auto uuid_ = (*it)["uuid"].get<std::string>();
-					if (uuid_ == uuid)
-					{
-						this->materialDb_.erase(it);
-						break;
-					}
-				}
-			}
-			else if (type == octoon::GameObject::getRtti()->type_name())
-			{
-				if (package.contains("data"))
-				{
-					auto assetPath = octoon::AssetDatabase::instance()->getAssetPath(package["data"].get<std::string>());
-					if (!assetPath.empty())
-					{
-						deleteAsset(uuid);
-						octoon::AssetDatabase::instance()->deleteFolder(assetPath.parent_path());
-					}
-				}
-
-				if (package.contains("model"))
-				{
-					auto folderPath = this->getAssetPath(package["model"].get<std::string>());
-					if (octoon::AssetDatabase::instance())
-						octoon::AssetDatabase::instance()->deleteFolder(folderPath);
-				}
-
-				for (auto it = this->prefabDb_.begin(); it != this->prefabDb_.end(); ++it)
-				{
-					auto uuid_ = (*it)["uuid"].get<std::string>();
-					if (uuid_ == uuid)
-					{
-						this->prefabDb_.erase(it);
-						break;
-					}
-				}
-			}
+			packageCache_.erase(cache);
 		}
 	}
 
