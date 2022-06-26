@@ -58,10 +58,10 @@ namespace octoon
 
 			for (auto it = assetDb.begin(); it != assetDb.end(); ++it)
 			{
-				auto uuid = it.key();
-				auto path = std::filesystem::path((char8_t*)it.value().get<std::string>().c_str());
+				auto uuid = it.value();
+				auto path = std::filesystem::path((char8_t*)it.key().c_str());
 
-				assetGuidList_[path] = uuid;
+				assetPaths_[path] = uuid;
 				assetUniques_[uuid] = path;
 			}
 		}
@@ -72,7 +72,7 @@ namespace octoon
 	{
 		rootPath_.clear();
 		dirtyList_.clear();
-		assetGuidList_.clear();
+		assetPaths_.clear();
 		assetUniques_.clear();
 		objectCaches_.clear();
 		objectPathList_.clear();
@@ -150,7 +150,7 @@ namespace octoon
 				auto uuid = it.key();
 				auto path = std::filesystem::path((char8_t*)it.value().get<std::string>().c_str());
 
-				assetGuidList_[path] = uuid;
+				assetPaths_[path] = uuid;
 				assetUniques_[uuid] = path;
 			}
 		}
@@ -159,8 +159,6 @@ namespace octoon
 	void
 	AssetDatabase::createAsset(const std::shared_ptr<const Texture>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
-		auto firstPath = (*relativePath.begin());
-
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
 
@@ -190,7 +188,7 @@ namespace octoon
 					ifs.close();
 				}
 
-				assetGuidList_[relativePath] = uuid;
+				assetPaths_[relativePath] = uuid;
 				assetUniques_[uuid] = relativePath;
 
 				objectPathList_[asset] = relativePath;
@@ -399,7 +397,7 @@ namespace octoon
 			auto uuid = this->getAssetGuid(relativePath);
 			if (!uuid.empty())
 			{
-				assetGuidList_.erase(assetGuidList_.find(relativePath));
+				assetPaths_.erase(assetPaths_.find(relativePath));
 				assetUniques_.erase(assetUniques_.find(uuid));
 			}
 
@@ -436,11 +434,11 @@ namespace octoon
 
 		nlohmann::json assetDb;
 
-		for (auto& it : assetUniques_)
+		for (auto& it : assetPaths_)
 		{
-			auto path = it.second.u8string();
-			if (std::filesystem::exists(std::filesystem::path(this->rootPath_).append(path)))
-				assetDb[it.first] = (char*)path.c_str();
+			auto path = it.first.u8string();
+			if (std::filesystem::exists(this->getAbsolutePath(path)))
+				assetDb[(char*)path.c_str()] = it.second;
 		}
 
 		auto assetRoot = std::filesystem::path(this->rootPath_).append("Library");
@@ -536,8 +534,8 @@ namespace octoon
 	{
 		if (!relativePath.empty())
 		{
-			auto it = assetGuidList_.find(relativePath);
-			if (it != assetGuidList_.end())
+			auto it = assetPaths_.find(relativePath);
+			if (it != assetPaths_.end())
 				return (*it).second;
 		}
 
@@ -587,7 +585,7 @@ namespace octoon
 			nlohmann::json metadata;
 			metadata["uuid"] = uuid;
 
-			assetGuidList_[relativePath] = uuid;
+			assetPaths_[relativePath] = uuid;
 			assetUniques_[uuid] = relativePath;
 
 			auto dump = metadata.dump();
@@ -601,10 +599,10 @@ namespace octoon
 	{
 		auto relativePath = std::filesystem::path(relativePath_).make_preferred();
 		auto uuid = this->getAssetGuid(relativePath);
-		assetGuidList_.erase(assetGuidList_.find(relativePath));
+		assetPaths_.erase(assetPaths_.find(relativePath));
 		assetUniques_.erase(assetUniques_.find(uuid));
 
-		auto metaPath = std::filesystem::path(this->rootPath_).append(relativePath.wstring() + L".metadata");
+		auto metaPath = this->getAbsolutePath(relativePath).concat(L".metadata");
 		if (std::filesystem::exists(metaPath))
 			std::filesystem::remove(metaPath);
 	}
@@ -612,7 +610,7 @@ namespace octoon
 	nlohmann::json
 	AssetDatabase::loadMetadataAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
-		auto metaPath = std::filesystem::path(this->rootPath_).append(relativePath.wstring() + L".metadata");
+		auto metaPath = this->getAbsolutePath(relativePath).concat(L".metadata");
 		std::ifstream ifs(metaPath);
 		if (ifs)
 		{
@@ -621,7 +619,7 @@ namespace octoon
 			if (metaData.contains("uuid"))
 			{
 				auto guid = metaData["uuid"].get<std::string>();
-				assetGuidList_[relativePath] = guid;
+				assetPaths_[relativePath] = guid;
 				assetUniques_[std::move(guid)] = (char*)relativePath.u8string().c_str();
 
 				return metaData;
@@ -636,20 +634,14 @@ namespace octoon
 	{
 		auto it = objectPathList_.find(asset);
 		if (it != objectPathList_.end())
-		{
-			auto path = (*it).second;
-			return std::filesystem::exists(std::filesystem::path(this->rootPath_).append(path.u8string()));
-		}
+			return std::filesystem::exists(this->getAbsolutePath((*it).second));
 
 		return false;
 	}
 
 	std::shared_ptr<Object>
 	AssetDatabase::loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
-	{
-		if (relativePath.empty())
-			return nullptr;
-		
+	{	
 		if (objectCaches_.contains(relativePath))
 		{
 			auto cache = objectCaches_.at(relativePath);
@@ -661,14 +653,13 @@ namespace octoon
 		for (auto& it : ext)
 			it = (char)std::tolower(it);
 
-		auto absolutePath = this->getAbsolutePath(relativePath);
 		if (ext == u8".vmd")
 		{
-			auto motion = AssetLoader::instance()->loadAssetAtPath<Animation>(absolutePath);
+			auto motion = AssetLoader::instance()->loadAssetAtPath<Animation>(this->getAbsolutePath(relativePath));
 			if (motion)
 			{
 				if (motion->getName().empty())
-					motion->setName((char*)absolutePath.filename().c_str());
+					motion->setName((char*)relativePath.filename().c_str());
 
 				auto metadata = this->loadMetadataAtPath(relativePath);
 				if (metadata.is_null())
@@ -682,7 +673,7 @@ namespace octoon
 		}
 		else if (ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
-			auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(absolutePath);
+			auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(this->getAbsolutePath(relativePath));
 			if (texture)
 			{
 				auto metadata = this->loadMetadataAtPath(relativePath);
@@ -709,7 +700,7 @@ namespace octoon
 		}
 		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
 		{
-			auto model = AssetLoader::instance()->loadAssetAtPath<GameObject>(absolutePath);
+			auto model = AssetLoader::instance()->loadAssetAtPath<GameObject>(this->getAbsolutePath(relativePath));
 			if (model)
 			{
 				auto metadata = this->loadMetadataAtPath(relativePath);
@@ -724,11 +715,11 @@ namespace octoon
 		}
 		else if (ext == u8".abc")
 		{
-			auto model = AssetLoader::instance()->loadAssetAtPath<GameObject>(absolutePath);
+			auto model = AssetLoader::instance()->loadAssetAtPath<GameObject>(this->getAbsolutePath(relativePath));
 			if (model)
 			{
 				auto alembic = model->addComponent<MeshAnimationComponent>();
-				alembic->setFilePath(absolutePath);
+				alembic->setFilePath(relativePath);
 
 				auto metadata = this->loadMetadataAtPath(relativePath);
 				if (!metadata.is_object())
@@ -742,7 +733,7 @@ namespace octoon
 		}
 		else if (ext == u8".mat")
 		{
-			std::ifstream ifs(absolutePath);
+			std::ifstream ifs(this->getAbsolutePath(relativePath));
 			if (ifs)
 			{
 				auto mat = nlohmann::json::parse(ifs);
@@ -935,7 +926,7 @@ namespace octoon
 		}
 		else if (ext == u8".prefab")
 		{
-			std::ifstream ifs(absolutePath);
+			std::ifstream ifs(this->getAbsolutePath(relativePath));
 			if (ifs)
 			{
 				auto prefab = nlohmann::json::parse(ifs);
