@@ -160,24 +160,24 @@ namespace octoon
 	AssetDatabase::createAsset(const std::shared_ptr<const Texture>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		if (!asset || relativePath.empty())
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		if (this->contains(asset))
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
 		{
 			auto absolutePath = this->getAbsolutePath(relativePath);
-			auto extension = absolutePath.extension();
+			auto extension = absolutePath.extension().u8string();
 
-			if (asset->save(absolutePath, extension.string().substr(1).c_str()))
+			if (asset->save(absolutePath, (char*)extension.substr(1).c_str()))
 			{
 				auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
 
 				nlohmann::json metadata;
 				metadata["uuid"] = uuid;
 				metadata["name"] = asset->getName();
-				metadata["suffix"] = (char*)extension.u8string().c_str();
+				metadata["suffix"] = (char*)extension.c_str();
 				metadata["mipmap"] = asset->getMipLevel();
 
 				std::ofstream ifs(absolutePath.u8string() + u8".metadata", std::ios_base::binary);
@@ -195,7 +195,7 @@ namespace octoon
 			}
 			else
 			{
-				throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+				throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 			}
 		}
 		catch (const std::exception& e)
@@ -209,15 +209,14 @@ namespace octoon
 	AssetDatabase::createAsset(const std::shared_ptr<const Animation>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		if (!asset || relativePath.empty())
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		if (this->contains(asset))
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
 		{
-			auto absolutePath = this->getAbsolutePath(relativePath);
-			std::ofstream stream(absolutePath, io::ios_base::binary);
+			std::ofstream stream(this->getAbsolutePath(relativePath), io::ios_base::binary);
 			if (stream)
 			{
 				VMDLoader::save(stream, *asset);
@@ -227,7 +226,7 @@ namespace octoon
 			}
 			else
 			{
-				throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+				throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 			}
 		}
 		catch (const std::exception& e)
@@ -241,10 +240,10 @@ namespace octoon
 	AssetDatabase::createAsset(const std::shared_ptr<const Material>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		if (!asset || relativePath.empty())
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		if (this->contains(asset))
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
 		{
@@ -329,6 +328,10 @@ namespace octoon
 				this->objectPathList_[asset] = relativePath;
 				this->createMetadataAtPath(relativePath);
 			}
+			else
+			{
+				throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
 		}
 		catch (const std::exception& e)
 		{
@@ -341,43 +344,47 @@ namespace octoon
 	AssetDatabase::createAsset(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		if (!asset || relativePath.empty())
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		if (this->contains(asset))
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
 		{
-			nlohmann::json prefab;
-
-			if (!this->contains(asset))
-			{
-				auto modelPath = AssetLoader::instance()->getAssetPath(asset);
-				if (!modelPath.empty())
-				{
-					auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
-					this->importAsset(modelPath, outputPath);
-
-					objectPathList_[asset] = outputPath;
-					prefab["model"] = this->getAssetGuid(outputPath);
-				}
-			}
-			else
-			{
-				prefab["model"] = this->getAssetGuid(asset);
-			}
-
-			asset->save(prefab, *this);
-
 			std::ofstream ifs(this->getAbsolutePath(relativePath), std::ios_base::binary);
 			if (ifs)
 			{
+				nlohmann::json prefab;
+
+				if (!this->contains(asset))
+				{
+					auto modelPath = AssetLoader::instance()->getAssetPath(asset);
+					if (!modelPath.empty())
+					{
+						auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
+						this->importAsset(modelPath, outputPath);
+
+						objectPathList_[asset] = outputPath;
+						prefab["model"] = this->getAssetGuid(outputPath);
+					}
+				}
+				else
+				{
+					prefab["model"] = this->getAssetGuid(asset);
+				}
+
+				asset->save(prefab, *this);
+
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
-			}
 
-			this->objectPathList_[asset] = relativePath;
-			this->createMetadataAtPath(relativePath);
+				this->objectPathList_[asset] = relativePath;
+				this->createMetadataAtPath(relativePath);
+			}
+			else
+			{
+				throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
 		}
 		catch (const std::exception& e)
 		{
@@ -497,7 +504,7 @@ namespace octoon
 		}
 		else
 		{
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)assetFolder_.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)assetFolder_.u8string().c_str() + " failed.");
 		}
 	}
 
@@ -515,7 +522,7 @@ namespace octoon
 		}
 		else
 		{
-			throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 		}
 	}
 
@@ -570,7 +577,7 @@ namespace octoon
 			}
 		}
 		
-		throw std::runtime_error(std::string("Creating asset at path") + (char*)relativePath.u8string().c_str() + " failed.");
+		throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 	}
 
 	void

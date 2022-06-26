@@ -285,7 +285,7 @@ namespace unreal
 
 		try
 		{
-			auto texturePath = std::filesystem::path("Assets/Textures");
+			auto texturePath = std::filesystem::path("Packages/Assets/Textures");
 			auto materialPath = std::filesystem::path(relativePath).append(guid + ".mat");
 
 			for (auto& it : material->getMaterialParams())
@@ -302,6 +302,7 @@ namespace unreal
 				}
 			}
 
+			octoon::AssetDatabase::instance()->createFolder(relativePath);
 			octoon::AssetDatabase::instance()->createAsset(material, materialPath);
 
 			nlohmann::json package;
@@ -315,7 +316,7 @@ namespace unreal
 			if (preview)
 			{
 				auto uuid = octoon::make_guid();
-				auto previewFolder = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2));
+				auto previewFolder = std::filesystem::path("Packages/Assets/Thumbnails").append(uuid.substr(0, 2));
 				auto previewPath = std::filesystem::path(previewFolder).append(uuid + ".png");
 				octoon::AssetDatabase::instance()->createFolder(previewFolder);
 				octoon::AssetDatabase::instance()->createAsset(preview, previewPath);

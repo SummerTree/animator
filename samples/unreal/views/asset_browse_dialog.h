@@ -24,6 +24,9 @@ namespace unreal
 		MaterialListDialog(QWidget* parent, const octoon::GameObjectPtr& behaviour) noexcept(false);
 		~MaterialListDialog() noexcept;
 
+		void addItem(const nlohmann::json& package) noexcept(false);
+
+	private:
 		void resizeEvent(QResizeEvent* e) noexcept override;
 		void showEvent(QShowEvent* event) noexcept override;
 		void keyPressEvent(QKeyEvent* event) noexcept;
@@ -37,9 +40,6 @@ namespace unreal
 
 	Q_SIGNALS:
 		void itemSelected(QListWidgetItem* item);
-
-	private:
-		void addItem(std::string_view uuid) noexcept;
 
 	public:
 		QListWidget* mainWidget_;

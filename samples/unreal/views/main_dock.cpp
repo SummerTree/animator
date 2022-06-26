@@ -557,26 +557,36 @@ namespace unreal
 						if (dialog.wasCanceled())
 							break;
 
-						auto package = AssetLibrary::instance()->importAsset(filepaths[i].toStdWString());
-						if (!package.is_null())
+						try
 						{
-							auto ext = std::filesystem::path(filepaths[i].toStdWString()).extension().wstring();
-							for (auto& it : ext)
-								it = (char)std::tolower(it);
-
-							if (ext == L".pmx")
-								this->modelDock_->addItem(package);
-							else if (ext == L".vmd")
-								this->motionDock_->addItem(package);
-							else if (ext == L".bmp" || ext == L".tga" || ext == L".jpg" || ext == L".png" || ext == L".jpeg" || ext == L".dds")
-								this->textureDock_->addItem(package);
-							else if (ext == L".mdl")
+							auto package = AssetLibrary::instance()->importAsset(filepaths[i].toStdWString());
+							if (!package.is_null())
 							{
-								for (auto& it : package)
-									this->materialDock_->addItem(it);
+								auto ext = std::filesystem::path(filepaths[i].toStdWString()).extension().wstring();
+								for (auto& it : ext)
+									it = (char)std::tolower(it);
 
-								this->textureDock_->updateItems();
+								if (ext == L".pmx")
+									this->modelDock_->addItem(package);
+								else if (ext == L".vmd")
+									this->motionDock_->addItem(package);
+								else if (ext == L".bmp" || ext == L".tga" || ext == L".jpg" || ext == L".png" || ext == L".jpeg" || ext == L".dds")
+									this->textureDock_->addItem(package);
+								else if (ext == L".mdl")
+								{
+									for (auto& it : package)
+										this->materialDock_->addItem(it);
+
+									this->textureDock_->updateItems();
+								}
 							}
+						}
+						catch (const std::exception& e)
+						{
+							spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
+
+							QCoreApplication::processEvents();
+							QMessageBox::critical(this, tr("Error"), tr("Import asset at path %1 failed.").arg(filepaths[i]));
 						}
 					}
 
@@ -589,7 +599,7 @@ namespace unreal
 			spdlog::error("Function importEvent raised exception: " + std::string(e.what()));
 
 			QCoreApplication::processEvents();
-			QMessageBox::critical(this, tr("Error"), tr("Failed to import resource: ") + QString::fromStdString(e.what()));
+			QMessageBox::critical(this, tr("Error"), e.what());
 		}
 
 		spdlog::debug("Exited importEvent");

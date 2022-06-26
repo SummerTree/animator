@@ -287,27 +287,27 @@
 <context>
     <name>unreal::EnvironmentListDialog</name>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="236"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="235"/>
         <source>Environment Resource</source>
         <translation>环境资源</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="242"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="241"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="246"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="245"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="247"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="246"/>
         <source>ESC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="251"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="250"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
@@ -316,38 +316,38 @@
         <translation type="vanished">加载图像</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="323"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="322"/>
         <source>HDRi Files (*.hdr)</source>
         <translation>HDRi 文件 (*.hdr)</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="323"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="322"/>
         <source>Import Resource</source>
         <translation type="unfinished">加载资源</translation>
     </message>
     <message>
+        <location filename="../views/asset_browse_dialog.cpp" line="327"/>
         <location filename="../views/asset_browse_dialog.cpp" line="328"/>
-        <location filename="../views/asset_browse_dialog.cpp" line="329"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="328"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="327"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="419"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="418"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation>确定要删除此图像吗?</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="419"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="418"/>
         <source>Info</source>
         <translation type="unfinished">提示</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="433"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="432"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>
@@ -552,10 +552,11 @@ $20 (Original cost $40)</source>
         <location filename="../views/main_dock.cpp" line="476"/>
         <location filename="../views/main_dock.cpp" line="503"/>
         <location filename="../views/main_dock.cpp" line="530"/>
-        <location filename="../views/main_dock.cpp" line="592"/>
-        <location filename="../views/main_dock.cpp" line="621"/>
-        <location filename="../views/main_dock.cpp" line="694"/>
-        <location filename="../views/main_dock.cpp" line="721"/>
+        <location filename="../views/main_dock.cpp" line="589"/>
+        <location filename="../views/main_dock.cpp" line="602"/>
+        <location filename="../views/main_dock.cpp" line="631"/>
+        <location filename="../views/main_dock.cpp" line="704"/>
+        <location filename="../views/main_dock.cpp" line="731"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
@@ -581,8 +582,8 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="592"/>
-        <source>Failed to import resource: </source>
+        <location filename="../views/main_dock.cpp" line="589"/>
+        <source>Import asset at path %1 failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -590,7 +591,7 @@ $20 (Original cost $40)</source>
         <translation type="vanished">获取核心模块失败。</translation>
     </message>
     <message>
-        <location filename="../views/main_dock.cpp" line="695"/>
+        <location filename="../views/main_dock.cpp" line="705"/>
         <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation>当前的显卡不支持OpenCL或您正在使用集成显卡。</translation>
     </message>
@@ -856,38 +857,38 @@ $20 (Original cost $40)</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="116"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="115"/>
         <source>Import Resource</source>
         <translation>加载资源</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="116"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="115"/>
         <source>NVIDIA MDL Files (*.mdl)</source>
         <translation>NVIDIA MDL Files (*.mdl)</translation>
     </message>
     <message>
+        <location filename="../views/asset_browse_dialog.cpp" line="120"/>
         <location filename="../views/asset_browse_dialog.cpp" line="121"/>
-        <location filename="../views/asset_browse_dialog.cpp" line="122"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="121"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="120"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="172"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="171"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="172"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="171"/>
         <source>Are you sure you want to delete this material?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="188"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="187"/>
         <source>Error</source>
         <translation type="unfinished">错误</translation>
     </message>

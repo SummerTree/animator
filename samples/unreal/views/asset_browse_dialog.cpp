@@ -83,9 +83,8 @@ namespace unreal
 	}
 
 	void 
-	MaterialListDialog::addItem(std::string_view uuid) noexcept
+	MaterialListDialog::addItem(const nlohmann::json& package) noexcept(false)
 	{
-		auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
 		if (package.is_object())
 		{
 			auto item = std::make_unique<QListWidgetItem>();
@@ -221,8 +220,8 @@ namespace unreal
 		{
 			mainWidget_->clear();
 
-			for (auto& uuid : AssetLibrary::instance()->getMaterialList())
-				this->addItem(uuid.get<nlohmann::json::string_t>());
+			for (auto& package : AssetLibrary::instance()->getMaterialList())
+				this->addItem(package);
 		}
 	}
 
