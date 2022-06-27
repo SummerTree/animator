@@ -53,7 +53,6 @@ namespace unreal
 		this->profile_->reset();
 
 		AssetLibrary::instance()->unload();
-		octoon::AssetDatabase::instance()->clearUpdate();
 	}
 
 	bool

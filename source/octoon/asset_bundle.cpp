@@ -36,7 +36,7 @@ namespace octoon
 		assetPath_ = assetPath;
 
 		this->assetDatabase_ = std::make_unique<AssetDatabase>();
-		this->assetDatabase_->open(assetPath);
+		this->assetDatabase_->mountPackage(u8"Assets", assetPath);
 
 		std::ifstream ifs(std::filesystem::path(this->assetPath_).append("Library").append("AssetBundle.json"), std::ios_base::binary);
 		if (ifs)

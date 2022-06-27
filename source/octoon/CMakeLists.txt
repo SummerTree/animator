@@ -181,8 +181,8 @@ SET(EDITOR_LIST
 	${SOURCE_PATH}/asset_bundle.cpp
 	${HEADER_PATH}/asset_preview.h
 	${SOURCE_PATH}/asset_preview.cpp
-	${HEADER_PATH}/prefab_utility.h
-	${SOURCE_PATH}/prefab_utility.cpp
+	${HEADER_PATH}/package.h
+	${SOURCE_PATH}/package.cpp
 )
 SOURCE_GROUP("system\\editor" FILES ${EDITOR_LIST})
 

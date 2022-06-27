@@ -26,7 +26,7 @@ namespace unreal
 		this->assetPath_ = path;
 		this->assetPath_.make_preferred();
 
-		octoon::AssetDatabase::instance()->importPackage(std::filesystem::path(path).append("Assets"));
+		octoon::AssetDatabase::instance()->mountPackage(u8"Packages/Assets/", std::filesystem::path(path).append("Assets"));
 
 		auto libraryPath = std::filesystem::path(path).append("Library");
 
