@@ -52,6 +52,10 @@ namespace octoon
 		void setLabels(const std::shared_ptr<const Object>& asset, const std::vector<std::string>& labels) noexcept(false);
 		const std::vector<std::string>& getLabels(const std::shared_ptr<const Object>& asset) noexcept(false);
 
+		bool isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept;
+		void addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path);
+		bool getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, std::string& outGuid, std::int64_t& outLocalId);
+
 		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false);
 
 		template<typename T>
@@ -78,6 +82,9 @@ namespace octoon
 	private:
 		std::map<std::u8string, std::shared_ptr<Package>> packages_;
 		std::set<std::weak_ptr<const Object>, std::owner_less<std::weak_ptr<const Object>>> dirtyList_;
+
+		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> subAssetToPath_;
+		std::map<std::filesystem::path, std::vector<std::weak_ptr<const Object>>> pathToSubAsset_;
 	};
 }
 

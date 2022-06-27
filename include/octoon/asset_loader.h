@@ -16,6 +16,8 @@ namespace octoon
 		AssetLoader() noexcept;
 		virtual ~AssetLoader() noexcept;
 
+		void setAssetPath(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path) noexcept;
+
 		std::filesystem::path getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept;
 		std::filesystem::path getAssetExtension(const std::shared_ptr<const Object>& asset, std::string_view defaultExtension = "") const noexcept;
 

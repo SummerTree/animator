@@ -128,7 +128,7 @@ namespace octoon
 			{
 				auto pmx = std::make_shared<PMX>();
 				if (PMX::load(assetPath, *pmx))
-					return this->getAssetPreview(*pmx);
+					return this->getAssetPreview(*pmx, assetPath);
 			}
 		}
 
@@ -136,11 +136,11 @@ namespace octoon
 	}
 
 	std::shared_ptr<Texture>
-	AssetPreview::getAssetPreview(const PMX& pmx)
+	AssetPreview::getAssetPreview(const PMX& pmx, const std::filesystem::path& path)
 	{
 		assert(scene_);
 		
-		auto geometry = PMXLoader::loadGeometry(pmx);
+		auto geometry = PMXLoader::loadGeometry(pmx, path);
 
 		for (auto& v : pmx.bones)
 		{

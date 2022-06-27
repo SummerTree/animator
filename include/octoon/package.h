@@ -58,6 +58,8 @@ namespace octoon
 		void setLabels(const std::shared_ptr<const Object>& asset, const std::vector<std::string>& labels) noexcept;
 		const std::vector<std::string>& getLabels(const std::shared_ptr<const Object>& asset) noexcept;
 
+		bool getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, const std::string& outGuid, std::int64_t& outLocalId);
+
 	private:
 		void createMetadataAtPath(const std::filesystem::path& path) noexcept(false);
 		void createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false);
@@ -74,13 +76,11 @@ namespace octoon
 		std::filesystem::path rootPath_;
 		std::vector<std::string> defaultLabel_;
 
-		std::map<std::filesystem::path, std::string> paths_;
 		std::map<std::string, std::filesystem::path> uniques_;
-
+		std::map<std::filesystem::path, std::string> paths_;
 		std::map<std::filesystem::path, std::weak_ptr<Object>> objectCaches_;
 
 		std::map<std::weak_ptr<const Object>, std::vector<std::string>, std::owner_less<std::weak_ptr<const Object>>> labels_;
-		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> objectPaths_;
 	};
 }
 

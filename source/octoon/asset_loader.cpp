@@ -19,12 +19,20 @@ namespace octoon
 	{
 	}
 
+	void
+	AssetLoader::setAssetPath(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path) noexcept
+	{
+		auto it = pathList_.find(asset);
+		if (it != pathList_.end())
+			it->second = path;
+	}
+
 	std::filesystem::path
 	AssetLoader::getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept
 	{
 		auto it = pathList_.find(asset);
 		if (it != pathList_.end())
-			return (*it).second;
+			return it->second;
 		return std::filesystem::path();
 	}
 

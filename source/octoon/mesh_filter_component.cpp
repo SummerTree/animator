@@ -93,7 +93,10 @@ namespace octoon
 
 		if (json.contains("mesh"))
 		{
-			auto guid = json["mesh"]["guid"].get<std::string>();
+			auto& mesh = json["mesh"];
+
+			auto guid = mesh["guid"].get<std::string>();
+			auto localId = mesh["localId"].get<std::string>();
 
 			auto assetPath = assetDatabase.getAssetPath(guid);
 			if (!assetPath.empty())
@@ -114,9 +117,17 @@ namespace octoon
 	{
 		GameComponent::save(json, assetDatabase);
 
-		auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
-		if (!guid.empty())
-			json["mesh"]["guid"] = guid;
+		std::string guid;
+		std::int64_t localId;
+
+		if (assetDatabase.getGUIDAndLocalIdentifier(this->mesh_, guid, localId))
+		{
+			nlohmann::json mesh;
+			mesh["guid"] = guid;
+			mesh["localId"] = localId;
+
+			json["mesh"] = std::move(mesh);
+		}
 	}
 
 	GameComponentPtr

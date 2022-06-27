@@ -22,6 +22,7 @@
 #include <octoon/rotation_link_limit_component.h>
 #include <octoon/cloth_component.h>
 #include <octoon/asset_loader.h>
+#include <octoon/asset_database.h>
 
 #include <set>
 #include <codecvt>
@@ -348,7 +349,7 @@ namespace octoon
 		}
 	}
 
-	void createMaterials(const PMX& pmx, Materials& materials) noexcept(false)
+	void createMaterials(const PMX& pmx, Materials& materials, const std::filesystem::path& path) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 		std::unordered_map<std::u8string, std::shared_ptr<Texture>> textureMap;
@@ -371,6 +372,7 @@ namespace octoon
 					{
 						texture->apply();
 						textureMap[fullpath] = std::move(texture);
+						octoon::AssetDatabase::instance()->addObjectToAsset(texture, path);
 					}
 				}
 			}
@@ -422,11 +424,13 @@ namespace octoon
 				material->setBlendDest(BlendMode::OneMinusSrcAlpha);
 			}
 
+			octoon::AssetDatabase::instance()->addObjectToAsset(material, path);
+
 			materials.emplace_back(std::move(material));
 		}
 	}
 
-	void createMeshes(const PMX& pmx, GameObjectPtr& object, const GameObjects& bones, PMXLoadFlags flags) noexcept(false)
+	void createMeshes(const PMX& pmx, GameObjectPtr& object, const GameObjects& bones, const std::filesystem::path& path) noexcept(false)
 	{
 		math::float4x4s bindposes(pmx.bones.size());
 		for (std::size_t i = 0; i < pmx.bones.size(); i++)
@@ -502,6 +506,8 @@ namespace octoon
 
 		mesh->computeBoundingBox();
 
+		octoon::AssetDatabase::instance()->addObjectToAsset(mesh, path);
+
 		object->addComponent<MeshFilterComponent>(std::move(mesh));
 
 		if (bones.empty())
@@ -509,12 +515,9 @@ namespace octoon
 			auto meshRender = object->addComponent<MeshRendererComponent>();
 			meshRender->setGlobalIllumination(true);
 
-			if (flags & PMXLoadFlagBits::MaterialBit)
-			{
-				Materials materials;
-				createMaterials(pmx, materials);
-				meshRender->setMaterials(std::move(materials));
-			}
+			Materials materials;
+			createMaterials(pmx, materials, path);
+			meshRender->setMaterials(std::move(materials));
 		}
 		else
 		{
@@ -524,22 +527,19 @@ namespace octoon
 			smr->setTextureBlendEnable(true);
 			smr->setGlobalIllumination(true);
 
-			if (flags & PMXLoadFlagBits::MaterialBit)
-			{
-				Materials materials;
-				createMaterials(pmx, materials);
-				smr->setMaterials(std::move(materials));
-			}
+			Materials materials;
+			createMaterials(pmx, materials, path);
+			smr->setMaterials(std::move(materials));
 
 			object->addComponent(smr);
 		}
 	}
 
 	std::shared_ptr<Geometry>
-	PMXLoader::loadGeometry(const PMX& pmx) noexcept(false)
+	PMXLoader::loadGeometry(const PMX& pmx, const std::filesystem::path& path) noexcept(false)
 	{
 		Materials materials;
-		createMaterials(pmx, materials);
+		createMaterials(pmx, materials, path);
 
 		math::float4x4s bindposes(pmx.bones.size());
 		for (std::size_t i = 0; i < pmx.bones.size(); i++)
@@ -626,42 +626,9 @@ namespace octoon
 	PMXLoader::load(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false)
 	{
 		PMX pmx;
-		if (PMX::load(path, pmx))
-		{
-			if (pmx.numMaterials > 0)
-			{
-				GameObjects bones;
-				GameObjectPtr actor = std::make_shared<GameObject>();
-
-				if (!pmx.description.japanModelName.empty())
-				{
-					std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-					actor->setName(cv.to_bytes(pmx.description.japanModelName.data()));
-				}
-				else
-				{
-					actor->setName((char*)std::filesystem::path(path).filename().c_str());
-				}
-
-				createBones(pmx, bones);
-				createColliders(pmx, bones);
-				createRigidbodies(pmx, bones);
-				createJoints(pmx, bones);
-
-				createMeshes(pmx, actor, bones, flags);
-				createMorph(pmx, actor);
-				createClothes(pmx, actor, bones);
-
-				return actor;
-			}
-		}
-
-		return nullptr;
-	}
-
-	std::shared_ptr<GameObject>
-	PMXLoader::load(const PMX& pmx, PMXLoadFlags flags) noexcept(false)
-	{
+		if (!PMX::load(path, pmx))
+			return nullptr;
+		
 		if (pmx.numMaterials > 0)
 		{
 			GameObjects bones;
@@ -672,13 +639,17 @@ namespace octoon
 				std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 				actor->setName(cv.to_bytes(pmx.description.japanModelName.data()));
 			}
+			else
+			{
+				actor->setName((char*)std::filesystem::path(path).filename().c_str());
+			}
 
 			createBones(pmx, bones);
 			createColliders(pmx, bones);
 			createRigidbodies(pmx, bones);
 			createJoints(pmx, bones);
 
-			createMeshes(pmx, actor, bones, flags);
+			createMeshes(pmx, actor, bones, path);
 			createMorph(pmx, actor);
 			createClothes(pmx, actor, bones);
 

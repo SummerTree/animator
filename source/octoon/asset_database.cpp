@@ -310,6 +310,40 @@ namespace octoon
 		}
 	}
 
+	bool
+	AssetDatabase::isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept
+	{
+		return this->subAssetToPath_.contains(asset);
+	}
+
+	void
+	AssetDatabase::addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
+	{
+		if (!this->isSubAsset(asset))
+		{
+			this->subAssetToPath_[asset] = path;
+			this->pathToSubAsset_[path].push_back(asset);
+		}
+		else
+		{
+			throw std::runtime_error(std::string("Add object to path ") + (char*)path.u8string().c_str() + " failed.");
+		}
+	}
+
+	bool
+	AssetDatabase::getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, std::string& outGuid, std::int64_t& outLocalId)
+	{
+		auto assetPath = this->subAssetToPath_[asset];
+		if (!assetPath.empty())
+		{
+			outGuid = this->getAssetGuid(assetPath);
+			outLocalId = 0;
+			return true;
+		}
+
+		return false;
+	}
+
 	std::shared_ptr<Object>
 	AssetDatabase::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
 	{

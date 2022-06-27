@@ -54,7 +54,6 @@ namespace octoon
 		paths_.clear();
 		uniques_.clear();
 		objectCaches_.clear();
-		objectPaths_.clear();
 	}
 
 	void
@@ -148,7 +147,7 @@ namespace octoon
 				paths_[relativePath] = uuid;
 				uniques_[uuid] = relativePath;
 
-				objectPaths_[asset] = relativePath;
+				AssetLoader::instance()->setAssetPath(asset, relativePath);
 			}
 			else
 			{
@@ -178,7 +177,7 @@ namespace octoon
 			{
 				VMDLoader::save(stream, *asset);
 
-				this->objectPaths_[asset] = relativePath;
+				AssetLoader::instance()->setAssetPath(asset, relativePath);
 				this->createMetadataAtPath(relativePath);
 			}
 			else
@@ -283,7 +282,7 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 
-				this->objectPaths_[asset] = relativePath;
+				AssetLoader::instance()->setAssetPath(asset, relativePath);
 				this->createMetadataAtPath(relativePath);
 			}
 			else
@@ -320,7 +319,6 @@ namespace octoon
 					auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
 					this->importAsset(modelPath, outputPath);
 
-					objectPaths_[asset] = outputPath;
 					prefab["model"] = this->getAssetGuid(outputPath);
 				}
 
@@ -329,7 +327,7 @@ namespace octoon
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
 
-				this->objectPaths_[asset] = relativePath;
+				AssetLoader::instance()->setAssetPath(asset, relativePath);
 				this->createMetadataAtPath(relativePath);
 			}
 			else
@@ -368,7 +366,6 @@ namespace octoon
 						auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
 						this->importAsset(modelPath, outputPath);
 
-						objectPaths_[asset] = outputPath;
 						prefab["model"] = this->getAssetGuid(outputPath);
 					}
 				}
@@ -382,6 +379,7 @@ namespace octoon
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
 
+				AssetLoader::instance()->setAssetPath(asset, relativePath);
 				this->createMetadataAtPath(relativePath);
 			}
 			else
@@ -399,9 +397,9 @@ namespace octoon
 	bool
 	Package::contains(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		auto it = objectPaths_.find(asset);
-		if (it != objectPaths_.end())
-			return std::filesystem::exists(std::filesystem::path(this->rootPath_).append((*it).second.wstring()));
+		auto assetPath = AssetLoader::instance()->getAssetPath(asset);
+		if (!assetPath.empty())
+			return std::filesystem::exists(std::filesystem::path(this->rootPath_).append(assetPath.wstring()));
 
 		return false;
 	}
@@ -419,11 +417,7 @@ namespace octoon
 	std::filesystem::path
 	Package::getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		auto it = objectPaths_.find(asset);
-		if (it != objectPaths_.end())
-			return (*it).second;
-
-		return std::filesystem::path();
+		return AssetLoader::instance()->getAssetPath(asset);
 	}
 
 	std::filesystem::path
@@ -605,6 +599,12 @@ namespace octoon
 		return defaultLabel_;
 	}
 
+	bool
+	Package::getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, const std::string& outGuid, std::int64_t& outLocalId)
+	{
+		return false;
+	}
+
 	void
 	Package::createMetadataAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
@@ -707,7 +707,7 @@ namespace octoon
 				}
 
 				objectCaches_[relativePath] = motion;
-				objectPaths_[motion] = relativePath;
+				AssetLoader::instance()->setAssetPath(motion, relativePath);
 
 				return motion;
 			}
@@ -740,7 +740,7 @@ namespace octoon
 				texture->apply();
 
 				objectCaches_[relativePath] = texture;
-				objectPaths_[texture] = relativePath;
+				AssetLoader::instance()->setAssetPath(texture, relativePath);
 
 				return texture;
 			}
@@ -765,7 +765,7 @@ namespace octoon
 				}
 
 				objectCaches_[relativePath] = model;
-				objectPaths_[model] = relativePath;
+				AssetLoader::instance()->setAssetPath(model, relativePath);
 
 				return model;
 			}
@@ -793,7 +793,7 @@ namespace octoon
 				}
 
 				objectCaches_[relativePath] = model;
-				objectPaths_[model] = relativePath;
+				AssetLoader::instance()->setAssetPath(model, relativePath);
 
 				return model;
 			}
@@ -996,7 +996,7 @@ namespace octoon
 				}
 
 				objectCaches_[relativePath] = material;
-				objectPaths_[material] = relativePath;
+				AssetLoader::instance()->setAssetPath(material, relativePath);
 
 				return std::move(material);
 			}
@@ -1032,7 +1032,7 @@ namespace octoon
 						}
 
 						objectCaches_[relativePath] = object;
-						objectPaths_[object] = relativePath;
+						AssetLoader::instance()->setAssetPath(object, relativePath);
 
 						return object;
 					}
