@@ -263,6 +263,7 @@ namespace octoon
 							if (!this->contains(texture))
 							{
 								auto texturePath = std::filesystem::path("Assets/Textures").append(make_guid() + ".png");
+								this->createFolder(std::filesystem::path("Assets/Textures"));
 								this->createAsset(texture, texturePath);
 								mat[it.key] = this->getAssetGuid(texturePath);
 							}
@@ -338,7 +339,7 @@ namespace octoon
 		}
 		catch (const std::exception& e)
 		{
-			this->deleteFolder(relativePath);
+			this->deleteAsset(relativePath);
 			throw e;
 		}
 	}
@@ -390,7 +391,7 @@ namespace octoon
 		}
 		catch (const std::exception& e)
 		{
-			this->deleteFolder(relativePath);
+			this->deleteAsset(relativePath);
 			throw e;
 		}
 	}
