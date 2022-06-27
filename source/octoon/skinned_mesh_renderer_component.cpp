@@ -90,7 +90,7 @@ namespace octoon
 	}
 
 	bool
-	SkinnedMeshRendererComponent::getAutomaticUpdate() noexcept
+	SkinnedMeshRendererComponent::getAutomaticUpdate() const noexcept
 	{
 		return automaticUpdate_;
 	}
@@ -227,7 +227,12 @@ namespace octoon
 		auto instance = std::make_shared<SkinnedMeshRendererComponent>();
 		instance->setName(this->getName());
 		instance->setBones(this->getBones());
-		instance->setMaterial(this->getMaterial() ? (this->isSharedMaterial() ? this->getMaterial() : this->getMaterial()->clone()) : nullptr, this->isSharedMaterial());
+		instance->setMaterials(this->getMaterials());
+		instance->setAutomaticUpdate(this->getAutomaticUpdate());
+		instance->setClothBlendEnable(this->getClothBlendEnable());
+		instance->setMorphBlendEnable(this->getMorphBlendEnable());
+		instance->setTextureBlendEnable(this->getTextureBlendEnable());
+		instance->setUpdateWhenOffscreen(this->getUpdateWhenOffscreen());
 
 		return instance;
 	}

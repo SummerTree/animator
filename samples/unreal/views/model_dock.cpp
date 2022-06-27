@@ -196,7 +196,7 @@ namespace unreal
 
 			auto model = AssetLibrary::instance()->loadAsset<octoon::GameObject>(uuid);
 			if (model)
-				this->profile_->entitiesModule->objects.getValue().push_back(model);
+				this->profile_->entitiesModule->objects.getValue().push_back(model->clone());
 
 			dialog.setValue(1);
 		}

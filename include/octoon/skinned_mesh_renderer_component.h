@@ -29,7 +29,7 @@ namespace octoon
 		void setTextureBlendEnable(bool enable) noexcept;
 		void setUpdateWhenOffscreen(bool enable) noexcept;
 
-		bool getAutomaticUpdate() noexcept;
+		bool getAutomaticUpdate() const noexcept;
 		bool getClothBlendEnable() const noexcept;
 		bool getMorphBlendEnable() const noexcept;
 		bool getTextureBlendEnable() const noexcept;
