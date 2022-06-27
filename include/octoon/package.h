@@ -16,7 +16,7 @@ namespace octoon
 		Package(AssetDatabase* assetDatabase) noexcept;
 		~Package() noexcept;
 
-		void open(const std::filesystem::path& path) noexcept(false);
+		void open(const std::filesystem::path& diskPath) noexcept(false);
 		void close() noexcept;
 
 		void importAsset(const std::filesystem::path& diskPath, const std::filesystem::path& relativePath) noexcept(false);
@@ -28,10 +28,7 @@ namespace octoon
 
 		void createPrefab(const std::shared_ptr<const GameObject>& object, const std::filesystem::path& relativePath) noexcept(false);
 
-		bool contains(const std::shared_ptr<const Object>& asset) const noexcept;
-
 		std::filesystem::path getAssetPath(const std::string& uuid) const noexcept;
-		std::filesystem::path getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept;
 		std::filesystem::path getAbsolutePath(const std::filesystem::path& relativePath) const noexcept;
 
 		std::string getAssetGuid(const std::filesystem::path& relativePath) const noexcept;
@@ -42,6 +39,11 @@ namespace octoon
 
 		void createFolder(const std::filesystem::path& folderPath) noexcept(false);
 		void deleteFolder(const std::filesystem::path& folderPath) noexcept(false);
+
+		void createMetadataAtPath(const std::filesystem::path& path) noexcept(false);
+		void createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false);
+		void removeMetadataAtPath(const std::filesystem::path& path) noexcept;
+		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
 
 		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false);
 
@@ -54,18 +56,6 @@ namespace octoon
 			return nullptr;
 		}
 
-		void setLabels(const std::shared_ptr<const Object>& asset, std::vector<std::string>&& labels) noexcept;
-		void setLabels(const std::shared_ptr<const Object>& asset, const std::vector<std::string>& labels) noexcept;
-		const std::vector<std::string>& getLabels(const std::shared_ptr<const Object>& asset) noexcept;
-
-		bool getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, const std::string& outGuid, std::int64_t& outLocalId);
-
-	private:
-		void createMetadataAtPath(const std::filesystem::path& path) noexcept(false);
-		void createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false);
-		void removeMetadataAtPath(const std::filesystem::path& path) noexcept;
-		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
-
 	private:
 		Package(const Package&) = delete;
 		Package& operator=(const Package&) = delete;
@@ -74,13 +64,10 @@ namespace octoon
 		AssetDatabase* assetDatabase_;
 
 		std::filesystem::path rootPath_;
-		std::vector<std::string> defaultLabel_;
 
 		std::map<std::string, std::filesystem::path> uniques_;
 		std::map<std::filesystem::path, std::string> paths_;
 		std::map<std::filesystem::path, std::weak_ptr<Object>> objectCaches_;
-
-		std::map<std::weak_ptr<const Object>, std::vector<std::string>, std::owner_less<std::weak_ptr<const Object>>> labels_;
 	};
 }
 

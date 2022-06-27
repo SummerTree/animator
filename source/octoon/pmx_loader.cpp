@@ -506,7 +506,7 @@ namespace octoon
 
 		mesh->computeBoundingBox();
 
-		octoon::AssetDatabase::instance()->addObjectToAsset(mesh, path);
+		octoon::AssetLoader::instance()->addObjectToAsset(mesh, path);
 
 		object->addComponent<MeshFilterComponent>(std::move(mesh));
 

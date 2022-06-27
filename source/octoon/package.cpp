@@ -146,8 +146,6 @@ namespace octoon
 
 				paths_[relativePath] = uuid;
 				uniques_[uuid] = relativePath;
-
-				AssetLoader::instance()->setAssetPath(asset, relativePath);
 			}
 			else
 			{
@@ -176,8 +174,6 @@ namespace octoon
 			if (stream)
 			{
 				VMDLoader::save(stream, *asset);
-
-				AssetLoader::instance()->setAssetPath(asset, relativePath);
 				this->createMetadataAtPath(relativePath);
 			}
 			else
@@ -259,7 +255,7 @@ namespace octoon
 						auto texture = asset->get<std::shared_ptr<Texture>>(it.key);
 						if (texture)
 						{
-							if (!this->contains(texture))
+							if (!assetDatabase_->contains(texture))
 							{
 								auto texturePath = std::filesystem::path("Assets/Textures").append(make_guid() + ".png");
 								this->createFolder(std::filesystem::path("Assets/Textures"));
@@ -282,7 +278,6 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 
-				AssetLoader::instance()->setAssetPath(asset, relativePath);
 				this->createMetadataAtPath(relativePath);
 			}
 			else
@@ -316,10 +311,16 @@ namespace octoon
 				auto modelPath = AssetLoader::instance()->getAssetPath(asset);
 				if (!modelPath.empty())
 				{
-					auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
-					this->importAsset(modelPath, outputPath);
-
-					prefab["model"] = this->getAssetGuid(outputPath);
+					if (modelPath.is_absolute())
+					{
+						auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
+						this->importAsset(modelPath, outputPath);
+						prefab["model"] = this->getAssetGuid(outputPath);
+					}
+					else
+					{
+						prefab["model"] = this->getAssetGuid(modelPath);
+					}
 				}
 
 				asset->save(prefab, *assetDatabase_);
@@ -327,7 +328,6 @@ namespace octoon
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
 
-				AssetLoader::instance()->setAssetPath(asset, relativePath);
 				this->createMetadataAtPath(relativePath);
 			}
 			else
@@ -358,20 +358,19 @@ namespace octoon
 			{
 				nlohmann::json prefab;
 
-				if (!assetDatabase_->contains(asset))
+				auto modelPath = AssetLoader::instance()->getAssetPath(asset);
+				if (!modelPath.empty())
 				{
-					auto modelPath = AssetLoader::instance()->getAssetPath(asset);
-					if (!modelPath.empty())
+					if (modelPath.is_absolute())
 					{
 						auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
 						this->importAsset(modelPath, outputPath);
-
 						prefab["model"] = this->getAssetGuid(outputPath);
 					}
-				}
-				else
-				{
-					prefab["model"] = assetDatabase_->getAssetGuid(asset);
+					else
+					{
+						prefab["model"] = assetDatabase_->getAssetGuid(modelPath);
+					}
 				}
 
 				asset->save(prefab, *assetDatabase_);
@@ -379,7 +378,6 @@ namespace octoon
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
 
-				AssetLoader::instance()->setAssetPath(asset, relativePath);
 				this->createMetadataAtPath(relativePath);
 			}
 			else
@@ -394,30 +392,14 @@ namespace octoon
 		}
 	}
 
-	bool
-	Package::contains(const std::shared_ptr<const Object>& asset) const noexcept
-	{
-		auto assetPath = AssetLoader::instance()->getAssetPath(asset);
-		if (!assetPath.empty())
-			return std::filesystem::exists(std::filesystem::path(this->rootPath_).append(assetPath.wstring()));
-
-		return false;
-	}
-
 	std::filesystem::path
 	Package::getAssetPath(const std::string& uuid) const noexcept
 	{
 		auto item = uniques_.find(uuid);
 		if (item != uniques_.end())
-			return (*item).second;
+			return item->second;
 
 		return std::filesystem::path();
-	}
-
-	std::filesystem::path
-	Package::getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept
-	{
-		return AssetLoader::instance()->getAssetPath(asset);
 	}
 
 	std::filesystem::path
@@ -442,7 +424,7 @@ namespace octoon
 	std::string
 	Package::getAssetGuid(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		auto path = this->getAssetPath(asset);
+		auto path = assetDatabase_->getAssetPath(asset);
 		if (!path.empty())
 			return this->getAssetGuid(path);
 		return std::string();
@@ -553,59 +535,6 @@ namespace octoon
 	}
 
 	void
-	Package::setLabels(const std::shared_ptr<const Object>& asset, std::vector<std::string>&& labels) noexcept
-	{
-		auto assetPath = this->getAssetPath(asset);
-		auto metaData = this->loadMetadataAtPath(assetPath);
-		if (metaData.is_object())
-		{
-			metaData["label"] = labels;
-			this->createMetadataAtPath(assetPath, metaData);
-		}
-
-		this->labels_[asset] = std::move(labels);
-	}
-
-	void
-	Package::setLabels(const std::shared_ptr<const Object>& asset, const std::vector<std::string>& labels) noexcept
-	{
-		auto assetPath = this->getAssetPath(asset);
-		auto metaData = this->loadMetadataAtPath(assetPath);
-		if (metaData.is_object())
-		{
-			metaData["label"] = labels;
-			this->createMetadataAtPath(assetPath, metaData);
-		}
-
-		this->labels_[asset] = labels;
-	}
-
-	const std::vector<std::string>&
-	Package::getLabels(const std::shared_ptr<const Object>& asset) noexcept
-	{
-		auto it = this->labels_.find(asset);
-		if (it != this->labels_.end())
-			return it->second;
-		
-		auto metaData = this->loadMetadataAtPath(this->getAssetPath(asset));
-		if (metaData.is_object())
-		{
-			for (auto& label : metaData["label"])
-				this->labels_[asset].push_back(label.get<std::string>());
-
-			return this->labels_[asset];
-		}
-
-		return defaultLabel_;
-	}
-
-	bool
-	Package::getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, const std::string& outGuid, std::int64_t& outLocalId)
-	{
-		return false;
-	}
-
-	void
 	Package::createMetadataAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
 		nlohmann::json metadata;
@@ -671,7 +600,7 @@ namespace octoon
 
 	std::shared_ptr<Object>
 	Package::loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
-	{	
+	{
 		if (objectCaches_.contains(relativePath))
 		{
 			auto cache = objectCaches_.at(relativePath);
@@ -693,21 +622,10 @@ namespace octoon
 					motion->setName((char*)relativePath.filename().c_str());
 
 				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("labels"))
-					{
-						for (auto& it : metadata["labels"])
-							labels_[motion].push_back(it.get<std::string>());
-					}
-				}
-				else
-				{
+				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
-				}
 
 				objectCaches_[relativePath] = motion;
-				AssetLoader::instance()->setAssetPath(motion, relativePath);
 
 				return motion;
 			}
@@ -722,12 +640,6 @@ namespace octoon
 				{
 					if (metadata.contains("mipmap"))
 						texture->setMipLevel(metadata["mipmap"].get<nlohmann::json::number_integer_t>());
-
-					if (metadata.contains("labels"))
-					{
-						for (auto& it : metadata["labels"])
-							labels_[texture].push_back(it.get<std::string>());
-					}
 				}
 				else
 				{
@@ -740,7 +652,6 @@ namespace octoon
 				texture->apply();
 
 				objectCaches_[relativePath] = texture;
-				AssetLoader::instance()->setAssetPath(texture, relativePath);
 
 				return texture;
 			}
@@ -751,21 +662,10 @@ namespace octoon
 			if (model)
 			{
 				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("labels"))
-					{
-						for (auto& it : metadata["labels"])
-							labels_[model].push_back(it.get<std::string>());
-					}
-				}
-				else
-				{
+				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
-				}
 
 				objectCaches_[relativePath] = model;
-				AssetLoader::instance()->setAssetPath(model, relativePath);
 
 				return model;
 			}
@@ -779,21 +679,10 @@ namespace octoon
 				alembic->setFilePath(relativePath);
 
 				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("labels"))
-					{
-						for (auto& it : metadata["labels"])
-							labels_[model].push_back(it.get<std::string>());
-					}
-				}
-				else
-				{
+				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
-				}
 
 				objectCaches_[relativePath] = model;
-				AssetLoader::instance()->setAssetPath(model, relativePath);
 
 				return model;
 			}
@@ -982,21 +871,10 @@ namespace octoon
 					material->setSubsurfaceColor(math::float3((*subsurfaceColor).get<std::array<float, 3>>()));
 
 				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("labels"))
-					{
-						for (auto& it : metadata["labels"])
-							labels_[material].push_back(it.get<std::string>());
-					}
-				}
-				else
-				{
+				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
-				}
 
 				objectCaches_[relativePath] = material;
-				AssetLoader::instance()->setAssetPath(material, relativePath);
 
 				return std::move(material);
 			}
@@ -1007,36 +885,18 @@ namespace octoon
 			if (ifs)
 			{
 				auto prefab = nlohmann::json::parse(ifs);
-				if (prefab.contains("model"))
-				{
-					auto path = this->getAssetPath(prefab["model"].get<std::string>());
-					if (!path.empty())
-					{
-						auto cache = this->loadAssetAtPath<GameObject>(path);
+				auto object = std::make_shared<GameObject>();
+				object->load(prefab, *assetDatabase_);
 
-						auto object = std::make_shared<GameObject>();
-						object->load(prefab, *assetDatabase_);
+				auto metadata = this->loadMetadataAtPath(relativePath);
+				if (!metadata.is_object())
+					this->createMetadataAtPath(relativePath);
 
-						auto metadata = this->loadMetadataAtPath(relativePath);
-						if (metadata.is_object())
-						{
-							if (metadata.contains("labels"))
-							{
-								for (auto& it : metadata["labels"])
-									labels_[object].push_back(it.get<std::string>());
-							}
-						}
-						else
-						{
-							this->createMetadataAtPath(relativePath);
-						}
+				objectCaches_[relativePath] = object;
 
-						objectCaches_[relativePath] = object;
-						AssetLoader::instance()->setAssetPath(object, relativePath);
+				AssetLoader::instance()->unload();
 
-						return object;
-					}
-				}
+				return object;
 			}
 		}
 

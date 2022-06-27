@@ -96,7 +96,7 @@ namespace octoon
 			auto& mesh = json["mesh"];
 
 			auto guid = mesh["guid"].get<std::string>();
-			auto localId = mesh["localId"].get<std::string>();
+			//auto localId = mesh["localId"].get<std::string>();
 
 			auto assetPath = assetDatabase.getAssetPath(guid);
 			if (!assetPath.empty())

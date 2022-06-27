@@ -80,11 +80,11 @@ namespace octoon
 		AssetDatabase& operator=(const AssetDatabase&) = delete;
 
 	private:
+		std::vector<std::string> defaultLabel_;
+
 		std::map<std::u8string, std::shared_ptr<Package>> packages_;
 		std::set<std::weak_ptr<const Object>, std::owner_less<std::weak_ptr<const Object>>> dirtyList_;
-
-		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> subAssetToPath_;
-		std::map<std::filesystem::path, std::vector<std::weak_ptr<const Object>>> pathToSubAsset_;
+		std::map<std::weak_ptr<const Object>, std::vector<std::string>, std::owner_less<std::weak_ptr<const Object>>> labels_;
 	};
 }
 

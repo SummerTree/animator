@@ -101,14 +101,17 @@ namespace octoon
 
 		if (json.contains("materials"))
 		{
+			auto& materialJson = json["materials"];
+
 			std::vector<std::shared_ptr<octoon::Material>> materials;
 
-			for (auto& it : json["materials"])
+			for (std::size_t i = 0; i < materialJson.size(); i ++)
 			{
+				auto& it = materialJson[i];
 				if (it.is_object())
 				{
 					auto guid = it["guid"].get<std::string>();
-					auto index = it["index"].get<int>();
+					auto localId = it["localId"].get<int>();
 
 					auto assetPath = assetDatabase.getAssetPath(guid);
 					if (!assetPath.empty())
@@ -118,7 +121,7 @@ namespace octoon
 						{
 							auto meshRenderer = gameObject->getComponent<MeshRendererComponent>();
 							if (meshRenderer)
-								materials.push_back(meshRenderer->getMaterial(index));
+								materials.push_back(meshRenderer->getMaterial(i));
 						}
 					}
 				}
@@ -139,32 +142,30 @@ namespace octoon
 	{
 		GameComponent::save(json, assetDatabase);
 
-		auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
-
 		auto& materials = this->getMaterials();
 
 		for (std::size_t i = 0; i < materials.size(); i++)
 		{
-			if (!assetDatabase.contains(materials[i]))
+			if (materials[i])
 			{
-				if (guid.empty())
+				std::string guid;
+				std::int64_t localId;
+
+				if (assetDatabase.getGUIDAndLocalIdentifier(materials[i], guid, localId))
+				{
+					nlohmann::json asset;
+					asset["guid"] = guid;
+					asset["localId"] = localId;
+
+					json["materials"].push_back(std::move(asset));
+				}
+				else
 				{
 					auto materialPath = std::filesystem::path("Assets/Materials").append(make_guid() + ".mat");
 					assetDatabase.createFolder(std::filesystem::path("Assets/Materials"));
 					assetDatabase.createAsset(materials[i], materialPath);
 					json["materials"].push_back(assetDatabase.getAssetGuid(materialPath));
 				}
-				else
-				{
-					nlohmann::json asset;
-					asset["guid"] = guid;
-					asset["index"] = i;
-					json["materials"].push_back(std::move(asset));
-				}
-			}
-			else
-			{
-				json["materials"].push_back(assetDatabase.getAssetGuid(materials[i]));
 			}
 		}
 	}

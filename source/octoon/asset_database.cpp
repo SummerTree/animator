@@ -1,4 +1,5 @@
 #include <octoon/asset_database.h>
+#include <octoon/asset_loader.h>
 
 namespace octoon
 {
@@ -48,9 +49,14 @@ namespace octoon
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
+		{
 			package->createAsset(asset, packagePath);
+			AssetLoader::instance()->setAssetPath(asset, path);
+		}
 		else
+		{
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)path.u8string().c_str() + " failed.");
+		}
 	}
 
 	void
@@ -59,9 +65,14 @@ namespace octoon
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
+		{
 			package->createAsset(asset, packagePath);
+			AssetLoader::instance()->setAssetPath(asset, path);
+		}
 		else
+		{
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)path.u8string().c_str() + " failed.");
+		}
 	}
 
 	void
@@ -70,9 +81,14 @@ namespace octoon
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
-			return package->createAsset(asset, packagePath);
+		{
+			package->createAsset(asset, packagePath);
+			AssetLoader::instance()->setAssetPath(asset, path);
+		}
 		else
+		{
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)path.u8string().c_str() + " failed.");
+		}
 	}
 
 	void
@@ -81,9 +97,14 @@ namespace octoon
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
-			return package->createAsset(asset, packagePath);
+		{
+			package->createAsset(asset, packagePath);
+			AssetLoader::instance()->setAssetPath(asset, path);
+		}
 		else
+		{
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)path.u8string().c_str() + " failed.");
+		}
 	}
 
 	void
@@ -92,9 +113,14 @@ namespace octoon
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
-			return package->createPrefab(asset, packagePath);
+		{
+			package->createPrefab(asset, packagePath);
+			AssetLoader::instance()->setAssetPath(asset, path);
+		}
 		else
-			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)path.u8string().c_str() + " failed.");
+		{
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)path.u8string().c_str() + " failed.");
+		}
 	}
 
 	bool
@@ -166,14 +192,7 @@ namespace octoon
 	std::filesystem::path
 	AssetDatabase::getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		for (auto& package : packages_)
-		{
-			auto path = package.second->getAssetPath(asset);
-			if (!path.empty())
-				return std::filesystem::path(package.first).append(path.wstring());
-		}
-
-		return std::filesystem::path();
+		return AssetLoader::instance()->getAssetPath(asset);
 	}
 
 	std::filesystem::path
@@ -253,10 +272,11 @@ namespace octoon
 	bool
 	AssetDatabase::contains(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		for (auto& package : packages_)
+		auto assetPath = AssetLoader::instance()->getAssetPath(asset);
+		if (!assetPath.empty())
 		{
-			if (package.second->contains(asset))
-				return true;
+			if (!assetPath.is_absolute())
+				return std::filesystem::exists(this->getAbsolutePath(assetPath));
 		}
 
 		return false;
@@ -270,7 +290,17 @@ namespace octoon
 		{
 			std::filesystem::path packagePath;
 			auto package = this->getPackage(assetPath, packagePath);
-			package->setLabels(asset, std::move(labels));
+			if (package)
+			{
+				auto metaData = package->loadMetadataAtPath(packagePath);
+				if (metaData.is_object())
+				{
+					metaData["label"] = labels;
+					package->createMetadataAtPath(packagePath, metaData);
+				}
+
+				this->labels_[asset] = std::move(labels);
+			}
 		}
 		else
 		{
@@ -286,7 +316,17 @@ namespace octoon
 		{
 			std::filesystem::path packagePath;
 			auto package = this->getPackage(assetPath, packagePath);
-			package->setLabels(asset, labels);
+			if (package)
+			{
+				auto metaData = package->loadMetadataAtPath(packagePath);
+				if (metaData.is_object())
+				{
+					metaData["label"] = labels;
+					package->createMetadataAtPath(packagePath, metaData);
+				}
+
+				this->labels_[asset] = labels;
+			}
 		}
 		else
 		{
@@ -302,7 +342,23 @@ namespace octoon
 		{
 			std::filesystem::path packagePath;
 			auto package = this->getPackage(assetPath, packagePath);
-			return package->getLabels(asset);
+			if (package)
+			{
+				auto it = this->labels_.find(asset);
+				if (it != this->labels_.end())
+					return it->second;
+
+				auto metaData = package->loadMetadataAtPath(packagePath);
+				if (metaData.is_object())
+				{
+					for (auto& label : metaData["label"])
+						this->labels_[asset].push_back(label.get<std::string>());
+
+					return this->labels_[asset];
+				}
+			}
+
+			return defaultLabel_;
 		}
 		else
 		{
@@ -313,27 +369,19 @@ namespace octoon
 	bool
 	AssetDatabase::isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		return this->subAssetToPath_.contains(asset);
+		return AssetLoader::instance()->isSubAsset(asset);
 	}
 
 	void
 	AssetDatabase::addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
 	{
-		if (!this->isSubAsset(asset))
-		{
-			this->subAssetToPath_[asset] = path;
-			this->pathToSubAsset_[path].push_back(asset);
-		}
-		else
-		{
-			throw std::runtime_error(std::string("Add object to path ") + (char*)path.u8string().c_str() + " failed.");
-		}
+		return AssetLoader::instance()->addObjectToAsset(asset, path);
 	}
 
 	bool
 	AssetDatabase::getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, std::string& outGuid, std::int64_t& outLocalId)
 	{
-		auto assetPath = this->subAssetToPath_[asset];
+		auto assetPath = AssetLoader::instance()->getAssetPath(asset);
 		if (!assetPath.empty())
 		{
 			outGuid = this->getAssetGuid(assetPath);
@@ -347,10 +395,33 @@ namespace octoon
 	std::shared_ptr<Object>
 	AssetDatabase::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
 	{
-		std::filesystem::path packagePath;
-		auto package = this->getPackage(path, packagePath);
-		if (package)
-			return package->loadAssetAtPath(packagePath);
+		if (!path.empty())
+		{
+			std::filesystem::path packagePath;
+			auto package = this->getPackage(path, packagePath);
+			if (package)
+			{
+				auto asset = package->loadAssetAtPath(packagePath);
+				if (asset)
+				{
+					AssetLoader::instance()->setAssetPath(asset, path);
+
+					auto metadata = package->loadMetadataAtPath(packagePath);
+					if (metadata.is_object())
+					{
+						if (metadata.contains("labels"))
+						{
+							for (auto& it : metadata["labels"])
+								labels_[asset].push_back(it.get<std::string>());
+						}
+					}
+
+				}
+
+				return asset;
+			}
+		}
+
 		return nullptr;
 	}
 

@@ -102,7 +102,7 @@ namespace octoon
 
 				if (data.contains("offsets"))
 				{
-					std::vector<char> buffer = base64_decode(data["offests"].get<std::string>());
+					std::vector<char> buffer = base64_decode(data["offsets"].get<std::string>());
 					this->offsets_.resize(buffer.size() / sizeof(math::float3));
 					std::memcpy(this->offsets_.data(), buffer.data(), buffer.size());
 				}
