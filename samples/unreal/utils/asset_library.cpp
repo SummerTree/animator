@@ -342,7 +342,7 @@ namespace unreal
 	AssetLibrary::importAsset(const std::shared_ptr<octoon::GameObject>& gameObject, const std::filesystem::path& relativeFolder, const std::filesystem::path& modelPath) noexcept(false)
 	{
 		auto guid = octoon::make_guid();
-		auto relativePath = std::filesystem::path(relativeFolder).append(guid);
+		auto relativePath = std::filesystem::path(relativeFolder).append(guid.substr(0, 2));
 
 		try
 		{
