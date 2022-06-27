@@ -97,6 +97,22 @@ namespace octoon
 			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)path.u8string().c_str() + " failed.");
 	}
 
+	bool
+	AssetDatabase::isPartOfPrefabAsset(const std::shared_ptr<const GameObject>& asset) const noexcept
+	{
+		if (this->contains(asset))
+		{
+			auto assetPath = this->getAssetPath(asset);
+			auto ext = assetPath.extension().wstring();
+			for (auto& it : ext)
+				it = (char)std::tolower(it);
+
+			return ext == L".prefabs";
+		}
+
+		return false;
+	}
+
 	void
 	AssetDatabase::deleteAsset(const std::filesystem::path& path) noexcept(false)
 	{

@@ -31,6 +31,7 @@ namespace octoon
 		void createAsset(const std::shared_ptr<const GameObject>& object, const std::filesystem::path& assetPath) noexcept(false);
 
 		void createPrefab(const std::shared_ptr<const GameObject>& object, const std::filesystem::path& relativePath) noexcept(false);
+		bool isPartOfPrefabAsset(const std::shared_ptr<const GameObject>& object) const noexcept;
 
 		bool contains(const std::shared_ptr<const Object>& asset) const noexcept;
 

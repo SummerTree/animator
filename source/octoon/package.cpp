@@ -349,7 +349,7 @@ namespace octoon
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
-		if (assetDatabase_->contains(asset))
+		if (assetDatabase_->contains(asset) && assetDatabase_->isPartOfPrefabAsset(asset))
 			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
@@ -359,14 +359,21 @@ namespace octoon
 			{
 				nlohmann::json prefab;
 
-				auto modelPath = AssetLoader::instance()->getAssetPath(asset);
-				if (!modelPath.empty())
+				if (!assetDatabase_->contains(asset))
 				{
-					auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
-					this->importAsset(modelPath, outputPath);
+					auto modelPath = AssetLoader::instance()->getAssetPath(asset);
+					if (!modelPath.empty())
+					{
+						auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
+						this->importAsset(modelPath, outputPath);
 
-					objectPaths_[asset] = outputPath;
-					prefab["model"] = this->getAssetGuid(outputPath);
+						objectPaths_[asset] = outputPath;
+						prefab["model"] = this->getAssetGuid(outputPath);
+					}
+				}
+				else
+				{
+					prefab["model"] = assetDatabase_->getAssetGuid(asset);
 				}
 
 				asset->save(prefab, *assetDatabase_);
@@ -374,7 +381,6 @@ namespace octoon
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
 
-				this->objectPaths_[asset] = relativePath;
 				this->createMetadataAtPath(relativePath);
 			}
 			else

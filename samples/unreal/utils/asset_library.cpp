@@ -364,7 +364,7 @@ namespace unreal
 			if (preview)
 			{
 				auto uuid = octoon::make_guid();
-				auto previewFolder = std::filesystem::path("Assets").append("Thumbnails").append(uuid.substr(0, 2));
+				auto previewFolder = std::filesystem::path("Packages/Assets/Thumbnails").append(uuid.substr(0, 2));
 				auto previewPath = std::filesystem::path(previewFolder).append(uuid + ".png");
 				octoon::AssetDatabase::instance()->createFolder(previewFolder);
 				octoon::AssetDatabase::instance()->createAsset(preview, previewPath);
