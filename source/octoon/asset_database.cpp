@@ -87,6 +87,17 @@ namespace octoon
 	}
 
 	void
+	AssetDatabase::createPrefab(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& path) noexcept(false)
+	{
+		std::filesystem::path packagePath;
+		auto package = this->getPackage(path, packagePath);
+		if (package)
+			return package->createPrefab(asset, packagePath);
+		else
+			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)path.u8string().c_str() + " failed.");
+	}
+
+	void
 	AssetDatabase::deleteAsset(const std::filesystem::path& path) noexcept(false)
 	{
 		std::filesystem::path packagePath;

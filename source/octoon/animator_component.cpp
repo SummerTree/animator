@@ -252,6 +252,7 @@ namespace octoon
 			if (!assetDatabase.contains(this->getAnimation()))
 			{
 				auto path = std::filesystem::path("Assets/Motions").append(make_guid() + ".vmd");
+				assetDatabase.createFolder(std::filesystem::path("Assets/Motions"));
 				assetDatabase.createAsset(this->getAnimation(), path);
 				json["data"] = assetDatabase.getAssetGuid(path);
 			}

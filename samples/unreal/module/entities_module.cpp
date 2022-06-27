@@ -64,7 +64,7 @@ namespace unreal
 				{
 					auto uuid = octoon::make_guid();
 					auto path = std::filesystem::path("Assets/Prefabs").append(uuid + ".prefab");
-					octoon::AssetDatabase::instance()->createAsset(it, path);
+					octoon::AssetDatabase::instance()->createPrefab(it, path);
 					sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(path));
 				}
 			}

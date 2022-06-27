@@ -150,6 +150,7 @@ namespace octoon
 				if (guid.empty())
 				{
 					auto materialPath = std::filesystem::path("Assets/Materials").append(make_guid() + ".mat");
+					assetDatabase.createFolder(std::filesystem::path("Assets/Materials"));
 					assetDatabase.createAsset(materials[i], materialPath);
 					json["materials"].push_back(assetDatabase.getAssetGuid(materialPath));
 				}

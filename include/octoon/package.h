@@ -19,34 +19,36 @@ namespace octoon
 		void open(const std::filesystem::path& path) noexcept(false);
 		void close() noexcept;
 
-		void importAsset(const std::filesystem::path& diskPath, const std::filesystem::path& assetPath) noexcept(false);
+		void importAsset(const std::filesystem::path& diskPath, const std::filesystem::path& relativePath) noexcept(false);
 
-		void createAsset(const std::shared_ptr<const Texture>& texture, const std::filesystem::path& assetPath) noexcept(false);
-		void createAsset(const std::shared_ptr<const Animation>& animation, const std::filesystem::path& assetPath) noexcept(false);
-		void createAsset(const std::shared_ptr<const Material>& material, const std::filesystem::path& assetPath) noexcept(false);
-		void createAsset(const std::shared_ptr<const GameObject>& object, const std::filesystem::path& assetPath) noexcept(false);
+		void createAsset(const std::shared_ptr<const Texture>& texture, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<const Animation>& animation, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<const Material>& material, const std::filesystem::path& relativePath) noexcept(false);
+		void createAsset(const std::shared_ptr<const GameObject>& object, const std::filesystem::path& relativePath) noexcept(false);
+
+		void createPrefab(const std::shared_ptr<const GameObject>& object, const std::filesystem::path& relativePath) noexcept(false);
 
 		bool contains(const std::shared_ptr<const Object>& asset) const noexcept;
 
 		std::filesystem::path getAssetPath(const std::string& uuid) const noexcept;
 		std::filesystem::path getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept;
-		std::filesystem::path getAbsolutePath(const std::filesystem::path& assetPath) const noexcept;
+		std::filesystem::path getAbsolutePath(const std::filesystem::path& relativePath) const noexcept;
 
-		std::string getAssetGuid(const std::filesystem::path& assetPath) const noexcept;
+		std::string getAssetGuid(const std::filesystem::path& relativePath) const noexcept;
 		std::string getAssetGuid(const std::shared_ptr<const Object>& asset) const noexcept;
 
-		void deleteAsset(const std::filesystem::path& assetPath) noexcept(false);
+		void deleteAsset(const std::filesystem::path& relativePath) noexcept(false);
 		void saveAssets() noexcept(false);
 
 		void createFolder(const std::filesystem::path& folderPath) noexcept(false);
 		void deleteFolder(const std::filesystem::path& folderPath) noexcept(false);
 
-		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false);
+		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false);
 
 		template<typename T>
-		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false)
+		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
 		{
-			auto asset = loadAssetAtPath(assetPath);
+			auto asset = loadAssetAtPath(relativePath);
 			if (asset)
 				return asset->downcast_pointer<T>();
 			return nullptr;

@@ -349,7 +349,7 @@ namespace unreal
 			auto prefabPath = std::filesystem::path(relativePath).append(guid + ".prefab");
 
 			octoon::AssetDatabase::instance()->createFolder(relativePath);
-			octoon::AssetDatabase::instance()->createAsset(gameObject, prefabPath);
+			octoon::AssetDatabase::instance()->createPrefab(gameObject, prefabPath);
 			octoon::AssetDatabase::instance()->setLabels(gameObject, { guid });
 
 			nlohmann::json package;

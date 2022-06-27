@@ -343,6 +343,52 @@ namespace octoon
 		}
 	}
 
+	void
+	Package::createPrefab(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& relativePath) noexcept(false)
+	{
+		if (!asset || relativePath.empty())
+			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+
+		if (assetDatabase_->contains(asset))
+			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+
+		try
+		{
+			std::ofstream ifs(std::filesystem::path(this->rootPath_).append(relativePath.wstring()), std::ios_base::binary);
+			if (ifs)
+			{
+				nlohmann::json prefab;
+
+				auto modelPath = AssetLoader::instance()->getAssetPath(asset);
+				if (!modelPath.empty())
+				{
+					auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
+					this->importAsset(modelPath, outputPath);
+
+					objectPaths_[asset] = outputPath;
+					prefab["model"] = this->getAssetGuid(outputPath);
+				}
+
+				asset->save(prefab, *assetDatabase_);
+
+				auto dump = prefab.dump();
+				ifs.write(dump.c_str(), dump.size());
+
+				this->objectPaths_[asset] = relativePath;
+				this->createMetadataAtPath(relativePath);
+			}
+			else
+			{
+				throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
+		}
+		catch (const std::exception& e)
+		{
+			this->deleteFolder(relativePath);
+			throw e;
+		}
+	}
+
 	bool
 	Package::contains(const std::shared_ptr<const Object>& asset) const noexcept
 	{
