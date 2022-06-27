@@ -556,9 +556,9 @@ namespace unreal
 					if (octoon::AssetDatabase::instance())
 						octoon::AssetDatabase::instance()->deleteAsset(path);
 
-					auto parent_path = std::filesystem::path(this->assetPath_).append(path.parent_path().wstring());
-					if (std::filesystem::is_empty(parent_path))
-						std::filesystem::remove(parent_path);
+					auto parent_path = path.parent_path();
+					if (std::filesystem::is_empty(octoon::AssetDatabase::instance()->getAbsolutePath(parent_path)))
+						octoon::AssetDatabase::instance()->deleteFolder(parent_path);
 				}
 			}
 			catch (...)
