@@ -117,7 +117,7 @@ namespace octoon
 	std::shared_ptr<Texture>
 	AssetPreview::getAssetPreview(const std::shared_ptr<GameObject>& gameObject)
 	{
-		auto assetPath = AssetLoader::instance()->getAssetPath(gameObject);
+		auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
 		if (!assetPath.empty())
 		{
 			auto ext = assetPath.extension().u8string();
@@ -127,7 +127,7 @@ namespace octoon
 			if (ext == u8".pmx")
 			{
 				auto pmx = std::make_shared<PMX>();
-				if (PMX::load(assetPath, *pmx))
+				if (PMX::load(AssetDatabase::instance()->getAbsolutePath(assetPath), *pmx))
 					return this->getAssetPreview(*pmx, assetPath);
 			}
 		}

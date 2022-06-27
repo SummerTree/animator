@@ -74,7 +74,7 @@ namespace unreal
 		this->selectorModule->reset();
 		this->gridModule->reset();
 
-		octoon::AssetDatabase::instance()->clearUpdate();
+		octoon::AssetDatabase::instance()->saveAssets();
 	}
 
 	void

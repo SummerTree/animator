@@ -70,7 +70,6 @@ namespace octoon
 		bool isDirty() const noexcept;
 		bool isDirty(const std::shared_ptr<Object>& object) const noexcept;
 		void setDirty(const std::shared_ptr<Object>& object, bool dirty = true) noexcept(false);
-		void clearUpdate() noexcept;
 
 	private:
 		std::shared_ptr<Package> getPackage(const std::filesystem::path& assetPath, std::filesystem::path& packagePath) const noexcept(false);

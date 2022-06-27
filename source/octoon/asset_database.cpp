@@ -174,6 +174,8 @@ namespace octoon
 
 		for (auto& package : packages_)
 			package.second->saveAssets();
+
+		AssetLoader::instance()->unload();
 	}
 
 	std::filesystem::path
@@ -448,11 +450,5 @@ namespace octoon
 	AssetDatabase::isDirty(const std::shared_ptr<Object>& object) const noexcept
 	{
 		return this->dirtyList_.contains(object);
-	}
-
-	void
-	AssetDatabase::clearUpdate() noexcept
-	{
-		this->dirtyList_.clear();
 	}
 }
