@@ -206,6 +206,7 @@ namespace unreal
 
 			octoon::AssetDatabase::instance()->createFolder(relativePath);
 			octoon::AssetDatabase::instance()->createAsset(texture, outputPath);
+			octoon::AssetDatabase::instance()->setLabels(texture, { guid });
 
 			nlohmann::json package;
 			package["uuid"] = guid;
@@ -256,6 +257,7 @@ namespace unreal
 
 			octoon::AssetDatabase::instance()->createFolder(relativePath);
 			octoon::AssetDatabase::instance()->createAsset(animation, outputPath);
+			octoon::AssetDatabase::instance()->setLabels(animation, { guid });
 
 			nlohmann::json package;
 			package["uuid"] = guid;
@@ -304,6 +306,7 @@ namespace unreal
 
 			octoon::AssetDatabase::instance()->createFolder(relativePath);
 			octoon::AssetDatabase::instance()->createAsset(material, materialPath);
+			octoon::AssetDatabase::instance()->setLabels(material, { guid });
 
 			nlohmann::json package;
 			package["uuid"] = guid;
@@ -347,6 +350,7 @@ namespace unreal
 
 			octoon::AssetDatabase::instance()->createFolder(relativePath);
 			octoon::AssetDatabase::instance()->createAsset(gameObject, prefabPath);
+			octoon::AssetDatabase::instance()->setLabels(gameObject, { guid });
 
 			nlohmann::json package;
 			package["uuid"] = guid;
@@ -457,6 +461,11 @@ namespace unreal
 	{
 		if (assetGuidCache_.contains(asset))
 			return this->getPackage(assetGuidCache_.at(asset));
+
+		auto label = octoon::AssetDatabase::instance()->getLabels(asset);
+		if (!label.empty())
+			return this->getPackage(label.front());
+
 		return nlohmann::json();
 	}
 

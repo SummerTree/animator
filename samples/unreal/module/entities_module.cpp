@@ -52,18 +52,21 @@ namespace unreal
 	{
 		nlohmann::json sceneJson;
 
-		octoon::AssetDatabase::instance()->createFolder("Assets/Prefabs");
-
-		for (auto& it : this->objects.getValue())
+		if (!this->objects.getValue().empty())
 		{
-			if (octoon::AssetDatabase::instance()->contains(it))
-				sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(it));
-			else
+			octoon::AssetDatabase::instance()->createFolder("Assets/Prefabs");
+
+			for (auto& it : this->objects.getValue())
 			{
-				auto uuid = octoon::make_guid();
-				auto path = std::filesystem::path("Assets/Prefabs").append(uuid + ".prefab");
-				octoon::AssetDatabase::instance()->createAsset(it, path);
-				sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(path));
+				if (octoon::AssetDatabase::instance()->contains(it))
+					sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(it));
+				else
+				{
+					auto uuid = octoon::make_guid();
+					auto path = std::filesystem::path("Assets/Prefabs").append(uuid + ".prefab");
+					octoon::AssetDatabase::instance()->createAsset(it, path);
+					sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(path));
+				}
 			}
 		}
 

@@ -45,6 +45,10 @@ namespace octoon
 		std::string getAssetGuid(const std::filesystem::path& assetPath) const noexcept;
 		std::string getAssetGuid(const std::shared_ptr<const Object>& asset) const noexcept;
 
+		void setLabels(const std::shared_ptr<const Object>& asset, std::vector<std::string>&& labels) noexcept(false);
+		void setLabels(const std::shared_ptr<const Object>& asset, const std::vector<std::string>& labels) noexcept(false);
+		const std::vector<std::string>& getLabels(const std::shared_ptr<const Object>& asset) noexcept(false);
+
 		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false);
 
 		template<typename T>

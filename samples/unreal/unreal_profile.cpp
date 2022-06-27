@@ -59,7 +59,6 @@ namespace unreal
 	void
 	UnrealProfile::reset() noexcept
 	{
-		this->path.clear();
 		this->physicsModule->reset();
 		this->encodeModule->reset();
 		this->playerModule->reset();
@@ -88,7 +87,7 @@ namespace unreal
 
 			this->path = path_;
 
-			octoon::AssetDatabase::instance()->mountPackage(u8"Assets/", path_);
+			octoon::AssetDatabase::instance()->mountPackage(u8"Assets/", std::filesystem::path(path_).append("Assets"));
 
 			if (json.contains("version") && json["physics"].is_string())
 				this->version = json["version"].get<std::string>();
@@ -151,7 +150,7 @@ namespace unreal
 				json["version"] = UNREAL_VERSION;
 
 				if (this->path != path_)
-					octoon::AssetDatabase::instance()->mountPackage(u8"Assets/", path_);
+					octoon::AssetDatabase::instance()->mountPackage(u8"Assets/", std::filesystem::path(path_).append("Assets"));
 
 				this->path = path_;
 				this->physicsModule->save(json["physics"]);

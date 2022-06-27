@@ -137,43 +137,25 @@ namespace octoon
 	}
 
 	std::filesystem::path
-	AssetDatabase::getAbsolutePath(const std::filesystem::path& path) const noexcept
-	{
-		std::filesystem::path packagePath;
-		auto package = this->getPackage(path, packagePath);
-		if (package)
-			return package->getAbsolutePath(packagePath);
-
-		return std::filesystem::path();
-	}
-
-	void
-	AssetDatabase::createFolder(const std::filesystem::path& path) noexcept(false)
-	{
-		std::filesystem::path packagePath;
-		auto package = this->getPackage(path, packagePath);
-		if (package)
-			return package->createFolder(packagePath);
-	}
-
-	void
-	AssetDatabase::deleteFolder(const std::filesystem::path& path) noexcept(false)
-	{
-		std::filesystem::path packagePath;
-		auto package = this->getPackage(path, packagePath);
-		if (package)
-			return package->deleteFolder(packagePath);
-	}
-
-	std::filesystem::path
 	AssetDatabase::getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept
 	{
 		for (auto& package : packages_)
 		{
 			auto path = package.second->getAssetPath(asset);
 			if (!path.empty())
-				return path;
+				return std::filesystem::path(package.first).append(path.wstring());
 		}
+
+		return std::filesystem::path();
+	}
+
+	std::filesystem::path
+	AssetDatabase::getAbsolutePath(const std::filesystem::path& path) const noexcept
+	{
+		std::filesystem::path packagePath;
+		auto package = this->getPackage(path, packagePath);
+		if (package)
+			return package->getAbsolutePath(packagePath);
 
 		return std::filesystem::path();
 	}
@@ -195,6 +177,24 @@ namespace octoon
 		if (!path.empty())
 			return this->getAssetGuid(path);
 		return std::string();
+	}
+
+	void
+	AssetDatabase::createFolder(const std::filesystem::path& path) noexcept(false)
+	{
+		std::filesystem::path packagePath;
+		auto package = this->getPackage(path, packagePath);
+		if (package)
+			return package->createFolder(packagePath);
+	}
+
+	void
+	AssetDatabase::deleteFolder(const std::filesystem::path& path) noexcept(false)
+	{
+		std::filesystem::path packagePath;
+		auto package = this->getPackage(path, packagePath);
+		if (package)
+			return package->deleteFolder(packagePath);
 	}
 
 	std::shared_ptr<Package>
@@ -233,6 +233,54 @@ namespace octoon
 		}
 
 		return false;
+	}
+
+	void
+	AssetDatabase::setLabels(const std::shared_ptr<const Object>& asset, std::vector<std::string>&& labels) noexcept(false)
+	{
+		auto assetPath = this->getAssetPath(asset);
+		if (!assetPath.empty())
+		{
+			std::filesystem::path packagePath;
+			auto package = this->getPackage(assetPath, packagePath);
+			package->setLabels(asset, std::move(labels));
+		}
+		else
+		{
+			throw std::runtime_error(std::string("Failed to set labels."));
+		}
+	}
+
+	void
+	AssetDatabase::setLabels(const std::shared_ptr<const Object>& asset, const std::vector<std::string>& labels) noexcept(false)
+	{
+		auto assetPath = this->getAssetPath(asset);
+		if (!assetPath.empty())
+		{
+			std::filesystem::path packagePath;
+			auto package = this->getPackage(assetPath, packagePath);
+			package->setLabels(asset, labels);
+		}
+		else
+		{
+			throw std::runtime_error(std::string("Failed to set labels."));
+		}
+	}
+
+	const std::vector<std::string>&
+	AssetDatabase::getLabels(const std::shared_ptr<const Object>& asset) noexcept(false)
+	{
+		auto assetPath = this->getAssetPath(asset);
+		if (!assetPath.empty())
+		{
+			std::filesystem::path packagePath;
+			auto package = this->getPackage(assetPath, packagePath);
+			return package->getLabels(asset);
+		}
+		else
+		{
+			throw std::runtime_error(std::string("Failed to get labels."));
+		}
 	}
 
 	std::shared_ptr<Object>
