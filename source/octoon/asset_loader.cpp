@@ -35,7 +35,7 @@ namespace octoon
 		}
 		else
 		{
-			assetToPath_.insert(std::make_pair(asset, path));
+			assetToPath_[asset] = path;
 		}
 	}
 
@@ -137,6 +137,9 @@ namespace octoon
 			auto model = OBJLoader::load(path);
 			if (model)
 			{
+				for (auto it : model->getComponents())
+					this->addObjectToAsset(it, path);
+
 				caches_.push_back(model);
 				assetToPath_[model] = path;
 				return std::move(model);
@@ -147,6 +150,9 @@ namespace octoon
 			auto model = FBXLoader::load(path);
 			if (model)
 			{
+				for (auto it : model->getComponents())
+					this->addObjectToAsset(it, path);
+
 				caches_.push_back(model);
 				assetToPath_[model] = path;
 				return std::move(model);
@@ -161,6 +167,10 @@ namespace octoon
 				auto alembic = model->addComponent<MeshAnimationComponent>();
 				alembic->setFilePath(path);
 				assetToPath_[model] = path;
+
+				for (auto it : model->getComponents())
+					this->addObjectToAsset(it, path);
+
 				return std::move(model);
 			}
 		}
