@@ -77,6 +77,7 @@ namespace unreal
 		auto meshRenderHover = gizmoHover_->addComponent<octoon::MeshRendererComponent>(this->gizmoHoverMtl_);
 		meshRenderHover->setVisible(false);
 		meshRenderHover->setRendererPriority(1);
+		meshRenderHover->setGlobalIllumination(false);
 
 		gizmoSelected_ = std::make_shared<octoon::GameObject>(std::string_view("GizmoSelect"));
 		gizmoSelected_->setRaycastEnable(false);
@@ -84,6 +85,7 @@ namespace unreal
 		auto meshRenderSelected = gizmoSelected_->addComponent<octoon::MeshRendererComponent>(this->gizmoSelectedMtl_);
 		meshRenderSelected->setVisible(false);
 		meshRenderSelected->setRendererPriority(1);
+		meshRenderSelected->setGlobalIllumination(false);
 	}
 
 	void

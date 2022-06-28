@@ -120,20 +120,20 @@ namespace unreal
 			auto handleX = std::make_shared<octoon::GameObject>();
 			handleX->setRaycastEnable(false);
 			handleX->addComponent<octoon::MeshFilterComponent>(arrowGeometry);
-			handleX->addComponent<octoon::MeshRendererComponent>(gizmoXMaterial);
+			handleX->addComponent<octoon::MeshRendererComponent>(gizmoXMaterial)->setGlobalIllumination(false);
 			handleX->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(1.0, 0, 0));
 			handleX->getComponent<octoon::TransformComponent>()->setEulerAngles(octoon::math::float3(-octoon::math::PI / 2, 0, -octoon::math::PI / 2));
 			
 			auto handleY = std::make_shared<octoon::GameObject>();
 			handleY->setRaycastEnable(false);
 			handleY->addComponent<octoon::MeshFilterComponent>(arrowGeometry);
-			handleY->addComponent<octoon::MeshRendererComponent>(gizmoYMaterial);
+			handleY->addComponent<octoon::MeshRendererComponent>(gizmoYMaterial)->setGlobalIllumination(false);
 			handleY->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0, 1.0, 0));
 
 			auto handleZ = std::make_shared<octoon::GameObject>();
 			handleZ->setRaycastEnable(false);
 			handleZ->addComponent<octoon::MeshFilterComponent>(arrowGeometry);
-			handleZ->addComponent<octoon::MeshRendererComponent>(gizmoZMaterial);
+			handleZ->addComponent<octoon::MeshRendererComponent>(gizmoZMaterial)->setGlobalIllumination(false);
 			handleZ->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0, 0, 1.0));
 			handleZ->getComponent<octoon::TransformComponent>()->setEulerAngles(octoon::math::float3(octoon::math::PI / 2, 0, 0));
 
@@ -155,19 +155,19 @@ namespace unreal
 			handleLineX->setRaycastEnable(false);
 			handleLineX->addComponent<octoon::MeshFilterComponent>(lineXGeometry);
 			handleLineX->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0.5, 0, 0));
-			handleLineX->addComponent<octoon::MeshRendererComponent>(gizmoXMaterial);
+			handleLineX->addComponent<octoon::MeshRendererComponent>(gizmoXMaterial)->setGlobalIllumination(false);
 
 			auto handleLineY = std::make_shared<octoon::GameObject>();
 			handleLineY->setRaycastEnable(false);
 			handleLineY->addComponent<octoon::MeshFilterComponent>(lineYGeometry);
 			handleLineY->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0, 0.5, 0));
-			handleLineY->addComponent<octoon::MeshRendererComponent>(gizmoYMaterial);
+			handleLineY->addComponent<octoon::MeshRendererComponent>(gizmoYMaterial)->setGlobalIllumination(false);
 
 			auto handleLineZ = std::make_shared<octoon::GameObject>();
 			handleLineZ->setRaycastEnable(false);
 			handleLineZ->addComponent<octoon::MeshFilterComponent>(lineZGeometry);
 			handleLineZ->getComponent<octoon::TransformComponent>()->setTranslate(octoon::math::float3(0, 0, 0.5));
-			handleLineZ->addComponent<octoon::MeshRendererComponent>(gizmoZMaterial);
+			handleLineZ->addComponent<octoon::MeshRendererComponent>(gizmoZMaterial)->setGlobalIllumination(false);
 			
 			auto X = std::make_shared<octoon::GameObject>(std::string_view("X"));
 			X->addChild(handleX);
