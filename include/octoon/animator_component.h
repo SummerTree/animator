@@ -69,6 +69,7 @@ namespace octoon
 		std::unordered_map<std::string, std::size_t> bindmap_;
 
 		GameObjects avatar_;
+		AnimatorStateInfo animatorStateInfo_;
 	};
 }
 

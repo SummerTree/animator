@@ -30,7 +30,6 @@ namespace octoon
 		const std::string& getName() const noexcept;
 
 		void setTime(const float& time) noexcept;
-		float getTime() const noexcept;
 
 		void addClip(std::shared_ptr<AnimationClip>&& clip_, std::string_view key) noexcept;
 		void addClip(const std::shared_ptr<AnimationClip>& clip_, std::string_view key) noexcept;
@@ -45,8 +44,6 @@ namespace octoon
 		const std::shared_ptr<AnimationClip>& getClip(const std::string& key) const;
 
 		bool hasClip(std::string_view key) const;
-
-		float timeLength() const noexcept;
 
 		bool setDefaultClip(std::string_view key);
 
@@ -69,7 +66,6 @@ namespace octoon
 
 	public:
 		std::string name;
-		AnimatorStateInfo state;
 		std::shared_ptr<AnimationClip> clip;
 		std::unordered_map<std::string, std::shared_ptr<AnimationClip>> clips;
 	};

@@ -15,6 +15,9 @@ namespace octoon
 		: enableAnimation_(true)
 		, enableAnimOnVisableOnly_(false)
 	{
+		animatorStateInfo_.finish = false;
+		animatorStateInfo_.time = 0;
+		animatorStateInfo_.timeLength = 0;
 	}
 
 	AnimatorComponent::AnimatorComponent(std::shared_ptr<Animation>&& animation, GameObjects&& avatar) noexcept
@@ -105,15 +108,31 @@ namespace octoon
 	void
 	AnimatorComponent::setTime(float time) noexcept
 	{
-		assert(animation_);
-		animation_->setTime(time);
+		if (this->animatorStateInfo_.time != time)
+		{
+			if (animation_)
+			{
+				for (auto& it : animation_->clips)
+					it.second->setTime(time);
+
+				this->animatorStateInfo_.time = time;
+				this->animatorStateInfo_.finish = true;
+
+				for (auto& it : animation_->clips)
+					this->animatorStateInfo_.finish &= it.second->finish;
+			}
+			else
+			{
+				this->animatorStateInfo_.time = time;
+				this->animatorStateInfo_.finish = true;
+			}
+		}
 	}
 
 	float
 	AnimatorComponent::getTime() const noexcept
 	{
-		assert(animation_);
-		return animation_->getTime();
+		return this->animatorStateInfo_.time;
 	}
 
 	void
@@ -122,7 +141,11 @@ namespace octoon
 		if (animation_ && !animation_->empty())
 		{
 			if (delta != 0.0f)
-				animation_->evaluate(delta);
+			{
+				this->animatorStateInfo_.time += delta;
+				this->animation_->evaluate(delta);
+				this->animatorStateInfo_.finish = animation_->clip->finish;
+			}
 
 			if (!avatar_.empty())
 			{
@@ -159,7 +182,11 @@ namespace octoon
 		if (animation_ && !animation_->empty())
 		{
 			if (delta != 0.0f)
-				animation_->evaluate(delta);
+			{
+				this->animatorStateInfo_.time += delta;
+				this->animation_->evaluate(delta);
+				this->animatorStateInfo_.finish = animation_->clip->finish;
+			}
 
 			if (!avatar_.empty())
 				this->updateAvatar();
@@ -171,14 +198,52 @@ namespace octoon
 	void
 	AnimatorComponent::setAnimation(std::shared_ptr<Animation>&& animtion) noexcept
 	{
-		animation_ = std::move(animtion);
+		if (animtion)
+		{
+			animation_ = std::move(animtion);
+
+			for (auto& it : animation_->clips)
+			{
+				animatorStateInfo_.finish &= it.second->finish;
+				animatorStateInfo_.timeLength = std::max(it.second->timeLength, animatorStateInfo_.timeLength);
+			}
+
+			animatorStateInfo_.time = std::min(animatorStateInfo_.time, animatorStateInfo_.timeLength);
+			animation_->setTime(animatorStateInfo_.time);
+		}
+		else
+		{
+			animatorStateInfo_.time = 0;
+			animatorStateInfo_.timeLength = 0;
+			animatorStateInfo_.finish = true;
+		}
+
 		this->updateBindmap();
 	}
 
 	void
 	AnimatorComponent::setAnimation(const std::shared_ptr<Animation>& animtion) noexcept
 	{
-		animation_ = animtion;
+		if (animtion)
+		{
+			animation_ = animtion;
+
+			for (auto& it : animation_->clips)
+			{
+				animatorStateInfo_.finish &= it.second->finish;
+				animatorStateInfo_.timeLength = std::max(it.second->timeLength, animatorStateInfo_.timeLength);
+			}
+
+			animatorStateInfo_.time = std::min(animatorStateInfo_.time, animatorStateInfo_.timeLength);
+			animation_->setTime(animatorStateInfo_.time);
+		}
+		else
+		{
+			animatorStateInfo_.time = 0;
+			animatorStateInfo_.timeLength = 0;
+			animatorStateInfo_.finish = true;
+		}
+
 		this->updateBindmap();
 	}
 
@@ -213,8 +278,7 @@ namespace octoon
 	const AnimatorStateInfo&
 	AnimatorComponent::getCurrentAnimatorStateInfo() const noexcept
 	{
-		assert(animation_);
-		return animation_->state;
+		return animatorStateInfo_;
 	}
 
 	void
