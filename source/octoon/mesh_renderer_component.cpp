@@ -162,18 +162,18 @@ namespace octoon
 
 				if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(materials[i], guid, localId))
 				{
-					nlohmann::json asset;
-					asset["guid"] = guid;
-					asset["localId"] = localId;
+					if (AssetDatabase::instance()->isSubAsset(materials[i]))
+					{
+						nlohmann::json asset;
+						asset["guid"] = guid;
+						asset["localId"] = localId;
 
-					json["materials"].push_back(std::move(asset));
-				}
-				else
-				{
-					auto materialPath = std::filesystem::path("Assets/Materials").append(make_guid() + ".mat");
-					AssetDatabase::instance()->createFolder(std::filesystem::path("Assets/Materials"));
-					AssetDatabase::instance()->createAsset(materials[i], materialPath);
-					json["materials"].push_back(AssetDatabase::instance()->getAssetGuid(materialPath));
+						json["materials"].push_back(std::move(asset));
+					}
+					else
+					{
+						json["materials"].push_back(guid);
+					}
 				}
 			}
 		}

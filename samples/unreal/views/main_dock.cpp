@@ -540,7 +540,7 @@ namespace unreal
 		{
 			if (!profile_->playerModule->isPlaying)
 			{
-				QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("All Files(*.pmx *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)"));
+				QStringList filepaths = QFileDialog::getOpenFileNames(this, tr("Import Resource"), "", tr("All Files(*.pmx *.obj *.fbx *.mdl *.vmd *.hdr);; PMX Files (*.pmx);; VMD Files (*.vmd);; HDRi Files (*.hdr);; Material Files (*.mdl)"));
 				if (!filepaths.isEmpty())
 				{
 					QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, filepaths.size(), this);
@@ -566,7 +566,7 @@ namespace unreal
 								for (auto& it : ext)
 									it = (char)std::tolower(it);
 
-								if (ext == L".pmx")
+								if (ext == L".pmx" || ext == L".obj" || ext == L".fbx")
 									this->modelDock_->addItem(package);
 								else if (ext == L".vmd")
 									this->motionDock_->addItem(package);

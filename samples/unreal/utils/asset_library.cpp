@@ -2,6 +2,7 @@
 #include <octoon/runtime/guid.h>
 #include <octoon/asset_loader.h>
 #include <octoon/asset_preview.h>
+#include <octoon/mesh_renderer_component.h>
 #include <octoon/mdl_loader.h>
 #include <fstream>
 #include <filesystem>
@@ -346,6 +347,40 @@ namespace unreal
 
 		try
 		{
+			auto meshRenderer = gameObject->getComponent<octoon::MeshRendererComponent>();
+			if (meshRenderer)
+			{
+				for (auto& material : meshRenderer->getMaterials())
+				{
+					if (octoon::AssetDatabase::instance()->contains(material))
+						continue;
+
+					for (auto& it : material->getMaterialParams())
+					{
+						switch (it.type)
+						{
+						case octoon::PropertyTypeInfo::PropertyTypeInfoTexture:
+						{
+							auto texture = material->get<std::shared_ptr<octoon::Texture>>(it.key);
+							if (texture && !octoon::AssetDatabase::instance()->contains(texture))
+							{
+								auto uuid = octoon::make_guid();
+								auto textureFolder = std::filesystem::path("Packages/Assets/Textures").append(uuid.substr(0, 2));
+								octoon::AssetDatabase::instance()->createFolder(textureFolder);
+								octoon::AssetDatabase::instance()->createAsset(texture, std::filesystem::path(textureFolder).append(uuid + ".png"));
+							}
+						}
+						break;
+						}
+					}
+
+					auto guid = octoon::make_guid();
+					auto materialFolder = std::filesystem::path("Packages/Assets/Materials").append(guid.substr(0, 2));
+					octoon::AssetDatabase::instance()->createFolder(materialFolder);
+					octoon::AssetDatabase::instance()->createAsset(material, std::filesystem::path(materialFolder).append(guid + ".mat"));
+				}
+			}
+
 			auto prefabPath = std::filesystem::path(relativePath).append(guid + ".prefab");
 
 			octoon::AssetDatabase::instance()->createFolder(relativePath);

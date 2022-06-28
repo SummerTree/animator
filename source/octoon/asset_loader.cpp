@@ -33,6 +33,10 @@ namespace octoon
 
 			it->second = path;
 		}
+		else
+		{
+			assetToPath_.insert(std::make_pair(asset, path));
+		}
 	}
 
 	std::filesystem::path

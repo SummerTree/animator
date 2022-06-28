@@ -1,5 +1,5 @@
 #include <octoon/obj_loader.h>
-#include <octoon/asset_database.h>
+#include <octoon/asset_loader.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/mesh_filter_component.h>
 #include <octoon/mesh_renderer_component.h>
@@ -31,7 +31,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<GameObject>
-	OBJLoader::load(std::istream& stream) noexcept(false)
+	OBJLoader::load(std::istream& stream, const std::filesystem::path& path) noexcept(false)
 	{
 		tinyobj::attrib_t attrib;
 		std::vector<tinyobj::shape_t> shapes;
@@ -60,7 +60,7 @@ namespace octoon
 
 				if (!material.diffuse_texname.empty())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.diffuse_texname);
+					auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(material.diffuse_texname);
 					if (texture) {
 						texture->apply();
 						standard->setColorMap(std::move(texture));
@@ -69,7 +69,7 @@ namespace octoon
 
 				if (!material.normal_texname.empty())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.normal_texname);
+					auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(material.normal_texname);
 					if (texture) {
 						texture->apply();
 						standard->setNormalMap(std::move(texture));
@@ -78,7 +78,7 @@ namespace octoon
 
 				if (!material.roughness_texname.empty())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.roughness_texname);
+					auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(material.roughness_texname);
 					if (texture) {
 						texture->apply();
 						standard->setRoughnessMap(std::move(texture));
@@ -87,7 +87,7 @@ namespace octoon
 
 				if (!material.metallic_texname.empty())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.metallic_texname);
+					auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(material.metallic_texname);
 					if (texture) {
 						texture->apply();
 						standard->setMetalnessMap(std::move(texture));
@@ -96,7 +96,7 @@ namespace octoon
 
 				if (!material.sheen_texname.empty())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.sheen_texname);
+					auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(material.sheen_texname);
 					if (texture) {
 						texture->apply();
 						standard->setSheenMap(std::move(texture));
@@ -105,7 +105,7 @@ namespace octoon
 
 				if (!material.emissive_texname.empty())
 				{
-					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.emissive_texname);
+					auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(material.emissive_texname);
 					if (texture) {
 						texture->apply();
 						standard->setEmissiveMap(std::move(texture));
@@ -248,14 +248,20 @@ namespace octoon
 			mesh->computeBoundingBox();
 			mesh->computeVertexNormals();
 
+			octoon::AssetLoader::instance()->addObjectToAsset(mesh, path);
+
 			auto object = std::make_shared<GameObject>();
 			object->addComponent<MeshFilterComponent>(std::move(mesh));
 
+			octoon::AssetLoader::instance()->setAssetPath(object, path);
+
 			auto meshRender = object->addComponent<MeshRendererComponent>();
-			meshRender->setGlobalIllumination(true);
 
 			for (std::size_t i = 0; i < shapesMaterials.size(); i++)
+			{
 				meshRender->setMaterial(shapesMaterials[i] ? shapesMaterials[i] : std::make_shared<MeshStandardMaterial>(), i);
+				octoon::AssetLoader::instance()->addObjectToAsset(meshRender->getMaterial(i), path);
+			}
 
 			return object;
 		}
@@ -268,7 +274,7 @@ namespace octoon
 	{
 		std::ifstream stream(filepath);
 		if (stream)
-			return load(stream);
+			return load(stream, filepath);
 
 		return nullptr;
 	}
