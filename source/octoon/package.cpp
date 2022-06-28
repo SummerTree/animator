@@ -357,22 +357,6 @@ namespace octoon
 			if (ifs)
 			{
 				nlohmann::json prefab;
-
-				auto modelPath = AssetLoader::instance()->getAssetPath(asset);
-				if (!modelPath.empty())
-				{
-					if (modelPath.is_absolute())
-					{
-						auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
-						this->importAsset(modelPath, outputPath);
-						prefab["model"] = this->getAssetGuid(outputPath);
-					}
-					else
-					{
-						prefab["model"] = assetDatabase_->getAssetGuid(modelPath);
-					}
-				}
-
 				asset->save(prefab);
 
 				auto dump = prefab.dump();
