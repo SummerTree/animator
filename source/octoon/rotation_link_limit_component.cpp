@@ -118,6 +118,11 @@ namespace octoon
 		instance->setAdditiveMoveRatio(this->getAdditiveMoveRatio());
 		instance->setAdditiveRotationRatio(this->getAdditiveRotationRatio());
 		instance->setAdditiveUseLocal(this->getAdditiveUseLocal());
+		instance->setTranslate(this->getTranslate());
+		instance->setRotation(this->getRotation());
+		instance->setLocalTranslate(this->getLocalTranslate());
+		instance->setLocalQuaternion(this->getLocalQuaternion());
+
 		return instance;
 	}
 }

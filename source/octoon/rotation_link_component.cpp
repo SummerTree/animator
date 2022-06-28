@@ -31,15 +31,6 @@ namespace octoon
 		bones_.push_back(bone);
 	}
 
-	GameComponentPtr
-	RotationLinkComponent::clone() const noexcept
-	{
-		auto instance = std::make_shared<RotationLinkComponent>();
-		instance->setName(this->getName());
-		instance->setBones(this->getBones());
-		return instance;
-	}
-
 	void
 	RotationLinkComponent::addBone(GameObjectPtr&& joint) noexcept
 	{
@@ -134,5 +125,19 @@ namespace octoon
 		return useLocal ?
 			math::inverse(localRotation_) * transform->getLocalQuaternion() :
 			math::inverse(rotation_) * transform->getRotation();
+	}
+
+	GameComponentPtr
+	RotationLinkComponent::clone() const noexcept
+	{
+		auto instance = std::make_shared<RotationLinkComponent>();
+		instance->setName(this->getName());
+		instance->setBones(this->getBones());
+		instance->setTranslate(this->getTranslate());
+		instance->setRotation(this->getRotation());
+		instance->setLocalTranslate(this->getLocalTranslate());
+		instance->setLocalQuaternion(this->getLocalQuaternion());
+
+		return instance;
 	}
 }

@@ -30,7 +30,7 @@ namespace octoon
 		bool getAxisLimitEnable() const noexcept;
 
 		void setAutomaticUpdate(bool enable) noexcept;
-		bool getAutomaticUpdate() noexcept;
+		bool getAutomaticUpdate() const noexcept;
 
 		void addBone(GameObjectPtr&& bone) noexcept;
 		void addBone(const GameObjectPtr& bone) noexcept;
@@ -42,7 +42,8 @@ namespace octoon
 
 		void solve() noexcept;
 
-		GameComponentPtr clone() const noexcept;
+		GameComponentPtr clone() const noexcept override;
+
 	private:
 		void onActivate() noexcept override;
 		void onDeactivate() noexcept override;

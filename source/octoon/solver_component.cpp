@@ -128,7 +128,7 @@ namespace octoon
 	}
 
 	bool
-	CCDSolverComponent::getAutomaticUpdate() noexcept
+	CCDSolverComponent::getAutomaticUpdate() const noexcept
 	{
 		return this->enableAutomaticUpdate_;
 	}
@@ -187,6 +187,7 @@ namespace octoon
 		instance->setTimeStep(this->getTimeStep());
 		instance->setTolerance(this->getTolerance());
 		instance->setAxisLimitEnable(this->getAxisLimitEnable());
+		instance->setAutomaticUpdate(this->getAutomaticUpdate());
 
 		return instance;
 	}

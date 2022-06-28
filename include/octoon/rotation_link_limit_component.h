@@ -21,9 +21,9 @@ namespace octoon
 		float getAdditiveRotationRatio() const noexcept;
 
 		void setTranslate(const math::float3& translate) noexcept;
-		void setLocalTranslate(const math::float3& translate) noexcept;
-
 		void setRotation(const math::Quaternion& quat) noexcept;
+
+		void setLocalTranslate(const math::float3& translate) noexcept;
 		void setLocalQuaternion(const math::Quaternion& quat) noexcept;
 
 		const math::float3& getTranslate() const noexcept;
