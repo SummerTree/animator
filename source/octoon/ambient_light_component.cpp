@@ -35,6 +35,9 @@ namespace octoon
 	{
 		auto instance = std::make_shared<AmbientLightComponent>();
 		instance->setName(this->getName());
+		instance->setColor(this->getColor());
+		instance->setIntensity(this->getIntensity());
+		instance->setSize(this->getSize());
 
 		return instance;
 	}

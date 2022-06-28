@@ -293,6 +293,7 @@ namespace unreal
 		videoLayout->addSpacing(8);
 		videoLayout->addWidget(quality_);
 		videoLayout->addLayout(qualityLayout_);
+		videoLayout->addSpacing(8);
 		videoLayout->addLayout(denoiseLayout_);
 		videoLayout->addWidget(sppSpinbox_);
 		videoLayout->addWidget(bouncesSpinbox_);

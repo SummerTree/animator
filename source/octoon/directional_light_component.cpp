@@ -103,6 +103,12 @@ namespace octoon
 	{
 		auto instance = std::make_shared<DirectionalLightComponent>();
 		instance->setName(this->getName());
+		instance->setColor(this->getColor());
+		instance->setIntensity(this->getIntensity());
+		instance->setSize(this->getSize());
+		instance->setShadowBias(this->getShadowBias());
+		instance->setShadowEnable(this->getShadowEnable());
+		instance->setShadowMapSize(this->getShadowMapSize());
 
 		return instance;
 	}

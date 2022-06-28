@@ -94,6 +94,13 @@ namespace octoon
 	{
 		auto instance = std::make_shared<PointLightComponent>();
 		instance->setName(this->getName());
+		instance->setColor(this->getColor());
+		instance->setIntensity(this->getIntensity());
+		instance->setSize(this->getSize());
+		instance->setRadius(this->getRadius());
+		instance->setShadowBias(this->getShadowBias());
+		instance->setShadowEnable(this->getShadowEnable());
+		instance->setShadowMapSize(this->getShadowMapSize());
 
 		return instance;
 	}

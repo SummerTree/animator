@@ -35,6 +35,9 @@ namespace octoon
 	{
 		auto instance = std::make_shared<RectangleLightComponent>();
 		instance->setName(this->getName());
+		instance->setSize(this->getSize());
+		instance->setColor(this->getColor());
+		instance->setIntensity(this->getIntensity());
 
 		return instance;
 	}

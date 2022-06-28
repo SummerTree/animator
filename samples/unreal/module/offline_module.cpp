@@ -16,7 +16,7 @@ namespace unreal
 	{
 		this->showSpp = false;
 		this->bounces = 5;
-		this->spp = 150;
+		this->spp = 256;
 		this->sppCount = 0;
 		this->setEnable(false);
 	}
