@@ -5,10 +5,12 @@
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/animation/animation.h>
 #include <octoon/mesh_animation_component.h>
+#include <octoon/skinned_mesh_renderer_component.h>
+#include <octoon/environment_light_component.h>
+#include <octoon/transform_component.h>
+#include <octoon/PMREM_loader.h>
 #include <octoon/video/renderer.h>
 #include <octoon/mesh/sphere_mesh.h>
-#include <octoon/environment_light_component.h>
-#include <octoon/PMREM_loader.h>
 
 #include <fstream>
 #include <filesystem>
@@ -117,48 +119,32 @@ namespace octoon
 	std::shared_ptr<Texture>
 	AssetPreview::getAssetPreview(const std::shared_ptr<GameObject>& gameObject)
 	{
-		auto assetPath = AssetDatabase::instance()->getAssetPath(gameObject);
-		if (!assetPath.empty())
+		auto mf = gameObject->getComponent<MeshFilterComponent>();
+		if (mf)
+			geometry_->setMesh(mf->getMesh());
+
+		auto meshRenderer = gameObject->getComponent<MeshRendererComponent>();
+		if (meshRenderer)
+			geometry_->setMaterials(meshRenderer->getMaterials());
+
+		auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
+		if (smr)
 		{
-			auto ext = assetPath.extension().u8string();
-			for (auto& it : ext)
-				it = (char)std::tolower(it);
-
-			if (ext == u8".pmx")
+			for (auto& bone : smr->getBones())
 			{
-				auto pmx = std::make_shared<PMX>();
-				if (PMX::load(AssetDatabase::instance()->getAbsolutePath(assetPath), *pmx))
-					return this->getAssetPreview(*pmx, assetPath);
-			}
-		}
-
-		return nullptr;
-	}
-
-	std::shared_ptr<Texture>
-	AssetPreview::getAssetPreview(const PMX& pmx, const std::filesystem::path& path)
-	{
-		assert(scene_);
-		
-		auto geometry = PMXLoader::loadGeometry(pmx, path);
-
-		for (auto& v : pmx.bones)
-		{
-			if (std::wcscmp(v.name.name, L"左目") == 0 || std::wcscmp(v.name.name, L"右目") == 0)
-			{
-				auto position = v.position.y;
-				camera_->setTransform(math::makeLookatRH(math::float3(0, position, 10), math::float3(0, position, 0), -math::float3::UnitY));
+				if (std::strcmp(bone->getName().c_str(), (char*)u8"左目") == 0 || std::strcmp(bone->getName().c_str(), (char*)u8"右目") == 0)
+				{
+					auto position = bone->getComponent<TransformComponent>()->getTranslate();
+					camera_->setTransform(math::makeLookatRH(math::float3(0, position.y, 10), math::float3(0, position.y, 0), -math::float3::UnitY));
+					break;
+				}
 			}
 		}
 
 		auto renderer = Renderer::instance();
 		if (renderer)
 		{
-			geometry_->setMesh(geometry->getMesh());
-			geometry_->setMaterials(geometry->getMaterials());
-
 			Renderer::instance()->render(scene_);
-
 			geometry_->setDirty(true);
 		}
 

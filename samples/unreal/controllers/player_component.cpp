@@ -225,7 +225,7 @@ namespace unreal
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
-					smr->updateMeshData();
+					smr->uploadMeshData();
 			}
 		}
 
@@ -308,7 +308,7 @@ namespace unreal
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
-					smr->updateMeshData();
+					smr->uploadMeshData();
 			}
 		}
 
@@ -405,7 +405,7 @@ namespace unreal
 			{
 				auto smr = it->getComponent<octoon::SkinnedMeshRendererComponent>();
 				if (smr)
-					smr->updateMeshData();
+					smr->uploadMeshData();
 			}
 		}
 

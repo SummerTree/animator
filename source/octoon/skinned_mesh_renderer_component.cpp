@@ -132,8 +132,9 @@ namespace octoon
 	}
 
 	const MeshPtr&
-	SkinnedMeshRendererComponent::getSkinnedMesh() const noexcept
+	SkinnedMeshRendererComponent::getSkinnedMesh() noexcept
 	{
+		this->updateMeshData();
 		return this->skinnedMesh_;
 	}
 
@@ -145,44 +146,9 @@ namespace octoon
 	}
 
 	void
-	SkinnedMeshRendererComponent::updateMeshData(bool force) noexcept
+	SkinnedMeshRendererComponent::uploadMeshData() noexcept
 	{
-		if (force)
-		{
-			if (mesh_)
-			{
-				if (this->skinnedMesh_)
-				{
-					this->skinnedMesh_->setVertexArray(mesh_->getVertexArray());
-					this->skinnedMesh_->setNormalArray(mesh_->getNormalArray());
-				}
-				else
-				{
-					skinnedMesh_ = mesh_->clone();
-				}
-
-				this->updateJointData();
-				this->updateClothBlendData();
-				this->updateMorphBlendData();
-				this->updateTextureBlendData();
-				this->updateBoneData();
-
-				skinnedMesh_->computeBoundingBox();
-				skinnedMesh_->setDirty(true);
-
-				MeshRendererComponent::uploadMeshData(skinnedMesh_);
-			}
-			else
-			{
-				MeshRendererComponent::uploadMeshData(nullptr);
-			}
-
-			needUpdate_ = false;
-		}
-		else
-		{
-			needUpdate_ = true;
-		}
+		needUpdate_ = true;
 	}
 
 	void
@@ -338,8 +304,8 @@ namespace octoon
 	void
 	SkinnedMeshRendererComponent::onPreRender(const Camera& camera) noexcept
 	{
-		if (needUpdate_ && updateWhenOffscreenEnable_)
-			this->updateMeshData(true);
+		if (updateWhenOffscreenEnable_)
+			this->updateMeshData();
 	}
 
 	void
@@ -462,6 +428,43 @@ namespace octoon
 						dstTextures[indices[i]] += offsets[i] * control;
 				}
 			}
+		}
+	}
+
+	void
+	SkinnedMeshRendererComponent::updateMeshData() noexcept
+	{
+		if (needUpdate_)
+		{
+			if (mesh_)
+			{
+				if (this->skinnedMesh_)
+				{
+					this->skinnedMesh_->setVertexArray(mesh_->getVertexArray());
+					this->skinnedMesh_->setNormalArray(mesh_->getNormalArray());
+				}
+				else
+				{
+					skinnedMesh_ = mesh_->clone();
+				}
+
+				this->updateJointData();
+				this->updateClothBlendData();
+				this->updateMorphBlendData();
+				this->updateTextureBlendData();
+				this->updateBoneData();
+
+				skinnedMesh_->computeBoundingBox();
+				skinnedMesh_->setDirty(true);
+
+				MeshRendererComponent::uploadMeshData(skinnedMesh_);
+			}
+			else
+			{
+				MeshRendererComponent::uploadMeshData(nullptr);
+			}
+
+			needUpdate_ = false;
 		}
 	}
 }

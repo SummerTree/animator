@@ -27,7 +27,6 @@ namespace octoon
 		std::shared_ptr<Texture> getAssetPreview(const std::shared_ptr<Texture>& hdri);
 		std::shared_ptr<Texture> getAssetPreview(const std::shared_ptr<Material>& material);
 		std::shared_ptr<Texture> getAssetPreview(const std::shared_ptr<GameObject>& gameObject);
-		std::shared_ptr<Texture> getAssetPreview(const PMX& pmx, const std::filesystem::path& path);
 
 	private:
 		void initRenderScene() noexcept(false);

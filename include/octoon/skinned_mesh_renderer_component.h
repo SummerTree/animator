@@ -35,9 +35,9 @@ namespace octoon
 		bool getTextureBlendEnable() const noexcept;
 		bool getUpdateWhenOffscreen() const noexcept;
 
-		const MeshPtr& getSkinnedMesh() const noexcept;
+		const MeshPtr& getSkinnedMesh() noexcept;
 
-		void updateMeshData(bool force = false) noexcept;
+		void uploadMeshData() noexcept;
 		void uploadMeshData(const MeshPtr& mesh) noexcept override;
 
 		void load(const nlohmann::json& json) noexcept(false) override;
@@ -65,6 +65,7 @@ namespace octoon
 		void updateClothBlendData() noexcept;
 		void updateMorphBlendData() noexcept;
 		void updateTextureBlendData() noexcept;
+		void updateMeshData() noexcept;
 
 	private:
 		SkinnedMeshRendererComponent(const SkinnedMeshRendererComponent&) = delete;
