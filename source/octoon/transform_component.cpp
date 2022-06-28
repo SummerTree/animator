@@ -80,7 +80,7 @@ namespace octoon
 	}
 
 	void
-	TransformComponent::setQuaternion(const math::Quaternion& quat) noexcept
+	TransformComponent::setRotation(const math::Quaternion& quat) noexcept
 	{
 		assert(math::abs(math::length(quat) - 1) < 1e-2f);
 
@@ -98,14 +98,14 @@ namespace octoon
 	}
 
 	void
-	TransformComponent::setQuaternionAccum(const math::Quaternion& quat) noexcept
+	TransformComponent::setRotationAccum(const math::Quaternion& quat) noexcept
 	{
 		assert(math::abs(math::length(quat) - 1) < 1e-2f);
-		this->setQuaternion(math::normalize(this->getQuaternion() * quat));
+		this->setRotation(math::normalize(this->getRotation() * quat));
 	}
 
 	const math::Quaternion&
-	TransformComponent::getQuaternion() const noexcept
+	TransformComponent::getRotation() const noexcept
 	{
 		updateWorldTransform();
 		return rotation_;

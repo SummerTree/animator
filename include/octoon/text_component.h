@@ -32,7 +32,7 @@ namespace octoon
 		GameComponentPtr clone() const noexcept override;
 
 	private:
-		void onActivate() except override;
+		void onActivate() noexcept(false) override;
 		void onDeactivate() noexcept override;
 
 		void onTextReplace() noexcept;

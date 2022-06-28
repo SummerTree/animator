@@ -69,7 +69,7 @@ namespace octoon
 	}
 
 	void
-	CapsuleColliderComponent::setQuaternion(const math::Quaternion& rotation) noexcept
+	CapsuleColliderComponent::setRotation(const math::Quaternion& rotation) noexcept
 	{
 		if (this->rotation_ != rotation)
 		{
@@ -99,7 +99,7 @@ namespace octoon
 	}
 
 	const math::Quaternion&
-	CapsuleColliderComponent::getQuaternion() const noexcept
+	CapsuleColliderComponent::getRotation() const noexcept
 	{
 		return this->rotation_;
 	}
@@ -140,6 +140,36 @@ namespace octoon
 		return localPose_;
 	}
 
+	void
+	CapsuleColliderComponent::load(const nlohmann::json& json) noexcept(false)
+	{
+		GameComponent::load(json);
+
+		if (json.contains("radius"))
+			this->setRadius(json["radius"]);
+		if (json.contains("height"))
+			this->setHeight(json["height"]);
+		if (json.contains("center"))
+			this->setCenter(math::float3(json["center"].get<std::array<float, 3>>()));
+		if (json.contains("rotation"))
+			this->setRotation(math::Quaternion(json["rotation"].get<std::array<float, 4>>()));
+		if (json.contains("contactOffset"))
+			this->setContactOffset(json["contactOffset"]);
+	}
+
+	void
+	CapsuleColliderComponent::save(nlohmann::json& json) const noexcept(false)
+	{
+		GameComponent::save(json);
+
+		json["radius"] = this->getRadius();
+		json["height"] = this->getHeight();
+		json["center"] = this->getCenter().to_array();
+		json["rotation"] = this->getRotation().to_array();
+		json["restOffset"] = this->getRestOffset();
+		json["contactOffset"] = this->getContactOffset();
+	}
+
     GameComponentPtr
 	CapsuleColliderComponent::clone() const noexcept
     {
@@ -148,6 +178,9 @@ namespace octoon
 		instance->setRadius(this->getRadius());
 		instance->setHeight(this->getHeight());
 		instance->setCenter(this->getCenter());
+		instance->setRotation(this->getRotation());
+		instance->setRestOffset(this->getRestOffset());
+		instance->setContactOffset(this->getContactOffset());
 		return instance;
     }
 
@@ -168,7 +201,7 @@ namespace octoon
 			boxDesc.height = height_;
 			shape_ = physicsFeature->getContext()->createCapsuleShape(boxDesc);
 			shape_->setCenter(this->center_);
-			shape_->setQuaternion(this->getQuaternion());
+			shape_->setQuaternion(this->getRotation());
 			shape_->setContactOffset(this->contactOffset_);
 			shape_->setRestOffset(this->restOffset_);
 

@@ -26,10 +26,13 @@ namespace octoon
 		void setCenter(const math::float3& center) noexcept override;
 		const math::float3& getCenter() const noexcept override;
 
-		void setQuaternion(const math::Quaternion& rotation) noexcept override;
-		const math::Quaternion& getQuaternion() const noexcept override;
+		void setRotation(const math::Quaternion& rotation) noexcept override;
+		const math::Quaternion& getRotation() const noexcept override;
 
 		math::float4x4 getLocalPose() const noexcept override;
+
+		void load(const nlohmann::json& json) noexcept(false) override;
+		void save(nlohmann::json& json) const noexcept(false) override;
 
 		GameComponentPtr clone() const noexcept override;
 

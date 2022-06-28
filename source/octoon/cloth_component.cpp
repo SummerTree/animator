@@ -258,7 +258,7 @@ namespace octoon
 		{
 			auto transform = target_->getComponent<TransformComponent>();
 			auto translate = transform->getTranslate();
-			auto rotation = transform->getQuaternion();
+			auto rotation = transform->getRotation();
 
 			cloth_->teleportToLocation(physx::PxVec3(translate.x, translate.y, translate.z), physx::PxQuat(rotation.x, rotation.y, rotation.z, rotation.w));
 		}
@@ -291,7 +291,7 @@ namespace octoon
 				auto capsule = collide->downcast<CapsuleColliderComponent>();
 				auto transform = collide->getComponent<TransformComponent>();
 				auto translate = transform->getTranslate();
-				auto quaternion = transform->getQuaternion();
+				auto quaternion = transform->getRotation();
 				auto height = capsule->getHeight();
 				auto radius = capsule->getRadius();
 				auto halfHeight = height * 0.5f;
@@ -402,7 +402,7 @@ namespace octoon
 
 				auto transform = this->getComponent<TransformComponent>();
 				auto translate = transform->getTranslate();
-				auto rotation = transform->getQuaternion();
+				auto rotation = transform->getRotation();
 				cloth_->teleportToLocation(physx::PxVec3(translate.x, translate.y, translate.z), physx::PxQuat(rotation.x, rotation.y, rotation.z, rotation.w));
 
 				nv::cloth::Range<physx::PxVec4> motionConstraints = cloth_->getMotionConstraints();

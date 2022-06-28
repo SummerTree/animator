@@ -20,9 +20,9 @@ namespace octoon
 		void setScaleAccum(const math::float3& v) noexcept;
 		const math::float3& getScale() const noexcept;
 
-		void setQuaternion(const math::Quaternion& quat) noexcept;
-		void setQuaternionAccum(const math::Quaternion& quat) noexcept;
-		const math::Quaternion& getQuaternion() const noexcept;
+		void setRotation(const math::Quaternion& rotation) noexcept;
+		void setRotationAccum(const math::Quaternion& rotation) noexcept;
+		const math::Quaternion& getRotation() const noexcept;
 
 		void setEulerAngles(const math::float3& euler) noexcept;
 		const math::float3& getEulerAngles() const noexcept;

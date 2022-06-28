@@ -280,7 +280,7 @@ namespace octoon
 			for (std::size_t i = 0; i < quaternions_.size(); i++)
 			{
 				auto transform = bones_[i]->getComponent<TransformComponent>();
-				if (transform->getQuaternion() != quaternions_[i])
+				if (transform->getRotation() != quaternions_[i])
 				{
 					needUpdate_ = true;
 					break;
@@ -354,7 +354,7 @@ namespace octoon
 		for (std::size_t i = 0; i < boneSize; ++i)
 		{
 			auto transform = bones_[i]->getComponent<TransformComponent>();
-			quaternions_[i] = transform->getQuaternion();
+			quaternions_[i] = transform->getRotation();
 			joints_[i] = math::transformMultiply(transform->getTransform(), bindposes[i]);
 		}
 

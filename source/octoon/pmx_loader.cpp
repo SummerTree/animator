@@ -55,7 +55,7 @@ namespace octoon
 			{
 				auto limit = bones[i]->addComponent<RotationLinkLimitComponent>();
 				limit->setTranslate(transform->getTranslate());
-				limit->setQuaternion(transform->getQuaternion());
+				limit->setRotation(transform->getRotation());
 				limit->setLocalTranslate(transform->getLocalTranslate());
 				limit->setLocalQuaternion(transform->getLocalQuaternion());
 				limit->setAdditiveUseLocal(!(it.Flag & PMX_BONE_ADD_LOCAL));
@@ -73,7 +73,7 @@ namespace octoon
 					auto additiveTransform = bones[additiveParent]->getComponent<TransformComponent>();
 					auto rotationLink = bones[additiveParent]->addComponent<RotationLinkComponent>(bones[i]);
 					rotationLink->setTranslate(additiveTransform->getTranslate());
-					rotationLink->setQuaternion(additiveTransform->getQuaternion());
+					rotationLink->setRotation(additiveTransform->getRotation());
 					rotationLink->setLocalTranslate(additiveTransform->getLocalTranslate());
 					rotationLink->setLocalQuaternion(additiveTransform->getLocalQuaternion());
 				}
@@ -175,19 +175,19 @@ namespace octoon
 			{
 				auto collider = bone->addComponent<SphereColliderComponent>(it.scale.x > 0.0f ? it.scale.x : math::EPSILON_E3);
 				collider->setCenter(translate);
-				collider->setQuaternion(rotation);
+				collider->setRotation(rotation);
 			}
 			else if (it.shape == PmxShapeType::ShapeTypeSquare)
 			{
 				auto collider = bone->addComponent<BoxColliderComponent>(math::max(math::float3(0.001, 0.001, 0.001), math::float3(it.scale.x, it.scale.y, it.scale.z) * 2.0f));
 				collider->setCenter(translate);
-				collider->setQuaternion(rotation);
+				collider->setRotation(rotation);
 			}
 			else if (it.shape == PmxShapeType::ShapeTypeCapsule)
 			{
 				auto collider = bone->addComponent<CapsuleColliderComponent>(it.scale.x > 0.0f ? it.scale.x : math::EPSILON_E3, it.scale.y);
 				collider->setCenter(translate);
-				collider->setQuaternion(rotation);
+				collider->setRotation(rotation);
 			}
 		}
 	}
@@ -902,7 +902,7 @@ namespace octoon
 							if (collider)
 							{
 								auto baseTransform = it->getComponent<TransformComponent>()->getTransform();
-								auto localTransform = math::transformMultiply(baseTransform, math::makeRotation(collider->getQuaternion(), collider->getCenter()));
+								auto localTransform = math::transformMultiply(baseTransform, math::makeRotation(collider->getRotation(), collider->getCenter()));
 
 								math::float3 translate;
 								math::float3 scale;

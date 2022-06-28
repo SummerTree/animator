@@ -59,7 +59,7 @@ namespace octoon
 	}
 
 	void
-	SphereColliderComponent::setQuaternion(const math::Quaternion& rotation) noexcept
+	SphereColliderComponent::setRotation(const math::Quaternion& rotation) noexcept
 	{
 		if (this->rotation_ != rotation)
 		{
@@ -105,7 +105,7 @@ namespace octoon
 	}
 
 	const math::Quaternion&
-	SphereColliderComponent::getQuaternion() const noexcept
+	SphereColliderComponent::getRotation() const noexcept
 	{
 		return this->rotation_;
 	}
@@ -130,6 +130,32 @@ namespace octoon
 		return localPose_;
 	}
 
+	void
+	SphereColliderComponent::load(const nlohmann::json& json) noexcept(false)
+	{
+		GameComponent::load(json);
+
+		if (json.contains("radius"))
+			this->setRadius(json["radius"]);
+		if (json.contains("center"))
+			this->setCenter(math::float3(json["center"].get<std::array<float, 3>>()));
+		if (json.contains("rotation"))
+			this->setRotation(math::Quaternion(json["rotation"].get<std::array<float, 4>>()));
+		if (json.contains("contactOffset"))
+			this->setContactOffset(json["contactOffset"]);
+	}
+
+	void
+	SphereColliderComponent::save(nlohmann::json& json) const noexcept(false)
+	{
+		GameComponent::save(json);
+
+		json["radius"] = this->getRadius();
+		json["center"] = this->getCenter().to_array();
+		json["rotation"] = this->getRotation().to_array();
+		json["contactOffset"] = this->getContactOffset();
+	}
+
 	GameComponentPtr
 	SphereColliderComponent::clone() const noexcept
 	{
@@ -137,6 +163,8 @@ namespace octoon
 		instance->setName(this->getName());
 		instance->setRadius(this->getRadius());
 		instance->setCenter(this->getCenter());
+		instance->setRotation(this->getRotation());
+		instance->setContactOffset(this->getContactOffset());
 		return instance;
 	}
 
@@ -150,7 +178,7 @@ namespace octoon
 			sphereDesc.radius = radius_;
 			shape_ = physicsFeature->getContext()->createSphereShape(sphereDesc);
 			shape_->setCenter(this->center_);
-			shape_->setQuaternion(this->getQuaternion());
+			shape_->setQuaternion(this->getRotation());
 			shape_->setContactOffset(this->contactOffset_);
 			shape_->setRestOffset(this->restOffset_);
 

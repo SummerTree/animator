@@ -75,7 +75,7 @@ namespace octoon
 	}
 
 	void
-	RotationLinkLimitComponent::setQuaternion(const math::Quaternion& quat) noexcept
+	RotationLinkLimitComponent::setRotation(const math::Quaternion& quat) noexcept
 	{
 		this->rotation_ = quat;
 	}
@@ -99,7 +99,7 @@ namespace octoon
 	}
 
 	const math::Quaternion&
-	RotationLinkLimitComponent::getQuaternion() const noexcept
+	RotationLinkLimitComponent::getRotation() const noexcept
 	{
 		return this->rotation_;
 	}

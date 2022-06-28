@@ -83,7 +83,7 @@ namespace octoon
 	}
 
 	void
-	RotationLinkComponent::setQuaternion(const math::Quaternion& quat) noexcept
+	RotationLinkComponent::setRotation(const math::Quaternion& quat) noexcept
 	{
 		this->rotation_ = quat;
 	}
@@ -107,7 +107,7 @@ namespace octoon
 	}
 
 	const math::Quaternion&
-	RotationLinkComponent::getQuaternion() const noexcept
+	RotationLinkComponent::getRotation() const noexcept
 	{
 		return this->rotation_;
 	}
@@ -133,6 +133,6 @@ namespace octoon
 		auto transform = this->getComponent<TransformComponent>();
 		return useLocal ?
 			math::inverse(localRotation_) * transform->getLocalQuaternion() :
-			math::inverse(rotation_) * transform->getQuaternion();
+			math::inverse(rotation_) * transform->getRotation();
 	}
 }

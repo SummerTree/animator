@@ -15,8 +15,8 @@ namespace octoon::math
 		enum class Type
 		{
 			Void,
-			Int,
 			Bool,
+			Int,
 			Float,
 			Float2,
 			Float3,
@@ -140,7 +140,7 @@ namespace octoon::math
 	public:
 		friend bool operator==(const Variant& lhs, int rhs)
 		{
-			return (lhs.type_ == Type::Int && lhs.value_.i == rhs);
+			return (lhs.type_ == Type::Int && lhs.value_.i.x == rhs);
 		}
 
 		friend bool operator==(const Variant& lhs, float rhs)
@@ -207,7 +207,7 @@ namespace octoon::math
 
 		friend bool operator!=(const Variant& lhs, int rhs)
 		{
-			return (lhs.type_ != Type::Int || lhs.value_.i != rhs);
+			return (lhs.type_ != Type::Int || lhs.value_.i.x != rhs);
 		}
 
 		friend bool operator!=(const Variant& lhs, float rhs)
@@ -254,7 +254,7 @@ namespace octoon::math
 			case Type::Void:
 				return true;
 			case Type::Int:
-				return (lhs.value_.i > rhs.value_.i);
+				return (lhs.value_.i.x > rhs.value_.i.x);
 			case Type::Bool:
 				return (lhs.value_.b > rhs.value_.b);
 			case Type::Float:
@@ -281,7 +281,7 @@ namespace octoon::math
 			case Type::Void:
 				return true;
 			case Type::Int:
-				return (lhs.value_.i < rhs.value_.i);
+				return (lhs.value_.i.x < rhs.value_.i.x);
 			case Type::Bool:
 				return (lhs.value_.b < rhs.value_.b);
 			case Type::Float:
@@ -306,7 +306,7 @@ namespace octoon::math
 			case Type::Void:
 				return true;
 			case Type::Int:
-				return (lhs.value_.i >= rhs.value_.i);
+				return (lhs.value_.i.x >= rhs.value_.i.x);
 			case Type::Bool:
 				return (lhs.value_.b >= rhs.value_.b);
 			case Type::Float:
@@ -331,7 +331,7 @@ namespace octoon::math
 			case Type::Void:
 				return true;
 			case Type::Int:
-				return (lhs.value_.i <= rhs.value_.i);
+				return (lhs.value_.i.x <= rhs.value_.i.x);
 			case Type::Bool:
 				return (lhs.value_.b <= rhs.value_.b);
 			case Type::Float:
@@ -354,7 +354,7 @@ namespace octoon::math
 			switch (lhs.type_)
 			{
 			case Type::Int:
-				return Variant(lhs.value_.i + rhs.value_.i);
+				return Variant(lhs.value_.i.x + rhs.value_.i.x);
 			case Type::Float:
 				return Variant(lhs.value_.f.x + rhs.value_.f.x);
 			case Type::Float2:
@@ -375,7 +375,7 @@ namespace octoon::math
 			switch (v.type_)
 			{
 			case Type::Int:
-				return Variant(v.value_.i * value);
+				return Variant(v.value_.i.x * value);
 			case Type::Float:
 				return Variant(v.value_.f.x * value);
 			case Type::Float2:
@@ -396,9 +396,8 @@ namespace octoon::math
 
 		union
 		{
-			int i;
 			bool b;
-			const void* object;
+			int4 i;
 			float4 f;
 			float4x4* matrix;
 			Quaternion quaternion;
@@ -409,6 +408,7 @@ namespace octoon::math
 			std::vector<float4>* float4Array;
 			std::vector<float4x4>* float4x4Array;
 			std::vector<std::string>* stringArray;
+			const void* object;
 		} value_;
 	};
 

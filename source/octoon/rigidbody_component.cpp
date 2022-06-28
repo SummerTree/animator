@@ -419,7 +419,7 @@ namespace octoon
 			auto transform = this->getComponent<TransformComponent>();
 
 			position_ = transform->getTranslate();
-			rotation_ = transform->getQuaternion();
+			rotation_ = transform->getRotation();
 
 			rigidbody_->setPositionAndRotation(position_, rotation_);
 		}
@@ -452,7 +452,7 @@ namespace octoon
 			PhysicsRigidbodyDesc desc;
 			desc.type = isKinematic_ ? PhysicsRigidbodyType::Static : PhysicsRigidbodyType::Dynamic;
 			desc.position = center_ = position_ = transform->getTranslate();
-			desc.rotation = quaternion_ = rotation_ = transform->getQuaternion();
+			desc.rotation = quaternion_ = rotation_ = transform->getRotation();
 			desc.mass = mass_;
 
 			rigidbody_ = physicsFeature->getContext()->createRigidbody(desc);

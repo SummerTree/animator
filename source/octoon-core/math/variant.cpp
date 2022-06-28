@@ -5,7 +5,7 @@ namespace octoon::math
 	Variant::Variant()
 		: type_(Type::Void)
 	{
-		value_.i = 0;
+		value_.i = int4::Zero;
 	}
 
 	Variant::Variant(bool rhs)
@@ -17,7 +17,7 @@ namespace octoon::math
 	Variant::Variant(int rhs)
 		: type_(Type::Int)
 	{
-		value_.i = rhs;
+		value_.i.x = rhs;
 	}
 
 	Variant::Variant(const void* ptr)
@@ -170,7 +170,7 @@ namespace octoon::math
 	Variant::setInt(int val)
 	{
 		assert(type_ == Type::Int);
-		value_.i = val;
+		value_.i.x = val;
 	}
 
 	void
@@ -437,7 +437,7 @@ namespace octoon::math
 	Variant::getInt() const
 	{
 		assert(Type::Int == type_);
-		return value_.i;
+		return value_.i.x;
 	}
 
 	bool

@@ -191,7 +191,7 @@ namespace unreal
 
 		void setActivePlane(const std::string& axis, const octoon::math::float3& eye)
 		{
-			auto q = this->planes->findChild("XY")->getComponent<octoon::TransformComponent>()->getQuaternion();
+			auto q = this->planes->findChild("XY")->getComponent<octoon::TransformComponent>()->getRotation();
 			auto qinv = octoon::math::inverse(q);
 			auto localEye = octoon::math::rotate(qinv, eye);
 
@@ -298,7 +298,7 @@ namespace unreal
 				if (planeIntersect)
 				{
 					this->oldScale_ = pickerObject->getComponent<octoon::TransformComponent>()->getScale();
-					this->oldRotation_ = pickerObject->getComponent<octoon::TransformComponent>()->getQuaternion();
+					this->oldRotation_ = pickerObject->getComponent<octoon::TransformComponent>()->getRotation();
 					this->oldPosition_ = pickerObject->getComponent<octoon::TransformComponent>()->getTranslate();
 
 					this->offset_ = planeIntersect.value().point;

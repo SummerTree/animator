@@ -26,7 +26,7 @@ namespace unreal
 		this->gizmo_->addComponent<octoon::MeshRendererComponent>(material)->setRendererPriority(-1);
 
 		auto transform = this->gizmo_->getComponent<octoon::TransformComponent>();
-		transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(octoon::math::PI * 0.5f, 0, 0)));
+		transform->setRotation(octoon::math::Quaternion(octoon::math::float3(octoon::math::PI * 0.5f, 0, 0)));
 		transform->setTranslate(octoon::math::float3::Zero);
 	}
 

@@ -135,7 +135,7 @@ namespace octoon
 						if (rigidbody)
 						{
 							auto transform = child->getComponent<TransformComponent>();
-							rigidbody->setPositionAndRotation(transform->getTranslate(), transform->getQuaternion());
+							rigidbody->setPositionAndRotation(transform->getTranslate(), transform->getRotation());
 							rigidbody->setLinearVelocity(math::float3::Zero);
 							rigidbody->setAngularVelocity(math::float3::Zero);
 							rigidbody->setInterpolationLinearVelocity(math::float3::Zero);

@@ -64,8 +64,8 @@ namespace unreal
 				auto transform = mainLight->getComponent<octoon::TransformComponent>();
 				if (transform)
 				{
-					transform->setQuaternion(octoon::math::Quaternion(octoon::math::radians(value)));
-					transform->setTranslate(-octoon::math::rotate(transform->getQuaternion(), octoon::math::float3::UnitZ) * 50);
+					transform->setRotation(octoon::math::Quaternion(octoon::math::radians(value)));
+					transform->setTranslate(-octoon::math::rotate(transform->getRotation(), octoon::math::float3::UnitZ) * 50);
 				}
 			}
 		};
@@ -81,7 +81,7 @@ namespace unreal
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setSize(this->getContext()->profile->mainLightModule->size);
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setIntensity(this->getContext()->profile->mainLightModule->intensity);
 		mainLight->getComponent<octoon::DirectionalLightComponent>()->setColor(this->getContext()->profile->mainLightModule->color);
-		mainLight->getComponent<octoon::TransformComponent>()->setQuaternion(octoon::math::Quaternion(octoon::math::radians(this->getContext()->profile->mainLightModule->rotation)));
+		mainLight->getComponent<octoon::TransformComponent>()->setRotation(octoon::math::Quaternion(octoon::math::radians(this->getContext()->profile->mainLightModule->rotation)));
 
 		this->getContext()->profile->mainLightModule->mainLight = mainLight;
 	}

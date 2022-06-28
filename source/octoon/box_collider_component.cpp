@@ -96,7 +96,7 @@ namespace octoon
 	}
 
 	void
-	BoxColliderComponent::setQuaternion(const math::Quaternion& rotation) noexcept
+	BoxColliderComponent::setRotation(const math::Quaternion& rotation) noexcept
 	{
 		if (this->rotation_ != rotation)
 		{
@@ -138,7 +138,7 @@ namespace octoon
 	}
 
 	const math::Quaternion&
-	BoxColliderComponent::getQuaternion() const noexcept
+	BoxColliderComponent::getRotation() const noexcept
 	{
 		return this->rotation_;
 	}
@@ -179,6 +179,41 @@ namespace octoon
 		return this->restOffset_;
 	}
 
+	void
+	BoxColliderComponent::load(const nlohmann::json& json) noexcept(false)
+	{
+		GameComponent::load(json);
+
+		if (json.contains("width"))
+			this->setWidth(json["width"]);
+		if (json.contains("height"))
+			this->setHeight(json["height"]);
+		if (json.contains("depth"))
+			this->setDepth(json["depth"]);
+		if (json.contains("center"))
+			this->setCenter(math::float3(json["center"].get<std::array<float, 3>>()));
+		if (json.contains("rotation"))
+			this->setRotation(math::Quaternion(json["rotation"].get<std::array<float, 4>>()));
+		if (json.contains("restOffset"))
+			this->setRestOffset(json["restOffset"]);
+		if (json.contains("contactOffset"))
+			this->setContactOffset(json["contactOffset"]);
+	}
+
+	void
+	BoxColliderComponent::save(nlohmann::json& json) const noexcept(false)
+	{
+		GameComponent::save(json);
+
+		json["width"] = this->getWidth();
+		json["height"] = this->getHeight();
+		json["depth"] = this->getDepth();
+		json["center"] = this->getCenter().to_array();
+		json["rotation"] = this->getRotation().to_array();
+		json["restOffset"] = this->getRestOffset();
+		json["contactOffset"] = this->getContactOffset();
+	}
+
     GameComponentPtr
 	BoxColliderComponent::clone() const noexcept
     {
@@ -188,6 +223,9 @@ namespace octoon
 		instance->setHeight(this->getHeight());
 		instance->setDepth(this->getDepth());
 		instance->setCenter(this->getCenter());
+		instance->setRotation(this->getRotation());
+		instance->setContactOffset(this->getContactOffset());
+		instance->setRestOffset(this->getRestOffset());
 		return instance;
     }
 
@@ -209,7 +247,7 @@ namespace octoon
 			boxDesc.depth = size_.z;
 			shape_ = physicsFeature->getContext()->createBoxShape(boxDesc);
 			shape_->setCenter(this->getCenter());
-			shape_->setQuaternion(this->getQuaternion());
+			shape_->setQuaternion(this->getRotation());
 			shape_->setContactOffset(this->contactOffset_);
 			shape_->setRestOffset(this->restOffset_);
 

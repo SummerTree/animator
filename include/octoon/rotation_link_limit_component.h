@@ -23,13 +23,13 @@ namespace octoon
 		void setTranslate(const math::float3& translate) noexcept;
 		void setLocalTranslate(const math::float3& translate) noexcept;
 
-		void setQuaternion(const math::Quaternion& quat) noexcept;
+		void setRotation(const math::Quaternion& quat) noexcept;
 		void setLocalQuaternion(const math::Quaternion& quat) noexcept;
 
 		const math::float3& getTranslate() const noexcept;
 		const math::float3& getLocalTranslate() const noexcept;
 
-		const math::Quaternion& getQuaternion() const noexcept;
+		const math::Quaternion& getRotation() const noexcept;
 		const math::Quaternion& getLocalQuaternion() const noexcept;
 
 		GameComponentPtr clone() const noexcept override;
