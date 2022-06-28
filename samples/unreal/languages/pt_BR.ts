@@ -139,7 +139,7 @@
         <location filename="../views/camera_dock.cpp" line="82"/>
         <location filename="../views/camera_dock.cpp" line="210"/>
         <location filename="../views/camera_dock.cpp" line="260"/>
-        <location filename="../views/camera_dock.cpp" line="327"/>
+        <location filename="../views/camera_dock.cpp" line="328"/>
         <source>Target: Empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -161,13 +161,13 @@
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="202"/>
-        <location filename="../views/camera_dock.cpp" line="323"/>
+        <location filename="../views/camera_dock.cpp" line="324"/>
         <source>Target: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/camera_dock.cpp" line="204"/>
-        <location filename="../views/camera_dock.cpp" line="322"/>
+        <location filename="../views/camera_dock.cpp" line="323"/>
         <source>Auto-measuring</source>
         <translation type="unfinished"></translation>
     </message>

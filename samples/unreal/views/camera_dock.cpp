@@ -307,6 +307,7 @@ namespace unreal
 		auto mainCamera = profile_->cameraModule->camera.getValue();
 
 		fovSpinbox_->setValue(profile_->cameraModule->fov);
+		fovSlider->setValue(profile_->cameraModule->fov * 100.0f);
 		focalLengthSpinbox_->setValue(profile_->cameraModule->focalLength);
 		apertureSpinbox_->setValue(profile_->cameraModule->aperture);
 		dofButton_->setChecked(profile_->cameraModule->useDepthOfFiled);
