@@ -42,7 +42,7 @@ namespace unreal
 				if (!boneClip->empty())
 				{
 					auto motion = std::make_shared<octoon::Animation>(std::move(boneClip), "Motion");
-					object->addComponent<octoon::AnimatorComponent>(std::move(motion), object->getComponent<octoon::SkinnedMeshRendererComponent>()->getBones());
+					object->getComponent<octoon::AnimatorComponent>()->setAnimation(std::move(motion));
 				}
 			
 				objects.emplace_back(std::move(object));
