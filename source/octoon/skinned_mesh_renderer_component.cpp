@@ -3,6 +3,7 @@
 #include <octoon/skinned_texture_component.h>
 #include <octoon/transform_component.h>
 #include <octoon/asset_database.h>
+#include <octoon/asset_loader.h>
 #include <omp.h>
 
 namespace octoon
@@ -167,9 +168,12 @@ namespace octoon
 		if (json.contains("updateWhenOffscreen"))
 			this->setUpdateWhenOffscreen(json["updateWhenOffscreen"].get<bool>());
 
-		if (json.contains("bone"))
+		if (json.contains("bones"))
 		{
-			auto guid = json["bone"]["guid"].get<std::string>();
+			auto& bones = json["bones"];
+
+			auto guid = bones["guid"].get<std::string>();
+			auto localId = bones["localId"].get<int>();
 
 			auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
 			if (!assetPath.empty())
@@ -181,6 +185,8 @@ namespace octoon
 					if (smr)
 						this->setBones(smr->getBones());
 				}
+
+				AssetLoader::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
 			}
 		}
 	}
@@ -196,11 +202,16 @@ namespace octoon
 		json["textureBlendEnable"] = this->getTextureBlendEnable();
 		json["updateWhenOffscreen"] = this->getUpdateWhenOffscreen();
 
-		if (!this->getBones().empty())
+		std::string guid;
+		std::int64_t localId;
+
+		if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->shared_from_this(), guid, localId))
 		{
-			auto guid = AssetDatabase::instance()->getAssetGuid(this->getGameObject()->shared_from_this());
-			if (!guid.empty())
-				json["bone"]["guid"] = guid;
+			nlohmann::json bone;
+			bone["guid"] = guid;
+			bone["localId"] = localId;
+
+			json["bones"] = std::move(bone);
 		}
 	}
 

@@ -264,9 +264,17 @@ namespace octoon
 
 		if (!this->getAvatar().empty())
 		{
-			auto guid = AssetDatabase::instance()->getAssetGuid(this->getGameObject()->shared_from_this());
-			if (!guid.empty())
-				json["avatar"]["guid"] = guid;
+			std::string guid;
+			std::int64_t localId;
+
+			if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->getGameObject()->shared_from_this(), guid, localId))
+			{
+				nlohmann::json avatar;
+				avatar["guid"] = guid;
+				avatar["localId"] = localId;
+
+				json["avatar"] = std::move(avatar);
+			}
 		}
 	}
 

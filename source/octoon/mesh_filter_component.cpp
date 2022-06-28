@@ -1,5 +1,6 @@
 #include <octoon/mesh_filter_component.h>
 #include <octoon/asset_database.h>
+#include <octoon/asset_loader.h>
 
 namespace octoon
 {
@@ -108,6 +109,8 @@ namespace octoon
 					if (mf)
 						this->setMesh(mf->getMesh());
 				}
+
+				AssetLoader::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
 			}
 		}
 	}

@@ -123,8 +123,12 @@ namespace octoon
 			auto model = PMXLoader::load(path, octoon::PMXLoadFlagBits::AllBit);
 			if (model)
 			{
+				for (auto it : model->getComponents())
+					this->addObjectToAsset(it, path);
+
 				caches_.push_back(model);
 				assetToPath_[model] = path;
+
 				return std::move(model);
 			}
 		}
