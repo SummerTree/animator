@@ -155,7 +155,7 @@ namespace octoon
 	{
 		for (auto& it : dirtyList_)
 		{
-			if (it.expired())
+			if (!it.expired())
 			{
 				auto item = it.lock();
 

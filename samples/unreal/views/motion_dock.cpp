@@ -240,6 +240,8 @@ namespace unreal
 											solver->solve();
 									}
 								}
+
+								octoon::AssetDatabase::instance()->setDirty(model, true);
 							}
 						}
 					}
