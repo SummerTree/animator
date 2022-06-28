@@ -323,7 +323,7 @@ namespace octoon
 					}
 				}
 
-				asset->save(prefab, *assetDatabase_);
+				asset->save(prefab);
 
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
@@ -373,7 +373,7 @@ namespace octoon
 					}
 				}
 
-				asset->save(prefab, *assetDatabase_);
+				asset->save(prefab);
 
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
@@ -886,7 +886,7 @@ namespace octoon
 			{
 				auto prefab = nlohmann::json::parse(ifs);
 				auto object = std::make_shared<GameObject>();
-				object->load(prefab, *assetDatabase_);
+				object->load(prefab);
 
 				auto metadata = this->loadMetadataAtPath(relativePath);
 				if (!metadata.is_object())

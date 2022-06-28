@@ -63,9 +63,9 @@ namespace octoon
 	}
 
 	void
-	SkinnedMorphComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	SkinnedMorphComponent::load(const nlohmann::json& json) noexcept(false)
 	{
-		GameComponent::load(json, assetDatabase);
+		GameComponent::load(json);
 
 		if (json.contains("data"))
 		{
@@ -73,10 +73,10 @@ namespace octoon
 			if (data.contains("guid"))
 			{
 				auto guid = data["guid"].get<std::string>();
-				auto assetPath = assetDatabase.getAssetPath(guid);
+				auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
 				if (!assetPath.empty())
 				{
-					auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+					auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
 					if (gameObject)
 					{
 						for (auto& it : gameObject->getComponents())
@@ -118,11 +118,11 @@ namespace octoon
 	}
 
 	void
-	SkinnedMorphComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	SkinnedMorphComponent::save(nlohmann::json& json) const noexcept(false)
 	{
-		GameComponent::save(json, assetDatabase);
+		GameComponent::save(json);
 
-		auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
+		auto guid = AssetDatabase::instance()->getAssetGuid(this->getGameObject()->shared_from_this());
 		if (!guid.empty())
 		{
 			json["data"]["guid"] = guid;

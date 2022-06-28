@@ -675,7 +675,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	GameObject::load(const nlohmann::json& json) noexcept(false)
 	{
 		if (json.contains("name"))
 			this->setName(json["name"].get<std::string>());
@@ -695,7 +695,7 @@ namespace octoon
 				for (auto& it : item.value())
 				{
 					auto component = RttiFactory::instance()->make_shared<GameComponent>(item.key());
-					component->load(it, assetDatabase);
+					component->load(it);
 					this->addComponent(std::move(component));
 				}
 			}
@@ -706,7 +706,7 @@ namespace octoon
 			for (auto& it : json["children"])
 			{
 				auto object = std::make_shared<GameObject>();
-				object->load(it, assetDatabase);
+				object->load(it);
 
 				this->addChild(std::move(object));
 			}
@@ -714,7 +714,7 @@ namespace octoon
 	}
 
 	void
-	GameObject::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	GameObject::save(nlohmann::json& json) const noexcept(false)
 	{
 		json["name"] = name_;
 		json["active"] = active_;
@@ -726,7 +726,7 @@ namespace octoon
 				continue;
 			
 			nlohmann::json componentJson;
-			it->save(componentJson, assetDatabase);
+			it->save(componentJson);
 
 			json["components"][it->type_name()].push_back(std::move(componentJson));
 		}
@@ -737,7 +737,7 @@ namespace octoon
 				continue;
 
 			nlohmann::json childrenJson;
-			it->save(childrenJson, assetDatabase);
+			it->save(childrenJson);
 			json["children"].push_back(childrenJson);
 		}
 	}

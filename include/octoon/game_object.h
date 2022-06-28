@@ -110,8 +110,8 @@ namespace octoon
 		virtual GameScene* getGameScene() noexcept;
 		virtual const GameScene* getGameScene() const noexcept;
 
-		virtual void load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false);
-		virtual void save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false);
+		virtual void load(const nlohmann::json& json) noexcept(false);
+		virtual void save(nlohmann::json& json) const noexcept(false);
 
 		GameObjectPtr clone() const noexcept(false);
 

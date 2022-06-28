@@ -39,10 +39,10 @@ namespace octoon
 		GameSceneManager::instance()->_instanceScene(this, instanceID_);
 	}
 
-	GameScene::GameScene(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept
+	GameScene::GameScene(const nlohmann::json& json) noexcept
 		: GameScene()
 	{
-		this->load(json, assetDatabase);
+		this->load(json);
 	}
 
 	GameScene::GameScene(std::string&& name) noexcept
@@ -136,15 +136,15 @@ namespace octoon
 	}
 
 	void
-	GameScene::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	GameScene::load(const nlohmann::json& json) noexcept(false)
 	{
-		root_->load(json, assetDatabase);
+		root_->load(json);
 	}
 
 	void
-	GameScene::save(nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	GameScene::save(nlohmann::json& json) noexcept(false)
 	{
-		root_->save(json, assetDatabase);
+		root_->save(json);
 	}
 
 	const GameObjectPtr&

@@ -2,10 +2,8 @@
 #include <octoon/game_scene.h>
 #include <octoon/game_feature.h>
 #include <octoon/game_listener.h>
-#include <octoon/asset_database.h>
-#include <fstream>
 
-#include <octoon/transform_component.h>
+#include <fstream>
 
 namespace octoon
 {
@@ -100,7 +98,7 @@ namespace octoon
 				auto scene = std::make_shared<GameScene>();
 				scene->_setGameServer(this);
 				scene->setGameListener(listener_);
-				scene->load(nlohmann::json::parse(stream), *AssetDatabase::instance());
+				scene->load(nlohmann::json::parse(stream));
 
 				return this->addScene(scene);
 			}

@@ -12,7 +12,7 @@ namespace octoon
 		GameScene() noexcept;
 		GameScene(std::string&& name) noexcept;
 		GameScene(std::string_view name) noexcept;
-		GameScene(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept;
+		GameScene(const nlohmann::json& json) noexcept;
 		~GameScene() noexcept;
 
 		std::size_t id() const noexcept;
@@ -33,8 +33,8 @@ namespace octoon
 
 		void sendMessage(std::string_view event, const std::any& data = std::any()) noexcept;
 
-		void load(const nlohmann::json& reader, AssetDatabase& assetDatabase) noexcept(false);
-		void save(nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false);
+		void load(const nlohmann::json& reader) noexcept(false);
+		void save(nlohmann::json& json) noexcept(false);
 
 		const GameObjectPtr& root() const noexcept;
 

@@ -186,9 +186,9 @@ namespace octoon
 	}
 
 	void
-	SkinnedMeshRendererComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	SkinnedMeshRendererComponent::load(const nlohmann::json& json) noexcept(false)
 	{
-		MeshRendererComponent::load(json, assetDatabase);
+		MeshRendererComponent::load(json);
 
 		if (json.contains("automaticUpdate"))
 			this->setAutomaticUpdate(json["automaticUpdate"].get<bool>());
@@ -205,10 +205,10 @@ namespace octoon
 		{
 			auto guid = json["bone"]["guid"].get<std::string>();
 
-			auto assetPath = assetDatabase.getAssetPath(guid);
+			auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
 			if (!assetPath.empty())
 			{
-				auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+				auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
 				if (gameObject)
 				{
 					auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
@@ -220,9 +220,9 @@ namespace octoon
 	}
 
 	void
-	SkinnedMeshRendererComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	SkinnedMeshRendererComponent::save(nlohmann::json& json) const noexcept(false)
 	{
-		MeshRendererComponent::save(json, assetDatabase);
+		MeshRendererComponent::save(json);
 
 		json["automaticUpdate"] = this->getAutomaticUpdate();
 		json["clothBlendEnable"] = this->getClothBlendEnable();
@@ -232,7 +232,7 @@ namespace octoon
 
 		if (!this->getBones().empty())
 		{
-			auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
+			auto guid = AssetDatabase::instance()->getAssetGuid(this->getGameObject()->shared_from_this());
 			if (!guid.empty())
 				json["bone"]["guid"] = guid;
 		}

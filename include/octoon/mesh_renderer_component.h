@@ -29,10 +29,10 @@ namespace octoon
 		virtual void uploadMeshData(const MeshPtr& mesh) noexcept;
 		virtual void uploadMaterialData(const Materials& material) noexcept;
 
-		void load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false) override;
-		void save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false) override;
+		virtual void load(const nlohmann::json& json) noexcept(false) override;
+		virtual void save(nlohmann::json& json) const noexcept(false) override;
 
-		GameComponentPtr clone() const noexcept override;
+		virtual GameComponentPtr clone() const noexcept override;
 
 	protected:
 		virtual void onActivate() noexcept override;

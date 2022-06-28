@@ -468,9 +468,9 @@ namespace octoon
 	}
 
 	void
-	MeshAnimationComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	MeshAnimationComponent::load(const nlohmann::json& json) noexcept(false)
 	{
-		GameComponent::load(json, assetDatabase);
+		GameComponent::load(json);
 
 		std::unordered_map<std::string, MaterialPtr> materials;
 
@@ -478,7 +478,7 @@ namespace octoon
 		{
 			auto data = material["data"].get<nlohmann::json::string_t>();
 			auto name = material["name"].get<std::string>();
-			materials[name] = assetDatabase.loadAssetAtPath<Material>(assetDatabase.getAssetPath(data));
+			materials[name] = AssetDatabase::instance()->loadAssetAtPath<Material>(AssetDatabase::instance()->getAssetPath(data));
 		}
 
 		this->setMaterials(std::move(materials));
@@ -490,20 +490,20 @@ namespace octoon
 	}
 
 	void
-	MeshAnimationComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	MeshAnimationComponent::save(nlohmann::json& json) const noexcept(false)
 	{
-		GameComponent::save(json, assetDatabase);
+		GameComponent::save(json);
 
 		json["path"] = (char*)this->path_.u8string().c_str();
 		json["time"] = this->animationState_.time;
 
 		for (auto& pair : this->materials_)
 		{
-			if (!assetDatabase.contains(pair.second))
-				assetDatabase.createAsset(pair.second, std::filesystem::path("Assets/Materials").append(make_guid() + ".mat"));
+			if (!AssetDatabase::instance()->contains(pair.second))
+				AssetDatabase::instance()->createAsset(pair.second, std::filesystem::path("Assets/Materials").append(make_guid() + ".mat"));
 
 			nlohmann::json materialJson;
-			materialJson["data"] = assetDatabase.getAssetGuid(pair.second);
+			materialJson["data"] = AssetDatabase::instance()->getAssetGuid(pair.second);
 			materialJson["name"] = pair.first;
 
 			json["materials"].push_back(materialJson);

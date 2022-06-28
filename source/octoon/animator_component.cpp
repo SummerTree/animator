@@ -217,12 +217,12 @@ namespace octoon
 	}
 
 	void
-	AnimatorComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	AnimatorComponent::load(const nlohmann::json& json) noexcept(false)
 	{
 		if (json.contains("data"))
 		{
 			auto data = json["data"].get<nlohmann::json::string_t>();
-			auto animation = assetDatabase.loadAssetAtPath<octoon::Animation>(assetDatabase.getAssetPath(data));
+			auto animation = AssetDatabase::instance()->loadAssetAtPath<octoon::Animation>(AssetDatabase::instance()->getAssetPath(data));
 			this->setAnimation(std::move(animation));
 		}
 
@@ -230,10 +230,10 @@ namespace octoon
 		{
 			auto guid = json["avatar"]["guid"].get<std::string>();
 
-			auto assetPath = assetDatabase.getAssetPath(guid);
+			auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
 			if (!assetPath.empty())
 			{
-				auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+				auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
 				if (gameObject)
 				{
 					auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
@@ -245,26 +245,26 @@ namespace octoon
 	}
 
 	void
-	AnimatorComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	AnimatorComponent::save(nlohmann::json& json) const noexcept(false)
 	{
 		if (this->getAnimation())
 		{
-			if (!assetDatabase.contains(this->getAnimation()))
+			if (!AssetDatabase::instance()->contains(this->getAnimation()))
 			{
 				auto path = std::filesystem::path("Assets/Motions").append(make_guid() + ".vmd");
-				assetDatabase.createFolder(std::filesystem::path("Assets/Motions"));
-				assetDatabase.createAsset(this->getAnimation(), path);
-				json["data"] = assetDatabase.getAssetGuid(path);
+				AssetDatabase::instance()->createFolder(std::filesystem::path("Assets/Motions"));
+				AssetDatabase::instance()->createAsset(this->getAnimation(), path);
+				json["data"] = AssetDatabase::instance()->getAssetGuid(path);
 			}
 			else
 			{
-				json["data"] = assetDatabase.getAssetGuid(this->getAnimation());
+				json["data"] = AssetDatabase::instance()->getAssetGuid(this->getAnimation());
 			}
 		}
 
 		if (!this->getAvatar().empty())
 		{
-			auto guid = assetDatabase.getAssetGuid(this->getGameObject()->shared_from_this());
+			auto guid = AssetDatabase::instance()->getAssetGuid(this->getGameObject()->shared_from_this());
 			if (!guid.empty())
 				json["avatar"]["guid"] = guid;
 		}

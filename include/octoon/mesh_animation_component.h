@@ -35,8 +35,8 @@ namespace octoon
 
 		const AnimatorStateInfo& getCurrentAnimatorStateInfo() const noexcept override;
 
-		void load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false) override;
-		void save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false) override;
+		void load(const nlohmann::json& json) noexcept(false) override;
+		void save(nlohmann::json& json) const noexcept(false) override;
 
 		GameComponentPtr clone() const noexcept override;
 

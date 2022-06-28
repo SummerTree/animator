@@ -87,9 +87,9 @@ namespace octoon
 	}
 
 	void
-	MeshFilterComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	MeshFilterComponent::load(const nlohmann::json& json) noexcept(false)
 	{
-		GameComponent::load(json, assetDatabase);
+		GameComponent::load(json);
 
 		if (json.contains("mesh"))
 		{
@@ -98,10 +98,10 @@ namespace octoon
 			auto guid = mesh["guid"].get<std::string>();
 			auto localId = mesh["localId"].get<int>();
 
-			auto assetPath = assetDatabase.getAssetPath(guid);
+			auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
 			if (!assetPath.empty())
 			{
-				auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+				auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
 				if (gameObject)
 				{
 					auto mf = gameObject->getComponent<MeshFilterComponent>();
@@ -113,14 +113,14 @@ namespace octoon
 	}
 
 	void
-	MeshFilterComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	MeshFilterComponent::save(nlohmann::json& json) const noexcept(false)
 	{
-		GameComponent::save(json, assetDatabase);
+		GameComponent::save(json);
 
 		std::string guid;
 		std::int64_t localId;
 
-		if (assetDatabase.getGUIDAndLocalIdentifier(this->mesh_, guid, localId))
+		if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->mesh_, guid, localId))
 		{
 			nlohmann::json mesh;
 			mesh["guid"] = guid;

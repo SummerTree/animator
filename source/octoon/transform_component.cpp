@@ -453,9 +453,9 @@ namespace octoon
 	}
 
 	void
-	TransformComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	TransformComponent::load(const nlohmann::json& json) noexcept(false)
 	{
-		GameComponent::load(json, assetDatabase);
+		GameComponent::load(json);
 
 		if (json.contains("translate"))
 			this->setLocalTranslate(math::float3(json["localTranslate"].get<std::array<float, 3>>()));
@@ -466,9 +466,9 @@ namespace octoon
 	}
 
 	void
-	TransformComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	TransformComponent::save(nlohmann::json& json) const noexcept(false)
 	{
-		GameComponent::save(json, assetDatabase);
+		GameComponent::save(json);
 
 		json["localTranslate"] = this->getLocalTranslate().to_array();
 		json["localScale"] = this->getLocalScale().to_array();

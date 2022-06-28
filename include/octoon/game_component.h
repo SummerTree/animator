@@ -71,10 +71,10 @@ namespace octoon
 		bool tryAddMessageListener(std::string_view event, std::function<void(const std::any&)> listener) noexcept;
 		bool tryRemoveMessageListener(std::string_view event, std::function<void(const std::any&)> listener) noexcept;
 
-		virtual void load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false);
-		virtual void save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false);
+		virtual void load(const nlohmann::json& json) noexcept(false);
+		virtual void save(nlohmann::json& json) const noexcept(false);
 
-		virtual GameComponentPtr clone() const noexcept = 0;
+		virtual GameComponentPtr clone() const noexcept(false) = 0;
 
 		static GameComponentPtr instantiate(const GameComponent* component) noexcept(false);
 		static GameComponentPtr instantiate(const GameComponent& component) noexcept(false);

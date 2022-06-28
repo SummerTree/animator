@@ -95,9 +95,9 @@ namespace octoon
 	}
 
 	void
-	MeshRendererComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
+	MeshRendererComponent::load(const nlohmann::json& json) noexcept(false)
 	{
-		GameComponent::load(json, assetDatabase);
+		GameComponent::load(json);
 
 		if (json.contains("rendererPriority"))
 			this->setRendererPriority(json["rendererPriority"].get<int>());
@@ -119,10 +119,10 @@ namespace octoon
 					auto guid = it["guid"].get<std::string>();
 					auto localId = it["localId"].get<int>();
 
-					auto assetPath = assetDatabase.getAssetPath(guid);
+					auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
 					if (!assetPath.empty())
 					{
-						auto gameObject = assetDatabase.loadAssetAtPath<GameObject>(assetPath);
+						auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
 						if (gameObject)
 						{
 							auto meshRenderer = gameObject->getComponent<MeshRendererComponent>();
@@ -134,7 +134,7 @@ namespace octoon
 				else
 				{
 					auto data = it.get<nlohmann::json::string_t>();
-					auto material = assetDatabase.loadAssetAtPath<octoon::Material>(assetDatabase.getAssetPath(data));
+					auto material = AssetDatabase::instance()->loadAssetAtPath<octoon::Material>(AssetDatabase::instance()->getAssetPath(data));
 					materials.push_back(std::move(material));
 				}
 			}
@@ -144,9 +144,9 @@ namespace octoon
 	}
 
 	void
-	MeshRendererComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
+	MeshRendererComponent::save(nlohmann::json& json) const noexcept(false)
 	{
-		GameComponent::save(json, assetDatabase);
+		GameComponent::save(json);
 
 		auto& materials = this->getMaterials();
 
@@ -160,7 +160,7 @@ namespace octoon
 				std::string guid;
 				std::int64_t localId;
 
-				if (assetDatabase.getGUIDAndLocalIdentifier(materials[i], guid, localId))
+				if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(materials[i], guid, localId))
 				{
 					nlohmann::json asset;
 					asset["guid"] = guid;
@@ -171,9 +171,9 @@ namespace octoon
 				else
 				{
 					auto materialPath = std::filesystem::path("Assets/Materials").append(make_guid() + ".mat");
-					assetDatabase.createFolder(std::filesystem::path("Assets/Materials"));
-					assetDatabase.createAsset(materials[i], materialPath);
-					json["materials"].push_back(assetDatabase.getAssetGuid(materialPath));
+					AssetDatabase::instance()->createFolder(std::filesystem::path("Assets/Materials"));
+					AssetDatabase::instance()->createAsset(materials[i], materialPath);
+					json["materials"].push_back(AssetDatabase::instance()->getAssetGuid(materialPath));
 				}
 			}
 		}
