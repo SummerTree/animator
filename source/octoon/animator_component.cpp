@@ -220,16 +220,19 @@ namespace octoon
 	void
 	AnimatorComponent::load(const nlohmann::json& json) noexcept(false)
 	{
-		if (json.contains("data"))
+		if (json.contains("animation"))
 		{
-			auto data = json["data"].get<nlohmann::json::string_t>();
+			auto data = json["animation"].get<nlohmann::json::string_t>();
 			auto animation = AssetDatabase::instance()->loadAssetAtPath<octoon::Animation>(AssetDatabase::instance()->getAssetPath(data));
 			this->setAnimation(std::move(animation));
 		}
 
 		if (json.contains("avatar"))
 		{
-			auto guid = json["avatar"]["guid"].get<std::string>();
+			auto& avatar = json["avatar"];
+
+			auto guid = avatar["guid"].get<std::string>();
+			auto localId = avatar["localId"].get<int>();
 
 			auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
 			if (!assetPath.empty())
@@ -237,10 +240,12 @@ namespace octoon
 				auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
 				if (gameObject)
 				{
-					auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
-					if (smr)
-						this->setAvatar(smr->getBones());
+					auto animator = gameObject->getComponent<AnimatorComponent>();
+					if (animator)
+						this->setAvatar(animator->getAvatar());
 				}
+
+				AssetLoader::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
 			}
 		}
 	}
@@ -255,11 +260,11 @@ namespace octoon
 				auto path = std::filesystem::path("Assets/Motions").append(make_guid() + ".vmd");
 				AssetDatabase::instance()->createFolder(std::filesystem::path("Assets/Motions"));
 				AssetDatabase::instance()->createAsset(this->getAnimation(), path);
-				json["data"] = AssetDatabase::instance()->getAssetGuid(path);
+				json["animation"] = AssetDatabase::instance()->getAssetGuid(path);
 			}
 			else
 			{
-				json["data"] = AssetDatabase::instance()->getAssetGuid(this->getAnimation());
+				json["animation"] = AssetDatabase::instance()->getAssetGuid(this->getAnimation());
 			}
 		}
 
@@ -268,7 +273,7 @@ namespace octoon
 			std::string guid;
 			std::int64_t localId;
 
-			if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->getGameObject()->shared_from_this(), guid, localId))
+			if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->shared_from_this(), guid, localId))
 			{
 				nlohmann::json avatar;
 				avatar["guid"] = guid;

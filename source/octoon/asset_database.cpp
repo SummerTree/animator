@@ -430,13 +430,16 @@ namespace octoon
 	void
 	AssetDatabase::setDirty(const std::shared_ptr<Object>& object, bool dirty) noexcept(false)
 	{
-		if (dirty)
-			this->dirtyList_.insert(object);
-		else
+		if (this->contains(object))
 		{
-			auto it = this->dirtyList_.find(object);
-			if (it != this->dirtyList_.end())
-				this->dirtyList_.erase(it);
+			if (dirty)
+				this->dirtyList_.insert(object);
+			else
+			{
+				auto it = this->dirtyList_.find(object);
+				if (it != this->dirtyList_.end())
+					this->dirtyList_.erase(it);
+			}
 		}
 	}
 

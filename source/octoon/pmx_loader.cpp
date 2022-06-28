@@ -535,93 +535,6 @@ namespace octoon
 		}
 	}
 
-	std::shared_ptr<Geometry>
-	PMXLoader::loadGeometry(const PMX& pmx, const std::filesystem::path& path) noexcept(false)
-	{
-		Materials materials;
-		createMaterials(pmx, materials, path);
-
-		math::float4x4s bindposes(pmx.bones.size());
-		for (std::size_t i = 0; i < pmx.bones.size(); i++)
-			bindposes[i].makeTranslate(-math::float3(pmx.bones[i].position.x, pmx.bones[i].position.y, pmx.bones[i].position.z));
-
-		math::float3s vertices_;
-		math::float3s normals_;
-		math::float2s texcoords_;
-		std::vector<VertexWeight> weights;
-		std::vector<std::shared_ptr<Mesh>> meshes;
-
-		vertices_.resize(pmx.numVertices);
-		normals_.resize(pmx.numVertices);
-		texcoords_.resize(pmx.numVertices);
-
-		if (pmx.numBones)
-			weights.resize(pmx.numVertices);
-
-		for (std::size_t i = 0; i < pmx.numVertices; i++)
-		{
-			auto& v = pmx.vertices[i];
-
-			vertices_[i].set(v.position.x, v.position.y, v.position.z);
-			normals_[i].set(v.normal.x, v.normal.y, v.normal.z);
-			texcoords_[i].set(v.coord.x, v.coord.y);
-
-			if (pmx.numBones)
-			{
-				VertexWeight weight;
-				weight.weight1 = v.weight.weight1;
-				weight.weight2 = v.weight.weight2;
-				weight.weight3 = v.weight.weight3;
-				weight.weight4 = v.weight.weight4;
-				weight.bone1 = v.weight.bone1 < pmx.numBones ? v.weight.bone1 : 0;
-				weight.bone2 = v.weight.bone2 < pmx.numBones ? v.weight.bone2 : 0;
-				weight.bone3 = v.weight.bone3 < pmx.numBones ? v.weight.bone3 : 0;
-				weight.bone4 = v.weight.bone4 < pmx.numBones ? v.weight.bone4 : 0;
-
-				weights[i] = weight;
-			}
-		}
-
-		auto mesh = std::make_shared<Mesh>();
-		mesh->setBindposes(std::move(bindposes));
-		mesh->setVertexArray(std::move(vertices_));
-		mesh->setNormalArray(std::move(normals_));
-		mesh->setTexcoordArray(std::move(texcoords_));
-		mesh->setWeightArray(std::move(weights));
-
-		PmxUInt32 startIndices = 0;
-
-		for (std::size_t i = 0; i < pmx.materials.size(); i++)
-		{
-			math::uint1s indices_(pmx.materials[i].FaceCount);
-
-			for (std::size_t j = startIndices; j < startIndices + pmx.materials[i].FaceCount; j++)
-			{
-				std::uint32_t index = 0;
-				if (pmx.header.sizeOfIndices == 1)
-					index = *((std::uint8_t*)pmx.indices.data() + j);
-				else if (pmx.header.sizeOfIndices == 2)
-					index = *((std::uint16_t*)pmx.indices.data() + j);
-				else if (pmx.header.sizeOfIndices == 4)
-					index = *((std::uint32_t*)pmx.indices.data() + j);
-
-				indices_[j - startIndices] = index;
-			}
-
-			mesh->setIndicesArray(std::move(indices_), i);
-
-			startIndices += pmx.materials[i].FaceCount;
-		}
-
-		mesh->computeBoundingBox();
-
-		auto geometry = std::make_shared<Geometry>();
-		geometry->setMesh(std::move(mesh));
-		geometry->setMaterials(std::move(materials));
-
-		return geometry;
-	}
-
 	std::shared_ptr<GameObject>
 	PMXLoader::load(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false)
 	{
@@ -632,7 +545,13 @@ namespace octoon
 		if (pmx.numMaterials > 0)
 		{
 			GameObjects bones;
+			createBones(pmx, bones);
+			createColliders(pmx, bones);
+			createRigidbodies(pmx, bones);
+			createJoints(pmx, bones);
+
 			GameObjectPtr actor = std::make_shared<GameObject>();
+			actor->addComponent<AnimatorComponent>(bones);
 
 			if (!pmx.description.japanModelName.empty())
 			{
@@ -643,11 +562,6 @@ namespace octoon
 			{
 				actor->setName((char*)std::filesystem::path(path).filename().c_str());
 			}
-
-			createBones(pmx, bones);
-			createColliders(pmx, bones);
-			createRigidbodies(pmx, bones);
-			createJoints(pmx, bones);
 
 			createMeshes(pmx, actor, bones, path);
 			createMorph(pmx, actor);
