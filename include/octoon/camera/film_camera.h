@@ -10,6 +10,7 @@ namespace octoon
 		OctoonDeclareSubClass(FilmCamera, Camera)
 	public:
 		FilmCamera() noexcept;
+		FilmCamera(float fov, float znear, float zfar) noexcept;
 		virtual ~FilmCamera() noexcept;
 
 		void setFov(float fov) noexcept;

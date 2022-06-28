@@ -7,7 +7,7 @@
 #include <octoon/animation/animation.h>
 #include <octoon/light/directional_light.h>
 #include <octoon/light/environment_light.h>
-#include <octoon/camera/perspective_camera.h>
+#include <octoon/camera/film_camera.h>
 #include <octoon/video/render_scene.h>
 #include <filesystem>
 #include <set>
@@ -40,7 +40,7 @@ namespace octoon
 		std::uint32_t previewWidth_;
 		std::uint32_t previewHeight_;
 
-		std::shared_ptr<PerspectiveCamera> camera_;
+		std::shared_ptr<FilmCamera> camera_;
 		std::shared_ptr<Geometry> geometry_;
 		std::shared_ptr<DirectionalLight> directionalLight_;
 		std::shared_ptr<EnvironmentLight> environmentLight_;

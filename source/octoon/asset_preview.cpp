@@ -127,6 +127,8 @@ namespace octoon
 		if (meshRenderer)
 			geometry_->setMaterials(meshRenderer->getMaterials());
 
+		bool found = false;
+
 		auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
 		if (smr)
 		{
@@ -134,10 +136,28 @@ namespace octoon
 			{
 				if (std::strcmp(bone->getName().c_str(), (char*)u8"×óÄ¿") == 0 || std::strcmp(bone->getName().c_str(), (char*)u8"ÓÒÄ¿") == 0)
 				{
+					found = true;
 					auto position = bone->getComponent<TransformComponent>()->getTranslate();
+					camera_->setFov(23.9f);
+					camera_->setFar(100.0f);
 					camera_->setTransform(math::makeLookatRH(math::float3(0, position.y, 10), math::float3(0, position.y, 0), -math::float3::UnitY));
 					break;
 				}
+			}
+		}
+
+		if (!found)
+		{
+			auto mesh = geometry_->getMesh();
+			if (mesh)
+			{
+				auto& bounds = mesh->getBoundingBoxAll();
+				auto size = bounds.box().size();
+				auto center = bounds.box().center();
+
+				camera_->setFov(45.0f);
+				camera_->setFar(math::max3(size) * 2.0f);
+				camera_->setTransform(math::makeLookatRH(math::float3(center.x, center.y, std::abs(bounds.box().min.z) + std::max(size.x, size.y)), math::float3::Zero, -math::float3::UnitY));
 			}
 		}
 
@@ -277,7 +297,7 @@ namespace octoon
 			if (!framebuffer_)
 				throw std::runtime_error("createFramebuffer() failed");
 
-			camera_ = std::make_shared<PerspectiveCamera>(23.9f, 1.0f, 100.0f);
+			camera_ = std::make_shared<FilmCamera>(23.9f, 1.0f, 100.0f);
 			camera_->setClearColor(math::float4::Zero);
 			camera_->setClearFlags(ClearFlagBits::AllBit);
 			camera_->setFramebuffer(framebuffer_);

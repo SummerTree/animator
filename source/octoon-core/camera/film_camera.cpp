@@ -21,6 +21,14 @@ namespace octoon
 	{
 	}
 
+	FilmCamera::FilmCamera(float fov, float znear, float zfar) noexcept
+		: FilmCamera()
+	{
+		this->setFov(fov);
+		this->setNear(znear);
+		this->setFar(zfar);
+	}
+
 	FilmCamera::~FilmCamera() noexcept
 	{
 	}

@@ -573,7 +573,7 @@ namespace octoon
 			{
 				auto guid = metaData["uuid"].get<std::string>();
 				paths_[relativePath] = guid;
-				uniques_[std::move(guid)] = (char*)relativePath.u8string().c_str();
+				uniques_[guid] = relativePath;
 
 				return metaData;
 			}
