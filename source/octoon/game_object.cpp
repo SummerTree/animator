@@ -751,10 +751,24 @@ namespace octoon
 		instance->setLayer(this->getLayer());
 
 		for (auto& it : components_)
-			instance->addComponent(it->clone());
+		{
+			auto component = it->clone();
+			instance->addComponent(component);
+
+			std::filesystem::path assetPath = AssetLoader::instance()->getAssetPath(it->shared_from_this());
+			if (!assetPath.empty())
+				AssetLoader::instance()->addObjectToAsset(component, assetPath);
+		}
 
 		for (auto& it : children_)
-			instance->addChild(it->clone());
+		{
+			auto child = it->clone();
+			instance->addChild(child);
+
+			std::filesystem::path assetPath = AssetLoader::instance()->getAssetPath(it->shared_from_this());
+			if (!assetPath.empty())
+				AssetLoader::instance()->addObjectToAsset(child, assetPath);
+		}
 
 		return instance;
 	}

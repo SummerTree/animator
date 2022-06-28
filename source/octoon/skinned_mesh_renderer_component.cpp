@@ -228,10 +228,6 @@ namespace octoon
 		instance->setTextureBlendEnable(this->getTextureBlendEnable());
 		instance->setUpdateWhenOffscreen(this->getUpdateWhenOffscreen());
 
-		std::filesystem::path assetPath = AssetLoader::instance()->getAssetPath(this->shared_from_this());
-		if (!assetPath.empty())
-			AssetLoader::instance()->addObjectToAsset(instance->shared_from_this(), assetPath);
-
 		return instance;
 	}
 

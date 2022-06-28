@@ -1,5 +1,6 @@
 #include <octoon/skinned_morph_component.h>
 #include <octoon/asset_database.h>
+#include <octoon/asset_loader.h>
 #include <octoon/runtime/base64.h>
 
 namespace octoon
@@ -73,6 +74,8 @@ namespace octoon
 			if (data.contains("guid"))
 			{
 				auto guid = data["guid"].get<std::string>();
+				auto localId = data["localId"].get<int>();
+
 				auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
 				if (!assetPath.empty())
 				{
@@ -93,6 +96,8 @@ namespace octoon
 							}
 						}
 					}
+
+					AssetLoader::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
 				}
 			}
 			else
@@ -122,10 +127,16 @@ namespace octoon
 	{
 		GameComponent::save(json);
 
-		auto guid = AssetDatabase::instance()->getAssetGuid(this->getGameObject()->shared_from_this());
-		if (!guid.empty())
+		std::string guid;
+		std::int64_t localId;
+
+		if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->shared_from_this(), guid, localId))
 		{
-			json["data"]["guid"] = guid;
+			nlohmann::json data;
+			data["guid"] = guid;
+			data["localId"] = localId;
+
+			json["data"] = std::move(data);
 		}
 		else
 		{
