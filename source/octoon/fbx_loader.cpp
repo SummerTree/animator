@@ -1,5 +1,5 @@
 #include <octoon/fbx_loader.h>
-#include <octoon/asset_database.h>
+#include <octoon/asset_loader.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/transform_component.h>
 #include <octoon/point_light_component.h>
@@ -7,6 +7,8 @@
 #include <octoon/mesh_filter_component.h>
 #include <octoon/mesh_renderer_component.h>
 #include <fstream>
+#include <tuple>
+#include <set>
 #include <fbxsdk.h>
 
 namespace octoon
@@ -103,7 +105,7 @@ namespace octoon
 		}
 	}
 
-	std::shared_ptr<Texture> LoadTexture(FbxSurfaceMaterial* surfaceMaterial, const char* name, const std::filesystem::path& root)
+	std::shared_ptr<Texture> LoadTexture(FbxSurfaceMaterial* surfaceMaterial, const char* name, const std::filesystem::path& fbxPath)
 	{
 		auto fbxProperty = surfaceMaterial->FindProperty(name);
 		if (fbxProperty.IsValid())
@@ -115,14 +117,15 @@ namespace octoon
 				if (fileTexture)
 				{
 					FbxString filename = FbxPathUtils::GetFileName(fileTexture->GetFileName());
-					std::filesystem::path path = std::filesystem::path(root).append(filename.Buffer());
+					std::filesystem::path path = std::filesystem::path(fbxPath.parent_path()).append(filename.Buffer());
 
 					if (std::filesystem::exists(path))
 					{
-						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(path);
+						auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(path);
 						if (texture)
 						{
 							texture->apply();
+							AssetLoader::instance()->addObjectToAsset(texture, path);
 							return texture;
 						}
 					}
@@ -133,16 +136,16 @@ namespace octoon
 		return nullptr;
 	}
 
-	std::shared_ptr<Material> LoadMaterialAttribute(FbxSurfaceMaterial* surfaceMaterial, const std::filesystem::path& root)
+	std::shared_ptr<Material> LoadMaterialAttribute(FbxSurfaceMaterial* surfaceMaterial, const std::filesystem::path& path)
 	{
 		auto material = std::make_shared<MeshStandardMaterial>();
 		material->setName(surfaceMaterial->GetName());
-		material->setColorMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sDiffuse, root));
-		material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sNormalMap, root));
-		material->setEmissiveMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sEmissive, root));
+		material->setColorMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sDiffuse, path));
+		material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sNormalMap, path));
+		material->setEmissiveMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sEmissive, path));
 
 		if (!material->getNormalMap())
-			material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sBump, root));
+			material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sBump, path));
 
 		if (surfaceMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
@@ -179,10 +182,12 @@ namespace octoon
 			material->setEmissiveIntensity((float)emissiveFactor);
 		}
 
+		AssetLoader::instance()->addObjectToAsset(material, path);
+
 		return material;
 	}
 
-	std::size_t LoadMaterial(FbxMesh* mesh, std::vector<std::shared_ptr<Material>>& materials, const std::filesystem::path& root)
+	std::size_t LoadMaterial(FbxMesh* mesh, std::vector<std::shared_ptr<Material>>& materials, const std::filesystem::path& path)
 	{
 		if (mesh && mesh->GetNode())
 		{
@@ -190,7 +195,7 @@ namespace octoon
 			auto materialCount = mesh->GetElementMaterialCount();
 
 			for (int materialIndex = 0; materialIndex < materialCount; materialIndex++)
-				materials.push_back(LoadMaterialAttribute(node->GetMaterial(materialIndex), root));
+				materials.push_back(LoadMaterialAttribute(node->GetMaterial(materialIndex), path));
 
 			return materialCount;
 		}
@@ -378,7 +383,7 @@ namespace octoon
 		return -1;
 	}
 
-	std::shared_ptr<GameObject> ParseMesh(FbxNode* node, const std::filesystem::path& root)
+	std::shared_ptr<GameObject> ParseMesh(FbxNode* node, const std::filesystem::path& path)
 	{
 		auto fbxMesh = node->GetMesh();
 		if (fbxMesh)
@@ -461,7 +466,7 @@ namespace octoon
 			if (fbxMesh->GetElementMaterialCount() > 0)
 			{
 				std::vector<std::shared_ptr<Material>> materials;
-				LoadMaterial(fbxMesh, materials, root);
+				LoadMaterial(fbxMesh, materials, path);
 
 				for (std::size_t i = 0; i < materials.size(); i++)
 					meshRenderer->setMaterial(materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>(), i);
@@ -500,7 +505,7 @@ namespace octoon
 		return object;
 	}
 
-	GameObjectPtr ProcessNode(FbxNode* node, const std::filesystem::path& root)
+	GameObjectPtr ProcessNode(FbxNode* node, const std::filesystem::path& path)
 	{
 		GameObjectPtr object;
 
@@ -513,7 +518,7 @@ namespace octoon
 				object = ParseCamera(node);
 				break;
 			case FbxNodeAttribute::eMesh:
-				object = ParseMesh(node, root);
+				object = ParseMesh(node, path);
 				break;
 			case FbxNodeAttribute::eSkeleton:
 				object = ParseSkeleton(node);
@@ -527,7 +532,7 @@ namespace octoon
 		if (object)
 		{
 			for (int j = 0; j < node->GetChildCount(); j++)
-				object->addChild(ProcessNode(node->GetChild(j), root));
+				object->addChild(ProcessNode(node->GetChild(j), path));
 		}
 
 		return object;
@@ -560,11 +565,12 @@ namespace octoon
 				FbxNode* rootNode = scene->GetRootNode();
 				if (rootNode)
 				{
-					auto root = filepath.parent_path();
 					auto object = std::make_shared<GameObject>();
 
 					for (int i = 0; i < rootNode->GetChildCount(); i++)
-						object->addChild(ProcessNode(rootNode->GetChild(i), root));
+						object->addChild(ProcessNode(rootNode->GetChild(i), filepath));
+
+					AssetLoader::instance()->setAssetPath(object, filepath);
 
 					return object;
 				}
