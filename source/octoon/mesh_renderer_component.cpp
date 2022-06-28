@@ -11,8 +11,8 @@ namespace octoon
 
 	MeshRendererComponent::MeshRendererComponent() noexcept
 		: visible_(true)
-		, renderOrder_(0)
-		, globalIllumination_(false)
+		, rendererPriority_(0)
+		, globalIllumination_(true)
 	{
 	}
 
@@ -61,20 +61,20 @@ namespace octoon
 	}
 
 	void
-	MeshRendererComponent::setRenderOrder(std::int32_t order) noexcept
+	MeshRendererComponent::setRendererPriority(std::int32_t order) noexcept
 	{
-		if (this->renderOrder_ != order)
+		if (this->rendererPriority_ != order)
 		{
 			if (this->geometry_)
-				this->geometry_->setRenderOrder(order);
-			this->renderOrder_ = order;
+				this->geometry_->setRendererPriority(order);
+			this->rendererPriority_ = order;
 		}
 	}
 
 	std::int32_t
-	MeshRendererComponent::getRenderOrder() const noexcept
+	MeshRendererComponent::getRendererPriority() const noexcept
 	{
-		return this->renderOrder_;
+		return this->rendererPriority_;
 	}
 
 	void
@@ -98,6 +98,12 @@ namespace octoon
 	MeshRendererComponent::load(const nlohmann::json& json, AssetDatabase& assetDatabase) noexcept(false)
 	{
 		GameComponent::load(json, assetDatabase);
+
+		if (json.contains("rendererPriority"))
+			this->setRendererPriority(json["rendererPriority"].get<int>());
+
+		if (json.contains("globalIllumination"))
+			this->setGlobalIllumination(json["globalIllumination"].get<bool>());
 
 		if (json.contains("materials"))
 		{
@@ -143,6 +149,9 @@ namespace octoon
 		GameComponent::save(json, assetDatabase);
 
 		auto& materials = this->getMaterials();
+
+		json["renderOrder"] = this->getRendererPriority();
+		json["globalIllumination"] = this->getGlobalIllumination();
 
 		for (std::size_t i = 0; i < materials.size(); i++)
 		{
@@ -202,7 +211,7 @@ namespace octoon
 		this->geometry_->setOwnerListener(this);
 		this->geometry_->setVisible(this->getVisible());
 		this->geometry_->setGlobalIllumination(this->getGlobalIllumination());
-		this->geometry_->setRenderOrder(this->getRenderOrder());
+		this->geometry_->setRendererPriority(this->getRendererPriority());
 
 		this->onMoveAfter();
 		this->onLayerChangeAfter();

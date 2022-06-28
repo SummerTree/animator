@@ -17,7 +17,7 @@ namespace octoon
 		: visible_(true)
 		, dirty_(true)
 		, layer_(0)
-		, order_(0)
+		, priority_(0)
 		, transform_(math::float4x4::One)
 		, transformInverse_(math::float4x4::One)
 		, renderListener_(nullptr)
@@ -42,16 +42,16 @@ namespace octoon
 	}
 
 	void
-	RenderObject::setRenderOrder(std::int32_t order) noexcept
+	RenderObject::setRendererPriority(std::int32_t priority) noexcept
 	{
-		order_ = order;
+		priority_ = priority;
 		this->setDirty(true);
 	}
 
 	std::int32_t
-	RenderObject::getRenderOrder() const noexcept
+	RenderObject::getRendererPriority() const noexcept
 	{
-		return order_;
+		return priority_;
 	}
 
 	void

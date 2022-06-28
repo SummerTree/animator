@@ -76,14 +76,14 @@ namespace unreal
 		gizmoHover_->addComponent<octoon::MeshFilterComponent>(std::make_shared<octoon::CubeWireframeMesh>(1.0f, 1.0f, 1.0f));
 		auto meshRenderHover = gizmoHover_->addComponent<octoon::MeshRendererComponent>(this->gizmoHoverMtl_);
 		meshRenderHover->setVisible(false);
-		meshRenderHover->setRenderOrder(1);
+		meshRenderHover->setRendererPriority(1);
 
 		gizmoSelected_ = std::make_shared<octoon::GameObject>(std::string_view("GizmoSelect"));
 		gizmoSelected_->setRaycastEnable(false);
 		gizmoSelected_->addComponent<octoon::MeshFilterComponent>(std::make_shared<octoon::CubeWireframeMesh>(1.0f, 1.0f, 1.0f));
 		auto meshRenderSelected = gizmoSelected_->addComponent<octoon::MeshRendererComponent>(this->gizmoSelectedMtl_);
 		meshRenderSelected->setVisible(false);
-		meshRenderSelected->setRenderOrder(1);
+		meshRenderSelected->setRendererPriority(1);
 	}
 
 	void

@@ -32,8 +32,8 @@ namespace octoon
 		void setLayer(std::uint8_t layer) noexcept;
 		std::uint8_t getLayer() const noexcept;
 
-		void setRenderOrder(std::int32_t order) noexcept;
-		std::int32_t getRenderOrder() const noexcept;
+		void setRendererPriority(std::int32_t priority) noexcept;
+		std::int32_t getRendererPriority() const noexcept;
 
 		void setVisible(bool enable) noexcept;
 		bool getVisible() const noexcept;
@@ -69,7 +69,7 @@ namespace octoon
 		bool dirty_;
 
 		std::uint8_t layer_;
-		std::int32_t order_;
+		std::int32_t priority_;
 
 		math::float4x4 transform_;
 		math::float4x4 transformInverse_;

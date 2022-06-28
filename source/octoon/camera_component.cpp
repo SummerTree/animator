@@ -45,12 +45,12 @@ namespace octoon
 	{
 		if (type == CameraType::Main)
 		{
-			camera_->setRenderOrder(std::numeric_limits<std::int32_t>::max());
+			camera_->setRendererPriority(std::numeric_limits<std::int32_t>::max());
 			camera_->setRenderToScreen(true);
 		}
 		else
 		{
-			camera_->setRenderOrder(0);
+			camera_->setRendererPriority(0);
 			camera_->setRenderToScreen(false);
 		}
 

@@ -236,7 +236,7 @@ namespace octoon
 	{
 		std::sort(cameras_.begin(), cameras_.end(), [](const Camera* a, const Camera* b)
 		{
-			return a->getRenderOrder() < b->getRenderOrder();
+			return a->getRendererPriority() < b->getRendererPriority();
 		});
 	}
 
@@ -245,7 +245,7 @@ namespace octoon
 	{
 		std::sort(renderables_.begin(), renderables_.end(), [](const RenderObject* a, const RenderObject* b)
 		{
-			return a->getRenderOrder() < b->getRenderOrder();
+			return a->getRendererPriority() < b->getRendererPriority();
 		});
 	}
 }

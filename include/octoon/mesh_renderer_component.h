@@ -20,8 +20,8 @@ namespace octoon
 		virtual void setVisible(bool visable) noexcept override;
 		virtual bool getVisible() const noexcept override;
 
-		virtual void setRenderOrder(std::int32_t order) noexcept override;
-		virtual std::int32_t getRenderOrder() const noexcept override;
+		virtual void setRendererPriority(std::int32_t order) noexcept override;
+		virtual std::int32_t getRendererPriority() const noexcept override;
 
 		virtual void setGlobalIllumination(bool enable) noexcept;
 		virtual bool getGlobalIllumination() const noexcept;
@@ -53,7 +53,7 @@ namespace octoon
 		bool visible_;
 		bool globalIllumination_;
 
-		std::int32_t renderOrder_;
+		std::int32_t rendererPriority_;
 		std::shared_ptr<Geometry> geometry_;
 	};
 }

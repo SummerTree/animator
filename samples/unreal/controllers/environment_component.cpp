@@ -168,7 +168,7 @@ namespace unreal
 		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setIntensity(this->getModel()->intensity);
 		enviromentLight->getComponent<octoon::EnvironmentLightComponent>()->setOffset(this->getModel()->offset);
 		enviromentLight->addComponent<octoon::MeshFilterComponent>(octoon::SphereMesh(10000, 32, 24, octoon::math::PI * 0.5));
-		enviromentLight->addComponent<octoon::MeshRendererComponent>(environmentMaterial)->setRenderOrder(-2);
+		enviromentLight->addComponent<octoon::MeshRendererComponent>(environmentMaterial)->setRendererPriority(-2);
 
 		this->getModel()->environmentLight = enviromentLight;
 	}

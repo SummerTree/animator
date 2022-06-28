@@ -23,7 +23,7 @@ namespace unreal
 		this->gizmo_ = std::make_shared<octoon::GameObject>(std::string_view("CoordinateSystem"));
 		this->gizmo_->setRaycastEnable(false);
 		this->gizmo_->addComponent<octoon::MeshFilterComponent>(std::make_shared<octoon::PlaneMesh>(100.0f, 100.0f, 20, 20, true));
-		this->gizmo_->addComponent<octoon::MeshRendererComponent>(material)->setRenderOrder(-1);
+		this->gizmo_->addComponent<octoon::MeshRendererComponent>(material)->setRendererPriority(-1);
 
 		auto transform = this->gizmo_->getComponent<octoon::TransformComponent>();
 		transform->setQuaternion(octoon::math::Quaternion(octoon::math::float3(octoon::math::PI * 0.5f, 0, 0)));

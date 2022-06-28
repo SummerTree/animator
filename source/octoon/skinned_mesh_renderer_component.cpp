@@ -190,6 +190,17 @@ namespace octoon
 	{
 		MeshRendererComponent::load(json, assetDatabase);
 
+		if (json.contains("automaticUpdate"))
+			this->setAutomaticUpdate(json["automaticUpdate"].get<bool>());
+		if (json.contains("clothBlendEnable"))
+			this->setClothBlendEnable(json["clothBlendEnable"].get<bool>());
+		if (json.contains("morphBlendEnable"))
+			this->setMorphBlendEnable(json["morphBlendEnable"].get<bool>());
+		if (json.contains("textureBlendEnable"))
+			this->setTextureBlendEnable(json["textureBlendEnable"].get<bool>());
+		if (json.contains("updateWhenOffscreen"))
+			this->setUpdateWhenOffscreen(json["updateWhenOffscreen"].get<bool>());
+
 		if (json.contains("bone"))
 		{
 			auto guid = json["bone"]["guid"].get<std::string>();
@@ -212,6 +223,12 @@ namespace octoon
 	SkinnedMeshRendererComponent::save(nlohmann::json& json, AssetDatabase& assetDatabase) const noexcept(false)
 	{
 		MeshRendererComponent::save(json, assetDatabase);
+
+		json["automaticUpdate"] = this->getAutomaticUpdate();
+		json["clothBlendEnable"] = this->getClothBlendEnable();
+		json["morphBlendEnable"] = this->getMorphBlendEnable();
+		json["textureBlendEnable"] = this->getTextureBlendEnable();
+		json["updateWhenOffscreen"] = this->getUpdateWhenOffscreen();
 
 		if (!this->getBones().empty())
 		{

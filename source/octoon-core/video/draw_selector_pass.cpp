@@ -83,7 +83,7 @@ namespace octoon
 
 		for (auto& geometry : renderingData.geometries)
 		{
-			if (geometry->getRenderOrder() == 1)
+			if (geometry->getRendererPriority() == 1)
 				context.drawRenderers(*geometry, *camera, renderingData);
 		}
 
