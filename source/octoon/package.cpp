@@ -105,8 +105,8 @@ namespace octoon
 			if (std::filesystem::exists(absolutePath))
 				std::filesystem::remove(absolutePath);
 
-			if (std::filesystem::exists(absolutePath.u8string() + u8".metadata"))
-				std::filesystem::remove(absolutePath.u8string() + u8".metadata");
+			if (std::filesystem::exists(absolutePath.u8string() + u8".meta"))
+				std::filesystem::remove(absolutePath.u8string() + u8".meta");
 
 			throw e;
 		}
@@ -136,7 +136,7 @@ namespace octoon
 				metadata["suffix"] = (char*)extension.c_str();
 				metadata["mipmap"] = asset->getMipLevel();
 
-				std::ofstream ifs(absolutePath.u8string() + u8".metadata", std::ios_base::binary);
+				std::ofstream ifs(absolutePath.u8string() + u8".meta", std::ios_base::binary);
 				if (ifs)
 				{
 					auto dump = metadata.dump();
@@ -421,7 +421,7 @@ namespace octoon
 		if (std::filesystem::is_directory(absolutePath))
 		{
 			std::filesystem::remove_all(absolutePath);
-			std::filesystem::remove(absolutePath.concat(".metadata"));
+			std::filesystem::remove(absolutePath.concat(".meta"));
 		}
 		else
 		{
@@ -435,7 +435,7 @@ namespace octoon
 			if (std::filesystem::exists(absolutePath))
 				std::filesystem::remove(absolutePath);
 
-			auto metadata = std::filesystem::path(absolutePath).concat(L".metadata");
+			auto metadata = std::filesystem::path(absolutePath).concat(L".meta");
 			if (std::filesystem::exists(metadata))
 				std::filesystem::remove(metadata);
 		}
@@ -530,7 +530,7 @@ namespace octoon
 	void
 	Package::createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false)
 	{
-		std::ofstream ifs(std::filesystem::path(this->rootPath_).append(path.wstring()).concat(L".metadata"), std::ios_base::binary);
+		std::ofstream ifs(std::filesystem::path(this->rootPath_).append(path.wstring()).concat(L".meta"), std::ios_base::binary);
 		if (ifs)
 		{
 			auto uuid = json["uuid"].get<std::string>();
@@ -556,7 +556,7 @@ namespace octoon
 		paths_.erase(paths_.find(relativePath));
 		uniques_.erase(uniques_.find(uuid));
 
-		auto metaPath = std::filesystem::path(this->rootPath_).append(relativePath.wstring()).concat(L".metadata");
+		auto metaPath = std::filesystem::path(this->rootPath_).append(relativePath.wstring()).concat(L".meta");
 		if (std::filesystem::exists(metaPath))
 			std::filesystem::remove(metaPath);
 	}
@@ -564,7 +564,7 @@ namespace octoon
 	nlohmann::json
 	Package::loadMetadataAtPath(const std::filesystem::path& relativePath) noexcept(false)
 	{
-		std::ifstream ifs(std::filesystem::path(this->rootPath_).append(relativePath.wstring()).concat(L".metadata"));
+		std::ifstream ifs(std::filesystem::path(this->rootPath_).append(relativePath.wstring()).concat(L".meta"));
 		if (ifs)
 		{
 			auto metaData = nlohmann::json::parse(ifs);
