@@ -1,5 +1,6 @@
 #include <octoon/asset_database.h>
 #include <octoon/asset_loader.h>
+#include <octoon/game_component.h>
 
 namespace octoon
 {
@@ -126,18 +127,31 @@ namespace octoon
 	bool
 	AssetDatabase::isPartOfPrefabAsset(const std::shared_ptr<const GameObject>& asset) const noexcept
 	{
-		auto assetPath = this->getAssetPath(asset);
-		if (assetPath.empty())
-			return true;
+		auto path = this->getAssetPath(asset);
+		if (!path.empty())
+		{
+			auto ext = path.extension().wstring();
+			for (auto& it : ext)
+				it = (char)std::tolower(it);
 
-		if (assetPath.is_absolute())
-			return false;
+			return ext == L".prefab";
+		}
 
-		auto ext = assetPath.extension().wstring();
-		for (auto& it : ext)
-			it = (char)std::tolower(it);
+		for (auto& component : asset->getComponents())
+		{
+			auto assetPath = this->getAssetPath(component);
+			if (!assetPath.empty())
+			{
+				auto ext = assetPath.extension().wstring();
+				for (auto& it : ext)
+					it = (char)std::tolower(it);
 
-		return ext == L".prefabs";
+				if (ext == L".prefab" || ext == L".pmx" || ext == L".obj" || ext == L".fbx")
+					return true;
+			}
+		}
+
+		return false;
 	}
 
 	void
