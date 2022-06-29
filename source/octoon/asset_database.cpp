@@ -126,17 +126,18 @@ namespace octoon
 	bool
 	AssetDatabase::isPartOfPrefabAsset(const std::shared_ptr<const GameObject>& asset) const noexcept
 	{
-		if (this->contains(asset))
-		{
-			auto assetPath = this->getAssetPath(asset);
-			auto ext = assetPath.extension().wstring();
-			for (auto& it : ext)
-				it = (char)std::tolower(it);
+		auto assetPath = this->getAssetPath(asset);
+		if (assetPath.empty())
+			return true;
 
-			return ext == L".prefabs";
-		}
+		if (assetPath.is_absolute())
+			return false;
 
-		return false;
+		auto ext = assetPath.extension().wstring();
+		for (auto& it : ext)
+			it = (char)std::tolower(it);
+
+		return ext == L".prefabs";
 	}
 
 	void

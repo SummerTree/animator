@@ -109,8 +109,6 @@ namespace octoon
 					if (mf)
 						this->setMesh(mf->getMesh());
 				}
-
-				AssetLoader::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
 			}
 		}
 	}
@@ -137,8 +135,8 @@ namespace octoon
 	MeshFilterComponent::clone() const noexcept
 	{
 		auto instance = std::make_shared<MeshFilterComponent>();
-		instance->setName(instance->getName());
-		instance->setMesh(mesh_ ? (isSharedMesh_ ? mesh_ : mesh_->clone()) : nullptr, isSharedMesh_);
+		instance->setName(this->getName());
+		instance->setMesh(this->mesh_ ? (this->isSharedMesh_ ? mesh_ : mesh_->clone()) : nullptr, this->isSharedMesh_);
 
 		return instance;
 	}
