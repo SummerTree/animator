@@ -766,7 +766,6 @@ namespace octoon
 	GameObject::clone() const noexcept(false)
 	{
 		auto instance = std::make_shared<GameObject>();
-		instance->setParent(parent_.lock());
 		instance->setName(this->getName());
 		instance->setLayer(this->getLayer());
 
