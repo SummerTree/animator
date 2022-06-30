@@ -15,7 +15,7 @@ namespace octoon
 		static bool doCanRead(std::istream& stream) noexcept;
 		static bool doCanRead(const char* type) noexcept;
 
-		static std::shared_ptr<GameObject> load(std::istream& stream) noexcept(false);
+		static std::vector<std::filesystem::path> getDependencies(const std::filesystem::path& filepath) noexcept(false);
 		static std::shared_ptr<GameObject> load(const std::filesystem::path& filepath) noexcept(false);
 
 	private:

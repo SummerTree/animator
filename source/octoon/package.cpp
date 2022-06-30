@@ -99,6 +99,21 @@ namespace octoon
 						this->importAsset(path.first, std::filesystem::path(rootPath).append(path.second));
 				}
 			}
+			else if (ext == u8".fbx")
+			{
+				auto dependencies = octoon::FBXLoader::getDependencies(diskPath);
+
+				std::map<std::filesystem::path, std::wstring> diskPaths;
+				for (auto& it : dependencies)
+				{
+					auto fullpath = std::filesystem::path(diskPath.parent_path()).append(it.wstring());
+					if (std::filesystem::exists(fullpath))
+						diskPaths[fullpath] = it.wstring();
+				}
+
+				for (auto& path : diskPaths)
+					this->importAsset(path.first, std::filesystem::path(rootPath).append(path.second));
+			}
 		}
 		catch (const std::exception& e)
 		{

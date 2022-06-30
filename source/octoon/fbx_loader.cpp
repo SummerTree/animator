@@ -33,25 +33,6 @@ namespace octoon
 		return std::strncmp(type, "fbx", 3) == 0;
 	}
 
-	std::shared_ptr<GameObject>
-	FBXLoader::load(std::istream& stream) noexcept(false)
-	{
-		if (stream.good())
-		{
-			stream.seekg(0, std::ios_base::end);
-			std::size_t size = stream.tellg();
-			stream.seekg(0, std::ios_base::beg);
-
-			if (size > 0)
-			{
-				auto content = std::make_unique<char[]>(size);
-				stream.read((char*)content.get(), size);
-			}
-		}
-
-		return nullptr;
-	}
-
 	void ParseChannel(FbxNode* node, FbxAnimLayer* layer)
 	{
 		auto curve = node->LclTranslation.GetCurve(layer, FBXSDK_CURVENODE_COMPONENT_X);
@@ -105,7 +86,7 @@ namespace octoon
 		}
 	}
 
-	std::shared_ptr<Texture> LoadTexture(FbxSurfaceMaterial* surfaceMaterial, const char* name, const std::filesystem::path& fbxPath)
+	FbxString GetTexturePath(FbxSurfaceMaterial* surfaceMaterial, const char* name)
 	{
 		auto fbxProperty = surfaceMaterial->FindProperty(name);
 		if (fbxProperty.IsValid())
@@ -117,18 +98,29 @@ namespace octoon
 				if (fileTexture)
 				{
 					FbxString filename = FbxPathUtils::GetFileName(fileTexture->GetFileName());
-					std::filesystem::path path = std::filesystem::path(fbxPath.parent_path()).append(filename.Buffer());
+					return filename;
+				}
+			}
+		}
 
-					if (std::filesystem::exists(path))
-					{
-						auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(path);
-						if (texture)
-						{
-							texture->apply();
-							AssetLoader::instance()->addObjectToAsset(texture, path);
-							return texture;
-						}
-					}
+		return FbxString();
+	}
+
+	std::shared_ptr<Texture> LoadTexture(FbxSurfaceMaterial* surfaceMaterial, const char* name, const std::filesystem::path& fbxPath)
+	{
+		FbxString filename = GetTexturePath(surfaceMaterial, name);
+		if (!filename.IsEmpty())
+		{
+			std::filesystem::path path = std::filesystem::path(fbxPath.parent_path()).append(filename.Buffer());
+
+			if (std::filesystem::exists(path))
+			{
+				auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(path);
+				if (texture)
+				{
+					texture->apply();
+					AssetLoader::instance()->addObjectToAsset(texture, path);
+					return texture;
 				}
 			}
 		}
@@ -181,8 +173,6 @@ namespace octoon
 			material->setEmissive(math::float3((float)emissive[0], (float)emissive[1], (float)emissive[2]));
 			material->setEmissiveIntensity((float)emissiveFactor);
 		}
-
-		AssetLoader::instance()->addObjectToAsset(material, path);
 
 		return material;
 	}
@@ -471,11 +461,17 @@ namespace octoon
 				LoadMaterial(fbxMesh, materials, path);
 
 				for (std::size_t i = 0; i < materials.size(); i++)
-					meshRenderer->setMaterial(materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>(), i);
+				{
+					auto material = materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>();
+					AssetLoader::instance()->addObjectToAsset(material, path);
+					meshRenderer->setMaterial(std::move(material), i);
+				}
 			}
 			else
 			{
-				meshRenderer->setMaterial(std::make_shared<MeshStandardMaterial>());
+				auto material = std::make_shared<MeshStandardMaterial>();
+				AssetLoader::instance()->addObjectToAsset(material, path);
+				meshRenderer->setMaterial(std::move(material));
 			}
 
 			auto translation = node->LclTranslation.Get();
@@ -602,5 +598,98 @@ namespace octoon
 		}
 
 		return nullptr;
+	}
+
+	void importerNode(FbxNode* node, std::vector<std::filesystem::path>& dependencies)
+	{
+		GameObjectPtr object;
+
+		auto attribute = node->GetNodeAttribute();
+		if (attribute)
+		{
+			switch (attribute->GetAttributeType())
+			{
+			case FbxNodeAttribute::eMesh:
+			{
+				auto fbxMesh = node->GetMesh();
+				if (fbxMesh)
+				{
+					if (fbxMesh->GetElementMaterialCount() > 0)
+					{
+						auto node = fbxMesh->GetNode();
+						auto materialCount = fbxMesh->GetElementMaterialCount();
+
+						for (int materialIndex = 0; materialIndex < materialCount; materialIndex++)
+						{
+							auto fbxMaterial = node->GetMaterial(materialIndex);
+							auto diffuseMap = GetTexturePath(fbxMaterial, FbxSurfaceMaterial::sDiffuse);
+							if (!diffuseMap.IsEmpty())
+								dependencies.push_back(diffuseMap.Buffer());
+							auto normalMapMap = GetTexturePath(fbxMaterial, FbxSurfaceMaterial::sNormalMap);
+							if (!normalMapMap.IsEmpty())
+								dependencies.push_back(normalMapMap.Buffer());
+							auto emissiveMap = GetTexturePath(fbxMaterial, FbxSurfaceMaterial::sEmissive);
+							if (!emissiveMap.IsEmpty())
+								dependencies.push_back(emissiveMap.Buffer());
+							auto bumpMap = GetTexturePath(fbxMaterial, FbxSurfaceMaterial::sBump);
+							if (!bumpMap.IsEmpty())
+								dependencies.push_back(bumpMap.Buffer());
+						}
+					}
+				}
+			}
+			break;
+			}
+		}
+
+		for (int j = 0; j < node->GetChildCount(); j++)
+			importerNode(node->GetChild(j), dependencies);
+	}
+
+	std::vector<std::filesystem::path>
+	FBXLoader::getDependencies(const std::filesystem::path& filepath) noexcept(false)
+	{
+		std::vector<std::filesystem::path> dependencies;
+
+		auto lsdkManager = FbxManager::Create();
+		if (lsdkManager)
+		{
+			FbxIOSettings* ios = FbxIOSettings::Create(lsdkManager, IOSROOT);
+			lsdkManager->SetIOSettings(ios);
+
+			FbxString extension = "dll";
+			FbxString path = FbxGetApplicationDirectory();
+			lsdkManager->LoadPluginsDirectory(path.Buffer(), extension.Buffer());
+
+			FbxImporter* importer = FbxImporter::Create(lsdkManager, "");
+
+			if (importer->Initialize((char*)filepath.u8string().c_str(), -1, lsdkManager->GetIOSettings()))
+			{
+				int major = 0, minor = 0, revision = 0;
+				importer->GetFileVersion(major, minor, revision);
+
+				FbxScene* scene = FbxScene::Create(lsdkManager, "myScene");
+				importer->Import(scene);
+				importer->Destroy();
+
+				FbxNode* rootNode = scene->GetRootNode();
+				if (rootNode)
+				{
+					auto object = std::make_shared<GameObject>();
+
+					for (int i = 0; i < rootNode->GetChildCount(); i++)
+						importerNode(rootNode->GetChild(i), dependencies);
+				}
+			}
+			else
+			{
+				printf("Call to FbxImporter::Initialize() failed.\n");
+				printf("Error returned: %s\n\n", importer->GetStatus().GetErrorString());
+			}
+
+			lsdkManager->Destroy();
+		}
+
+		return dependencies;
 	}
 }
