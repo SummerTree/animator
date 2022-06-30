@@ -502,14 +502,14 @@ namespace octoon
 	{
 		assert(type);
 
+		for (auto& component : this->components_)
+		{
+			if (component->isA(type))
+				return component;
+		}
+
 		for (auto& it : children_)
 		{
-			for (auto& component : it->components_)
-			{
-				if (component->isA(type))
-					return component;
-			}
-
 			auto component = it->getComponentInChildren(type);
 			if (component)
 				return component;

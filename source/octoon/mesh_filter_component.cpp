@@ -105,7 +105,7 @@ namespace octoon
 				auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
 				if (gameObject)
 				{
-					auto mf = gameObject->getComponent<MeshFilterComponent>();
+					auto mf = gameObject->getComponentInChildren<MeshFilterComponent>();
 					if (mf)
 						this->setMesh(mf->getMesh());
 				}

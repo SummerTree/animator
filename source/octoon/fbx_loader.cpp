@@ -564,6 +564,9 @@ namespace octoon
 				importer->Import(scene);
 				importer->Destroy();
 
+				FbxArray<FbxString*> animStackNameArray;
+				scene->FillAnimStackNameArray(animStackNameArray);
+
 				FbxNode* rootNode = scene->GetRootNode();
 				if (rootNode)
 				{

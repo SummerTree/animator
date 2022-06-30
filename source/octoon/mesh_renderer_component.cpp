@@ -125,7 +125,7 @@ namespace octoon
 						auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
 						if (gameObject)
 						{
-							auto meshRenderer = gameObject->getComponent<MeshRendererComponent>();
+							auto meshRenderer = gameObject->getComponentInChildren<MeshRendererComponent>();
 							if (meshRenderer)
 								materials.push_back(meshRenderer->getMaterial(i));
 						}
