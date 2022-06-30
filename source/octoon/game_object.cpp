@@ -692,11 +692,19 @@ namespace octoon
 
 			for (auto item = components.begin(); item != components.end(); ++item)
 			{
-				for (auto& it : item.value())
+				if (item.key() == TransformComponent::getRtti()->type_name())
 				{
-					auto component = RttiFactory::instance()->make_shared<GameComponent>(item.key());
-					component->load(it);
-					this->addComponent(std::move(component));
+					auto transform = this->getComponent<TransformComponent>();
+					transform->load(item.value());
+				}
+				else
+				{
+					for (auto& it : item.value())
+					{
+						auto component = RttiFactory::instance()->make_shared<GameComponent>(item.key());
+						component->load(it);
+						this->addComponent(std::move(component));
+					}
 				}
 			}
 		}

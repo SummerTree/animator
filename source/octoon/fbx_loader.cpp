@@ -568,7 +568,11 @@ namespace octoon
 					auto object = std::make_shared<GameObject>();
 
 					for (int i = 0; i < rootNode->GetChildCount(); i++)
-						object->addChild(ProcessNode(rootNode->GetChild(i), filepath));
+					{
+						auto node = ProcessNode(rootNode->GetChild(i), filepath);
+						AssetLoader::instance()->setAssetPath(node, filepath);
+						object->addChild(std::move(node));
+					}
 
 					AssetLoader::instance()->setAssetPath(object, filepath);
 
