@@ -456,6 +456,8 @@ namespace octoon
 			mesh->setTexcoordArray(std::move(texcoords));
 			mesh->setIndicesArray(std::move(indices));
 
+			AssetLoader::instance()->addObjectToAsset(mesh, path);
+
 			auto gameObject = std::make_shared<GameObject>();
 			gameObject->setName(node->GetName());
 			gameObject->addComponent<MeshFilterComponent>(std::move(mesh));
@@ -574,11 +576,20 @@ namespace octoon
 						object->addChild(std::move(node));
 					}
 					
-					if (object->getChildCount() == 1)
-						return object->getChild(0);
+					if (object->getChildCount() > 1)
+					{
+						AssetLoader::instance()->setAssetPath(object, filepath);
 
-					AssetLoader::instance()->setAssetPath(object, filepath);
-					return object;
+						for (int i = 0; i < object->getChildCount(); i++)
+							AssetLoader::instance()->addObjectToAsset(object->getChild(i), filepath);
+
+						return object;
+					}
+					else
+					{
+						AssetLoader::instance()->setAssetPath(object->getChild(0), filepath);
+						return object->getChild(0);
+					}
 				}
 			}
 			else

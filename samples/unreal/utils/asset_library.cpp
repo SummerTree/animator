@@ -374,10 +374,10 @@ namespace unreal
 						}
 					}
 
-					auto guid = octoon::make_guid();
-					auto materialFolder = std::filesystem::path("Packages/Assets/Materials").append(guid.substr(0, 2));
+					auto materialGuid = octoon::make_guid();
+					auto materialFolder = std::filesystem::path("Packages/Assets/Materials").append(materialGuid.substr(0, 2));
 					octoon::AssetDatabase::instance()->createFolder(materialFolder);
-					octoon::AssetDatabase::instance()->createAsset(material, std::filesystem::path(materialFolder).append(guid + ".mat"));
+					octoon::AssetDatabase::instance()->createAsset(material, std::filesystem::path(materialFolder).append(materialGuid + ".mat"));
 				}
 			}
 
