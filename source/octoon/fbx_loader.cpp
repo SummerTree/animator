@@ -11,6 +11,19 @@
 #include <set>
 #include <fbxsdk.h>
 
+static auto KFCURVENODE_T_X = "X";
+static auto KFCURVENODE_T_Y = "Y";
+static auto KFCURVENODE_T_Z = "Z";
+
+static auto KFCURVENODE_R_X = "X";
+static auto KFCURVENODE_R_Y = "Y";
+static auto KFCURVENODE_R_Z = "Z";
+static auto KFCURVENODE_R_W = "W";
+
+static auto KFCURVENODE_S_X = "X";
+static auto KFCURVENODE_S_Y = "Y";
+static auto KFCURVENODE_S_Z = "Z";
+
 namespace octoon
 {
 	FBXLoader::FBXLoader() noexcept
@@ -67,21 +80,169 @@ namespace octoon
 			ParseLayer(node->GetChild(i), layer);
 	}
 
-	void ParseAnimation(FbxNode* node)
+	int GetMaximumKeySpanFromSkeleton(FbxNode* node, FbxAnimLayer* animLayer)
 	{
-		auto stackCount = node->GetSrcObjectCount<FbxAnimStack>();
+		int keySpan = 0;
+
+		auto skeleton = node->GetSkeleton();
+		if (skeleton)
+		{
+			FbxAnimCurve* translationCurveX = node->LclTranslation.GetCurve(animLayer, KFCURVENODE_T_X);
+			FbxAnimCurve* translationCurveY = node->LclTranslation.GetCurve(animLayer, KFCURVENODE_T_Y);
+			FbxAnimCurve* translationCurveZ = node->LclTranslation.GetCurve(animLayer, KFCURVENODE_T_Z);
+
+			if (translationCurveX && translationCurveY && translationCurveZ)
+			{
+				int numKeys = std::max(std::max(translationCurveX->KeyGetCount(), translationCurveY->KeyGetCount()), translationCurveZ->KeyGetCount());
+				keySpan = std::max(keySpan, numKeys);
+			}
+
+			FbxAnimCurve* rotationCurveX = node->LclRotation.GetCurve(animLayer, KFCURVENODE_R_X);
+			FbxAnimCurve* rotationCurveY = node->LclRotation.GetCurve(animLayer, KFCURVENODE_R_Y);
+			FbxAnimCurve* rotationCurveZ = node->LclRotation.GetCurve(animLayer, KFCURVENODE_R_Z);
+
+			if (rotationCurveX && rotationCurveY && rotationCurveZ)
+			{
+				int numKeys = std::max(std::max(rotationCurveX->KeyGetCount(), rotationCurveY->KeyGetCount()), rotationCurveZ->KeyGetCount());
+				keySpan = std::max(keySpan, numKeys);
+			}
+
+			FbxAnimCurve* scaleCurveX = node->LclScaling.GetCurve(animLayer, KFCURVENODE_S_X);
+			FbxAnimCurve* scaleCurveY = node->LclScaling.GetCurve(animLayer, KFCURVENODE_S_Y);
+			FbxAnimCurve* scaleCurveZ = node->LclScaling.GetCurve(animLayer, KFCURVENODE_S_Z);
+
+			if (scaleCurveX && scaleCurveY && scaleCurveZ)
+			{
+				int numKeys = std::max(std::max(scaleCurveX->KeyGetCount(), scaleCurveY->KeyGetCount()), scaleCurveZ->KeyGetCount());
+				keySpan = std::max(keySpan, numKeys);
+			}
+
+			int childCount = node->GetChildCount();
+			for (int childIndex = 0; childIndex < childCount; childIndex++)
+			{
+				auto child = node->GetChild(childIndex);
+				keySpan = std::max(keySpan, GetMaximumKeySpanFromSkeleton(child, animLayer));
+			}
+		}
+
+		return keySpan;
+	}
+
+	void ReadClip(FbxNode* fbxNode, FbxAnimLayer* fbxAnimLayer, AnimationClip& clip, int& preInfType, int& postInfType, int keySpan)
+	{
+		Keyframes<float> translationCurve;
+		Keyframes<float> rotationCurve;
+
+		translationCurve.reserve(keySpan);
+		rotationCurve.reserve(keySpan);
+
+		FbxAnimCurve* translationCurveX = fbxNode->LclTranslation.GetCurve(fbxAnimLayer, KFCURVENODE_T_X);
+		FbxAnimCurve* translationCurveY = fbxNode->LclTranslation.GetCurve(fbxAnimLayer, KFCURVENODE_T_Y);
+		FbxAnimCurve* translationCurveZ = fbxNode->LclTranslation.GetCurve(fbxAnimLayer, KFCURVENODE_T_Z);
+
+		if (translationCurveX && translationCurveY && translationCurveZ)
+		{
+			preInfType |= translationCurveX->GetPreExtrapolation() | translationCurveY->GetPreExtrapolation() | translationCurveZ->GetPreExtrapolation();
+			postInfType |= translationCurveX->GetPostExtrapolation() | translationCurveY->GetPostExtrapolation() | translationCurveZ->GetPostExtrapolation();
+
+			int xIndex = 0;
+			int yIndex = 0;
+			int zIndex = 0;
+
+			for (int keyIndex = 0; keyIndex < keySpan; keyIndex++)
+			{
+				math::float3 key = math::float3(translationCurveX->EvaluateIndex(xIndex), translationCurveY->EvaluateIndex(yIndex), translationCurveZ->EvaluateIndex(zIndex));
+				translationCurve.emplace_back(keyIndex / 30.f, key);
+
+				if (keyIndex + 1 < translationCurveX->KeyGetCount())
+					xIndex++;
+				if (keyIndex + 1 < translationCurveY->KeyGetCount())
+					yIndex++;
+				if (keyIndex + 1 < translationCurveZ->KeyGetCount())
+					zIndex++;
+			}
+		}
+		else
+		{
+			math::float4 key = math::float4((float)fbxNode->LclTranslation.Get()[0], (float)fbxNode->LclTranslation.Get()[1], (float)fbxNode->LclTranslation.Get()[2], 0.0f);
+			rotationCurve.emplace_back(0.0f, key);
+		}
+
+		FbxAnimCurve* rotationCurveX = fbxNode->LclRotation.GetCurve(fbxAnimLayer, KFCURVENODE_R_X);
+		FbxAnimCurve* rotationCurveY = fbxNode->LclRotation.GetCurve(fbxAnimLayer, KFCURVENODE_R_Y);
+		FbxAnimCurve* rotationCurveZ = fbxNode->LclRotation.GetCurve(fbxAnimLayer, KFCURVENODE_R_Z);
+
+		if (rotationCurveX && rotationCurveY && rotationCurveZ)
+		{
+			preInfType |= rotationCurveX->GetPreExtrapolation() | rotationCurveY->GetPreExtrapolation() | rotationCurveZ->GetPreExtrapolation();
+			postInfType |= rotationCurveX->GetPostExtrapolation() | rotationCurveY->GetPostExtrapolation() | rotationCurveZ->GetPostExtrapolation();
+			
+			int xIndex = 0;
+			int yIndex = 0;
+			int zIndex = 0;
+
+			for (int keyIndex = 0; keyIndex < keySpan; keyIndex++)
+			{
+				math::float3 key = math::float3(rotationCurveX->EvaluateIndex(xIndex), rotationCurveY->EvaluateIndex(yIndex), rotationCurveZ->EvaluateIndex(zIndex));
+				rotationCurve.emplace_back(keyIndex / 30.f, key);
+
+				if (keyIndex + 1 < rotationCurveX->KeyGetCount())
+					xIndex++;
+				if (keyIndex + 1 < rotationCurveY->KeyGetCount())
+					yIndex++;
+				if (keyIndex + 1 < rotationCurveZ->KeyGetCount())
+					zIndex++;
+			}
+		}
+		else
+		{
+			math::float3 key = math::float3(fbxNode->LclRotation.Get()[0], fbxNode->LclRotation.Get()[1], fbxNode->LclRotation.Get()[2]);
+			rotationCurve.emplace_back(0.0f, key);
+		}
+
+		clip.setCurve(fbxNode->GetName(), "LocalPosition", AnimationCurve(translationCurve));
+		clip.setCurve(fbxNode->GetName(), "LocalEulerAnglesRaw", AnimationCurve(rotationCurve));
+	}
+
+	void ConstructAnimationCurvesFromSkeleton(FbxNode* fbxNode, FbxAnimLayer* fbxAnimLayer, AnimationClip& clip, int& preInfType, int& postInfType, int keySpan)
+	{
+		if (fbxNode->GetSkeleton())
+		{
+			ReadClip(fbxNode, fbxAnimLayer, clip, preInfType, postInfType, keySpan);
+
+			int childCount = fbxNode->GetChildCount();
+			for (int childIndex = 0; childIndex < childCount; childIndex++)
+			{
+				FbxNode* child = fbxNode->GetChild(childIndex);
+				ConstructAnimationCurvesFromSkeleton(child, fbxAnimLayer, clip, preInfType, postInfType, keySpan);
+			}
+		}
+	}
+
+	void ParseAnimation(FbxScene* scene, FbxNode* node)
+	{
+		auto stackCount = scene->GetSrcObjectCount<FbxAnimStack>();
 
 		for (int i = 0; i < stackCount; i++)
 		{
-			auto stack = node->GetSrcObject<FbxAnimStack>(i);
+			auto stack = scene->GetSrcObject<FbxAnimStack>(i);
 			auto stackName = stack->GetName();
+			auto takeinfo = scene->GetTakeInfo(stackName);
 
 			auto layerCount = stack->GetMemberCount<FbxAnimLayer>();
 			for (int j = 0; j < layerCount; j++)
 			{
 				auto layer = stack->GetMember<FbxAnimLayer>(j);
 				auto layerName = layer->GetName();
-				ParseLayer(node, layer);
+
+				int keySpan = GetMaximumKeySpanFromSkeleton(node, layer);
+				if (keySpan > 0)
+				{
+					int preInfType = 0;
+					int postInfType = 0;
+					AnimationClip clip;
+					ConstructAnimationCurvesFromSkeleton(node, layer, clip, preInfType, postInfType, keySpan);
+				}
 			}
 		}
 	}
@@ -489,51 +650,96 @@ namespace octoon
 		return nullptr;
 	}
 
-	std::shared_ptr<GameObject> ParseCamera(FbxNode* node)
+	std::shared_ptr<GameObject> ParseCamera(FbxScene* scene, FbxNode* node)
 	{
 		auto camera = node->GetCamera();
 		if (camera)
-			ParseAnimation(node);
+		{
+			auto stackCount = scene->GetSrcObjectCount<FbxAnimStack>();
+
+			for (int i = 0; i < stackCount; i++)
+			{
+				auto stack = scene->GetSrcObject<FbxAnimStack>(i);
+				auto stackName = stack->GetName();
+				auto takeinfo = scene->GetTakeInfo(stackName);
+
+				FbxTime start = takeinfo->mLocalTimeSpan.GetStart();
+				FbxTime end = takeinfo->mLocalTimeSpan.GetStop();
+
+				for (FbxLongLong i = start.GetFrameCount(FbxTime::eFrames30); i <= end.GetFrameCount(FbxTime::eFrames30); ++i)
+				{
+					FbxTime time;
+					time.SetFrame(i, FbxTime::eFrames30);
+
+					auto layerCount = stack->GetMemberCount<FbxAnimLayer>();
+					for (int j = 0; j < layerCount; j++)
+					{
+						auto layer = stack->GetMember<FbxAnimLayer>(j);
+						auto layerName = layer->GetName();
+
+						auto pixelAspectRatio = camera->PixelAspectRatio.GetCurve(layer);
+						if (pixelAspectRatio)
+						{
+							pixelAspectRatio->Evaluate(time);
+						}
+					}
+				}
+			}
+		}
+
 		return std::make_shared<GameObject>();
 	}
 
 	std::shared_ptr<GameObject> ParseSkeleton(FbxNode* node)
 	{
-		auto object = std::make_shared<GameObject>();
-		return object;
+		auto skeleton = node->GetSkeleton();
+		if (skeleton)
+		{
+			auto object = std::make_shared<GameObject>();
+			object->setName(skeleton->GetName());
+
+			for (int j = 0; j < node->GetChildCount(); j++)
+			{
+				auto child = ParseSkeleton(node->GetChild(j));
+				object->addChild(child);
+			}
+
+			return object;
+		}
+
+		return nullptr;
 	}
 
-	GameObjectPtr ProcessNode(FbxNode* node, const std::filesystem::path& path)
+	GameObjectPtr ProcessNode(FbxScene* scene, FbxNode* node, const std::filesystem::path& path)
 	{
 		GameObjectPtr object;
 
 		auto attribute = node->GetNodeAttribute();
 		if (attribute)
 		{
-			switch (attribute->GetAttributeType())
+			auto type = attribute->GetAttributeType();
+			switch (type)
 			{
 			case FbxNodeAttribute::eCamera:
-				object = ParseCamera(node);
+				object = ParseCamera(scene, node);
 				break;
 			case FbxNodeAttribute::eMesh:
 				object = ParseMesh(node, path);
 				break;
 			case FbxNodeAttribute::eSkeleton:
+				//ParseAnimation(scene, node);
 				object = ParseSkeleton(node);
 				break;
 			default:
 				object = std::make_shared<GameObject>();
-				break;
-			}
-		}
 
-		if (object)
-		{
-			for (int j = 0; j < node->GetChildCount(); j++)
-			{
-				auto child = ProcessNode(node->GetChild(j), path);
-				AssetLoader::instance()->addObjectToAsset(child, path);
-				object->addChild(child);
+				for (int j = 0; j < node->GetChildCount(); j++)
+				{
+					auto child = ProcessNode(scene, node->GetChild(j), path);
+					AssetLoader::instance()->addObjectToAsset(child, path);
+					object->addChild(child);
+				}
+				break;
 			}
 		}
 
@@ -574,7 +780,7 @@ namespace octoon
 
 					for (int i = 0; i < rootNode->GetChildCount(); i++)
 					{
-						auto node = ProcessNode(rootNode->GetChild(i), filepath);
+						auto node = ProcessNode(scene, rootNode->GetChild(i), filepath);
 						AssetLoader::instance()->setAssetPath(node, filepath);
 						object->addChild(std::move(node));
 					}
