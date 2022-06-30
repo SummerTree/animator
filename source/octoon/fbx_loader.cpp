@@ -530,7 +530,11 @@ namespace octoon
 		if (object)
 		{
 			for (int j = 0; j < node->GetChildCount(); j++)
-				object->addChild(ProcessNode(node->GetChild(j), path));
+			{
+				auto child = ProcessNode(node->GetChild(j), path);
+				AssetLoader::instance()->addObjectToAsset(child, path);
+				object->addChild(child);
+			}
 		}
 
 		return object;
