@@ -58,6 +58,8 @@ namespace octoon
 		void removeChild(const GameObjectPtr& child) noexcept;
 		void cleanupChildren() noexcept;
 		GameObjectPtr findChild(std::string_view name, bool recurse = true) noexcept;
+		GameObjectPtr& getChild(std::size_t n) noexcept;
+		const GameObjectPtr& getChild(std::size_t n) const noexcept;
 
 		std::size_t getChildCount() const noexcept;
 		GameObjects& getChildren() noexcept;

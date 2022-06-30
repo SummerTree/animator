@@ -295,6 +295,18 @@ namespace octoon
 		return nullptr;
 	}
 
+	GameObjectPtr&
+	GameObject::getChild(std::size_t n) noexcept
+	{
+		return children_[n];
+	}
+
+	const GameObjectPtr&
+	GameObject::getChild(std::size_t n) const noexcept
+	{
+		return children_[n];
+	}
+
 	std::size_t
 	GameObject::getChildCount() const noexcept
 	{

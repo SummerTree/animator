@@ -573,9 +573,11 @@ namespace octoon
 						AssetLoader::instance()->setAssetPath(node, filepath);
 						object->addChild(std::move(node));
 					}
+					
+					if (object->getChildCount() == 1)
+						return object->getChild(0);
 
 					AssetLoader::instance()->setAssetPath(object, filepath);
-
 					return object;
 				}
 			}
