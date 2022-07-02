@@ -259,8 +259,6 @@ namespace octoon
 				asset = this->assetDatabase_->loadAssetAtPath<Animation>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(Material::getRtti()))
 				asset = this->assetDatabase_->loadAssetAtPath<Material>(this->assetDatabase_->getAssetPath(data));
-			else if (type.isDerivedFrom(PMX::getRtti()))
-				asset = this->assetDatabase_->loadAssetAtPath<GameObject>(this->assetDatabase_->getAssetPath(data));
 			else if (type.isDerivedFrom(GameObject::getRtti()))
 				asset = this->assetDatabase_->loadAssetAtPath<GameObject>(this->assetDatabase_->getAssetPath(data));
 

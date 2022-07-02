@@ -1,4 +1,4 @@
-#include <octoon/vmd_loader.h>
+#include <octoon/vmd_importer.h>
 #include <octoon/math/vector2.h>
 #include <octoon/math/vector3.h>
 #include <octoon/math/vector4.h>
@@ -14,6 +14,8 @@
 
 namespace octoon
 {
+	OctoonImplementSubClass(VMDImporter, AssetImporter, "VMDImporter")
+
 	std::string sjis2utf8(const std::string& sjis)
 	{
 		std::size_t in_size = sjis.size();
@@ -236,16 +238,16 @@ namespace octoon
 		return false;
 	}
 
-	VMDLoader::VMDLoader() noexcept
+	VMDImporter::VMDImporter() noexcept
 	{
 	}
 
-	VMDLoader::~VMDLoader() noexcept
+	VMDImporter::~VMDImporter() noexcept
 	{
 	}
 
 	bool
-	VMDLoader::doCanRead(std::istream& stream) noexcept
+	VMDImporter::doCanRead(std::istream& stream) noexcept
 	{
 		static_assert(sizeof(VMDMotion) == 111, "");
 		static_assert(sizeof(VMDMorph) == 23, "");
@@ -265,13 +267,13 @@ namespace octoon
 	}
 
 	bool
-	VMDLoader::doCanRead(const char* type) noexcept
+	VMDImporter::doCanRead(const char* type) noexcept
 	{
 		return std::strncmp(type, "vmd", 3) == 0;
 	}
 
 	std::shared_ptr<Animation>
-	VMDLoader::load(std::istream& stream) noexcept(false)
+	VMDImporter::load(std::istream& stream) noexcept(false)
 	{
 		VMD vmd;
 		vmd.load(stream);
@@ -398,7 +400,7 @@ namespace octoon
 	}
 
 	void
-	VMDLoader::save(std::ostream& stream, const Animation& animation) noexcept(false)
+	VMDImporter::save(std::ostream& stream, const Animation& animation) noexcept(false)
 	{
 		auto sjis = utf82sjis(animation.name);
 
@@ -569,17 +571,24 @@ namespace octoon
 	}
 
 	std::shared_ptr<Animation>
-	VMDLoader::load(const std::filesystem::path& filepath) noexcept(false)
+	VMDImporter::load(const std::filesystem::path& filepath) noexcept(false)
 	{
 		std::ifstream stream(filepath, std::ios_base::binary);
 		if (stream)
-			return load(stream);
+		{
+			auto motion = load(stream);
+			if (motion)
+			{
+				if (motion->getName().empty())
+					motion->setName((char*)filepath.filename().u8string().c_str());
+			}
+		}
 
 		return nullptr;
 	}
 
 	void
-	VMDLoader::save(const std::filesystem::path& filepath, const Animation& animation) noexcept(false)
+	VMDImporter::save(const std::filesystem::path& filepath, const Animation& animation) noexcept(false)
 	{
 		std::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
 		if (stream)

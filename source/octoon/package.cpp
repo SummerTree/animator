@@ -1,12 +1,10 @@
 #include <octoon/package.h>
 #include <octoon/runtime/md5.h>
 #include <octoon/runtime/guid.h>
-#include <octoon/vmd_loader.h>
-#include <octoon/pmx_loader.h>
-#include <octoon/obj_loader.h>
-#include <octoon/ass_loader.h>
-#include <octoon/fbx_loader.h>
-#include <octoon/asset_importer.h>
+#include <octoon/pmx.h>
+#include <octoon/vmd_importer.h>
+#include <octoon/fbx_importer.h>
+#include <octoon/texture_importer.h>
 #include <octoon/asset_database.h>
 #include <octoon/mesh_animation_component.h>
 
@@ -101,7 +99,7 @@ namespace octoon
 			}
 			else if (ext == u8".fbx")
 			{
-				auto dependencies = octoon::FBXLoader::getDependencies(diskPath);
+				auto dependencies = octoon::FBXImporter::getDependencies(diskPath);
 
 				std::map<std::filesystem::path, std::wstring> diskPaths;
 				for (auto& it : dependencies)
@@ -188,7 +186,7 @@ namespace octoon
 			std::ofstream stream(std::filesystem::path(this->rootPath_).append(relativePath.wstring()), io::ios_base::binary);
 			if (stream)
 			{
-				VMDLoader::save(stream, *asset);
+				VMDImporter::save(stream, *asset);
 				this->createMetadataAtPath(relativePath);
 			}
 			else

@@ -1,14 +1,15 @@
 #ifndef OCTOON_ASSET_PREVIEW_H_
 #define OCTOON_ASSET_PREVIEW_H_
 
-#include <octoon/pmx_loader.h>
+#include <octoon/game_object.h>
 #include <octoon/texture/texture.h>
-#include <octoon/material/mesh_standard_material.h>
+#include <octoon/material/material.h>
 #include <octoon/animation/animation.h>
 #include <octoon/light/directional_light.h>
 #include <octoon/light/environment_light.h>
 #include <octoon/camera/film_camera.h>
 #include <octoon/video/render_scene.h>
+#include <octoon/runtime/singleton.h>
 #include <filesystem>
 #include <set>
 

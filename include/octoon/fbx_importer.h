@@ -2,15 +2,17 @@
 #define OCTOON_FBX_LOADER_H_
 
 #include <octoon/game_object.h>
+#include <octoon/asset_importer.h>
 #include <filesystem>
 
 namespace octoon
 {
-	class OCTOON_EXPORT FBXLoader final
+	class OCTOON_EXPORT FBXImporter final : public AssetImporter
 	{
+		OctoonDeclareSubClass(FBXImporter, AssetImporter)
 	public:
-		FBXLoader() noexcept;
-		~FBXLoader() noexcept;
+		FBXImporter() noexcept;
+		~FBXImporter() noexcept;
 
 		static bool doCanRead(std::istream& stream) noexcept;
 		static bool doCanRead(const char* type) noexcept;
@@ -19,8 +21,8 @@ namespace octoon
 		static std::shared_ptr<GameObject> load(const std::filesystem::path& filepath) noexcept(false);
 
 	private:
-		FBXLoader(const FBXLoader&) = delete;
-		FBXLoader& operator=(const FBXLoader&) = delete;
+		FBXImporter(const FBXImporter&) = delete;
+		FBXImporter& operator=(const FBXImporter&) = delete;
 	};
 }
 

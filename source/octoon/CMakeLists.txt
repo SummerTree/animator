@@ -153,30 +153,36 @@ SOURCE_GROUP("system\\io" FILES ${IO_FEATURES_LIST})
 SET(LOADER_LIST
 	${HEADER_PATH}/pmx.h
 	${SOURCE_PATH}/pmx.cpp
-	${HEADER_PATH}/pmx_loader.h
-	${SOURCE_PATH}/pmx_loader.cpp
-	${HEADER_PATH}/fbx_loader.h
-	${SOURCE_PATH}/fbx_loader.cpp
-	${HEADER_PATH}/vmd_loader.h
-	${SOURCE_PATH}/vmd_loader.cpp
-	${HEADER_PATH}/mdl_loader.h
-	${SOURCE_PATH}/mdl_loader.cpp
 	${HEADER_PATH}/PMREM_loader.h
 	${SOURCE_PATH}/PMREM_loader.cpp
-	${HEADER_PATH}/ass_loader.h
-	${SOURCE_PATH}/ass_loader.cpp
-	${HEADER_PATH}/obj_loader.h
-	${SOURCE_PATH}/obj_loader.cpp
+	${HEADER_PATH}/mdl_loader.h
+	${SOURCE_PATH}/mdl_loader.cpp
 	${HEADER_PATH}/audio_loader.h
 	${SOURCE_PATH}/audio_loader.cpp
 )
 SOURCE_GROUP("system\\loader" FILES ${LOADER_LIST})
 
+SET(IMPORTER_LIST
+	${HEADER_PATH}/pmx_importer.h
+	${SOURCE_PATH}/pmx_importer.cpp
+	${HEADER_PATH}/fbx_importer.h
+	${SOURCE_PATH}/fbx_importer.cpp
+	${HEADER_PATH}/vmd_importer.h
+	${SOURCE_PATH}/vmd_importer.cpp
+	${HEADER_PATH}/ass_importer.h
+	${SOURCE_PATH}/ass_importer.cpp
+	${HEADER_PATH}/obj_importer.h
+	${SOURCE_PATH}/obj_importer.cpp
+	${HEADER_PATH}/texture_importer.h
+	${SOURCE_PATH}/texture_importer.cpp
+	${HEADER_PATH}/asset_importer.h
+	${SOURCE_PATH}/asset_importer.cpp
+)
+SOURCE_GROUP("system\\importer" FILES ${IMPORTER_LIST})
+
 SET(EDITOR_LIST
 	${HEADER_PATH}/asset_database.h
 	${SOURCE_PATH}/asset_database.cpp
-	${HEADER_PATH}/asset_importer.h
-	${SOURCE_PATH}/asset_importer.cpp
 	${HEADER_PATH}/asset_bundle.h
 	${SOURCE_PATH}/asset_bundle.cpp
 	${HEADER_PATH}/asset_preview.h
@@ -247,6 +253,7 @@ SOURCE_GROUP("system\\animation" FILES ${ANIMATION_FEATURES_LIST})
 LIST(APPEND OCTOON_LIST ${GAMEBASE_LIST})
 LIST(APPEND OCTOON_LIST ${HELPER_LIST})
 LIST(APPEND OCTOON_LIST ${LOADER_LIST})
+LIST(APPEND OCTOON_LIST ${IMPORTER_LIST})
 LIST(APPEND OCTOON_LIST ${EDITOR_LIST})
 
 IF(OCTOON_FEATURE_IO_ENABLE)

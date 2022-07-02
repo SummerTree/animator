@@ -1,4 +1,4 @@
-#include <octoon/pmx_loader.h>
+#include <octoon/pmx_importer.h>
 #include <octoon/pmx.h>
 
 #include <octoon/runtime/string.h>
@@ -30,6 +30,16 @@
 
 namespace octoon
 {
+	OctoonImplementSubClass(PMXImporter, AssetImporter, "PMXImporter")
+
+	PMXImporter::PMXImporter() noexcept
+	{
+	}
+
+	PMXImporter::~PMXImporter()
+	{
+	}
+
 	void createBones(const PMX& pmx, GameObjects& bones) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
@@ -536,7 +546,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<GameObject>
-	PMXLoader::load(const std::filesystem::path& path, PMXLoadFlags flags) noexcept(false)
+	PMXImporter::load(const std::filesystem::path& path) noexcept(false)
 	{
 		PMX pmx;
 		if (!PMX::load(path, pmx))
@@ -567,6 +577,9 @@ namespace octoon
 			createMorph(pmx, actor);
 			createClothes(pmx, actor, bones);
 
+			for (auto it : actor->getComponents())
+				AssetImporter::instance()->addRemap(it, path);
+
 			return actor;
 		}
 
@@ -574,7 +587,7 @@ namespace octoon
 	}
 
 	bool
-	PMXLoader::save(const GameObject& gameObject, PMX& pmx, const std::filesystem::path& path) noexcept(false)
+	PMXImporter::save(const GameObject& gameObject, PMX& pmx, const std::filesystem::path& path) noexcept(false)
 	{
 		if (!gameObject.getName().empty())
 		{
@@ -936,7 +949,7 @@ namespace octoon
 	}
 
 	bool
-	PMXLoader::save(const GameObject& gameObject, const std::filesystem::path& path) noexcept(false)
+	PMXImporter::save(const GameObject& gameObject, const std::filesystem::path& path) noexcept(false)
 	{
 		auto stream = std::ofstream(path, std::ios_base::binary);
 		if (stream)

@@ -1,5 +1,5 @@
 #include "ass_loader.h"
-#include <octoon/ass_loader.h>
+#include <octoon/ass_importer.h>
 
 namespace unreal
 {
@@ -14,7 +14,7 @@ namespace unreal
 	void
 	AssLoader::load(UnrealProfile& profile, const std::filesystem::path& path) noexcept(false)
 	{
-		for (auto& it : octoon::ASSLoader::load(path))
+		for (auto& it : octoon::ASSImporter::load(path))
 		{
 			if (it->getComponent<octoon::CameraComponent>())
 				profile.cameraModule->camera = it;

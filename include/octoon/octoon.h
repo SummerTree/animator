@@ -37,6 +37,7 @@
 #include <octoon/material/mesh_basic_material.h>
 #include <octoon/material/mesh_standard_material.h>
 
+#include <octoon/animation/animation.h>
 #include <octoon/animation/animation_curve.h>
 #include <octoon/animation/animation_clip.h>
 #include <octoon/animation/path_interpolator.h>
@@ -84,10 +85,7 @@
 #include <octoon/editor_camera_component.h>
 #include <octoon/first_person_camera_component.h>
 
-#include <octoon/vmd_loader.h>
-#include <octoon/pmx_loader.h>
 #include <octoon/PMREM_loader.h>
-#include <octoon/audio_loader.h>
 
 #include <octoon/raycaster.h>
 #include <octoon/ortho_camera_helper.h>
@@ -101,8 +99,6 @@
 #include <octoon/cone_helper.h>
 #include <octoon/text_helper.h>
 #include <octoon/volume_helper.h>
-
-#include <octoon/animation/animation.h>
 
 #include <octoon/ui/imgui.h>
 

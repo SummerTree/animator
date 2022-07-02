@@ -1,4 +1,4 @@
-#include <octoon/fbx_loader.h>
+#include <octoon/fbx_importer.h>
 #include <octoon/asset_importer.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/transform_component.h>
@@ -11,37 +11,39 @@
 #include <set>
 #include <fbxsdk.h>
 
-static auto KFCURVENODE_T_X = "X";
-static auto KFCURVENODE_T_Y = "Y";
-static auto KFCURVENODE_T_Z = "Z";
-
-static auto KFCURVENODE_R_X = "X";
-static auto KFCURVENODE_R_Y = "Y";
-static auto KFCURVENODE_R_Z = "Z";
-static auto KFCURVENODE_R_W = "W";
-
-static auto KFCURVENODE_S_X = "X";
-static auto KFCURVENODE_S_Y = "Y";
-static auto KFCURVENODE_S_Z = "Z";
-
 namespace octoon
 {
-	FBXLoader::FBXLoader() noexcept
+	static auto KFCURVENODE_T_X = "X";
+	static auto KFCURVENODE_T_Y = "Y";
+	static auto KFCURVENODE_T_Z = "Z";
+
+	static auto KFCURVENODE_R_X = "X";
+	static auto KFCURVENODE_R_Y = "Y";
+	static auto KFCURVENODE_R_Z = "Z";
+	static auto KFCURVENODE_R_W = "W";
+
+	static auto KFCURVENODE_S_X = "X";
+	static auto KFCURVENODE_S_Y = "Y";
+	static auto KFCURVENODE_S_Z = "Z";
+
+	OctoonImplementSubClass(FBXImporter, AssetImporter, "FBXImporter")
+
+	FBXImporter::FBXImporter() noexcept
 	{
 	}
 
-	FBXLoader::~FBXLoader() noexcept
+	FBXImporter::~FBXImporter() noexcept
 	{
 	}
 
 	bool
-	FBXLoader::doCanRead(std::istream& stream) noexcept
+	FBXImporter::doCanRead(std::istream& stream) noexcept
 	{
 		return false;
 	}
 
 	bool
-	FBXLoader::doCanRead(const char* type) noexcept
+	FBXImporter::doCanRead(const char* type) noexcept
 	{
 		return std::strncmp(type, "fbx", 3) == 0;
 	}
@@ -747,7 +749,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<GameObject>
-	FBXLoader::load(const std::filesystem::path& filepath) noexcept(false)
+	FBXImporter::load(const std::filesystem::path& filepath) noexcept(false)
 	{
 		auto lsdkManager = FbxManager::Create();
 		if (lsdkManager)
@@ -785,6 +787,9 @@ namespace octoon
 						object->addChild(std::move(node));
 					}
 					
+					for (auto it : object->getComponents())
+						AssetImporter::instance()->addRemap(it, filepath);
+
 					if (object->getChildCount() > 1)
 					{
 						AssetImporter::instance()->setAssetPath(object, filepath);
@@ -860,7 +865,7 @@ namespace octoon
 	}
 
 	std::vector<std::filesystem::path>
-	FBXLoader::getDependencies(const std::filesystem::path& filepath) noexcept(false)
+	FBXImporter::getDependencies(const std::filesystem::path& filepath) noexcept(false)
 	{
 		std::vector<std::filesystem::path> dependencies;
 

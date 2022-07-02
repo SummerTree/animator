@@ -5,7 +5,6 @@
 #include <octoon/texture/texture.h>
 #include <octoon/material/material.h>
 #include <octoon/animation/animation.h>
-#include <octoon/pmx_loader.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/asset_bundle.h>
 #include <filesystem>

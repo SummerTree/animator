@@ -1,7 +1,7 @@
 #ifndef OCTOON_VMD_LOADER_H_
 #define OCTOON_VMD_LOADER_H_
 
-#include <iostream>
+#include <octoon/asset_importer.h>
 #include <octoon/animation/animation.h>
 #include <filesystem>
 
@@ -144,24 +144,25 @@ namespace octoon
 		bool save(const std::filesystem::path& filepath) noexcept(false);
 	};
 
-	class OCTOON_EXPORT VMDLoader final
+	class OCTOON_EXPORT VMDImporter final : public AssetImporter
 	{
+		OctoonDeclareSubClass(VMDImporter, AssetImporter)
 	public:
-		VMDLoader() noexcept;
-		~VMDLoader() noexcept;
+		VMDImporter() noexcept;
+		~VMDImporter() noexcept;
 
 		static bool doCanRead(std::istream& stream) noexcept;
 		static bool doCanRead(const char* type) noexcept;
 
-		static std::shared_ptr<Animation> load(std::istream& stream) noexcept(false);
-		static std::shared_ptr<Animation> load(const std::filesystem::path& filepath) noexcept(false);
+		std::shared_ptr<Animation> load(std::istream& stream) noexcept(false);
+		std::shared_ptr<Animation> load(const std::filesystem::path& filepath) noexcept(false);
 
 		static void save(std::ostream& stream, const Animation& animation) noexcept(false);
 		static void save(const std::filesystem::path& filepath, const Animation& animation) noexcept(false);
 
 	private:
-		VMDLoader(const VMDLoader&) = delete;
-		VMDLoader& operator=(const VMDLoader&) = delete;
+		VMDImporter(const VMDImporter&) = delete;
+		VMDImporter& operator=(const VMDImporter&) = delete;
 	};
 }
 

@@ -1,5 +1,4 @@
-#include <octoon/ass_loader.h>
-#include <octoon/asset_importer.h>
+#include <octoon/ass_importer.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/transform_component.h>
 #include <octoon/point_light_component.h>
@@ -8,6 +7,8 @@
 
 namespace octoon
 {
+	OctoonImplementSubClass(ASSImporter, AssetImporter, "ASSImporter")
+
 	struct ASS_Material
 	{
 		math::float3 albedo;
@@ -40,28 +41,28 @@ namespace octoon
 		std::string type;
 	};
 
-	ASSLoader::ASSLoader() noexcept
+	ASSImporter::ASSImporter() noexcept
 	{
 	}
 
-	ASSLoader::~ASSLoader() noexcept
+	ASSImporter::~ASSImporter() noexcept
 	{
 	}
 
 	bool
-	ASSLoader::doCanRead(io::istream& stream) noexcept
+	ASSImporter::doCanRead(io::istream& stream) noexcept
 	{
 		return false;
 	}
 
 	bool
-	ASSLoader::doCanRead(const char* type) noexcept
+	ASSImporter::doCanRead(const char* type) noexcept
 	{
 		return std::strncmp(type, "ass", 3) == 0;
 	}
 
 	GameObjects
-	ASSLoader::load(const std::filesystem::path& path) noexcept(false)
+	ASSImporter::load(const std::filesystem::path& path) noexcept(false)
 	{
 		static constexpr int kMaxLineLength = 2048;
 

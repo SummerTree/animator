@@ -3,15 +3,17 @@
 
 #include <octoon/io/iostream.h>
 #include <octoon/game_object.h>
+#include <octoon/asset_importer.h>
 #include <filesystem>
 
 namespace octoon
 {
-	class OCTOON_EXPORT ASSLoader final
+	class OCTOON_EXPORT ASSImporter final : public AssetImporter
 	{
+		OctoonDeclareSubClass(ASSImporter, AssetImporter)
 	public:
-		ASSLoader() noexcept;
-		~ASSLoader() noexcept;
+		ASSImporter() noexcept;
+		~ASSImporter() noexcept;
 
 		static bool doCanRead(io::istream& stream) noexcept;
 		static bool doCanRead(const char* type) noexcept;
@@ -19,8 +21,8 @@ namespace octoon
 		static GameObjects load(const std::filesystem::path& filepath) noexcept(false);
 
 	private:
-		ASSLoader(const ASSLoader&) = delete;
-		ASSLoader& operator=(const ASSLoader&) = delete;
+		ASSImporter(const ASSImporter&) = delete;
+		ASSImporter& operator=(const ASSImporter&) = delete;
 	};
 }
 

@@ -1,7 +1,6 @@
 #ifndef OCTOON_ASSET_DATABASE_H_
 #define OCTOON_ASSET_DATABASE_H_
 
-#include <octoon/pmx_loader.h>
 #include <octoon/texture/texture.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/animation/animation.h>

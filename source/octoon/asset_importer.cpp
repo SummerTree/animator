@@ -1,16 +1,18 @@
 #include <octoon/asset_importer.h>
-#include <octoon/vmd_loader.h>
-#include <octoon/pmx_loader.h>
-#include <octoon/obj_loader.h>
-#include <octoon/ass_loader.h>
-#include <octoon/fbx_loader.h>
-#include <octoon/texture/texture.h>
+#include <octoon/texture_importer.h>
+#include <octoon/vmd_importer.h>
+#include <octoon/pmx_importer.h>
+#include <octoon/obj_importer.h>
+#include <octoon/ass_importer.h>
+#include <octoon/fbx_importer.h>
 #include <octoon/mesh_animation_component.h>
 
 namespace octoon
 {
 	OctoonImplementSingleton(AssetImporter)
 	OctoonImplementSubClass(AssetImporter, Object, "AssetImporter")
+
+	std::map<std::filesystem::path, std::shared_ptr<const AssetImporter>> AssetImporter::assets_;
 
 	AssetImporter::AssetImporter() noexcept
 	{
@@ -38,6 +40,14 @@ namespace octoon
 		{
 			assetToPath_[asset] = path;
 		}
+	}
+
+	std::shared_ptr<const AssetImporter>
+	AssetImporter::getAtPath(const std::filesystem::path& path) const noexcept
+	{
+		if (assets_.find(path) != assets_.end())
+			return assets_.at(path);
+		return nullptr;
 	}
 
 	std::filesystem::path
@@ -97,49 +107,48 @@ namespace octoon
 
 		if (ext == u8".vmd")
 		{
-			auto motion = VMDLoader::load(path);
+			auto motionImporter = std::make_shared<VMDImporter>();
+			auto motion = motionImporter->load(path);
 			if (motion)
 			{
 				caches_.push_back(motion);
-				if (motion->getName().empty())
-					motion->setName((char*)path.filename().u8string().c_str());
-
 				assetToPath_[motion] = path;
 				return std::move(motion);
 			}
 		}
 		else if (ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
-			auto texture = std::make_shared<Texture>();
-			if (texture->load(path))
+			auto textureImporter = std::make_shared<TextureImporter>();
+			auto texture = textureImporter->load(path);
+			if (texture)
 			{
+				this->assets_[path] = textureImporter;
+
 				caches_.push_back(texture);
-				texture->setName((char*)path.filename().u8string().c_str());
 				assetToPath_[texture] = path;
-				return std::move(texture);
+				return texture;
 			}
 		}
 		else if (ext == u8".pmx")
 		{
-			auto model = PMXLoader::load(path, octoon::PMXLoadFlagBits::AllBit);
+			auto modelImporter = std::make_shared<PMXImporter>();
+			auto model = modelImporter->load(path);
 			if (model)
 			{
-				for (auto it : model->getComponents())
-					this->addRemap(it, path);
+				this->assets_[path] = modelImporter;
 
 				caches_.push_back(model);
 				assetToPath_[model] = path;
-
-				return std::move(model);
+				return model;
 			}
 		}
 		else if (ext == u8".obj")
 		{
-			auto model = OBJLoader::load(path);
+			auto modelImporter = std::make_shared<OBJImporter>();
+			auto model = modelImporter->load(path);
 			if (model)
 			{
-				for (auto it : model->getComponents())
-					this->addRemap(it, path);
+				this->assets_[path] = modelImporter;
 
 				caches_.push_back(model);
 				assetToPath_[model] = path;
@@ -148,11 +157,11 @@ namespace octoon
 		}
 		else if (ext == u8".fbx")
 		{
-			auto model = FBXLoader::load(path);
+			auto modelImporter = std::make_shared<FBXImporter>();
+			auto model = modelImporter->load(path);
 			if (model)
 			{
-				for (auto it : model->getComponents())
-					this->addRemap(it, path);
+				this->assets_[path] = modelImporter;
 
 				caches_.push_back(model);
 				assetToPath_[model] = path;
