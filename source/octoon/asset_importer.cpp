@@ -69,7 +69,7 @@ namespace octoon
 	}
 
 	void
-	AssetImporter::addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
+	AssetImporter::addRemap(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
 	{
 		if (!this->isSubAsset(asset))
 		{
@@ -124,7 +124,7 @@ namespace octoon
 			if (model)
 			{
 				for (auto it : model->getComponents())
-					this->addObjectToAsset(it, path);
+					this->addRemap(it, path);
 
 				caches_.push_back(model);
 				assetToPath_[model] = path;
@@ -138,7 +138,7 @@ namespace octoon
 			if (model)
 			{
 				for (auto it : model->getComponents())
-					this->addObjectToAsset(it, path);
+					this->addRemap(it, path);
 
 				caches_.push_back(model);
 				assetToPath_[model] = path;
@@ -151,7 +151,7 @@ namespace octoon
 			if (model)
 			{
 				for (auto it : model->getComponents())
-					this->addObjectToAsset(it, path);
+					this->addRemap(it, path);
 
 				caches_.push_back(model);
 				assetToPath_[model] = path;
@@ -169,7 +169,7 @@ namespace octoon
 				assetToPath_[model] = path;
 
 				for (auto it : model->getComponents())
-					this->addObjectToAsset(it, path);
+					this->addRemap(it, path);
 
 				return std::move(model);
 			}

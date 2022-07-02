@@ -248,7 +248,7 @@ namespace octoon
 			mesh->computeBoundingBox();
 			mesh->computeVertexNormals();
 
-			octoon::AssetImporter::instance()->addObjectToAsset(mesh, path);
+			octoon::AssetImporter::instance()->addRemap(mesh, path);
 
 			auto object = std::make_shared<GameObject>();
 			object->addComponent<MeshFilterComponent>(std::move(mesh));
@@ -260,7 +260,7 @@ namespace octoon
 			for (std::size_t i = 0; i < shapesMaterials.size(); i++)
 			{
 				meshRender->setMaterial(shapesMaterials[i] ? shapesMaterials[i] : std::make_shared<MeshStandardMaterial>(), i);
-				octoon::AssetImporter::instance()->addObjectToAsset(meshRender->getMaterial(i), path);
+				octoon::AssetImporter::instance()->addRemap(meshRender->getMaterial(i), path);
 			}
 
 			return object;

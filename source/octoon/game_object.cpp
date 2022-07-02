@@ -776,7 +776,7 @@ namespace octoon
 
 			std::filesystem::path assetPath = AssetImporter::instance()->getAssetPath(it->shared_from_this());
 			if (!assetPath.empty())
-				AssetImporter::instance()->addObjectToAsset(component, assetPath);
+				AssetImporter::instance()->addRemap(component, assetPath);
 		}
 
 		for (auto& it : children_)
@@ -786,7 +786,7 @@ namespace octoon
 
 			std::filesystem::path assetPath = AssetImporter::instance()->getAssetPath(it->shared_from_this());
 			if (!assetPath.empty())
-				AssetImporter::instance()->addObjectToAsset(child, assetPath);
+				AssetImporter::instance()->addRemap(child, assetPath);
 		}
 
 		return instance;

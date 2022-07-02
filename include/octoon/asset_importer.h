@@ -17,7 +17,7 @@ namespace octoon
 		virtual ~AssetImporter() noexcept;
 
 		bool isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept;
-		void addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path);
+		void addRemap(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path);
 
 		void setAssetPath(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path) noexcept;
 

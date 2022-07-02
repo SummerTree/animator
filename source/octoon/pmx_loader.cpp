@@ -372,7 +372,7 @@ namespace octoon
 					{
 						texture->apply();
 						textureMap[fullpath] = std::move(texture);
-						octoon::AssetDatabase::instance()->addObjectToAsset(texture, path);
+						octoon::AssetDatabase::instance()->addRemap(texture, path);
 					}
 				}
 			}
@@ -424,7 +424,7 @@ namespace octoon
 				material->setBlendDest(BlendMode::OneMinusSrcAlpha);
 			}
 
-			octoon::AssetDatabase::instance()->addObjectToAsset(material, path);
+			octoon::AssetDatabase::instance()->addRemap(material, path);
 
 			materials.emplace_back(std::move(material));
 		}
@@ -506,7 +506,7 @@ namespace octoon
 
 		mesh->computeBoundingBox();
 
-		octoon::AssetImporter::instance()->addObjectToAsset(mesh, path);
+		octoon::AssetImporter::instance()->addRemap(mesh, path);
 
 		object->addComponent<MeshFilterComponent>(std::move(mesh));
 

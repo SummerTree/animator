@@ -390,9 +390,9 @@ namespace octoon
 	}
 
 	void
-	AssetDatabase::addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
+	AssetDatabase::addRemap(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
 	{
-		return AssetImporter::instance()->addObjectToAsset(asset, path);
+		return AssetImporter::instance()->addRemap(asset, path);
 	}
 
 	bool

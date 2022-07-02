@@ -280,7 +280,7 @@ namespace octoon
 				if (texture)
 				{
 					texture->apply();
-					AssetImporter::instance()->addObjectToAsset(texture, path);
+					AssetImporter::instance()->addRemap(texture, path);
 					return texture;
 				}
 			}
@@ -607,7 +607,7 @@ namespace octoon
 			mesh->setTexcoordArray(std::move(texcoords));
 			mesh->setIndicesArray(std::move(indices));
 
-			AssetImporter::instance()->addObjectToAsset(mesh, path);
+			AssetImporter::instance()->addRemap(mesh, path);
 
 			auto gameObject = std::make_shared<GameObject>();
 			gameObject->setName(node->GetName());
@@ -624,14 +624,14 @@ namespace octoon
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
 					auto material = materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>();
-					AssetImporter::instance()->addObjectToAsset(material, path);
+					AssetImporter::instance()->addRemap(material, path);
 					meshRenderer->setMaterial(std::move(material), i);
 				}
 			}
 			else
 			{
 				auto material = std::make_shared<MeshStandardMaterial>();
-				AssetImporter::instance()->addObjectToAsset(material, path);
+				AssetImporter::instance()->addRemap(material, path);
 				meshRenderer->setMaterial(std::move(material));
 			}
 
@@ -736,7 +736,7 @@ namespace octoon
 				for (int j = 0; j < node->GetChildCount(); j++)
 				{
 					auto child = ProcessNode(scene, node->GetChild(j), path);
-					AssetImporter::instance()->addObjectToAsset(child, path);
+					AssetImporter::instance()->addRemap(child, path);
 					object->addChild(child);
 				}
 				break;
@@ -790,7 +790,7 @@ namespace octoon
 						AssetImporter::instance()->setAssetPath(object, filepath);
 
 						for (int i = 0; i < object->getChildCount(); i++)
-							AssetImporter::instance()->addObjectToAsset(object->getChild(i), filepath);
+							AssetImporter::instance()->addRemap(object->getChild(i), filepath);
 
 						return object;
 					}
