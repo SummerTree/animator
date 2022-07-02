@@ -12,7 +12,6 @@ namespace octoon
 	OctoonImplementSingleton(AssetImporter)
 	OctoonImplementSubClass(AssetImporter, Object, "AssetImporter")
 
-	std::vector<std::shared_ptr<const Object>> AssetImporter::caches_;
 	std::map<std::filesystem::path, std::shared_ptr<const AssetImporter>> AssetImporter::assets_;
 	std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> AssetImporter::assetToPath_;
 	std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> AssetImporter::subAssetToPath_;
@@ -23,6 +22,14 @@ namespace octoon
 
 	AssetImporter::~AssetImporter() noexcept
 	{
+	}
+
+	std::shared_ptr<const AssetImporter>
+	AssetImporter::getAtPath(const std::filesystem::path& path) const noexcept
+	{
+		if (assets_.find(path) != assets_.end())
+			return assets_.at(path);
+		return nullptr;
 	}
 
 	void
@@ -43,14 +50,6 @@ namespace octoon
 		{
 			assetToPath_[asset] = path;
 		}
-	}
-
-	std::shared_ptr<const AssetImporter>
-	AssetImporter::getAtPath(const std::filesystem::path& path) const noexcept
-	{
-		if (assets_.find(path) != assets_.end())
-			return assets_.at(path);
-		return nullptr;
 	}
 
 	std::filesystem::path
@@ -87,18 +86,12 @@ namespace octoon
 	{
 		if (!this->isSubAsset(subAsset))
 		{
-			this->subAssetToPath_[subAsset] = assetPath_;
+			this->subAssetToPath_[asset] = assetPath_;
 		}
 		else
 		{
 			throw std::runtime_error(std::string("Add object to path ") + (char*)assetPath_.u8string().c_str() + " failed.");
 		}
-	}
-
-	void
-	AssetImporter::unload() noexcept
-	{
-		caches_.clear();
 	}
 
 	std::shared_ptr<Object>
@@ -116,7 +109,6 @@ namespace octoon
 			{
 				this->assets_[path] = motionImporter;
 
-				caches_.push_back(motion);
 				assetToPath_[motion] = path;
 				return std::move(motion);
 			}
@@ -129,7 +121,6 @@ namespace octoon
 			{
 				this->assets_[path] = textureImporter;
 
-				caches_.push_back(texture);
 				assetToPath_[texture] = path;
 				return texture;
 			}
@@ -142,7 +133,6 @@ namespace octoon
 			{
 				this->assets_[path] = modelImporter;
 
-				caches_.push_back(model);
 				assetToPath_[model] = path;
 				return model;
 			}
@@ -155,7 +145,6 @@ namespace octoon
 			{
 				this->assets_[path] = modelImporter;
 
-				caches_.push_back(model);
 				assetToPath_[model] = path;
 				return std::move(model);
 			}
@@ -168,7 +157,6 @@ namespace octoon
 			{
 				this->assets_[path] = modelImporter;
 
-				caches_.push_back(model);
 				assetToPath_[model] = path;
 				return std::move(model);
 			}
@@ -178,7 +166,6 @@ namespace octoon
 			auto model = std::make_shared<GameObject>();
 			if (model)
 			{
-				caches_.push_back(model);
 				auto alembic = model->addComponent<MeshAnimationComponent>();
 				alembic->setFilePath(path);
 				assetToPath_[model] = path;

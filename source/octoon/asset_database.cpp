@@ -189,8 +189,6 @@ namespace octoon
 
 		for (auto& package : packages_)
 			package.second->saveAssets();
-
-		AssetImporter::instance()->unload();
 	}
 
 	std::filesystem::path

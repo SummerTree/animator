@@ -891,8 +891,6 @@ namespace octoon
 
 				objectCaches_[relativePath] = object;
 
-				AssetImporter::instance()->unload();
-
 				return object;
 			}
 		}

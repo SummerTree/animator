@@ -41,18 +41,15 @@ namespace octoon
 			return nullptr;
 		}
 
-		void unload() noexcept;
-
 	private:
 		AssetImporter(const AssetImporter&) = delete;
 		AssetImporter& operator=(const AssetImporter&) = delete;
 
 	protected:
 		std::filesystem::path assetPath_;
+		std::vector<std::weak_ptr<const Object>> externalObjectMap_;
 
 	private:
-		static std::vector<std::shared_ptr<const Object>> caches_;
-
 		static std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> assetToPath_;
 		static std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> subAssetToPath_;
 
