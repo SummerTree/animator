@@ -9,8 +9,9 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT AssetImporter final
+	class OCTOON_EXPORT AssetImporter final : public Object
 	{
+		OctoonDeclareSubClass(AssetImporter, Object)
 		OctoonDeclareSingleton(AssetImporter)
 	public:
 		AssetImporter() noexcept;

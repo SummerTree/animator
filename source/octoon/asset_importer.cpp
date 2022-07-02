@@ -10,6 +10,7 @@
 namespace octoon
 {
 	OctoonImplementSingleton(AssetImporter)
+	OctoonImplementSubClass(AssetImporter, Object, "AssetImporter")
 
 	AssetImporter::AssetImporter() noexcept
 	{
