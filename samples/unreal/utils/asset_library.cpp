@@ -1,6 +1,6 @@
 #include "asset_library.h"
 #include <octoon/runtime/guid.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/asset_preview.h>
 #include <octoon/mesh_renderer_component.h>
 #include <octoon/mdl_loader.h>
@@ -138,7 +138,7 @@ namespace unreal
 
 		if (ext == u8".hdr")
 		{
-			auto texture = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::Texture>(path);
+			auto texture = octoon::AssetImporter::instance()->loadAssetAtPath<octoon::Texture>(path);
 			if (texture)
 			{
 				texture->setMipLevel(8);
@@ -147,13 +147,13 @@ namespace unreal
 		}
 		if (ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
-			auto texture = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::Texture>(path);
+			auto texture = octoon::AssetImporter::instance()->loadAssetAtPath<octoon::Texture>(path);
 			if (texture)
 				return this->importAsset(texture, "Packages/Assets/Textures");
 		}
 		else if (ext == u8".vmd")
 		{
-			auto animation = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::Animation>(path);
+			auto animation = octoon::AssetImporter::instance()->loadAssetAtPath<octoon::Animation>(path);
 			if (animation)
 			{
 				animation->setName((char*)path.filename().u8string().c_str());
@@ -202,7 +202,7 @@ namespace unreal
 		try
 		{
 			auto hdr = (texture->format() == octoon::Format::R32G32B32SFloat) ? true : false;
-			auto ext = octoon::AssetLoader::instance()->getAssetExtension(texture, hdr ? ".hdr" : ".png").string();
+			auto ext = octoon::AssetImporter::instance()->getAssetExtension(texture, hdr ? ".hdr" : ".png").string();
 			auto outputPath = std::filesystem::path(relativePath).append(guid + ext);
 
 			octoon::AssetDatabase::instance()->createFolder(relativePath);
@@ -253,7 +253,7 @@ namespace unreal
 
 		try
 		{
-			auto ext = octoon::AssetLoader::instance()->getAssetExtension(animation, ".vmd").string();
+			auto ext = octoon::AssetImporter::instance()->getAssetExtension(animation, ".vmd").string();
 			auto outputPath = std::filesystem::path(relativePath).append(guid + ext);
 
 			octoon::AssetDatabase::instance()->createFolder(relativePath);

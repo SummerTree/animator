@@ -1,5 +1,5 @@
 #include <octoon/asset_bundle.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/asset_preview.h>
 #include <octoon/asset_database.h>
 #include <octoon/io/fstream.h>
@@ -73,7 +73,7 @@ namespace octoon
 		
 		try
 		{
-			auto ext = AssetLoader::instance()->getAssetExtension(texture, hdr ? ".hdr" : ".png").string();
+			auto ext = AssetImporter::instance()->getAssetExtension(texture, hdr ? ".hdr" : ".png").string();
 			auto outputPath = std::filesystem::path(relativePath).append(uuid + ext);
 
 			this->assetDatabase_->createAsset(texture, outputPath);
@@ -113,7 +113,7 @@ namespace octoon
 
 		try
 		{
-			auto ext = AssetLoader::instance()->getAssetExtension(animation, ".vmd").string();
+			auto ext = AssetImporter::instance()->getAssetExtension(animation, ".vmd").string();
 			auto outputPath = std::filesystem::path(relativePath).append(uuid + ext);
 
 			this->assetDatabase_->createAsset(animation, outputPath);

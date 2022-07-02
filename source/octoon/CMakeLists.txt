@@ -175,8 +175,8 @@ SOURCE_GROUP("system\\loader" FILES ${LOADER_LIST})
 SET(EDITOR_LIST
 	${HEADER_PATH}/asset_database.h
 	${SOURCE_PATH}/asset_database.cpp
-	${HEADER_PATH}/asset_loader.h
-	${SOURCE_PATH}/asset_loader.cpp
+	${HEADER_PATH}/asset_importer.h
+	${SOURCE_PATH}/asset_importer.cpp
 	${HEADER_PATH}/asset_bundle.h
 	${SOURCE_PATH}/asset_bundle.cpp
 	${HEADER_PATH}/asset_preview.h

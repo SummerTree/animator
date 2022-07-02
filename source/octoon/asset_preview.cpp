@@ -1,5 +1,5 @@
 #include <octoon/asset_preview.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/asset_database.h>
 #include <octoon/texture/texture.h>
 #include <octoon/material/mesh_standard_material.h>

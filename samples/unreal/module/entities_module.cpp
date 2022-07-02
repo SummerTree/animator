@@ -1,7 +1,7 @@
 #include "entities_module.h"
 #include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/animator_component.h>
 #include <octoon/skinned_mesh_renderer_component.h>
 #include <octoon/mesh_animation_component.h>
@@ -71,12 +71,12 @@ namespace unreal
 					}
 					else
 					{
-						auto modelPath = octoon::AssetLoader::instance()->getAssetPath(it);
+						auto modelPath = octoon::AssetImporter::instance()->getAssetPath(it);
 						if (!modelPath.empty() && modelPath.is_absolute())
 						{
 							auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
 							octoon::AssetDatabase::instance()->importAsset(modelPath, outputPath);
-							octoon::AssetLoader::instance()->setAssetPath(it, outputPath);
+							octoon::AssetImporter::instance()->setAssetPath(it, outputPath);
 
 							auto uuid = octoon::make_guid();
 							auto path = std::filesystem::path("Assets/Prefabs").append(uuid + ".prefab");

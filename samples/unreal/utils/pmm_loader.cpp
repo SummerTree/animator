@@ -1,5 +1,5 @@
 #include "pmm_loader.h"
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 
 namespace unreal
 {
@@ -21,7 +21,7 @@ namespace unreal
 
 		for (auto& it : pmm.model)
 		{
-			auto object = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::GameObject>(it.path);
+			auto object = octoon::AssetImporter::instance()->loadAssetAtPath<octoon::GameObject>(it.path);
 			if (object)
 			{
 				auto boneClip = std::make_shared<octoon::AnimationClip>();

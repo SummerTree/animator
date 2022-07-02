@@ -3,7 +3,7 @@
 #include <octoon/rigidbody_component.h>
 #include <octoon/skinned_mesh_renderer_component.h>
 #include <octoon/asset_database.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/timer_feature.h>
 #include <octoon/runtime/guid.h>
 
@@ -309,7 +309,7 @@ namespace octoon
 						this->setAvatar(animator->getAvatar());
 				}
 
-				AssetLoader::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
+				AssetImporter::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
 			}
 		}
 	}

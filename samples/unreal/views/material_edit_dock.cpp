@@ -15,8 +15,8 @@
 #include <qtreewidget.h>
 #include <qprogressdialog.h>
 
-#include <octoon/asset_loader.h>
 #include <octoon/asset_preview.h>
+#include <octoon/asset_importer.h>
 #include <octoon/asset_database.h>
 
 namespace unreal
@@ -175,7 +175,7 @@ namespace unreal
 	std::shared_ptr<octoon::Texture>
 	MaterialEditWindow::MaterialUi::setImage(const QString& filepath)
 	{
-		auto textureData = octoon::AssetLoader::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdWString());
+		auto textureData = octoon::AssetImporter::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdWString());
 		auto width = textureData->width();
 		auto height = textureData->height();
 
@@ -1210,47 +1210,47 @@ namespace unreal
 
 		auto colorMap = material_->getColorMap();
 		if (colorMap)
-			this->setAlbedoMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(colorMap).wstring()));
+			this->setAlbedoMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(colorMap).wstring()));
 
 		auto opacityMap = material_->getOpacityMap();
 		if (opacityMap)
-			this->setOpacityMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(opacityMap).wstring()));
+			this->setOpacityMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(opacityMap).wstring()));
 
 		auto normalMap = material_->getNormalMap();
 		if (normalMap)
-			this->setNormalMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(normalMap).wstring()));
+			this->setNormalMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(normalMap).wstring()));
 
 		auto roughnessMap = material_->getRoughnessMap();
 		if (roughnessMap)
-			this->setRoughnessMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(roughnessMap).wstring()));
+			this->setRoughnessMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(roughnessMap).wstring()));
 
 		auto metalnessMap = material_->getMetalnessMap();
 		if (metalnessMap)
-			this->setMetalnessMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(metalnessMap).wstring()));
+			this->setMetalnessMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(metalnessMap).wstring()));
 
 		auto sheenMap = material_->getSheenMap();
 		if (sheenMap)
-			this->setSheenMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(sheenMap).wstring()));
+			this->setSheenMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(sheenMap).wstring()));
 
 		auto clearcoatMap = material_->getClearCoatMap();
 		if (clearcoatMap)
-			this->setClearCoatMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(clearcoatMap).wstring()));
+			this->setClearCoatMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(clearcoatMap).wstring()));
 
 		auto clearcoatRoughnessMap = material_->getClearCoatRoughnessMap();
 		if (clearcoatRoughnessMap)
-			this->setClearCoatRoughnessMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(clearcoatRoughnessMap).wstring()));
+			this->setClearCoatRoughnessMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(clearcoatRoughnessMap).wstring()));
 
 		auto subsurfaceMap = material_->getSubsurfaceMap();
 		if (subsurfaceMap)
-			this->setSubsurfaceMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(subsurfaceMap).wstring()));
+			this->setSubsurfaceMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(subsurfaceMap).wstring()));
 
 		auto subsurfaceColorMap = material_->getSubsurfaceColorMap();
 		if (subsurfaceColorMap)
-			this->setSubsurfaceColorMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(subsurfaceColorMap).wstring()));
+			this->setSubsurfaceColorMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(subsurfaceColorMap).wstring()));
 
 		auto emissiveColorMap = material_->getEmissiveMap();
 		if (emissiveColorMap)
-			this->setEmissiveMap(QString::fromStdWString(octoon::AssetLoader::instance()->getAssetPath(emissiveColorMap).wstring()));
+			this->setEmissiveMap(QString::fromStdWString(octoon::AssetImporter::instance()->getAssetPath(emissiveColorMap).wstring()));
 	}
 
 	void

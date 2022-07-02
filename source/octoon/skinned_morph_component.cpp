@@ -1,6 +1,6 @@
 #include <octoon/skinned_morph_component.h>
 #include <octoon/asset_database.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/runtime/base64.h>
 
 namespace octoon
@@ -97,7 +97,7 @@ namespace octoon
 						}
 					}
 
-					AssetLoader::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
+					AssetImporter::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
 				}
 			}
 			else

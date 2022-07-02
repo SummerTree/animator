@@ -1,5 +1,5 @@
 #include <octoon/fbx_loader.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/transform_component.h>
 #include <octoon/point_light_component.h>
@@ -276,11 +276,11 @@ namespace octoon
 
 			if (std::filesystem::exists(path))
 			{
-				auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(path);
+				auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(path);
 				if (texture)
 				{
 					texture->apply();
-					AssetLoader::instance()->addObjectToAsset(texture, path);
+					AssetImporter::instance()->addObjectToAsset(texture, path);
 					return texture;
 				}
 			}
@@ -607,7 +607,7 @@ namespace octoon
 			mesh->setTexcoordArray(std::move(texcoords));
 			mesh->setIndicesArray(std::move(indices));
 
-			AssetLoader::instance()->addObjectToAsset(mesh, path);
+			AssetImporter::instance()->addObjectToAsset(mesh, path);
 
 			auto gameObject = std::make_shared<GameObject>();
 			gameObject->setName(node->GetName());
@@ -624,14 +624,14 @@ namespace octoon
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
 					auto material = materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>();
-					AssetLoader::instance()->addObjectToAsset(material, path);
+					AssetImporter::instance()->addObjectToAsset(material, path);
 					meshRenderer->setMaterial(std::move(material), i);
 				}
 			}
 			else
 			{
 				auto material = std::make_shared<MeshStandardMaterial>();
-				AssetLoader::instance()->addObjectToAsset(material, path);
+				AssetImporter::instance()->addObjectToAsset(material, path);
 				meshRenderer->setMaterial(std::move(material));
 			}
 
@@ -736,7 +736,7 @@ namespace octoon
 				for (int j = 0; j < node->GetChildCount(); j++)
 				{
 					auto child = ProcessNode(scene, node->GetChild(j), path);
-					AssetLoader::instance()->addObjectToAsset(child, path);
+					AssetImporter::instance()->addObjectToAsset(child, path);
 					object->addChild(child);
 				}
 				break;
@@ -781,22 +781,22 @@ namespace octoon
 					for (int i = 0; i < rootNode->GetChildCount(); i++)
 					{
 						auto node = ProcessNode(scene, rootNode->GetChild(i), filepath);
-						AssetLoader::instance()->setAssetPath(node, filepath);
+						AssetImporter::instance()->setAssetPath(node, filepath);
 						object->addChild(std::move(node));
 					}
 					
 					if (object->getChildCount() > 1)
 					{
-						AssetLoader::instance()->setAssetPath(object, filepath);
+						AssetImporter::instance()->setAssetPath(object, filepath);
 
 						for (int i = 0; i < object->getChildCount(); i++)
-							AssetLoader::instance()->addObjectToAsset(object->getChild(i), filepath);
+							AssetImporter::instance()->addObjectToAsset(object->getChild(i), filepath);
 
 						return object;
 					}
 					else
 					{
-						AssetLoader::instance()->setAssetPath(object->getChild(0), filepath);
+						AssetImporter::instance()->setAssetPath(object->getChild(0), filepath);
 						return object->getChild(0);
 					}
 				}

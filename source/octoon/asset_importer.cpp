@@ -1,4 +1,4 @@
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/vmd_loader.h>
 #include <octoon/pmx_loader.h>
 #include <octoon/obj_loader.h>
@@ -9,18 +9,18 @@
 
 namespace octoon
 {
-	OctoonImplementSingleton(AssetLoader)
+	OctoonImplementSingleton(AssetImporter)
 
-	AssetLoader::AssetLoader() noexcept
+	AssetImporter::AssetImporter() noexcept
 	{
 	}
 
-	AssetLoader::~AssetLoader() noexcept
+	AssetImporter::~AssetImporter() noexcept
 	{
 	}
 
 	void
-	AssetLoader::setAssetPath(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path) noexcept
+	AssetImporter::setAssetPath(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path) noexcept
 	{
 		auto it = assetToPath_.find(asset);
 		if (it != assetToPath_.end())
@@ -40,7 +40,7 @@ namespace octoon
 	}
 
 	std::filesystem::path
-	AssetLoader::getAssetPath(const std::shared_ptr<const Object>& object) const noexcept
+	AssetImporter::getAssetPath(const std::shared_ptr<const Object>& object) const noexcept
 	{
 		auto asset = assetToPath_.find(object);
 		if (asset != assetToPath_.end())
@@ -54,22 +54,22 @@ namespace octoon
 	}
 
 	std::filesystem::path
-	AssetLoader::getAssetExtension(const std::shared_ptr<const Object>& asset, std::string_view defaultExtension) const noexcept
+	AssetImporter::getAssetExtension(const std::shared_ptr<const Object>& asset, std::string_view defaultExtension) const noexcept
 	{
-		auto assetPath = AssetLoader::instance()->getAssetPath(asset);
+		auto assetPath = AssetImporter::instance()->getAssetPath(asset);
 		if (!assetPath.empty())
 			return assetPath.extension();
 		return defaultExtension;
 	}
 
 	bool
-	AssetLoader::isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept
+	AssetImporter::isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept
 	{
 		return this->subAssetToPath_.contains(asset);
 	}
 
 	void
-	AssetLoader::addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
+	AssetImporter::addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
 	{
 		if (!this->isSubAsset(asset))
 		{
@@ -82,13 +82,13 @@ namespace octoon
 	}
 
 	void
-	AssetLoader::unload() noexcept
+	AssetImporter::unload() noexcept
 	{
 		caches_.clear();
 	}
 
 	std::shared_ptr<Object>
-	AssetLoader::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
+	AssetImporter::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
 	{
 		auto ext = path.extension().u8string();
 		for (auto& it : ext)

@@ -6,7 +6,7 @@
 #include <octoon/obj_loader.h>
 #include <octoon/ass_loader.h>
 #include <octoon/fbx_loader.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/asset_database.h>
 #include <octoon/mesh_animation_component.h>
 
@@ -323,7 +323,7 @@ namespace octoon
 			{
 				nlohmann::json prefab;
 
-				auto modelPath = AssetLoader::instance()->getAssetPath(asset);
+				auto modelPath = AssetImporter::instance()->getAssetPath(asset);
 				if (!modelPath.empty())
 				{
 					if (modelPath.is_absolute())
@@ -614,7 +614,7 @@ namespace octoon
 
 		if (ext == u8".vmd")
 		{
-			auto motion = AssetLoader::instance()->loadAssetAtPath<Animation>(absolutePath);
+			auto motion = AssetImporter::instance()->loadAssetAtPath<Animation>(absolutePath);
 			if (motion)
 			{
 				if (motion->getName().empty())
@@ -631,7 +631,7 @@ namespace octoon
 		}
 		else if (ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
-			auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(absolutePath);
+			auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(absolutePath);
 			if (texture)
 			{
 				auto metadata = this->loadMetadataAtPath(relativePath);
@@ -657,7 +657,7 @@ namespace octoon
 		}
 		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
 		{
-			auto model = AssetLoader::instance()->loadAssetAtPath<GameObject>(absolutePath);
+			auto model = AssetImporter::instance()->loadAssetAtPath<GameObject>(absolutePath);
 			if (model)
 			{
 				auto metadata = this->loadMetadataAtPath(relativePath);
@@ -671,7 +671,7 @@ namespace octoon
 		}
 		else if (ext == u8".abc")
 		{
-			auto model = AssetLoader::instance()->loadAssetAtPath<GameObject>(absolutePath);
+			auto model = AssetImporter::instance()->loadAssetAtPath<GameObject>(absolutePath);
 			if (model)
 			{
 				auto alembic = model->addComponent<MeshAnimationComponent>();
@@ -893,7 +893,7 @@ namespace octoon
 
 				objectCaches_[relativePath] = object;
 
-				AssetLoader::instance()->unload();
+				AssetImporter::instance()->unload();
 
 				return object;
 			}

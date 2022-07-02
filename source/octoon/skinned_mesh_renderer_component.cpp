@@ -3,7 +3,7 @@
 #include <octoon/skinned_texture_component.h>
 #include <octoon/transform_component.h>
 #include <octoon/asset_database.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <omp.h>
 
 namespace octoon
@@ -186,7 +186,7 @@ namespace octoon
 						this->setBones(smr->getBones());
 				}
 
-				AssetLoader::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
+				AssetImporter::instance()->addObjectToAsset(this->shared_from_this(), assetPath);
 			}
 		}
 	}

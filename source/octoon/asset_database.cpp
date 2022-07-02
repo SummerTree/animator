@@ -1,5 +1,5 @@
 #include <octoon/asset_database.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/game_component.h>
 
 namespace octoon
@@ -52,7 +52,7 @@ namespace octoon
 		if (package)
 		{
 			package->createAsset(asset, packagePath);
-			AssetLoader::instance()->setAssetPath(asset, path);
+			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -68,7 +68,7 @@ namespace octoon
 		if (package)
 		{
 			package->createAsset(asset, packagePath);
-			AssetLoader::instance()->setAssetPath(asset, path);
+			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -84,7 +84,7 @@ namespace octoon
 		if (package)
 		{
 			package->createAsset(asset, packagePath);
-			AssetLoader::instance()->setAssetPath(asset, path);
+			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -100,7 +100,7 @@ namespace octoon
 		if (package)
 		{
 			package->createAsset(asset, packagePath);
-			AssetLoader::instance()->setAssetPath(asset, path);
+			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -116,7 +116,7 @@ namespace octoon
 		if (package)
 		{
 			package->createPrefab(asset, packagePath);
-			AssetLoader::instance()->setAssetPath(asset, path);
+			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -190,7 +190,7 @@ namespace octoon
 		for (auto& package : packages_)
 			package.second->saveAssets();
 
-		AssetLoader::instance()->unload();
+		AssetImporter::instance()->unload();
 	}
 
 	std::filesystem::path
@@ -209,7 +209,7 @@ namespace octoon
 	std::filesystem::path
 	AssetDatabase::getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		return AssetLoader::instance()->getAssetPath(asset);
+		return AssetImporter::instance()->getAssetPath(asset);
 	}
 
 	std::filesystem::path
@@ -289,7 +289,7 @@ namespace octoon
 	bool
 	AssetDatabase::contains(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		auto assetPath = AssetLoader::instance()->getAssetPath(asset);
+		auto assetPath = AssetImporter::instance()->getAssetPath(asset);
 		if (!assetPath.empty())
 		{
 			if (!assetPath.is_absolute())
@@ -386,19 +386,19 @@ namespace octoon
 	bool
 	AssetDatabase::isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		return AssetLoader::instance()->isSubAsset(asset);
+		return AssetImporter::instance()->isSubAsset(asset);
 	}
 
 	void
 	AssetDatabase::addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
 	{
-		return AssetLoader::instance()->addObjectToAsset(asset, path);
+		return AssetImporter::instance()->addObjectToAsset(asset, path);
 	}
 
 	bool
 	AssetDatabase::getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, std::string& outGuid, std::int64_t& outLocalId)
 	{
-		auto assetPath = AssetLoader::instance()->getAssetPath(asset);
+		auto assetPath = AssetImporter::instance()->getAssetPath(asset);
 		if (!assetPath.empty())
 		{
 			outGuid = this->getAssetGuid(assetPath);
@@ -421,7 +421,7 @@ namespace octoon
 				auto asset = package->loadAssetAtPath(packagePath);
 				if (asset)
 				{
-					AssetLoader::instance()->setAssetPath(asset, path);
+					AssetImporter::instance()->setAssetPath(asset, path);
 
 					auto metadata = package->loadMetadataAtPath(packagePath);
 					if (metadata.is_object())

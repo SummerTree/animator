@@ -4,7 +4,7 @@
 #include <octoon/game_scene_manager.h>
 #include <octoon/transform_component.h>
 #include <octoon/runtime/guid.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/asset_database.h>
 
 namespace octoon
@@ -774,9 +774,9 @@ namespace octoon
 			auto component = it->clone();
 			instance->addComponent(component);
 
-			std::filesystem::path assetPath = AssetLoader::instance()->getAssetPath(it->shared_from_this());
+			std::filesystem::path assetPath = AssetImporter::instance()->getAssetPath(it->shared_from_this());
 			if (!assetPath.empty())
-				AssetLoader::instance()->addObjectToAsset(component, assetPath);
+				AssetImporter::instance()->addObjectToAsset(component, assetPath);
 		}
 
 		for (auto& it : children_)
@@ -784,9 +784,9 @@ namespace octoon
 			auto child = it->clone();
 			instance->addChild(child);
 
-			std::filesystem::path assetPath = AssetLoader::instance()->getAssetPath(it->shared_from_this());
+			std::filesystem::path assetPath = AssetImporter::instance()->getAssetPath(it->shared_from_this());
 			if (!assetPath.empty())
-				AssetLoader::instance()->addObjectToAsset(child, assetPath);
+				AssetImporter::instance()->addObjectToAsset(child, assetPath);
 		}
 
 		return instance;

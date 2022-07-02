@@ -1,6 +1,6 @@
 #include <octoon/mesh_filter_component.h>
 #include <octoon/asset_database.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 
 namespace octoon
 {

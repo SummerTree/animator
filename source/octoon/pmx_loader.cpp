@@ -21,7 +21,7 @@
 #include <octoon/rotation_link_component.h>
 #include <octoon/rotation_link_limit_component.h>
 #include <octoon/cloth_component.h>
-#include <octoon/asset_loader.h>
+#include <octoon/asset_importer.h>
 #include <octoon/asset_database.h>
 
 #include <set>
@@ -367,7 +367,7 @@ namespace octoon
 					if (!std::filesystem::exists(it.fullpath))
 						continue;
 
-					auto texture = AssetLoader::instance()->loadAssetAtPath<Texture>(it.fullpath);
+					auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(it.fullpath);
 					if (texture)
 					{
 						texture->apply();
@@ -506,7 +506,7 @@ namespace octoon
 
 		mesh->computeBoundingBox();
 
-		octoon::AssetLoader::instance()->addObjectToAsset(mesh, path);
+		octoon::AssetImporter::instance()->addObjectToAsset(mesh, path);
 
 		object->addComponent<MeshFilterComponent>(std::move(mesh));
 

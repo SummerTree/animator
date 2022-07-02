@@ -1,5 +1,5 @@
-#ifndef OCTOON_ASSET_LOADER_H_
-#define OCTOON_ASSET_LOADER_H_
+#ifndef OCTOON_ASSET_IMPORTER_H_
+#define OCTOON_ASSET_IMPORTER_H_
 
 #include <octoon/pmx_loader.h>
 #include <octoon/texture/texture.h>
@@ -9,12 +9,12 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT AssetLoader final
+	class OCTOON_EXPORT AssetImporter final
 	{
-		OctoonDeclareSingleton(AssetLoader)
+		OctoonDeclareSingleton(AssetImporter)
 	public:
-		AssetLoader() noexcept;
-		virtual ~AssetLoader() noexcept;
+		AssetImporter() noexcept;
+		virtual ~AssetImporter() noexcept;
 
 		bool isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept;
 		void addObjectToAsset(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path);
@@ -38,8 +38,8 @@ namespace octoon
 		void unload() noexcept;
 
 	private:
-		AssetLoader(const AssetLoader&) = delete;
-		AssetLoader& operator=(const AssetLoader&) = delete;
+		AssetImporter(const AssetImporter&) = delete;
+		AssetImporter& operator=(const AssetImporter&) = delete;
 
 	private:
 		std::vector<std::shared_ptr<const Object>> caches_;
