@@ -573,6 +573,8 @@ namespace octoon
 	std::shared_ptr<Animation>
 	VMDImporter::load(const std::filesystem::path& filepath) noexcept(false)
 	{
+		assetPath_ = filepath;
+
 		std::ifstream stream(filepath, std::ios_base::binary);
 		if (stream)
 		{

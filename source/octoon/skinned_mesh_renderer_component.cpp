@@ -185,8 +185,6 @@ namespace octoon
 					if (smr)
 						this->setBones(smr->getBones());
 				}
-
-				AssetImporter::instance()->addRemap(this->shared_from_this(), assetPath);
 			}
 		}
 	}

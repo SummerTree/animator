@@ -9,7 +9,6 @@
 #include <fstream>
 #include <tuple>
 #include <set>
-#include <fbxsdk.h>
 
 namespace octoon
 {
@@ -282,7 +281,6 @@ namespace octoon
 				if (texture)
 				{
 					texture->apply();
-					AssetImporter::instance()->addRemap(texture, path);
 					return texture;
 				}
 			}
@@ -291,7 +289,8 @@ namespace octoon
 		return nullptr;
 	}
 
-	std::shared_ptr<Material> LoadMaterialAttribute(FbxSurfaceMaterial* surfaceMaterial, const std::filesystem::path& path)
+	std::shared_ptr<Material>
+	FBXImporter::LoadMaterialAttribute(FbxSurfaceMaterial* surfaceMaterial, const std::filesystem::path& path)
 	{
 		auto material = std::make_shared<MeshStandardMaterial>();
 		material->setName(surfaceMaterial->GetName());
@@ -301,6 +300,15 @@ namespace octoon
 
 		if (!material->getNormalMap())
 			material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sBump, path));
+
+		if (material->getColorMap())
+			AssetImporter::instance()->addRemap(material, material->getColorMap());
+		if (material->getNormalMap())
+			AssetImporter::instance()->addRemap(material, material->getNormalMap());
+		if (material->getEmissiveMap())
+			AssetImporter::instance()->addRemap(material, material->getEmissiveMap());
+		if (material->getNormalMap())
+			AssetImporter::instance()->addRemap(material, material->getNormalMap());
 
 		if (surfaceMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
@@ -340,7 +348,8 @@ namespace octoon
 		return material;
 	}
 
-	std::size_t LoadMaterial(FbxMesh* mesh, std::vector<std::shared_ptr<Material>>& materials, const std::filesystem::path& path)
+	std::size_t
+	FBXImporter::LoadMaterial(FbxMesh* mesh, std::vector<std::shared_ptr<Material>>& materials, const std::filesystem::path& path)
 	{
 		if (mesh && mesh->GetNode())
 		{
@@ -536,7 +545,8 @@ namespace octoon
 		return -1;
 	}
 
-	std::shared_ptr<GameObject> ParseMesh(FbxNode* node, const std::filesystem::path& path)
+	std::shared_ptr<GameObject>
+	FBXImporter::ParseMesh(FbxNode* node, const std::filesystem::path& path)
 	{
 		auto fbxMesh = node->GetMesh();
 		if (fbxMesh)
@@ -609,11 +619,11 @@ namespace octoon
 			mesh->setTexcoordArray(std::move(texcoords));
 			mesh->setIndicesArray(std::move(indices));
 
-			AssetImporter::instance()->addRemap(mesh, path);
-
 			auto gameObject = std::make_shared<GameObject>();
 			gameObject->setName(node->GetName());
 			gameObject->addComponent<MeshFilterComponent>(std::move(mesh));
+
+			this->addRemap(gameObject, mesh);
 
 			auto meshRenderer = gameObject->addComponent<MeshRendererComponent>();
 			meshRenderer->setGlobalIllumination(true);
@@ -626,14 +636,14 @@ namespace octoon
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
 					auto material = materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>();
-					AssetImporter::instance()->addRemap(material, path);
+					this->addRemap(gameObject, material);
 					meshRenderer->setMaterial(std::move(material), i);
 				}
 			}
 			else
 			{
 				auto material = std::make_shared<MeshStandardMaterial>();
-				AssetImporter::instance()->addRemap(material, path);
+				this->addRemap(gameObject, material);
 				meshRenderer->setMaterial(std::move(material));
 			}
 
@@ -712,7 +722,8 @@ namespace octoon
 		return nullptr;
 	}
 
-	GameObjectPtr ProcessNode(FbxScene* scene, FbxNode* node, const std::filesystem::path& path)
+	GameObjectPtr
+	FBXImporter::ProcessNode(FbxScene* scene, FbxNode* node, const std::filesystem::path& path)
 	{
 		GameObjectPtr object;
 
@@ -738,7 +749,7 @@ namespace octoon
 				for (int j = 0; j < node->GetChildCount(); j++)
 				{
 					auto child = ProcessNode(scene, node->GetChild(j), path);
-					AssetImporter::instance()->addRemap(child, path);
+					this->addRemap(object, child);
 					object->addChild(child);
 				}
 				break;
@@ -788,14 +799,14 @@ namespace octoon
 					}
 					
 					for (auto it : object->getComponents())
-						AssetImporter::instance()->addRemap(it, filepath);
+						this->addRemap(object, it);
 
 					if (object->getChildCount() > 1)
 					{
 						AssetImporter::instance()->setAssetPath(object, filepath);
 
 						for (int i = 0; i < object->getChildCount(); i++)
-							AssetImporter::instance()->addRemap(object->getChild(i), filepath);
+							this->addRemap(object, object->getChild(i));
 
 						return object;
 					}

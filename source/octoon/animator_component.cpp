@@ -308,8 +308,6 @@ namespace octoon
 					if (animator)
 						this->setAvatar(animator->getAvatar());
 				}
-
-				AssetImporter::instance()->addRemap(this->shared_from_this(), assetPath);
 			}
 		}
 	}

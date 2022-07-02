@@ -96,8 +96,6 @@ namespace octoon
 							}
 						}
 					}
-
-					AssetImporter::instance()->addRemap(this->shared_from_this(), assetPath);
 				}
 			}
 			else

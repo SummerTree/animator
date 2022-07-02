@@ -18,8 +18,10 @@ namespace octoon
 		AssetImporter() noexcept;
 		virtual ~AssetImporter() noexcept;
 
+		void addRemap(const std::shared_ptr<const Object>& asset, const std::shared_ptr<const Object>& subAsset);
+
+	public:
 		bool isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept;
-		void addRemap(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path);
 
 		void setAssetPath(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path) noexcept;
 
@@ -46,10 +48,13 @@ namespace octoon
 		AssetImporter& operator=(const AssetImporter&) = delete;
 
 	protected:
-		std::vector<std::shared_ptr<const Object>> caches_;
+		std::filesystem::path assetPath_;
 
-		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> assetToPath_;
-		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> subAssetToPath_;
+	private:
+		static std::vector<std::shared_ptr<const Object>> caches_;
+
+		static std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> assetToPath_;
+		static std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> subAssetToPath_;
 
 		static std::map<std::filesystem::path, std::shared_ptr<const AssetImporter>> assets_;
 	};

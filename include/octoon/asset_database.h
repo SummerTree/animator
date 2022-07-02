@@ -52,7 +52,6 @@ namespace octoon
 		const std::vector<std::string>& getLabels(const std::shared_ptr<const Object>& asset) noexcept(false);
 
 		bool isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept;
-		void addRemap(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path);
 		bool getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, std::string& outGuid, std::int64_t& outLocalId);
 
 		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false);

@@ -389,12 +389,6 @@ namespace octoon
 		return AssetImporter::instance()->isSubAsset(asset);
 	}
 
-	void
-	AssetDatabase::addRemap(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
-	{
-		return AssetImporter::instance()->addRemap(asset, path);
-	}
-
 	bool
 	AssetDatabase::getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, std::string& outGuid, std::int64_t& outLocalId)
 	{

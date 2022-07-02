@@ -12,7 +12,10 @@ namespace octoon
 	OctoonImplementSingleton(AssetImporter)
 	OctoonImplementSubClass(AssetImporter, Object, "AssetImporter")
 
+	std::vector<std::shared_ptr<const Object>> AssetImporter::caches_;
 	std::map<std::filesystem::path, std::shared_ptr<const AssetImporter>> AssetImporter::assets_;
+	std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> AssetImporter::assetToPath_;
+	std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> AssetImporter::subAssetToPath_;
 
 	AssetImporter::AssetImporter() noexcept
 	{
@@ -80,15 +83,15 @@ namespace octoon
 	}
 
 	void
-	AssetImporter::addRemap(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path)
+	AssetImporter::addRemap(const std::shared_ptr<const Object>& asset, const std::shared_ptr<const Object>& subAsset)
 	{
-		if (!this->isSubAsset(asset))
+		if (!this->isSubAsset(subAsset))
 		{
-			this->subAssetToPath_[asset] = path;
+			this->subAssetToPath_[subAsset] = assetPath_;
 		}
 		else
 		{
-			throw std::runtime_error(std::string("Add object to path ") + (char*)path.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Add object to path ") + (char*)assetPath_.u8string().c_str() + " failed.");
 		}
 	}
 
@@ -111,6 +114,8 @@ namespace octoon
 			auto motion = motionImporter->load(path);
 			if (motion)
 			{
+				this->assets_[path] = motionImporter;
+
 				caches_.push_back(motion);
 				assetToPath_[motion] = path;
 				return std::move(motion);
@@ -177,9 +182,6 @@ namespace octoon
 				auto alembic = model->addComponent<MeshAnimationComponent>();
 				alembic->setFilePath(path);
 				assetToPath_[model] = path;
-
-				for (auto it : model->getComponents())
-					this->addRemap(it, path);
 
 				return std::move(model);
 			}

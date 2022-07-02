@@ -20,7 +20,6 @@ namespace octoon
 		TextureImporter& operator=(const TextureImporter&) = delete;
 
 	private:
-		std::filesystem::path assetPath_;
 		std::weak_ptr<const Texture> texture_;
 	};
 }

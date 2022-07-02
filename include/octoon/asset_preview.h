@@ -10,8 +10,6 @@
 #include <octoon/camera/film_camera.h>
 #include <octoon/video/render_scene.h>
 #include <octoon/runtime/singleton.h>
-#include <filesystem>
-#include <set>
 
 namespace octoon
 {

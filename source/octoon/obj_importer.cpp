@@ -40,72 +40,84 @@ namespace octoon
 				{
 					auto& material = materials[i];
 
-					auto standard = std::make_shared<MeshStandardMaterial>();
-					standard->setName(material.name);
-					standard->setColor(math::float3(material.diffuse[0], material.diffuse[1], material.diffuse[2]));
-					standard->setRoughness(material.roughness);
-					standard->setMetalness(material.metallic);
-					standard->setSheen(material.sheen);
-					standard->setClearCoat(material.clearcoat_thickness);
-					standard->setClearCoatRoughness(material.clearcoat_roughness);
-					standard->setAnisotropy(material.anisotropy);
-					standard->setRefractionRatio(material.ior);
+					auto standardMaterial = std::make_shared<MeshStandardMaterial>();
+					standardMaterial->setName(material.name);
+					standardMaterial->setColor(math::float3(material.diffuse[0], material.diffuse[1], material.diffuse[2]));
+					standardMaterial->setRoughness(material.roughness);
+					standardMaterial->setMetalness(material.metallic);
+					standardMaterial->setSheen(material.sheen);
+					standardMaterial->setClearCoat(material.clearcoat_thickness);
+					standardMaterial->setClearCoatRoughness(material.clearcoat_roughness);
+					standardMaterial->setAnisotropy(material.anisotropy);
+					standardMaterial->setRefractionRatio(material.ior);
 
 					if (!material.diffuse_texname.empty())
 					{
 						auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(material.diffuse_texname);
-						if (texture) {
+						if (texture)
+						{
 							texture->apply();
-							standard->setColorMap(std::move(texture));
+							this->addRemap(standardMaterial, texture);
+							standardMaterial->setColorMap(std::move(texture));
 						}
 					}
 
 					if (!material.normal_texname.empty())
 					{
 						auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(material.normal_texname);
-						if (texture) {
+						if (texture)
+						{
 							texture->apply();
-							standard->setNormalMap(std::move(texture));
+							this->addRemap(standardMaterial, texture);
+							standardMaterial->setNormalMap(std::move(texture));
 						}
 					}
 
 					if (!material.roughness_texname.empty())
 					{
 						auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(material.roughness_texname);
-						if (texture) {
+						if (texture)
+						{
 							texture->apply();
-							standard->setRoughnessMap(std::move(texture));
+							this->addRemap(standardMaterial, texture);
+							standardMaterial->setRoughnessMap(std::move(texture));
 						}
 					}
 
 					if (!material.metallic_texname.empty())
 					{
 						auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(material.metallic_texname);
-						if (texture) {
+						if (texture)
+						{
 							texture->apply();
-							standard->setMetalnessMap(std::move(texture));
+							this->addRemap(standardMaterial, texture);
+							standardMaterial->setMetalnessMap(std::move(texture));
 						}
 					}
 
 					if (!material.sheen_texname.empty())
 					{
 						auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(material.sheen_texname);
-						if (texture) {
+						if (texture)
+						{
 							texture->apply();
-							standard->setSheenMap(std::move(texture));
+							this->addRemap(standardMaterial, texture);
+							standardMaterial->setSheenMap(std::move(texture));
 						}
 					}
 
 					if (!material.emissive_texname.empty())
 					{
 						auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(material.emissive_texname);
-						if (texture) {
+						if (texture)
+						{
 							texture->apply();
-							standard->setEmissiveMap(std::move(texture));
+							this->addRemap(standardMaterial, texture);
+							standardMaterial->setEmissiveMap(std::move(texture));
 						}
 					}
 
-					standardMaterials[i] = std::move(standard);
+					standardMaterials[i] = std::move(standardMaterial);
 				}
 
 				std::set<std::tuple<int, int, int>> vertexSet;
@@ -241,8 +253,6 @@ namespace octoon
 				mesh->computeBoundingBox();
 				mesh->computeVertexNormals();
 
-				octoon::AssetImporter::instance()->addRemap(mesh, filepath);
-
 				auto object = std::make_shared<GameObject>();
 				object->addComponent<MeshFilterComponent>(std::move(mesh));
 
@@ -250,14 +260,16 @@ namespace octoon
 
 				auto meshRender = object->addComponent<MeshRendererComponent>();
 
+				this->addRemap(object, mesh);
+
 				for (std::size_t i = 0; i < shapesMaterials.size(); i++)
 				{
 					meshRender->setMaterial(shapesMaterials[i] ? shapesMaterials[i] : std::make_shared<MeshStandardMaterial>(), i);
-					octoon::AssetImporter::instance()->addRemap(meshRender->getMaterial(i), filepath);
+					this->addRemap(object, meshRender->getMaterial(i));
 				}
 
 				for (auto it : object->getComponents())
-					octoon::AssetImporter::instance()->addRemap(it, filepath);
+					this->addRemap(object, it);
 
 				return object;
 			}

@@ -40,7 +40,8 @@ namespace octoon
 	{
 	}
 
-	void createBones(const PMX& pmx, GameObjects& bones) noexcept(false)
+	void
+	PMXImporter::createBones(const PMX& pmx, GameObjects& bones) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
@@ -113,7 +114,8 @@ namespace octoon
 		}
 	}
 
-	void createClothes(const PMX& pmx, GameObjectPtr& meshes, const GameObjects& bones) noexcept(false)
+	void
+	PMXImporter::createClothes(const PMX& pmx, GameObjectPtr& meshes, const GameObjects& bones) noexcept(false)
 	{
 		for (auto& it : pmx.softbodies)
 		{
@@ -165,7 +167,8 @@ namespace octoon
 		}
 	}
 
-	void createColliders(const PMX& pmx, GameObjects& bones) noexcept(false)
+	void
+	PMXImporter::createColliders(const PMX& pmx, GameObjects& bones) noexcept(false)
 	{
 		for (auto& it : pmx.rigidbodies)
 		{
@@ -202,7 +205,8 @@ namespace octoon
 		}
 	}
 
-	void createRigidbodies(const PMX& pmx, GameObjects& bones) noexcept(false)
+	void
+	PMXImporter::createRigidbodies(const PMX& pmx, GameObjects& bones) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
@@ -236,7 +240,8 @@ namespace octoon
 		}
 	}
 
-	void createJoints(const PMX& pmx, GameObjects& bones) noexcept(false)
+	void
+	PMXImporter::createJoints(const PMX& pmx, GameObjects& bones) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
@@ -330,7 +335,8 @@ namespace octoon
 		}
 	}
 
-	void createMorph(const PMX& pmx, GameObjectPtr& mesh) noexcept(false)
+	void
+	PMXImporter::createMorph(const PMX& pmx, GameObjectPtr& mesh) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 
@@ -359,7 +365,8 @@ namespace octoon
 		}
 	}
 
-	void createMaterials(const PMX& pmx, Materials& materials, const std::filesystem::path& path) noexcept(false)
+	void
+	PMXImporter::createMaterials(const PMX& pmx, GameObjectPtr& object, Materials& materials) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
 		std::unordered_map<std::u8string, std::shared_ptr<Texture>> textureMap;
@@ -382,7 +389,6 @@ namespace octoon
 					{
 						texture->apply();
 						textureMap[fullpath] = std::move(texture);
-						octoon::AssetDatabase::instance()->addRemap(texture, path);
 					}
 				}
 			}
@@ -410,7 +416,11 @@ namespace octoon
 			{
 				auto fullpath = pmx.textures[it.TextureIndex].fullpath.u8string();
 				if (textureMap.find(fullpath) != textureMap.end())
-					material->setColorMap(textureMap.at(fullpath));
+				{
+					auto texture = textureMap.at(fullpath);
+					this->addRemap(material, texture);
+					material->setColorMap(texture);
+				}
 			}
 
 			bool hasAlphaTexture = it.TextureIndex < limits ? std::wstring_view(pmx.textures[it.TextureIndex].name).find(L".png") != std::string::npos : false;
@@ -434,13 +444,14 @@ namespace octoon
 				material->setBlendDest(BlendMode::OneMinusSrcAlpha);
 			}
 
-			octoon::AssetDatabase::instance()->addRemap(material, path);
+			this->addRemap(object, material);
 
 			materials.emplace_back(std::move(material));
 		}
 	}
 
-	void createMeshes(const PMX& pmx, GameObjectPtr& object, const GameObjects& bones, const std::filesystem::path& path) noexcept(false)
+	void
+	PMXImporter::createMeshes(const PMX& pmx, GameObjectPtr& object, const GameObjects& bones) noexcept(false)
 	{
 		math::float4x4s bindposes(pmx.bones.size());
 		for (std::size_t i = 0; i < pmx.bones.size(); i++)
@@ -516,7 +527,7 @@ namespace octoon
 
 		mesh->computeBoundingBox();
 
-		octoon::AssetImporter::instance()->addRemap(mesh, path);
+		this->addRemap(object, mesh);
 
 		object->addComponent<MeshFilterComponent>(std::move(mesh));
 
@@ -526,7 +537,7 @@ namespace octoon
 			meshRender->setGlobalIllumination(true);
 
 			Materials materials;
-			createMaterials(pmx, materials, path);
+			createMaterials(pmx, object, materials);
 			meshRender->setMaterials(std::move(materials));
 		}
 		else
@@ -538,7 +549,7 @@ namespace octoon
 			smr->setGlobalIllumination(true);
 
 			Materials materials;
-			createMaterials(pmx, materials, path);
+			createMaterials(pmx, object, materials);
 			smr->setMaterials(std::move(materials));
 
 			object->addComponent(smr);
@@ -573,12 +584,12 @@ namespace octoon
 				actor->setName((char*)std::filesystem::path(path).filename().c_str());
 			}
 
-			createMeshes(pmx, actor, bones, path);
+			createMeshes(pmx, actor, bones);
 			createMorph(pmx, actor);
 			createClothes(pmx, actor, bones);
 
 			for (auto it : actor->getComponents())
-				AssetImporter::instance()->addRemap(it, path);
+				AssetImporter::instance()->addRemap(actor, it);
 
 			return actor;
 		}
