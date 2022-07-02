@@ -73,7 +73,7 @@ namespace octoon
 		
 		try
 		{
-			auto ext = AssetImporter::instance()->getAssetExtension(texture, hdr ? ".hdr" : ".png").string();
+			auto ext = AssetDatabase::instance()->getAssetExtension(texture, hdr ? ".hdr" : ".png").string();
 			auto outputPath = std::filesystem::path(relativePath).append(uuid + ext);
 
 			this->assetDatabase_->createAsset(texture, outputPath);
@@ -113,7 +113,7 @@ namespace octoon
 
 		try
 		{
-			auto ext = AssetImporter::instance()->getAssetExtension(animation, ".vmd").string();
+			auto ext = AssetDatabase::instance()->getAssetExtension(animation, ".vmd").string();
 			auto outputPath = std::filesystem::path(relativePath).append(uuid + ext);
 
 			this->assetDatabase_->createAsset(animation, outputPath);

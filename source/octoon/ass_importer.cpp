@@ -1,4 +1,5 @@
 #include <octoon/ass_importer.h>
+#include <octoon/asset_database.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/transform_component.h>
 #include <octoon/point_light_component.h>
@@ -152,7 +153,7 @@ namespace octoon
 
 						if (!material.albedoTex.empty())
 						{
-							auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(material.albedoTex);
+							auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.albedoTex);
 							if (texture)
 							{
 								texture->apply();
@@ -162,7 +163,7 @@ namespace octoon
 
 						if (!material.normalmapTex.empty())
 						{
-							auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(material.normalmapTex);
+							auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.normalmapTex);
 							if (texture)
 							{
 								texture->apply();
@@ -287,7 +288,7 @@ namespace octoon
 
 					if (std::filesystem::exists(filepath))
 					{
-						auto model = octoon::AssetImporter::instance()->loadAssetAtPath<octoon::GameObject>(filepath);
+						auto model = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(filepath);
 						if (model)
 						{
 							model->setName(meshName);

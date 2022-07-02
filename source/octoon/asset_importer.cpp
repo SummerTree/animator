@@ -13,8 +13,6 @@ namespace octoon
 	OctoonImplementSubClass(AssetImporter, Object, "AssetImporter")
 
 	std::map<std::filesystem::path, std::shared_ptr<const AssetImporter>> AssetImporter::assets_;
-	std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> AssetImporter::assetToPath_;
-	std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> AssetImporter::subAssetToPath_;
 
 	AssetImporter::AssetImporter() noexcept
 	{
@@ -33,65 +31,15 @@ namespace octoon
 	}
 
 	void
-	AssetImporter::setAssetPath(const std::shared_ptr<const Object>& asset, const std::filesystem::path& path) noexcept
+	AssetImporter::addRemap(const std::shared_ptr<const Object>& subAsset)
 	{
-		auto it = assetToPath_.find(asset);
-		if (it != assetToPath_.end())
-		{
-			for (auto& subAsset : this->subAssetToPath_)
-			{
-				if (subAsset.second == it->second)
-					subAsset.second = path;
-			}
-
-			it->second = path;
-		}
-		else
-		{
-			assetToPath_[asset] = path;
-		}
+		this->externalObjectMap_.push_back(subAsset);
 	}
 
-	std::filesystem::path
-	AssetImporter::getAssetPath(const std::shared_ptr<const Object>& object) const noexcept
+	const std::vector<std::weak_ptr<const Object>>&
+	AssetImporter::getExternalObjectMap() const
 	{
-		auto asset = assetToPath_.find(object);
-		if (asset != assetToPath_.end())
-			return asset->second;
-
-		auto subAsset = subAssetToPath_.find(object);
-		if (subAsset != subAssetToPath_.end())
-			return subAsset->second;
-
-		return std::filesystem::path();
-	}
-
-	std::filesystem::path
-	AssetImporter::getAssetExtension(const std::shared_ptr<const Object>& asset, std::string_view defaultExtension) const noexcept
-	{
-		auto assetPath = AssetImporter::instance()->getAssetPath(asset);
-		if (!assetPath.empty())
-			return assetPath.extension();
-		return defaultExtension;
-	}
-
-	bool
-	AssetImporter::isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept
-	{
-		return this->subAssetToPath_.contains(asset);
-	}
-
-	void
-	AssetImporter::addRemap(const std::shared_ptr<const Object>& asset, const std::shared_ptr<const Object>& subAsset)
-	{
-		if (!this->isSubAsset(subAsset))
-		{
-			this->subAssetToPath_[asset] = assetPath_;
-		}
-		else
-		{
-			throw std::runtime_error(std::string("Add object to path ") + (char*)assetPath_.u8string().c_str() + " failed.");
-		}
+		return externalObjectMap_;
 	}
 
 	std::shared_ptr<Object>
@@ -108,8 +56,6 @@ namespace octoon
 			if (motion)
 			{
 				this->assets_[path] = motionImporter;
-
-				assetToPath_[motion] = path;
 				return std::move(motion);
 			}
 		}
@@ -120,8 +66,6 @@ namespace octoon
 			if (texture)
 			{
 				this->assets_[path] = textureImporter;
-
-				assetToPath_[texture] = path;
 				return texture;
 			}
 		}
@@ -132,8 +76,6 @@ namespace octoon
 			if (model)
 			{
 				this->assets_[path] = modelImporter;
-
-				assetToPath_[model] = path;
 				return model;
 			}
 		}
@@ -144,8 +86,6 @@ namespace octoon
 			if (model)
 			{
 				this->assets_[path] = modelImporter;
-
-				assetToPath_[model] = path;
 				return std::move(model);
 			}
 		}
@@ -156,8 +96,6 @@ namespace octoon
 			if (model)
 			{
 				this->assets_[path] = modelImporter;
-
-				assetToPath_[model] = path;
 				return std::move(model);
 			}
 		}
@@ -168,8 +106,6 @@ namespace octoon
 			{
 				auto alembic = model->addComponent<MeshAnimationComponent>();
 				alembic->setFilePath(path);
-				assetToPath_[model] = path;
-
 				return std::move(model);
 			}
 		}

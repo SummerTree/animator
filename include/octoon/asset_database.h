@@ -43,6 +43,7 @@ namespace octoon
 		std::filesystem::path getAssetPath(const std::string& uuid) const noexcept;
 		std::filesystem::path getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept;
 		std::filesystem::path getAbsolutePath(const std::filesystem::path& assetPath) const noexcept;
+		std::filesystem::path getAssetExtension(const std::shared_ptr<const Object>& asset, std::string_view defaultExtension = "") const noexcept;
 
 		std::string getAssetGuid(const std::filesystem::path& assetPath) const noexcept;
 		std::string getAssetGuid(const std::shared_ptr<const Object>& asset) const noexcept;
@@ -79,9 +80,11 @@ namespace octoon
 	private:
 		std::vector<std::string> defaultLabel_;
 
+		std::shared_ptr<Package> defaultPackage_;
 		std::map<std::u8string, std::shared_ptr<Package>> packages_;
 		std::set<std::weak_ptr<const Object>, std::owner_less<std::weak_ptr<const Object>>> dirtyList_;
 		std::map<std::weak_ptr<const Object>, std::vector<std::string>, std::owner_less<std::weak_ptr<const Object>>> labels_;
+		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> assetToPath_;
 	};
 }
 

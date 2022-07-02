@@ -321,7 +321,7 @@ namespace octoon
 			{
 				nlohmann::json prefab;
 
-				auto modelPath = AssetImporter::instance()->getAssetPath(asset);
+				auto modelPath = AssetDatabase::instance()->getAssetPath(asset);
 				if (!modelPath.empty())
 				{
 					if (modelPath.is_absolute())

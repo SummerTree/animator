@@ -1,5 +1,6 @@
 #include <octoon/fbx_importer.h>
 #include <octoon/asset_importer.h>
+#include <octoon/asset_database.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/transform_component.h>
 #include <octoon/point_light_component.h>
@@ -277,7 +278,7 @@ namespace octoon
 
 			if (std::filesystem::exists(path))
 			{
-				auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(path);
+				auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(path);
 				if (texture)
 				{
 					texture->apply();
@@ -302,13 +303,13 @@ namespace octoon
 			material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sBump, path));
 
 		if (material->getColorMap())
-			AssetImporter::instance()->addRemap(material, material->getColorMap());
+			AssetImporter::instance()->addRemap(material->getColorMap());
 		if (material->getNormalMap())
-			AssetImporter::instance()->addRemap(material, material->getNormalMap());
+			AssetImporter::instance()->addRemap(material->getNormalMap());
 		if (material->getEmissiveMap())
-			AssetImporter::instance()->addRemap(material, material->getEmissiveMap());
+			AssetImporter::instance()->addRemap(material->getEmissiveMap());
 		if (material->getNormalMap())
-			AssetImporter::instance()->addRemap(material, material->getNormalMap());
+			AssetImporter::instance()->addRemap(material->getNormalMap());
 
 		if (surfaceMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
@@ -623,7 +624,7 @@ namespace octoon
 			gameObject->setName(node->GetName());
 			gameObject->addComponent<MeshFilterComponent>(std::move(mesh));
 
-			this->addRemap(gameObject, mesh);
+			this->addRemap(mesh);
 
 			auto meshRenderer = gameObject->addComponent<MeshRendererComponent>();
 			meshRenderer->setGlobalIllumination(true);
@@ -636,14 +637,14 @@ namespace octoon
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
 					auto material = materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>();
-					this->addRemap(gameObject, material);
+					this->addRemap(material);
 					meshRenderer->setMaterial(std::move(material), i);
 				}
 			}
 			else
 			{
 				auto material = std::make_shared<MeshStandardMaterial>();
-				this->addRemap(gameObject, material);
+				this->addRemap(material);
 				meshRenderer->setMaterial(std::move(material));
 			}
 
@@ -749,7 +750,7 @@ namespace octoon
 				for (int j = 0; j < node->GetChildCount(); j++)
 				{
 					auto child = ProcessNode(scene, node->GetChild(j), path);
-					this->addRemap(object, child);
+					this->addRemap(child);
 					object->addChild(child);
 				}
 				break;
@@ -794,25 +795,21 @@ namespace octoon
 					for (int i = 0; i < rootNode->GetChildCount(); i++)
 					{
 						auto node = ProcessNode(scene, rootNode->GetChild(i), filepath);
-						AssetImporter::instance()->setAssetPath(node, filepath);
 						object->addChild(std::move(node));
 					}
 					
 					for (auto it : object->getComponents())
-						this->addRemap(object, it);
+						this->addRemap(it);
 
 					if (object->getChildCount() > 1)
 					{
-						AssetImporter::instance()->setAssetPath(object, filepath);
-
 						for (int i = 0; i < object->getChildCount(); i++)
-							this->addRemap(object, object->getChild(i));
+							this->addRemap(object->getChild(i));
 
 						return object;
 					}
 					else
 					{
-						AssetImporter::instance()->setAssetPath(object->getChild(0), filepath);
 						return object->getChild(0);
 					}
 				}

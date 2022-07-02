@@ -7,6 +7,7 @@ namespace octoon
 	OctoonImplementSingleton(AssetDatabase)
 
 	AssetDatabase::AssetDatabase() noexcept
+		: defaultPackage_(std::make_shared<Package>(this))
 	{
 	}
 
@@ -52,7 +53,6 @@ namespace octoon
 		if (package)
 		{
 			package->createAsset(asset, packagePath);
-			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -68,7 +68,6 @@ namespace octoon
 		if (package)
 		{
 			package->createAsset(asset, packagePath);
-			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -84,7 +83,6 @@ namespace octoon
 		if (package)
 		{
 			package->createAsset(asset, packagePath);
-			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -100,7 +98,6 @@ namespace octoon
 		if (package)
 		{
 			package->createAsset(asset, packagePath);
-			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -116,7 +113,6 @@ namespace octoon
 		if (package)
 		{
 			package->createPrefab(asset, packagePath);
-			AssetImporter::instance()->setAssetPath(asset, path);
 		}
 		else
 		{
@@ -205,9 +201,13 @@ namespace octoon
 	}
 
 	std::filesystem::path
-	AssetDatabase::getAssetPath(const std::shared_ptr<const Object>& asset) const noexcept
+	AssetDatabase::getAssetPath(const std::shared_ptr<const Object>& object) const noexcept
 	{
-		return AssetImporter::instance()->getAssetPath(asset);
+		auto asset = assetToPath_.find(object);
+		if (asset != assetToPath_.end())
+			return asset->second;
+
+		return std::filesystem::path();
 	}
 
 	std::filesystem::path
@@ -219,6 +219,16 @@ namespace octoon
 			return package->getAbsolutePath(packagePath);
 
 		return std::filesystem::path();
+	}
+
+	std::filesystem::path
+	AssetDatabase::getAssetExtension(const std::shared_ptr<const Object>& asset, std::string_view defaultExtension) const noexcept
+	{
+		auto path = this->getAssetPath(asset);
+		if (!path.empty())
+			return path.extension();
+
+		return defaultExtension;
 	}
 
 	std::string
@@ -261,33 +271,41 @@ namespace octoon
 	std::shared_ptr<Package>
 	AssetDatabase::getPackage(const std::filesystem::path& assetPath, std::filesystem::path& packagePath) const noexcept(false)
 	{
-		auto path = std::filesystem::path(assetPath).u8string();
-		for (auto& it : path)
+		if (assetPath.is_absolute())
 		{
-			if (it == '\\')
-				it = '/';
+			packagePath = assetPath;
+			return defaultPackage_;
 		}
-
-		for (auto& package : packages_)
+		else
 		{
-			auto length = package.first.length();
-			if (path.size() > length)
+			auto path = std::filesystem::path(assetPath).u8string();
+			for (auto& it : path)
 			{
-				if (package.first == path.substr(0, length))
+				if (it == '\\')
+					it = '/';
+			}
+
+			for (auto& package : packages_)
+			{
+				auto length = package.first.length();
+				if (path.size() > length)
 				{
-					packagePath = path.substr(length);
-					return package.second;
+					if (package.first == path.substr(0, length))
+					{
+						packagePath = path.substr(length);
+						return package.second;
+					}
 				}
 			}
-		}
 
-		throw std::runtime_error(std::string("Invalid path ") + (char*)assetPath.u8string().c_str() + " failed.");
+			throw std::runtime_error(std::string("Invalid path ") + (char*)assetPath.u8string().c_str() + " failed.");
+		}
 	}
 
 	bool
 	AssetDatabase::contains(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		auto assetPath = AssetImporter::instance()->getAssetPath(asset);
+		auto assetPath = this->getAssetPath(asset);
 		if (!assetPath.empty())
 		{
 			if (!assetPath.is_absolute())
@@ -384,13 +402,13 @@ namespace octoon
 	bool
 	AssetDatabase::isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		return AssetImporter::instance()->isSubAsset(asset);
+		return false;
 	}
 
 	bool
 	AssetDatabase::getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, std::string& outGuid, std::int64_t& outLocalId)
 	{
-		auto assetPath = AssetImporter::instance()->getAssetPath(asset);
+		auto assetPath = this->getAssetPath(asset);
 		if (!assetPath.empty())
 		{
 			outGuid = this->getAssetGuid(assetPath);
@@ -413,8 +431,6 @@ namespace octoon
 				auto asset = package->loadAssetAtPath(packagePath);
 				if (asset)
 				{
-					AssetImporter::instance()->setAssetPath(asset, path);
-
 					auto metadata = package->loadMetadataAtPath(packagePath);
 					if (metadata.is_object())
 					{
@@ -425,6 +441,7 @@ namespace octoon
 						}
 					}
 
+					assetToPath_[asset] = path;
 				}
 
 				return asset;

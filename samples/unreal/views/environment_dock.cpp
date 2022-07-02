@@ -477,7 +477,7 @@ namespace unreal
 			QString filepath = QFileDialog::getOpenFileName(this, tr("Import Image"), "", tr("HDRi Files (*.hdr)"));
 			if (!filepath.isEmpty())
 			{
-				auto texture = octoon::AssetImporter::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdWString());
+				auto texture = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::Texture>(filepath.toStdWString());
 				if (texture)
 				{
 					texture->setMipLevel(8);

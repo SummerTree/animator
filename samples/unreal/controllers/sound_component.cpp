@@ -1,6 +1,7 @@
 #include "sound_component.h"
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
+#include <octoon/audio_loader.h>
 
 namespace unreal
 {

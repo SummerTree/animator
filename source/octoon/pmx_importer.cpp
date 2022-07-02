@@ -384,10 +384,11 @@ namespace octoon
 					if (!std::filesystem::exists(it.fullpath))
 						continue;
 
-					auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(it.fullpath);
+					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(it.fullpath);
 					if (texture)
 					{
 						texture->apply();
+						this->addRemap(texture);
 						textureMap[fullpath] = std::move(texture);
 					}
 				}
@@ -418,7 +419,6 @@ namespace octoon
 				if (textureMap.find(fullpath) != textureMap.end())
 				{
 					auto texture = textureMap.at(fullpath);
-					this->addRemap(material, texture);
 					material->setColorMap(texture);
 				}
 			}
@@ -444,7 +444,7 @@ namespace octoon
 				material->setBlendDest(BlendMode::OneMinusSrcAlpha);
 			}
 
-			this->addRemap(object, material);
+			this->addRemap(material);
 
 			materials.emplace_back(std::move(material));
 		}
@@ -527,7 +527,7 @@ namespace octoon
 
 		mesh->computeBoundingBox();
 
-		this->addRemap(object, mesh);
+		this->addRemap(mesh);
 
 		object->addComponent<MeshFilterComponent>(std::move(mesh));
 
@@ -589,7 +589,7 @@ namespace octoon
 			createClothes(pmx, actor, bones);
 
 			for (auto it : actor->getComponents())
-				AssetImporter::instance()->addRemap(actor, it);
+				AssetImporter::instance()->addRemap(it);
 
 			return actor;
 		}

@@ -21,7 +21,7 @@ namespace unreal
 
 		for (auto& it : pmm.model)
 		{
-			auto object = octoon::AssetImporter::instance()->loadAssetAtPath<octoon::GameObject>(it.path);
+			auto object = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(it.path);
 			if (object)
 			{
 				auto boneClip = std::make_shared<octoon::AnimationClip>();
