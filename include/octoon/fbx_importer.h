@@ -1,5 +1,5 @@
-#ifndef OCTOON_FBX_LOADER_H_
-#define OCTOON_FBX_LOADER_H_
+#ifndef OCTOON_FBX_IMPORTER_H_
+#define OCTOON_FBX_IMPORTER_H_
 
 #include <octoon/game_object.h>
 #include <octoon/asset_importer.h>

@@ -1,5 +1,5 @@
-#ifndef OCTOON_ASS_LOADER_H_
-#define OCTOON_ASS_LOADER_H_
+#ifndef OCTOON_ASS_IMPORTER_H_
+#define OCTOON_ASS_IMPORTER_H_
 
 #include <octoon/io/iostream.h>
 #include <octoon/game_object.h>

@@ -1,5 +1,5 @@
-#ifndef OCTOON_VMD_LOADER_H_
-#define OCTOON_VMD_LOADER_H_
+#ifndef OCTOON_VMD_IMPORTER_H_
+#define OCTOON_VMD_IMPORTER_H_
 
 #include <octoon/asset_importer.h>
 #include <octoon/animation/animation.h>
