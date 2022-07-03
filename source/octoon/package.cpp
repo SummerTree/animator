@@ -109,7 +109,8 @@ namespace octoon
 		if (assetImporter)
 		{
 			auto context = std::make_shared<AssetImporterContext>(path);
-			return assetImporter->onImportAsset(*context);
+			assetImporter->onImportAsset(*context);
+			return context->getMainObject();
 		}
 
 		return nullptr;

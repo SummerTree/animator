@@ -13,12 +13,15 @@ namespace octoon
 		AssetImporterContext(const std::filesystem::path& path) noexcept;
 		virtual ~AssetImporterContext() noexcept;
 
+		void setMainObject(const std::shared_ptr<Object>& object) noexcept;
+		const std::shared_ptr<Object>& getMainObject() const noexcept;
+
 		void addRemap(const std::shared_ptr<const Object>& subAsset);
 		const std::vector<std::weak_ptr<const Object>>& getExternalObjects() const;
 
 		const std::filesystem::path& getAssetPath() const noexcept;
 
-		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
+		nlohmann::json getMetadata() noexcept(false);
 
 	private:
 		AssetImporterContext(const AssetImporterContext&) = delete;
@@ -26,6 +29,7 @@ namespace octoon
 
 	private:
 		std::filesystem::path assetPath_;
+		std::shared_ptr<Object> mainObject;
 		std::vector<std::weak_ptr<const Object>> externalObjectMap_;
 	};
 }

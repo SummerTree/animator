@@ -14,7 +14,7 @@ namespace octoon
 		OBJImporter() noexcept;
 		~OBJImporter() noexcept;
 
-		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) override;
+		virtual void onImportAsset(AssetImporterContext& context) noexcept(false) override;
 
 	private:
 		OBJImporter(const OBJImporter&) = delete;

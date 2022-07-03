@@ -426,7 +426,7 @@ namespace octoon
 		vmd.save(stream);
 	}
 
-	std::shared_ptr<Object>
+	void
 	VMDImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
@@ -557,10 +557,8 @@ namespace octoon
 				animation->addClip(std::move(clip), "Camera");
 			}
 
-			return animation;
+			context.setMainObject(animation);
 		}
-
-		return nullptr;
 	}
 
 	void

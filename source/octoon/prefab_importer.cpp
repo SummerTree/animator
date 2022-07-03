@@ -14,7 +14,7 @@ namespace octoon
 	{
 	}
 
-	std::shared_ptr<Object>
+	void
 	PrefabImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
@@ -25,9 +25,7 @@ namespace octoon
 			auto object = std::make_shared<GameObject>();
 			object->load(prefab);
 
-			return object;
+			context.setMainObject(object);
 		}
-
-		return nullptr;
 	}
 }

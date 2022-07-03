@@ -14,7 +14,7 @@ namespace octoon
 	{
 	}
 
-	std::shared_ptr<Object>
+	void
 	AlembicImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
@@ -24,9 +24,7 @@ namespace octoon
 		{
 			auto alembic = model->addComponent<MeshAnimationComponent>();
 			alembic->setFilePath(filepath);
-			return model;
+			context.setMainObject(model);
 		}
-
-		return nullptr;
 	}
 }

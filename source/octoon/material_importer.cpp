@@ -16,7 +16,7 @@ namespace octoon
 	{
 	}
 
-	std::shared_ptr<Object>
+	void
 	MaterialImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
@@ -201,9 +201,7 @@ namespace octoon
 			if (subsurfaceColor != mat.end() && (*subsurfaceColor).is_array())
 				material->setSubsurfaceColor(math::float3((*subsurfaceColor).get<std::array<float, 3>>()));
 
-			return material;
+			context.setMainObject(material);
 		}
-
-		return nullptr;
 	}
 }

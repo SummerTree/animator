@@ -556,14 +556,14 @@ namespace octoon
 		}
 	}
 
-	std::shared_ptr<Object>
+	void
 	PMXImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
 
 		PMX pmx;
 		if (!PMX::load(filepath, pmx))
-			return nullptr;
+			return;
 		
 		if (pmx.numMaterials > 0)
 		{
@@ -593,10 +593,8 @@ namespace octoon
 			for (auto it : actor->getComponents())
 				context.addRemap(it);
 
-			return actor;
+			context.setMainObject(actor);
 		}
-
-		return nullptr;
 	}
 
 	bool

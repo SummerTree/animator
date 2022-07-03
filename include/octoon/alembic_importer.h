@@ -13,7 +13,7 @@ namespace octoon
 		AlembicImporter() noexcept;
 		virtual ~AlembicImporter() noexcept;
 
-		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) override;
+		virtual void onImportAsset(AssetImporterContext& context) noexcept(false) override;
 
 	private:
 		AlembicImporter(const AlembicImporter&) = delete;

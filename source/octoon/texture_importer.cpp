@@ -13,7 +13,7 @@ namespace octoon
 	{
 	}
 
-	std::shared_ptr<Object>
+	void
 	TextureImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
@@ -23,7 +23,7 @@ namespace octoon
 		{
 			texture->setName((char*)filepath.filename().u8string().c_str());
 
-			auto metadata = context.loadMetadataAtPath(filepath);
+			auto metadata = context.getMetadata();
 			if (metadata.is_object())
 			{
 				if (metadata.contains("mipmap"))
@@ -49,9 +49,7 @@ namespace octoon
 
 			texture->apply();
 
-			return texture;
+			context.setMainObject(texture);
 		}
-
-		return nullptr;
 	}
 }

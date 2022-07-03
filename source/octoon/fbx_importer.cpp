@@ -748,7 +748,7 @@ namespace octoon
 		return object;
 	}
 
-	std::shared_ptr<Object>
+	void
 	FBXImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		auto lsdkManager = FbxManager::Create();
@@ -795,11 +795,11 @@ namespace octoon
 						for (int i = 0; i < object->getChildCount(); i++)
 							context.addRemap(object->getChild(i));
 
-						return object;
+						context.setMainObject(object);
 					}
 					else
 					{
-						return object->getChild(0);
+						context.setMainObject(object->getChild(0));
 					}
 				}
 			}
@@ -811,8 +811,6 @@ namespace octoon
 
 			lsdkManager->Destroy();
 		}
-
-		return nullptr;
 	}
 
 	void importerNode(FbxNode* node, std::vector<std::filesystem::path>& dependencies)

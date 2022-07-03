@@ -21,7 +21,7 @@ namespace octoon
 	{
 	}
 
-	std::shared_ptr<Object>
+	void
 	OBJImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
@@ -266,10 +266,8 @@ namespace octoon
 				for (auto it : object->getComponents())
 					context.addRemap(it);
 
-				return object;
+				context.setMainObject(object);
 			}
 		}
-
-		return nullptr;
 	}
 }

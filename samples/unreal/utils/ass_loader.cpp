@@ -14,12 +14,14 @@ namespace unreal
 	void
 	AssLoader::load(UnrealProfile& profile, const std::filesystem::path& path) noexcept(false)
 	{
-		auto importer = std::make_shared<octoon::ASSImporter>(path);
-		auto object = importer->onImportAsset();
+		auto importer = std::make_shared<octoon::ASSImporter>();
+
+		auto context = std::make_shared<octoon::AssetImporterContext>(path);
+		importer->onImportAsset(*context);
 		
-		if (object)
+		if (context->getMainObject())
 		{
-			for (auto& it : object->downcast<octoon::GameObject>()->getChildren())
+			for (auto& it : context->getMainObject()->downcast<octoon::GameObject>()->getChildren())
 			{
 				if (it->getComponent<octoon::CameraComponent>())
 					profile.cameraModule->camera = it;

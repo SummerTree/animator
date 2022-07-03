@@ -13,7 +13,7 @@ namespace octoon
 		MaterialImporter() noexcept;
 		~MaterialImporter() noexcept;
 
-		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) override;
+		virtual void onImportAsset(AssetImporterContext& context) noexcept(false) override;
 
 	private:
 		MaterialImporter(const MaterialImporter&) = delete;
