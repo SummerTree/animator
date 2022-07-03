@@ -7,7 +7,7 @@ namespace octoon
 	OctoonImplementSingleton(AssetDatabase)
 
 	AssetDatabase::AssetDatabase() noexcept
-		: defaultPackage_(std::make_shared<Package>(this))
+		: defaultPackage_(std::make_shared<Package>(u8""))
 	{
 	}
 
