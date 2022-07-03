@@ -444,8 +444,11 @@ namespace octoon
 				if (assetImporter)
 				{
 					auto asset = assetImporter->importer();
-					assetToPath_[asset] = path;
-					objectCaches_[path] = asset;
+					if (asset)
+					{
+						assetToPath_[asset] = path;
+						objectCaches_[path] = asset;
+					}
 
 					return asset;
 				}
