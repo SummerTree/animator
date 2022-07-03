@@ -1,5 +1,5 @@
-#ifndef OCTOON_PACKAGE_H_
-#define OCTOON_PACKAGE_H_
+#ifndef OCTOON_ASSET_PIPELINE_H_
+#define OCTOON_ASSET_PIPELINE_H_
 
 #include <octoon/game_object.h>
 #include <octoon/asset_importer.h>
@@ -7,11 +7,11 @@
 
 namespace octoon
 {
-	class OCTOON_EXPORT Package final
+	class OCTOON_EXPORT AssetPipeline final
 	{
 	public:
-		Package(const std::u8string& name) noexcept;
-		~Package() noexcept;
+		AssetPipeline(const std::u8string& name) noexcept;
+		~AssetPipeline() noexcept;
 
 		void open(const std::filesystem::path& diskPath) noexcept(false);
 		void close() noexcept;
@@ -32,8 +32,8 @@ namespace octoon
 		}
 
 	private:
-		Package(const Package&) = delete;
-		Package& operator=(const Package&) = delete;
+		AssetPipeline(const AssetPipeline&) = delete;
+		AssetPipeline& operator=(const AssetPipeline&) = delete;
 
 	private:
 		std::u8string name_;

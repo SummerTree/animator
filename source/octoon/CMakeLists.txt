@@ -181,12 +181,8 @@ SET(IMPORTER_LIST
 	${SOURCE_PATH}/alembic_importer.cpp
 	${HEADER_PATH}/prefab_importer.h
 	${SOURCE_PATH}/prefab_importer.cpp
-	${HEADER_PATH}/asset_importer.h
-	${SOURCE_PATH}/asset_importer.cpp
-	${HEADER_PATH}/asset_importer_context.h
-	${SOURCE_PATH}/asset_importer_context.cpp
 )
-SOURCE_GROUP("system\\importer" FILES ${IMPORTER_LIST})
+SOURCE_GROUP("system\\asset\\importer" FILES ${IMPORTER_LIST})
 
 SET(EDITOR_LIST
 	${HEADER_PATH}/asset_database.h
@@ -195,10 +191,14 @@ SET(EDITOR_LIST
 	${SOURCE_PATH}/asset_bundle.cpp
 	${HEADER_PATH}/asset_preview.h
 	${SOURCE_PATH}/asset_preview.cpp
-	${HEADER_PATH}/package.h
-	${SOURCE_PATH}/package.cpp
+	${HEADER_PATH}/asset_pipeline.h
+	${SOURCE_PATH}/asset_pipeline.cpp
+	${HEADER_PATH}/asset_importer.h
+	${SOURCE_PATH}/asset_importer.cpp
+	${HEADER_PATH}/asset_importer_context.h
+	${SOURCE_PATH}/asset_importer_context.cpp
 )
-SOURCE_GROUP("system\\editor" FILES ${EDITOR_LIST})
+SOURCE_GROUP("system\\asset" FILES ${EDITOR_LIST})
 
 SET(PHYSICS_FEATURES_LIST
 	${HEADER_PATH}/physics_feature.h

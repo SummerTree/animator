@@ -14,7 +14,7 @@ namespace octoon
 	OctoonImplementSingleton(AssetDatabase)
 
 	AssetDatabase::AssetDatabase() noexcept
-		: defaultPackage_(std::make_shared<Package>(u8""))
+		: defaultPackage_(std::make_shared<AssetPipeline>(u8""))
 	{
 	}
 
@@ -31,7 +31,7 @@ namespace octoon
 	{
 		if (!this->packages_.contains(name))
 		{
-			auto package = std::make_shared<Package>(name);
+			auto package = std::make_shared<AssetPipeline>(name);
 			package->open(diskPath);
 
 			this->packages_[name] = std::move(package);
@@ -598,7 +598,7 @@ namespace octoon
 		}
 	}
 
-	std::shared_ptr<Package>
+	std::shared_ptr<AssetPipeline>
 	AssetDatabase::getPackage(const std::filesystem::path& assetPath, std::filesystem::path& packagePath) const noexcept(false)
 	{
 		if (assetPath.is_absolute())

@@ -1,4 +1,4 @@
-#include <octoon/package.h>
+#include <octoon/asset_pipeline.h>
 #include <octoon/runtime/md5.h>
 #include <octoon/runtime/guid.h>
 #include <octoon/texture_importer.h>
@@ -17,18 +17,18 @@
 
 namespace octoon
 {
-	Package::Package(const std::u8string& name) noexcept
+	AssetPipeline::AssetPipeline(const std::u8string& name) noexcept
 		: name_(name)
 	{
 	}
 
-	Package::~Package() noexcept
+	AssetPipeline::~AssetPipeline() noexcept
 	{
 		this->close();
 	}
 
 	void
-	Package::open(const std::filesystem::path& diskPath) noexcept(false)
+	AssetPipeline::open(const std::filesystem::path& diskPath) noexcept(false)
 	{
 		this->close();
 
@@ -49,19 +49,19 @@ namespace octoon
 	}
 
 	void
-	Package::close() noexcept
+	AssetPipeline::close() noexcept
 	{
 		rootPath_.clear();
 	}
 
 	std::filesystem::path
-	Package::getAbsolutePath(const std::filesystem::path& assetPath) const noexcept
+	AssetPipeline::getAbsolutePath(const std::filesystem::path& assetPath) const noexcept
 	{
 		return std::filesystem::path(this->rootPath_).append(assetPath.wstring());
 	}
 
 	void
-	Package::saveAssets() noexcept(false)
+	AssetPipeline::saveAssets() noexcept(false)
 	{
 		std::ofstream ifs(std::filesystem::path(rootPath_).append("manifest.json"), std::ios_base::binary);
 		if (ifs)
@@ -82,7 +82,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	Package::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
+	AssetPipeline::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
 	{
 		auto ext = path.extension().u8string();
 		for (auto& it : ext)

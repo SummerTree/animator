@@ -2,10 +2,7 @@
 #define OCTOON_ASSET_IMPORTER_H_
 
 #include <octoon/asset_importer_context.h>
-#include <octoon/runtime/singleton.h>
-#include <octoon/runtime/json.h>
 #include <filesystem>
-#include <map>
 
 namespace octoon
 {

@@ -5,7 +5,7 @@
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/animation/animation.h>
 #include <octoon/video/renderer.h>
-#include <octoon/package.h>
+#include <octoon/asset_pipeline.h>
 #include <filesystem>
 #include <set>
 #include <map>
@@ -76,7 +76,7 @@ namespace octoon
 		void createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false);
 		void removeMetadataAtPath(const std::filesystem::path& path) noexcept;
 		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
-		std::shared_ptr<Package> getPackage(const std::filesystem::path& assetPath, std::filesystem::path& packagePath) const noexcept(false);
+		std::shared_ptr<AssetPipeline> getPackage(const std::filesystem::path& assetPath, std::filesystem::path& packagePath) const noexcept(false);
 
 	private:
 		AssetDatabase(const AssetDatabase&) = delete;
@@ -85,8 +85,8 @@ namespace octoon
 	private:
 		std::vector<std::string> defaultLabel_;
 
-		std::shared_ptr<Package> defaultPackage_;
-		std::map<std::u8string, std::shared_ptr<Package>> packages_;
+		std::shared_ptr<AssetPipeline> defaultPackage_;
+		std::map<std::u8string, std::shared_ptr<AssetPipeline>> packages_;
 		std::map<std::filesystem::path, std::weak_ptr<Object>> assetCaches_;
 
 		std::map<std::filesystem::path, std::string> paths_;
