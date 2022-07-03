@@ -37,8 +37,6 @@ namespace octoon
 		std::filesystem::path assetPath_;
 		std::vector<std::weak_ptr<const Object>> externalObjectMap_;
 
-		static std::map<std::string, std::filesystem::path> uniques_;
-		static std::map<std::filesystem::path, std::string> paths_;
 		static std::map<std::filesystem::path, std::shared_ptr<AssetImporter>> assets_;
 	};
 }

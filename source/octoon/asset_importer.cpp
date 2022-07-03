@@ -14,8 +14,6 @@ namespace octoon
 {
 	OctoonImplementSubInterface(AssetImporter, Object, "AssetImporter")
 
-	std::map<std::string, std::filesystem::path> AssetImporter::uniques_;
-	std::map<std::filesystem::path, std::string> AssetImporter::paths_;
 	std::map<std::filesystem::path, std::shared_ptr<AssetImporter>> AssetImporter::assets_;
 
 	AssetImporter::AssetImporter() noexcept
@@ -90,14 +88,7 @@ namespace octoon
 		if (ifs)
 		{
 			auto metaData = nlohmann::json::parse(ifs);
-			if (metaData.contains("uuid"))
-			{
-				auto guid = metaData["uuid"].get<std::string>();
-				paths_[path] = guid;
-				uniques_[guid] = path;
-
-				return metaData;
-			}
+			return metaData;
 		}
 
 		return nlohmann::json();

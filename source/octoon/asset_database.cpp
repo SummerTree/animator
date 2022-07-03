@@ -436,22 +436,14 @@ namespace octoon
 			auto package = this->getPackage(path, packagePath);
 			if (package)
 			{
-				auto metadata = package->loadMetadataAtPath(packagePath);
-				if (!metadata.is_object() && !path.is_absolute())
-					package->createMetadataAtPath(packagePath);
-
-				auto assetImporter = AssetImporter::getAtPath(package->getAbsolutePath(packagePath));
-				if (assetImporter)
+				auto asset = package->loadAssetAtPath(packagePath);
+				if (asset)
 				{
-					auto asset = assetImporter->importer();
-					if (asset)
-					{
-						assetToPath_[asset] = path;
-						objectCaches_[path] = asset;
-					}
-
-					return asset;
+					assetToPath_[asset] = path;
+					objectCaches_[path] = asset;
 				}
+
+				return asset;
 			}
 		}
 

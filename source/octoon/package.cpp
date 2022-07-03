@@ -593,4 +593,36 @@ namespace octoon
 
 		return nlohmann::json();
 	}
+
+	std::shared_ptr<Object>
+	Package::loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
+	{
+		auto assetImporter = AssetImporter::getAtPath(this->getAbsolutePath(path));
+		if (assetImporter)
+		{
+			auto asset = assetImporter->importer();
+			if (asset)
+			{
+				auto metadata = this->loadMetadataAtPath(path);
+				if (metadata.is_object())
+				{
+					if (metadata.contains("uuid"))
+					{
+						auto guid = metadata["uuid"].get<std::string>();
+						paths_[path] = guid;
+						uniques_[guid] = path;
+					}
+				}
+				else
+				{
+					if (!path.is_absolute())
+						this->createMetadataAtPath(path);
+				}
+			}
+
+			return asset;
+		}
+
+		return nullptr;
+	}
 }

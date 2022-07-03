@@ -22,9 +22,7 @@ namespace octoon
 	std::shared_ptr<Object>
 	PrefabImporter::importer() noexcept(false)
 	{
-		auto filepath = this->getAssetPath();
-
-		std::ifstream ifs(filepath);
+		std::ifstream ifs(this->getAssetPath());
 		if (ifs)
 		{
 			auto prefab = nlohmann::json::parse(ifs);
@@ -33,5 +31,7 @@ namespace octoon
 
 			return object;
 		}
+
+		return nullptr;
 	}
 }
