@@ -22,6 +22,7 @@ namespace octoon
 		void mountPackage(const std::u8string& name, const std::filesystem::path& diskPath) noexcept(false);
 		void unmountPackage(const std::u8string& name) noexcept(false);
 
+		void importAsset(const std::filesystem::path& assetPath) noexcept(false);
 		void importAsset(const std::filesystem::path& diskPath, const std::filesystem::path& assetPath) noexcept(false);
 
 		void createAsset(const std::shared_ptr<const Texture>& texture, const std::filesystem::path& assetPath) noexcept(false);
@@ -71,6 +72,10 @@ namespace octoon
 		void setDirty(const std::shared_ptr<Object>& object, bool dirty = true) noexcept(false);
 
 	private:
+		void createMetadataAtPath(const std::filesystem::path& path) noexcept(false);
+		void createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false);
+		void removeMetadataAtPath(const std::filesystem::path& path) noexcept;
+		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
 		std::shared_ptr<Package> getPackage(const std::filesystem::path& assetPath, std::filesystem::path& packagePath) const noexcept(false);
 
 	private:
@@ -84,6 +89,8 @@ namespace octoon
 		std::map<std::u8string, std::shared_ptr<Package>> packages_;
 		std::map<std::filesystem::path, std::weak_ptr<Object>> objectCaches_;
 
+		std::map<std::filesystem::path, std::string> paths_;
+		std::map<std::string, std::filesystem::path> uniques_;
 		std::set<std::weak_ptr<const Object>, std::owner_less<std::weak_ptr<const Object>>> dirtyList_;
 		std::map<std::weak_ptr<const Object>, std::vector<std::string>, std::owner_less<std::weak_ptr<const Object>>> labels_;
 		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> assetToPath_;

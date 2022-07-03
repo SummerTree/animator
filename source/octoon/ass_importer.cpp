@@ -56,13 +56,12 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	ASSImporter::importer() noexcept(false)
+	ASSImporter::onImportAsset() noexcept(false)
 	{
 		static constexpr int kMaxLineLength = 2048;
 
-		auto path = this->getAssetPath();
-		FILE* file = _wfopen(path.wstring().c_str(), L"r");
-		
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+		FILE* file = _wfopen(filepath.wstring().c_str(), L"r");		
 		if (!file)
 			return nullptr;
 
@@ -125,7 +124,7 @@ namespace octoon
 						sscanf(line, " normaltexture %s", normalTexName);
 					}
 
-					auto parent_path = path.parent_path();
+					auto parent_path = filepath.parent_path();
 
 					if (strcmp(albedoTexName, "None") != 0) material.albedoTex = parent_path.append(albedoTexName);
 					if (strcmp(metallicRoughnessTexName, "None") != 0) material.metallicRoughnessTex = parent_path.append(metallicRoughnessTexName);
@@ -255,7 +254,7 @@ namespace octoon
 
 				if (strstr(line, "mesh"))
 				{
-					std::filesystem::path filepath;
+					std::filesystem::path modelPath;
 					math::float3 pos = math::float3::Zero;
 					math::float3 scale = math::float3::One;
 					std::shared_ptr<MeshStandardMaterial> material;
@@ -274,15 +273,15 @@ namespace octoon
 
 						char fileName[2048];
 						if (sscanf(line, " file %s", fileName) == 1)
-							filepath = path.parent_path().append(fileName);
+							modelPath = filepath.parent_path().append(fileName);
 
 						if (sscanf(line, " material %s", matName) == 1)
 							material = materialMap.find(matName) != materialMap.end() ? materialMap[matName] : defaultMaterial;
 					}
 
-					if (std::filesystem::exists(filepath))
+					if (std::filesystem::exists(modelPath))
 					{
-						auto model = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(filepath);
+						auto model = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::GameObject>(modelPath);
 						if (model)
 						{
 							model->setName(meshName);

@@ -16,7 +16,7 @@ namespace octoon
 		PMXImporter(const std::filesystem::path& path) noexcept;
 		virtual ~PMXImporter() noexcept;
 
-		virtual std::shared_ptr<Object> importer() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
 
 		static bool save(const GameObject& gameObject, PMX& pmx, const std::filesystem::path& path) noexcept(false);
 		static bool save(const GameObject& gameObject, const std::filesystem::path& path) noexcept(false);

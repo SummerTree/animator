@@ -15,7 +15,7 @@ namespace octoon
 		OBJImporter(const std::filesystem::path& path) noexcept;
 		~OBJImporter() noexcept;
 
-		virtual std::shared_ptr<Object> importer() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
 
 	private:
 		OBJImporter(const OBJImporter&) = delete;

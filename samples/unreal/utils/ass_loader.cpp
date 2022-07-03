@@ -15,7 +15,7 @@ namespace unreal
 	AssLoader::load(UnrealProfile& profile, const std::filesystem::path& path) noexcept(false)
 	{
 		auto importer = std::make_shared<octoon::ASSImporter>(path);
-		auto object = importer->importer();
+		auto object = importer->onImportAsset();
 		
 		if (object)
 		{

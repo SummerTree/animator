@@ -152,7 +152,7 @@ namespace octoon
 		VMDImporter(const std::filesystem::path& path) noexcept;
 		virtual ~VMDImporter() noexcept;
 
-		virtual std::shared_ptr<Object> importer() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
 
 		static void save(std::ostream& stream, const Animation& animation) noexcept(false);
 		static void save(const std::filesystem::path& filepath, const Animation& animation) noexcept(false);

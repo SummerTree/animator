@@ -1,4 +1,5 @@
 #include <octoon/vmd_importer.h>
+#include <octoon/asset_database.h>
 #include <octoon/math/vector2.h>
 #include <octoon/math/vector3.h>
 #include <octoon/math/vector4.h>
@@ -9,7 +10,6 @@
 #include <octoon/io/fstream.h>
 #include <iconv.h>
 #include <map>
-#include <filesystem>
 #include <fstream>
 
 namespace octoon
@@ -432,9 +432,9 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	VMDImporter::importer() noexcept(false)
+	VMDImporter::onImportAsset() noexcept(false)
 	{
-		auto filepath = this->getAssetPath();
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
 		std::ifstream stream(filepath, std::ios_base::binary);
 		if (stream)
 		{

@@ -27,9 +27,9 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	OBJImporter::importer() noexcept(false)
+	OBJImporter::onImportAsset() noexcept(false)
 	{
-		auto filepath = this->getAssetPath();
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
 
 		std::ifstream stream(filepath);
 		if (stream)

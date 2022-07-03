@@ -14,7 +14,7 @@ namespace octoon
 		PrefabImporter(const std::filesystem::path& path) noexcept;
 		virtual ~PrefabImporter() noexcept;
 
-		virtual std::shared_ptr<Object> importer() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
 
 	private:
 		PrefabImporter(const PrefabImporter&) = delete;

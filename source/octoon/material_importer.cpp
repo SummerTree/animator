@@ -22,9 +22,10 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	MaterialImporter::importer() noexcept(false)
+	MaterialImporter::onImportAsset() noexcept(false)
 	{
-		std::ifstream ifs(this->getAssetPath());
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+		std::ifstream ifs(filepath);
 		if (ifs)
 		{
 			auto mat = nlohmann::json::parse(ifs);

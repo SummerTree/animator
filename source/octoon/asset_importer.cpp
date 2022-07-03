@@ -36,7 +36,7 @@ namespace octoon
 	}
 
 	const std::vector<std::weak_ptr<const Object>>&
-	AssetImporter::getExternalObjectMap() const
+	AssetImporter::getExternalObjects() const
 	{
 		return externalObjectMap_;
 	}

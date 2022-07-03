@@ -17,7 +17,7 @@ namespace octoon
 		FBXImporter(const std::filesystem::path& path) noexcept;
 		~FBXImporter() noexcept;
 
-		virtual std::shared_ptr<Object> importer() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
 
 		static std::vector<std::filesystem::path> getDependencies(const std::filesystem::path& filepath) noexcept(false);
 

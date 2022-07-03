@@ -562,9 +562,9 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	PMXImporter::importer() noexcept(false)
+	PMXImporter::onImportAsset() noexcept(false)
 	{
-		auto filepath = this->getAssetPath();
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
 
 		PMX pmx;
 		if (!PMX::load(filepath, pmx))

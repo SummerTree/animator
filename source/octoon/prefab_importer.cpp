@@ -20,9 +20,10 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	PrefabImporter::importer() noexcept(false)
+	PrefabImporter::onImportAsset() noexcept(false)
 	{
-		std::ifstream ifs(this->getAssetPath());
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+		std::ifstream ifs(filepath);
 		if (ifs)
 		{
 			auto prefab = nlohmann::json::parse(ifs);

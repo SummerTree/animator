@@ -18,11 +18,11 @@ namespace octoon
 		virtual ~AssetImporter() noexcept;
 
 		void addRemap(const std::shared_ptr<const Object>& subAsset);
-		const std::vector<std::weak_ptr<const Object>>& getExternalObjectMap() const;
+		const std::vector<std::weak_ptr<const Object>>& getExternalObjects() const;
 
 		const std::filesystem::path& getAssetPath() const noexcept;
 
-		virtual std::shared_ptr<Object> importer() noexcept(false) = 0;
+		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) = 0;
 
 		static std::shared_ptr<AssetImporter> getAtPath(const std::filesystem::path& path) noexcept;
 

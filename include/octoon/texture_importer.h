@@ -14,7 +14,7 @@ namespace octoon
 		TextureImporter(const std::filesystem::path& path) noexcept;
 		virtual ~TextureImporter() noexcept;
 
-		virtual std::shared_ptr<Object> importer() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
 
 	private:
 		TextureImporter(const TextureImporter&) = delete;

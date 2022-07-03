@@ -19,9 +19,9 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	TextureImporter::importer() noexcept(false)
+	TextureImporter::onImportAsset() noexcept(false)
 	{
-		auto filepath = this->getAssetPath();
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
 
 		auto texture = std::make_shared<Texture>();
 		if (texture->load(filepath))

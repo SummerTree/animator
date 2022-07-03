@@ -754,7 +754,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	FBXImporter::importer() noexcept(false)
+	FBXImporter::onImportAsset() noexcept(false)
 	{
 		auto lsdkManager = FbxManager::Create();
 		if (lsdkManager)
@@ -766,17 +766,17 @@ namespace octoon
 			FbxString path = FbxGetApplicationDirectory();
 			lsdkManager->LoadPluginsDirectory(path.Buffer(), extension.Buffer());
 
-			FbxImporter* importer = FbxImporter::Create(lsdkManager, "");
+			FbxImporter* onImportAsset = FbxImporter::Create(lsdkManager, "");
 
-			auto filepath = this->getAssetPath();
-			if (importer->Initialize((char*)filepath.u8string().c_str(), -1, lsdkManager->GetIOSettings()))
+			auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+			if (onImportAsset->Initialize((char*)filepath.u8string().c_str(), -1, lsdkManager->GetIOSettings()))
 			{
 				int major = 0, minor = 0, revision = 0;
-				importer->GetFileVersion(major, minor, revision);
+				onImportAsset->GetFileVersion(major, minor, revision);
 
 				FbxScene* scene = FbxScene::Create(lsdkManager, "myScene");
-				importer->Import(scene);
-				importer->Destroy();
+				onImportAsset->Import(scene);
+				onImportAsset->Destroy();
 
 				FbxArray<FbxString*> animStackNameArray;
 				scene->FillAnimStackNameArray(animStackNameArray);
@@ -811,7 +811,7 @@ namespace octoon
 			else
 			{
 				printf("Call to FbxImporter::Initialize() failed.\n");
-				printf("Error returned: %s\n\n", importer->GetStatus().GetErrorString());
+				printf("Error returned: %s\n\n", onImportAsset->GetStatus().GetErrorString());
 			}
 
 			lsdkManager->Destroy();
@@ -881,16 +881,16 @@ namespace octoon
 			FbxString path = FbxGetApplicationDirectory();
 			lsdkManager->LoadPluginsDirectory(path.Buffer(), extension.Buffer());
 
-			FbxImporter* importer = FbxImporter::Create(lsdkManager, "");
+			FbxImporter* onImportAsset = FbxImporter::Create(lsdkManager, "");
 
-			if (importer->Initialize((char*)filepath.u8string().c_str(), -1, lsdkManager->GetIOSettings()))
+			if (onImportAsset->Initialize((char*)filepath.u8string().c_str(), -1, lsdkManager->GetIOSettings()))
 			{
 				int major = 0, minor = 0, revision = 0;
-				importer->GetFileVersion(major, minor, revision);
+				onImportAsset->GetFileVersion(major, minor, revision);
 
 				FbxScene* scene = FbxScene::Create(lsdkManager, "myScene");
-				importer->Import(scene);
-				importer->Destroy();
+				onImportAsset->Import(scene);
+				onImportAsset->Destroy();
 
 				FbxNode* rootNode = scene->GetRootNode();
 				if (rootNode)
@@ -904,7 +904,7 @@ namespace octoon
 			else
 			{
 				printf("Call to FbxImporter::Initialize() failed.\n");
-				printf("Error returned: %s\n\n", importer->GetStatus().GetErrorString());
+				printf("Error returned: %s\n\n", onImportAsset->GetStatus().GetErrorString());
 			}
 
 			lsdkManager->Destroy();
