@@ -15,7 +15,6 @@
 #include <qtreewidget.h>
 #include <qprogressdialog.h>
 
-#include <octoon/asset_bundle.h>
 #include <octoon/asset_preview.h>
 #include <octoon/asset_database.h>
 

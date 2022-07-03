@@ -1,4 +1,5 @@
 #include <octoon/asset_pipeline.h>
+#include <octoon/asset_manager.h>
 #include <octoon/runtime/md5.h>
 #include <octoon/runtime/guid.h>
 #include <octoon/texture_importer.h>
@@ -110,7 +111,17 @@ namespace octoon
 		{
 			auto context = std::make_shared<AssetImporterContext>(path);
 			assetImporter->onImportAsset(*context);
-			return context->getMainObject();
+
+			auto mainObject = context->getMainObject();
+			if (mainObject)
+			{
+				AssetManager::instance()->setAssetPath(mainObject, context->getAssetPath());
+
+				for (auto& asset : context->getSubAssets())
+					AssetManager::instance()->setAssetPath(asset, context->getAssetPath());
+
+				return mainObject;
+			}
 		}
 
 		return nullptr;

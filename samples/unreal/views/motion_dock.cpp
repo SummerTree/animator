@@ -2,7 +2,6 @@
 #include "../utils/asset_library.h"
 #include "../widgets/draggable_list_widget.h"
 #include <octoon/asset_database.h>
-#include <octoon/asset_bundle.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qfiledialog.h>

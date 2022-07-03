@@ -1,5 +1,6 @@
 #include "pmm_loader.h"
 #include <octoon/asset_importer.h>
+#include <octoon/runtime/guid.h>
 
 namespace unreal
 {

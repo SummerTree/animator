@@ -1,11 +1,11 @@
 #include <octoon/mesh_animation_component.h>
 #include <octoon/runtime/except.h>
+#include <octoon/runtime/guid.h>
 #include <octoon/skinned_mesh_renderer_component.h>
 #include <octoon/transform_component.h>
 #include <octoon/timer_feature.h>
 #include <octoon/material/mesh_standard_material.h>
 #include <octoon/asset_database.h>
-#include <octoon/asset_bundle.h>
 
 #pragma warning(push)
 #pragma warning(disable:4244)

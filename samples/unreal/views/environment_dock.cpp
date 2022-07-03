@@ -1,6 +1,5 @@
 #include "environment_dock.h"
 #include "../utils/asset_library.h"
-#include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
 #include <octoon/asset_importer.h>
 

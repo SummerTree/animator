@@ -187,8 +187,8 @@ SOURCE_GROUP("system\\asset\\importer" FILES ${IMPORTER_LIST})
 SET(EDITOR_LIST
 	${HEADER_PATH}/asset_database.h
 	${SOURCE_PATH}/asset_database.cpp
-	${HEADER_PATH}/asset_bundle.h
-	${SOURCE_PATH}/asset_bundle.cpp
+	${HEADER_PATH}/asset_manager.h
+	${SOURCE_PATH}/asset_manager.cpp
 	${HEADER_PATH}/asset_preview.h
 	${SOURCE_PATH}/asset_preview.cpp
 	${HEADER_PATH}/asset_pipeline.h

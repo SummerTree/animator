@@ -6,7 +6,7 @@
 #include <octoon/material/material.h>
 #include <octoon/animation/animation.h>
 #include <octoon/runtime/singleton.h>
-#include <octoon/asset_bundle.h>
+#include <octoon/asset_database.h>
 #include <filesystem>
 
 namespace unreal

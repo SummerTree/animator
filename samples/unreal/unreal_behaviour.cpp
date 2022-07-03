@@ -2,7 +2,6 @@
 #include "../utils/pmm_loader.h"
 #include "../utils/ass_loader.h"
 #include "../utils/asset_library.h"
-#include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
 #include <filesystem>
 

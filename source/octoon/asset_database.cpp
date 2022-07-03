@@ -1,5 +1,6 @@
 #include <octoon/asset_database.h>
 #include <octoon/asset_importer.h>
+#include <octoon/asset_manager.h>
 #include <octoon/game_component.h>
 #include <octoon/runtime/md5.h>
 #include <octoon/runtime/guid.h>
@@ -495,11 +496,7 @@ namespace octoon
 	std::filesystem::path
 	AssetDatabase::getAssetPath(const std::shared_ptr<const Object>& object) const noexcept
 	{
-		auto asset = assetToPath_.find(object);
-		if (asset != assetToPath_.end())
-			return asset->second;
-
-		return std::filesystem::path();
+		return AssetManager::instance()->getAssetPath(object);
 	}
 
 	std::filesystem::path
@@ -811,7 +808,6 @@ namespace octoon
 				{
 					this->importAsset(path);
 
-					assetToPath_[asset] = path;
 					assetCaches_[path] = asset;
 				}
 

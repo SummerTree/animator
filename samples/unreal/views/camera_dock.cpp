@@ -1,6 +1,5 @@
 #include "camera_dock.h"
 #include <octoon/io/fstream.h>
-#include <octoon/asset_bundle.h>
 #include <octoon/asset_importer.h>
 #include <octoon/asset_database.h>
 #include <qapplication.h>

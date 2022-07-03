@@ -3,7 +3,6 @@
 #include <fstream>
 #include <filesystem>
 #include <octoon/runtime/json.h>
-#include <octoon/asset_bundle.h>
 
 namespace unreal
 {

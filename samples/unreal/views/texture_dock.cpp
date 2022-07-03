@@ -14,7 +14,7 @@
 #include <qgraphicseffect.h>
 #include <QToolButton>
 
-#include <octoon/asset_bundle.h>
+#include <octoon/asset_database.h>
 
 namespace unreal
 {

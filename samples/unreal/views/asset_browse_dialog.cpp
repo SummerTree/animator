@@ -2,7 +2,6 @@
 #include "../utils/asset_library.h"
 #include <octoon/environment_light_component.h>
 #include <octoon/texture/texture.h>
-#include <octoon/asset_bundle.h>
 #include <octoon/asset_database.h>
 #include <octoon/mesh_renderer_component.h>
 

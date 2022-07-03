@@ -14,8 +14,6 @@
 #include <qgraphicseffect.h>
 #include <QToolButton>
 
-#include <octoon/asset_bundle.h>
-
 namespace unreal
 {
 	ModelDock::ModelDock(const octoon::GameObjectPtr& behaviour, const std::shared_ptr<UnrealProfile>& profile)

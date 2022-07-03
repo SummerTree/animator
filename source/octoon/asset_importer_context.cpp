@@ -35,7 +35,7 @@ namespace octoon
 		this->subAssets_.push_back(subAsset);
 	}
 
-	const std::vector<std::weak_ptr<const Object>>&
+	const std::vector<std::shared_ptr<const Object>>&
 	AssetImporterContext::getSubAssets() const
 	{
 		return subAssets_;
