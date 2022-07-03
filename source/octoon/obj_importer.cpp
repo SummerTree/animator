@@ -59,7 +59,7 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.diffuse_texname);
 						if (texture)
 						{
-							context.addRemap(texture);
+							context.addObjectToAsset(texture);
 							standardMaterial->setColorMap(std::move(texture));
 						}
 					}
@@ -69,7 +69,7 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.normal_texname);
 						if (texture)
 						{
-							context.addRemap(texture);
+							context.addObjectToAsset(texture);
 							standardMaterial->setNormalMap(std::move(texture));
 						}
 					}
@@ -79,7 +79,7 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.roughness_texname);
 						if (texture)
 						{
-							context.addRemap(texture);
+							context.addObjectToAsset(texture);
 							standardMaterial->setRoughnessMap(std::move(texture));
 						}
 					}
@@ -89,7 +89,7 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.metallic_texname);
 						if (texture)
 						{
-							context.addRemap(texture);
+							context.addObjectToAsset(texture);
 							standardMaterial->setMetalnessMap(std::move(texture));
 						}
 					}
@@ -99,7 +99,7 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.sheen_texname);
 						if (texture)
 						{
-							context.addRemap(texture);
+							context.addObjectToAsset(texture);
 							standardMaterial->setSheenMap(std::move(texture));
 						}
 					}
@@ -109,7 +109,7 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.emissive_texname);
 						if (texture)
 						{
-							context.addRemap(texture);
+							context.addObjectToAsset(texture);
 							standardMaterial->setEmissiveMap(std::move(texture));
 						}
 					}
@@ -250,7 +250,7 @@ namespace octoon
 				mesh->computeBoundingBox();
 				mesh->computeVertexNormals();
 
-				context.addRemap(mesh);
+				context.addObjectToAsset(mesh);
 
 				auto object = std::make_shared<GameObject>();
 				object->addComponent<MeshFilterComponent>(std::move(mesh));
@@ -260,11 +260,11 @@ namespace octoon
 				for (std::size_t i = 0; i < shapesMaterials.size(); i++)
 				{
 					meshRender->setMaterial(shapesMaterials[i] ? shapesMaterials[i] : std::make_shared<MeshStandardMaterial>(), i);
-					context.addRemap(meshRender->getMaterial(i));
+					context.addObjectToAsset(meshRender->getMaterial(i));
 				}
 
 				for (auto it : object->getComponents())
-					context.addRemap(it);
+					context.addObjectToAsset(it);
 
 				context.setMainObject(object);
 			}

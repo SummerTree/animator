@@ -388,7 +388,7 @@ namespace octoon
 					if (texture)
 					{
 						texture->apply();
-						context.addRemap(texture);
+						context.addObjectToAsset(texture);
 						textureMap[fullpath] = std::move(texture);
 					}
 				}
@@ -444,7 +444,7 @@ namespace octoon
 				material->setBlendDest(BlendMode::OneMinusSrcAlpha);
 			}
 
-			context.addRemap(material);
+			context.addObjectToAsset(material);
 
 			materials.emplace_back(std::move(material));
 		}
@@ -527,7 +527,7 @@ namespace octoon
 
 		mesh->computeBoundingBox();
 
-		context.addRemap(mesh);
+		context.addObjectToAsset(mesh);
 
 		object->addComponent<MeshFilterComponent>(std::move(mesh));
 
@@ -591,7 +591,7 @@ namespace octoon
 			createClothes(context, pmx, actor, bones);
 
 			for (auto it : actor->getComponents())
-				context.addRemap(it);
+				context.addObjectToAsset(it);
 
 			context.setMainObject(actor);
 		}

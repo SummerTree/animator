@@ -291,13 +291,13 @@ namespace octoon
 			material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sBump, path));
 
 		if (material->getColorMap())
-			context.addRemap(material->getColorMap());
+			context.addObjectToAsset(material->getColorMap());
 		if (material->getNormalMap())
-			context.addRemap(material->getNormalMap());
+			context.addObjectToAsset(material->getNormalMap());
 		if (material->getEmissiveMap())
-			context.addRemap(material->getEmissiveMap());
+			context.addObjectToAsset(material->getEmissiveMap());
 		if (material->getNormalMap())
-			context.addRemap(material->getNormalMap());
+			context.addObjectToAsset(material->getNormalMap());
 
 		if (surfaceMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
@@ -612,7 +612,7 @@ namespace octoon
 			gameObject->setName(node->GetName());
 			gameObject->addComponent<MeshFilterComponent>(std::move(mesh));
 
-			context.addRemap(mesh);
+			context.addObjectToAsset(mesh);
 
 			auto meshRenderer = gameObject->addComponent<MeshRendererComponent>();
 			meshRenderer->setGlobalIllumination(true);
@@ -625,14 +625,14 @@ namespace octoon
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
 					auto material = materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>();
-					context.addRemap(material);
+					context.addObjectToAsset(material);
 					meshRenderer->setMaterial(std::move(material), i);
 				}
 			}
 			else
 			{
 				auto material = std::make_shared<MeshStandardMaterial>();
-				context.addRemap(material);
+				context.addObjectToAsset(material);
 				meshRenderer->setMaterial(std::move(material));
 			}
 
@@ -738,7 +738,7 @@ namespace octoon
 				for (int j = 0; j < node->GetChildCount(); j++)
 				{
 					auto child = ProcessNode(context, scene, node->GetChild(j), path);
-					context.addRemap(child);
+					context.addObjectToAsset(child);
 					object->addChild(child);
 				}
 				break;
@@ -788,12 +788,12 @@ namespace octoon
 					}
 					
 					for (auto it : object->getComponents())
-						context.addRemap(it);
+						context.addObjectToAsset(it);
 
 					if (object->getChildCount() > 1)
 					{
 						for (int i = 0; i < object->getChildCount(); i++)
-							context.addRemap(object->getChild(i));
+							context.addObjectToAsset(object->getChild(i));
 
 						context.setMainObject(object);
 					}

@@ -16,8 +16,8 @@ namespace octoon
 		void setMainObject(const std::shared_ptr<Object>& object) noexcept;
 		const std::shared_ptr<Object>& getMainObject() const noexcept;
 
-		void addRemap(const std::shared_ptr<const Object>& subAsset);
-		const std::vector<std::weak_ptr<const Object>>& getExternalObjects() const;
+		void addObjectToAsset(const std::shared_ptr<const Object>& subAsset);
+		const std::vector<std::weak_ptr<const Object>>& getSubAssets() const;
 
 		const std::filesystem::path& getAssetPath() const noexcept;
 
@@ -31,7 +31,7 @@ namespace octoon
 		nlohmann::json metaData_;
 		std::filesystem::path assetPath_;
 		std::shared_ptr<Object> mainObject;
-		std::vector<std::weak_ptr<const Object>> externalObjectMap_;
+		std::vector<std::weak_ptr<const Object>> subAssets_;
 	};
 }
 

@@ -30,15 +30,15 @@ namespace octoon
 	}
 
 	void
-	AssetImporterContext::addRemap(const std::shared_ptr<const Object>& subAsset)
+	AssetImporterContext::addObjectToAsset(const std::shared_ptr<const Object>& subAsset)
 	{
-		this->externalObjectMap_.push_back(subAsset);
+		this->subAssets_.push_back(subAsset);
 	}
 
 	const std::vector<std::weak_ptr<const Object>>&
-	AssetImporterContext::getExternalObjects() const
+	AssetImporterContext::getSubAssets() const
 	{
-		return externalObjectMap_;
+		return subAssets_;
 	}
 
 	const std::filesystem::path&
