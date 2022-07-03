@@ -1,5 +1,5 @@
 #include "entities_module.h"
-#include <octoon/asset_bundle.h>
+#include <octoon/runtime/guid.h>
 #include <octoon/asset_database.h>
 #include <octoon/asset_importer.h>
 #include <octoon/animator_component.h>
