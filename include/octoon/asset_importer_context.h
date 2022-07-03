@@ -21,13 +21,14 @@ namespace octoon
 
 		const std::filesystem::path& getAssetPath() const noexcept;
 
-		nlohmann::json getMetadata() noexcept(false);
+		nlohmann::json getMetadata() const noexcept(false);
 
 	private:
 		AssetImporterContext(const AssetImporterContext&) = delete;
 		AssetImporterContext& operator=(const AssetImporterContext&) = delete;
 
 	private:
+		nlohmann::json metaData_;
 		std::filesystem::path assetPath_;
 		std::shared_ptr<Object> mainObject;
 		std::vector<std::weak_ptr<const Object>> externalObjectMap_;

@@ -7,6 +7,10 @@ namespace octoon
 	AssetImporterContext::AssetImporterContext(const std::filesystem::path& path) noexcept
 		: assetPath_(path)
 	{
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(assetPath_);
+		std::ifstream ifs(std::filesystem::path(filepath).concat(L".meta"));
+		if (ifs)
+			this->metaData_ = nlohmann::json::parse(ifs);
 	}
 
 	AssetImporterContext::~AssetImporterContext() noexcept
@@ -44,16 +48,8 @@ namespace octoon
 	}
 
 	nlohmann::json
-	AssetImporterContext::getMetadata() noexcept(false)
+	AssetImporterContext::getMetadata() const noexcept(false)
 	{
-		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
-		std::ifstream ifs(std::filesystem::path(filepath).concat(L".meta"));
-		if (ifs)
-		{
-			auto metaData = nlohmann::json::parse(ifs);
-			return metaData;
-		}
-
-		return nlohmann::json();
+		return metaData_;
 	}
 }
