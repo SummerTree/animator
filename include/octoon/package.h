@@ -44,17 +44,6 @@ namespace octoon
 		void removeMetadataAtPath(const std::filesystem::path& path) noexcept;
 		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
 
-		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false);
-
-		template<typename T>
-		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& relativePath) noexcept(false)
-		{
-			auto asset = loadAssetAtPath(relativePath);
-			if (asset)
-				return asset->downcast_pointer<T>();
-			return nullptr;
-		}
-
 	private:
 		Package(const Package&) = delete;
 		Package& operator=(const Package&) = delete;
@@ -66,7 +55,6 @@ namespace octoon
 
 		std::map<std::string, std::filesystem::path> uniques_;
 		std::map<std::filesystem::path, std::string> paths_;
-		std::map<std::filesystem::path, std::weak_ptr<Object>> objectCaches_;
 	};
 }
 

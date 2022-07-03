@@ -82,6 +82,8 @@ namespace octoon
 
 		std::shared_ptr<Package> defaultPackage_;
 		std::map<std::u8string, std::shared_ptr<Package>> packages_;
+		std::map<std::filesystem::path, std::weak_ptr<Object>> objectCaches_;
+
 		std::set<std::weak_ptr<const Object>, std::owner_less<std::weak_ptr<const Object>>> dirtyList_;
 		std::map<std::weak_ptr<const Object>, std::vector<std::string>, std::owner_less<std::weak_ptr<const Object>>> labels_;
 		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> assetToPath_;

@@ -248,12 +248,12 @@ namespace octoon
 				mesh->computeBoundingBox();
 				mesh->computeVertexNormals();
 
+				this->addRemap(mesh);
+
 				auto object = std::make_shared<GameObject>();
 				object->addComponent<MeshFilterComponent>(std::move(mesh));
 
 				auto meshRender = object->addComponent<MeshRendererComponent>();
-
-				this->addRemap(mesh);
 
 				for (std::size_t i = 0; i < shapesMaterials.size(); i++)
 				{

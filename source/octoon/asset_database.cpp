@@ -13,6 +13,7 @@ namespace octoon
 
 	AssetDatabase::~AssetDatabase() noexcept
 	{
+		objectCaches_.clear();
 		this->packages_.clear();
 	}
 
@@ -424,11 +425,18 @@ namespace octoon
 	{
 		if (!path.empty())
 		{
+			if (objectCaches_.contains(path))
+			{
+				auto cache = objectCaches_.at(path);
+				if (!cache.expired())
+					return cache.lock();
+			}
+
 			std::filesystem::path packagePath;
 			auto package = this->getPackage(path, packagePath);
 			if (package)
 			{
-				auto asset = package->loadAssetAtPath(packagePath);
+				auto asset = AssetImporter::loadAssetAtPath(package->getAbsolutePath(packagePath));
 				if (asset)
 				{
 					auto metadata = package->loadMetadataAtPath(packagePath);
@@ -440,11 +448,17 @@ namespace octoon
 								labels_[asset].push_back(it.get<std::string>());
 						}
 					}
+					else
+					{
+						if (!path.is_absolute())
+							package->createMetadataAtPath(packagePath);
+					}
 
 					assetToPath_[asset] = path;
-				}
+					objectCaches_[path] = asset;
 
-				return asset;
+					return asset;
+				}
 			}
 		}
 
