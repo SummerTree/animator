@@ -784,14 +784,7 @@ namespace octoon
 		if (ifs)
 		{
 			auto metaData = nlohmann::json::parse(ifs);
-			if (metaData.contains("uuid"))
-			{
-				auto guid = metaData["uuid"].get<std::string>();
-				paths_[relativePath] = guid;
-				uniques_[guid] = relativePath;
-
-				return metaData;
-			}
+			return metaData;
 		}
 
 		return nlohmann::json();
