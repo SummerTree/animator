@@ -12,7 +12,7 @@ namespace octoon
 	class OCTOON_EXPORT Package final
 	{
 	public:
-		Package(AssetDatabase* assetDatabase) noexcept;
+		Package(const std::u8string& name) noexcept;
 		~Package() noexcept;
 
 		void open(const std::filesystem::path& diskPath) noexcept(false);
@@ -31,7 +31,6 @@ namespace octoon
 		std::filesystem::path getAbsolutePath(const std::filesystem::path& relativePath) const noexcept;
 
 		std::string getAssetGuid(const std::filesystem::path& relativePath) const noexcept;
-		std::string getAssetGuid(const std::shared_ptr<const Object>& asset) const noexcept;
 
 		void deleteAsset(const std::filesystem::path& relativePath) noexcept(false);
 		void saveAssets() noexcept(false);
@@ -60,8 +59,7 @@ namespace octoon
 		Package& operator=(const Package&) = delete;
 
 	private:
-		AssetDatabase* assetDatabase_;
-
+		std::u8string name_;
 		std::filesystem::path rootPath_;
 
 		std::map<std::string, std::filesystem::path> uniques_;

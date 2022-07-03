@@ -22,7 +22,7 @@ namespace octoon
 	{
 		if (!this->packages_.contains(name))
 		{
-			auto package = std::make_shared<Package>(this);
+			auto package = std::make_shared<Package>(name);
 			package->open(diskPath);
 
 			this->packages_[name] = std::move(package);

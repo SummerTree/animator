@@ -12,8 +12,8 @@
 
 namespace octoon
 {
-	Package::Package(AssetDatabase* assetDatabase) noexcept
-		: assetDatabase_(assetDatabase)
+	Package::Package(const std::u8string& name) noexcept
+		: name_(name)
 	{
 	}
 
@@ -130,7 +130,7 @@ namespace octoon
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
-		if (assetDatabase_->contains(asset))
+		if (AssetDatabase::instance()->contains(asset))
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
@@ -177,7 +177,7 @@ namespace octoon
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
-		if (assetDatabase_->contains(asset))
+		if (AssetDatabase::instance()->contains(asset))
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
@@ -206,7 +206,7 @@ namespace octoon
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
-		if (assetDatabase_->contains(asset))
+		if (AssetDatabase::instance()->contains(asset))
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
@@ -267,7 +267,7 @@ namespace octoon
 						auto texture = asset->get<std::shared_ptr<Texture>>(it.key);
 						if (texture)
 						{
-							if (!assetDatabase_->contains(texture))
+							if (!AssetDatabase::instance()->contains(texture))
 							{
 								auto texturePath = std::filesystem::path("Assets/Textures").append(make_guid() + ".png");
 								this->createFolder(std::filesystem::path("Assets/Textures"));
@@ -276,7 +276,7 @@ namespace octoon
 							}
 							else
 							{
-								mat[it.key] = this->getAssetGuid(texture);
+								mat[it.key] = AssetDatabase::instance()->getAssetGuid(texture);
 							}
 						}
 					}
@@ -310,7 +310,7 @@ namespace octoon
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
-		if (assetDatabase_->contains(asset))
+		if (AssetDatabase::instance()->contains(asset))
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
@@ -360,7 +360,7 @@ namespace octoon
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
-		if (assetDatabase_->contains(asset) && assetDatabase_->isPartOfPrefabAsset(asset))
+		if (AssetDatabase::instance()->contains(asset) && AssetDatabase::instance()->isPartOfPrefabAsset(asset))
 			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
@@ -414,15 +414,6 @@ namespace octoon
 				return (*it).second;
 		}
 
-		return std::string();
-	}
-
-	std::string
-	Package::getAssetGuid(const std::shared_ptr<const Object>& asset) const noexcept
-	{
-		auto path = assetDatabase_->getAssetPath(asset);
-		if (!path.empty())
-			return this->getAssetGuid(path);
 		return std::string();
 	}
 
