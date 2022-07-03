@@ -589,7 +589,7 @@ namespace octoon
 			createClothes(pmx, actor, bones);
 
 			for (auto it : actor->getComponents())
-				AssetImporter::instance()->addRemap(it);
+				this->addRemap(it);
 
 			return actor;
 		}

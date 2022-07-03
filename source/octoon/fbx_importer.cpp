@@ -36,18 +36,6 @@ namespace octoon
 	{
 	}
 
-	bool
-	FBXImporter::doCanRead(std::istream& stream) noexcept
-	{
-		return false;
-	}
-
-	bool
-	FBXImporter::doCanRead(const char* type) noexcept
-	{
-		return std::strncmp(type, "fbx", 3) == 0;
-	}
-
 	void ParseChannel(FbxNode* node, FbxAnimLayer* layer)
 	{
 		auto curve = node->LclTranslation.GetCurve(layer, FBXSDK_CURVENODE_COMPONENT_X);
@@ -303,13 +291,13 @@ namespace octoon
 			material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sBump, path));
 
 		if (material->getColorMap())
-			AssetImporter::instance()->addRemap(material->getColorMap());
+			this->addRemap(material->getColorMap());
 		if (material->getNormalMap())
-			AssetImporter::instance()->addRemap(material->getNormalMap());
+			this->addRemap(material->getNormalMap());
 		if (material->getEmissiveMap())
-			AssetImporter::instance()->addRemap(material->getEmissiveMap());
+			this->addRemap(material->getEmissiveMap());
 		if (material->getNormalMap())
-			AssetImporter::instance()->addRemap(material->getNormalMap());
+			this->addRemap(material->getNormalMap());
 
 		if (surfaceMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{

@@ -18,9 +18,6 @@ namespace octoon
 	private:
 		TextureImporter(const TextureImporter&) = delete;
 		TextureImporter& operator=(const TextureImporter&) = delete;
-
-	private:
-		std::weak_ptr<const Texture> texture_;
 	};
 }
 

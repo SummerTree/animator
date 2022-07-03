@@ -57,7 +57,6 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.diffuse_texname);
 						if (texture)
 						{
-							texture->apply();
 							this->addRemap(texture);
 							standardMaterial->setColorMap(std::move(texture));
 						}
@@ -68,7 +67,6 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.normal_texname);
 						if (texture)
 						{
-							texture->apply();
 							this->addRemap(texture);
 							standardMaterial->setNormalMap(std::move(texture));
 						}
@@ -79,7 +77,6 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.roughness_texname);
 						if (texture)
 						{
-							texture->apply();
 							this->addRemap(texture);
 							standardMaterial->setRoughnessMap(std::move(texture));
 						}
@@ -90,7 +87,6 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.metallic_texname);
 						if (texture)
 						{
-							texture->apply();
 							this->addRemap(texture);
 							standardMaterial->setMetalnessMap(std::move(texture));
 						}
@@ -101,7 +97,6 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.sheen_texname);
 						if (texture)
 						{
-							texture->apply();
 							this->addRemap(texture);
 							standardMaterial->setSheenMap(std::move(texture));
 						}
@@ -112,7 +107,6 @@ namespace octoon
 						auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(material.emissive_texname);
 						if (texture)
 						{
-							texture->apply();
 							this->addRemap(texture);
 							standardMaterial->setEmissiveMap(std::move(texture));
 						}

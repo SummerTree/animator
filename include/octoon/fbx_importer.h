@@ -15,9 +15,6 @@ namespace octoon
 		FBXImporter() noexcept;
 		~FBXImporter() noexcept;
 
-		static bool doCanRead(std::istream& stream) noexcept;
-		static bool doCanRead(const char* type) noexcept;
-
 		static std::vector<std::filesystem::path> getDependencies(const std::filesystem::path& filepath) noexcept(false);
 		std::shared_ptr<GameObject> load(const std::filesystem::path& filepath) noexcept(false);
 

@@ -15,9 +15,6 @@ namespace octoon
 		ASSImporter() noexcept;
 		~ASSImporter() noexcept;
 
-		static bool doCanRead(io::istream& stream) noexcept;
-		static bool doCanRead(const char* type) noexcept;
-
 		static GameObjects load(const std::filesystem::path& filepath) noexcept(false);
 
 	private:

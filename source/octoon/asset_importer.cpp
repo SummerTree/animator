@@ -6,13 +6,15 @@
 #include <octoon/ass_importer.h>
 #include <octoon/fbx_importer.h>
 #include <octoon/mesh_animation_component.h>
+#include <fstream>
 
 namespace octoon
 {
-	OctoonImplementSingleton(AssetImporter)
 	OctoonImplementSubClass(AssetImporter, Object, "AssetImporter")
 
-	std::map<std::filesystem::path, std::shared_ptr<const AssetImporter>> AssetImporter::assets_;
+	std::map<std::string, std::filesystem::path> AssetImporter::uniques_;
+	std::map<std::filesystem::path, std::string> AssetImporter::paths_;
+	std::map<std::filesystem::path, std::shared_ptr<AssetImporter>> AssetImporter::assets_;
 
 	AssetImporter::AssetImporter() noexcept
 	{
@@ -20,14 +22,6 @@ namespace octoon
 
 	AssetImporter::~AssetImporter() noexcept
 	{
-	}
-
-	std::shared_ptr<const AssetImporter>
-	AssetImporter::getAtPath(const std::filesystem::path& path) const noexcept
-	{
-		if (assets_.find(path) != assets_.end())
-			return assets_.at(path);
-		return nullptr;
 	}
 
 	void
@@ -40,6 +34,34 @@ namespace octoon
 	AssetImporter::getExternalObjectMap() const
 	{
 		return externalObjectMap_;
+	}
+
+	std::shared_ptr<AssetImporter>
+	AssetImporter::getAtPath(const std::filesystem::path& path) noexcept
+	{
+		if (assets_.find(path) != assets_.end())
+			return assets_.at(path);
+		return nullptr;
+	}
+
+	nlohmann::json
+	AssetImporter::loadMetadataAtPath(const std::filesystem::path& path) noexcept(false)
+	{
+		std::ifstream ifs(std::filesystem::path(path).concat(L".meta"));
+		if (ifs)
+		{
+			auto metaData = nlohmann::json::parse(ifs);
+			if (metaData.contains("uuid"))
+			{
+				auto guid = metaData["uuid"].get<std::string>();
+				paths_[path] = guid;
+				uniques_[guid] = path;
+
+				return metaData;
+			}
+		}
+
+		return nlohmann::json();
 	}
 
 	std::shared_ptr<Object>
@@ -55,8 +77,8 @@ namespace octoon
 			auto motion = motionImporter->load(path);
 			if (motion)
 			{
-				this->assets_[path] = motionImporter;
-				return std::move(motion);
+				assets_[path] = motionImporter;
+				return motion;
 			}
 		}
 		else if (ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
@@ -65,7 +87,7 @@ namespace octoon
 			auto texture = textureImporter->load(path);
 			if (texture)
 			{
-				this->assets_[path] = textureImporter;
+				assets_[path] = textureImporter;
 				return texture;
 			}
 		}
@@ -75,7 +97,7 @@ namespace octoon
 			auto model = modelImporter->load(path);
 			if (model)
 			{
-				this->assets_[path] = modelImporter;
+				assets_[path] = modelImporter;
 				return model;
 			}
 		}
@@ -85,8 +107,8 @@ namespace octoon
 			auto model = modelImporter->load(path);
 			if (model)
 			{
-				this->assets_[path] = modelImporter;
-				return std::move(model);
+				assets_[path] = modelImporter;
+				return model;
 			}
 		}
 		else if (ext == u8".fbx")
@@ -95,8 +117,8 @@ namespace octoon
 			auto model = modelImporter->load(path);
 			if (model)
 			{
-				this->assets_[path] = modelImporter;
-				return std::move(model);
+				assets_[path] = modelImporter;
+				return model;
 			}
 		}
 		else if (ext == u8".abc")
@@ -106,7 +128,7 @@ namespace octoon
 			{
 				auto alembic = model->addComponent<MeshAnimationComponent>();
 				alembic->setFilePath(path);
-				return std::move(model);
+				return model;
 			}
 		}
 

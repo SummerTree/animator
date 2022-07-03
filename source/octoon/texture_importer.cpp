@@ -21,7 +21,25 @@ namespace octoon
 		if (texture->load(assetPath_))
 		{
 			texture->setName((char*)assetPath_.filename().u8string().c_str());
-			texture_ = texture;
+
+			auto metadata = this->loadMetadataAtPath(path);
+			if (metadata.is_object())
+			{
+				if (metadata.contains("mipmap"))
+					texture->setMipLevel(metadata["mipmap"].get<nlohmann::json::number_integer_t>());
+			}
+			else
+			{
+				auto ext = path.extension().u8string();
+				for (auto& it : ext)
+					it = (char)std::tolower(it);
+
+				if (ext == u8".hdr")
+					texture->setMipLevel(8);
+			}
+
+			texture->apply();
+
 			return texture;
 		}
 

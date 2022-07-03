@@ -50,18 +50,6 @@ namespace octoon
 	{
 	}
 
-	bool
-	ASSImporter::doCanRead(io::istream& stream) noexcept
-	{
-		return false;
-	}
-
-	bool
-	ASSImporter::doCanRead(const char* type) noexcept
-	{
-		return std::strncmp(type, "ass", 3) == 0;
-	}
-
 	GameObjects
 	ASSImporter::load(const std::filesystem::path& path) noexcept(false)
 	{

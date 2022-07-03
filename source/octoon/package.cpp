@@ -610,78 +610,19 @@ namespace octoon
 		for (auto& it : ext)
 			it = (char)std::tolower(it);
 
-		if (ext == u8".vmd")
+		if (ext == u8".vmd" || ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx" || ext == u8".abc" ||
+			ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
 		{
-			auto motion = AssetImporter::instance()->loadAssetAtPath<Animation>(absolutePath);
-			if (motion)
-			{
-				if (motion->getName().empty())
-					motion->setName((char*)relativePath.filename().c_str());
-
-				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (!metadata.is_object())
-					this->createMetadataAtPath(relativePath);
-
-				objectCaches_[relativePath] = motion;
-
-				return motion;
-			}
-		}
-		else if (ext == u8".hdr" || ext == u8".bmp" || ext == u8".tga" || ext == u8".jpg" || ext == u8".png" || ext == u8".jpeg" || ext == u8".dds")
-		{
-			auto texture = AssetImporter::instance()->loadAssetAtPath<Texture>(absolutePath);
-			if (texture)
-			{
-				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (metadata.is_object())
-				{
-					if (metadata.contains("mipmap"))
-						texture->setMipLevel(metadata["mipmap"].get<nlohmann::json::number_integer_t>());
-				}
-				else
-				{
-					if (ext == u8".hdr")
-						texture->setMipLevel(8);
-
-					this->createMetadataAtPath(relativePath);
-				}
-
-				texture->apply();
-
-				objectCaches_[relativePath] = texture;
-
-				return texture;
-			}
-		}
-		else if (ext == u8".pmx" || ext == u8".obj" || ext == u8".fbx")
-		{
-			auto model = AssetImporter::instance()->loadAssetAtPath<GameObject>(absolutePath);
-			if (model)
+			auto asset = AssetImporter::loadAssetAtPath(absolutePath);
+			if (asset)
 			{
 				auto metadata = this->loadMetadataAtPath(relativePath);
 				if (!metadata.is_object())
 					this->createMetadataAtPath(relativePath);
 
-				objectCaches_[relativePath] = model;
+				objectCaches_[relativePath] = asset;
 
-				return model;
-			}
-		}
-		else if (ext == u8".abc")
-		{
-			auto model = AssetImporter::instance()->loadAssetAtPath<GameObject>(absolutePath);
-			if (model)
-			{
-				auto alembic = model->addComponent<MeshAnimationComponent>();
-				alembic->setFilePath(relativePath);
-
-				auto metadata = this->loadMetadataAtPath(relativePath);
-				if (!metadata.is_object())
-					this->createMetadataAtPath(relativePath);
-
-				objectCaches_[relativePath] = model;
-
-				return model;
+				return asset;
 			}
 		}
 		else if (ext == u8".mat")
