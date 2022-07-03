@@ -803,13 +803,11 @@ namespace octoon
 			auto package = this->getPackage(path, packagePath);
 			if (package)
 			{
+				this->importAsset(path);
+
 				auto asset = package->loadAssetAtPath(path);
 				if (asset)
-				{
-					this->importAsset(path);
-
 					assetCaches_[path] = asset;
-				}
 
 				return asset;
 			}
