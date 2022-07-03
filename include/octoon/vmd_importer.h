@@ -149,13 +149,10 @@ namespace octoon
 		OctoonDeclareSubClass(VMDImporter, AssetImporter)
 	public:
 		VMDImporter() noexcept;
-		~VMDImporter() noexcept;
+		VMDImporter(const std::filesystem::path& path) noexcept;
+		virtual ~VMDImporter() noexcept;
 
-		static bool doCanRead(std::istream& stream) noexcept;
-		static bool doCanRead(const char* type) noexcept;
-
-		std::shared_ptr<Animation> load(std::istream& stream) noexcept(false);
-		std::shared_ptr<Animation> load(const std::filesystem::path& filepath) noexcept(false);
+		virtual std::shared_ptr<Object> importer() noexcept(false) override;
 
 		static void save(std::ostream& stream, const Animation& animation) noexcept(false);
 		static void save(const std::filesystem::path& filepath, const Animation& animation) noexcept(false);

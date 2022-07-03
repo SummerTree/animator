@@ -11,9 +11,10 @@ namespace octoon
 		OctoonDeclareSubClass(TextureImporter, AssetImporter)
 	public:
 		TextureImporter() noexcept;
+		TextureImporter(const std::filesystem::path& path) noexcept;
 		virtual ~TextureImporter() noexcept;
 
-		std::shared_ptr<Texture> load(const std::filesystem::path& path) noexcept;
+		virtual std::shared_ptr<Object> importer() noexcept(false) override;
 
 	private:
 		TextureImporter(const TextureImporter&) = delete;

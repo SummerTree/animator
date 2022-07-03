@@ -2,6 +2,7 @@
 #define OCTOON_FBX_IMPORTER_H_
 
 #include <octoon/game_object.h>
+#include <octoon/material/material.h>
 #include <octoon/asset_importer.h>
 #include <filesystem>
 #include <fbxsdk.h>
@@ -13,10 +14,12 @@ namespace octoon
 		OctoonDeclareSubClass(FBXImporter, AssetImporter)
 	public:
 		FBXImporter() noexcept;
+		FBXImporter(const std::filesystem::path& path) noexcept;
 		~FBXImporter() noexcept;
 
+		virtual std::shared_ptr<Object> importer() noexcept(false) override;
+
 		static std::vector<std::filesystem::path> getDependencies(const std::filesystem::path& filepath) noexcept(false);
-		std::shared_ptr<GameObject> load(const std::filesystem::path& filepath) noexcept(false);
 
 	private:
 		FBXImporter(const FBXImporter&) = delete;

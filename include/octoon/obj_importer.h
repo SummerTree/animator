@@ -12,9 +12,10 @@ namespace octoon
 		OctoonDeclareSubClass(OBJImporter, AssetImporter)
 	public:
 		OBJImporter() noexcept;
+		OBJImporter(const std::filesystem::path& path) noexcept;
 		~OBJImporter() noexcept;
 
-		std::shared_ptr<GameObject> load(const std::filesystem::path& filepath) noexcept(false);
+		virtual std::shared_ptr<Object> importer() noexcept(false) override;
 
 	private:
 		OBJImporter(const OBJImporter&) = delete;

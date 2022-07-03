@@ -32,6 +32,11 @@ namespace octoon
 	{
 	}
 
+	FBXImporter::FBXImporter(const std::filesystem::path& path) noexcept
+		: AssetImporter(path)
+	{
+	}
+
 	FBXImporter::~FBXImporter() noexcept
 	{
 	}
@@ -748,8 +753,8 @@ namespace octoon
 		return object;
 	}
 
-	std::shared_ptr<GameObject>
-	FBXImporter::load(const std::filesystem::path& filepath) noexcept(false)
+	std::shared_ptr<Object>
+	FBXImporter::importer() noexcept(false)
 	{
 		auto lsdkManager = FbxManager::Create();
 		if (lsdkManager)
@@ -763,6 +768,7 @@ namespace octoon
 
 			FbxImporter* importer = FbxImporter::Create(lsdkManager, "");
 
+			auto filepath = this->getAssetPath();
 			if (importer->Initialize((char*)filepath.u8string().c_str(), -1, lsdkManager->GetIOSettings()))
 			{
 				int major = 0, minor = 0, revision = 0;

@@ -3,6 +3,7 @@
 
 #include <octoon/pmx.h>
 #include <octoon/game_object.h>
+#include <octoon/material/material.h>
 #include <octoon/asset_importer.h>
 
 namespace octoon
@@ -12,9 +13,10 @@ namespace octoon
 		OctoonDeclareSubClass(PMXImporter, AssetImporter)
 	public:
 		PMXImporter() noexcept;
+		PMXImporter(const std::filesystem::path& path) noexcept;
 		virtual ~PMXImporter() noexcept;
 
-		std::shared_ptr<GameObject> load(const std::filesystem::path& path) noexcept(false);
+		virtual std::shared_ptr<Object> importer() noexcept(false) override;
 
 		static bool save(const GameObject& gameObject, PMX& pmx, const std::filesystem::path& path) noexcept(false);
 		static bool save(const GameObject& gameObject, const std::filesystem::path& path) noexcept(false);

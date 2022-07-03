@@ -36,6 +36,11 @@ namespace octoon
 	{
 	}
 
+	PMXImporter::PMXImporter(const std::filesystem::path& path) noexcept
+		: AssetImporter(path)
+	{
+	}
+
 	PMXImporter::~PMXImporter()
 	{
 	}
@@ -556,11 +561,13 @@ namespace octoon
 		}
 	}
 
-	std::shared_ptr<GameObject>
-	PMXImporter::load(const std::filesystem::path& path) noexcept(false)
+	std::shared_ptr<Object>
+	PMXImporter::importer() noexcept(false)
 	{
+		auto filepath = this->getAssetPath();
+
 		PMX pmx;
-		if (!PMX::load(path, pmx))
+		if (!PMX::load(filepath, pmx))
 			return nullptr;
 		
 		if (pmx.numMaterials > 0)
@@ -581,7 +588,7 @@ namespace octoon
 			}
 			else
 			{
-				actor->setName((char*)std::filesystem::path(path).filename().c_str());
+				actor->setName((char*)std::filesystem::path(filepath).filename().c_str());
 			}
 
 			createMeshes(pmx, actor, bones);

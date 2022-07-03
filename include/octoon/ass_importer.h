@@ -1,7 +1,6 @@
 #ifndef OCTOON_ASS_IMPORTER_H_
 #define OCTOON_ASS_IMPORTER_H_
 
-#include <octoon/io/iostream.h>
 #include <octoon/game_object.h>
 #include <octoon/asset_importer.h>
 #include <filesystem>
@@ -13,9 +12,10 @@ namespace octoon
 		OctoonDeclareSubClass(ASSImporter, AssetImporter)
 	public:
 		ASSImporter() noexcept;
+		ASSImporter(const std::filesystem::path& path) noexcept;
 		~ASSImporter() noexcept;
 
-		static GameObjects load(const std::filesystem::path& filepath) noexcept(false);
+		virtual std::shared_ptr<Object> importer() noexcept(false) override;
 
 	private:
 		ASSImporter(const ASSImporter&) = delete;

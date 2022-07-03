@@ -175,6 +175,12 @@ SET(IMPORTER_LIST
 	${SOURCE_PATH}/obj_importer.cpp
 	${HEADER_PATH}/texture_importer.h
 	${SOURCE_PATH}/texture_importer.cpp
+	${HEADER_PATH}/material_importer.h
+	${SOURCE_PATH}/material_importer.cpp
+	${HEADER_PATH}/alembic_importer.h
+	${SOURCE_PATH}/alembic_importer.cpp
+	${HEADER_PATH}/prefab_importer.h
+	${SOURCE_PATH}/prefab_importer.cpp
 	${HEADER_PATH}/asset_importer.h
 	${SOURCE_PATH}/asset_importer.cpp
 )

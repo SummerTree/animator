@@ -1,4 +1,5 @@
 #include <octoon/texture_importer.h>
+#include <octoon/asset_database.h>
 
 namespace octoon
 {
@@ -8,29 +9,42 @@ namespace octoon
 	{
 	}
 
+	TextureImporter::TextureImporter(const std::filesystem::path& path) noexcept
+		: AssetImporter(path)
+	{
+	}
+
 	TextureImporter::~TextureImporter()
 	{
 	}
 
-	std::shared_ptr<Texture>
-	TextureImporter::load(const std::filesystem::path& path) noexcept
+	std::shared_ptr<Object>
+	TextureImporter::importer() noexcept(false)
 	{
-		assetPath_ = path;
+		auto filepath = this->getAssetPath();
 
 		auto texture = std::make_shared<Texture>();
-		if (texture->load(assetPath_))
+		if (texture->load(filepath))
 		{
-			texture->setName((char*)assetPath_.filename().u8string().c_str());
+			texture->setName((char*)filepath.filename().u8string().c_str());
 
-			auto metadata = this->loadMetadataAtPath(path);
+			auto metadata = this->loadMetadataAtPath(filepath);
 			if (metadata.is_object())
 			{
 				if (metadata.contains("mipmap"))
 					texture->setMipLevel(metadata["mipmap"].get<nlohmann::json::number_integer_t>());
+
+				if (metadata.contains("labels"))
+				{
+					std::vector<std::string> labels;
+					for (auto& it : metadata["labels"])
+						labels.push_back(it.get<std::string>());
+					AssetDatabase::instance()->setLabels(texture, std::move(labels));
+				}
 			}
 			else
 			{
-				auto ext = path.extension().u8string();
+				auto ext = filepath.extension().u8string();
 				for (auto& it : ext)
 					it = (char)std::tolower(it);
 

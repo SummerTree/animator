@@ -1,9 +1,7 @@
 #ifndef OCTOON_ASSET_IMPORTER_H_
 #define OCTOON_ASSET_IMPORTER_H_
 
-#include <octoon/texture/texture.h>
-#include <octoon/material/mesh_standard_material.h>
-#include <octoon/animation/animation.h>
+#include <octoon/runtime/object.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/runtime/json.h>
 #include <filesystem>
@@ -13,25 +11,20 @@ namespace octoon
 {
 	class OCTOON_EXPORT AssetImporter : public Object
 	{
-		OctoonDeclareSubClass(AssetImporter, Object)
+		OctoonDeclareSubInterface(AssetImporter, Object)
 	public:
 		AssetImporter() noexcept;
+		AssetImporter(const std::filesystem::path& path) noexcept;
 		virtual ~AssetImporter() noexcept;
 
 		void addRemap(const std::shared_ptr<const Object>& subAsset);
 		const std::vector<std::weak_ptr<const Object>>& getExternalObjectMap() const;
 
-		static std::shared_ptr<AssetImporter> getAtPath(const std::filesystem::path& path) noexcept;
-		static std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& path) noexcept(false);
+		const std::filesystem::path& getAssetPath() const noexcept;
 
-		template<typename T>
-		static std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& path) noexcept(false)
-		{
-			auto asset = loadAssetAtPath(path);
-			if (asset)
-				return asset->downcast_pointer<T>();
-			return nullptr;
-		}
+		virtual std::shared_ptr<Object> importer() noexcept(false) = 0;
+
+		static std::shared_ptr<AssetImporter> getAtPath(const std::filesystem::path& path) noexcept;
 
 	protected:
 		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);

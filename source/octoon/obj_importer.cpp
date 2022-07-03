@@ -17,13 +17,20 @@ namespace octoon
 	{
 	}
 
+	OBJImporter::OBJImporter(const std::filesystem::path& path) noexcept
+		: AssetImporter(path)
+	{
+	}
+
 	OBJImporter::~OBJImporter() noexcept
 	{
 	}
 
-	std::shared_ptr<GameObject>
-	OBJImporter::load(const std::filesystem::path& filepath) noexcept(false)
+	std::shared_ptr<Object>
+	OBJImporter::importer() noexcept(false)
 	{
+		auto filepath = this->getAssetPath();
+
 		std::ifstream stream(filepath);
 		if (stream)
 		{

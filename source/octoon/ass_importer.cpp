@@ -46,23 +46,29 @@ namespace octoon
 	{
 	}
 
+	ASSImporter::ASSImporter(const std::filesystem::path& path) noexcept
+		: AssetImporter(path)
+	{
+	}
+
 	ASSImporter::~ASSImporter() noexcept
 	{
 	}
 
-	GameObjects
-	ASSImporter::load(const std::filesystem::path& path) noexcept(false)
+	std::shared_ptr<Object>
+	ASSImporter::importer() noexcept(false)
 	{
 		static constexpr int kMaxLineLength = 2048;
 
+		auto path = this->getAssetPath();
 		FILE* file = _wfopen(path.wstring().c_str(), L"r");
 		
-		GameObjects objects;
 		if (!file)
-			return objects;
+			return nullptr;
 
 		try
 		{
+			GameObjectPtr object = std::make_shared<GameObject>();
 			std::map<std::string, std::shared_ptr<MeshStandardMaterial>> materialMap;
 
 			char line[kMaxLineLength];
@@ -236,15 +242,15 @@ namespace octoon
 						sscanf(line, " fov %f", &fov);
 					}
 
-					auto object = std::make_shared<GameObject>();
-					object->getComponent<TransformComponent>()->setTransform(math::inverse(math::makeLookatLH(position, lookAt, math::float3::UnitY)));
+					auto camera = std::make_shared<GameObject>();
+					camera->getComponent<TransformComponent>()->setTransform(math::inverse(math::makeLookatLH(position, lookAt, math::float3::UnitY)));
 
-					auto filmCamera = object->addComponent<FilmCameraComponent>();
+					auto filmCamera = camera->addComponent<FilmCameraComponent>();
 					filmCamera->setFov(fov);
 					filmCamera->setAperture(aperture);
 					filmCamera->setFocusDistance(focalDist);
 
-					objects.emplace_back(std::move(object));
+					object->addChild(std::move(camera));
 				}
 
 				if (strstr(line, "mesh"))
@@ -293,19 +299,20 @@ namespace octoon
 								model->addComponent<MeshRendererComponent>(material);
 							}
 
-							objects.push_back(std::move(model));
+							object->addChild(std::move(model));
 						}
 					}
 				}
 			}
 
 			fclose(file);
+
+			return object;
 		}
 		catch (...)
 		{
 			fclose(file);
+			return nullptr;
 		}
-
-		return objects;
 	}
 }
