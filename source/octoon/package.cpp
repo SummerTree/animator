@@ -130,9 +130,6 @@ namespace octoon
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
-		if (AssetDatabase::instance()->contains(asset))
-			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
-
 		try
 		{
 			auto absolutePath = std::filesystem::path(this->rootPath_).append(relativePath.wstring());
@@ -177,9 +174,6 @@ namespace octoon
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
-		if (AssetDatabase::instance()->contains(asset))
-			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
-
 		try
 		{
 			std::ofstream stream(std::filesystem::path(this->rootPath_).append(relativePath.wstring()), io::ios_base::binary);
@@ -204,9 +198,6 @@ namespace octoon
 	Package::createAsset(const std::shared_ptr<const Material>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		if (!asset || relativePath.empty())
-			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
-
-		if (AssetDatabase::instance()->contains(asset))
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try
@@ -310,9 +301,6 @@ namespace octoon
 		if (!asset || relativePath.empty())
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
-		if (AssetDatabase::instance()->contains(asset))
-			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
-
 		try
 		{
 			std::ofstream ifs(std::filesystem::path(this->rootPath_).append(relativePath.wstring()), std::ios_base::binary);
@@ -358,9 +346,6 @@ namespace octoon
 	Package::createPrefab(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		if (!asset || relativePath.empty())
-			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
-
-		if (AssetDatabase::instance()->contains(asset) && AssetDatabase::instance()->isPartOfPrefabAsset(asset))
 			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 
 		try

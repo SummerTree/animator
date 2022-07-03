@@ -49,6 +49,9 @@ namespace octoon
 	void
 	AssetDatabase::createAsset(const std::shared_ptr<const Texture>& asset, const std::filesystem::path& path) noexcept(false)
 	{
+		if (AssetDatabase::instance()->contains(asset))
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)path.u8string().c_str() + " failed.");
+
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
@@ -64,6 +67,9 @@ namespace octoon
 	void
 	AssetDatabase::createAsset(const std::shared_ptr<const Animation>& asset, const std::filesystem::path& path) noexcept(false)
 	{
+		if (AssetDatabase::instance()->contains(asset))
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)path.u8string().c_str() + " failed.");
+
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
@@ -79,6 +85,9 @@ namespace octoon
 	void
 	AssetDatabase::createAsset(const std::shared_ptr<const Material>& asset, const std::filesystem::path& path) noexcept(false)
 	{
+		if (AssetDatabase::instance()->contains(asset))
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)path.u8string().c_str() + " failed.");
+
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
@@ -94,6 +103,9 @@ namespace octoon
 	void
 	AssetDatabase::createAsset(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& path) noexcept(false)
 	{
+		if (AssetDatabase::instance()->contains(asset))
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)path.u8string().c_str() + " failed.");
+
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
@@ -109,6 +121,9 @@ namespace octoon
 	void
 	AssetDatabase::createPrefab(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& path) noexcept(false)
 	{
+		if (AssetDatabase::instance()->contains(asset) && AssetDatabase::instance()->isPartOfPrefabAsset(asset))
+			throw std::runtime_error(std::string("Creating prefab at path ") + (char*)path.u8string().c_str() + " failed.");
+
 		std::filesystem::path packagePath;
 		auto package = this->getPackage(path, packagePath);
 		if (package)
