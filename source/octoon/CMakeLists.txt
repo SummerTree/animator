@@ -183,6 +183,8 @@ SET(IMPORTER_LIST
 	${SOURCE_PATH}/prefab_importer.cpp
 	${HEADER_PATH}/asset_importer.h
 	${SOURCE_PATH}/asset_importer.cpp
+	${HEADER_PATH}/asset_importer_context.h
+	${SOURCE_PATH}/asset_importer_context.cpp
 )
 SOURCE_GROUP("system\\importer" FILES ${IMPORTER_LIST})
 

@@ -20,7 +20,7 @@ namespace octoon
 
 	AssetDatabase::~AssetDatabase() noexcept
 	{
-		objectCaches_.clear();
+		assetCaches_.clear();
 		paths_.clear();
 		uniques_.clear();
 		this->packages_.clear();
@@ -795,9 +795,9 @@ namespace octoon
 	{
 		if (!path.empty())
 		{
-			if (objectCaches_.contains(path))
+			if (assetCaches_.contains(path))
 			{
-				auto cache = objectCaches_.at(path);
+				auto cache = assetCaches_.at(path);
 				if (!cache.expired())
 					return cache.lock();
 			}
@@ -812,7 +812,7 @@ namespace octoon
 					this->importAsset(path);
 
 					assetToPath_[asset] = path;
-					objectCaches_[path] = asset;
+					assetCaches_[path] = asset;
 				}
 
 				return asset;

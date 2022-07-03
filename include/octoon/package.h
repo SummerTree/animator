@@ -39,7 +39,7 @@ namespace octoon
 		std::u8string name_;
 		std::filesystem::path rootPath_;
 
-		std::map<std::filesystem::path, std::shared_ptr<AssetImporter>> assets_;
+		std::vector<std::filesystem::path> assets_;
 	};
 }
 

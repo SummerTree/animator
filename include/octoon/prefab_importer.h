@@ -11,10 +11,9 @@ namespace octoon
 		OctoonDeclareSubClass(PrefabImporter, AssetImporter)
 	public:
 		PrefabImporter() noexcept;
-		PrefabImporter(const std::filesystem::path& path) noexcept;
 		virtual ~PrefabImporter() noexcept;
 
-		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) override;
 
 	private:
 		PrefabImporter(const PrefabImporter&) = delete;

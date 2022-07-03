@@ -10,19 +10,14 @@ namespace octoon
 	{
 	}
 
-	PrefabImporter::PrefabImporter(const std::filesystem::path& path) noexcept
-		: AssetImporter(path)
-	{
-	}
-
 	PrefabImporter::~PrefabImporter()
 	{
 	}
 
 	std::shared_ptr<Object>
-	PrefabImporter::onImportAsset() noexcept(false)
+	PrefabImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
-		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
 		std::ifstream ifs(filepath);
 		if (ifs)
 		{

@@ -12,10 +12,9 @@ namespace octoon
 		OctoonDeclareSubClass(ASSImporter, AssetImporter)
 	public:
 		ASSImporter() noexcept;
-		ASSImporter(const std::filesystem::path& path) noexcept;
 		~ASSImporter() noexcept;
 
-		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) override;
 
 	private:
 		ASSImporter(const ASSImporter&) = delete;

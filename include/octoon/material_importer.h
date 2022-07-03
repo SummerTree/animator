@@ -11,10 +11,9 @@ namespace octoon
 		OctoonDeclareSubClass(MaterialImporter, AssetImporter)
 	public:
 		MaterialImporter() noexcept;
-		MaterialImporter(const std::filesystem::path& path) noexcept;
 		~MaterialImporter() noexcept;
 
-		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) override;
 
 	private:
 		MaterialImporter(const MaterialImporter&) = delete;

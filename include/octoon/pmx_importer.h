@@ -13,23 +13,22 @@ namespace octoon
 		OctoonDeclareSubClass(PMXImporter, AssetImporter)
 	public:
 		PMXImporter() noexcept;
-		PMXImporter(const std::filesystem::path& path) noexcept;
 		virtual ~PMXImporter() noexcept;
 
-		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) override;
 
 		static bool save(const GameObject& gameObject, PMX& pmx, const std::filesystem::path& path) noexcept(false);
 		static bool save(const GameObject& gameObject, const std::filesystem::path& path) noexcept(false);
 
 	private:
-		void createBones(const PMX& pmx, GameObjects& bones) noexcept(false);
-		void createClothes(const PMX& pmx, GameObjectPtr& meshes, const GameObjects& bones) noexcept(false);
-		void createColliders(const PMX& pmx, GameObjects& bones) noexcept(false);
-		void createRigidbodies(const PMX& pmx, GameObjects& bones) noexcept(false);
-		void createJoints(const PMX& pmx, GameObjects& bones) noexcept(false);
-		void createMorph(const PMX& pmx, GameObjectPtr& mesh) noexcept(false);
-		void createMeshes(const PMX& pmx, GameObjectPtr& object, const GameObjects& bones) noexcept(false);
-		void createMaterials(const PMX& pmx, GameObjectPtr& object, Materials& materials) noexcept(false);
+		void createBones(AssetImporterContext& context, const PMX& pmx, GameObjects& bones) noexcept(false);
+		void createClothes(AssetImporterContext& context, const PMX& pmx, GameObjectPtr& meshes, const GameObjects& bones) noexcept(false);
+		void createColliders(AssetImporterContext& context, const PMX& pmx, GameObjects& bones) noexcept(false);
+		void createRigidbodies(AssetImporterContext& context, const PMX& pmx, GameObjects& bones) noexcept(false);
+		void createJoints(AssetImporterContext& context, const PMX& pmx, GameObjects& bones) noexcept(false);
+		void createMorph(AssetImporterContext& context, const PMX& pmx, GameObjectPtr& mesh) noexcept(false);
+		void createMeshes(AssetImporterContext& context, const PMX& pmx, GameObjectPtr& object, const GameObjects& bones) noexcept(false);
+		void createMaterials(AssetImporterContext& context, const PMX& pmx, GameObjectPtr& object, Materials& materials) noexcept(false);
 	};
 }
 

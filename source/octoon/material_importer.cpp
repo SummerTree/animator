@@ -12,19 +12,14 @@ namespace octoon
 	{
 	}
 
-	MaterialImporter::MaterialImporter(const std::filesystem::path& path) noexcept
-		: AssetImporter(path)
-	{
-	}
-
 	MaterialImporter::~MaterialImporter() noexcept
 	{
 	}
 
 	std::shared_ptr<Object>
-	MaterialImporter::onImportAsset() noexcept(false)
+	MaterialImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
-		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
 		std::ifstream ifs(filepath);
 		if (ifs)
 		{

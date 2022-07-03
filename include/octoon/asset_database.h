@@ -87,7 +87,7 @@ namespace octoon
 
 		std::shared_ptr<Package> defaultPackage_;
 		std::map<std::u8string, std::shared_ptr<Package>> packages_;
-		std::map<std::filesystem::path, std::weak_ptr<Object>> objectCaches_;
+		std::map<std::filesystem::path, std::weak_ptr<Object>> assetCaches_;
 
 		std::map<std::filesystem::path, std::string> paths_;
 		std::map<std::string, std::filesystem::path> uniques_;

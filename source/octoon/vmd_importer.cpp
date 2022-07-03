@@ -251,11 +251,6 @@ namespace octoon
 	{
 	}
 
-	VMDImporter::VMDImporter(const std::filesystem::path& path) noexcept
-		: AssetImporter(path)
-	{
-	}
-
 	VMDImporter::~VMDImporter() noexcept
 	{
 	}
@@ -432,9 +427,9 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	VMDImporter::onImportAsset() noexcept(false)
+	VMDImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
-		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
 		std::ifstream stream(filepath, std::ios_base::binary);
 		if (stream)
 		{

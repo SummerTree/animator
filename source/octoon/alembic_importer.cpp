@@ -10,19 +10,14 @@ namespace octoon
 	{
 	}
 
-	AlembicImporter::AlembicImporter(const std::filesystem::path& path) noexcept
-		: AssetImporter(path)
-	{
-	}
-
 	AlembicImporter::~AlembicImporter()
 	{
 	}
 
 	std::shared_ptr<Object>
-	AlembicImporter::onImportAsset() noexcept(false)
+	AlembicImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
-		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
 
 		auto model = std::make_shared<GameObject>();
 		if (model)

@@ -32,11 +32,6 @@ namespace octoon
 	{
 	}
 
-	FBXImporter::FBXImporter(const std::filesystem::path& path) noexcept
-		: AssetImporter(path)
-	{
-	}
-
 	FBXImporter::~FBXImporter() noexcept
 	{
 	}
@@ -284,7 +279,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<Material>
-	FBXImporter::LoadMaterialAttribute(FbxSurfaceMaterial* surfaceMaterial, const std::filesystem::path& path)
+	FBXImporter::LoadMaterialAttribute(AssetImporterContext& context, FbxSurfaceMaterial* surfaceMaterial, const std::filesystem::path& path)
 	{
 		auto material = std::make_shared<MeshStandardMaterial>();
 		material->setName(surfaceMaterial->GetName());
@@ -296,13 +291,13 @@ namespace octoon
 			material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sBump, path));
 
 		if (material->getColorMap())
-			this->addRemap(material->getColorMap());
+			context.addRemap(material->getColorMap());
 		if (material->getNormalMap())
-			this->addRemap(material->getNormalMap());
+			context.addRemap(material->getNormalMap());
 		if (material->getEmissiveMap())
-			this->addRemap(material->getEmissiveMap());
+			context.addRemap(material->getEmissiveMap());
 		if (material->getNormalMap())
-			this->addRemap(material->getNormalMap());
+			context.addRemap(material->getNormalMap());
 
 		if (surfaceMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
@@ -343,7 +338,7 @@ namespace octoon
 	}
 
 	std::size_t
-	FBXImporter::LoadMaterial(FbxMesh* mesh, std::vector<std::shared_ptr<Material>>& materials, const std::filesystem::path& path)
+	FBXImporter::LoadMaterial(AssetImporterContext& context, FbxMesh* mesh, std::vector<std::shared_ptr<Material>>& materials, const std::filesystem::path& path)
 	{
 		if (mesh && mesh->GetNode())
 		{
@@ -351,7 +346,7 @@ namespace octoon
 			auto materialCount = mesh->GetElementMaterialCount();
 
 			for (int materialIndex = 0; materialIndex < materialCount; materialIndex++)
-				materials.push_back(LoadMaterialAttribute(node->GetMaterial(materialIndex), path));
+				materials.push_back(LoadMaterialAttribute(context, node->GetMaterial(materialIndex), path));
 
 			return materialCount;
 		}
@@ -540,7 +535,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<GameObject>
-	FBXImporter::ParseMesh(FbxNode* node, const std::filesystem::path& path)
+	FBXImporter::ParseMesh(AssetImporterContext& context, FbxNode* node, const std::filesystem::path& path)
 	{
 		auto fbxMesh = node->GetMesh();
 		if (fbxMesh)
@@ -617,7 +612,7 @@ namespace octoon
 			gameObject->setName(node->GetName());
 			gameObject->addComponent<MeshFilterComponent>(std::move(mesh));
 
-			this->addRemap(mesh);
+			context.addRemap(mesh);
 
 			auto meshRenderer = gameObject->addComponent<MeshRendererComponent>();
 			meshRenderer->setGlobalIllumination(true);
@@ -625,19 +620,19 @@ namespace octoon
 			if (fbxMesh->GetElementMaterialCount() > 0)
 			{
 				std::vector<std::shared_ptr<Material>> materials;
-				LoadMaterial(fbxMesh, materials, path);
+				LoadMaterial(context, fbxMesh, materials, path);
 
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
 					auto material = materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>();
-					this->addRemap(material);
+					context.addRemap(material);
 					meshRenderer->setMaterial(std::move(material), i);
 				}
 			}
 			else
 			{
 				auto material = std::make_shared<MeshStandardMaterial>();
-				this->addRemap(material);
+				context.addRemap(material);
 				meshRenderer->setMaterial(std::move(material));
 			}
 
@@ -717,7 +712,7 @@ namespace octoon
 	}
 
 	GameObjectPtr
-	FBXImporter::ProcessNode(FbxScene* scene, FbxNode* node, const std::filesystem::path& path)
+	FBXImporter::ProcessNode(AssetImporterContext& context, FbxScene* scene, FbxNode* node, const std::filesystem::path& path)
 	{
 		GameObjectPtr object;
 
@@ -731,7 +726,7 @@ namespace octoon
 				object = ParseCamera(scene, node);
 				break;
 			case FbxNodeAttribute::eMesh:
-				object = ParseMesh(node, path);
+				object = ParseMesh(context, node, path);
 				break;
 			case FbxNodeAttribute::eSkeleton:
 				//ParseAnimation(scene, node);
@@ -742,8 +737,8 @@ namespace octoon
 
 				for (int j = 0; j < node->GetChildCount(); j++)
 				{
-					auto child = ProcessNode(scene, node->GetChild(j), path);
-					this->addRemap(child);
+					auto child = ProcessNode(context, scene, node->GetChild(j), path);
+					context.addRemap(child);
 					object->addChild(child);
 				}
 				break;
@@ -754,7 +749,7 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	FBXImporter::onImportAsset() noexcept(false)
+	FBXImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		auto lsdkManager = FbxManager::Create();
 		if (lsdkManager)
@@ -768,7 +763,7 @@ namespace octoon
 
 			FbxImporter* onImportAsset = FbxImporter::Create(lsdkManager, "");
 
-			auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+			auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
 			if (onImportAsset->Initialize((char*)filepath.u8string().c_str(), -1, lsdkManager->GetIOSettings()))
 			{
 				int major = 0, minor = 0, revision = 0;
@@ -788,17 +783,17 @@ namespace octoon
 
 					for (int i = 0; i < rootNode->GetChildCount(); i++)
 					{
-						auto node = ProcessNode(scene, rootNode->GetChild(i), filepath);
+						auto node = ProcessNode(context, scene, rootNode->GetChild(i), filepath);
 						object->addChild(std::move(node));
 					}
 					
 					for (auto it : object->getComponents())
-						this->addRemap(it);
+						context.addRemap(it);
 
 					if (object->getChildCount() > 1)
 					{
 						for (int i = 0; i < object->getChildCount(); i++)
-							this->addRemap(object->getChild(i));
+							context.addRemap(object->getChild(i));
 
 						return object;
 					}

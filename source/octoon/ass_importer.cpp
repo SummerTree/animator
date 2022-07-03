@@ -46,21 +46,16 @@ namespace octoon
 	{
 	}
 
-	ASSImporter::ASSImporter(const std::filesystem::path& path) noexcept
-		: AssetImporter(path)
-	{
-	}
-
 	ASSImporter::~ASSImporter() noexcept
 	{
 	}
 
 	std::shared_ptr<Object>
-	ASSImporter::onImportAsset() noexcept(false)
+	ASSImporter::onImportAsset(AssetImporterContext& context) noexcept(false)
 	{
 		static constexpr int kMaxLineLength = 2048;
 
-		auto filepath = AssetDatabase::instance()->getAbsolutePath(this->getAssetPath());
+		auto filepath = AssetDatabase::instance()->getAbsolutePath(context.getAssetPath());
 		FILE* file = _wfopen(filepath.wstring().c_str(), L"r");		
 		if (!file)
 			return nullptr;

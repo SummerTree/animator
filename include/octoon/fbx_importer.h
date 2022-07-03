@@ -14,10 +14,9 @@ namespace octoon
 		OctoonDeclareSubClass(FBXImporter, AssetImporter)
 	public:
 		FBXImporter() noexcept;
-		FBXImporter(const std::filesystem::path& path) noexcept;
 		~FBXImporter() noexcept;
 
-		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) override;
 
 		static std::vector<std::filesystem::path> getDependencies(const std::filesystem::path& filepath) noexcept(false);
 
@@ -26,11 +25,11 @@ namespace octoon
 		FBXImporter& operator=(const FBXImporter&) = delete;
 
 	private:
-		GameObjectPtr ParseMesh(FbxNode* node, const std::filesystem::path& path);
-		GameObjectPtr ProcessNode(FbxScene* scene, FbxNode* node, const std::filesystem::path& path);
+		GameObjectPtr ParseMesh(AssetImporterContext& context, FbxNode* node, const std::filesystem::path& path);
+		GameObjectPtr ProcessNode(AssetImporterContext& context, FbxScene* scene, FbxNode* node, const std::filesystem::path& path);
 
-		std::size_t LoadMaterial(FbxMesh* mesh, std::vector<std::shared_ptr<Material>>& materials, const std::filesystem::path& path);
-		std::shared_ptr<Material> LoadMaterialAttribute(FbxSurfaceMaterial* surfaceMaterial, const std::filesystem::path& path);
+		std::size_t LoadMaterial(AssetImporterContext& context, FbxMesh* mesh, std::vector<std::shared_ptr<Material>>& materials, const std::filesystem::path& path);
+		std::shared_ptr<Material> LoadMaterialAttribute(AssetImporterContext& context, FbxSurfaceMaterial* surfaceMaterial, const std::filesystem::path& path);
 	};
 }
 

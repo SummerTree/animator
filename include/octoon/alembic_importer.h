@@ -11,10 +11,9 @@ namespace octoon
 		OctoonDeclareSubClass(AlembicImporter, AssetImporter)
 	public:
 		AlembicImporter() noexcept;
-		AlembicImporter(const std::filesystem::path& path) noexcept;
 		virtual ~AlembicImporter() noexcept;
 
-		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) override;
+		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) override;
 
 	private:
 		AlembicImporter(const AlembicImporter&) = delete;

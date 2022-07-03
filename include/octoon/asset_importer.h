@@ -1,7 +1,7 @@
 #ifndef OCTOON_ASSET_IMPORTER_H_
 #define OCTOON_ASSET_IMPORTER_H_
 
-#include <octoon/runtime/object.h>
+#include <octoon/asset_importer_context.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/runtime/json.h>
 #include <filesystem>
@@ -14,30 +14,13 @@ namespace octoon
 		OctoonDeclareSubInterface(AssetImporter, Object)
 	public:
 		AssetImporter() noexcept;
-		AssetImporter(const std::filesystem::path& path) noexcept;
 		virtual ~AssetImporter() noexcept;
 
-		void addRemap(const std::shared_ptr<const Object>& subAsset);
-		const std::vector<std::weak_ptr<const Object>>& getExternalObjects() const;
-
-		const std::filesystem::path& getAssetPath() const noexcept;
-
-		virtual std::shared_ptr<Object> onImportAsset() noexcept(false) = 0;
-
-		static std::shared_ptr<AssetImporter> getAtPath(const std::filesystem::path& path) noexcept;
-
-	protected:
-		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
+		virtual std::shared_ptr<Object> onImportAsset(AssetImporterContext& context) noexcept(false) = 0;
 
 	private:
 		AssetImporter(const AssetImporter&) = delete;
 		AssetImporter& operator=(const AssetImporter&) = delete;
-
-	protected:
-		std::filesystem::path assetPath_;
-		std::vector<std::weak_ptr<const Object>> externalObjectMap_;
-
-		static std::map<std::filesystem::path, std::shared_ptr<AssetImporter>> assets_;
 	};
 }
 
