@@ -168,8 +168,7 @@ namespace octoon
 					ifs.close();
 				}
 
-				paths_[relativePath] = uuid;
-				uniques_[uuid] = relativePath;
+				AssetDatabase::instance()->importAsset(relativePath);
 			}
 			else
 			{
@@ -351,6 +350,7 @@ namespace octoon
 
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
 
 				this->createMetadataAtPath(relativePath);
 			}
@@ -385,6 +385,7 @@ namespace octoon
 
 				auto dump = prefab.dump();
 				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
 
 				this->createMetadataAtPath(relativePath);
 			}
