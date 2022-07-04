@@ -89,7 +89,7 @@ namespace octoon
 			throw runtime_error::create(R"(Cannot read property "Header" from stream)");
 		}
 
-		if (std::strncmp(this->Header.magic, "Vocaloid Motion Data 0002", 30) == 0)
+		if (std::strncmp(this->Header.magic, "Vocaloid Motion Data 0002", 30) != 0)
 			throw runtime_error::create(R"(Invalid Magic)");
 
 		if (!stream.read((char*)&this->NumMotion, sizeof(this->NumMotion))) {

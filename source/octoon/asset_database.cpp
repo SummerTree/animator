@@ -169,6 +169,7 @@ namespace octoon
 				}
 
 				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
 			}
 			else
 			{
@@ -197,7 +198,8 @@ namespace octoon
 			if (stream)
 			{
 				VMDImporter::save(stream, *asset);
-				this->createMetadataAtPath(relativePath);
+				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
 			}
 			else
 			{
@@ -301,7 +303,8 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 
-				this->createMetadataAtPath(relativePath);
+				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
 			}
 			else
 			{
@@ -352,7 +355,8 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 
-				this->createMetadataAtPath(relativePath);
+				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
 			}
 			else
 			{
@@ -387,7 +391,8 @@ namespace octoon
 				ifs.write(dump.c_str(), dump.size());
 				ifs.close();
 
-				this->createMetadataAtPath(relativePath);
+				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
 			}
 			else
 			{
