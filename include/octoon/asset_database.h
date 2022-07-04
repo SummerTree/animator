@@ -19,7 +19,7 @@ namespace octoon
 		AssetDatabase() noexcept;
 		virtual ~AssetDatabase() noexcept;
 
-		void mountPackage(const std::u8string& name, const std::filesystem::path& diskPath) noexcept(false);
+		bool mountPackage(const std::u8string& name, const std::filesystem::path& diskPath) noexcept(false);
 		void unmountPackage(const std::u8string& name) noexcept(false);
 
 		void importAsset(const std::filesystem::path& assetPath) noexcept(false);
@@ -76,7 +76,6 @@ namespace octoon
 		void createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false);
 		void removeMetadataAtPath(const std::filesystem::path& path) noexcept;
 		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
-		std::shared_ptr<AssetPipeline> getPackage(const std::filesystem::path& assetPath, std::filesystem::path& packagePath) const noexcept(false);
 
 	private:
 		AssetDatabase(const AssetDatabase&) = delete;
@@ -85,8 +84,7 @@ namespace octoon
 	private:
 		std::vector<std::string> defaultLabel_;
 
-		std::shared_ptr<AssetPipeline> defaultPackage_;
-		std::map<std::u8string, std::shared_ptr<AssetPipeline>> packages_;
+		std::vector<std::shared_ptr<AssetPipeline>> assetPipeline_;
 		std::map<std::filesystem::path, std::weak_ptr<Object>> assetCaches_;
 
 		std::map<std::filesystem::path, std::string> paths_;

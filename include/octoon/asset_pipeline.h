@@ -16,6 +16,10 @@ namespace octoon
 		void open(const std::filesystem::path& diskPath) noexcept(false);
 		void close() noexcept;
 
+		const std::u8string& getName() const noexcept;
+
+		bool isValidPath(const std::filesystem::path& diskPath) const noexcept;
+
 		std::filesystem::path getAbsolutePath(const std::filesystem::path& relativePath) const noexcept;
 
 		void saveAssets() noexcept(false);
@@ -30,6 +34,9 @@ namespace octoon
 				return asset->downcast_pointer<T>();
 			return nullptr;
 		}
+
+	private:
+		std::filesystem::path getRelativePath(const std::filesystem::path& assetPath) const noexcept(false);
 
 	private:
 		AssetPipeline(const AssetPipeline&) = delete;

@@ -15,8 +15,8 @@ namespace octoon
 	OctoonImplementSingleton(AssetDatabase)
 
 	AssetDatabase::AssetDatabase() noexcept
-		: defaultPackage_(std::make_shared<AssetPipeline>(u8""))
 	{
+		this->assetPipeline_.push_back(std::make_shared<AssetPipeline>(u8""));
 	}
 
 	AssetDatabase::~AssetDatabase() noexcept
@@ -24,25 +24,37 @@ namespace octoon
 		assetCaches_.clear();
 		paths_.clear();
 		uniques_.clear();
-		this->packages_.clear();
+		this->assetPipeline_.clear();
 	}
 
-	void
+	bool
 	AssetDatabase::mountPackage(const std::u8string& name, const std::filesystem::path& diskPath) noexcept(false)
 	{
-		if (!this->packages_.contains(name))
+		for (auto& it : this->assetPipeline_)
 		{
-			auto package = std::make_shared<AssetPipeline>(name);
-			package->open(diskPath);
-
-			this->packages_[name] = std::move(package);
+			if (it->getName() == name)
+				return false;
 		}
+
+		auto package = std::make_shared<AssetPipeline>(name);
+		package->open(diskPath);
+
+		this->assetPipeline_.push_back(std::move(package));
+
+		return true;
 	}
 
 	void
 	AssetDatabase::unmountPackage(const std::u8string& name) noexcept(false)
 	{
-		this->packages_.erase(this->packages_.find(name));
+		for (auto it = this->assetPipeline_.begin(); it != this->assetPipeline_.end(); ++it)
+		{
+			if ((*it)->getName() == name)
+			{
+				this->assetPipeline_.erase(it);
+				return;
+			}
+		}
 	}
 
 	void
@@ -485,8 +497,8 @@ namespace octoon
 
 		dirtyList_.clear();
 
-		for (auto& package : packages_)
-			package.second->saveAssets();
+		for (auto& package : assetPipeline_)
+			package->saveAssets();
 	}
 
 	std::filesystem::path
@@ -508,10 +520,11 @@ namespace octoon
 	std::filesystem::path
 	AssetDatabase::getAbsolutePath(const std::filesystem::path& path) const noexcept
 	{
-		std::filesystem::path packagePath;
-		auto package = this->getPackage(path, packagePath);
-		if (package)
-			return package->getAbsolutePath(packagePath);
+		for (auto& it : assetPipeline_)
+		{
+			if (it->isValidPath(path))
+				return it->getAbsolutePath(path);
+		}
 
 		return std::filesystem::path();
 	}
@@ -598,40 +611,6 @@ namespace octoon
 		else
 		{
 			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
-		}
-	}
-
-	std::shared_ptr<AssetPipeline>
-	AssetDatabase::getPackage(const std::filesystem::path& assetPath, std::filesystem::path& packagePath) const noexcept(false)
-	{
-		if (assetPath.is_absolute())
-		{
-			packagePath = assetPath;
-			return defaultPackage_;
-		}
-		else
-		{
-			auto path = std::filesystem::path(assetPath).u8string();
-			for (auto& it : path)
-			{
-				if (it == '\\')
-					it = '/';
-			}
-
-			for (auto& package : packages_)
-			{
-				auto length = package.first.length();
-				if (path.size() > length)
-				{
-					if (package.first == path.substr(0, length))
-					{
-						packagePath = path.substr(length);
-						return package.second;
-					}
-				}
-			}
-
-			throw std::runtime_error(std::string("Invalid path ") + (char*)assetPath.u8string().c_str() + " failed.");
 		}
 	}
 
@@ -805,17 +784,16 @@ namespace octoon
 					return cache.lock();
 			}
 
-			std::filesystem::path packagePath;
-			auto package = this->getPackage(path, packagePath);
-			if (package)
+			for (auto& it : assetPipeline_)
 			{
-				this->importAsset(path);
+				if (it->isValidPath(path))
+				{
+					auto asset = it->loadAssetAtPath(path);
+					if (asset)
+						assetCaches_[path] = asset;
 
-				auto asset = package->loadAssetAtPath(path);
-				if (asset)
-					assetCaches_[path] = asset;
-
-				return asset;
+					return asset;
+				}
 			}
 		}
 

@@ -55,10 +55,63 @@ namespace octoon
 		rootPath_.clear();
 	}
 
+	const std::u8string&
+	AssetPipeline::getName() const noexcept
+	{
+		return name_;
+	}
+
+	bool
+	AssetPipeline::isValidPath(const std::filesystem::path& assetPath) const noexcept
+	{
+		if (name_.empty())
+			return assetPath.is_absolute();
+		else
+		{
+			auto path = std::filesystem::path(assetPath).u8string();
+			for (auto& it : path)
+			{
+				if (it == '\\')
+					it = '/';
+			}
+
+			auto length = name_.length();
+			if (path.length() > length)
+				return std::strncmp((char*)path.data(), (char*)name_.data(), length) == 0 ? true : false;
+
+			return false;
+		}
+	}
+
 	std::filesystem::path
 	AssetPipeline::getAbsolutePath(const std::filesystem::path& assetPath) const noexcept
 	{
-		return std::filesystem::path(this->rootPath_).append(assetPath.wstring());
+		return std::filesystem::path(this->rootPath_).append(this->getRelativePath(assetPath).wstring());
+	}
+
+	std::filesystem::path
+	AssetPipeline::getRelativePath(const std::filesystem::path& assetPath) const noexcept(false)
+	{
+		if (assetPath.is_absolute())
+			return assetPath;
+		else
+		{
+			auto path = std::filesystem::path(assetPath).u8string();
+			for (auto& it : path)
+			{
+				if (it == '\\')
+					it = '/';
+			}
+
+			auto length = name_.length();
+			if (path.size() > length)
+			{
+				if (name_ == path.substr(0, length))
+					return path.substr(length);
+			}
+
+			throw std::runtime_error(std::string("Invalid path ") + (char*)assetPath.u8string().c_str() + " failed.");
+		}
 	}
 
 	void
@@ -120,6 +173,7 @@ namespace octoon
 				for (auto& asset : context->getSubAssets())
 					AssetManager::instance()->setAssetPath(asset, context->getAssetPath());
 
+				AssetDatabase::instance()->importAsset(path);
 				return mainObject;
 			}
 		}
