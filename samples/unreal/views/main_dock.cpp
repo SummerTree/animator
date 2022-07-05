@@ -700,13 +700,7 @@ namespace unreal
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(tr("Current GPU does not support OpenCL or you are using an integrated GPU accelerator."));
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::critical(this, tr("Error"), e.what());
 
 			listener_->onMessage(e.what());
 
@@ -727,13 +721,7 @@ namespace unreal
 		}
 		catch (const std::exception& e)
 		{
-			QMessageBox msg(this);
-			msg.setWindowTitle(tr("Error"));
-			msg.setText(e.what());
-			msg.setIcon(QMessageBox::Information);
-			msg.setStandardButtons(QMessageBox::Ok);
-
-			msg.exec();
+			QMessageBox::critical(this, tr("Error"), e.what());
 
 			listener_->onMessage(e.what());
 

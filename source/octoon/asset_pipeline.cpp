@@ -35,16 +35,20 @@ namespace octoon
 
 		this->rootPath_ = diskPath;
 
-		std::ifstream ifs(std::filesystem::path(diskPath).append("manifest.json"), std::ios_base::binary);
-		if (ifs)
+		if (!diskPath.empty())
 		{
-			auto assetDb = nlohmann::json::parse(ifs);
-
-			for (auto it = assetDb.begin(); it != assetDb.end(); ++it)
+			std::ifstream ifs(std::filesystem::path(diskPath).append("manifest.json"), std::ios_base::binary);
+			if (ifs)
 			{
-				auto uuid = it.value();
-				auto path = std::filesystem::path((char8_t*)it.key().c_str());
-				AssetDatabase::instance()->importAsset(path);
+				auto assetDb = nlohmann::json::parse(ifs);
+
+				for (auto it = assetDb.begin(); it != assetDb.end(); ++it)
+				{
+					auto uuid = it.value();
+					auto path = std::filesystem::path((char8_t*)it.key().c_str());
+					assetPaths_.insert(path);
+					AssetDatabase::instance()->importAsset(path);
+				}
 			}
 		}
 	}
@@ -59,6 +63,346 @@ namespace octoon
 	AssetPipeline::getName() const noexcept
 	{
 		return name_;
+	}
+
+	void
+	AssetPipeline::createAsset(const std::shared_ptr<const Texture>& asset, const std::filesystem::path& relativePath) noexcept(false)
+	{
+		assert(asset && !relativePath.empty());
+		assert(!AssetDatabase::instance()->contains(asset));
+
+		try
+		{
+			auto absolutePath = this->getAbsolutePath(relativePath);
+			auto extension = absolutePath.extension().u8string();
+
+			if (asset->save(absolutePath, (char*)extension.substr(1).c_str()))
+			{
+				auto uuid = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
+
+				nlohmann::json metadata;
+				metadata["uuid"] = uuid;
+				metadata["name"] = asset->getName();
+				metadata["suffix"] = (char*)extension.c_str();
+				metadata["mipmap"] = asset->getMipLevel();
+
+				std::ofstream ifs(absolutePath.u8string() + u8".meta", std::ios_base::binary);
+				if (ifs)
+				{
+					auto dump = metadata.dump();
+					ifs.write(dump.c_str(), dump.size());
+					ifs.close();
+				}
+
+				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
+
+				this->assetPaths_.insert(relativePath);
+			}
+			else
+			{
+				throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
+		}
+		catch (const std::exception& e)
+		{
+			this->deleteAsset(relativePath);
+			throw e;
+		}
+	}
+
+	void
+	AssetPipeline::createAsset(const std::shared_ptr<const Animation>& asset, const std::filesystem::path& relativePath) noexcept(false)
+	{
+		assert(asset && !relativePath.empty());
+		assert(!AssetDatabase::instance()->contains(asset));
+
+		try
+		{
+			std::ofstream stream(this->getAbsolutePath(relativePath), io::ios_base::binary);
+			if (stream)
+			{
+				VMDImporter::save(stream, *asset);
+				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
+
+				this->assetPaths_.insert(relativePath);
+			}
+			else
+			{
+				throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
+		}
+		catch (const std::exception& e)
+		{
+			this->deleteAsset(relativePath);
+			throw e;
+		}
+	}
+
+	void
+	AssetPipeline::createAsset(const std::shared_ptr<const Material>& asset, const std::filesystem::path& relativePath) noexcept(false)
+	{
+		assert(asset && !relativePath.empty());
+		assert(!AssetDatabase::instance()->contains(asset));
+
+		try
+		{
+			std::ofstream ifs(this->getAbsolutePath(relativePath), std::ios_base::binary);
+			if (ifs)
+			{
+				nlohmann::json mat;
+				mat["type"] = asset->type_name();
+				mat["name"] = asset->getName();
+				mat["blendEnable"] = asset->getBlendEnable();
+				mat["blendOp"] = asset->getBlendOp();
+				mat["blendSrc"] = asset->getBlendSrc();
+				mat["blendDest"] = asset->getBlendDest();
+				mat["blendAlphaOp"] = asset->getBlendAlphaOp();
+				mat["blendAlphaSrc"] = asset->getBlendAlphaSrc();
+				mat["blendAlphaDest"] = asset->getBlendAlphaDest();
+				mat["colorWriteMask"] = asset->getColorWriteMask();
+				mat["depthEnable"] = asset->getDepthEnable();
+				mat["depthBiasEnable"] = asset->getDepthBiasEnable();
+				mat["depthBoundsEnable"] = asset->getDepthBoundsEnable();
+				mat["depthClampEnable"] = asset->getDepthClampEnable();
+				mat["depthWriteEnable"] = asset->getDepthWriteEnable();
+				mat["depthMin"] = asset->getDepthMin();
+				mat["depthMax"] = asset->getDepthMax();
+				mat["depthBias"] = asset->getDepthBias();
+				mat["depthSlopeScaleBias"] = asset->getDepthSlopeScaleBias();
+				mat["stencilEnable"] = asset->getStencilEnable();
+				mat["scissorTestEnable"] = asset->getScissorTestEnable();
+
+				for (auto& it : asset->getMaterialParams())
+				{
+					switch (it.type)
+					{
+					case PropertyTypeInfo::PropertyTypeInfoFloat:
+						mat[it.key] = asset->get<math::float1>(it.key);
+						break;
+					case PropertyTypeInfo::PropertyTypeInfoFloat2:
+						mat[it.key] = asset->get<math::float2>(it.key).to_array();
+						break;
+					case PropertyTypeInfo::PropertyTypeInfoFloat3:
+						mat[it.key] = asset->get<math::float3>(it.key).to_array();
+						break;
+					case PropertyTypeInfo::PropertyTypeInfoFloat4:
+						mat[it.key] = asset->get<math::float4>(it.key).to_array();
+						break;
+					case PropertyTypeInfo::PropertyTypeInfoString:
+						mat[it.key] = asset->get<std::string>(it.key);
+						break;
+					case PropertyTypeInfo::PropertyTypeInfoBool:
+						mat[it.key] = asset->get<bool>(it.key);
+						break;
+					case PropertyTypeInfo::PropertyTypeInfoInt:
+						mat[it.key] = asset->get<int>(it.key);
+						break;
+					case PropertyTypeInfo::PropertyTypeInfoTexture:
+					{
+						auto texture = asset->get<std::shared_ptr<Texture>>(it.key);
+						if (texture)
+						{
+							if (!AssetDatabase::instance()->contains(texture))
+							{
+								auto texturePath = std::filesystem::path("Assets/Textures").append(make_guid() + ".png");
+								//this->createFolder(std::filesystem::path("Assets/Textures"));
+								this->createAsset(texture, texturePath);
+								mat[it.key] = AssetDatabase::instance()->getAssetGuid(texturePath);
+							}
+							else
+							{
+								mat[it.key] = AssetDatabase::instance()->getAssetGuid(texture);
+							}
+						}
+					}
+					break;
+					default:
+						break;
+					}
+				}
+
+				auto dump = mat.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+
+				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
+
+				this->assetPaths_.insert(relativePath);
+			}
+			else
+			{
+				throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
+		}
+		catch (const std::exception& e)
+		{
+			this->deleteAsset(relativePath);
+			throw e;
+		}
+	}
+
+	void
+	AssetPipeline::createAsset(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& relativePath) noexcept(false)
+	{
+		assert(asset && !relativePath.empty());
+		assert(!AssetDatabase::instance()->contains(asset));
+
+		try
+		{
+			std::ofstream ifs(this->getAbsolutePath(relativePath), std::ios_base::binary);
+			if (ifs)
+			{
+				nlohmann::json prefab;
+
+				auto modelPath = AssetDatabase::instance()->getAssetPath(asset);
+				if (!modelPath.empty())
+				{
+					/*if (modelPath.is_absolute())
+					{
+						auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
+						this->importAsset(modelPath, outputPath);
+						prefab["model"] = AssetDatabase::instance()->getAssetGuid(outputPath);
+					}
+					else*/
+					{
+						prefab["model"] = AssetDatabase::instance()->getAssetGuid(modelPath);
+					}
+				}
+
+				asset->save(prefab);
+
+				auto dump = prefab.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+
+				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
+
+				this->assetPaths_.insert(relativePath);
+			}
+			else
+			{
+				throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
+		}
+		catch (const std::exception& e)
+		{
+			this->deleteAsset(relativePath);
+			throw e;
+		}
+	}
+
+	void
+	AssetPipeline::createPrefab(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& relativePath) noexcept(false)
+	{
+		try
+		{
+			std::ofstream ifs(this->getAbsolutePath(relativePath), std::ios_base::binary);
+			if (ifs)
+			{
+				nlohmann::json prefab;
+				asset->save(prefab);
+
+				auto dump = prefab.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+
+				AssetDatabase::instance()->importAsset(relativePath);
+				AssetManager::instance()->setAssetPath(asset, relativePath);
+
+				this->assetPaths_.insert(relativePath);
+			}
+			else
+			{
+				throw std::runtime_error(std::string("Creating prefab at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+			}
+		}
+		catch (const std::exception& e)
+		{
+			this->deleteAsset(relativePath);
+			throw e;
+		}
+	}
+
+	void
+	AssetPipeline::deleteAsset(const std::filesystem::path& relativePath) noexcept(false)
+	{
+		auto absolutePath = this->getAbsolutePath(relativePath);
+		if (std::filesystem::is_directory(absolutePath))
+		{
+			std::filesystem::remove_all(absolutePath);
+			AssetManager::instance()->removeMetadataAtPath(relativePath);
+		}
+		else
+		{
+			if (std::filesystem::exists(absolutePath))
+				std::filesystem::remove(absolutePath);
+
+			AssetManager::instance()->removeMetadataAtPath(relativePath);
+		}
+	}
+
+	void
+	AssetPipeline::createFolder(const std::filesystem::path& assetFolder_) noexcept(false)
+	{
+		if (!assetFolder_.empty())
+		{
+			auto relativePath = std::filesystem::path(assetFolder_).make_preferred();
+			auto absolutePath = this->getAbsolutePath(relativePath);
+			auto path = relativePath.wstring();
+
+			std::filesystem::create_directories(std::filesystem::path(absolutePath));
+
+			auto offset = path.find_first_of(std::filesystem::path::preferred_separator);
+			if (offset > 0 && offset < path.size())
+			{
+				auto folder = path.substr(0, offset);
+				if (folder == L"Assets")
+					offset = path.find_first_of(std::filesystem::path::preferred_separator, offset + 1);
+				else if (folder == L"Packages")
+				{
+					offset = path.find_first_of(std::filesystem::path::preferred_separator, offset + 1);
+					offset = path.find_first_of(std::filesystem::path::preferred_separator, offset + 1);
+				}
+			}
+
+			while (offset > 0 && offset < path.size())
+			{
+				auto metaPath = path.substr(0, offset);
+				this->assetPaths_.insert(metaPath);
+				AssetManager::instance()->createMetadataAtPath(metaPath);
+				offset = path.find_first_of(std::filesystem::path::preferred_separator, offset + 1);
+			}
+
+			this->assetPaths_.insert(relativePath);
+			AssetManager::instance()->createMetadataAtPath(relativePath);
+		}
+		else
+		{
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)assetFolder_.u8string().c_str() + " failed.");
+		}
+	}
+
+	void
+	AssetPipeline::deleteFolder(const std::filesystem::path& relativePath) noexcept(false)
+	{
+		if (!relativePath.empty())
+		{
+			auto folderPath = AssetDatabase::instance()->getAbsolutePath(relativePath);
+			if (std::filesystem::exists(folderPath))
+			{
+				this->assetPaths_.erase(std::find(this->assetPaths_.begin(), this->assetPaths_.end(), relativePath));
+				std::filesystem::remove_all(folderPath);
+				AssetManager::instance()->removeMetadataAtPath(relativePath);
+			}
+		}
+		else
+		{
+			throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
+		}
 	}
 
 	bool
@@ -117,21 +461,24 @@ namespace octoon
 	void
 	AssetPipeline::saveAssets() noexcept(false)
 	{
-		std::ofstream ifs(std::filesystem::path(rootPath_).append("manifest.json"), std::ios_base::binary);
-		if (ifs)
+		if (!this->getName().empty())
 		{
-			nlohmann::json assetDb;
-
-			for (auto& it : assets_)
+			std::ofstream ifs(std::filesystem::path(rootPath_).append("manifest.json"), std::ios_base::binary);
+			if (ifs)
 			{
-				auto path = it;
-				if (std::filesystem::exists(AssetDatabase::instance()->getAbsolutePath(path)))
-					assetDb[(char*)path.c_str()] = AssetDatabase::instance()->getAssetGuid(path);
-			}
+				nlohmann::json assetDb;
 
-			auto dump = assetDb.dump();
-			ifs.write(dump.c_str(), dump.size());
-			ifs.close();
+				for (auto& it : assetPaths_)
+				{
+					auto path = it.u8string();
+					if (std::filesystem::exists(AssetDatabase::instance()->getAbsolutePath(it)))
+						assetDb[(char*)path.c_str()] = AssetDatabase::instance()->getAssetGuid(it);
+				}
+
+				auto dump = assetDb.dump();
+				ifs.write(dump.c_str(), dump.size());
+				ifs.close();
+			}
 		}
 	}
 

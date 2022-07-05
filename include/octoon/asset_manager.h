@@ -4,6 +4,7 @@
 #include <octoon/runtime/guid.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/runtime/object.h>
+#include <octoon/runtime/json.h>
 #include <map>
 #include <filesystem>
 
@@ -17,7 +18,16 @@ namespace octoon
 		~AssetManager() noexcept;
 
 		void setAssetPath(const std::shared_ptr<const Object>& object, std::filesystem::path) noexcept;
+
+		std::filesystem::path getAssetPath(const std::string& uuid) const noexcept;
 		std::filesystem::path getAssetPath(const std::shared_ptr<const Object>& object) const noexcept;
+
+		std::string getAssetGuid(const std::filesystem::path& path) const noexcept;
+
+		void createMetadataAtPath(const std::filesystem::path& path) noexcept(false);
+		void createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false);
+		void removeMetadataAtPath(const std::filesystem::path& path) noexcept;
+		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
 
 	private:
 		AssetManager(const AssetManager&) = delete;

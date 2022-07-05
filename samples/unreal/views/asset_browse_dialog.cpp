@@ -341,8 +341,6 @@ namespace unreal
 					if (!package.is_null())
 						this->addItem(package);
 				}
-
-				AssetLibrary::instance()->saveAssets();
 			}
 			catch (...)
 			{

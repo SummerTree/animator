@@ -1,4 +1,6 @@
 #include <octoon/asset_manager.h>
+#include <octoon/asset_database.h>
+#include <octoon/runtime/md5.h>
 
 namespace octoon
 {
@@ -26,5 +28,91 @@ namespace octoon
 			return asset->second;
 
 		return std::filesystem::path();
+	}
+
+	std::filesystem::path
+	AssetManager::getAssetPath(const std::string& uuid) const noexcept
+	{
+		auto item = uniques_.find(uuid);
+		if (item != uniques_.end())
+			return item->second;
+
+		return std::filesystem::path();
+	}
+
+	std::string
+	AssetManager::getAssetGuid(const std::filesystem::path& path) const noexcept
+	{
+		auto item = paths_.find(path);
+		if (item != paths_.end())
+			return item->second;
+
+		return std::string();
+	}
+
+	void
+	AssetManager::createMetadataAtPath(const std::filesystem::path& relativePath) noexcept(false)
+	{
+		nlohmann::json metadata;
+		metadata["uuid"] = MD5(std::filesystem::path(relativePath).make_preferred().u8string()).toString();
+
+		this->createMetadataAtPath(relativePath, metadata);
+	}
+
+	void
+	AssetManager::createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false)
+	{
+		std::ofstream ifs(AssetDatabase::instance()->getAbsolutePath(path).concat(L".meta"), std::ios_base::binary);
+		if (ifs)
+		{
+			auto uuid = json["uuid"].get<std::string>();
+
+			paths_[path] = uuid;
+			uniques_[uuid] = path;
+
+			auto dump = json.dump();
+			ifs.write(dump.c_str(), dump.size());
+			ifs.close();
+		}
+		else
+		{
+			throw std::runtime_error(std::string("Creating metadata at path ") + (char*)path.u8string().c_str() + " failed.");
+		}
+	}
+
+	void
+	AssetManager::removeMetadataAtPath(const std::filesystem::path& relativePath_) noexcept
+	{
+		auto relativePath = std::filesystem::path(relativePath_).make_preferred();
+		auto uuid = this->getAssetGuid(relativePath);
+		paths_.erase(paths_.find(relativePath));
+		uniques_.erase(uniques_.find(uuid));
+
+		auto metaPath = AssetDatabase::instance()->getAbsolutePath(relativePath).concat(L".meta");
+		if (std::filesystem::exists(metaPath))
+			std::filesystem::remove(metaPath);
+	}
+
+	nlohmann::json
+	AssetManager::loadMetadataAtPath(const std::filesystem::path& relativePath) noexcept(false)
+	{
+		std::ifstream ifs(AssetDatabase::instance()->getAbsolutePath(relativePath).concat(L".meta"));
+		if (ifs)
+		{
+			auto metaData = nlohmann::json::parse(ifs);
+			if (metaData.is_object())
+			{
+				if (metaData.contains("uuid"))
+				{
+					auto guid = metaData["uuid"].get<std::string>();
+					paths_[relativePath] = guid;
+					uniques_[guid] = relativePath;
+				}
+			}
+
+			return metaData;
+		}
+
+		return nlohmann::json();
 	}
 }

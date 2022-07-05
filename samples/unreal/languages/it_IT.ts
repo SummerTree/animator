@@ -329,17 +329,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="415"/>
         <source>Are you sure you want to delete this picture?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="417"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="415"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/asset_browse_dialog.cpp" line="431"/>
+        <location filename="../views/asset_browse_dialog.cpp" line="429"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>

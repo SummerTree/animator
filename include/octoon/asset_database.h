@@ -1,9 +1,6 @@
 #ifndef OCTOON_ASSET_DATABASE_H_
 #define OCTOON_ASSET_DATABASE_H_
 
-#include <octoon/texture/texture.h>
-#include <octoon/material/mesh_standard_material.h>
-#include <octoon/animation/animation.h>
 #include <octoon/video/renderer.h>
 #include <octoon/asset_pipeline.h>
 #include <filesystem>
@@ -72,12 +69,6 @@ namespace octoon
 		void setDirty(const std::shared_ptr<Object>& object, bool dirty = true) noexcept(false);
 
 	private:
-		void createMetadataAtPath(const std::filesystem::path& path) noexcept(false);
-		void createMetadataAtPath(const std::filesystem::path& path, const nlohmann::json& json) noexcept(false);
-		void removeMetadataAtPath(const std::filesystem::path& path) noexcept;
-		nlohmann::json loadMetadataAtPath(const std::filesystem::path& path) noexcept(false);
-
-	private:
 		AssetDatabase(const AssetDatabase&) = delete;
 		AssetDatabase& operator=(const AssetDatabase&) = delete;
 
@@ -87,8 +78,6 @@ namespace octoon
 		std::vector<std::shared_ptr<AssetPipeline>> assetPipeline_;
 		std::map<std::filesystem::path, std::weak_ptr<Object>> assetCaches_;
 
-		std::map<std::filesystem::path, std::string> paths_;
-		std::map<std::string, std::filesystem::path> uniques_;
 		std::set<std::weak_ptr<const Object>, std::owner_less<std::weak_ptr<const Object>>> dirtyList_;
 		std::map<std::weak_ptr<const Object>, std::vector<std::string>, std::owner_less<std::weak_ptr<const Object>>> labels_;
 	};
