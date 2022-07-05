@@ -930,6 +930,7 @@ $20 (Original cost $40)</source>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="125"/>
+        <location filename="../views/motion_dock.cpp" line="259"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -946,14 +947,14 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/motion_dock.cpp" line="139"/>
         <location filename="../views/motion_dock.cpp" line="140"/>
-        <location filename="../views/motion_dock.cpp" line="189"/>
-        <location filename="../views/motion_dock.cpp" line="190"/>
+        <location filename="../views/motion_dock.cpp" line="191"/>
+        <location filename="../views/motion_dock.cpp" line="192"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../views/motion_dock.cpp" line="139"/>
-        <location filename="../views/motion_dock.cpp" line="189"/>
+        <location filename="../views/motion_dock.cpp" line="191"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

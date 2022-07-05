@@ -180,76 +180,83 @@ namespace unreal
 	void
 	MotionDock::itemSelected(QListWidgetItem* item)
 	{
-		if (item)
+		try
 		{
-			auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
-			if (!behaviour)
-				return;
-
-			QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 2, this);
-			dialog.setWindowTitle(tr("Loading..."));
-			dialog.setWindowModality(Qt::WindowModal);
-			dialog.setValue(0);
-			dialog.show();
-
-			QCoreApplication::processEvents();
-
-			auto uuid = item->data(Qt::UserRole).toString().toStdString();
-			auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
-			if (package.is_object())
+			if (item)
 			{
-				auto animation = AssetLibrary::instance()->loadAsset<octoon::Animation>(uuid);
-				if (animation)
+				auto behaviour = behaviour_->getComponent<UnrealBehaviour>();
+				if (!behaviour)
+					return;
+
+				QProgressDialog dialog(tr("Loading..."), tr("Cancel"), 0, 2, this);
+				dialog.setWindowTitle(tr("Loading..."));
+				dialog.setWindowModality(Qt::WindowModal);
+				dialog.setValue(0);
+				dialog.show();
+
+				QCoreApplication::processEvents();
+
+				auto uuid = item->data(Qt::UserRole).toString().toStdString();
+				auto package = AssetLibrary::instance()->getPackage((std::string)uuid);
+				if (package.is_object())
 				{
-					dialog.setValue(1);
-					QCoreApplication::processEvents();
-
-					if (animation->hasClip("Camera"))
-						profile_->cameraModule->animation = animation;
-					else
+					auto animation = AssetLibrary::instance()->loadAsset<octoon::Animation>(uuid);
+					if (animation)
 					{
-						auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
-						if (selectedItem.has_value())
+						dialog.setValue(1);
+						QCoreApplication::processEvents();
+
+						if (animation->hasClip("Camera"))
+							profile_->cameraModule->animation = animation;
+						else
 						{
-							if (animation && !animation->clips.empty())
+							auto selectedItem = behaviour->getProfile()->selectorModule->selectedItemHover_.getValue();
+							if (selectedItem.has_value())
 							{
-								auto model = selectedItem->object.lock();
-								auto animator = model->getComponent<octoon::AnimatorComponent>();
-								auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
-
-								if (animator)
-									animator->setAnimation(std::move(animation));
-								else
+								if (animation && !animation->clips.empty())
 								{
-									if (smr)
-										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getBones());
+									auto model = selectedItem->object.lock();
+									auto animator = model->getComponent<octoon::AnimatorComponent>();
+									auto smr = model->getComponent<octoon::SkinnedMeshRendererComponent>();
+
+									if (animator)
+										animator->setAnimation(std::move(animation));
 									else
-										animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
-								}
-
-								animator->setName(package["name"].get<nlohmann::json::string_t>());
-								animator->sample();
-
-								if (smr)
-								{
-									for (auto& transform : smr->getBones())
 									{
-										auto solver = transform->getComponent<octoon::CCDSolverComponent>();
-										if (solver)
-											solver->solve();
+										if (smr)
+											animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation), smr->getBones());
+										else
+											animator = model->addComponent<octoon::AnimatorComponent>(std::move(animation));
 									}
-								}
 
-								octoon::AssetDatabase::instance()->setDirty(model, true);
+									animator->setName(package["name"].get<nlohmann::json::string_t>());
+									animator->sample();
+
+									if (smr)
+									{
+										for (auto& transform : smr->getBones())
+										{
+											auto solver = transform->getComponent<octoon::CCDSolverComponent>();
+											if (solver)
+												solver->solve();
+										}
+									}
+
+									octoon::AssetDatabase::instance()->setDirty(model, true);
+								}
 							}
 						}
+
+						behaviour->getComponent<PlayerComponent>()->updateTimeLength();
 					}
 
-					behaviour->getComponent<PlayerComponent>()->updateTimeLength();
+					dialog.setValue(2);
 				}
-
-				dialog.setValue(2);
 			}
+		}
+		catch (const std::exception& e)
+		{
+			QMessageBox::information(this, tr("Error"), e.what());
 		}
 	}
 
