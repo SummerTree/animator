@@ -1,5 +1,6 @@
 #include <octoon/asset_importer_context.h>
 #include <octoon/asset_database.h>
+#include <octoon/game_component.h>
 #include <fstream>
 
 namespace octoon
@@ -30,8 +31,25 @@ namespace octoon
 	}
 
 	void
-	AssetImporterContext::addObjectToAsset(std::string_view name, const std::shared_ptr<const Object>& subAsset)
+	AssetImporterContext::addObjectToAsset(std::string_view identifier, const std::shared_ptr<Object>& subAsset)
 	{
+		auto globalId = 0;
+		if (subAsset->isInstanceOf<Texture>())
+			globalId = 100000;
+		else if (subAsset->isA<Material>())
+			globalId = 200000;
+		else if (subAsset->isInstanceOf<Animation>())
+			globalId = 300000;
+		else if (subAsset->isInstanceOf<Mesh>())
+			globalId = 400000;
+		else if (subAsset->isInstanceOf<GameObject>())
+			globalId = 500000;
+		else if (subAsset->isA<GameComponent>())
+			globalId = 600000;
+
+		auto& identifiers = identifiers_[subAsset->getRtti()->type_name()];
+		identifiers.insert(std::string(identifier));
+		subAsset->setLocalIdentifier(globalId + identifiers.size());
 		this->subAssets_.push_back(subAsset);
 	}
 

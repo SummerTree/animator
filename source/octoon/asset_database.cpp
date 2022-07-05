@@ -413,7 +413,7 @@ namespace octoon
 		if (!assetPath.empty())
 		{
 			outGuid = this->getAssetGuid(assetPath);
-			outLocalId = 0;
+			outLocalId = asset->getLocalIdentifier();
 			return true;
 		}
 

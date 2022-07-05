@@ -186,7 +186,7 @@ namespace octoon
 		}
 		else
 		{
-			math::float3 key = math::float3(fbxNode->LclRotation.Get()[0], fbxNode->LclRotation.Get()[1], fbxNode->LclRotation.Get()[2]);
+			math::float3 key = math::float3((float)fbxNode->LclRotation.Get()[0], (float)fbxNode->LclRotation.Get()[1], (float)fbxNode->LclRotation.Get()[2]);
 			rotationCurve.emplace_back(0.0f, key);
 		}
 

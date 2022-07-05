@@ -4,6 +4,27 @@ namespace octoon
 {
 	OctoonImplementClass(Object, "Object")
 
+	Object::Object() noexcept
+		: localIdentifier_(0)
+	{
+	}
+
+	Object::~Object() noexcept
+	{
+	}
+
+	void
+	Object::setLocalIdentifier(long id) noexcept
+	{
+		localIdentifier_ = id;
+	}
+
+	long
+	Object::getLocalIdentifier() const noexcept
+	{
+		return localIdentifier_;
+	}
+
 	bool
 	Object::isInstanceOf(const Rtti* rtti) const noexcept
 	{

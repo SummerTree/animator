@@ -4,6 +4,7 @@
 #include <octoon/runtime/object.h>
 #include <octoon/runtime/json.h>
 #include <filesystem>
+#include <set>
 
 namespace octoon
 {
@@ -16,7 +17,7 @@ namespace octoon
 		void setMainObject(const std::shared_ptr<Object>& object) noexcept;
 		const std::shared_ptr<Object>& getMainObject() const noexcept;
 
-		void addObjectToAsset(std::string_view identifier, const std::shared_ptr<const Object>& object);
+		void addObjectToAsset(std::string_view identifier, const std::shared_ptr<Object>& object);
 		const std::vector<std::shared_ptr<const Object>>& getObjects() const;
 
 		const std::filesystem::path& getAssetPath() const noexcept;
@@ -31,6 +32,7 @@ namespace octoon
 		nlohmann::json metaData_;
 		std::filesystem::path assetPath_;
 		std::shared_ptr<Object> mainObject;
+		std::map<std::string, std::set<std::string>> identifiers_;
 		std::vector<std::shared_ptr<const Object>> subAssets_;
 	};
 }

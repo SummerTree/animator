@@ -14,8 +14,11 @@ namespace octoon
 	{
 		OctoonDeclareClass(Object)
 	public:
-		Object() = default;
-		virtual ~Object() = default;
+		Object() noexcept;
+		virtual ~Object() noexcept;
+
+		void setLocalIdentifier(long id) noexcept;
+		long getLocalIdentifier() const noexcept;
 
 		bool isInstanceOf(const Rtti* rtti) const noexcept;
 		bool isInstanceOf(const Rtti& rtti) const noexcept;
@@ -118,6 +121,9 @@ namespace octoon
 			assert(this->isA<T>());
 			return std::dynamic_pointer_cast<const T>(this->shared_from_this());
 		}
+
+	private:
+		long localIdentifier_;
 	};
 }
 
