@@ -207,7 +207,7 @@ namespace octoon
 							if (!AssetDatabase::instance()->contains(texture))
 							{
 								auto texturePath = std::filesystem::path("Assets/Textures").append(make_guid() + ".png");
-								//this->createFolder(std::filesystem::path("Assets/Textures"));
+								this->createFolder(std::filesystem::path("Assets/Textures"));
 								this->createAsset(texture, texturePath);
 								mat[it.key] = AssetDatabase::instance()->getAssetGuid(texturePath);
 							}
@@ -260,13 +260,13 @@ namespace octoon
 				auto modelPath = AssetDatabase::instance()->getAssetPath(asset);
 				if (!modelPath.empty())
 				{
-					/*if (modelPath.is_absolute())
+					if (modelPath.is_absolute())
 					{
 						auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
-						this->importAsset(modelPath, outputPath);
+						AssetDatabase::instance()->importAsset(modelPath, outputPath);
 						prefab["model"] = AssetDatabase::instance()->getAssetGuid(outputPath);
 					}
-					else*/
+					else
 					{
 						prefab["model"] = AssetDatabase::instance()->getAssetGuid(modelPath);
 					}
@@ -391,7 +391,7 @@ namespace octoon
 	{
 		if (!relativePath.empty())
 		{
-			auto folderPath = AssetDatabase::instance()->getAbsolutePath(relativePath);
+			auto folderPath = this->getAbsolutePath(relativePath);
 			if (std::filesystem::exists(folderPath))
 			{
 				this->assetPaths_.erase(std::find(this->assetPaths_.begin(), this->assetPaths_.end(), relativePath));
@@ -471,7 +471,7 @@ namespace octoon
 				for (auto& it : assetPaths_)
 				{
 					auto path = it.u8string();
-					if (std::filesystem::exists(AssetDatabase::instance()->getAbsolutePath(it)))
+					if (std::filesystem::exists(this->getAbsolutePath(it)))
 						assetDb[(char*)path.c_str()] = AssetDatabase::instance()->getAssetGuid(it);
 				}
 

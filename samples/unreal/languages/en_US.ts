@@ -535,8 +535,8 @@ $20 (Original cost $40)</source>
         <location filename="../views/main_dock.cpp" line="589"/>
         <location filename="../views/main_dock.cpp" line="602"/>
         <location filename="../views/main_dock.cpp" line="631"/>
-        <location filename="../views/main_dock.cpp" line="704"/>
-        <location filename="../views/main_dock.cpp" line="731"/>
+        <location filename="../views/main_dock.cpp" line="703"/>
+        <location filename="../views/main_dock.cpp" line="724"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -564,11 +564,6 @@ $20 (Original cost $40)</source>
     <message>
         <location filename="../views/main_dock.cpp" line="589"/>
         <source>Import asset at path %1 failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../views/main_dock.cpp" line="705"/>
-        <source>Current GPU does not support OpenCL or you are using an integrated GPU accelerator.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
