@@ -30,13 +30,13 @@ namespace octoon
 	}
 
 	void
-	AssetImporterContext::addObjectToAsset(const std::shared_ptr<const Object>& subAsset)
+	AssetImporterContext::addObjectToAsset(std::string_view name, const std::shared_ptr<const Object>& subAsset)
 	{
 		this->subAssets_.push_back(subAsset);
 	}
 
 	const std::vector<std::shared_ptr<const Object>>&
-	AssetImporterContext::getSubAssets() const
+	AssetImporterContext::getObjects() const
 	{
 		return subAssets_;
 	}

@@ -388,7 +388,7 @@ namespace octoon
 					if (texture)
 					{
 						texture->apply();
-						context.addObjectToAsset(texture);
+						context.addObjectToAsset(texture->getName(), texture);
 						textureMap[fullpath] = std::move(texture);
 					}
 				}
@@ -444,7 +444,7 @@ namespace octoon
 				material->setBlendDest(BlendMode::OneMinusSrcAlpha);
 			}
 
-			context.addObjectToAsset(material);
+			context.addObjectToAsset(material->getName(), material);
 
 			materials.emplace_back(std::move(material));
 		}
@@ -495,6 +495,7 @@ namespace octoon
 		}
 
 		auto mesh = std::make_shared<Mesh>();
+		mesh->setName("Mesh");
 		mesh->setBindposes(std::move(bindposes));
 		mesh->setVertexArray(std::move(vertices_));
 		mesh->setNormalArray(std::move(normals_));
@@ -527,7 +528,7 @@ namespace octoon
 
 		mesh->computeBoundingBox();
 
-		context.addObjectToAsset(mesh);
+		context.addObjectToAsset(mesh->getName(), mesh);
 
 		object->addComponent<MeshFilterComponent>(std::move(mesh));
 
@@ -589,9 +590,6 @@ namespace octoon
 			createMeshes(context, pmx, actor, bones);
 			createMorph(context, pmx, actor);
 			createClothes(context, pmx, actor, bones);
-
-			for (auto it : actor->getComponents())
-				context.addObjectToAsset(it);
 
 			context.setMainObject(actor);
 		}

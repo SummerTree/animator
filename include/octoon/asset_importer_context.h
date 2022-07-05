@@ -16,8 +16,8 @@ namespace octoon
 		void setMainObject(const std::shared_ptr<Object>& object) noexcept;
 		const std::shared_ptr<Object>& getMainObject() const noexcept;
 
-		void addObjectToAsset(const std::shared_ptr<const Object>& subAsset);
-		const std::vector<std::shared_ptr<const Object>>& getSubAssets() const;
+		void addObjectToAsset(std::string_view identifier, const std::shared_ptr<const Object>& object);
+		const std::vector<std::shared_ptr<const Object>>& getObjects() const;
 
 		const std::filesystem::path& getAssetPath() const noexcept;
 

@@ -291,13 +291,13 @@ namespace octoon
 			material->setNormalMap(LoadTexture(surfaceMaterial, FbxSurfaceMaterial::sBump, path));
 
 		if (material->getColorMap())
-			context.addObjectToAsset(material->getColorMap());
+			context.addObjectToAsset(material->getColorMap()->getName(), material->getColorMap());
 		if (material->getNormalMap())
-			context.addObjectToAsset(material->getNormalMap());
+			context.addObjectToAsset(material->getNormalMap()->getName(), material->getNormalMap());
 		if (material->getEmissiveMap())
-			context.addObjectToAsset(material->getEmissiveMap());
+			context.addObjectToAsset(material->getEmissiveMap()->getName(), material->getEmissiveMap());
 		if (material->getNormalMap())
-			context.addObjectToAsset(material->getNormalMap());
+			context.addObjectToAsset(material->getNormalMap()->getName(), material->getNormalMap());
 
 		if (surfaceMaterial->GetClassId().Is(FbxSurfacePhong::ClassId))
 		{
@@ -603,6 +603,7 @@ namespace octoon
 				indices[i] = polygonMap.at(polygonIndices[i]);
 
 			auto mesh = std::make_shared<Mesh>();
+			mesh->setName(fbxMesh->GetName());
 			mesh->setVertexArray(std::move(vertices));
 			mesh->setNormalArray(std::move(normals));
 			mesh->setTexcoordArray(std::move(texcoords));
@@ -612,7 +613,7 @@ namespace octoon
 			gameObject->setName(node->GetName());
 			gameObject->addComponent<MeshFilterComponent>(std::move(mesh));
 
-			context.addObjectToAsset(mesh);
+			context.addObjectToAsset(fbxMesh->GetName(), mesh);
 
 			auto meshRenderer = gameObject->addComponent<MeshRendererComponent>();
 			meshRenderer->setGlobalIllumination(true);
@@ -624,15 +625,27 @@ namespace octoon
 
 				for (std::size_t i = 0; i < materials.size(); i++)
 				{
-					auto material = materials[i] ? materials[i] : std::make_shared<MeshStandardMaterial>();
-					context.addObjectToAsset(material);
-					meshRenderer->setMaterial(std::move(material), i);
+					if (materials[i])
+					{
+						auto& material = materials[i];
+						context.addObjectToAsset(material->getName(), material);
+						meshRenderer->setMaterial(std::move(material), i);
+					}
+					else
+					{
+						std::ostringstream buffer;
+						buffer << "Standard Material";
+						buffer << i;
+						auto material = std::make_shared<MeshStandardMaterial>(buffer.str());
+						context.addObjectToAsset(material->getName(), material);
+						meshRenderer->setMaterial(std::move(material), i);
+					}
 				}
 			}
 			else
 			{
-				auto material = std::make_shared<MeshStandardMaterial>();
-				context.addObjectToAsset(material);
+				auto material = std::make_shared<MeshStandardMaterial>("Standard Material");
+				context.addObjectToAsset(material->getName(), material);
 				meshRenderer->setMaterial(std::move(material));
 			}
 
@@ -738,7 +751,7 @@ namespace octoon
 				for (int j = 0; j < node->GetChildCount(); j++)
 				{
 					auto child = ProcessNode(context, scene, node->GetChild(j), path);
-					context.addObjectToAsset(child);
+					context.addObjectToAsset(child->getName(), child);
 					object->addChild(child);
 				}
 				break;
@@ -784,23 +797,14 @@ namespace octoon
 					for (int i = 0; i < rootNode->GetChildCount(); i++)
 					{
 						auto node = ProcessNode(context, scene, rootNode->GetChild(i), filepath);
+						context.addObjectToAsset(node->getName(), node->getChild(i));
 						object->addChild(std::move(node));
 					}
 					
-					for (auto it : object->getComponents())
-						context.addObjectToAsset(it);
-
 					if (object->getChildCount() > 1)
-					{
-						for (int i = 0; i < object->getChildCount(); i++)
-							context.addObjectToAsset(object->getChild(i));
-
 						context.setMainObject(object);
-					}
 					else
-					{
 						context.setMainObject(object->getChild(0));
-					}
 				}
 			}
 			else

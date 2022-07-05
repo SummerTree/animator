@@ -580,7 +580,7 @@ namespace octoon
 			{
 				AssetManager::instance()->setAssetPath(mainObject, context->getAssetPath());
 
-				for (auto& asset : context->getSubAssets())
+				for (auto& asset : context->getObjects())
 					AssetManager::instance()->setAssetPath(asset, context->getAssetPath());
 
 				AssetDatabase::instance()->importAsset(path);
