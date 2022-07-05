@@ -425,27 +425,41 @@ namespace octoon
 	{
 		if (!path.empty())
 		{
-			if (assetCaches_.contains(path))
-			{
-				auto cache = assetCaches_.at(path);
-				if (!cache.expired())
-					return cache.lock();
-			}
-
 			for (auto& it : assetPipeline_)
 			{
 				if (it->isValidPath(path))
 				{
 					auto asset = it->loadAssetAtPath(path);
-					if (asset)
-						assetCaches_[path] = asset;
-
+					assetCaches_.clear();
 					return asset;
 				}
 			}
 		}
 
 		return nullptr;
+	}
+
+	std::shared_ptr<Object>
+	AssetDatabase::loadAsset(const std::string& guid, long localId) noexcept(false)
+	{
+		auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
+		if (!assetPath.empty())
+		{
+			if (assetCaches_.contains(assetPath))
+				return assetCaches_.at(assetPath);
+
+			for (auto& it : assetPipeline_)
+			{
+				if (it->isValidPath(assetPath))
+				{
+					auto asset = it->loadAssetAtPath(assetPath);
+					if (asset)
+						assetCaches_[assetPath] = asset;
+
+					return asset;
+				}
+			}
+		}
 	}
 
 	void

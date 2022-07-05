@@ -119,16 +119,12 @@ namespace octoon
 					auto guid = it["guid"].get<std::string>();
 					auto localId = it["localId"].get<int>();
 
-					auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
-					if (!assetPath.empty())
+					auto gameObject = AssetDatabase::instance()->loadAsset<GameObject>(guid, localId);
+					if (gameObject)
 					{
-						auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
-						if (gameObject)
-						{
-							auto meshRenderer = gameObject->getComponentInChildren<MeshRendererComponent>();
-							if (meshRenderer)
-								materials.push_back(meshRenderer->getMaterial(i));
-						}
+						auto meshRenderer = gameObject->getComponentInChildren<MeshRendererComponent>();
+						if (meshRenderer)
+							materials.push_back(meshRenderer->getMaterial(i));
 					}
 				}
 				else

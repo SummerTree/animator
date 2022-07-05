@@ -53,7 +53,17 @@ namespace octoon
 		bool isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept;
 		bool getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, std::string& outGuid, std::int64_t& outLocalId);
 
+		std::shared_ptr<Object> loadAsset(const std::string& guid, long localId) noexcept(false);
 		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false);
+
+		template<typename T>
+		std::shared_ptr<T> loadAsset(const std::string& guid, long localId) noexcept(false)
+		{
+			auto asset = loadAsset(guid, localId);
+			if (asset)
+				return asset->downcast_pointer<T>();
+			return nullptr;
+		}
 
 		template<typename T>
 		std::shared_ptr<T> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false)
@@ -76,7 +86,7 @@ namespace octoon
 		std::vector<std::string> defaultLabel_;
 
 		std::vector<std::shared_ptr<AssetPipeline>> assetPipeline_;
-		std::map<std::filesystem::path, std::weak_ptr<Object>> assetCaches_;
+		std::map<std::filesystem::path, std::shared_ptr<Object>> assetCaches_;
 
 		std::set<std::weak_ptr<const Object>, std::owner_less<std::weak_ptr<const Object>>> dirtyList_;
 		std::map<std::weak_ptr<const Object>, std::vector<std::string>, std::owner_less<std::weak_ptr<const Object>>> labels_;
