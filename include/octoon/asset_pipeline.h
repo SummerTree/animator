@@ -22,6 +22,8 @@ namespace octoon
 
 		const std::u8string& getName() const noexcept;
 
+		void importAsset(const std::filesystem::path& diskPath, const std::filesystem::path& assetPath) noexcept(false);
+
 		void createAsset(const std::shared_ptr<const Texture>& asset, const std::filesystem::path& relativePath) noexcept(false);
 		void createAsset(const std::shared_ptr<const Animation>& animation, const std::filesystem::path& assetPath) noexcept(false);
 		void createAsset(const std::shared_ptr<const Material>& material, const std::filesystem::path& assetPath) noexcept(false);

@@ -2,11 +2,6 @@
 #include <octoon/asset_importer.h>
 #include <octoon/asset_manager.h>
 #include <octoon/game_component.h>
-#include <octoon/runtime/md5.h>
-#include <octoon/runtime/guid.h>
-#include <octoon/vmd_importer.h>
-#include <octoon/fbx_importer.h>
-#include <octoon/pmx.h>
 
 #include <fstream>
 
@@ -74,63 +69,13 @@ namespace octoon
 		if (diskPath.empty() || !std::filesystem::exists(diskPath))
 			return;
 
-		auto rootPath = relativePath.parent_path();
-		auto absolutePath = this->getAbsolutePath(relativePath);
-
-		try
+		for (auto& it : assetPipeline_)
 		{
-			this->createFolder(rootPath);
-
-			std::filesystem::copy_file(diskPath, absolutePath, std::filesystem::copy_options::overwrite_existing);
-			std::filesystem::permissions(absolutePath, std::filesystem::perms::owner_write);
-
-			AssetManager::instance()->createMetadataAtPath(relativePath);
-
-			auto ext = diskPath.extension().u8string();
-			for (auto& it : ext)
-				it = (char)std::tolower(it);
-
-			if (ext == u8".pmx")
+			if (it->isValidPath(relativePath))
 			{
-				auto pmx = std::make_shared<octoon::PMX>();
-				if (octoon::PMX::load(diskPath, *pmx))
-				{
-					std::map<std::filesystem::path, std::wstring> diskPaths;
-					for (auto& texture : pmx->textures)
-					{
-						if (std::filesystem::exists(texture.fullpath))
-							diskPaths[texture.fullpath] = texture.name;
-					}
-
-					for (auto& path : diskPaths)
-						this->importAsset(path.first, std::filesystem::path(rootPath).append(path.second));
-				}
+				it->importAsset(diskPath, relativePath);
+				return;
 			}
-			else if (ext == u8".fbx")
-			{
-				auto dependencies = octoon::FBXImporter::getDependencies(diskPath);
-
-				std::map<std::filesystem::path, std::wstring> diskPaths;
-				for (auto& it : dependencies)
-				{
-					auto fullpath = std::filesystem::path(diskPath.parent_path()).append(it.wstring());
-					if (std::filesystem::exists(fullpath))
-						diskPaths[fullpath] = it.wstring();
-				}
-
-				for (auto& path : diskPaths)
-					this->importAsset(path.first, std::filesystem::path(rootPath).append(path.second));
-			}
-		}
-		catch (const std::exception& e)
-		{
-			if (std::filesystem::exists(absolutePath))
-				std::filesystem::remove(absolutePath);
-
-			if (std::filesystem::exists(absolutePath.u8string() + u8".meta"))
-				std::filesystem::remove(absolutePath.u8string() + u8".meta");
-
-			throw e;
 		}
 	}
 
@@ -223,7 +168,7 @@ namespace octoon
 		{
 			if (it->isValidPath(relativePath))
 			{
-				it->createAsset(asset, relativePath);
+				it->createPrefab(asset, relativePath);
 				return;
 			}
 		}
