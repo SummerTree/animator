@@ -78,6 +78,7 @@ namespace octoon
 			std::filesystem::copy_file(diskPath, absolutePath, std::filesystem::copy_options::overwrite_existing);
 			std::filesystem::permissions(absolutePath, std::filesystem::perms::owner_write);
 
+			this->assetPaths_.insert(relativePath);
 			AssetManager::instance()->createMetadataAtPath(relativePath);
 
 			auto ext = diskPath.extension().u8string();
