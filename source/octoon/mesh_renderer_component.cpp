@@ -114,25 +114,11 @@ namespace octoon
 			for (std::size_t i = 0; i < materialJson.size(); i ++)
 			{
 				auto& it = materialJson[i];
-				if (it.is_object())
-				{
-					auto guid = it["guid"].get<std::string>();
-					auto localId = it["localId"].get<int>();
 
-					auto gameObject = AssetDatabase::instance()->loadAsset<GameObject>(guid, localId);
-					if (gameObject)
-					{
-						auto meshRenderer = gameObject->getComponentInChildren<MeshRendererComponent>();
-						if (meshRenderer)
-							materials.push_back(meshRenderer->getMaterial(i));
-					}
-				}
-				else
-				{
-					auto data = it.get<nlohmann::json::string_t>();
-					auto material = AssetDatabase::instance()->loadAssetAtPath<octoon::Material>(AssetDatabase::instance()->getAssetPath(data));
-					materials.push_back(std::move(material));
-				}
+				auto guid = it["guid"].get<std::string>();
+				auto localId = it["localId"].get<int>();
+
+				materials.push_back(AssetDatabase::instance()->loadAsset<Material>(guid, localId));
 			}
 
 			this->setMaterials(std::move(materials));

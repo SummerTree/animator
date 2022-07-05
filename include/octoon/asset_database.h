@@ -53,7 +53,7 @@ namespace octoon
 		bool isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept;
 		bool getGUIDAndLocalIdentifier(const std::shared_ptr<const Object>& asset, std::string& outGuid, std::int64_t& outLocalId);
 
-		std::shared_ptr<Object> loadAsset(const std::string& guid, long localId) noexcept(false);
+		std::shared_ptr<Object> loadAsset(const std::string& guid, std::int64_t localId) noexcept(false);
 		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false);
 
 		template<typename T>

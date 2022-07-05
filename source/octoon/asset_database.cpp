@@ -2,7 +2,9 @@
 #include <octoon/asset_importer.h>
 #include <octoon/asset_manager.h>
 #include <octoon/game_component.h>
-
+#include <octoon/animator_component.h>
+#include <octoon/mesh_filter_component.h>
+#include <octoon/mesh_renderer_component.h>
 #include <fstream>
 
 namespace octoon
@@ -440,26 +442,85 @@ namespace octoon
 	}
 
 	std::shared_ptr<Object>
-	AssetDatabase::loadAsset(const std::string& guid, long localId) noexcept(false)
+	AssetDatabase::loadAsset(const std::string& guid, std::int64_t localId) noexcept(false)
 	{
 		auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
 		if (!assetPath.empty())
 		{
+			std::shared_ptr<Object> object;
 			if (assetCaches_.contains(assetPath))
-				return assetCaches_.at(assetPath);
-
-			for (auto& it : assetPipeline_)
+				object = assetCaches_.at(assetPath);
+			else
 			{
-				if (it->isValidPath(assetPath))
+				for (auto& it : assetPipeline_)
 				{
-					auto asset = it->loadAssetAtPath(assetPath);
-					if (asset)
-						assetCaches_[assetPath] = asset;
+					if (it->isValidPath(assetPath))
+					{
+						object = it->loadAssetAtPath(assetPath);
+						if (object)
+							assetCaches_[assetPath] = object;
+						break;
+					}
+				}
+			}
 
-					return asset;
+			if (object)
+			{
+				auto gameObject = object->downcast<GameObject>();
+				
+				if (localId >= 100000 && localId < 200000)
+				{
+				}
+				else if (localId >= 200000 && localId < 300000)
+				{
+					GameComponents meshRenderer;
+					gameObject->getComponentsInChildren<MeshRendererComponent>(meshRenderer);
+
+					for (auto& it : meshRenderer)
+					{
+						for (auto& mat : it->downcast<MeshRendererComponent>()->getMaterials())
+						{
+							if (mat->getLocalIdentifier() == localId)
+								return mat;
+						}
+					}
+				}
+				else if (localId >= 300000 && localId < 400000)
+				{
+					GameComponents animators;
+					gameObject->getComponentsInChildren<AnimatorComponent>(animators);
+					for (auto& it : animators)
+					{
+						auto animation = it->downcast<AnimatorComponent>()->getAnimation();
+						if (animation->getLocalIdentifier() == localId)
+							return animation;
+					}
+				}
+				else if (localId >= 400000 && localId < 500000)
+				{
+					GameComponents meshFilter;
+					gameObject->getComponentsInChildren<MeshFilterComponent>(meshFilter);
+					for (auto& it : meshFilter)
+					{
+						auto mesh = it->downcast<MeshFilterComponent>()->getMesh();
+						if (mesh->getLocalIdentifier() == localId)
+							return mesh;
+					}
+				}
+				else if (localId >= 500000 && localId < 600000)
+				{
+					GameComponents components;
+					gameObject->getComponentsInChildren<GameComponent>(components);
+					for (auto& it : components)
+					{
+						if (it->getLocalIdentifier() == localId)
+							return it;
+					}
 				}
 			}
 		}
+
+		return nullptr;
 	}
 
 	void

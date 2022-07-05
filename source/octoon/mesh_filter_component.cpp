@@ -97,15 +97,8 @@ namespace octoon
 			auto& mesh = json["mesh"];
 
 			auto guid = mesh["guid"].get<std::string>();
-			auto localId = mesh["localId"].get<int>();
-
-			auto gameObject = AssetDatabase::instance()->loadAsset<GameObject>(guid, localId);
-			if (gameObject)
-			{
-				auto mf = gameObject->getComponentInChildren<MeshFilterComponent>();
-				if (mf)
-					this->setMesh(mf->getMesh());
-			}
+			auto localId = mesh["localId"].get<std::int64_t>();
+			this->setMesh(AssetDatabase::instance()->loadAsset<Mesh>(guid, localId));
 		}
 	}
 
