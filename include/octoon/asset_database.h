@@ -16,7 +16,7 @@ namespace octoon
 		AssetDatabase() noexcept;
 		virtual ~AssetDatabase() noexcept;
 
-		bool mountPackage(const std::u8string& name, const std::filesystem::path& diskPath) noexcept(false);
+		void mountPackage(const std::u8string& name, const std::filesystem::path& diskPath) noexcept(false);
 		void unmountPackage(const std::u8string& name) noexcept(false);
 
 		void importAsset(const std::filesystem::path& assetPath) noexcept(false);

@@ -25,20 +25,18 @@ namespace octoon
 		assetPipeline_.clear();
 	}
 
-	bool
+	void
 	AssetDatabase::mountPackage(const std::u8string& name, const std::filesystem::path& diskPath) noexcept(false)
 	{
 		for (auto& it : this->assetPipeline_)
 		{
 			if (it->getName() == name)
-				return false;
+				throw std::runtime_error(std::string("Mount package at path ") + (char*)diskPath.u8string().c_str() + " failed.");
 		}
 
 		auto package = std::make_shared<AssetPipeline>(name);
 		this->assetPipeline_.push_back(package);
 		package->open(diskPath);
-
-		return true;
 	}
 
 	void
