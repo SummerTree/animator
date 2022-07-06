@@ -509,6 +509,14 @@ namespace octoon
 				}
 				else if (localId >= 500000 && localId < 600000)
 				{
+					for (auto& it : gameObject->getChildren())
+					{
+						if (it->getLocalIdentifier() == localId)
+							return it;
+					}
+				}
+				else if (localId >= 600000 && localId < 700000)
+				{
 					GameComponents components;
 					gameObject->getComponentsInChildren<GameComponent>(components);
 					for (auto& it : components)

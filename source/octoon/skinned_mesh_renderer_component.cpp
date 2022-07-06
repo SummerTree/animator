@@ -173,19 +173,11 @@ namespace octoon
 			auto& bones = json["bones"];
 
 			auto guid = bones["guid"].get<std::string>();
-			auto localId = bones["localId"].get<int>();
+			auto localId = bones["localId"].get<std::int64_t>();
 
-			auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
-			if (!assetPath.empty())
-			{
-				auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
-				if (gameObject)
-				{
-					auto smr = gameObject->getComponent<SkinnedMeshRendererComponent>();
-					if (smr)
-						this->setBones(smr->getBones());
-				}
-			}
+			auto component = AssetDatabase::instance()->loadAsset<SkinnedMeshRendererComponent>(guid, localId);
+			if (component)
+				this->setBones(component->getBones());
 		}
 	}
 

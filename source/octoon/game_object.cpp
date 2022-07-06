@@ -529,9 +529,11 @@ namespace octoon
 	{
 		assert(type);
 
-		auto it = this->getComponent(type);
-		if (it)
-			components.push_back(it);
+		for (auto& component : this->components_)
+		{
+			if (component->isA(type))
+				components.push_back(component);
+		}
 
 		for (auto& child : children_)
 		{

@@ -68,54 +68,36 @@ namespace octoon
 	{
 		GameComponent::load(json);
 
-		if (json.contains("data"))
+		if (json.contains("guid") && json.contains("localId"))
 		{
-			auto& data = json["data"];
-			if (data.contains("guid"))
+			auto guid = json["guid"].get<std::string>();
+			auto localId = json["localId"].get<std::int64_t>();
+
+			auto component = AssetDatabase::instance()->loadAsset<SkinnedMorphComponent>(guid, localId);
+			if (component)
 			{
-				auto guid = data["guid"].get<std::string>();
-				auto localId = data["localId"].get<int>();
-
-				auto assetPath = AssetDatabase::instance()->getAssetPath(guid);
-				if (!assetPath.empty())
-				{
-					auto gameObject = AssetDatabase::instance()->loadAssetAtPath<GameObject>(assetPath);
-					if (gameObject)
-					{
-						for (auto& it : gameObject->getComponents())
-						{
-							if (!it->isA<SkinnedMorphComponent>())
-								continue;
-
-							if (it->getName() == this->getName())
-							{
-								auto skinnedMorph = it->downcast<SkinnedMorphComponent>();
-								this->setControl(skinnedMorph->getControl());
-								this->setIndices(skinnedMorph->getIndices());
-								this->setOffsets(skinnedMorph->getOffsets());
-							}
-						}
-					}
-				}
+				this->setControl(component->getControl());
+				this->setIndices(component->getIndices());
+				this->setOffsets(component->getOffsets());
 			}
-			else
+		}
+		else
+		{
+			if (json.contains("control"))
+				this->setControl(json["control"].get<float>());
+
+			if (json.contains("offsets"))
 			{
-				if (data.contains("control"))
-					this->setControl(data["control"].get<float>());
+				std::vector<char> buffer = base64_decode(json["offsets"].get<std::string>());
+				this->offsets_.resize(buffer.size() / sizeof(math::float3));
+				std::memcpy(this->offsets_.data(), buffer.data(), buffer.size());
+			}
 
-				if (data.contains("offsets"))
-				{
-					std::vector<char> buffer = base64_decode(data["offsets"].get<std::string>());
-					this->offsets_.resize(buffer.size() / sizeof(math::float3));
-					std::memcpy(this->offsets_.data(), buffer.data(), buffer.size());
-				}
-
-				if (data.contains("indices"))
-				{
-					std::vector<char> buffer = base64_decode(data["indices"].get<std::string>());
-					this->indices_.resize(buffer.size() / sizeof(unsigned int));
-					std::memcpy(this->offsets_.data(), buffer.data(), buffer.size());
-				}
+			if (json.contains("indices"))
+			{
+				std::vector<char> buffer = base64_decode(json["indices"].get<std::string>());
+				this->indices_.resize(buffer.size() / sizeof(unsigned int));
+				std::memcpy(this->offsets_.data(), buffer.data(), buffer.size());
 			}
 		}
 	}
@@ -130,17 +112,14 @@ namespace octoon
 
 		if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->shared_from_this(), guid, localId))
 		{
-			nlohmann::json data;
-			data["guid"] = guid;
-			data["localId"] = localId;
-
-			json["data"] = std::move(data);
+			json["guid"] = guid;
+			json["localId"] = localId;
 		}
 		else
 		{
-			json["data"]["control"] = this->getControl();
-			json["data"]["offsets"] = base64_encode((unsigned char*)offsets_.data(), offsets_.size() * sizeof(math::float3));
-			json["data"]["indices"] = base64_encode((unsigned char*)indices_.data(), indices_.size() * sizeof(unsigned int));
+			json["control"] = this->getControl();
+			json["offsets"] = base64_encode((unsigned char*)offsets_.data(), offsets_.size() * sizeof(math::float3));
+			json["indices"] = base64_encode((unsigned char*)indices_.data(), indices_.size() * sizeof(unsigned int));
 		}
 	}
 

@@ -591,6 +591,7 @@ namespace octoon
 			createMorph(context, pmx, actor);
 			createClothes(context, pmx, actor, bones);
 
+			context.addObjectToAsset("MainAsset", actor);
 			context.setMainObject(actor);
 		}
 	}

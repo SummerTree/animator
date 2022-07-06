@@ -57,7 +57,7 @@ namespace octoon
 		std::shared_ptr<Object> loadAssetAtPath(const std::filesystem::path& assetPath) noexcept(false);
 
 		template<typename T>
-		std::shared_ptr<T> loadAsset(const std::string& guid, long localId) noexcept(false)
+		std::shared_ptr<T> loadAsset(const std::string& guid, std::int64_t localId) noexcept(false)
 		{
 			auto asset = loadAsset(guid, localId);
 			if (asset)

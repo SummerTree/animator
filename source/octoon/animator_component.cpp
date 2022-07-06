@@ -298,13 +298,9 @@ namespace octoon
 			auto guid = avatar["guid"].get<std::string>();
 			auto localId = avatar["localId"].get<int>();
 
-			auto gameObject = AssetDatabase::instance()->loadAsset<GameObject>(guid, localId);
-			if (gameObject)
-			{
-				auto animator = gameObject->getComponent<AnimatorComponent>();
-				if (animator)
-					this->setAvatar(animator->getAvatar());
-			}
+			auto animator = AssetDatabase::instance()->loadAsset<AnimatorComponent>(guid, localId);
+			if (animator)
+				this->setAvatar(animator->getAvatar());
 		}
 	}
 
