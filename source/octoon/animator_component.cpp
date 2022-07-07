@@ -318,7 +318,17 @@ namespace octoon
 			}
 			else
 			{
-				json["animation"] = AssetDatabase::instance()->getAssetGuid(this->getAnimation());
+				std::string guid;
+				std::int64_t localId;
+
+				if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->getAnimation(), guid, localId))
+				{
+					nlohmann::json animation;
+					animation["guid"] = guid;
+					animation["localId"] = localId;
+
+					json["animation"] = std::move(animation);
+				}
 			}
 		}
 

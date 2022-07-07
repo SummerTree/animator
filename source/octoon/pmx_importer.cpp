@@ -591,6 +591,9 @@ namespace octoon
 			createMorph(context, pmx, actor);
 			createClothes(context, pmx, actor, bones);
 
+			for (auto& it : bones)
+				context.addObjectToAsset(it->getName(), it);
+
 			context.addObjectToAsset("MainAsset", actor);
 			context.setMainObject(actor);
 		}
@@ -875,7 +878,7 @@ namespace octoon
 
 						for (std::size_t i = 0; i < pmx.numRigidbodys; i++)
 						{
-							auto rigidbody = rigidbodies[i]->downcast<RigidbodyComponent>();;
+							auto rigidbody = rigidbodies[i]->downcast<RigidbodyComponent>();
 							if (rigidbody)
 								rigidbodyMap[rigidbody] = rigidbodyMap.size();
 						}
