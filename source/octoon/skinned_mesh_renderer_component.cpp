@@ -172,15 +172,12 @@ namespace octoon
 		{
 			auto& bones = json["bones"];
 
-			bones_.resize(bones.size());
+			auto guid = bones["guid"].get<std::string>();
+			auto localId = bones["localId"].get<std::int64_t>();
 
-			for (std::size_t i = 0; i < bones.size(); i++)
-			{
-				auto guid = bones[i]["guid"].get<std::string>();
-				auto localId = bones[i]["localId"].get<std::int64_t>();
-
-				bones_[i] = AssetDatabase::instance()->loadAsset<GameObject>(guid, localId);
-			}
+			auto component = AssetDatabase::instance()->loadAsset<SkinnedMeshRendererComponent>(guid, localId);
+			if (component)
+				this->setBones(component->getBones());
 		}
 	}
 
@@ -195,24 +192,17 @@ namespace octoon
 		json["textureBlendEnable"] = this->getTextureBlendEnable();
 		json["updateWhenOffscreen"] = this->getUpdateWhenOffscreen();
 
-		nlohmann::json boneJson;
+		std::string guid;
+		std::int64_t localId;
 
-		for (auto& it : bones_)
+		if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->shared_from_this(), guid, localId))
 		{
-			std::string guid;
-			std::int64_t localId;
+			nlohmann::json bone;
+			bone["guid"] = guid;
+			bone["localId"] = localId;
 
-			if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(it, guid, localId))
-			{
-				nlohmann::json bone;
-				bone["guid"] = guid;
-				bone["localId"] = localId;
-
-				boneJson.push_back(std::move(bone));
-			}
+			json["bones"] = std::move(bone);
 		}
-
-		json["bones"] = std::move(boneJson);
 	}
 
 	GameComponentPtr
