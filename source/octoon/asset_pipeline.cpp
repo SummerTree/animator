@@ -133,7 +133,6 @@ namespace octoon
 	AssetPipeline::createAsset(const std::shared_ptr<const Texture>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(asset && !relativePath.empty());
-		assert(!AssetDatabase::instance()->contains(asset));
 
 		try
 		{
@@ -179,7 +178,6 @@ namespace octoon
 	AssetPipeline::createAsset(const std::shared_ptr<const Animation>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(asset && !relativePath.empty());
-		assert(!AssetDatabase::instance()->contains(asset));
 
 		try
 		{
@@ -208,7 +206,6 @@ namespace octoon
 	AssetPipeline::createAsset(const std::shared_ptr<const Material>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(asset && !relativePath.empty());
-		assert(!AssetDatabase::instance()->contains(asset));
 
 		try
 		{
@@ -312,7 +309,6 @@ namespace octoon
 	AssetPipeline::createAsset(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
 		assert(asset && !relativePath.empty());
-		assert(!AssetDatabase::instance()->contains(asset));
 
 		try
 		{
@@ -333,6 +329,8 @@ namespace octoon
 	void
 	AssetPipeline::createPrefab(const std::shared_ptr<const GameObject>& asset, const std::filesystem::path& relativePath) noexcept(false)
 	{
+		assert(asset && !relativePath.empty());
+
 		try
 		{
 			std::ofstream ifs(this->getAbsolutePath(relativePath), std::ios_base::binary);

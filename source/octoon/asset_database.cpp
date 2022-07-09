@@ -31,9 +31,9 @@ namespace octoon
 				throw std::runtime_error(std::string("Mount package at path ") + (char*)diskPath.u8string().c_str() + " failed.");
 		}
 
-		auto package = std::make_shared<AssetPipeline>(name);
-		this->assetPipeline_.push_back(package);
-		package->open(diskPath);
+		auto pipeline = std::make_shared<AssetPipeline>(name);
+		this->assetPipeline_.push_back(pipeline);
+		pipeline->open(diskPath);
 	}
 
 	void
@@ -226,23 +226,37 @@ namespace octoon
 		{
 			if (!it.expired())
 			{
-				auto item = it.lock();
+				auto asset = it.lock();
+				auto assetPath = this->getAssetPath(asset);
 
-				if (item->isInstanceOf<Texture>())
-					this->createAsset(item->downcast_pointer<Texture>(), this->getAssetPath(item));
-				else if (item->isInstanceOf<Material>())
-					this->createAsset(item->downcast_pointer<Material>(), this->getAssetPath(item));
-				else if (item->isInstanceOf<Animation>())
-					this->createAsset(item->downcast_pointer<Animation>(), this->getAssetPath(item));
-				else if (item->isInstanceOf<GameObject>())
-					this->createAsset(item->downcast_pointer<GameObject>(), this->getAssetPath(item));
+				for (auto& pipeline : assetPipeline_)
+				{
+					if (!pipeline->isValidPath(assetPath))
+						continue;
+
+					if (asset->isInstanceOf<Texture>())
+						pipeline->createAsset(asset->downcast_pointer<Texture>(), assetPath);
+					else if (asset->isInstanceOf<Material>())
+						pipeline->createAsset(asset->downcast_pointer<Material>(), assetPath);
+					else if (asset->isInstanceOf<Animation>())
+						pipeline->createAsset(asset->downcast_pointer<Animation>(), assetPath);
+					else if (asset->isInstanceOf<GameObject>())
+					{
+						if (this->isPartOfPrefabAsset(asset->downcast_pointer<GameObject>()))
+							pipeline->createPrefab(asset->downcast_pointer<GameObject>(), assetPath);
+						else
+							pipeline->createAsset(asset->downcast_pointer<GameObject>(), assetPath);
+					}
+
+					break;
+				}
 			}
 		}
 
 		dirtyList_.clear();
 
-		for (auto& package : assetPipeline_)
-			package->saveAssets();
+		for (auto& pipeline : assetPipeline_)
+			pipeline->saveAssets();
 	}
 
 	std::filesystem::path
