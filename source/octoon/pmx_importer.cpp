@@ -355,10 +355,10 @@ namespace octoon
 					indices.push_back(v.index);
 				}
 
-				auto animation = mesh->addComponent<SkinnedMorphComponent>();
-				animation->setName(cv.to_bytes(it.name.name));
-				animation->setOffsets(std::move(offsets));
-				animation->setIndices(std::move(indices));
+				auto morph = mesh->addComponent<SkinnedMorphComponent>();
+				morph->setName(cv.to_bytes(it.name.name));
+				morph->setOffsets(std::move(offsets));
+				morph->setIndices(std::move(indices));
 			}
 			break;
 			}

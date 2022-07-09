@@ -43,18 +43,7 @@ namespace octoon
 		else if (subAsset->isInstanceOf<Mesh>())
 			globalId = 400000;
 		else if (subAsset->isInstanceOf<GameObject>())
-		{
-			for (auto& it : subAsset->downcast<GameObject>()->getComponents())
-			{
-				auto& name = it->getName();
-				if (name.empty())
-					this->addObjectToAsset(it->type_name(), it);
-				else
-					this->addObjectToAsset(it->getName(), it);
-			}
-
 			globalId = 500000;
-		}
 		else if (subAsset->isA<GameComponent>())
 			globalId = 600000;
 
