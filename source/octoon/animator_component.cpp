@@ -286,9 +286,14 @@ namespace octoon
 	{
 		if (json.contains("animation"))
 		{
-			auto data = json["animation"].get<nlohmann::json::string_t>();
-			auto animation = AssetDatabase::instance()->loadAssetAtPath<octoon::Animation>(AssetDatabase::instance()->getAssetPath(data));
-			this->setAnimation(std::move(animation));
+			auto& data = json["animation"];
+
+			auto guid = data["guid"].get<std::string>();
+			auto localId = data["localId"].get<int>();
+
+			auto animation = AssetDatabase::instance()->loadAsset<Animation>(guid, localId);
+			if (animation)
+				this->setAnimation(std::move(animation));
 		}
 
 		if (json.contains("avatar"))
@@ -314,21 +319,18 @@ namespace octoon
 				auto path = std::filesystem::path("Assets/Motions").append(make_guid() + ".vmd");
 				AssetDatabase::instance()->createFolder(std::filesystem::path("Assets/Motions"));
 				AssetDatabase::instance()->createAsset(this->getAnimation(), path);
-				json["animation"] = AssetDatabase::instance()->getAssetGuid(path);
 			}
-			else
+
+			std::string guid;
+			std::int64_t localId;
+
+			if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->getAnimation(), guid, localId))
 			{
-				std::string guid;
-				std::int64_t localId;
+				nlohmann::json animation;
+				animation["guid"] = guid;
+				animation["localId"] = localId;
 
-				if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->getAnimation(), guid, localId))
-				{
-					nlohmann::json animation;
-					animation["guid"] = guid;
-					animation["localId"] = localId;
-
-					json["animation"] = std::move(animation);
-				}
+				json["animation"] = std::move(animation);
 			}
 		}
 

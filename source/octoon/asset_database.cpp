@@ -464,7 +464,7 @@ namespace octoon
 				}
 			}
 
-			if (object)
+			if (localId > 0)
 			{
 				auto gameObject = object->downcast<GameObject>();
 				
@@ -526,6 +526,10 @@ namespace octoon
 					}
 				}
 			}
+			else
+			{
+				return object;
+			}			
 		}
 
 		return nullptr;
