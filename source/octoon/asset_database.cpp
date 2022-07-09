@@ -419,7 +419,7 @@ namespace octoon
 	bool
 	AssetDatabase::isSubAsset(const std::shared_ptr<const Object>& asset) const noexcept
 	{
-		return false;
+		return asset->getLocalIdentifier() > 0;
 	}
 
 	bool
