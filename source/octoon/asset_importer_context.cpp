@@ -48,7 +48,7 @@ namespace octoon
 			{
 				auto& name = it->getName();
 				if (name.empty())
-					this->addObjectToAsset(it->rtti()->type_name(), it);
+					this->addObjectToAsset(it->type_name(), it);
 				else
 					this->addObjectToAsset(it->getName(), it);
 			}
@@ -58,13 +58,13 @@ namespace octoon
 		else if (subAsset->isA<GameComponent>())
 			globalId = 600000;
 
-		auto& identifiers = identifiers_[subAsset->getRtti()->type_name()];
+		auto& identifiers = identifiers_[subAsset->isA<GameComponent>() ? GameComponent::getRtti()->type_name() : subAsset->type_name()];
 		identifiers.insert(std::string(identifier));
 		subAsset->setLocalIdentifier(globalId + identifiers.size());
 		this->subAssets_.push_back(subAsset);
 	}
 
-	const std::vector<std::shared_ptr<const Object>>&
+	const std::vector<std::shared_ptr<Object>>&
 	AssetImporterContext::getObjects() const
 	{
 		return subAssets_;

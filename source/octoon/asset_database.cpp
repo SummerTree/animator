@@ -479,71 +479,9 @@ namespace octoon
 			}
 
 			if (localId > 0)
-			{
-				auto gameObject = object->downcast<GameObject>();
-				
-				if (localId >= 100000 && localId < 200000)
-				{
-				}
-				else if (localId >= 200000 && localId < 300000)
-				{
-					GameComponents meshRenderer;
-					gameObject->getComponentsInChildren<MeshRendererComponent>(meshRenderer);
-
-					for (auto& it : meshRenderer)
-					{
-						for (auto& mat : it->downcast<MeshRendererComponent>()->getMaterials())
-						{
-							if (mat->getLocalIdentifier() == localId)
-								return mat;
-						}
-					}
-				}
-				else if (localId >= 300000 && localId < 400000)
-				{
-					GameComponents animators;
-					gameObject->getComponentsInChildren<AnimatorComponent>(animators);
-					for (auto& it : animators)
-					{
-						auto animation = it->downcast<AnimatorComponent>()->getAnimation();
-						if (animation->getLocalIdentifier() == localId)
-							return animation;
-					}
-				}
-				else if (localId >= 400000 && localId < 500000)
-				{
-					GameComponents meshFilter;
-					gameObject->getComponentsInChildren<MeshFilterComponent>(meshFilter);
-					for (auto& it : meshFilter)
-					{
-						auto mesh = it->downcast<MeshFilterComponent>()->getMesh();
-						if (mesh->getLocalIdentifier() == localId)
-							return mesh;
-					}
-				}
-				else if (localId >= 500000 && localId < 600000)
-				{
-					for (auto& it : gameObject->getChildren())
-					{
-						if (it->getLocalIdentifier() == localId)
-							return it;
-					}
-				}
-				else if (localId >= 600000 && localId < 700000)
-				{
-					GameComponents components;
-					gameObject->getComponentsInChildren<GameComponent>(components);
-					for (auto& it : components)
-					{
-						if (it->getLocalIdentifier() == localId)
-							return it;
-					}
-				}
-			}
+				return AssetManager::instance()->getSubAssets(assetPath, localId);
 			else
-			{
 				return object;
-			}			
 		}
 
 		return nullptr;

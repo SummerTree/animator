@@ -31,7 +31,7 @@ namespace octoon
 	}
 
 	void
-	AssetManager::setSubAssetPath(const std::shared_ptr<const Object>& object, const std::filesystem::path& path) noexcept
+	AssetManager::setSubAssetPath(const std::shared_ptr<Object>& object, const std::filesystem::path& path) noexcept
 	{
 		assetToPath_[object] = path;
 		pathToSubAssets_[path].push_back(object);
@@ -65,6 +65,26 @@ namespace octoon
 			return item->second;
 
 		return std::string();
+	}
+
+	std::shared_ptr<Object>
+	AssetManager::getSubAssets(const std::filesystem::path& path, std::int64_t localId) const noexcept
+	{
+		auto assets = pathToSubAssets_.find(path);
+		if (assets != pathToSubAssets_.end())
+		{
+			for (auto& it : assets->second)
+			{
+				if (!it.expired())
+				{
+					auto asset = it.lock();
+					if (asset->getLocalIdentifier() == localId)
+						return asset;
+				}
+			}
+		}
+
+		return nullptr;
 	}
 
 	void

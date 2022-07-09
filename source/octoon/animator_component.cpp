@@ -298,14 +298,17 @@ namespace octoon
 
 		if (json.contains("avatar"))
 		{
-			auto& avatar = json["avatar"];
+			GameObjects avatar;
+			
+			for (auto& it : json["avatar"])
+			{
+				auto guid = it["guid"].get<std::string>();
+				auto localId = it["localId"].get<int>();
 
-			auto guid = avatar["guid"].get<std::string>();
-			auto localId = avatar["localId"].get<int>();
+				avatar.push_back(AssetDatabase::instance()->loadAsset<GameObject>(guid, localId));
+			}
 
-			auto animator = AssetDatabase::instance()->loadAsset<AnimatorComponent>(guid, localId);
-			if (animator)
-				this->setAvatar(animator->getAvatar());
+			this->setAvatar(std::move(avatar));
 		}
 	}
 
@@ -336,16 +339,21 @@ namespace octoon
 
 		if (!this->getAvatar().empty())
 		{
-			std::string guid;
-			std::int64_t localId;
+			auto& avatarJson = json["avatar"];
 
-			if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->shared_from_this(), guid, localId))
+			for (auto& it : avatar_)
 			{
-				nlohmann::json avatar;
-				avatar["guid"] = guid;
-				avatar["localId"] = localId;
+				std::string guid;
+				std::int64_t localId;
 
-				json["avatar"] = std::move(avatar);
+				if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(it, guid, localId))
+				{
+					nlohmann::json avatar;
+					avatar["guid"] = guid;
+					avatar["localId"] = localId;
+
+					avatarJson.push_back(std::move(avatar));
+				}
 			}
 		}
 	}

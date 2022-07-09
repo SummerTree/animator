@@ -56,14 +56,14 @@ namespace octoon
 	SkinnedMeshRendererComponent::setBones(const GameObjects& bones) noexcept
 	{
 		bones_ = bones;
-		quaternions_.resize(bones.size());
+		quaternions_.resize(bones_.size());
 	}
 
 	void
 	SkinnedMeshRendererComponent::setBones(GameObjects&& bones) noexcept
 	{
 		bones_ = std::move(bones);
-		quaternions_.resize(bones.size());
+		quaternions_.resize(bones_.size());
 	}
 
 	const GameObjects&
@@ -170,14 +170,17 @@ namespace octoon
 
 		if (json.contains("bones"))
 		{
-			auto& bones = json["bones"];
+			GameObjects bones;
 
-			auto guid = bones["guid"].get<std::string>();
-			auto localId = bones["localId"].get<std::int64_t>();
+			for (auto& it : json["bones"])
+			{
+				auto guid = it["guid"].get<std::string>();
+				auto localId = it["localId"].get<int>();
 
-			auto component = AssetDatabase::instance()->loadAsset<SkinnedMeshRendererComponent>(guid, localId);
-			if (component)
-				this->setBones(component->getBones());
+				bones.push_back(AssetDatabase::instance()->loadAsset<GameObject>(guid, localId));
+			}
+
+			this->setBones(std::move(bones));
 		}
 	}
 
@@ -192,16 +195,24 @@ namespace octoon
 		json["textureBlendEnable"] = this->getTextureBlendEnable();
 		json["updateWhenOffscreen"] = this->getUpdateWhenOffscreen();
 
-		std::string guid;
-		std::int64_t localId;
-
-		if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(this->shared_from_this(), guid, localId))
+		if (!this->getBones().empty())
 		{
-			nlohmann::json bone;
-			bone["guid"] = guid;
-			bone["localId"] = localId;
+			auto& bonesJson = json["bones"];
 
-			json["bones"] = std::move(bone);
+			for (auto& it : bones_)
+			{
+				std::string guid;
+				std::int64_t localId;
+
+				if (AssetDatabase::instance()->getGUIDAndLocalIdentifier(it, guid, localId))
+				{
+					nlohmann::json bone;
+					bone["guid"] = guid;
+					bone["localId"] = localId;
+
+					bonesJson.push_back(std::move(bone));
+				}
+			}
 		}
 	}
 
