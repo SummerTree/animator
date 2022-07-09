@@ -74,9 +74,9 @@ namespace unreal
 						auto modelPath = octoon::AssetDatabase::instance()->getAssetPath(it);
 						if (!modelPath.empty() && modelPath.is_absolute())
 						{
-							auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
-							octoon::AssetDatabase::instance()->importAsset(modelPath, outputPath);
-							//octoon::AssetDatabase::instance()->setAssetPath(it, outputPath);
+							auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid());
+							octoon::AssetDatabase::instance()->createFolder(outputPath);
+							octoon::AssetDatabase::instance()->createAsset(it, outputPath.append(modelPath.filename().wstring()));
 
 							auto uuid = octoon::make_guid();
 							auto path = std::filesystem::path("Assets/Prefabs").append(uuid + ".prefab");

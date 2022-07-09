@@ -316,40 +316,11 @@ namespace octoon
 
 		try
 		{
-			std::ofstream ifs(this->getAbsolutePath(relativePath), std::ios_base::binary);
-			if (ifs)
+			auto modelPath = AssetDatabase::instance()->getAssetPath(asset);
+			if (modelPath.is_absolute())
 			{
-				nlohmann::json prefab;
-
-				auto modelPath = AssetDatabase::instance()->getAssetPath(asset);
-				if (!modelPath.empty())
-				{
-					if (modelPath.is_absolute())
-					{
-						auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid()).append(modelPath.filename().wstring());
-						AssetDatabase::instance()->importAsset(modelPath, outputPath);
-						prefab["model"] = AssetDatabase::instance()->getAssetGuid(outputPath);
-					}
-					else
-					{
-						prefab["model"] = AssetDatabase::instance()->getAssetGuid(modelPath);
-					}
-				}
-
-				asset->save(prefab);
-
-				auto dump = prefab.dump();
-				ifs.write(dump.c_str(), dump.size());
-				ifs.close();
-
-				AssetDatabase::instance()->importAsset(relativePath);
+				this->importAsset(modelPath, relativePath);
 				AssetManager::instance()->setAssetPath(asset, relativePath);
-
-				this->assetPaths_.insert(relativePath);
-			}
-			else
-			{
-				throw std::runtime_error(std::string("Creating asset at path ") + (char*)relativePath.u8string().c_str() + " failed.");
 			}
 		}
 		catch (const std::exception& e)
