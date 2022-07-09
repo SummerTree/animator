@@ -49,7 +49,7 @@ namespace octoon
 		std::size_t id() const noexcept;
 
 		void setParent(const GameObjectPtr& parent) noexcept;
-		GameObject* getParent() const noexcept;
+		GameObjectPtr getParent() const noexcept;
 
 		void addChild(GameObjects&& child) noexcept;
 		void addChild(GameObjectPtr&& child) noexcept;

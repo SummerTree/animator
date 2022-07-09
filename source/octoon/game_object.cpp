@@ -186,10 +186,10 @@ namespace octoon
 		}
 	}
 
-	GameObject*
+	GameObjectPtr
 	GameObject::getParent() const noexcept
 	{
-		return parent_.lock().get();
+		return parent_.lock();
 	}
 
 	GameScene*

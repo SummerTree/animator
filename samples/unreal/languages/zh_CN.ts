@@ -1851,13 +1851,13 @@ $20 (Original cost $40)</source>
         <translation type="unfinished">确定要删除此模型吗?</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="198"/>
-        <location filename="../views/view_dock.cpp" line="210"/>
+        <location filename="../views/view_dock.cpp" line="201"/>
+        <location filename="../views/view_dock.cpp" line="213"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="198"/>
+        <location filename="../views/view_dock.cpp" line="201"/>
         <source>Unsupported light type.</source>
         <translation>不支持的光源类型。</translation>
     </message>

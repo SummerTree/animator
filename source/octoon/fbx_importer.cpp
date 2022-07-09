@@ -603,17 +603,17 @@ namespace octoon
 				indices[i] = polygonMap.at(polygonIndices[i]);
 
 			auto mesh = std::make_shared<Mesh>();
-			mesh->setName(fbxMesh->GetName());
+			mesh->setName(node->GetName());
 			mesh->setVertexArray(std::move(vertices));
 			mesh->setNormalArray(std::move(normals));
 			mesh->setTexcoordArray(std::move(texcoords));
 			mesh->setIndicesArray(std::move(indices));
 
+			context.addObjectToAsset(node->GetName(), mesh);
+
 			auto gameObject = std::make_shared<GameObject>();
 			gameObject->setName(node->GetName());
 			gameObject->addComponent<MeshFilterComponent>(std::move(mesh));
-
-			context.addObjectToAsset(fbxMesh->GetName(), mesh);
 
 			auto meshRenderer = gameObject->addComponent<MeshRendererComponent>();
 			meshRenderer->setGlobalIllumination(true);
@@ -797,7 +797,7 @@ namespace octoon
 					for (int i = 0; i < rootNode->GetChildCount(); i++)
 					{
 						auto node = ProcessNode(context, scene, rootNode->GetChild(i), filepath);
-						context.addObjectToAsset(node->getName(), node->getChild(i));
+						context.addObjectToAsset(node->getName(), node);
 						object->addChild(std::move(node));
 					}
 					

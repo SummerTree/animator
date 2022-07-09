@@ -1670,13 +1670,13 @@ $20 (Original cost $40)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="198"/>
-        <location filename="../views/view_dock.cpp" line="210"/>
+        <location filename="../views/view_dock.cpp" line="201"/>
+        <location filename="../views/view_dock.cpp" line="213"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../views/view_dock.cpp" line="198"/>
+        <location filename="../views/view_dock.cpp" line="201"/>
         <source>Unsupported light type.</source>
         <translation type="unfinished"></translation>
     </message>

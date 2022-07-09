@@ -119,6 +119,9 @@ namespace unreal
 					auto item = profile_->selectorModule->selectedItem_.getValue().value().object.lock();
 					auto& items = profile_->entitiesModule->objects.getValue();
 					
+					while (item->getParent())
+						item = item->getParent();
+
 					for (auto it = items.begin(); it != items.end(); ++it)
 					{
 						if (*it == item)

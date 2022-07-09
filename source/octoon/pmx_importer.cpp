@@ -742,7 +742,7 @@ namespace octoon
 							pmxBone.name = transform->getName();
 							pmxBone.Visable = true;
 							pmxBone.position = -mesh->getBindposes()[i].getTranslate();
-							pmxBone.Parent = transform->getParent() ? boneMap[transform->getParent()] : -1;
+							pmxBone.Parent = transform->getParent() ? boneMap[transform->getParent().get()] : -1;
 							pmxBone.ProvidedParentBoneIndex = -1;
 							pmxBone.Flag |= PMX_BONE_ROTATION | PMX_BONE_OPERATOR | PMX_BONE_DISPLAY;
 
