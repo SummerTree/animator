@@ -53,38 +53,32 @@ namespace unreal
 	{
 		nlohmann::json sceneJson;
 
-		if (!this->objects.getValue().empty())
+		for (auto& it : this->objects.getValue())
 		{
-			for (auto& it : this->objects.getValue())
+			if (octoon::AssetDatabase::instance()->contains(it))
+				sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(it));
+			else
 			{
-				if (octoon::AssetDatabase::instance()->contains(it))
-					sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(it));
+				auto modelPath = octoon::AssetDatabase::instance()->getAssetPath(it);
+				if (!modelPath.empty() && modelPath.is_absolute())
+				{
+					auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid());
+					octoon::AssetDatabase::instance()->createFolder(outputPath);
+					octoon::AssetDatabase::instance()->createAsset(it, outputPath.append(modelPath.filename().wstring()));
+
+					auto uuid = octoon::make_guid();
+					auto path = std::filesystem::path("Assets/Prefabs").append(uuid + ".prefab");
+					octoon::AssetDatabase::instance()->createFolder("Assets/Prefabs");
+					octoon::AssetDatabase::instance()->createPrefab(it, path);
+					sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(path));
+				}
 				else
 				{
-					if (octoon::AssetDatabase::instance()->isPartOfPrefabAsset(it))
-					{
-						auto uuid = octoon::make_guid();
-						auto path = std::filesystem::path("Assets/Prefabs").append(uuid + ".prefab");
-						octoon::AssetDatabase::instance()->createFolder("Assets/Prefabs");
-						octoon::AssetDatabase::instance()->createPrefab(it, path);
-						sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(path));
-					}
-					else
-					{
-						auto modelPath = octoon::AssetDatabase::instance()->getAssetPath(it);
-						if (!modelPath.empty() && modelPath.is_absolute())
-						{
-							auto outputPath = std::filesystem::path("Assets/Models").append(octoon::make_guid());
-							octoon::AssetDatabase::instance()->createFolder(outputPath);
-							octoon::AssetDatabase::instance()->createAsset(it, outputPath.append(modelPath.filename().wstring()));
-
-							auto uuid = octoon::make_guid();
-							auto path = std::filesystem::path("Assets/Prefabs").append(uuid + ".prefab");
-							octoon::AssetDatabase::instance()->createFolder("Assets/Prefabs");
-							octoon::AssetDatabase::instance()->createPrefab(it, path);
-							sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(path));
-						}
-					}
+					auto uuid = octoon::make_guid();
+					auto path = std::filesystem::path("Assets/Prefabs").append(uuid + ".prefab");
+					octoon::AssetDatabase::instance()->createFolder("Assets/Prefabs");
+					octoon::AssetDatabase::instance()->createPrefab(it, path);
+					sceneJson.push_back(octoon::AssetDatabase::instance()->getAssetGuid(path));
 				}
 			}
 		}
