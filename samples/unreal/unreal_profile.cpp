@@ -86,6 +86,7 @@ namespace unreal
 
 			this->path = path_;
 
+			octoon::AssetDatabase::instance()->unmountPackage(u8"Assets/");
 			octoon::AssetDatabase::instance()->mountPackage(u8"Assets/", std::filesystem::path(path_).append("Assets"));
 
 			if (json.contains("version") && json["physics"].is_string())
@@ -149,7 +150,10 @@ namespace unreal
 				json["version"] = UNREAL_VERSION;
 
 				if (this->path != path_)
+				{
+					octoon::AssetDatabase::instance()->unmountPackage(u8"Assets/");
 					octoon::AssetDatabase::instance()->mountPackage(u8"Assets/", std::filesystem::path(path_).append("Assets"));
+				}
 
 				this->path = path_;
 				this->physicsModule->save(json["physics"]);
