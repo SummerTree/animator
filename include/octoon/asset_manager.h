@@ -17,7 +17,8 @@ namespace octoon
 		AssetManager() noexcept;
 		~AssetManager() noexcept;
 
-		void setAssetPath(const std::shared_ptr<const Object>& object, std::filesystem::path) noexcept;
+		void setAssetPath(const std::shared_ptr<const Object>& object, const std::filesystem::path& path) noexcept;
+		void setSubAssetPath(const std::shared_ptr<const Object>& object, const std::filesystem::path& path) noexcept;
 
 		std::filesystem::path getAssetPath(const std::string& uuid) const noexcept;
 		std::filesystem::path getAssetPath(const std::shared_ptr<const Object>& object) const noexcept;
@@ -37,6 +38,7 @@ namespace octoon
 		std::map<std::filesystem::path, std::string> paths_;
 		std::map<std::string, std::filesystem::path> uniques_;
 		std::map<std::weak_ptr<const Object>, std::filesystem::path, std::owner_less<std::weak_ptr<const Object>>> assetToPath_;
+		std::map<std::filesystem::path, std::vector<std::weak_ptr<const Object>>> pathToSubAssets_;
 	};
 }
 

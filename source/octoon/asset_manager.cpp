@@ -15,9 +15,26 @@ namespace octoon
 	}
 
 	void
-	AssetManager::setAssetPath(const std::shared_ptr<const Object>& object, std::filesystem::path path) noexcept
+	AssetManager::setAssetPath(const std::shared_ptr<const Object>& object, const std::filesystem::path& path) noexcept
+	{
+		auto it = assetToPath_.find(object);
+		if (it != assetToPath_.end())
+		{
+			if (pathToSubAssets_.contains(it->second))
+			{
+				for (auto& it : pathToSubAssets_[it->second])
+					assetToPath_[it] = path;
+			}
+		}
+
+		assetToPath_[object] = path;
+	}
+
+	void
+	AssetManager::setSubAssetPath(const std::shared_ptr<const Object>& object, const std::filesystem::path& path) noexcept
 	{
 		assetToPath_[object] = path;
+		pathToSubAssets_[path].push_back(object);
 	}
 
 	std::filesystem::path
