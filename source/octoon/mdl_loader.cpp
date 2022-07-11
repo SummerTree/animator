@@ -554,6 +554,7 @@ namespace octoon
 			}
 		}
 	}
+
 	class Canvas_exporter
 	{
 		bool m_in_parallel = true;
@@ -564,6 +565,7 @@ namespace octoon
 			: m_in_parallel(parallel)
 		{
 		}
+
 		void add_canvas(const std::string& filename, const mi::neuraylib::ICanvas* canvas)
 		{
 			m_canvases[filename] = mi::base::make_handle_dup(canvas);
@@ -575,27 +577,22 @@ namespace octoon
 			{
 				mdl_impexp_api->export_canvas(filename, canvas) ;
 			};
+
 			std::vector<std::thread> threads;
 
 			for (auto& canvas_file : m_canvases)
 			{
 				const char* filename(canvas_file.first.c_str());
 				const mi::neuraylib::ICanvas* canvas(canvas_file.second.get());
+
 				if (m_in_parallel)
-				{
-					threads.emplace_back(
-						std::thread(export_canvas, filename, canvas)
-					);
-				}
+					threads.emplace_back(std::thread(export_canvas, filename, canvas));
 				else
-				{
 					export_canvas(filename, canvas);
-				}
 			}
+
 			for (auto& t : threads)
-			{
 				t.join();
-			}
 		}
 	};
 
