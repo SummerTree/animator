@@ -22,8 +22,8 @@ namespace octoon
 		{
 			if (pathToSubAssets_.contains(it->second))
 			{
-				for (auto& it : pathToSubAssets_[it->second])
-					assetToPath_[it] = path;
+				for (auto& subAsset : pathToSubAssets_[it->second])
+					assetToPath_[subAsset] = path;
 			}
 		}
 
@@ -31,9 +31,8 @@ namespace octoon
 	}
 
 	void
-	AssetManager::setSubAssetPath(const std::shared_ptr<Object>& object, const std::filesystem::path& path) noexcept
+	AssetManager::addObjectToAsset(const std::shared_ptr<Object>& object, const std::filesystem::path& path) noexcept
 	{
-		assetToPath_[object] = path;
 		pathToSubAssets_[path].push_back(object);
 	}
 
