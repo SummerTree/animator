@@ -13,7 +13,6 @@ namespace octoon
 
 	AssetDatabase::AssetDatabase() noexcept
 	{
-		this->assetPipeline_.push_back(std::make_shared<AssetPipeline>(u8""));
 	}
 
 	AssetDatabase::~AssetDatabase() noexcept

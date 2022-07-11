@@ -22,7 +22,6 @@ namespace octoon
 
 	private:
 		std::string diskPath_;
-		std::string systemPath_;
 	};
 }
 
