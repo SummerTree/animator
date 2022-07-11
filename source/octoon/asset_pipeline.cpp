@@ -556,7 +556,7 @@ namespace octoon
 
 				for (auto& asset : context->getObjects())
 				{
-					if (!AssetDatabase::instance()->contains(asset))
+					if (AssetDatabase::instance()->getAssetPath(asset).empty())
 						AssetManager::instance()->setAssetPath(asset, context->getAssetPath());
 
 					AssetManager::instance()->addObjectToAsset(asset, context->getAssetPath());
