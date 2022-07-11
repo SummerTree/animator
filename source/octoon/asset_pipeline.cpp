@@ -556,10 +556,10 @@ namespace octoon
 
 				for (auto& asset : context->getObjects())
 				{
-					if (!AssetDatabase::instance()->contains(asset))
-						AssetManager::instance()->setAssetPath(asset, context->getAssetPath());
-
-					AssetManager::instance()->addObjectToAsset(asset, context->getAssetPath());
+					if (AssetDatabase::instance()->contains(asset))
+						AssetManager::instance()->addObjectToAsset(asset, context->getAssetPath());
+					else
+						AssetManager::instance()->setAssetPath(asset, context->getAssetPath());					
 				}
 
 				AssetDatabase::instance()->importAsset(path);
