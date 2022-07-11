@@ -155,13 +155,13 @@ namespace octoon
 	}
 
 	void
-	Renderer::beginFrameRendering(const std::shared_ptr<RenderScene>& scene, const std::vector<Camera*>& camera) noexcept
+	Renderer::beginFrameRendering(const std::shared_ptr<RenderScene>& scene) noexcept
 	{
 		scene->sortCameras();
 	}
 
 	void 
-	Renderer::endFrameRendering(const std::shared_ptr<RenderScene>& scene, const std::vector<Camera*>& camera) noexcept
+	Renderer::endFrameRendering(const std::shared_ptr<RenderScene>& scene) noexcept
 	{
 		scene->setSceneDirty(false);
 	}
@@ -246,9 +246,21 @@ namespace octoon
 	}
 
 	void
+	Renderer::render(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false)
+	{
+		this->beginFrameRendering(scene);
+
+		this->beginCameraRendering(scene, camera);
+		this->renderSingleCamera(scene, camera);
+		this->endCameraRendering(scene, camera);
+
+		this->endFrameRendering(scene);
+	}
+
+	void
 	Renderer::render(const std::shared_ptr<RenderScene>& scene) noexcept(false)
 	{
-		this->beginFrameRendering(scene, scene->getCameras());
+		this->beginFrameRendering(scene);
 
 		for (auto& camera : scene->getCameras())
 		{
@@ -259,6 +271,6 @@ namespace octoon
 			this->endCameraRendering(scene, camera);
 		}
 
-		this->endFrameRendering(scene, scene->getCameras());
+		this->endFrameRendering(scene);
 	}
 }

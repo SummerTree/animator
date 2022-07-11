@@ -52,10 +52,11 @@ namespace octoon
 		const GraphicsDevicePtr getGraphicsDevice() const noexcept;
 
 		void render(const std::shared_ptr<RenderScene>& scene) noexcept(false);
+		void render(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false);
 
 	private:
-		void beginFrameRendering(const std::shared_ptr<RenderScene>& scene, const std::vector<Camera*>& camera) noexcept;
-		void endFrameRendering(const std::shared_ptr<RenderScene>& scene, const std::vector<Camera*>& camera) noexcept;
+		void beginFrameRendering(const std::shared_ptr<RenderScene>& scene) noexcept;
+		void endFrameRendering(const std::shared_ptr<RenderScene>& scene) noexcept;
 
 		void beginCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false);
 		void endCameraRendering(const std::shared_ptr<RenderScene>& scene, Camera* camera) noexcept(false);
