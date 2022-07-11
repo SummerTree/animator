@@ -17,12 +17,14 @@ namespace octoon
 		virtual void setViewport(const math::float4& viewport) noexcept;
 		virtual void setRenderToScreen(bool enable) noexcept;
 
+		virtual void setCullingMask(std::uint32_t mask) noexcept;
 		virtual void setClearFlags(ClearFlags clearflags) noexcept;
 		virtual void setFramebuffer(const GraphicsFramebufferPtr& framebuffer) noexcept;
 
 		virtual void setProjection(math::float4x4& projection) const noexcept;
 		virtual void setProjectionInverse(math::float4x4& projection) const noexcept;
 
+		virtual std::uint32_t getCullingMask() const noexcept;
 		virtual bool getRenderToScreen() const noexcept;
 		virtual ClearFlags getClearFlags() const noexcept;
 		virtual const GraphicsFramebufferPtr& getFramebuffer() const noexcept;
@@ -54,6 +56,7 @@ namespace octoon
 
 		bool blitToScreen_;
 
+		std::uint32_t cullingMask_;
 		ClearFlags clearflags_;
 
 		GraphicsFramebufferPtr colorFramebuffer_;

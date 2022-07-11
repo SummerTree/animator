@@ -16,6 +16,7 @@ namespace octoon
 		, viewProject_(math::float4x4::One)
 		, viewProjectInverse_(math::float4x4::One)
 		, clearflags_(ClearFlagBits::AllBit)
+		, cullingMask_(0xFFFFFFFF)
 	{
 	}
 
@@ -42,6 +43,13 @@ namespace octoon
 	{
 		this->setDirty(true);
 		blitToScreen_ = enable;
+	}
+
+	void
+	Camera::setCullingMask(std::uint32_t mask) noexcept
+	{
+		this->setDirty(true);
+		cullingMask_ = mask;
 	}
 
 	void
@@ -233,6 +241,12 @@ namespace octoon
 	Camera::getRenderToScreen() const noexcept
 	{
 		return blitToScreen_;
+	}
+
+	std::uint32_t
+	Camera::getCullingMask() const noexcept
+	{
+		return cullingMask_;
 	}
 
 	ClearFlags

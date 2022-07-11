@@ -68,9 +68,21 @@ namespace octoon
 	}
 
 	void
+	CameraComponent::setCullingMask(std::uint32_t mask) noexcept
+	{
+		camera_->setCullingMask(mask);
+	}
+
+	void
 	CameraComponent::setFramebuffer(const GraphicsFramebufferPtr& framebuffer) noexcept
 	{
 		camera_->setFramebuffer(framebuffer);
+	}
+
+	std::uint32_t
+	CameraComponent::getCullingMask() const noexcept
+	{
+		return camera_->getCullingMask();
 	}
 
 	CameraType

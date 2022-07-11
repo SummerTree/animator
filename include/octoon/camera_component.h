@@ -26,7 +26,9 @@ namespace octoon
 		void setClearFlags(ClearFlags clearflags) noexcept;
 		void setCameraType(CameraType type) noexcept;
 		void setFramebuffer(const GraphicsFramebufferPtr& framebuffer) noexcept;
+		void setCullingMask(std::uint32_t mask) noexcept;
 
+		std::uint32_t getCullingMask() const noexcept;
 		CameraType getCameraType() const noexcept;
 		ClearFlags getClearFlags() const noexcept;
 		GraphicsFramebufferPtr getFramebuffer() const noexcept;
