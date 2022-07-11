@@ -369,7 +369,7 @@ namespace octoon
 	PMXImporter::createMaterials(AssetImporterContext& context, const PMX& pmx, GameObjectPtr& object, Materials& materials) noexcept(false)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> cv;
-		std::unordered_map<std::u8string, std::shared_ptr<Texture>> textureMap;
+		std::unordered_map<std::wstring, std::shared_ptr<Texture>> textureMap;
 
 		materials.reserve(pmx.materials.size());
 
@@ -377,19 +377,18 @@ namespace octoon
 		{
 			try
 			{
-				auto fullpath = it.fullpath.u8string();
-
-				if (!textureMap.contains(fullpath))
+				if (!textureMap.contains(it.name))
 				{
-					if (!std::filesystem::exists(it.fullpath))
+					auto assetPath = context.getAssetPath().parent_path().append(it.name);
+					if (!std::filesystem::exists(AssetDatabase::instance()->getAbsolutePath(assetPath)))
 						continue;
 
-					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(it.fullpath);
+					auto texture = AssetDatabase::instance()->loadAssetAtPath<Texture>(assetPath);
 					if (texture)
 					{
 						texture->apply();
 						context.addObjectToAsset(texture->getName(), texture);
-						textureMap[fullpath] = std::move(texture);
+						textureMap[it.name] = std::move(texture);
 					}
 				}
 			}
@@ -415,10 +414,10 @@ namespace octoon
 
 			if (it.TextureIndex < limits)
 			{
-				auto fullpath = pmx.textures[it.TextureIndex].fullpath.u8string();
-				if (textureMap.find(fullpath) != textureMap.end())
+				auto name = pmx.textures[it.TextureIndex].name;
+				if (textureMap.find(name) != textureMap.end())
 				{
-					auto texture = textureMap.at(fullpath);
+					auto texture = textureMap.at(name);
 					material->setColorMap(texture);
 				}
 			}

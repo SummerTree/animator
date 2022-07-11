@@ -94,8 +94,9 @@ namespace octoon
 					std::map<std::filesystem::path, std::wstring> diskPaths;
 					for (auto& texture : pmx->textures)
 					{
-						if (std::filesystem::exists(texture.fullpath))
-							diskPaths[texture.fullpath] = texture.name;
+						auto fullpath = diskPath.parent_path().append(texture.name);
+						if (std::filesystem::exists(fullpath))
+							diskPaths[fullpath] = texture.name;
 					}
 
 					for (auto& path : diskPaths)
@@ -555,7 +556,7 @@ namespace octoon
 
 				for (auto& asset : context->getObjects())
 				{
-					if (asset != mainObject)
+					if (!AssetDatabase::instance()->contains(asset))
 						AssetManager::instance()->setSubAssetPath(asset, context->getAssetPath());
 				}
 

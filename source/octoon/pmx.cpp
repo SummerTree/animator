@@ -183,8 +183,6 @@ namespace octoon
 			{
 				if (!stream.read((char*)&texture.length, sizeof(texture.length))) return false;
 				if (!stream.read((char*)&texture.name, texture.length)) return false;
-
-				texture.fullpath = std::filesystem::path(rootPath).append(texture.name).make_preferred();
 			}
 		}
 

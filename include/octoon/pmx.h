@@ -172,7 +172,6 @@ namespace octoon
 	{
 		PmxUInt32 length;
 		PmxChar name[MAX_PATH];
-		std::filesystem::path fullpath;
 
 		PmxName()
 		{
