@@ -1,4 +1,5 @@
 #include <octoon/perspective_camera_component.h>
+#include <octoon/math/variant.h>
 
 namespace octoon
 {
@@ -105,7 +106,7 @@ namespace octoon
 	void
 	PerspectiveCameraComponent::onFovChange(const std::any& data) noexcept
 	{
-		if (data.type() == typeid(float))
-			this->setFov(std::any_cast<float>(data));
+		if (data.type() == typeid(math::Variant))
+			this->setFov(std::any_cast<math::Variant>(data).getFloat());
 	}
 }

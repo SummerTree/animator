@@ -157,12 +157,12 @@ SET(LOADER_LIST
 	${SOURCE_PATH}/PMREM_loader.cpp
 	${HEADER_PATH}/mdl_loader.h
 	${SOURCE_PATH}/mdl_loader.cpp
-	${HEADER_PATH}/audio_loader.h
-	${SOURCE_PATH}/audio_loader.cpp
 )
 SOURCE_GROUP("system\\loader" FILES ${LOADER_LIST})
 
 SET(IMPORTER_LIST
+	${HEADER_PATH}/audio_importer.h
+	${SOURCE_PATH}/audio_importer.cpp
 	${HEADER_PATH}/pmx_importer.h
 	${SOURCE_PATH}/pmx_importer.cpp
 	${HEADER_PATH}/fbx_importer.h
