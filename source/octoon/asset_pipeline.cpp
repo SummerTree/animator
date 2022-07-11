@@ -8,6 +8,7 @@
 #include <octoon/obj_importer.h>
 #include <octoon/ass_importer.h>
 #include <octoon/fbx_importer.h>
+#include <octoon/audio_importer.h>
 #include <octoon/material_importer.h>
 #include <octoon/prefab_importer.h>
 #include <octoon/alembic_importer.h>
@@ -531,6 +532,8 @@ namespace octoon
 			assetImporter = std::make_shared<PMXImporter>();
 		else if (ext == u8".obj")
 			assetImporter = std::make_shared<OBJImporter>();
+		else if (ext == u8".ogg" || ext == u8".wav" || ext == u8".flac" || ext == u8".mp3")
+			assetImporter = std::make_shared<AudioImporter>();
 		else if (ext == u8".fbx")
 			assetImporter = std::make_shared<FBXImporter>();
 		else if (ext == u8".mat")

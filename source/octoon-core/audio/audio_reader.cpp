@@ -2,8 +2,9 @@
 
 namespace octoon
 {
+	OctoonImplementSubInterface(AudioReader, Object, "AudioReader")
+
 	AudioReader::AudioReader(AudioBuffer* buf) noexcept
-		: io::istream(buf)
 	{
 		this->buf_ = buf;
 	}
@@ -13,9 +14,9 @@ namespace octoon
     }
 
 	bool
-	AudioReader::access(io::istream& stream) const noexcept
+	AudioReader::is_open() const noexcept
 	{
-		return this->buf_->access(stream);
+		return this->buf_->is_open();
 	}
 
 	std::uint32_t
@@ -40,5 +41,53 @@ namespace octoon
 	AudioReader::bitsPerSample() const noexcept
 	{
 		return this->buf_->bitsPerSample();
+	}
+
+	std::streamsize
+	AudioReader::read(char* str, std::streamsize cnt) noexcept
+	{
+		return this->buf_->read(str, cnt);
+	}
+
+	std::streamsize
+	AudioReader::write(const char* str, std::streamsize cnt) noexcept
+	{
+		return this->buf_->write(str, cnt);
+	}
+
+	std::streamoff
+	AudioReader::seekg(io::ios_base::off_type pos, io::ios_base::seekdir dir) noexcept
+	{
+		return this->buf_->seekg(pos, dir);
+	}
+
+	std::streamoff
+	AudioReader::tellg() noexcept
+	{
+		return this->buf_->tellg();
+	}
+
+	std::streamsize
+	AudioReader::size() const noexcept
+	{
+		return this->buf_->size();
+	}
+
+	int
+	AudioReader::flush() noexcept
+	{
+		return this->buf_->flush();
+	}
+
+	void
+	AudioReader::lock() noexcept
+	{
+		return this->buf_->lock();
+	}
+
+	void
+	AudioReader::unlock() noexcept
+	{
+		return this->buf_->unlock();
 	}
 }

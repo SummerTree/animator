@@ -1,12 +1,12 @@
-#ifndef OCTOON_MP3_AUDIO_BUFFER_H_
-#define OCTOON_MP3_AUDIO_BUFFER_H_
+#ifndef OCTOON_MP3_AUDIO_READER_H_
+#define OCTOON_MP3_AUDIO_READER_H_
 
 #include <octoon/audio/audio_reader.h>
 #include <filesystem>
 
 namespace octoon
 {
-	class Mp3StreamBuffer final : public AudioBuffer
+	class OCTOON_EXPORT Mp3StreamBuffer final : public AudioBuffer
 	{
 	public:
 		Mp3StreamBuffer() noexcept;
@@ -44,13 +44,13 @@ namespace octoon
 
 	class OCTOON_EXPORT Mp3AudioReader final : public AudioReader
 	{
+		OctoonDeclareSubClass(Mp3AudioReader, AudioReader)
 	public:
 		Mp3AudioReader() noexcept;
 		Mp3AudioReader(const std::filesystem::path& path) noexcept;
 		virtual ~Mp3AudioReader() noexcept;
 
 		bool open(const std::filesystem::path& path) noexcept(false);
-		bool is_open() const noexcept(false);
 
 		std::shared_ptr<AudioReader> clone() const noexcept override;
 

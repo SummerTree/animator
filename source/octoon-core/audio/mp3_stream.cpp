@@ -5,6 +5,8 @@
 
 namespace octoon
 {
+	OctoonImplementSubClass(Mp3AudioReader, AudioReader, "Mp3AudioReader")
+
 	Mp3StreamBuffer::Mp3StreamBuffer() noexcept
 		: pos_(0)
 	{
@@ -188,12 +190,6 @@ namespace octoon
 	Mp3AudioReader::open(const std::filesystem::path& path) noexcept(false)
 	{
 		return this->buf_.open(path);
-	}
-
-	bool
-	Mp3AudioReader::is_open() const noexcept(false)
-	{
-		return this->buf_.is_open();
 	}
 
 	std::shared_ptr<AudioReader>

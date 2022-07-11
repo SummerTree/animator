@@ -4,6 +4,8 @@
 
 namespace octoon
 {
+	OctoonImplementSubClass(OggAudioReader, AudioReader, "OggAudioReader")
+
 	std::size_t
 	ogg_stream_read(void* ptr, std::size_t elementSize, std::size_t count, void* data)
 	{
@@ -270,12 +272,6 @@ namespace octoon
 	OggAudioReader::open(const std::filesystem::path& filepath) noexcept(false)
 	{
 		return buf_.open(filepath);
-	}
-
-	bool
-	OggAudioReader::is_open() const noexcept(false)
-	{
-		return buf_.is_open();
 	}
 
 	std::shared_ptr<AudioReader>

@@ -5,6 +5,8 @@
 
 namespace octoon
 {
+	OctoonImplementSubClass(FlacAudioReader, AudioReader, "FlacAudioReader")
+
 	FlacStreamBuffer::FlacStreamBuffer() noexcept
 		: pos_(0)
 	{
@@ -184,12 +186,6 @@ namespace octoon
 	FlacAudioReader::open(const std::filesystem::path& path) noexcept(false)
 	{
 		return this->buf_.open(path);
-	}
-
-	bool
-	FlacAudioReader::is_open() const noexcept(false)
-	{
-		return this->buf_.is_open();
 	}
 
 	std::shared_ptr<AudioReader>

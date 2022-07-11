@@ -1,5 +1,5 @@
-#ifndef OCTOON_OGG_AUDIO_BUFFER_H_
-#define OCTOON_OGG_AUDIO_BUFFER_H_
+#ifndef OCTOON_OGG_AUDIO_READER_H_
+#define OCTOON_OGG_AUDIO_READER_H_
 
 #include <octoon/audio/audio_buffer.h>
 #include <octoon/audio/audio_reader.h>
@@ -9,7 +9,7 @@ struct OggVorbis_File;
 
 namespace octoon
 {
-	class OggStreamBuffer final : public AudioBuffer
+	class OCTOON_EXPORT OggStreamBuffer final : public AudioBuffer
 	{
 	public:
 		OggStreamBuffer() noexcept;
@@ -46,13 +46,13 @@ namespace octoon
 
 	class OCTOON_EXPORT OggAudioReader final : public AudioReader
 	{
+		OctoonDeclareSubClass(OggAudioReader, AudioReader)
 	public:
 		OggAudioReader() noexcept;
 		OggAudioReader(const std::filesystem::path& filepath) noexcept;
 		virtual ~OggAudioReader() noexcept;
 
 		bool open(const std::filesystem::path& filepath) noexcept(false);
-		bool is_open() const noexcept(false);
 
 		std::shared_ptr<AudioReader> clone() const noexcept override;
 

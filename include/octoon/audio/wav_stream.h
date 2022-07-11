@@ -1,12 +1,12 @@
-#ifndef OCTOON_WAV_AUDIO_BUFFER_H_
-#define OCTOON_WAV_AUDIO_BUFFER_H_
+#ifndef OCTOON_WAV_AUDIO_READER_H_
+#define OCTOON_WAV_AUDIO_READER_H_
 
 #include <octoon/audio/audio_reader.h>
 #include <filesystem>
 
 namespace octoon
 {
-	class WavStreamBuffer final : public AudioBuffer
+	class OCTOON_EXPORT WavStreamBuffer final : public AudioBuffer
 	{
 	public:
 		WavStreamBuffer() noexcept;
@@ -44,13 +44,13 @@ namespace octoon
 
 	class OCTOON_EXPORT WavAudioReader final : public AudioReader
 	{
+		OctoonDeclareSubClass(WavAudioReader, AudioReader)
 	public:
 		WavAudioReader() noexcept;
 		WavAudioReader(const std::filesystem::path& path) noexcept;
 		virtual ~WavAudioReader() noexcept;
 
 		bool open(const std::filesystem::path& path) noexcept(false);
-		bool is_open() const noexcept(false);
 
 		std::shared_ptr<AudioReader> clone() const noexcept override;
 

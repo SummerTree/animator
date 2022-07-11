@@ -1,7 +1,7 @@
 #include "sound_component.h"
 #include "../unreal_profile.h"
 #include "../unreal_behaviour.h"
-#include <octoon/audio_loader.h>
+#include <octoon/asset_database.h>
 
 namespace unreal
 {
@@ -45,7 +45,7 @@ namespace unreal
 		{
 			if (!path.empty())
 			{
-				auto source = octoon::AudioLoader::load(path);
+				auto source = octoon::AssetDatabase::instance()->loadAssetAtPath<octoon::AudioReader>(path);
 				if (source)
 				{
 					auto audio = std::make_shared<octoon::GameObject>();

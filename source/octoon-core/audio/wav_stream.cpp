@@ -5,6 +5,8 @@
 
 namespace octoon
 {
+	OctoonImplementSubClass(WavAudioReader, AudioReader, "WavAudioReader")
+
 	WavStreamBuffer::WavStreamBuffer() noexcept
 		: pos_(0)
 	{
@@ -188,12 +190,6 @@ namespace octoon
 	WavAudioReader::open(const std::filesystem::path& path) noexcept(false)
 	{
 		return this->buf_.open(path);
-	}
-
-	bool
-	WavAudioReader::is_open() const noexcept(false)
-	{
-		return this->buf_.is_open();
 	}
 
 	std::shared_ptr<AudioReader>
