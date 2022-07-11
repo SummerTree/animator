@@ -716,8 +716,8 @@ namespace octoon
 					for (auto& it : item.value())
 					{
 						auto component = RttiFactory::instance()->make_shared<GameComponent>(item.key());
-						component->load(it);
 						this->addComponent(std::move(component));
+						component->load(it);
 					}
 				}
 			}
