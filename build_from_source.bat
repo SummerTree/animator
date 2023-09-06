@@ -6,12 +6,12 @@ if exist build (
 
 git clone https://github.com/octoon/octoon-mdl-sdk-bin.git
 cd octoon-mdl-sdk-bin/mdl-sdk
-conan create conanfile.py mdl-sdk/2021.01.02@xiahan/stable -s build_type=Debug
-conan create conanfile.py mdl-sdk/2021.01.02@xiahan/stable -s build_type=Release
+conan create . -s build_type=Debug
+conan create . -s build_type=Release
 cd ../../
 
-conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Debug -s compiler.runtime=MDd --build missing
-conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Release -s compiler.runtime=MD --build missing
+conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Debug -s compiler.runtime=dynamic --build missing
+conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Release -s compiler.runtime=dynamic --build missing
 
 if %errorlevel% == 0 (
   cmake .. -G "Visual Studio 16"
