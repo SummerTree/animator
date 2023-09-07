@@ -4,21 +4,21 @@ libjpeg-turbo/2.1.2
 libpng/1.6.40
 vorbis/1.3.7
 libcurl/7.82.0
-freetype/2.11.1
+freetype/2.13.0
 bullet3/3.24
 glew/2.2.0
 alembic/1.8.3
 tinyobjloader/1.0.6
-libiconv/1.16
+libiconv/1.17
 glfw/3.3.7
 nvcloth/1.1.6
-qt/6.3.0
+qt/6.3.2
 ffmpeg/5.0
 spdlog/1.10.0
 openal/1.21.1
 opencl-headers/2022.01.04
 opencl-icd-loader/2022.01.04
-mdl-sdk/2021.01.02@xiahan/stable
+mdl-sdk/2021.01.02
 
 [options]
 qt/*:shared=True
@@ -35,6 +35,5 @@ bin, *.dll -> ../lib/binaries/win64_Release @ excludes=Qt6*.dll
 bin, *.dll -> ../lib/binaries/win64_Debug @ excludes=Qt6*.dll
 
 [generators]
-cmake
-cmake_find_package
-cmake_paths
+CMakeDeps
+CMakeToolchain
