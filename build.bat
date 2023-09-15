@@ -6,8 +6,8 @@ if exist build (
 
 conan remote add iteale http://conan.iteale.com:19479
 
-conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Debug -s compiler.runtime=MDd --build missing
-conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Release -s compiler.runtime=MD --build missing
+conan install .. -s arch=x86_64 -s build_type=Debug -s compiler.runtime=MDd --build missing
+conan install .. -s arch=x86_64 -s build_type=Release -s compiler.runtime=MD --build missing
 
 if %errorlevel% == 0 (
   cmake .. -G "Visual Studio 16"

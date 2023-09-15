@@ -21,3 +21,7 @@ document/OctoonAPI/*.tmp
 /lib/system/materials
 /lib/system/hdris
 /redist
+/CMakeFiles/
+
+CMakeCache.txt
+CMakeUserPresets.json

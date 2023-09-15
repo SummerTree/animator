@@ -24,7 +24,7 @@ mdl-sdk/2021.01.02
 qt/*:shared=True
 qt/*:gui=True
 qt/*:qtshadertools=True
-qt/*:qtdeclarative=True
+qt/*:qtdeclarative=False
 qt/*:qtsvg=True
 spdlog/*:shared=True
 
@@ -33,6 +33,9 @@ bin, *.dll -> ../lib/binaries/win86_Release @ excludes=Qt6*.dll
 bin, *.dll -> ../lib/binaries/win86_Debug @ excludes=Qt6*.dll
 bin, *.dll -> ../lib/binaries/win64_Release @ excludes=Qt6*.dll
 bin, *.dll -> ../lib/binaries/win64_Debug @ excludes=Qt6*.dll
+
+[tool_requires]
+cmake/3.22.6
 
 [generators]
 CMakeDeps

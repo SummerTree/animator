@@ -10,11 +10,14 @@ conan create . -s build_type=Debug
 conan create . -s build_type=Release
 cd ../../
 
-conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Debug -s compiler.runtime=dynamic --build missing
-conan install .. -g cmake_multi -s arch=x86_64 -s build_type=Release -s compiler.runtime=dynamic --build missing
+cd ../
+conan install . --output-folder=build -s arch=x86_64 -s build_type=Debug -s compiler.runtime=dynamic --build missing
+conan install . --output-folder=build -s arch=x86_64 -s build_type=Release -s compiler.runtime=dynamic --build missing
 
 if %errorlevel% == 0 (
-  cmake .. -G "Visual Studio 16"
+  cd ./build
+  conanbuild.bat
+  cmake .. -G "Visual Studio 16" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
 ) else (
   goto ExitLabelFailure
 )

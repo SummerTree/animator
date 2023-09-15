@@ -1,13 +1,5 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+cmake_minimum_required(VERSION 3.21)
 PROJECT(octoon)
-
-# CONAN依赖
-IF(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo_multi.cmake)
-    INCLUDE(${CMAKE_BINARY_DIR}/conanbuildinfo_multi.cmake)
-    conan_basic_setup()
-else()
-    MESSAGE(WARNING "The file conanbuildinfo_multi.cmake doesn't exist, you have to run conan install first")
-ENDIF()
 
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 LIST(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
