@@ -323,9 +323,9 @@ if(NOT FBX_FOUND)
 	MESSAGE("Fbx SDK not found, FBX tools libraries and samples will be skipped.")
 endif()
 
-CONAN_TARGET_LINK_LIBRARIES(${LIB_NAME})
+# CONAN_TARGET_LINK_LIBRARIES(${LIB_NAME})
 
-TARGET_LINK_LIBRARIES(${LIB_NAME} general fbx::sdk)
+# TARGET_LINK_LIBRARIES(${LIB_NAME} general fbx::sdk)
 TARGET_LINK_LIBRARIES(${LIB_NAME} general octoon-core)
 
 TARGET_INCLUDE_DIRECTORIES(${LIB_NAME} PRIVATE ${OCTOON_PATH_INCLUDE})

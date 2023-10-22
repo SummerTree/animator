@@ -16,8 +16,7 @@ conan install . --output-folder=build -s arch=x86_64 -s build_type=Release -s co
 
 if %errorlevel% == 0 (
   cd ./build
-  conanbuild.bat
-  cmake .. -G "Visual Studio 16" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
+  cmake .. -G "Visual Studio 17" -DCMAKE_TOOLCHAIN_FILE=build/generators/conan_toolchain.cmake
 ) else (
   goto ExitLabelFailure
 )

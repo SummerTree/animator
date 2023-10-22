@@ -19,6 +19,7 @@ openal/1.21.1
 opencl-headers/2022.01.04
 opencl-icd-loader/2022.01.04
 mdl-sdk/2021.01.02
+zlib/1.2.13
 
 [options]
 qt/*:shared=True
@@ -40,3 +41,6 @@ cmake/3.22.6
 [generators]
 CMakeDeps
 CMakeToolchain
+
+[layout]
+cmake_layout
